@@ -79,6 +79,7 @@ embedded-hal-async = { version = "1.0.0", default-features = false }
 embedded-nal-coap = "0.1.0-alpha.4"
 embedded-storage = { version = "0.3.1" }
 embedded-storage-async = { version = "0.4.1" }
+embedded-test = { version = "0.5.0", default-features = false, features = ["ariel-os"] }
 
 esp-alloc = { version = "0.5.0", default-features = false }
 esp-hal = { version = "0.21.1", default-features = false }
@@ -171,6 +172,9 @@ esp-storage = { git = "https://github.com/kaspar030/esp-hal", branch = "for-arie
 
 # patched to use portable-atomics <https://github.com/seanmonstar/try-lock/pull/11>
 try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "a1aadfac9840fe23672159c12af7272e44bc684c" }
+
+# added Ariel OS support
+embedded-test = { git = "https://github.com/kaspar030/embedded-test", branch = "for-ariel-os-2024-10-21" }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html
