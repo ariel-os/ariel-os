@@ -17,7 +17,6 @@ contexts:
       - ?semihosting
     env:
       RUSTFLAGS:
-        - --cfg builder=\"${builder}\"
         - --cfg context=\"${builder}\"
         - --cfg context=\"ariel-os\"
       FEATURES:
@@ -71,6 +70,7 @@ contexts:
           test "${SKIP_CARGO_BUILD}" = "1" && exit 0;
           cd ${relpath} && ${CARGO_ENV} cargo ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --${PROFILE} ${FEATURES}
           && cp ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE}/${riot_binary} ${relroot}/${out}
+          ${POST_LINK}
 
       - name: GIT_DOWNLOAD
         cmd: "D=$$(dirname ${out}); rm -rf $$D && git clone ${url} $$D -n && git -C $$D reset --hard ${commit} && touch ${out}"
@@ -207,6 +207,8 @@ contexts:
   - name: rp2040
     parent: rp
     selects:
+      - rp-link-arg
+      - thumbv6m-none-eabi
       - ?probe-rs
     env:
       RUSTFLAGS:
@@ -220,6 +222,35 @@ contexts:
       debug-rs:
         cmd:
           - probe-rs debug --chip ${PROBE_RS_CHIP} --exe ${out}
+
+  - name: rp2350
+    parent: rp
+    selects:
+      - thumbv8m.main-none-eabi  # actually eabihf, but ariel-os doesn't support hard float yet
+      # no probe-rs support, yet
+      #  - ?probe-rs
+      # somehow when not using clang, the `OS/ABI` field of the resulting .elf
+      # becomes `0x03` ("UNIX - GNU"), whereas picotool rejects the .elf if the field
+      # does not equal `0x00` ("UNIX - System V"). using lld through clang leads to
+      # the correct field.
+      - ?linker-clang
+    disables:
+      # linker error (and no probe-rs anyways)
+      - defmt
+    env:
+      RUSTFLAGS:
+        - --cfg context=\"rp2350\"
+      # hacky fix when not using `linker-clang` (see above)
+      #POST_LINK: "&& echo 00000007: 00 | xxd -r -c 1 - ${relroot}/${out}"
+      PROBE_RS_CHIP: RP2040
+      CARGO_RUNNER:
+        - ${SCRIPTS}/debug-openocd.sh
+      OPENOCD_ARGS:
+        - "-f interface/cmsis-dap.cfg -f target/rp2040.cfg"
+    tasks:
+      flash:
+        cmd:
+          - picotool load -u -v -x -t elf ${out}
 
   - name: esp
     parent: ariel-os
@@ -340,7 +371,7 @@ modules:
       global:
         OBJCOPY: arm-none-eabi-objcopy
         RUSTFLAGS:
-          - -Clink-arg=--nmagic
+          - -Clink-arg=${LINK_ARG_PREFIX}--nmagic
           - -Clink-arg=${LINK_ARG_PREFIX}--no-eh-frame-hdr
           - -Clink-arg=-Tlinkme.x
           - -Clink-arg=-Tlink.x
@@ -385,6 +416,16 @@ modules:
       global:
         RUSTC_TARGET: thumbv8m.main-none-eabi
         CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV8M_MAIN_NONE_EABI
+        RUSTFLAGS:
+          - --cfg armv8m
+
+  - name: thumbv8m.main-none-eabihf
+    depends:
+      - cortex-m
+    env:
+      global:
+        RUSTC_TARGET: thumbv8m.main-none-eabihf
+        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV8M_MAIN_NONE_EABIHF
         RUSTFLAGS:
           - --cfg armv8m
 
@@ -524,15 +565,23 @@ modules:
           - ariel-os/thread_info
 
   - name: cross-language-lto
-    # use clang/lld to link, enables cross-language LTO.
+    help: Enable cross-language LTO
     # This requires rustc's llvm and clang's llvm version to match.
     context: ariel-os
     depends:
       - lto
+      - linker-clang
     env:
       global:
         RUSTFLAGS:
           - "-Clinker-plugin-lto"
+
+  - name: linker-clang
+    help: Use clang/lld to link
+    context: riot-rs
+    env:
+      global:
+        RUSTFLAGS:
           - "-Clinker=clang"
           - "-Clink-arg=-fuse-ld=lld"
           - "-Clink-arg=--target=${RUSTC_TARGET}"
@@ -694,6 +743,7 @@ modules:
       - nrf52840dk
       - rpi-pico
       - rpi-pico-w
+      - rpi-pico2
       - particle-xenon
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
@@ -937,6 +987,7 @@ builders:
           - rustup target add thumbv7em-none-eabi
           - rustup target add thumbv7em-none-eabihf
           - rustup target add thumbv8m.main-none-eabi
+          - rustup target add thumbv8m.main-none-eabihf
           - rustup target add riscv32imc-unknown-none-elf
           - rustup target add riscv32imac-unknown-none-elf
           - rustup component add rust-src
@@ -1001,6 +1052,11 @@ builders:
     parent: rpi-pico
     env:
       BOARD: rpi-pico-w
+
+  - name: rpi-pico2
+    parent: rp2350
+    env:
+      BOARD: rpi-pico2
 
   - name: ai-c3
     parent: esp32c3

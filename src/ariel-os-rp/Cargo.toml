@@ -41,6 +41,11 @@ embassy-rp = { workspace = true, default-features = false, features = [
   "rp2040",
 ] }
 
+[target.'cfg(context = "rp2350")'.dependencies]
+embassy-rp = { workspace = true, default-features = false, features = [
+  "rp235xa", "binary-info"
+] }
+
 [features]
 ## Enables GPIO interrupt support.
 external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
@@ -77,5 +82,8 @@ wifi-cyw43 = [
 
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
+
+## Enables picotool support
+picotool = []
 
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
