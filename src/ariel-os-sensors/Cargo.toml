@@ -1,0 +1,30 @@
+[package]
+name = "ariel-os-sensors"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os-macros = { workspace = true }
+defmt = { workspace = true, optional = true }
+embassy-sync = { workspace = true }
+linkme = { workspace = true }
+pin-project = { workspace = true }
+
+[features]
+defmt = ["dep:defmt"]
+
+# These features could be codegened
+max-reading-value-min-count-2 = ["ariel-os-macros/max-reading-value-min-count-2"]
+max-reading-value-min-count-3 = ["ariel-os-macros/max-reading-value-min-count-3"]
+max-reading-value-min-count-4 = ["ariel-os-macros/max-reading-value-min-count-4"]
+max-reading-value-min-count-6 = ["ariel-os-macros/max-reading-value-min-count-6"]
+max-reading-value-min-count-7 = ["ariel-os-macros/max-reading-value-min-count-7"]
+max-reading-value-min-count-9 = ["ariel-os-macros/max-reading-value-min-count-9"]
+max-reading-value-min-count-12 = [
+  "ariel-os-macros/max-reading-value-min-count-12",
+]
