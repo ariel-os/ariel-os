@@ -65,3 +65,13 @@ impl Thread {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn check_type_sizes() {
+        assert_eq!(size_of::<Thread>(), size_of::<usize>() + 24);
+    }
+}
