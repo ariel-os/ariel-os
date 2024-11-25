@@ -1438,23 +1438,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "embassy-http-server"
-version = "0.1.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "embassy-net",
- "embassy-nrf",
- "embassy-sync 0.6.0",
- "embedded-io-async",
- "heapless 0.8.0",
- "httparse",
- "picoserve",
- "serde",
- "static_cell",
-]
-
-[[package]]
 name = "embassy-net"
 version = "0.4.0"
 source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
@@ -2648,10 +2631,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "httparse"
-version = "1.9.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d71d3574edd2771538b901e6549113b4006ece66150fb69c0fb6d9a2adae946"
+name = "http-server"
+version = "0.1.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-sync 0.6.0",
+ "heapless 0.8.0",
+ "picoserve",
+ "serde",
+]
 
 [[package]]
 name = "i2c-controller"
