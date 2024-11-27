@@ -1,0 +1,26 @@
+[package]
+name = "http-server"
+version = "0.1.0"
+authors.workspace = true
+license.workspace = true
+edition.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "override-network-config",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embassy-sync = { workspace = true }
+heapless = { workspace = true }
+picoserve = { version = "0.12.2", default-features = false, features = [
+  "embassy",
+  "embassy-stack-is-copy",
+], git = "https://github.com/ariel-os/picoserve", branch = "update_embassy_stack_api" }
+serde = { workspace = true, optional = true }
+
+[features]
+button-reading = ["dep:serde"]
