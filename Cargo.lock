@@ -1127,7 +1127,7 @@ dependencies = [
 [[package]]
 name = "cyw43"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -1144,7 +1144,7 @@ dependencies = [
 [[package]]
 name = "cyw43-pio"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "cyw43",
  "embassy-rp",
@@ -1396,7 +1396,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor"
 version = "0.6.1"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -1409,7 +1409,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor-macros"
 version = "0.6.1"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -1429,7 +1429,7 @@ dependencies = [
 [[package]]
 name = "embassy-hal-internal"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -1457,7 +1457,7 @@ dependencies = [
 [[package]]
 name = "embassy-net"
 version = "0.4.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "defmt",
  "document-features",
@@ -1474,7 +1474,7 @@ dependencies = [
 [[package]]
 name = "embassy-net-driver"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "defmt",
 ]
@@ -1482,7 +1482,7 @@ dependencies = [
 [[package]]
 name = "embassy-net-driver-channel"
 version = "0.3.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "embassy-futures",
  "embassy-net-driver",
@@ -1492,7 +1492,7 @@ dependencies = [
 [[package]]
 name = "embassy-nrf"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "bitflags 2.6.0",
  "cfg-if",
@@ -1522,7 +1522,7 @@ dependencies = [
 [[package]]
 name = "embassy-rp"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "atomic-polyfill",
  "cfg-if",
@@ -1560,7 +1560,7 @@ dependencies = [
 [[package]]
 name = "embassy-stm32"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "aligned",
  "bit_field",
@@ -1618,7 +1618,7 @@ dependencies = [
 [[package]]
 name = "embassy-sync"
 version = "0.6.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -1651,7 +1651,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-driver"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "document-features",
 ]
@@ -1659,7 +1659,7 @@ dependencies = [
 [[package]]
 name = "embassy-time-queue-driver"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 
 [[package]]
 name = "embassy-usb"
@@ -1680,15 +1680,28 @@ dependencies = [
 [[package]]
 name = "embassy-usb-driver"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "defmt",
 ]
 
 [[package]]
+name = "embassy-usb-keyboard"
+version = "0.1.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-nrf",
+ "embassy-sync 0.6.0",
+ "embassy-usb",
+ "static_cell",
+ "usbd-hid",
+]
+
+[[package]]
 name = "embassy-usb-synopsys-otg"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
+source = "git+https://github.com/kaspar030/embassy?branch=for-ariel-os-2024-11-06#af2533fffdd50d35a1fdee682a1e7ed5ccc5e3d8"
 dependencies = [
  "critical-section",
  "embassy-sync 0.6.0",
@@ -1935,7 +1948,7 @@ dependencies = [
 [[package]]
 name = "esp-alloc"
 version = "0.5.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
 dependencies = [
  "critical-section",
  "enumset",
@@ -1945,7 +1958,18 @@ dependencies = [
 [[package]]
 name = "esp-build"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b94a4b8d74e7cc7baabcca5b2277b41877e039ad9cd49959d48ef94dac7eab4b"
+dependencies = [
+ "quote",
+ "syn 2.0.87",
+ "termcolor",
+]
+
+[[package]]
+name = "esp-build"
+version = "0.1.0"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
 dependencies = [
  "quote",
  "syn 2.0.87",
@@ -1955,7 +1979,8 @@ dependencies = [
 [[package]]
 name = "esp-config"
 version = "0.1.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7eeb7365af80ce4f8a1a2536676daf4e3d1487ec7a5b2eda0e8c458b9ba8b266"
 dependencies = [
  "document-features",
 ]
@@ -1963,7 +1988,8 @@ dependencies = [
 [[package]]
 name = "esp-hal"
 version = "0.21.1"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dae8535b3c6762c286dba6a206ab83637fb347ed26e99d99011726d9ee2f4082"
 dependencies = [
  "basic-toml",
  "bitfield 0.16.1",
@@ -1987,7 +2013,7 @@ dependencies = [
  "embedded-io 0.6.1",
  "embedded-io-async",
  "enumset",
- "esp-build",
+ "esp-build 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "esp-config",
  "esp-hal-procmacros",
  "esp-metadata",
@@ -2005,7 +2031,7 @@ dependencies = [
  "paste",
  "portable-atomic",
  "rand_core",
- "riscv",
+ "riscv 0.11.1",
  "serde",
  "strum",
  "ufmt-write",
@@ -2018,13 +2044,14 @@ dependencies = [
 [[package]]
 name = "esp-hal-embassy"
 version = "0.4.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1d17e1b37de4605fdcadbb2a9701065e7d6ed376b473bf8eeac1d879a53b3470"
 dependencies = [
  "critical-section",
  "document-features",
  "embassy-executor",
  "embassy-time-driver",
- "esp-build",
+ "esp-build 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "esp-hal",
  "esp-hal-procmacros",
  "esp-metadata",
@@ -2035,7 +2062,8 @@ dependencies = [
 [[package]]
 name = "esp-hal-procmacros"
 version = "0.14.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "34022a362a27f781b83852afd0c856a43e2ee5b4334cdc292bd80c9be482a1f5"
 dependencies = [
  "darling",
  "document-features",
@@ -2051,7 +2079,8 @@ dependencies = [
 [[package]]
 name = "esp-metadata"
 version = "0.4.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9972bbb21dcafe430b87f92efc7a788978a2d17cf8f572d104beeb48602482a"
 dependencies = [
  "anyhow",
  "basic-toml",
@@ -2062,22 +2091,23 @@ dependencies = [
 [[package]]
 name = "esp-println"
 version = "0.12.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
 dependencies = [
  "critical-section",
  "defmt",
- "esp-build",
+ "esp-build 0.1.0 (git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0)",
  "log 0.4.22",
  "portable-atomic",
 ]
 
 [[package]]
 name = "esp-riscv-rt"
-version = "0.9.0"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94aca65db6157aa5f42d9df6595b21462f28207ca4230b799aa3620352ef6a72"
 dependencies = [
  "document-features",
- "riscv",
+ "riscv 0.12.1",
  "riscv-rt-macros",
 ]
 
@@ -2097,7 +2127,8 @@ dependencies = [
 [[package]]
 name = "esp-wifi"
 version = "0.10.1"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44431e7946c560e7632f3d0241763681da1376b357f2cba1362be168bc38d162"
 dependencies = [
  "bt-hci",
  "cfg-if",
@@ -2110,7 +2141,7 @@ dependencies = [
  "embedded-io-async",
  "enumset",
  "esp-alloc",
- "esp-build",
+ "esp-build 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "esp-config",
  "esp-hal",
  "esp-metadata",
@@ -2118,6 +2149,7 @@ dependencies = [
  "fugit",
  "heapless 0.8.0",
  "libm",
+ "no-std-net",
  "num-derive",
  "num-traits",
  "portable-atomic",
@@ -3086,6 +3118,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
 
 [[package]]
+name = "no-std-net"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43794a0ace135be66a25d3ae77d41b91615fb68ae937f904090203e81f755b65"
+
+[[package]]
 name = "nom"
 version = "7.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3392,7 +3430,7 @@ dependencies = [
 [[package]]
 name = "picoserve"
 version = "0.12.2"
-source = "git+https://github.com/ariel-os/picoserve?branch=update_embassy_stack_api#aaae1d90152fc0c235e200cbb00368821cf3c08a"
+source = "git+https://github.com/kaspar030/picoserve?branch=update_embassy_stack_api#aaae1d90152fc0c235e200cbb00368821cf3c08a"
 dependencies = [
  "const-sha1",
  "data-encoding",
@@ -3795,6 +3833,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "riscv"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ea8ff73d3720bdd0a97925f0bf79ad2744b6da8ff36be3840c48ac81191d7a7"
+dependencies = [
+ "critical-section",
+ "embedded-hal 1.0.0",
+ "paste",
+ "riscv-macros",
+ "riscv-pac",
+]
+
+[[package]]
+name = "riscv-macros"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f265be5d634272320a7de94cea15c22a3bfdd4eb42eb43edc528415f066a1f25"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.87",
+]
+
+[[package]]
+name = "riscv-pac"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8188909339ccc0c68cfb5a04648313f09621e8b87dc03095454f1a11f6c5d436"
+
+[[package]]
 name = "riscv-rt-macros"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3853,8 +3921,7 @@ dependencies = [
 [[package]]
 name = "rtt-target"
 version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "322755a23eef4451b18c666f8c38ed685e6adb3556b00b377d33f4b7b4ce4f99"
+source = "git+https://github.com/probe-rs/rtt-target?rev=5b7603b6114bb08385f71674b9d962471c221681#5b7603b6114bb08385f71674b9d962471c221681"
 dependencies = [
  "critical-section",
  "defmt",
@@ -4678,16 +4745,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "usb-keyboard"
-version = "0.1.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "embassy-sync 0.6.0",
- "static_cell",
-]
-
-[[package]]
 name = "usb-serial"
 version = "0.1.0"
 dependencies = [
@@ -4926,8 +4983,9 @@ dependencies = [
 
 [[package]]
 name = "xtensa-lx-rt"
-version = "0.17.1"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+version = "0.17.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c0307d03dadbf95633942e13901984f2059df4c963367348168cbd21c962669"
 dependencies = [
  "anyhow",
  "bare-metal 1.0.0",
@@ -4945,7 +5003,8 @@ dependencies = [
 [[package]]
 name = "xtensa-lx-rt-proc-macros"
 version = "0.2.2"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "11277b1e4cbb7ffe44678c668518b249c843c81df249b8f096701757bc50d7ee"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -4981,6 +5040,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde"
 
 [[patch.unused]]
+name = "esp-hal"
+version = "0.22.0"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
+
+[[patch.unused]]
+name = "esp-hal-embassy"
+version = "0.5.0"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
+
+[[patch.unused]]
 name = "esp-storage"
-version = "0.3.1"
-source = "git+https://github.com/ariel-os/esp-hal?branch=for-ariel-os-2024-10-16-0.21.1-pr2377#3d8715519a702ce2bca49073bcf52a93fe5e443a"
+version = "0.4.0"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
+
+[[patch.unused]]
+name = "esp-wifi"
+version = "0.11.0"
+source = "git+https://github.com/kaspar030/esp-hal?branch=for-ariel-os-2024-11-21-0.22.0#cf24d2238ab70c5277eefc873a76fa0385d41995"
