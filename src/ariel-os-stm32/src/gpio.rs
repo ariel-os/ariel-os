@@ -79,9 +79,11 @@ pub mod output {
     }
 
     /// Available drive strength settings.
+    ///
+    #[doc = ariel_os_embassy_common::setting_unsupported_by_mcu_family_doc_note!("drive strength of outputs")]
     #[derive(Copy, Clone, PartialEq, Eq)]
     pub enum DriveStrength {
-        /// Configuring the speed of outputs is not supported.
+        #[doc(hidden)]
         UnsupportedByHardware,
     }
 
