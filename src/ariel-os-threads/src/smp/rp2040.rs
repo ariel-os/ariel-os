@@ -78,7 +78,7 @@ const SCHEDULE_TOKEN: u32 = 0x11;
 /// This method is injected into the `embassy_rp` interrupt handler
 /// for FIFO messages.
 #[no_mangle]
-#[link_section = ".data.ram_func"]
+#[unsafe(link_section = ".data.ram_func")]
 #[inline]
 fn handle_fifo_token(token: u32) -> bool {
     if token != SCHEDULE_TOKEN {
