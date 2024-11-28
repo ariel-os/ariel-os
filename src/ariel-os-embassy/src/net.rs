@@ -158,7 +158,9 @@ impl embassy_net::driver::RxToken for DummyDriver {
 }
 
 #[cfg(feature = "network-config-static")]
-#[no_mangle]
+// SAFETY: the compiler prevents from defining multiple functions with the same name in the
+// same crate.
+#[unsafe(no_mangle)]
 fn __ariel_os_network_config() -> embassy_net::Config {
     use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
 

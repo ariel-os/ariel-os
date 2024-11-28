@@ -63,7 +63,8 @@ mod isr_stack {
         CONFIG_ISR_STACKSIZE
     };
 
-    #[link_section = ".isr_stack"]
+    // SAFETY: a linker script inserts this section in RAM.
+    #[unsafe(link_section = ".isr_stack")]
     #[used(linker)]
     static ISR_STACK: [u8; ISR_STACKSIZE] = [0u8; ISR_STACKSIZE];
 }
