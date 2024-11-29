@@ -64,7 +64,7 @@ pub fn thread(args: TokenStream, item: TokenStream) -> TokenStream {
     };
 
     let no_mangle_attr = if attrs.no_mangle {
-        quote! {#[no_mangle]}
+        quote! {#[unsafe(no_mangle)]}
     } else {
         quote! {}
     };

@@ -1,3 +1,5 @@
+cargo-features = ["edition2024"]
+
 [package]
 name = "ariel-os-bench"
 version.workspace = true
@@ -18,3 +20,6 @@ cortex-m = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
 esp-hal = { workspace = true }
+
+[features]
+defmt = ["dep:defmt"]
