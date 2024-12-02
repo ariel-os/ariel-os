@@ -191,3 +191,15 @@ pub mod input {
         NoIntChannelAvailable,
     }
 }
+
+/// Documentation note for when a GPIO setting is not supported on an MCU family.
+#[macro_export]
+macro_rules! setting_unsupported_by_mcu_family_doc_note {
+    ($setting:literal) => {
+        concat!(
+            "*Note: configuring the ",
+            $setting,
+            " is not supported on this MCU family.*",
+        )
+    };
+}

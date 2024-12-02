@@ -113,9 +113,11 @@ pub mod output {
     }
 
     /// Available output speed/slew rate settings.
+    ///
+    #[doc = ariel_os_embassy_common::setting_unsupported_by_mcu_family_doc_note!("speed of outputs")]
     #[derive(Copy, Clone, PartialEq, Eq)]
     pub enum Speed {
-        /// Configuring the speed of outputs is not supported.
+        #[doc(hidden)]
         UnsupportedByHardware,
     }
 
