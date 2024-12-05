@@ -197,9 +197,6 @@ contexts:
   - name: rp
     help: Raspberry Pi pico MCU support (based on embassy-rp)
     parent: ariel-os
-    selects:
-      - rp-link-arg
-      - thumbv6m-none-eabi
     env:
       RUSTFLAGS:
         - --cfg context=\"rp\"
@@ -233,10 +230,10 @@ contexts:
       # becomes `0x03` ("UNIX - GNU"), whereas picotool rejects the .elf if the field
       # does not equal `0x00` ("UNIX - System V"). using lld through clang leads to
       # the correct field.
-      - ?linker-clang
+      #      - ?linker-clang
     disables:
       # linker error (and no probe-rs anyways)
-      - defmt
+      #- defmt
     env:
       RUSTFLAGS:
         - --cfg context=\"rp2350\"
@@ -578,7 +575,7 @@ modules:
 
   - name: linker-clang
     help: Use clang/lld to link
-    context: riot-rs
+    context: ariel-os
     env:
       global:
         RUSTFLAGS:
@@ -877,7 +874,7 @@ modules:
   - name: multi-core
     help: usage platform as multi-core system
     context:
-      - rp
+      - rp2040
       - esp32s3
     provides_unique:
       - critical-section

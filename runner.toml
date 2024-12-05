@@ -1,0 +1,33 @@
+# Optional: Load section in the gdb script.
+#
+# The load section gets resolved using the Tera templating language.
+# Variables `binary_path`, `binary_filepath`, and `binary_filepath_noextension` are passed as context.
+#
+# e.g. "load {{ binary_filepath }}"
+load = "load"
+
+# Optional: Path to a custom OpenOCD configuration
+openocd-cfg = "openocd.cfg"
+
+# Optional: Connection to a GDB server to use instead of OpenOCD
+#gdb-connection = ""
+
+# Optional: Path to write GDB logs to
+#gdb-logfile = "<output directory>/gdb.log"
+
+# Optional: RTT port to use on the host
+#rtt-port = 19021
+
+# Optional: Define a command to run before the runner executes the binary.
+# A 'post-runner' may also be set that is run after executing the binary.
+#
+# On windows, `pre-runner-windows` is available that takes precedence over `pre-runner`.
+# Same with `post-runner-windows`.
+#[pre-runner]
+
+# Name of the command
+#name = "powershell"
+
+# Arguments passed to the command.
+# The binary path is automatically added as last argument
+#args = ["echo"]
