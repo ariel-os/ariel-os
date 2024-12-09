@@ -229,6 +229,7 @@ dependencies = [
  "heapless 0.8.0",
  "linkme",
  "once_cell",
+ "portable-atomic",
  "rand_core",
  "static_cell",
  "usbd-hid",
