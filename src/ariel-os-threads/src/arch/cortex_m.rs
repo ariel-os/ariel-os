@@ -233,7 +233,7 @@ unsafe extern "C" fn sched() -> u64 {
             // The returned `r1` therefore will be null, and saving/ restoring
             // the context is skipped.
             let mut current_high_regs = core::ptr::null();
-            if let Some(ref mut current_tid_ref) = scheduler.current_tid_mut() {
+            if let Some(current_tid_ref) = scheduler.current_tid_mut() {
                 if next_tid == *current_tid_ref {
                     return Some((0, 0));
                 }
