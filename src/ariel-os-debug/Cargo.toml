@@ -11,7 +11,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
-ariel-os-log = { workspace = true }
+ariel-os-debug-log = { workspace = true }
 rtt-target = { workspace = true, optional = true }
 semihosting = { version = "0.1.16", optional = true }
 
@@ -40,7 +40,7 @@ esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 debug-console = []
 
 defmt = [
-  "ariel-os-log/defmt",
+  "ariel-os-debug-log/defmt",
   "esp-println?/defmt-espflash",
   "rtt-target?/defmt",
 ]

@@ -15,7 +15,7 @@ compile_error!(
 );
 
 #[doc(inline)]
-pub use ariel_os_log as log;
+pub use ariel_os_debug_log as log;
 
 /// Represents the exit code of a debug session.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]

@@ -42,10 +42,10 @@ jobs:
                     spi,
                     " \
                 -p ariel-os \
+                -p ariel-os-debug-log \
                 -p ariel-os-embassy \
                 -p ariel-os-embassy-common \
                 -p ariel-os-identity \
-                -p ariel-os-log \
                 -p ariel-os-macros \
                 -p ariel-os-runqueue \
                 -p ariel-os-threads \
@@ -160,11 +160,11 @@ jobs:
             -p ariel-os-chips
             -p ariel-os-coap
             -p ariel-os-debug
+            -p ariel-os-debug-log
             -p ariel-os-embassy
             -p ariel-os-embassy-common
             -p ariel-os-hal
             -p ariel-os-identity
-            -p ariel-os-log
             -p ariel-os-macros
             -p ariel-os-random
             -p ariel-os-rt
