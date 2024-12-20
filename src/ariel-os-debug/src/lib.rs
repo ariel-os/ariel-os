@@ -66,6 +66,9 @@ mod backend {
             rtt_target::rtt_init_print!(NoBlockTrim);
         }
 
+        #[cfg(feature = "log")]
+        crate::logger::init();
+
         #[cfg(feature = "defmt")]
         {
             use rtt_target::ChannelMode::{NoBlockSkip, NoBlockTrim};
@@ -127,3 +130,37 @@ mod backend {
 }
 
 pub use backend::*;
+
+#[doc(hidden)]
+#[cfg(feature = "log")]
+mod logger {
+    // FIXME: use SetLoggerError?
+    use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
+
+    static LOGGER: DebugLogger = DebugLogger;
+
+    struct DebugLogger;
+
+    pub fn init() {
+        // FIXME: should be configurable through an env var
+        let max_level = LevelFilter::Info;
+        log::set_logger(&LOGGER)
+            .map(|()| log::set_max_level(max_level))
+            .unwrap();
+        log::trace!("logging enabled");
+    }
+
+    impl log::Log for DebugLogger {
+        fn enabled(&self, metadata: &Metadata) -> bool {
+            metadata.level() <= Level::Info
+        }
+
+        fn log(&self, record: &Record) {
+            if self.enabled(record.metadata()) {
+                crate::println!("[{}] {}", record.level(), record.args());
+            }
+        }
+
+        fn flush(&self) {}
+    }
+}

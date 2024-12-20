@@ -1,9 +1,11 @@
-//! Provides logging facilities.
+//! Provides debug logging facilities.
 
 #![cfg_attr(not(test), no_std)]
 #![feature(doc_auto_cfg)]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
+
+// TODO: assuming that defmt and log are mutually exclusive
 
 #[cfg(feature = "defmt")]
 pub mod defmt {
@@ -23,6 +25,9 @@ pub mod defmt {
     // These are required "internally" by `defmt`.
     pub use defmt::{export, unreachable, Formatter, Str};
 }
+
+#[cfg(feature = "log")]
+pub use log::{debug, error, info, trace, warn};
 
 // The declarative macros are required because the defmt macros expect defmt to be in scope.
 
@@ -77,7 +82,7 @@ macro_rules! error {
 }
 
 /// No-op log macro.
-#[cfg(not(feature = "defmt"))]
+#[cfg(not(any(feature = "defmt", feature = "log")))]
 #[macro_export]
 macro_rules! trace {
     ($($arg:tt)*) => {{
@@ -86,7 +91,7 @@ macro_rules! trace {
 }
 
 /// No-op log macro.
-#[cfg(not(feature = "defmt"))]
+#[cfg(not(any(feature = "defmt", feature = "log")))]
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)*) => {{
@@ -95,7 +100,7 @@ macro_rules! debug {
 }
 
 /// No-op log macro.
-#[cfg(not(feature = "defmt"))]
+#[cfg(not(any(feature = "defmt", feature = "log")))]
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => {{
@@ -104,7 +109,7 @@ macro_rules! info {
 }
 
 /// No-op log macro.
-#[cfg(not(feature = "defmt"))]
+#[cfg(not(any(feature = "defmt", feature = "log")))]
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => {{
@@ -113,7 +118,7 @@ macro_rules! warn {
 }
 
 /// No-op log macro.
-#[cfg(not(feature = "defmt"))]
+#[cfg(not(any(feature = "defmt", feature = "log")))]
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => {{

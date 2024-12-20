@@ -10,7 +10,7 @@ contexts:
     selects:
       - executor-default
       - ?critical-section
-      - ?defmt
+      - ?debug-logging
       - ?lto
       - ?semihosting
     env:
@@ -489,7 +489,9 @@ modules:
 
   - name: defmt
     help: Enable use of defmt
-    context: ariel-os
+    context: ariel-os # FIXME: needed?
+    provides_unique:
+      - debug-logging
     env:
       global:
         FEATURES:
@@ -502,6 +504,17 @@ modules:
           # `DEFMT_LOG`. Painful as it is, hard-disable `sccache` here.
           - RUSTC_WRAPPER=""
           - DEFMT_LOG=info,${LOG}
+
+  # FIXME: should be called log but seems to conflict
+  - name: log2
+    help: Enable use of log
+    context: ariel-os # FIXME: needed?
+    provides_unique:
+      - debug-logging
+    env:
+      global:
+        FEATURES:
+          - ariel-os/log
 
   - name: silent-panic
     context: ariel-os

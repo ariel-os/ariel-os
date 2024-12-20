@@ -15,6 +15,9 @@ ariel-os-debug-log = { workspace = true }
 rtt-target = { workspace = true, optional = true }
 semihosting = { version = "0.1.16", optional = true }
 
+# TODO: maybe reuse the one from ariel-os-debug-log
+log = { workspace = true, optional = true }
+
 [target.'cfg(context = "xtensa")'.dependencies]
 semihosting = { version = "0.1.16", optional = true, features = [
   "openocd-semihosting",
@@ -44,6 +47,7 @@ defmt = [
   "esp-println?/defmt-espflash",
   "rtt-target?/defmt",
 ]
+log = ["dep:log", "ariel-os-debug-log/log"]
 
 rtt-target = ["dep:rtt-target"]
 semihosting = ["dep:semihosting"]
