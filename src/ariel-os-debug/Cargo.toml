@@ -39,5 +39,6 @@ esp-println = { workspace = true, optional = true, features = ["esp32c6"] }
 esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
+std = []
 debug-console = []
 defmt = ["dep:defmt", "esp-println?/defmt-espflash", "rtt-target?/defmt"]

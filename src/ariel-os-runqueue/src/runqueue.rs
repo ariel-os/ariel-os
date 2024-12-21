@@ -12,6 +12,12 @@ const USIZE_BITS: usize = mem::size_of::<usize>() * 8;
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct RunqueueId(u8);
 
+impl core::fmt::Display for RunqueueId {
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
+        core::fmt::Debug::fmt(self, formatter)
+    }
+}
+
 impl RunqueueId {
     pub const fn new(value: u8) -> Self {
         Self(value)
@@ -37,6 +43,12 @@ impl ThreadId {
 impl From<ThreadId> for usize {
     fn from(value: ThreadId) -> Self {
         usize::from(value.0)
+    }
+}
+
+impl core::fmt::Display for ThreadId {
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> Result<(), core::fmt::Error> {
+        core::fmt::Debug::fmt(self, formatter)
     }
 }
 
