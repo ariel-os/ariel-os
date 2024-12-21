@@ -970,6 +970,7 @@ modules:
       # - esp32c2
       # - esp32h2
       # - esp32s2
+      - native
 
   - name: wifi-esp
     selects:
@@ -1057,6 +1058,17 @@ modules:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: infini-core
+    help: use platform as if it had one core per thread
+    provides_unique:
+      - critical-section
+    context:
+      - native
+    env:
+      global:
+        FEATURES:
+          - ariel-os/infini-core
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
@@ -1267,6 +1279,23 @@ builders:
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
+
+  - name: native
+    parent: ariel-os
+    selects:
+      - infini-core
+      - ?debug-console
+    disables:
+      - semihosting
+      - defmt
+    env:
+      RUSTC_TARGET: x86_64-unknown-linux-musl
+      CARGO_TARGET_PREFIX: CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL
+      CARGO_RUNNER: '"sh -c"'
+        #CARGO_ARGS:
+        #  - -Zbuild-std=core,alloc,std
+      RUSTFLAGS:
+        - -Cpanic=abort
 
 apps:
   # define a dummy host application so the host tasks work
