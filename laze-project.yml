@@ -37,7 +37,7 @@ contexts:
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
-          CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/${app}/cargo
+          CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
       BOARD: ${builder}
       PROFILE: release
       riot_binary: ${app}
@@ -69,7 +69,7 @@ contexts:
         always: true
         cmd: >-
           cd ${relpath} && ${CARGO_ENV} cargo ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --${PROFILE} ${FEATURES}
-          && cp ${relroot}/${build-dir}/bin/${builder}/${app}/cargo/${RUSTC_TARGET}/${PROFILE}/${riot_binary} ${relroot}/${out}
+          && cp ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE}/${riot_binary} ${relroot}/${out}
 
       - name: GIT_DOWNLOAD
         cmd: "D=$$(dirname ${out}); rm -rf $$D && git clone ${url} $$D -n && git -C $$D reset --hard ${commit} && touch ${out}"
