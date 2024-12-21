@@ -7,6 +7,8 @@
 // features
 // linkme
 #![feature(used_with_arg)]
+// native
+#![feature(naked_functions)]
 
 #[cfg(feature = "threading")]
 mod threading;
@@ -27,6 +29,10 @@ cfg_if::cfg_if! {
         mod esp;
         use esp as arch;
     }
+    else if #[cfg(context = "native")] {
+        mod native;
+        use native as arch;
+    }
     else if #[cfg(context = "ariel-os")] {
         // When run with laze but the MCU family is not supported
         compile_error!("no runtime is defined for this MCU family");
@@ -46,7 +52,7 @@ const ISR_STACKSIZE: usize =
 #[used(linker)]
 static ISR_STACK: [u8; ISR_STACKSIZE] = [0u8; ISR_STACKSIZE];
 
-#[cfg(feature = "_panic-handler")]
+#[cfg(not(context = "native"))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
     #[cfg(not(feature = "silent-panic"))]

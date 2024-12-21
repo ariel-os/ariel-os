@@ -24,6 +24,7 @@ embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "embassy-n
 embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "embassy-net-v0.6.0+ariel-os" }
 embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "embassy-rp-v0.3.1+ariel-os" }
 embassy-stm32 = { git = "https://github.com/ariel-os/embassy", branch = "embassy-stm32-v0.2.0+ariel-os" }
+embassy-time = { git = "https://github.com/ariel-os/embassy", branch = "embassy-time-v0.4.0+ariel-os" }
 
 # ariel-os esp-hal fork
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.1+ariel-os" }
