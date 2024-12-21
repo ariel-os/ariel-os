@@ -61,6 +61,7 @@ mod backend {
             use rtt_target::ChannelMode::NoBlockTrim;
 
             rtt_target::rtt_init_print!(NoBlockTrim);
+            crate::log::logger::init();
         }
 
         #[cfg(feature = "defmt")]
@@ -178,6 +179,8 @@ pub mod log {
 
 #[cfg(not(feature = "defmt"))]
 pub mod log {
+    pub use log;
+
     #[macro_export]
     macro_rules! __stub {
         ($($arg:tt)*) => {{
@@ -185,9 +188,79 @@ pub mod log {
         }};
     }
 
-    pub use __stub as debug;
-    pub use __stub as error;
-    pub use __stub as info;
-    pub use __stub as trace;
-    pub use __stub as warn;
+    #[macro_export]
+    macro_rules! __info {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::info!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __debug {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::debug!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __error {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::error!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __trace {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::trace!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __warn {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::warn!($($arg)*);
+        }};
+    }
+
+    pub use __debug as debug;
+    pub use __error as error;
+    pub use __info as info;
+    pub use __trace as trace;
+    pub use __warn as warn;
+
+    pub(crate) mod logger {
+        use log::{Level, LevelFilter, Metadata, Record, SetLoggerError};
+
+        static LOGGER: DebugLogger = DebugLogger;
+
+        struct DebugLogger;
+
+        pub fn init() {
+            let max_level = LevelFilter::Info;
+            log::set_logger(&LOGGER)
+                .map(|()| log::set_max_level(max_level))
+                .unwrap();
+            log::trace!("logging enabled");
+        }
+
+        impl log::Log for DebugLogger {
+            fn enabled(&self, metadata: &Metadata) -> bool {
+                metadata.level() <= Level::Info
+            }
+
+            fn log(&self, record: &Record) {
+                if self.enabled(record.metadata()) {
+                    crate::println!("[{}] {}", record.level(), record.args());
+                }
+            }
+
+            fn flush(&self) {}
+        }
+    }
 }

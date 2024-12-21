@@ -113,6 +113,8 @@ defmt = [
   "ariel-os-threads?/defmt",
   "ariel-os-bench?/defmt",
 ]
+## Enables logging support through `log` / stdout
+debug-log = [ "ariel-os-debug/log" ]
 ## Enables benchmarking facilities.
 bench = ["dep:ariel-os-bench"]
 ## Prints nothing in case of panics (may help reduce binary size).

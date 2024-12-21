@@ -444,6 +444,16 @@ modules:
           - RUSTC_WRAPPER=""
           - DEFMT_LOG=info,${LOG}
 
+  - name: debug-log
+    help: Enable non-defmt debug logger
+    context: ariel-os
+    conflicts:
+      - defmt
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-log
+
   - name: silent-panic
     context: ariel-os
     env:
