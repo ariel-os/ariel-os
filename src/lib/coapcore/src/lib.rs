@@ -20,11 +20,23 @@
 //!
 //! **Warning**: At the Debug level, this module may show cryptographic key material. This will be
 //! revised once all components have been interop-tested.
+#![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
 #![no_std]
+#![cfg_attr(feature = "_nightly_docs", feature(doc_auto_cfg))]
+
+mod sealed;
+use sealed::{PrivateMethod, Sealed};
+
+mod helpers;
+
+mod ace;
+pub mod scope;
+pub mod seccfg;
 
 // Might warrant a standalone crate at some point
 //
 // This is pub only to make the doctests run (but the crate's pub-ness needs a major overhaul
 // anyway)
 pub mod oluru;
-pub mod seccontext;
+mod seccontext;
+pub use seccontext::*;
