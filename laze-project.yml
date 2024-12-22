@@ -12,7 +12,7 @@ contexts:
     selects:
       - executor-default
       - ?critical-section
-      - ?defmt
+      - ?debug-console
       - ?lto
       - ?semihosting
     env:
@@ -228,7 +228,6 @@ contexts:
   - name: esp
     parent: ariel-os
     selects:
-      - ?debug-console
       - ?esp-println
     env:
       RUSTFLAGS:
@@ -423,6 +422,9 @@ modules:
 
   - name: debug-console
     context: ariel-os
+    selects:
+      - ?defmt
+      - ?debug-log
     env:
       global:
         FEATURES:
@@ -431,18 +433,33 @@ modules:
   - name: defmt
     help: Enable use of defmt
     context: ariel-os
+    selects:
+      - debug-console
     env:
       global:
         FEATURES:
           - ariel-os/defmt
         RUSTFLAGS:
           - -Clink-arg=-Tdefmt.x
+          - --cfg defmt
         ESPFLASH_LOG_FORMAT: '--log-format defmt'
         CARGO_ENV:
           # For some reason, `sccache` makes the build not realize changes to
           # `DEFMT_LOG`. Painful as it is, hard-disable `sccache` here.
           - RUSTC_WRAPPER=""
           - DEFMT_LOG=info,${LOG}
+
+  - name: debug-log
+    help: Enable non-defmt debug logger
+    context: ariel-os
+    selects:
+      - debug-console
+    conflicts:
+      - defmt
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-log
 
   - name: silent-panic
     context: ariel-os
@@ -731,6 +748,7 @@ modules:
       # - esp32c2
       # - esp32h2
       # - esp32s2
+      - native
 
   - name: wifi-esp
     context:
@@ -809,6 +827,17 @@ modules:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: infini-core
+    help: usage platform as if it had one core per thread
+    provides_unique:
+      - critical-section
+    context:
+      - native
+    env:
+      global:
+        FEATURES:
+          - ariel-os/infini-core
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
@@ -946,6 +975,22 @@ builders:
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
+
+  - name: native
+    parent: ariel-os
+    selects:
+      - infini-core
+    disables:
+      - semihosting
+      - defmt
+    env:
+      RUSTC_TARGET: x86_64-unknown-linux-musl
+      CARGO_TARGET_PREFIX: CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL
+      CARGO_RUNNER: '"sh -c"'
+        #CARGO_ARGS:
+        #  - -Zbuild-std=core,alloc,std
+      RUSTFLAGS:
+        - -Cpanic=abort
 
 apps:
   # define a dummy host application so the host tasks work

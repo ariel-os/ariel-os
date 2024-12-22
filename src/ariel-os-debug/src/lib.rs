@@ -1,17 +1,17 @@
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, context = "native")), no_std)]
 #![cfg_attr(test, no_main)]
 
-#[cfg(all(feature = "rtt-target", feature = "esp-println"))]
+#[cfg(all(feature = "rtt-target", feature = "esp-println", feature = "std"))]
 compile_error!(
-    r#"feature "rtt-target" and feature "esp-println" cannot be enabled at the same time"#
+    r#"features "rtt-target", "esp-println" or "std" cannot be enabled at the same time"#
 );
 
 #[cfg(all(
     feature = "debug-console",
-    not(any(feature = "rtt-target", feature = "esp-println"))
+    not(any(feature = "rtt-target", feature = "esp-println", feature = "std"))
 ))]
 compile_error!(
-    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target" or feature "esp-println"."#
+    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target", "esp-println" or "std"."#
 );
 
 /// Represents the exit code of a debug session.
@@ -42,6 +42,9 @@ pub fn exit(code: ExitCode) {
     #[cfg(feature = "semihosting")]
     semihosting::process::exit(code.to_semihosting_code());
 
+    #[cfg(feature = "std")]
+    std::process::exit(code.to_semihosting_code());
+
     #[allow(unreachable_code, reason = "stop nagging")]
     let _ = code;
 
@@ -61,6 +64,9 @@ mod backend {
             use rtt_target::ChannelMode::NoBlockTrim;
 
             rtt_target::rtt_init_print!(NoBlockTrim);
+
+            #[cfg(feature = "log")]
+            crate::log::logger::init();
         }
 
         #[cfg(feature = "defmt")]
@@ -96,6 +102,16 @@ mod backend {
         // Until then, `ESP_LOGLEVEL` can be used.
         // See https://github.com/esp-rs/esp-println#logging.
         esp_println::logger::init_logger_from_env();
+    }
+}
+
+#[cfg(all(feature = "debug-console", feature = "std"))]
+mod backend {
+    pub use std::{print, println};
+
+    pub fn init() {
+        #[cfg(feature = "log")]
+        crate::log::logger::init();
     }
 }
 
@@ -176,8 +192,10 @@ pub mod log {
     pub use __warn as warn;
 }
 
-#[cfg(not(feature = "defmt"))]
+#[cfg(feature = "log")]
 pub mod log {
+    pub use log;
+
     #[macro_export]
     macro_rules! __stub {
         ($($arg:tt)*) => {{
@@ -185,9 +203,79 @@ pub mod log {
         }};
     }
 
-    pub use __stub as debug;
-    pub use __stub as error;
-    pub use __stub as info;
-    pub use __stub as trace;
-    pub use __stub as warn;
+    #[macro_export]
+    macro_rules! __info {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::info!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __debug {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::debug!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __error {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::error!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __trace {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::trace!($($arg)*);
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! __warn {
+        ($($arg:tt)*) => {{
+            use $crate::log::log;
+            log::warn!($($arg)*);
+        }};
+    }
+
+    pub use __debug as debug;
+    pub use __error as error;
+    pub use __info as info;
+    pub use __trace as trace;
+    pub use __warn as warn;
+
+    pub(crate) mod logger {
+        use log::{Level, LevelFilter, Metadata, Record};
+
+        static LOGGER: DebugLogger = DebugLogger;
+
+        struct DebugLogger;
+
+        pub fn init() {
+            let max_level = LevelFilter::Info;
+            log::set_logger(&LOGGER)
+                .map(|()| log::set_max_level(max_level))
+                .unwrap();
+            log::trace!("logging enabled");
+        }
+
+        impl log::Log for DebugLogger {
+            fn enabled(&self, metadata: &Metadata) -> bool {
+                metadata.level() <= Level::Info
+            }
+
+            fn log(&self, record: &Record) {
+                if self.enabled(record.metadata()) {
+                    crate::println!("[{}] {}", record.level(), record.args());
+                }
+            }
+
+            fn flush(&self) {}
+        }
+    }
 }

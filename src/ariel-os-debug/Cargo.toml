@@ -12,8 +12,9 @@ workspace = true
 
 [dependencies]
 defmt = { workspace = true, optional = true }
-rtt-target = { workspace = true, optional = true }
+log = { workspace = true, optional = true }
 
+rtt-target = { workspace = true, optional = true }
 semihosting = { version = "0.1.16", optional = true }
 
 [target.'cfg(context = "xtensa")'.dependencies]
@@ -23,7 +24,7 @@ semihosting = { version = "0.1.16", optional = true, features = [
 
 [target.'cfg(context = "esp")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["log"] }
-log = { version = "0.4.20" }
+log = { workspace = true }
 
 [target.'cfg(context = "esp32")'.dependencies]
 esp-println = { workspace = true, features = ["esp32"] }
@@ -38,5 +39,6 @@ esp-println = { workspace = true, optional = true, features = ["esp32c6"] }
 esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
+std = []
 debug-console = []
 defmt = ["dep:defmt", "esp-println?/defmt-espflash", "rtt-target?/defmt"]

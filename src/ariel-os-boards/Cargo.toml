@@ -20,6 +20,7 @@ espressif-esp32-wroom-32 = { optional = true, path = "espressif-esp32-wroom-32" 
 dwm1001 = { optional = true, path = "dwm1001" }
 microbit = { optional = true, path = "microbit" }
 microbit-v2 = { optional = true, path = "microbit-v2" }
+native = { optional = true, path = "native" }
 nrf52840-mdk = { optional = true, path = "nrf52840-mdk" }
 nrf52840dk = { optional = true, path = "nrf52840dk" }
 nrf52dk = { optional = true, path = "nrf52dk" }

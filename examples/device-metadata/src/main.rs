@@ -9,7 +9,10 @@ fn main() {
     info!("Available information:");
     info!("Board type: {}", ariel_os::buildinfo::BOARD);
     if let Ok(id) = ariel_os::identity::device_id_bytes() {
+        #[cfg(defmt)]
         info!("Device ID: {=[u8]:02x}", id.as_ref());
+        #[cfg(not(defmt))]
+        info!("Device ID: {:02x?}", id.as_ref());
     } else {
         info!("Device ID is unavailable.");
     }
