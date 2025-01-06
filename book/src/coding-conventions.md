@@ -91,7 +91,10 @@ To add a new workspace crate re-exported by `riot-rs`, follow these steps:
 1. Add relevant lints (e.g., `#![deny(missing_docs)]` and `#![deny(clippy::pedantic)]`) to the crate; some lints are already inherited from the workspace and do not need to be added to the new crate.
 1. Cargo has added the crate to the workspace members in the workspace's `Cargo.toml`, move the added string to its own line, preserving lexicographic order.
 1. Add the crate to the list of crates checked by Clippy in `.github/workflows/main.yml`, preserving lexicographic order.
-1. Consider adding the crate to the list of crates run by cargo test in `.github/workflows/main.yml`, preserving lexicographic order.
+1. If the crate has tests that can be run with `cargo test`:
+1.1. Add a feature named `_test` that enables all features that can be tested.
+1.2. Add a `laze.yml` with an application for the crate named `crates/your-crate-name` that selects the `host-test-only` module (see e.g., `src/ariel-os/laze.yml`)
+1.3. Add the crate's folder to its parent's `laze.yml` `subdirs`.
 1. Re-export the crate from the `riot-rs` crate, inline it in the docs as done for the other crates, and feature-gate it if necessary.
 1. If the new crate is feature-gated and if this is possible, add the feature that enables it to the ones used by cargo doc in `.github/workflows/main.yml` and in `.github/workflows/build-deploy-docs.yml`, preserving lexicographic order.
 
