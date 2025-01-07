@@ -1,0 +1,7 @@
+error: custom attribute panicked
+ --> tests/ui/hook/non_default_return_type.rs:4:1
+  |
+4 | #[ariel_os::hook(usb_builder)]
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: hook functions must not have a non-default return type

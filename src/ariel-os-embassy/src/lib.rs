@@ -206,12 +206,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(feature = "usb")]
     let usb_peripherals = hal::usb::Peripherals::new(&mut peripherals);
 
-    // Tasks have to be started before driver initializations so that the tasks are able to
-    // configure the drivers using hooks.
-    for task in EMBASSY_TASKS {
-        task(spawner, &mut peripherals);
-    }
-
+    #[allow(unused_mut, reason = "depends on conditional compilation")]
     #[cfg(feature = "usb")]
     let mut usb_builder = {
         use static_cell::ConstStaticCell;
@@ -277,8 +272,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "usb")]
     {
-        for hook in usb::USB_BUILDER_HOOKS {
-            hook.lend(&mut usb_builder).await;
+        // SAFETY: this function is defined by the `hook` macro we control, which completely
+        // manages its type signature.
+        #[cfg(feature = "usb-builder-hook")]
+        unsafe {
+            usb::__ariel_os_usb_builder_hook(&mut usb_builder);
         }
         let usb = usb_builder.build();
         spawner.spawn(usb::usb_task(usb)).unwrap();
@@ -349,6 +347,10 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let _ = peripherals;
 
     debug!("ariel-os-embassy::init_task() done");
+
+    for task in EMBASSY_TASKS {
+        task(spawner, &mut peripherals);
+    }
 
     #[cfg(feature = "threading")]
     ariel_os_threads::events::THREAD_START_EVENT.set();

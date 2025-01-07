@@ -78,6 +78,8 @@ usb-hid = ["ariel-os-embassy/usb-hid"]
 override-network-config = ["ariel-os-embassy/override-network-config"]
 ## Enables custom USB configuration.
 override-usb-config = ["ariel-os-embassy/override-usb-config"]
+## Enables hooking into the USB builder setup, see [`ariel_os::hook`](hook).
+usb-builder-hook = ["ariel-os-embassy/usb-builder-hook"]
 
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).

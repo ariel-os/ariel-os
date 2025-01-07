@@ -66,3 +66,8 @@ pub(crate) fn config() -> embassy_usb::Config<'static> {
         unsafe { __ariel_os_usb_config() }
     }
 }
+
+#[cfg(feature = "usb-builder-hook")]
+extern "Rust" {
+    pub(crate) fn __ariel_os_usb_builder_hook(builder: &mut UsbBuilder);
+}

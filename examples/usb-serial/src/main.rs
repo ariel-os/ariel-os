@@ -9,6 +9,9 @@ use ariel_os::{
     reexports::embassy_usb,
     usb::{UsbBuilderHook, UsbDriver},
 };
+use embassy_sync::{
+    blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock,
+};
 use embassy_usb::{
     class::cdc_acm::{CdcAcmClass, State},
     driver::EndpointError,
@@ -33,24 +36,26 @@ const USB_CONFIG: ariel_os::reexports::embassy_usb::Config = {
     config
 };
 
+static USB_CLASS: OnceLock<Mutex<CriticalSectionRawMutex, CdcAcmClass<UsbDriver>>> =
+    OnceLock::new();
+static USB_STATE: StaticCell<State> = StaticCell::new();
+
+#[ariel_os::hook(usb_builder)]
+fn usb_builder(builder: &mut ariel_os::usb::UsbBuilder) {
+    let class = CdcAcmClass::new(
+        builder,
+        USB_STATE.init_with(State::new),
+        MAX_FULL_SPEED_PACKET_SIZE.into(),
+    );
+    let _ = USB_CLASS.init(Mutex::new(class));
+}
+
 #[ariel_os::task(autostart, usb_builder_hook)]
 async fn main() {
     info!("Hello World!");
 
-    static STATE: StaticCell<State> = StaticCell::new();
+    let mut class = USB_CLASS.get().await.lock().await;
 
-    // Create and inject the USB class on the system USB builder.
-    let mut class = USB_BUILDER_HOOK
-        .with(|builder| {
-            CdcAcmClass::new(
-                builder,
-                STATE.init_with(State::new),
-                MAX_FULL_SPEED_PACKET_SIZE.into(),
-            )
-        })
-        .await;
-
-    // Do stuff with the class!
     loop {
         class.wait_connection().await;
         info!("Connected");

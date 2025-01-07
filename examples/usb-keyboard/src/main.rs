@@ -9,12 +9,13 @@ use ariel_os::{
     cell::ConstStaticCell,
     debug::log::*,
     reexports::{
-        embassy_usb::class::hid::{self, HidReaderWriter},
+        embassy_usb::class::hid,
         usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor},
     },
     time::{Duration, Timer},
     usb::{UsbBuilderHook, UsbDriver},
 };
+use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex};
 
 // Assuming a QWERTY US layout, see https://docs.qmk.fm/#/how_keyboards_work
 // and https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
@@ -47,30 +48,34 @@ const USB_CONFIG: ariel_os::reexports::embassy_usb::Config = {
     config
 };
 
+static HID_WRITER: Mutex<
+    CriticalSectionRawMutex,
+    Option<hid::HidWriter<'static, UsbDriver, HID_WRITER_BUFFER_SIZE>>,
+> = Mutex::new(None);
 static HID_STATE: ConstStaticCell<hid::State> = ConstStaticCell::new(hid::State::new());
 
-#[ariel_os::task(autostart, peripherals, usb_builder_hook)]
-async fn usb_keyboard(button_peripherals: pins::Buttons) {
-    let mut buttons = buttons::Buttons::new(button_peripherals);
-
+#[ariel_os::hook(usb_builder)]
+fn usb_builder(builder: &mut ariel_os::usb::UsbBuilder) {
     let config = hid::Config {
         report_descriptor: <KeyboardReport as SerializedDescriptor>::desc(),
         request_handler: None,
         poll_ms: 60,
         max_packet_size: 64,
     };
+    let hid_rw = hid::HidReaderWriter::<_, HID_READER_BUFFER_SIZE, HID_WRITER_BUFFER_SIZE>::new(
+        builder,
+        HID_STATE.take(),
+        config,
+    );
+    let (_hid_reader, hid_writer) = hid_rw.split();
+    *HID_WRITER.try_lock().unwrap() = Some(hid_writer);
+}
 
-    let hid_state = HID_STATE.take();
-    let hid_rw: HidReaderWriter<
-        'static,
-        UsbDriver,
-        HID_READER_BUFFER_SIZE,
-        HID_WRITER_BUFFER_SIZE,
-    > = USB_BUILDER_HOOK
-        .with(|usb_builder| hid::HidReaderWriter::new(usb_builder, hid_state, config))
-        .await;
+#[ariel_os::task(autostart, peripherals, usb_builder_hook)]
+async fn usb_keyboard(button_peripherals: pins::Buttons) {
+    let mut buttons = buttons::Buttons::new(button_peripherals);
 
-    let (_hid_reader, mut hid_writer) = hid_rw.split();
+    let mut hid_writer = HID_WRITER.lock().await.take().unwrap();
 
     loop {
         for (i, button) in buttons.iter_mut().enumerate() {

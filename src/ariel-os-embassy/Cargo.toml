@@ -100,6 +100,8 @@ threading = ["dep:ariel-os-threads"]
 override-network-config = []
 override-usb-config = []
 
+usb-builder-hook = []
+
 executor-single-thread = [
   "ariel-os-hal/executor-single-thread",
   "ariel-os-rt/executor-single-thread",

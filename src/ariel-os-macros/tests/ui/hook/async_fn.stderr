@@ -1,0 +1,7 @@
+error: custom attribute panicked
+ --> tests/ui/hook/async_fn.rs:4:1
+  |
+4 | #[ariel_os::hook(usb_builder)]
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: hook functions cannot be async
