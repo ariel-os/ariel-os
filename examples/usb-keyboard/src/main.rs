@@ -13,7 +13,7 @@ use ariel_os::{
         usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor},
     },
     time::{Duration, Timer},
-    usb::{UsbBuilderHook, UsbDriver},
+    usb::UsbDriver,
 };
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex};
 
@@ -71,7 +71,7 @@ fn usb_builder(builder: &mut ariel_os::usb::UsbBuilder) {
     *HID_WRITER.try_lock().unwrap() = Some(hid_writer);
 }
 
-#[ariel_os::task(autostart, peripherals, usb_builder_hook)]
+#[ariel_os::task(autostart, peripherals)]
 async fn usb_keyboard(button_peripherals: pins::Buttons) {
     let mut buttons = buttons::Buttons::new(button_peripherals);
 

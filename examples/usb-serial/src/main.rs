@@ -3,12 +3,7 @@
 #![feature(impl_trait_in_assoc_type)]
 #![feature(used_with_arg)]
 
-use ariel_os::{
-    cell::StaticCell,
-    debug::log::info,
-    reexports::embassy_usb,
-    usb::{UsbBuilderHook, UsbDriver},
-};
+use ariel_os::{cell::StaticCell, debug::log::info, reexports::embassy_usb, usb::UsbDriver};
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock,
 };
@@ -50,7 +45,7 @@ fn usb_builder(builder: &mut ariel_os::usb::UsbBuilder) {
     let _ = USB_CLASS.init(Mutex::new(class));
 }
 
-#[ariel_os::task(autostart, usb_builder_hook)]
+#[ariel_os::task(autostart)]
 async fn main() {
     info!("Hello World!");
 

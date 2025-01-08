@@ -6,17 +6,12 @@
 ///
 /// # Parameters
 ///
-/// - `autostart`: (*optional*) run the task at startup; required to use `peripherals` and/or
-///     hooks.
+/// - `autostart`: (*optional*) run the task at startup; required to use `peripherals`.
 ///     - `peripherals`: (*optional*) provide the function with a peripheral struct as the first
 ///         parameter.
 ///         The `peripherals` parameter can only be used on `autostart` tasks.
 ///         The peripheral struct must be defined with the `ariel_os::hal::define_peripherals!`
 ///         macro.
-///     - hooks: (*optional*) available hooks are:
-///         - `usb_builder_hook`: when present, the macro will define a static `USB_BUILDER_HOOK`
-///           of type `UsbBuilderHook`, allowing to access and modify the system-provided
-///           `embassy_usb::Builder` through `Delegate::with()`, *before* it is built by the system.
 /// - `pool_size`: (*optional*) set the maximum number of concurrent tasks that can be spawned for
 ///     the function (defaults to `1`).
 ///     Cannot be used on `autostart` tasks.
@@ -24,9 +19,7 @@
 /// # Examples
 ///
 /// ```ignore
-/// use ariel_os::usb::UsbBuilderHook;
-///
-/// #[ariel_os::task(autostart, peripherals, usb_builder_hook)]
+/// #[ariel_os::task(autostart, peripherals)]
 /// async fn task(peripherals: /* your peripheral type */) {}
 /// ```
 ///
@@ -71,11 +64,6 @@ pub fn task(args: TokenStream, item: TokenStream) -> TokenStream {
             !attrs.peripherals,
             "the task must be `{AUTOSTART_PARAM}` to receive peripherals"
         );
-
-        assert!(
-            attrs.hooks.is_empty(),
-            "the task must be `{AUTOSTART_PARAM}` to instantiate hooks",
-        );
     }
 
     // TODO: forbid generics on the function
@@ -89,14 +77,9 @@ pub fn task(args: TokenStream, item: TokenStream) -> TokenStream {
             quote! {}
         };
 
-        let hooks = Hook::hook_definitions();
-        let delegates = task::generate_delegates(&ariel_os_crate, &hooks, &attrs);
-
         let new_function_name = format_ident!("__start_{task_function_name}");
 
         quote! {
-            #delegates
-
             #[allow(non_snake_case)]
             #[#ariel_os_crate::reexports::linkme::distributed_slice(#ariel_os_crate::EMBASSY_TASKS)]
             #[linkme(crate = #ariel_os_crate::reexports::linkme)]
@@ -136,7 +119,6 @@ mod task {
         pub autostart: bool,
         pub peripherals: bool,
         pub pool_size: Option<syn::Expr>,
-        pub hooks: Vec<Hook>,
     }
 
     impl Attributes {
@@ -158,107 +140,9 @@ mod task {
                 return Ok(());
             }
 
-            // The order in which hooks are passed to the macro is enforced here
-            for HookDefinition { kind, .. } in Hook::hook_definitions() {
-                if attr.path.is_ident(kind.param_name()) {
-                    self.hooks.push(kind);
-                    return Ok(());
-                }
-            }
-
-            let supported_hooks = Hook::format_list();
             Err(attr.error(format!(
-                "unsupported parameter (`{AUTOSTART_PARAM}`, `{PERIPHERALS_PARAM}`, `{POOL_SIZE_PARAM}`, and hooks {supported_hooks} are supported)"
+                "unsupported parameter (`{AUTOSTART_PARAM}`, `{PERIPHERALS_PARAM}`, `{POOL_SIZE_PARAM}` are supported)"
             )))
         }
-    }
-
-    #[derive(Debug, PartialEq, Eq, Hash, enum_iterator::Sequence)]
-    pub enum Hook {
-        UsbBuilder,
-    }
-
-    impl Hook {
-        pub fn param_name(&self) -> &'static str {
-            match self {
-                Self::UsbBuilder => "usb_builder_hook",
-            }
-        }
-
-        pub fn type_name(&self) -> &'static str {
-            match self {
-                Self::UsbBuilder => "UsbBuilderHook",
-            }
-        }
-
-        pub fn delegate_ident(&self) -> String {
-            self.param_name().to_uppercase()
-        }
-
-        fn format_list() -> String {
-            enum_iterator::all::<Self>()
-                .map(|h| format!("`{}`", h.param_name()))
-                .collect::<Vec<_>>()
-                .join(", ")
-        }
-
-        pub fn hook_definitions() -> [HookDefinition; 1] {
-            use quote::quote;
-
-            let ariel_os_crate = crate::utils::ariel_os_crate();
-
-            // New hooks need to be defined here, in the order they are run during system
-            // initialization
-            [HookDefinition {
-                kind: Self::UsbBuilder,
-                delegate_inner_type: quote! {#ariel_os_crate::usb::UsbBuilder},
-                distributed_slice_type: quote! {#ariel_os_crate::usb::USB_BUILDER_HOOKS},
-            }]
-        }
-    }
-
-    #[derive(Debug)]
-    pub struct HookDefinition {
-        pub kind: Hook,
-        pub delegate_inner_type: proc_macro2::TokenStream,
-        pub distributed_slice_type: proc_macro2::TokenStream,
-    }
-
-    pub fn generate_delegates(
-        ariel_os_crate: &syn::Ident,
-        hooks: &[HookDefinition],
-        attrs: &Attributes,
-    ) -> proc_macro2::TokenStream {
-        use quote::{format_ident, quote};
-
-        let delegate_type = quote! {#ariel_os_crate::delegate::Delegate};
-
-        let enabled_hooks = hooks.iter().filter(|hook| match hook.kind {
-            Hook::UsbBuilder => attrs.hooks.iter().any(|h| *h == Hook::UsbBuilder),
-        });
-
-        // Instantiate a Delegate as a static and store a reference to it in the appropriate
-        // distributed slice
-        let delegates = enabled_hooks.clone().map(|hook| {
-            let HookDefinition { kind, delegate_inner_type, distributed_slice_type } = hook;
-
-            let delegate_ident = kind.delegate_ident();
-
-            let type_name = format_ident!("{}", kind.type_name());
-            let delegate_hook_ident = format_ident!("{delegate_ident}");
-            let delegate_hook_ref_ident = format_ident!("{delegate_ident}_REF");
-
-            // TODO: try to reduce namespace pollution
-            quote! {
-                static #delegate_hook_ident: #delegate_type<#delegate_inner_type> = #delegate_type::new();
-
-                #[#ariel_os_crate::reexports::linkme::distributed_slice(#distributed_slice_type)]
-                #[linkme(crate=#ariel_os_crate::reexports::linkme)]
-                    static #delegate_hook_ref_ident: #type_name = &#delegate_hook_ident;
-                }
-            }
-        );
-
-        quote! {#(#delegates)*}
     }
 }
