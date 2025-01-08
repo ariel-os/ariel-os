@@ -12,13 +12,6 @@ pub use crate::hal::usb::UsbDriver;
 /// Builder for a USB device stack.
 pub type UsbBuilder = embassy_usb::Builder<'static, UsbDriver>;
 
-/// Configuration hook for a [`UsbBuilder`].
-pub type UsbBuilderHook = &'static crate::delegate::Delegate<UsbBuilder>;
-
-#[doc(hidden)]
-#[linkme::distributed_slice]
-pub static USB_BUILDER_HOOKS: [UsbBuilderHook] = [..];
-
 #[embassy_executor::task]
 pub(crate) async fn usb_task(mut device: embassy_usb::UsbDevice<'static, UsbDriver>) -> ! {
     device.run().await
