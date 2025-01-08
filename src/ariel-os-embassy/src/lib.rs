@@ -31,7 +31,7 @@ pub use linkme::{self, distributed_slice};
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{asynch, delegate, gpio, hal, EMBASSY_TASKS};
+    pub use crate::{asynch, gpio, hal, EMBASSY_TASKS};
 
     pub mod cell {
         //! Shareable containers.
@@ -88,7 +88,6 @@ cfg_if::cfg_if! {
 pub use network::NetworkStack;
 
 pub mod asynch;
-pub mod delegate;
 pub mod sendcell;
 
 #[cfg(feature = "executor-thread")]
