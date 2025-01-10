@@ -25,6 +25,7 @@ static_cell = { workspace = true }
 
 [target.'cfg(context = "stm32")'.dependencies]
 embassy-stm32 = { workspace = true, features = [
+  "optfield",
   "rt",
   "time-driver-any",
   "unstable-pac",
@@ -46,14 +47,10 @@ stm32-rng = []
 
 ## Enables I2C support.
 # Time-related features are required for timeout support.
-i2c = [
-  "ariel-os-embassy-common/i2c",
-  "embassy-stm32/time",
-  "embassy-executor/integrated-timers",
-]
+i2c = ["ariel-os-embassy-common/i2c", "embassy-stm32/time"]
 
 ## Enables SPI support.
-spi = ["ariel-os-embassy-common/spi", "embassy-executor/integrated-timers"]
+spi = ["ariel-os-embassy-common/spi"]
 
 ## Enables USB support.
 usb = []

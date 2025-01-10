@@ -81,18 +81,10 @@ external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
 hwrng = ["dep:ariel-os-random"]
 
 ## Enables I2C support.
-i2c = [
-  "dep:fugit",
-  "ariel-os-embassy-common/i2c",
-  "embassy-executor/integrated-timers",
-]
+i2c = ["dep:fugit", "ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
-spi = [
-  "dep:fugit",
-  "ariel-os-embassy-common/spi",
-  "embassy-executor/integrated-timers",
-]
+spi = ["dep:fugit", "ariel-os-embassy-common/spi"]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "esp-hal/defmt", "esp-wifi?/defmt", "fugit?/defmt"]

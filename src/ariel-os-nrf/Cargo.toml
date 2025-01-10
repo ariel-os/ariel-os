@@ -16,6 +16,7 @@ embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
 ] }
 embassy-nrf = { workspace = true, default-features = false, features = [
+  "optfield",
   "time-driver-rtc1",
   "time",
   "unstable-pac",
@@ -58,10 +59,10 @@ external-interrupts = [
 hwrng = ["dep:ariel-os-random"]
 
 ## Enables I2C support.
-i2c = ["ariel-os-embassy-common/i2c", "embassy-executor/integrated-timers"]
+i2c = ["ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
-spi = ["ariel-os-embassy-common/spi", "embassy-executor/integrated-timers"]
+spi = ["ariel-os-embassy-common/spi"]
 
 ## Enables storage support.
 storage = ["dep:embassy-embedded-hal"]
