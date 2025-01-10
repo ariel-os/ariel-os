@@ -195,7 +195,7 @@ contexts:
       PROBE_RS_CHIP: nrf52840_xxAA
 
   - name: rp
-    help: Raspberry Pi pico MCU support (based on embassy-rp)
+    help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     env:
       RUSTFLAGS:
@@ -224,8 +224,7 @@ contexts:
     parent: rp
     selects:
       - thumbv8m.main-none-eabi  # actually eabihf, but ariel-os doesn't support hard float yet
-      # no probe-rs support, yet
-      #  - ?probe-rs
+      - ?probe-rs
       # somehow when not using clang, the `OS/ABI` field of the resulting .elf
       # becomes `0x03` ("UNIX - GNU"), whereas picotool rejects the .elf if the field
       # does not equal `0x00` ("UNIX - System V"). using lld through clang leads to
@@ -239,7 +238,7 @@ contexts:
         - --cfg context=\"rp2350\"
       # hacky fix when not using `linker-clang` (see above)
       #POST_LINK: "&& echo 00000007: 00 | xxd -r -c 1 - ${relroot}/${out}"
-      PROBE_RS_CHIP: RP2040
+      PROBE_RS_CHIP: RP235x
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:
@@ -616,7 +615,7 @@ modules:
       flash:
         help: Flashes the target using probe-rs
         cmd:
-          - probe-rs download ${out} --chip ${PROBE_RS_CHIP}
+          - probe-rs download --chip ${PROBE_RS_CHIP} ${out}
           - probe-rs reset --chip ${PROBE_RS_CHIP}
 
       debug:
