@@ -522,11 +522,16 @@ pub unsafe fn start_threading() {
     Cpu::start_threading();
 }
 
+trait Sealed {}
+
 /// Trait for types that fit into a single register.
-pub trait Arguable {
+#[expect(private_bounds, reason = "sealed trait")]
+pub trait Arguable: Sealed {
     #[doc(hidden)]
     fn into_arg(self) -> usize;
 }
+
+impl Sealed for usize {}
 
 impl Arguable for usize {
     fn into_arg(self) -> usize {
@@ -534,11 +539,15 @@ impl Arguable for usize {
     }
 }
 
+impl Sealed for () {}
+
 impl Arguable for () {
     fn into_arg(self) -> usize {
         0
     }
 }
+
+impl<T> Sealed for &'static T {}
 
 /// [`Arguable`] is only implemented on *static* references because the references passed to a
 /// thread must be valid for its entire lifetime.
