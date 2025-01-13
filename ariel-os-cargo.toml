@@ -16,22 +16,13 @@ opt-level = "s"
 opt-level = 3
 
 [patch.crates-io]
-# ariel-os embassy fork
-embassy-executor = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-executor-macros = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-net-driver = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-net-driver-channel = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-stm32 = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-sync = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-time-driver = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-usb-driver = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-embassy-usb-synopsys-otg = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-cyw43 = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
-cyw43-pio = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2025-01-10" }
+# ariel-os embassy forks
+embassy-executor = { git = "https://github.com/ariel-os/embassy", branch = "embassy-executor-v0.7.0+ariel-os" }
+embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", branch = "embassy-hal-internal-v0.2.0+ariel-os" }
+embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "embassy-nrf-v0.3.1+ariel-os" }
+embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "embassy-net-v0.6.0+ariel-os" }
+embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "embassy-rp-v0.3.0+ariel-os" }
+embassy-stm32 = { git = "https://github.com/ariel-os/embassy", branch = "embassy-stm32-v0.2.0+ariel-os" }
 
 # ariel-os esp-hal fork
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
