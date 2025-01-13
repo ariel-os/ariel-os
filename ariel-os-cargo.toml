@@ -36,7 +36,7 @@ esp-storage = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+a
 try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "a1aadfac9840fe23672159c12af7272e44bc684c" }
 
 # added Ariel OS support
-embedded-test = { git = "https://github.com/ariel-os/embedded-test", branch = "for-ariel-os-2024-10-21" }
+embedded-test = { git = "https://github.com/ariel-os/embedded-test", branch = "v0.6.0+ariel-os" }
 
 # picoserve
 picoserve = { git = "https://github.com/sammhicks/picoserve", rev = "c4fe40eccfcd1188f117d4b7c689f6dc48c94d44" }
