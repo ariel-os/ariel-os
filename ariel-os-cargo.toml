@@ -37,3 +37,6 @@ try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "a1aadfac984
 
 # added Ariel OS support
 embedded-test = { git = "https://github.com/ariel-os/embedded-test", branch = "for-ariel-os-2024-10-21" }
+
+# picoserve
+picoserve = { git = "https://github.com/sammhicks/picoserve", rev = "c4fe40eccfcd1188f117d4b7c689f6dc48c94d44" }
