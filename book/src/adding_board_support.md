@@ -10,7 +10,7 @@ Feel free to report anything that is unclear!
 The more similar a board is to one that is already supported, the easier.
 It is usually best to copy and adapt an existing one.
 
-- Ensure that the HAL [is supported in `ariel-os-hal`](#adding-an-embassy-hal-mcu-family).
+- Ensure that the HAL [is supported in `ariel-os-hal`](#adding-support-for-an-embassy-halmcu-family).
 - In `laze-project.yml`:
   - Add a context for the MCU (if it does not already exist).
     - `parent`: the closest Embassy HAL.
