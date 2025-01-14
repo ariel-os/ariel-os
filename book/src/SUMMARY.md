@@ -19,5 +19,6 @@
 
 # Developer Guide
 
+- [Adding Support for a Board](./adding_board_support.md)
 - [Appendices](./appendices.md)
   - [Coding Conventions](./coding-conventions.md)
