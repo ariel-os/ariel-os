@@ -12,8 +12,11 @@ ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_13 });
 #[cfg(context = "nrf5340dk")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_28 });
 
-#[cfg(context = "rp")]
+#[cfg(context = "rp2040")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: PIN_1 });
+
+#[cfg(context = "rp2350")]
+ariel_os::hal::define_peripherals!(LedPeripherals { led: PIN_25 });
 
 #[cfg(context = "esp")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: GPIO_0 });

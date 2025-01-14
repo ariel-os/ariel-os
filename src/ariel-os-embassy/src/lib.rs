@@ -119,7 +119,7 @@ pub(crate) fn init() {
     debug!("ariel-os-embassy::init(): using interrupt mode executor");
     let p = hal::init();
 
-    #[cfg(any(context = "nrf", context = "rp2040", context = "stm32"))]
+    #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
         hal::EXECUTOR.start(hal::SWI);
         hal::EXECUTOR.spawner().must_spawn(init_task(p));
