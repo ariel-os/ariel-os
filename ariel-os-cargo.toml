@@ -35,12 +35,12 @@ cyw43 = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-20
 cyw43-pio = { git = "https://github.com/ariel-os/embassy", branch = "for-ariel-os-2024-11-28" }
 
 # ariel-os esp-hal fork
-esp-alloc = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-timer-rework" }
-esp-hal = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-timer-rework" }
-esp-hal-embassy = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-timer-rework" }
-#esp-println = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-2024-11-21-0.22.0" }
-esp-wifi = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-timer-rework" }
-#esp-storage = { git = "https://github.com/ariel-os/esp-hal", branch = "for-ariel-os-2024-11-21-0.22.0" }
+esp-alloc = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
+esp-hal = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
+esp-hal-embassy = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
+esp-println = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
+esp-wifi = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
+esp-storage = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.0+ariel-os" }
 
 # patched to use portable-atomics <https://github.com/seanmonstar/try-lock/pull/11>
 try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "a1aadfac9840fe23672159c12af7272e44bc684c" }
