@@ -25,31 +25,9 @@ This directory contains example applications that showcase how to use Ariel OS.
 
 ## Networking
 
-Some examples configure networking. By default, they will listen on a static
-IPv4 address. Be sure to configure the host computer end of the network
-accordingly.
+Some examples demonstrate networking capabilities. By default, they will listen on a static
+IPv4 address: `10.42.0.61`.
+To make the device use a DHCP client for address allocation instead of the static address,
+disable the `override-network-config` feature in the example's `Cargo.toml`.
 
-The default IPv4 address the test examples will configure is `10.42.0.61`.
-You can configure the other end like this:
-
-    $ ip address add 10.42.0.1/24 dev <INTERFACE>
-    $ ip link set up dev <INTERFACE>
-
-To double-check that the address has indeed be added, you can use:
-
-    $ ip address show dev <INTERFACE>
-
-Replace `<INTERFACE>` with the name of the used network interface.
-To find out the name of your interface you can use a command such as `ifconfig`.
-
-For *USB Ethernet*, ensure that in addition to the USB cable used for flashing
-and debugging, the USB device port is also connected to the host computer with
-a second cable.
-
-For *WiFi* (default on `rpi-pico-w` and the esp32 based boards), the actual WiFi
-network credentials have to be supplied via environment variables:
-
-    $ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
-
-In order to make the device use a DHCP client instead of the static address,
-remove the `override-network-config` feature from `Cargo.toml` of the example.
+See the [networking documentation](https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html) to learn how to set up networking.
