@@ -1,0 +1,13 @@
+error[E0061]: this function takes 0 arguments but 1 argument was supplied
+ --> tests/ui/hook/missing_parameter.rs:5:4
+  |
+4 | #[ariel_os::hook(usb_builder)]
+  | ------------------------------ unexpected argument of type `&mut ariel_os::reexports::embassy_usb::Builder<'static, UsbDriver>`
+5 | fn usb_builder() {}
+  |    ^^^^^^^^^^^
+  |
+note: function defined here
+ --> tests/ui/hook/missing_parameter.rs:5:4
+  |
+5 | fn usb_builder() {}
+  |    ^^^^^^^^^^^

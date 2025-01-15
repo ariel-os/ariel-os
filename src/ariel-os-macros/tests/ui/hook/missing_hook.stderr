@@ -1,0 +1,7 @@
+error: custom attribute panicked
+ --> tests/ui/hook/missing_hook.rs:4:1
+  |
+4 | #[ariel_os::hook]
+  | ^^^^^^^^^^^^^^^^^
+  |
+  = help: message: a hook must be specified

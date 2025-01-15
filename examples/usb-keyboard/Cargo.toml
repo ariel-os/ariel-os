@@ -12,6 +12,7 @@ workspace = true
 ariel-os = { path = "../../src/ariel-os", features = [
   "time",
   "override-usb-config",
+  "usb-builder-hook",
   "usb-hid",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }

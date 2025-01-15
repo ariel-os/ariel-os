@@ -4795,6 +4795,7 @@ version = "0.1.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "embassy-sync 0.6.1",
 ]
 
 [[package]]

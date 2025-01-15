@@ -1,0 +1,24 @@
+error[E0308]: mismatched types
+ --> tests/ui/hook/incorrect_parameter_type.rs:4:1
+  |
+4 | #[ariel_os::hook(usb_builder)]
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `usize`, found `&mut Builder<'_, UsbDriver>`
+5 | fn usb_builder(builder: usize) {}
+  |    ----------- arguments to this function are incorrect
+  |
+  = note:           expected type `usize`
+          found mutable reference `&mut ariel_os::reexports::embassy_usb::Builder<'static, UsbDriver>`
+note: function defined here
+ --> tests/ui/hook/incorrect_parameter_type.rs:5:4
+  |
+5 | fn usb_builder(builder: usize) {}
+  |    ^^^^^^^^^^^ --------------
+  = note: this error originates in the attribute macro `ariel_os::hook` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused variable: `builder`
+ --> tests/ui/hook/incorrect_parameter_type.rs:5:16
+  |
+5 | fn usb_builder(builder: usize) {}
+  |                ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_builder`
+  |
+  = note: `#[warn(unused_variables)]` on by default

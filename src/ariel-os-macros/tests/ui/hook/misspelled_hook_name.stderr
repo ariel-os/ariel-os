@@ -1,0 +1,5 @@
+error: unsupported parameter (`usb_builder` are supported)
+ --> tests/ui/hook/misspelled_hook_name.rs:4:18
+  |
+4 | #[ariel_os::hook(usb_buildeeer)]
+  |                  ^^^^^^^^^^^^^

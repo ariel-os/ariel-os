@@ -35,6 +35,7 @@ pub use ariel_os_threads as thread;
 
 // Attribute macros
 pub use ariel_os_macros::config;
+pub use ariel_os_macros::hook;
 pub use ariel_os_macros::spawner;
 pub use ariel_os_macros::task;
 #[cfg(any(feature = "threading", doc))]
