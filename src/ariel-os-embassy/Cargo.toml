@@ -55,7 +55,7 @@ external-interrupts = [
   "ariel-os-embassy-common/external-interrupts",
   "ariel-os-hal/external-interrupts",
 ]
-time = ["dep:embassy-time", "embassy-executor/integrated-timers"]
+time = ["dep:embassy-time" ]
 
 ## Enables I2C support.
 i2c = [

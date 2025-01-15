@@ -1,4 +1,4 @@
-#[esp_hal::entry]
+#[esp_hal::main]
 fn main() -> ! {
     crate::startup();
 }
