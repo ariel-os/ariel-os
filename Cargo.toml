@@ -89,7 +89,7 @@ embedded-test = { version = "0.6.0", default-features = false, features = [
 ] }
 
 esp-alloc = { version = "0.6.0", default-features = false }
-esp-hal = { version = "0.23.0", default-features = false, features = [
+esp-hal = { version = "0.23.1", default-features = false, features = [
   "unstable",
 ] }
 esp-hal-embassy = { version = "0.6.0", default-features = false }
