@@ -5,19 +5,19 @@ pub mod main;
 
 use ariel_os_embassy_common::spi::{BitOrder, Mode};
 
-fn from_mode(mode: Mode) -> esp_hal::spi::SpiMode {
+fn from_mode(mode: Mode) -> esp_hal::spi::Mode {
     match mode {
-        Mode::Mode0 => esp_hal::spi::SpiMode::Mode0,
-        Mode::Mode1 => esp_hal::spi::SpiMode::Mode1,
-        Mode::Mode2 => esp_hal::spi::SpiMode::Mode2,
-        Mode::Mode3 => esp_hal::spi::SpiMode::Mode3,
+        Mode::Mode0 => esp_hal::spi::Mode::_0,
+        Mode::Mode1 => esp_hal::spi::Mode::_1,
+        Mode::Mode2 => esp_hal::spi::Mode::_2,
+        Mode::Mode3 => esp_hal::spi::Mode::_3,
     }
 }
 
-fn from_bit_order(bit_order: BitOrder) -> esp_hal::spi::SpiBitOrder {
+fn from_bit_order(bit_order: BitOrder) -> esp_hal::spi::BitOrder {
     match bit_order {
-        BitOrder::MsbFirst => esp_hal::spi::SpiBitOrder::MSBFirst,
-        BitOrder::LsbFirst => esp_hal::spi::SpiBitOrder::LSBFirst,
+        BitOrder::MsbFirst => esp_hal::spi::BitOrder::MsbFirst,
+        BitOrder::LsbFirst => esp_hal::spi::BitOrder::LsbFirst,
     }
 }
 
