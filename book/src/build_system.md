@@ -10,23 +10,17 @@ For example, when run in `examples/hello-world`, `laze build -b nrf52840dk`
 would build the hello-world example for the `nrf52840dk` board.
 Alternatively, the `-C` option can be used to switch to the given directory.
 
+laze allows to override global environment variables using e.g., `-DFOO=BAR`.
+
+## laze tasks
+
 For tasks like flashing and debugging, Ariel OS uses laze *tasks*.
 laze tasks currently have the syntax `laze build -b <board> [other options] <task-name>`.
-For example, to run the hello-world example, the command would be (when in `examples/hello-world`):
+For example, to run the hello-world example, the command would be:
 
     laze -C examples/hello-world build -b nrf52840dk run
 
-laze allows enabling/disabling individual features using [*modules*](#laze-modules), which can be selected
-or disabled using `--select <module>` or `--disable <module>`.
-
-laze also allows to override global environment variables using e.g., `-DFOO=BAR`.
-
-> As some tasks may trigger a rebuild, it is necessary to pass the same settings to related consecutive commands:
-`laze build -DFOO=1 flash` followed by `laze build -DFOO=other debug` might not
-work as expected, as the second command could be rebuilding the application
-before starting the debug session.
-
-## laze tasks
+Tasks available in Ariel OS include:
 
 - `run`: Compiles, flashes, and runs an application. The [debug output](./debug_logging.md) is printed in the terminal.
 - `flash`: Compiles and flashes an application.
@@ -36,11 +30,20 @@ before starting the debug session.
 - `reset`: Reboots the target.
 - `tree`: Prints the application's `cargo tree`.
 
+> As some tasks may trigger a rebuild, it is necessary to pass the same settings to related consecutive commands:
+`laze build -DFOO=1 flash` followed by `laze build -DFOO=other debug` might not
+work as expected, as the second command could be rebuilding the application
+before starting the debug session.
+
 ## laze modules
 
-This is an non-exhaustive list of modules that can be used.
-Other modules are documented in their respective pages.
+laze allows enabling/disabling individual features using [*modules*](#laze-modules), which can be selected
+or disabled using `--select <module>` or `--disable <module>`.
+
+Modules available in Ariel OS include:
 
 - `silent-panic`: Disables printing panics. May help reduce binary size.
+
+> Other modules are documented in their respective pages.
 
 [laze]: https://kaspar030.github.io/laze/dev/
