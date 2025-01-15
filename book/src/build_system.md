@@ -49,5 +49,5 @@ Other modules are documented in their respective pages.
 
 The laze configuration defines a laze context for each MCU, MCU family, and board.
 
-laze passes the names of all contexts related to the selected builder as rustc `--cfg` flags.
+laze passes the names of all contexts related to the selected builder as rustc `--cfg context=$CONTEXT` flags.
 This makes it possible to use the `#[cfg]` attribute to introduce feature-gates based on the MCU, MCU family, or board, when required.
