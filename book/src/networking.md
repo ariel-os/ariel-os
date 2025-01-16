@@ -53,8 +53,8 @@ When using a device with a static IPv4 address,
 the host computer can be configured as follows (where `host_address` is an IP address configured as gateway for the device):
 
 ```sh
-ip address add <host_address>/24 dev <interface>
-ip link set up dev <interface>
+# ip address add <host_address>/24 dev <interface>
+# ip link set up dev <interface>
 ```
 
 To double-check that the address has indeed be added, you can use:
