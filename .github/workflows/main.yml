@@ -100,14 +100,19 @@ jobs:
             --verbose
             --locked
             --features "
+                coap,
                 csprng,
+                dns,
                 external-interrupts,
                 hwrng,
                 i2c,
+                mdns,
                 net,
                 no-boards,
                 spi,
                 storage,
+                tcp,
+                udp,
                 usb,
                 usb-ethernet,
                 "
