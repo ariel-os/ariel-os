@@ -3,7 +3,7 @@
 ## Network Link Selection
 
 Ariel OS currently supports two different networking links: Ethernet-over-USB (aka CDC-NCM) and Wi-Fi.
-Boards may support both of them, only one of them, or none of them.
+Boards may support both of them, only one of them, or none of them. However, currently the network stack supports at most one interface.
 
 Which link layer is used for networking must be selected at compile time,
 through [laze modules](./build_system.md#laze-modules):
@@ -44,9 +44,9 @@ When the `override-network-config` Cargo feature is enabled, DHCP is disabled an
 Support for various network protocols can be enabled through [Cargo features listed in the documentation][rustdoc-homepage].
 Most of these use `embassy_net`, which should be used through the [`ariel_os::reexports::embassy_net`][embassy-net-reexport-rustdoc] re-export.
 
-### Obtaining a Network Stack
+### Using the Network Stack
 
-A network stack can then be obtained using [`ariel_os::network::network_stack()`][network-stack-rustdoc].
+A network stack handle can then be obtained using [`ariel_os::network::network_stack()`][network-stack-rustdoc].
 
 See the [examples][examples-dir-repo] for details.
 
