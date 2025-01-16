@@ -21,7 +21,6 @@ esp-hal = { workspace = true, default-features = false }
 esp-hal-embassy = { workspace = true, default-features = false }
 esp-wifi = { workspace = true, default-features = false, features = [
   "esp-alloc",
-  "embassy-net",
   "wifi",
 ], optional = true }
 fugit = { workspace = true, optional = true }
@@ -82,11 +81,7 @@ external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
 hwrng = ["dep:ariel-os-random"]
 
 ## Enables I2C support.
-i2c = [
-  "dep:fugit",
-  "ariel-os-embassy-common/i2c",
-  "embassy-executor/integrated-timers",
-]
+i2c = ["dep:fugit", "ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
 spi = ["dep:fugit", "ariel-os-embassy-common/spi"]

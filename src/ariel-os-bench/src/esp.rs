@@ -1,27 +1,16 @@
-use esp_hal::{
-    peripherals,
-    timer::systimer::{SystemTimer, Unit as _},
-};
+use esp_hal::timer::systimer::{SystemTimer, Unit};
 
 use crate::Error;
 
 #[allow(missing_docs)]
 pub fn benchmark<F: FnMut() -> ()>(iterations: usize, mut f: F) -> Result<usize, Error> {
-    let mut systimer_periph = unsafe { peripherals::SYSTIMER::steal() };
-    let timer = SystemTimer::new(&mut systimer_periph);
-
-    // Reset counter of unit0, which is read in `SystemTimer::now()`.
-    timer.unit0.set_count(0);
-
-    while SystemTimer::now() == 0 {}
-
-    let before = SystemTimer::now();
+    let before = SystemTimer::unit_value(Unit::Unit0);
 
     for _ in 0..iterations {
         f();
     }
 
-    SystemTimer::now()
+    SystemTimer::unit_value(Unit::Unit0)
         .checked_sub(before)
         .map(|total| total as usize / iterations)
         .ok_or(Error::SystemTimerWrapped)

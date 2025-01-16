@@ -15,20 +15,18 @@ embassy-embedded-hal = { workspace = true }
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
 ] }
-embassy-stm32 = { workspace = true, default-features = false }
+embassy-stm32 = { workspace = true, default-features = false, features = [
+  "optfield",
+  "rt",
+  "time-driver-any",
+  "unstable-pac",
+] }
 embedded-hal-async = { workspace = true }
 paste = { workspace = true }
 portable-atomic = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
-
-[target.'cfg(context = "stm32")'.dependencies]
-embassy-stm32 = { workspace = true, features = [
-  "rt",
-  "time-driver-any",
-  "unstable-pac",
-] }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -46,14 +44,10 @@ stm32-rng = []
 
 ## Enables I2C support.
 # Time-related features are required for timeout support.
-i2c = [
-  "ariel-os-embassy-common/i2c",
-  "embassy-stm32/time",
-  "embassy-executor/integrated-timers",
-]
+i2c = ["ariel-os-embassy-common/i2c", "embassy-stm32/time"]
 
 ## Enables SPI support.
-spi = ["ariel-os-embassy-common/spi", "embassy-executor/integrated-timers"]
+spi = ["ariel-os-embassy-common/spi"]
 
 ## Enables USB support.
 usb = []
