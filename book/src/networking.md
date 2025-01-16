@@ -32,10 +32,12 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 
 ### Network Configuration
 
-DHCP is used by default for network configuration, including IPv4 address allocation.
+DHCPv4 is used by default for network configuration, including for IP address allocation.
 
-The [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] is currently used to provide network configuration for the device.
+The [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] is currently used to provide manual network configuration for the device.
 When the `override-network-config` Cargo feature is enabled, DHCP is disabled and the provided configuration is used instead.
+
+> Non-static IPv6 address allocation will be supported in the future.
 
 ### Support for Network Protocols
 
