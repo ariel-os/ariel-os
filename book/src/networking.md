@@ -1,9 +1,9 @@
 # Networking
 
-## Network Type Selection
+## Network Link Selection
 
-Ariel OS currently supports two physical and link layers for networking: Ethernet-over-USB (aka CDC-NCM) and Wi-Fi.
-Boards may support all of them, only some of them, or none of them.
+Ariel OS currently supports two different networking links: Ethernet-over-USB (aka CDC-NCM) and Wi-Fi.
+Boards may support both of them, only one of them, or none of them.
 
 Which link layer is used for networking must be selected at compile time,
 through [laze modules](./build_system.md#laze-modules):
@@ -30,20 +30,23 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 
 ## Using the Networking Link on the Device
 
-### Configuring the Device
+### Network Configuration
+
+DHCP is used by default for network configuration, including IPv4 address allocation.
 
 The [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] is currently used to provide network configuration for the device.
+When the `override-network-config` Cargo feature is enabled, DHCP is disabled and the provided configuration is used instead.
+
+### Support for Network Protocols
+
+Support for various network protocols can be enabled through [Cargo features listed in the documentation][rustdoc-homepage].
+Most of these use `embassy_net`, which should be used through the [`ariel_os::reexports::embassy_net`][embassy-net-reexport-rustdoc] re-export.
 
 ### Obtaining a Network Stack
 
 A network stack can then be obtained using [`ariel_os::network::network_stack()`][network-stack-rustdoc].
 
 See the [examples][examples-dir-repo] for details.
-
-### Support for Network Protocols
-
-Support for various network protocols can be enabled through [Cargo features listed in the documentation][rustdoc-homepage].
-Most of these use `embassy_net`, which should be used through [`ariel_os::reexports::embassy_net`][embassy-net-reexport-rustdoc].
 
 ## Host Setup
 
@@ -52,19 +55,19 @@ Most of these use `embassy_net`, which should be used through [`ariel_os::reexpo
 When using a device with a static IPv4 address,
 the host computer can be configured as follows (where `host_address` is an IP address configured as gateway for the device):
 
-```sh
+```
 # ip address add <host_address>/24 dev <interface>
 # ip link set up dev <interface>
 ```
 
-To double-check that the address has indeed be added, you can use:
+To verify that the address has indeed be added, you can use:
 
 ```sh
 ip address show dev <interface>
 ```
 
 Replace `<interface>` with the name of the used network interface.
-To find out the name of your interface you can use a command such as `ip addr`.
+To find out the name of your interface you can use a command such as `ip address`.
 
 ### Ethernet-over-USB
 
