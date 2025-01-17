@@ -34,7 +34,4 @@ And this is a joyful and welcoming open-source community, so: [join us](https://
 
 ### Further Reading
 
-As Ariel OS builds on top of the embedded Rust ecosystem, readers of this book
-could benefit from also reading the [Rust book](https://doc.rust-lang.org/book/),
-the [Embedded Rust book](https://docs.rust-embedded.org/book/)
-and the [Embassy book](https://embassy.dev/book/).
+If you want to know more about the embedded Rust ecosystem that Ariel OS builds on top of, you could take a look at the [Rust book](https://doc.rust-lang.org/book/), the [Embedded Rust book](https://docs.rust-embedded.org/book/) and the [Embassy book](https://embassy.dev/book/).
