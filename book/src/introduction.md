@@ -6,7 +6,7 @@ Targeted hardware includes various hardware based on 32-bit microcontroller arch
 The targeted **memory footprint** (RAM and flash memory) is measured in hundreds of kilobytes.
 The targeted **power consumption** levels enable applications lasting 1+ years on a small battery.
 
-Ariel OS  builds on top of existing projects in the Embedded Rust ecosystem, including
+Ariel OS builds on top of existing projects in the Embedded Rust ecosystem, including
 [Embassy](https://github.com/embassy-rs/embassy), [esp-hal](https://github.com/esp-rs/esp-hal),
 [defmt](https://github.com/knurling-rs/defmt), [probe-rs](https://github.com/probe-rs/probe-rs),
 [sequential-storage](https://github.com/tweedegolf/sequential-storage), and
