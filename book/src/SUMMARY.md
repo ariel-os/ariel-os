@@ -3,7 +3,6 @@
 - [Manifesto](./manifesto.md)
 - [Introduction](./introduction.md)
 - [Hardware & Functionality Support](./hardware_functionality_support.md)
-- [Multithreading](./multithreading.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
   - [Reporting Guidelines](./COC_reporting.md)
 
@@ -13,6 +12,7 @@
 - [Building an Application](./application.md)
 - [Debug Logging](./debug_logging.md)
 - [Networking](./networking.md)
+- [Multithreading](./multithreading.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
   - [Ferrocene](./tooling/ferrocene.md)
