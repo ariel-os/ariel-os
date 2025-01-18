@@ -75,6 +75,33 @@ impl HeaderMap<'_> {
     }
 }
 
+/// A COSE_Key as described in Section 7 of RFC9052.
+///
+/// This combines [COSE Key Common
+/// Parameters](https://www.iana.org/assignments/cose/cose.xhtml#key-common-parameters) with [COSE
+/// Key Type Parameters](https://www.iana.org/assignments/cose/cose.xhtml#key-type-parameters)
+/// under the assumption that the key type is 1 (OKP) or 2 (EC2), which so far have non-conflicting
+/// entries.
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[derive(minicbor::Decode, Debug)]
+#[cbor(map)]
+#[non_exhaustive]
+pub struct CoseKey<'a> {
+    #[n(1)]
+    pub kty: i32, // or tstr (unsupported here so far)
+    #[cbor(b(2), with = "minicbor::bytes")]
+    pub kid: Option<&'a [u8]>,
+    #[n(3)]
+    pub alg: Option<i32>, // or tstr (unsupported here so far)
+
+    #[n(-1)]
+    pub crv: Option<i32>, // or tstr (unsupported here so far)
+    #[cbor(b(-2), with = "minicbor::bytes")]
+    pub x: Option<&'a [u8]>,
+    #[cbor(b(-3), with = "minicbor::bytes")]
+    pub y: Option<&'a [u8]>, // or bool (unsupported here so far)
+}
+
 /// A COSE_Encrypt0 structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode)]
@@ -91,6 +118,25 @@ struct CoseEncrypt0<'a> {
 
 type EncryptedCwt<'a> = CoseEncrypt0<'a>;
 
+/// A COSE_Sign1 structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[derive(minicbor::Decode)]
+#[cbor(tag(18))]
+#[non_exhaustive]
+struct CoseSign1<'a> {
+    #[cbor(b(0), with = "minicbor::bytes")]
+    protected: &'a [u8],
+    #[b(1)]
+    unprotected: HeaderMap<'a>,
+    // Payload could also be nil, but we don't support detached signatures here right now.
+    #[cbor(b(2), with = "minicbor::bytes")]
+    payload: &'a [u8],
+    #[cbor(b(3), with = "minicbor::bytes")]
+    signature: &'a [u8],
+}
+
+type SignedCwt<'a> = CoseSign1<'a>;
+
 /// A CWT Claims Set.
 ///
 /// Full attribute references are in the [CWT Claims
@@ -100,6 +146,8 @@ type EncryptedCwt<'a> = CoseEncrypt0<'a>;
 #[cbor(map)]
 #[non_exhaustive]
 struct CwtClaimsSet<'a> {
+    #[n(3)]
+    aud: Option<&'a str>,
     #[cfg_attr(
         not(defmt),
         expect(
@@ -145,6 +193,8 @@ struct CwtClaimsSet<'a> {
 struct Cnf<'a> {
     #[b(4)]
     osc: Option<OscoreInputMaterial<'a>>,
+    #[b(1)]
+    cose_key: Option<minicbor_adapters::WithOpaque<'a, CoseKey<'a>>>,
 }
 
 /// OSCORE_Input_Material.
@@ -372,9 +422,13 @@ pub fn process_acecbor_authz_info<Scope>(
         .new_from_token_scope(claims.scope)
         .map_err(|_| minicbor::decode::Error::message("Scope could not be processed"))?;
 
-    let Cnf { osc: Some(osc) } = claims.cnf else {
+    let Cnf {
+        osc: Some(osc),
+        cose_key: None,
+    } = claims.cnf
+    else {
         return Err(minicbor::decode::Error::message(
-            "osc field missing in cnf.",
+            "osc field missing in cnf / unexpected cnf",
         ));
     };
 
