@@ -41,14 +41,17 @@ pub trait ServerSecurityConfig: crate::Sealed {
 
     /// The way scopes issued with this system as audience by this AS are expressed here.
     type Scope: crate::scope::Scope;
-    // Can't `-> Result<impl ..., _>` here because that would capture lifetimes we don't want
-    // captured
-    type ScopeGenerator: crate::scope::ScopeGenerator<Scope = Self::Scope>;
 
-    /// Unprotect a symmetriclly encrypted token.
+    /// Unprotects a symmetriclly encrypted token and processes the contained [CWT Claims
+    /// Set][crate::ace::CwtClaimsSet] into a [`Self::Scope`] and returns the claims.
     ///
-    /// It would be preferable to return a decryption key and let the `ace` module do the
-    /// decryption, but the key is not dyn safe, and
+    /// The steps are performed together rather than in separate functions because it is yet
+    /// unclear how data would precisely be carried around. (Previous iterations of this API had a
+    /// `ScopeGenerator` associated type that would carry such data, but that did not scale well to
+    /// different kinds of tokens).
+    ///
+    /// As part of such a dissection it would be preferable to return a decryption key and let the
+    /// `ace` module do the decryption, but the key is not dyn safe, and
     /// [`aead::AeadInPlace`](https://docs.rs/aead/latest/aead/trait.AeadInPlace.html) can not be
     /// enum'd around different potential key types because the associated types are fixed length.
     /// (Returning a key in some COSE crypto abstraction may work better).
@@ -59,21 +62,23 @@ pub trait ServerSecurityConfig: crate::Sealed {
     /// The buffer is given as heapless buffer rather than an an
     /// [`aead::Buffer`](https://docs.rs/aead/latest/aead/trait.Buffer.html) because the latter is
     /// not on the latest heaples version in its released version.
-    ///
-    /// On success, the ciphertext_buffer contains the decrypted and verified plaintext.
     #[allow(
         unused_variables,
         reason = "Names are human visible part of API description"
     )]
-    // The method is already sealed by the use of a HeaderMap, but that may become more public over
-    // time, and that should not impct this method's publicness.
-    fn decrypt_symmetric_token<const N: usize>(
+    #[expect(
+        rustdoc::private_intra_doc_links,
+        reason = "Method is sealed by private types"
+    )]
+    // The method is already sealed by the use of a HeaderMap and CwtClaimsSet, but that may become
+    // more public over time, and that should not impct this method's publicness.
+    fn decrypt_symmetric_token<'buf, const N: usize>(
         &self,
         headers: &HeaderMap,
         aad: &[u8],
-        ciphertext_buffer: &mut heapless::Vec<u8, N>,
+        ciphertext_buffer: &'buf mut heapless::Vec<u8, N>,
         _: crate::PrivateMethod,
-    ) -> Result<Self::ScopeGenerator, DecryptionError> {
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), DecryptionError> {
         Err(DecryptionError::NoKeyFound)
     }
 
@@ -124,28 +129,6 @@ impl ServerSecurityConfig for DenyAll {
     const PARSES_TOKENS: bool = false;
 
     type Scope = core::convert::Infallible;
-    type ScopeGenerator = core::convert::Infallible;
-}
-
-/// A ScopeGenerator that can be used on [`ServerSecurityConfig`] types that don't process tokens
-///
-/// Unlike [`core::convert::Infallible`], this produces none of any scope, rather than none of
-/// [`Infallible`][core::convert::Infallible].
-pub enum NullGenerator<Scope> {
-    _Phantom(core::convert::Infallible, core::marker::PhantomData<Scope>),
-}
-
-impl<Scope: crate::scope::Scope> crate::scope::ScopeGenerator for NullGenerator<Scope> {
-    type Scope = Scope;
-
-    fn new_from_token_scope(
-        self,
-        _bytes: &[u8],
-    ) -> Result<Self::Scope, crate::scope::InvalidScope> {
-        match self {
-            NullGenerator::_Phantom(infallible, _) => match infallible {},
-        }
-    }
 }
 
 /// An SSC representing unconditionally allowed access, including unencrypted.
@@ -157,7 +140,6 @@ impl ServerSecurityConfig for AllowAll {
     const PARSES_TOKENS: bool = false;
 
     type Scope = crate::scope::AllowAll;
-    type ScopeGenerator = NullGenerator<Self::Scope>;
 
     fn nosec_authorization(&self) -> Option<Self::Scope> {
         Some(crate::scope::AllowAll)
@@ -183,15 +165,14 @@ impl ServerSecurityConfig for ConfigBuilder {
     const PARSES_TOKENS: bool = true;
 
     type Scope = crate::scope::UnionScope;
-    type ScopeGenerator = crate::scope::ParsingAif<crate::scope::UnionScope>;
 
-    fn decrypt_symmetric_token<const N: usize>(
+    fn decrypt_symmetric_token<'buf, const N: usize>(
         &self,
         headers: &HeaderMap,
         aad: &[u8],
-        ciphertext_buffer: &mut heapless::Vec<u8, N>,
+        ciphertext_buffer: &'buf mut heapless::Vec<u8, N>,
         _: crate::PrivateMethod,
-    ) -> Result<Self::ScopeGenerator, DecryptionError> {
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), DecryptionError> {
         use ccm::aead::AeadInPlace;
         use ccm::KeyInit;
 
@@ -238,7 +219,16 @@ impl ServerSecurityConfig for ConfigBuilder {
 
         ciphertext_buffer.truncate(ciphertext_len);
 
-        Ok(crate::scope::ParsingAif::default())
+        let claims: crate::ace::CwtClaimsSet = minicbor::decode(ciphertext_buffer.as_slice())
+            // FIXME: Error type mess
+            .map_err(|_| DecryptionError::InconsistentDetails)?;
+
+        // FIXME: That type will probably go away, but AifValue will grow a validating constructor.
+        let scope = crate::scope::AifValue::parse(claims.scope)
+            // FIXME: Error type mess
+            .map_err(|_| DecryptionError::InconsistentDetails)?;
+
+        Ok((scope.into(), claims))
     }
 
     fn nosec_authorization(&self) -> Option<Self::Scope> {

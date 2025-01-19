@@ -145,7 +145,7 @@ type SignedCwt<'a> = CoseSign1<'a>;
 #[derive(minicbor::Decode, Debug)]
 #[cbor(map)]
 #[non_exhaustive]
-struct CwtClaimsSet<'a> {
+pub struct CwtClaimsSet<'a> {
     #[n(3)]
     aud: Option<&'a str>,
     #[cfg_attr(
@@ -169,7 +169,7 @@ struct CwtClaimsSet<'a> {
     #[b(8)]
     cnf: Cnf<'a>,
     #[cbor(b(9), with = "minicbor::bytes")]
-    scope: &'a [u8],
+    pub(crate) scope: &'a [u8],
 }
 
 /// A single CWT Claims Set Confirmation value.
@@ -403,7 +403,7 @@ pub fn process_acecbor_authz_info<Scope>(
         heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::from_slice(encrypt0.encrypted)
             .map_err(|_| minicbor::decode::Error::message("Token too long to decrypt"))?;
 
-    let scope_generator = authorities
+    let (scope, claims) = authorities
         .decrypt_symmetric_token(
             &headers,
             &aad_encoded,
@@ -412,15 +412,9 @@ pub fn process_acecbor_authz_info<Scope>(
         )
         .map_err(|_| minicbor::decode::Error::message("Decryption failed"))?;
 
-    let claims: CwtClaimsSet = minicbor::decode(ciphertext_buffer.as_slice())?;
     // Currently disabled because no formatting is available while there; works with
     // <https://codeberg.org/chrysn/minicbor-adapters/pulls/1>
     // trace!("Decrypted CWT claims: {}", claims);
-
-    use crate::scope::ScopeGenerator;
-    let scope = scope_generator
-        .new_from_token_scope(claims.scope)
-        .map_err(|_| minicbor::decode::Error::message("Scope could not be processed"))?;
 
     let Cnf {
         osc: Some(osc),

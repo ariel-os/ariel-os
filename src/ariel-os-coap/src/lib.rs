@@ -90,14 +90,13 @@ pub async fn coap_run(handler: impl coap_handler::Handler + coap_handler::Report
     let own_credential = lakers::Credential::parse_ccs(demo_setup::DEVICE_CREDENTIAL)
         .expect("Credential should be processable");
 
-    let unauthenticated_scope: &[u8] = &demo_setup::UNAUTHENTICATED_SCOPE;
-    let unauthenticated_scope = coapcore::scope::AifValue::try_from(unauthenticated_scope)
-        .expect("hard-coded scope fits this type")
-        .into();
+    let unauthenticated_scope =
+        coapcore::scope::AifValue::parse(&demo_setup::UNAUTHENTICATED_SCOPE)
+            .expect("hard-coded scope fits this type")
+            .into();
     let admin_key = lakers::Credential::parse_ccs(demo_setup::ADMIN_CREDENTIAL)
         .expect("hard-coded credential fits this type");
-    let admin_scope: &[u8] = &demo_setup::ADMIN_SCOPE;
-    let admin_scope = coapcore::scope::AifValue::try_from(admin_scope)
+    let admin_scope = coapcore::scope::AifValue::parse(&demo_setup::ADMIN_SCOPE)
         .expect("hard-coded scope fits this type")
         .into();
 
