@@ -8,6 +8,8 @@
 
 use defmt_or_log::trace;
 
+use crate::error::{CredentialError, CredentialErrorDetail};
+
 use crate::helpers::COwn;
 
 /// Fixed length of the ACE OSCORE nonce issued by this module.
@@ -222,9 +224,6 @@ struct OscoreInputMaterial<'a> {
     ms: &'a [u8],
 }
 
-/// The error type of [`OscoreInputMaterial::derive()`].
-struct DeriveError;
-
 impl OscoreInputMaterial<'_> {
     fn derive(
         &self,
@@ -232,7 +231,7 @@ impl OscoreInputMaterial<'_> {
         nonce2: &[u8],
         sender_id: &[u8],
         recipient_id: &[u8],
-    ) -> Result<liboscore::PrimitiveContext, DeriveError> {
+    ) -> Result<liboscore::PrimitiveContext, CredentialError> {
         // We don't process the algorithm fields
         let hkdf = liboscore::HkdfAlg::from_number(5).expect("Default algorithm is supported");
         let aead = liboscore::AeadAlg::from_number(10).expect("Default algorithm is supported");
@@ -250,8 +249,7 @@ impl OscoreInputMaterial<'_> {
         encoder
             .bytes(b"")
             .and_then(|encoder| encoder.bytes(nonce1))
-            .and_then(|encoder| encoder.bytes(nonce2))
-            .map_err(|_| DeriveError)?;
+            .and_then(|encoder| encoder.bytes(nonce2))?;
 
         let immutables = liboscore::PrimitiveImmutables::derive(
             hkdf,
@@ -262,7 +260,8 @@ impl OscoreInputMaterial<'_> {
             sender_id,
             recipient_id,
         )
-        .map_err(|_| DeriveError)?;
+        // Unknown HKDF is probably the only case here.
+        .map_err(|_| CredentialErrorDetail::UnsupportedAlgorithm)?;
 
         // It is fresh because it is derived from.
         Ok(liboscore::PrimitiveContext::new_from_fresh_material(
@@ -338,8 +337,7 @@ pub fn process_acecbor_authz_info<Scope>(
     authorities: &impl crate::seccfg::ServerSecurityConfig<Scope = Scope>,
     nonce2: [u8; OWN_NONCE_LEN],
     server_recipient_id: impl FnOnce(&[u8]) -> COwn,
-) -> Result<(AceCborAuthzInfoResponse, Scope, liboscore::PrimitiveContext), minicbor::decode::Error>
-{
+) -> Result<(AceCborAuthzInfoResponse, Scope, liboscore::PrimitiveContext), CredentialError> {
     trace!("Processing authz_info {=[u8]:02x}", payload); // :02x could be :cbor
 
     let decoded: UnprotectedAuthzInfoPost = minicbor::decode(payload)?;
@@ -352,7 +350,7 @@ pub fn process_acecbor_authz_info<Scope>(
         ..
     } = decoded
     else {
-        return Err(minicbor::decode::Error::message("Missing fields"));
+        return Err(CredentialErrorDetail::ProtocolViolation.into());
     };
 
     trace!(
@@ -377,7 +375,7 @@ pub fn process_acecbor_authz_info<Scope>(
     // could shine by getting an exclusive copy of something in RAM
 
     if headers.alg != Some(31) {
-        return Err(minicbor::decode::Error::message("unknown algorithm"));
+        return Err(CredentialErrorDetail::UnsupportedAlgorithm.into());
     }
 
     #[derive(minicbor::Encode)]
@@ -396,21 +394,19 @@ pub fn process_acecbor_authz_info<Scope>(
     };
     let mut aad_encoded = heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::new();
     minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut aad_encoded))
-        .map_err(|_| minicbor::decode::Error::message("AAD too long"))?;
+        .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
     trace!("Serialized AAD: {:02x}", aad_encoded); // :02x could be :cbor
 
     let mut ciphertext_buffer =
         heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::from_slice(encrypt0.encrypted)
-            .map_err(|_| minicbor::decode::Error::message("Token too long to decrypt"))?;
+            .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
 
-    let (scope, claims) = authorities
-        .decrypt_symmetric_token(
-            &headers,
-            &aad_encoded,
-            &mut ciphertext_buffer,
-            crate::PrivateMethod,
-        )
-        .map_err(|_| minicbor::decode::Error::message("Decryption failed"))?;
+    let (scope, claims) = authorities.decrypt_symmetric_token(
+        &headers,
+        &aad_encoded,
+        &mut ciphertext_buffer,
+        crate::PrivateMethod,
+    )?;
 
     // Currently disabled because no formatting is available while there; works with
     // <https://codeberg.org/chrysn/minicbor-adapters/pulls/1>
@@ -421,22 +417,17 @@ pub fn process_acecbor_authz_info<Scope>(
         cose_key: None,
     } = claims.cnf
     else {
-        return Err(minicbor::decode::Error::message(
-            "osc field missing in cnf / unexpected cnf",
-        ));
+        return Err(CredentialErrorDetail::InconsistentDetails.into());
     };
 
     let ace_server_recipientid = server_recipient_id(ace_client_recipientid);
 
-    let derived = osc
-        .derive(
-            nonce1,
-            &nonce2,
-            ace_client_recipientid,
-            ace_server_recipientid.as_slice(),
-        )
-        // And at latest herer it's *definitely* not a minicbor error any more
-        .map_err(|_| minicbor::decode::Error::message("OSCORE derivation failed"))?;
+    let derived = osc.derive(
+        nonce1,
+        &nonce2,
+        ace_client_recipientid,
+        ace_server_recipientid.as_slice(),
+    )?;
 
     let response = AceCborAuthzInfoResponse {
         nonce2,

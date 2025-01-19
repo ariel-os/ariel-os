@@ -693,7 +693,7 @@ impl<
             .map_err(|e| {
                 error!("Sending out error:");
                 error!("{}", Debug2Format(&e));
-                e.position()
+                e.position
                     // FIXME: Could also come from processing inner
                     .map(CoAPError::bad_request_with_rbep)
                     .unwrap_or(CoAPError::bad_request())

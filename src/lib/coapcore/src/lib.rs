@@ -43,3 +43,6 @@ pub mod seccfg;
 pub mod oluru;
 mod seccontext;
 pub use seccontext::*;
+
+mod error;
+pub use error::CredentialError;

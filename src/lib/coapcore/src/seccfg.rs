@@ -4,21 +4,7 @@
 use defmt_or_log::{debug, error, trace};
 
 use crate::ace::HeaderMap;
-
-/// The error type for [`ServerSecurityConfig::decrypt_symmetric_token`] and future similar
-/// methods.
-#[derive(Debug)]
-pub enum DecryptionError {
-    /// A key was indicated that is not available.
-    NoKeyFound,
-    /// Details of the encrypted message msimatch.
-    ///
-    /// For example, the nonce size could not match the nonce size expected by the indicated key's
-    /// algorithm.
-    InconsistentDetails,
-    /// The decryption itself failed, indicating mismatch of the keys.
-    DecryptionError,
-}
+use crate::error::{CredentialError, CredentialErrorDetail};
 
 /// Error type of [`ServerSecurityConfig::render_not_allowed`].
 ///
@@ -78,8 +64,8 @@ pub trait ServerSecurityConfig: crate::Sealed {
         aad: &[u8],
         ciphertext_buffer: &'buf mut heapless::Vec<u8, N>,
         _: crate::PrivateMethod,
-    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), DecryptionError> {
-        Err(DecryptionError::NoKeyFound)
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
+        Err(CredentialErrorDetail::KeyNotPresent.into())
     }
 
     fn own_edhoc_credential(&self) -> Option<(lakers::Credential, lakers::BytesP256ElemLen)> {
@@ -172,13 +158,13 @@ impl ServerSecurityConfig for ConfigBuilder {
         aad: &[u8],
         ciphertext_buffer: &'buf mut heapless::Vec<u8, N>,
         _: crate::PrivateMethod,
-    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), DecryptionError> {
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
         use ccm::aead::AeadInPlace;
         use ccm::KeyInit;
 
         let key = self.as_key_31.ok_or_else(|| {
             error!("Symmetrically encrypted token was sent, but no symmetric key is configured.");
-            DecryptionError::NoKeyFound
+            CredentialErrorDetail::KeyNotPresent
         })?;
 
         // FIXME: should be something Aes256Ccm::TagLength
@@ -192,12 +178,12 @@ impl ServerSecurityConfig for ConfigBuilder {
             .iv
             .ok_or_else(|| {
                 error!("IV missing from token.");
-                DecryptionError::InconsistentDetails
+                CredentialErrorDetail::InconsistentDetails
             })?
             .try_into()
             .map_err(|_| {
                 error!("Token's IV length mismatches algorithm.");
-                DecryptionError::InconsistentDetails
+                CredentialErrorDetail::InconsistentDetails
             })?;
 
         let ciphertext_len = ciphertext_buffer
@@ -205,7 +191,7 @@ impl ServerSecurityConfig for ConfigBuilder {
             .checked_sub(TAG_SIZE)
             .ok_or_else(|| {
                 error!("Token's ciphertext too short for the algorithm's tag.");
-                DecryptionError::InconsistentDetails
+                CredentialErrorDetail::InconsistentDetails
             })?;
 
         let (ciphertext, tag) = ciphertext_buffer.split_at_mut(ciphertext_len);
@@ -214,19 +200,16 @@ impl ServerSecurityConfig for ConfigBuilder {
             .decrypt_in_place_detached(nonce.into(), aad, ciphertext, ccm::Tag::from_slice(tag))
             .map_err(|_| {
                 error!("Token decryption failed.");
-                DecryptionError::DecryptionError
+                CredentialErrorDetail::VerifyFailed
             })?;
 
         ciphertext_buffer.truncate(ciphertext_len);
 
         let claims: crate::ace::CwtClaimsSet = minicbor::decode(ciphertext_buffer.as_slice())
-            // FIXME: Error type mess
-            .map_err(|_| DecryptionError::InconsistentDetails)?;
+            .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
 
-        // FIXME: That type will probably go away, but AifValue will grow a validating constructor.
         let scope = crate::scope::AifValue::parse(claims.scope)
-            // FIXME: Error type mess
-            .map_err(|_| DecryptionError::InconsistentDetails)?;
+            .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
 
         Ok((scope.into(), claims))
     }
