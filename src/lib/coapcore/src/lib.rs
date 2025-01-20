@@ -30,6 +30,8 @@
 mod sealed;
 use sealed::{PrivateMethod, Sealed};
 
+mod iana;
+
 mod helpers;
 
 mod ace;

@@ -494,7 +494,7 @@ impl<
 
             let mut cred_i_and_authorization = None;
 
-            if let Some(lakers::EADItem { label: 20, value: Some(value), .. }) = ead_3.take() {
+            if let Some(lakers::EADItem { label: crate::iana::edhoc_ead::ACETOKEN, value: Some(value), .. }) = ead_3.take() {
                 match crate::ace::process_edhoc_token(value.as_slice(), &self.authorities) {
                     Ok(ci_and_a) => cred_i_and_authorization = Some(ci_and_a),
                     Err(e) => {
@@ -539,8 +539,8 @@ impl<
             let recipient_id = c_r.as_slice();
 
             // FIXME probe cipher suite
-            let hkdf = liboscore::HkdfAlg::from_number(5).unwrap();
-            let aead = liboscore::AeadAlg::from_number(10).unwrap();
+            let hkdf = liboscore::HkdfAlg::from_number(crate::iana::cose_alg::HKDF_HMAC256256).unwrap();
+            let aead = liboscore::AeadAlg::from_number(crate::iana::cose_alg::AES_CCM_16_64_128).unwrap();
 
             let immutables = liboscore::PrimitiveImmutables::derive(
                 hkdf,
