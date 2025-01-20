@@ -86,6 +86,10 @@ impl HeaderMap<'_> {
 /// entries.
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 pub struct CoseKey<'a> {
@@ -145,27 +149,17 @@ type SignedCwt<'a> = CoseSign1<'a>;
 /// registry](https://www.iana.org/assignments/cwt/cwt.xhtml#claims-registry).
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 pub struct CwtClaimsSet<'a> {
     #[n(3)]
     pub(crate) aud: Option<&'a str>,
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
     #[n(4)]
     exp: u64,
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
     #[n(6)]
     iat: u64,
     #[b(8)]
@@ -208,16 +202,13 @@ struct Cnf<'a> {
 /// has the full set in case it gets extended.
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 struct OscoreInputMaterial<'a> {
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
     #[cbor(b(0), with = "minicbor::bytes")]
     id: &'a [u8],
     #[cbor(b(2), with = "minicbor::bytes")]
