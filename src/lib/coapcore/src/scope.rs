@@ -20,27 +20,6 @@ impl Scope for core::convert::Infallible {
     }
 }
 
-/// A parser for [`Scope`] from a serialized form.
-///
-/// This is expressed as a type with possibly non-ZST self to allow carrying over data from the
-/// configuration of the Authorization Server (AS) that issued the token into its processed form. For
-/// example, while many applications can use the zero-sized [`ParsingAif`] implementation, others
-/// may build on that and limit the resulting in a multi-AS scenario (when not all ASes may issue
-/// all scopes).
-pub trait ScopeGenerator: Sized {
-    type Scope: Scope;
-
-    fn new_from_token_scope(self, bytes: &[u8]) -> Result<Self::Scope, InvalidScope>;
-}
-
-impl ScopeGenerator for core::convert::Infallible {
-    type Scope = core::convert::Infallible;
-
-    fn new_from_token_scope(self, _bytes: &[u8]) -> Result<Self::Scope, InvalidScope> {
-        match self {}
-    }
-}
-
 /// Error type indicating that a scope could not be created from the given token scope.
 ///
 /// As tokens are only accepted from trusted sources, the presence of this error typically
@@ -91,17 +70,27 @@ const AIF_SCOPE_MAX_LEN: usize = 64;
 #[derive(Debug, Clone)]
 pub struct AifValue([u8; AIF_SCOPE_MAX_LEN]);
 
-impl TryFrom<&[u8]> for AifValue {
-    // compatible with heapless's
-    type Error = ();
+impl AifValue {
+    pub fn parse(bytes: &[u8]) -> Result<Self, InvalidScope> {
+        let mut buffer = [0; AIF_SCOPE_MAX_LEN];
 
-    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
-        let mut new = [0; AIF_SCOPE_MAX_LEN];
-        if value.len() >= AIF_SCOPE_MAX_LEN {
-            return Err(());
+        buffer
+            .get_mut(..bytes.len())
+            .ok_or(InvalidScope)?
+            .copy_from_slice(bytes);
+
+        let mut decoder = minicbor::Decoder::new(bytes);
+        for item in decoder
+            .array_iter::<(&str, u32)>()
+            .map_err(|_| InvalidScope)?
+        {
+            let (path, _mask) = item.map_err(|_| InvalidScope)?;
+            if !path.starts_with("/") {
+                return Err(InvalidScope);
+            }
         }
-        new.get_mut(..value.len()).ok_or(())?.copy_from_slice(value);
-        Ok(AifValue(new))
+
+        Ok(Self(buffer))
     }
 }
 
@@ -162,45 +151,6 @@ impl Scope for AifValue {
 
     fn is_admin(&self) -> bool {
         self.0[0] >= 0x83
-    }
-}
-
-/// A scope generator that parses the scope's bytes as AIF, accepting any value within that model.
-pub struct ParsingAif<S = AifValue> {
-    _phantom: core::marker::PhantomData<S>,
-}
-
-impl<S> Default for ParsingAif<S> {
-    fn default() -> Self {
-        Self {
-            _phantom: core::marker::PhantomData,
-        }
-    }
-}
-
-impl<S: Scope + From<AifValue>> ScopeGenerator for ParsingAif<S> {
-    type Scope = S;
-
-    fn new_from_token_scope(self, bytes: &[u8]) -> Result<Self::Scope, InvalidScope> {
-        let mut buffer = [0; AIF_SCOPE_MAX_LEN];
-
-        buffer
-            .get_mut(..bytes.len())
-            .ok_or(InvalidScope)?
-            .copy_from_slice(bytes);
-
-        let mut decoder = minicbor::Decoder::new(bytes);
-        for item in decoder
-            .array_iter::<(&str, u32)>()
-            .map_err(|_| InvalidScope)?
-        {
-            let (path, _mask) = item.map_err(|_| InvalidScope)?;
-            if !path.starts_with("/") {
-                return Err(InvalidScope);
-            }
-        }
-
-        Ok(AifValue(buffer).into())
     }
 }
 

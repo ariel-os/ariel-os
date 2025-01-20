@@ -8,6 +8,8 @@
 
 use defmt_or_log::trace;
 
+use crate::error::{CredentialError, CredentialErrorDetail};
+
 use crate::helpers::COwn;
 
 /// Fixed length of the ACE OSCORE nonce issued by this module.
@@ -75,6 +77,37 @@ impl HeaderMap<'_> {
     }
 }
 
+/// A COSE_Key as described in Section 7 of RFC9052.
+///
+/// This combines [COSE Key Common
+/// Parameters](https://www.iana.org/assignments/cose/cose.xhtml#key-common-parameters) with [COSE
+/// Key Type Parameters](https://www.iana.org/assignments/cose/cose.xhtml#key-type-parameters)
+/// under the assumption that the key type is 1 (OKP) or 2 (EC2), which so far have non-conflicting
+/// entries.
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
+#[cbor(map)]
+#[non_exhaustive]
+pub struct CoseKey<'a> {
+    #[n(1)]
+    pub kty: i32, // or tstr (unsupported here so far)
+    #[cbor(b(2), with = "minicbor::bytes")]
+    pub kid: Option<&'a [u8]>,
+    #[n(3)]
+    pub alg: Option<i32>, // or tstr (unsupported here so far)
+
+    #[n(-1)]
+    pub crv: Option<i32>, // or tstr (unsupported here so far)
+    #[cbor(b(-2), with = "minicbor::bytes")]
+    pub x: Option<&'a [u8]>,
+    #[cbor(b(-3), with = "minicbor::bytes")]
+    pub y: Option<&'a [u8]>, // or bool (unsupported here so far)
+}
+
 /// A COSE_Encrypt0 structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode)]
@@ -91,37 +124,47 @@ struct CoseEncrypt0<'a> {
 
 type EncryptedCwt<'a> = CoseEncrypt0<'a>;
 
+/// A COSE_Sign1 structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[derive(minicbor::Decode)]
+#[cbor(tag(18))]
+#[non_exhaustive]
+struct CoseSign1<'a> {
+    #[cbor(b(0), with = "minicbor::bytes")]
+    protected: &'a [u8],
+    #[b(1)]
+    unprotected: HeaderMap<'a>,
+    // Payload could also be nil, but we don't support detached signatures here right now.
+    #[cbor(b(2), with = "minicbor::bytes")]
+    payload: &'a [u8],
+    #[cbor(b(3), with = "minicbor::bytes")]
+    signature: &'a [u8],
+}
+
+type SignedCwt<'a> = CoseSign1<'a>;
+
 /// A CWT Claims Set.
 ///
 /// Full attribute references are in the [CWT Claims
 /// registry](https://www.iana.org/assignments/cwt/cwt.xhtml#claims-registry).
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
 #[cbor(map)]
 #[non_exhaustive]
-struct CwtClaimsSet<'a> {
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
+pub struct CwtClaimsSet<'a> {
+    #[n(3)]
+    pub(crate) aud: Option<&'a str>,
     #[n(4)]
     exp: u64,
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
     #[n(6)]
     iat: u64,
     #[b(8)]
     cnf: Cnf<'a>,
     #[cbor(b(9), with = "minicbor::bytes")]
-    scope: &'a [u8],
+    pub(crate) scope: &'a [u8],
 }
 
 /// A single CWT Claims Set Confirmation value.
@@ -138,13 +181,14 @@ struct CwtClaimsSet<'a> {
 /// of](https://www.rfc-editor.org/rfc/rfc8747.html#name-confirmation-claim) "At most one of the
 /// `COSE_Key` and `Encrypted_COSE_Key` […] may be present", doesn't rule out that items without
 /// key material can't be attached.
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
 #[cbor(map)]
 #[non_exhaustive]
 struct Cnf<'a> {
     #[b(4)]
     osc: Option<OscoreInputMaterial<'a>>,
+    #[b(1)]
+    cose_key: Option<minicbor_adapters::WithOpaque<'a, CoseKey<'a>>>,
 }
 
 /// OSCORE_Input_Material.
@@ -156,24 +200,18 @@ struct Cnf<'a> {
 /// has the full set in case it gets extended.
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    dead_code,
+    reason = "Presence of the item makes CBOR derive tolerate the item"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 struct OscoreInputMaterial<'a> {
-    #[cfg_attr(
-        not(defmt),
-        expect(
-            dead_code,
-            reason = "Presence of the item makes CBOR derive tolerate the item"
-        )
-    )]
     #[cbor(b(0), with = "minicbor::bytes")]
     id: &'a [u8],
     #[cbor(b(2), with = "minicbor::bytes")]
     ms: &'a [u8],
 }
-
-/// The error type of [`OscoreInputMaterial::derive()`].
-struct DeriveError;
 
 impl OscoreInputMaterial<'_> {
     fn derive(
@@ -182,7 +220,7 @@ impl OscoreInputMaterial<'_> {
         nonce2: &[u8],
         sender_id: &[u8],
         recipient_id: &[u8],
-    ) -> Result<liboscore::PrimitiveContext, DeriveError> {
+    ) -> Result<liboscore::PrimitiveContext, CredentialError> {
         // We don't process the algorithm fields
         let hkdf = liboscore::HkdfAlg::from_number(5).expect("Default algorithm is supported");
         let aead = liboscore::AeadAlg::from_number(10).expect("Default algorithm is supported");
@@ -200,8 +238,7 @@ impl OscoreInputMaterial<'_> {
         encoder
             .bytes(b"")
             .and_then(|encoder| encoder.bytes(nonce1))
-            .and_then(|encoder| encoder.bytes(nonce2))
-            .map_err(|_| DeriveError)?;
+            .and_then(|encoder| encoder.bytes(nonce2))?;
 
         let immutables = liboscore::PrimitiveImmutables::derive(
             hkdf,
@@ -212,7 +249,8 @@ impl OscoreInputMaterial<'_> {
             sender_id,
             recipient_id,
         )
-        .map_err(|_| DeriveError)?;
+        // Unknown HKDF is probably the only case here.
+        .map_err(|_| CredentialErrorDetail::UnsupportedAlgorithm)?;
 
         // It is fresh because it is derived from.
         Ok(liboscore::PrimitiveContext::new_from_fresh_material(
@@ -288,8 +326,7 @@ pub fn process_acecbor_authz_info<Scope>(
     authorities: &impl crate::seccfg::ServerSecurityConfig<Scope = Scope>,
     nonce2: [u8; OWN_NONCE_LEN],
     server_recipient_id: impl FnOnce(&[u8]) -> COwn,
-) -> Result<(AceCborAuthzInfoResponse, Scope, liboscore::PrimitiveContext), minicbor::decode::Error>
-{
+) -> Result<(AceCborAuthzInfoResponse, Scope, liboscore::PrimitiveContext), CredentialError> {
     trace!("Processing authz_info {=[u8]:02x}", payload); // :02x could be :cbor
 
     let decoded: UnprotectedAuthzInfoPost = minicbor::decode(payload)?;
@@ -302,7 +339,7 @@ pub fn process_acecbor_authz_info<Scope>(
         ..
     } = decoded
     else {
-        return Err(minicbor::decode::Error::message("Missing fields"));
+        return Err(CredentialErrorDetail::ProtocolViolation.into());
     };
 
     trace!(
@@ -327,7 +364,7 @@ pub fn process_acecbor_authz_info<Scope>(
     // could shine by getting an exclusive copy of something in RAM
 
     if headers.alg != Some(31) {
-        return Err(minicbor::decode::Error::message("unknown algorithm"));
+        return Err(CredentialErrorDetail::UnsupportedAlgorithm.into());
     }
 
     #[derive(minicbor::Encode)]
@@ -346,49 +383,40 @@ pub fn process_acecbor_authz_info<Scope>(
     };
     let mut aad_encoded = heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::new();
     minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut aad_encoded))
-        .map_err(|_| minicbor::decode::Error::message("AAD too long"))?;
+        .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
     trace!("Serialized AAD: {:02x}", aad_encoded); // :02x could be :cbor
 
     let mut ciphertext_buffer =
         heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::from_slice(encrypt0.encrypted)
-            .map_err(|_| minicbor::decode::Error::message("Token too long to decrypt"))?;
+            .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
 
-    let scope_generator = authorities
-        .decrypt_symmetric_token(
-            &headers,
-            &aad_encoded,
-            &mut ciphertext_buffer,
-            crate::PrivateMethod,
-        )
-        .map_err(|_| minicbor::decode::Error::message("Decryption failed"))?;
+    let (scope, claims) = authorities.decrypt_symmetric_token(
+        &headers,
+        &aad_encoded,
+        &mut ciphertext_buffer,
+        crate::PrivateMethod,
+    )?;
 
-    let claims: CwtClaimsSet = minicbor::decode(ciphertext_buffer.as_slice())?;
     // Currently disabled because no formatting is available while there; works with
     // <https://codeberg.org/chrysn/minicbor-adapters/pulls/1>
     // trace!("Decrypted CWT claims: {}", claims);
 
-    use crate::scope::ScopeGenerator;
-    let scope = scope_generator
-        .new_from_token_scope(claims.scope)
-        .map_err(|_| minicbor::decode::Error::message("Scope could not be processed"))?;
-
-    let Cnf { osc: Some(osc) } = claims.cnf else {
-        return Err(minicbor::decode::Error::message(
-            "osc field missing in cnf.",
-        ));
+    let Cnf {
+        osc: Some(osc),
+        cose_key: None,
+    } = claims.cnf
+    else {
+        return Err(CredentialErrorDetail::InconsistentDetails.into());
     };
 
     let ace_server_recipientid = server_recipient_id(ace_client_recipientid);
 
-    let derived = osc
-        .derive(
-            nonce1,
-            &nonce2,
-            ace_client_recipientid,
-            ace_server_recipientid.as_slice(),
-        )
-        // And at latest herer it's *definitely* not a minicbor error any more
-        .map_err(|_| minicbor::decode::Error::message("OSCORE derivation failed"))?;
+    let derived = osc.derive(
+        nonce1,
+        &nonce2,
+        ace_client_recipientid,
+        ace_server_recipientid.as_slice(),
+    )?;
 
     let response = AceCborAuthzInfoResponse {
         nonce2,
@@ -396,4 +424,77 @@ pub fn process_acecbor_authz_info<Scope>(
     };
 
     Ok((response, scope, derived))
+}
+
+pub fn process_edhoc_token<Scope>(
+    ead3: &[u8],
+    authorities: &impl crate::seccfg::ServerSecurityConfig<Scope = Scope>,
+) -> Result<(lakers::Credential, Scope), CredentialError> {
+    let sign1: SignedCwt = minicbor::decode(ead3)?;
+    let protected: HeaderMap = minicbor::decode(sign1.protected)?;
+    trace!(
+        "Decoded protected header map {:?} inside sign1 container {:?}",
+        &protected,
+        &sign1
+    );
+    let headers = sign1.unprotected.updated_with(protected);
+
+    #[derive(minicbor::Encode)]
+    struct SigStructureForSignature1<'a> {
+        #[n(0)]
+        context: &'static str,
+        #[cbor(b(1), with = "minicbor::bytes")]
+        body_protected: &'a [u8],
+        #[cbor(b(2), with = "minicbor::bytes")]
+        external_aad: &'a [u8],
+        #[cbor(b(3), with = "minicbor::bytes")]
+        payload: &'a [u8],
+    }
+    let aad = SigStructureForSignature1 {
+        context: "Signature1",
+        body_protected: sign1.protected,
+        external_aad: &[],
+        payload: sign1.payload,
+    };
+    let mut signed_data = heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::new();
+    minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut signed_data))?;
+    trace!("Serialized AAD: {:#02x}", signed_data);
+
+    let (scope, claims) = authorities.verify_asymmetric_token(
+        &headers,
+        &signed_data,
+        sign1.signature,
+        sign1.payload,
+        crate::PrivateMethod,
+    )?;
+
+    // FIXME: Check iat/exp against raytime
+
+    let Cnf {
+        osc: None,
+        cose_key: Some(cose_key),
+    } = claims.cnf
+    else {
+        return Err(CredentialErrorDetail::InconsistentDetails.into());
+    };
+
+    let mut prefixed = lakers::BufferCred::new();
+    // The prefix for naked COSE_Keys from Section 3.5.2 of RFC9528
+    prefixed
+        .extend_from_slice(&[0xa1, 0x08, 0xa1, 0x01])
+        .unwrap();
+    prefixed
+        .extend_from_slice(&cose_key.opaque)
+        .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
+    let credential = lakers::Credential::new_ccs(
+        prefixed,
+        cose_key
+            .parsed
+            .x
+            .ok_or(CredentialErrorDetail::InconsistentDetails)?
+            .try_into()
+            .map_err(|_| CredentialErrorDetail::InconsistentDetails)?,
+    );
+
+    Ok((credential, scope))
 }

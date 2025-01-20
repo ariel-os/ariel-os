@@ -30,6 +30,8 @@
 mod sealed;
 use sealed::{PrivateMethod, Sealed};
 
+mod iana;
+
 mod helpers;
 
 mod ace;
@@ -43,3 +45,6 @@ pub mod seccfg;
 pub mod oluru;
 mod seccontext;
 pub use seccontext::*;
+
+mod error;
+pub use error::CredentialError;

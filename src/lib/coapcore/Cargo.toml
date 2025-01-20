@@ -29,8 +29,15 @@ lakers-crypto-rustcrypto = "0.7.2"
 liboscore = "0.2.2"
 liboscore-msgbackend = "0.2.2"
 
+# actually we depend on <https://github.com/twittner/minicbor/pull/9> so it
+# should be
+#     minicbor = { git = "https://github.com/chrysn-pull-requests/minicbor", branch = "negativ-indices", features = ["derive"] }
+# and it could be patched locally because it is a non-pub dependency, but as
+# minicbor-adapters needs to use the same types, this still has to go into
+# patch.crates-io to also catch minicbor-adapters.
 minicbor = { version = "0.25.1", features = ["derive"] }
-minicbor-adapters = "0.0.1"
+
+minicbor-adapters = "0.0.3"
 heapless = "0.8.0"
 defmt-or-log = { version = "0.2.1", default-features = false }
 defmt = { workspace = true, optional = true }
@@ -43,6 +50,8 @@ document-features = "0.2.10"
 # dependencies.
 ccm = { version = "0.5.0", default-features = false }
 aes = { version = "0.8.4", default-features = false }
+
+p256 = { version = "0.13.2", features = ["ecdsa"], default-features = false }
 
 [features]
 #! # Cargo features

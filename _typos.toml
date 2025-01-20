@@ -5,6 +5,8 @@ extint = "extint"     # External interrupt
 synopsys = "synopsys" # Manufacturer name
 COSE = "COSE"         # A technology we use
 
+negativ = "negativ" # Typo in a branch name in ariel-os-cargo.toml
+
 [default.extend-identifiers]
 celcius = "celcius" # Until embedded-aht20 is fixed
 
