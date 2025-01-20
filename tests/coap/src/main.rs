@@ -3,9 +3,11 @@
 #![feature(impl_trait_in_assoc_type)]
 #![feature(used_with_arg)]
 
+use ariel_os::reexports::embassy_net;
+
 #[ariel_os::config(network)]
-const NETWORK_CONFIG: ariel_os::reexports::embassy_net::Config = {
-    use ariel_os::reexports::embassy_net::{self, Ipv4Address};
+const NETWORK_CONFIG: embassy_net::Config = {
+    use embassy_net::{self, Ipv4Address};
 
     embassy_net::Config::ipv4_static(embassy_net::StaticConfigV4 {
         address: embassy_net::Ipv4Cidr::new(Ipv4Address::new(10, 42, 0, 61), 24),

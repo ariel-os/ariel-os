@@ -28,6 +28,15 @@ TODO: how to organize type definitions w.r.t. related logic?
 
 Imports from the same crate with the same visibility MUST be [merged into a single use statement](https://rust-analyzer.github.io/manual.html#auto-import).
 
+### Imports from Re-exports
+
+When using whole-crate re-exports from [`ariel_os::reexports`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/index.html), two imports SHOULD be used: one to bring the re-exported crate into the scope, and the other one to import the required items from that crate, as it it were a direct dependency of the crate, as follows:
+
+```rust
+use ariel_os::reexports::embassy_usb;
+use embassy_usb::class::hid::HidReaderWriter;
+```
+
 ## Comments
 
 ### Doc Comments

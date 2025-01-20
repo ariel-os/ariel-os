@@ -17,8 +17,8 @@ use embassy_usb::{
 const MAX_FULL_SPEED_PACKET_SIZE: u8 = 64;
 
 #[ariel_os::config(usb)]
-const USB_CONFIG: ariel_os::reexports::embassy_usb::Config = {
-    let mut config = ariel_os::reexports::embassy_usb::Config::new(0xc0de, 0xcafe);
+const USB_CONFIG: embassy_usb::Config = {
+    let mut config = embassy_usb::Config::new(0xc0de, 0xcafe);
     config.manufacturer = Some(ariel_os::buildinfo::OS_NAME);
     config.product = Some("USB serial example");
     config.serial_number = Some("12345678");

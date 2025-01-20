@@ -8,13 +8,12 @@ mod pins;
 use ariel_os::{
     cell::ConstStaticCell,
     debug::log::*,
-    reexports::{
-        embassy_usb::class::hid::{self, HidReaderWriter},
-        usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor},
-    },
+    reexports::{embassy_usb, usbd_hid},
     time::{Duration, Timer},
     usb::{UsbBuilderHook, UsbDriver},
 };
+use embassy_usb::class::hid::{self, HidReaderWriter};
+use usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor};
 
 // Assuming a QWERTY US layout, see https://docs.qmk.fm/#/how_keyboards_work
 // and https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
@@ -31,8 +30,8 @@ const HID_READER_BUFFER_SIZE: usize = 1;
 const HID_WRITER_BUFFER_SIZE: usize = 8;
 
 #[ariel_os::config(usb)]
-const USB_CONFIG: ariel_os::reexports::embassy_usb::Config = {
-    let mut config = ariel_os::reexports::embassy_usb::Config::new(0xc0de, 0xcafe);
+const USB_CONFIG: embassy_usb::Config = {
+    let mut config = embassy_usb::Config::new(0xc0de, 0xcafe);
     config.manufacturer = Some(ariel_os::buildinfo::OS_NAME);
     config.product = Some("HID keyboard example");
     config.serial_number = Some("12345678");
