@@ -5,6 +5,8 @@ macro_rules! define_env_with_default_macro {
         #[macro_export]
         macro_rules! $macro_name {
             // $doc is currently unused
+            // TODO: $$(,)? should be added to allow trailing commas if this gets re-exported
+            // for users, but that requires the unstable `macro_metavar_expr` feature
             ($env_var:literal, $default:expr, $doc:literal) => {
                 if let Some(str_value) = option_env!($env_var) {
                     if let Ok(value) = $crate::env::konst::primitive::$parse_fn_name(str_value) {
@@ -30,7 +32,7 @@ macro_rules! define_env_with_default_macro {
 define_env_with_default_macro!(usize_from_env_or, parse_usize, "a usize");
 define_env_with_default_macro!(u8_from_env_or, parse_u8, "a u8");
 
-/// Reads a value a compile time from the given environment variable, with a default.
+/// Reads a value at compile time from the given environment variable, with a default.
 ///
 /// - The `$default` parameter allows to provide a fallback value for when the environment variable
 ///   is not found.
@@ -41,7 +43,7 @@ define_env_with_default_macro!(u8_from_env_or, parse_u8, "a u8");
 #[macro_export]
 macro_rules! str_from_env_or {
     // $doc is currently unused
-    ($env_var:literal, $default:expr, $doc:literal) => {
+    ($env_var:literal, $default:expr, $doc:literal $(,)?) => {
         if let Some(str_value) = option_env!($env_var) {
             str_value
         } else {
@@ -50,7 +52,7 @@ macro_rules! str_from_env_or {
     };
 }
 
-/// Reads a value a compile time from the given environment variable.
+/// Reads a value at compile time from the given environment variable.
 ///
 /// Produces a compile-time error if the environment variable is not found.
 /// The `$doc` parameter allows to provide a documentation string for this tunable.
@@ -59,7 +61,7 @@ macro_rules! str_from_env_or {
 /// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! str_from_env {
-    ($env_var:literal, $doc:literal) => {
+    ($env_var:literal, $doc:literal $(,)?) => {
         if let Some(str_value) = option_env!($env_var) {
             str_value
         } else {
