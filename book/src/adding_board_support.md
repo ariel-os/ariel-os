@@ -54,7 +54,7 @@ builders:
   - `Cargo.toml`: Add a Cargo feature that matches the board's name.
   - `src/lib.rs`: Add the board to the dispatch logic.
 
-## Adding Support for an MCU from an Supported MCU family
+## Adding Support for an MCU from a Supported MCU family
 
 - In `laze-project.yml`:
   - Add a context for the MCU (if it does not already exist).
