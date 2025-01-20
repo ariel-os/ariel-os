@@ -30,6 +30,14 @@ macro_rules! define_env_with_default_macro {
 define_env_with_default_macro!(usize_from_env_or, parse_usize, "a usize");
 define_env_with_default_macro!(u8_from_env_or, parse_u8, "a u8");
 
+/// Reads a value a compile time from the given environment variable, with a default.
+///
+/// - The `$default` parameter allows to provide a fallback value for when the environment variable
+///   is not found.
+/// - The `$doc` parameter allows to provide a documentation string for this tunable (see
+///   [`str_from_env!`](str_from_env)).
+///
+/// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! str_from_env_or {
     // $doc is currently unused
@@ -42,6 +50,13 @@ macro_rules! str_from_env_or {
     };
 }
 
+/// Reads a value a compile time from the given environment variable.
+///
+/// Produces a compile-time error if the environment variable is not found.
+/// The `$doc` parameter allows to provide a documentation string for this tunable.
+/// It should complete the following sentence: "This environment variable provides the `$doc`".
+///
+/// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! str_from_env {
     ($env_var:literal, $doc:literal) => {
@@ -57,3 +72,5 @@ macro_rules! str_from_env {
         }
     };
 }
+#[expect(unused_imports, reason = "used for docs of str_from_env_or")]
+pub(crate) use str_from_env;

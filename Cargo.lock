@@ -97,6 +97,7 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-storage",
  "ariel-os-threads",
+ "ariel-os-utils",
  "document-features",
  "linkme",
  "static_cell",

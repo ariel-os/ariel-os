@@ -10,6 +10,7 @@
 #![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
 #![no_std]
 #![feature(doc_auto_cfg)]
+#![deny(missing_docs)]
 
 #[cfg(feature = "bench")]
 #[doc(inline)]
@@ -44,6 +45,12 @@ pub use ariel_os_macros::thread;
 use ariel_os_boards as _;
 
 pub use ariel_os_embassy::api::*;
+
+pub mod config {
+    //! Provides configuration to the system and the application.
+
+    pub use ariel_os_utils::{str_from_env, str_from_env_or};
+}
 
 /// This module contains all third party crates as used by Ariel OS.
 ///
