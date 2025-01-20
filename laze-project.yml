@@ -9,6 +9,13 @@ contexts:
         - ${CARGO_WRAPPER}
         - cargo
 
+    tasks:
+      info-modules:
+        help: List modules selected in this configuration
+        build: false
+        cmd:
+          - echo ${modules} | tr ' ' '\n' | sort
+
   # base context for all Ariel OS applications
   - name: ariel-os
     parent: default
