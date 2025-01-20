@@ -9,6 +9,7 @@
 - [Build System](./build_system.md)
 - [Building an Application](./application.md)
 - [Debug Logging](./debug_logging.md)
+- [Testing](./testing.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
   - [Ferrocene](./tooling/ferrocene.md)
