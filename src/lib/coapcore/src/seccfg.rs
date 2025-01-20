@@ -6,6 +6,8 @@ use defmt_or_log::{debug, error, trace};
 use crate::ace::HeaderMap;
 use crate::error::{CredentialError, CredentialErrorDetail};
 
+pub const MAX_AUD_SIZE: usize = 8;
+
 /// Error type of [`ServerSecurityConfig::render_not_allowed`].
 ///
 /// This represents a failure to express the Request Creation Hints of ACE in a message. Unlike
@@ -65,6 +67,28 @@ pub trait ServerSecurityConfig: crate::Sealed {
         ciphertext_buffer: &'buf mut heapless::Vec<u8, N>,
         _: crate::PrivateMethod,
     ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
+        Err(CredentialErrorDetail::KeyNotPresent.into())
+    }
+
+    /// Verify the signature on a symmetrically encrypted token
+    ///
+    /// `signed_payload` is the payload part of the signed CWT; while it is part of `signed_data` and
+    /// can be recovered from it, `signed_data` currently typically resides in a copied buffer
+    /// created for signature verification, and signed_payload is around inside the caller for
+    /// longer. As common with signed data, it should only be parsed once the signature has been
+    /// verified.
+    #[allow(
+        unused_variables,
+        reason = "Names are human visible part of API description"
+    )]
+    fn verify_asymmetric_token<'b>(
+        &self,
+        headers: &HeaderMap,
+        signed_data: &[u8],
+        signature: &[u8],
+        signed_payload: &'b [u8],
+        _: crate::PrivateMethod,
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'b>), CredentialError> {
         Err(CredentialErrorDetail::KeyNotPresent.into())
     }
 
@@ -137,7 +161,13 @@ impl ServerSecurityConfig for AllowAll {
 /// This is very much in flux, and will need further exploration as to inhowmuch this can be
 /// type-composed from components.
 pub struct ConfigBuilder {
+    /// Symmetric used when tokens are symmetrically encrypted with AES-CCM-16-128-256
     as_key_31: Option<[u8; 32]>,
+    /// Asymmetric key used when tokens are signed with ES256
+    ///
+    /// Alogn with the key, this also holds the audience value of this RS (as signed tokens only
+    /// make sense when the same signing key is used with multiple recipients).
+    as_key_neg7: Option<([u8; 32], [u8; 32], heapless::String<MAX_AUD_SIZE>)>,
     unauthenticated_scope: Option<crate::scope::UnionScope>,
     own_edhoc_credential: Option<(lakers::Credential, lakers::BytesP256ElemLen)>,
     known_edhoc_clients: Option<(lakers::Credential, crate::scope::UnionScope)>,
@@ -207,6 +237,49 @@ impl ServerSecurityConfig for ConfigBuilder {
 
         let claims: crate::ace::CwtClaimsSet = minicbor::decode(ciphertext_buffer.as_slice())
             .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
+
+        let scope = crate::scope::AifValue::parse(claims.scope)
+            .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
+
+        Ok((scope.into(), claims))
+    }
+
+    fn verify_asymmetric_token<'b>(
+        &self,
+        headers: &HeaderMap,
+        signed_data: &[u8],
+        signature: &[u8],
+        signed_payload: &'b [u8],
+        _: crate::PrivateMethod,
+    ) -> Result<(Self::Scope, crate::ace::CwtClaimsSet<'b>), CredentialError> {
+        if headers.alg != Some(-7) {
+            // ES256
+            return Err(CredentialErrorDetail::UnsupportedAlgorithm.into());
+        }
+
+        let Some((x, y, rs_audience)) = self.as_key_neg7.as_ref() else {
+            return Err(CredentialErrorDetail::KeyNotPresent.into());
+        };
+
+        use p256::ecdsa::{signature::Verifier, VerifyingKey};
+        let as_key = VerifyingKey::from_encoded_point(
+            &p256::EncodedPoint::from_affine_coordinates(x.into(), y.into(), false),
+        )
+        .map_err(|_| CredentialErrorDetail::InconsistentDetails)?;
+        let signature = p256::ecdsa::Signature::from_slice(signature)
+            .map_err(|_| CredentialErrorDetail::InconsistentDetails)?;
+
+        as_key
+            .verify(signed_data, &signature)
+            .map_err(|_| CredentialErrorDetail::VerifyFailed)?;
+
+        let claims: crate::ace::CwtClaimsSet = minicbor::decode(signed_payload)
+            .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
+
+        if claims.aud != Some(rs_audience) {
+            // FIXME describe better? "Verified but we're not the audience?"
+            return Err(CredentialErrorDetail::VerifyFailed.into());
+        }
 
         let scope = crate::scope::AifValue::parse(claims.scope)
             .map_err(|_| CredentialErrorDetail::UnsupportedExtension)?;
@@ -304,6 +377,7 @@ impl ConfigBuilder {
     pub fn new() -> Self {
         Self {
             as_key_31: None,
+            as_key_neg7: None,
             unauthenticated_scope: None,
             known_edhoc_clients: None,
             own_edhoc_credential: None,
@@ -333,6 +407,31 @@ impl ConfigBuilder {
     pub fn with_aif_symmetric_as_aesccm256(self, key: [u8; 32]) -> Self {
         Self {
             as_key_31: Some(key),
+            ..self
+        }
+    }
+
+    /// Sets a single Authorization Server recignized by its `ES256` (COSE algorithm -7) signing
+    /// key.
+    ///
+    /// An audience identifier is taken along with the key; signed tokens are only accepted if they
+    /// have that audience.
+    ///
+    /// Scopes are accepted as given by the AS using the AIF REST model as understood by
+    /// [`crate::scope::AifValue`].
+    ///
+    /// # Caveats and evolution
+    ///
+    /// Same from [`Self::with_aif_symmetric_as_aesccm256`] apply, minus the considerations for
+    /// secure key storage.
+    pub fn with_aif_asymmetric_es256(
+        self,
+        x: [u8; 32],
+        y: [u8; 32],
+        audience: heapless::String<MAX_AUD_SIZE>,
+    ) -> Self {
+        Self {
+            as_key_neg7: Some((x, y, audience)),
             ..self
         }
     }

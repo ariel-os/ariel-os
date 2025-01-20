@@ -489,26 +489,46 @@ impl<
             let msg_3 = lakers::EdhocMessageBuffer::new_from_slice(&payload[..cutoff])
                 .map_err(too_small)?;
 
-            let (responder, id_cred_i, ead_3) =
+            let (responder, id_cred_i, mut ead_3) =
                 responder.parse_message_3(&msg_3).map_err(render_error)?;
 
-            if ead_3.is_some_and(|e| e.is_critical) {
-                error!("Critical EAD3 item received, aborting");
-                // FIXME: send error message
-                return Err(CoAPError::bad_request());
+            let mut cred_i_and_authorization = None;
+
+            if let Some(lakers::EADItem { label: 20, value: Some(value), .. }) = ead_3.take() {
+                match crate::ace::process_edhoc_token(value.as_slice(), &self.authorities) {
+                    Ok(ci_and_a) => cred_i_and_authorization = Some(ci_and_a),
+                    Err(e) => {
+                        error!("Received unprocessable token {=[u8]:02x}, error: {}", value.as_slice(), Debug2Format(&e)); // :02x could be :cbor
+                    }
+                }
             }
 
-            let (cred_i, authorization) = self
-                .authorities
-                .expand_id_cred_x(id_cred_i)
+            if cred_i_and_authorization.is_none() {
+                cred_i_and_authorization = self
+                    .authorities
+                    .expand_id_cred_x(id_cred_i);
+            }
+
+            let Some((cred_i, authorization)) = cred_i_and_authorization else {
                 // FIXME: send better message; how much variability should we allow?
-                .ok_or_else(|| {
-                    error!("Peer's ID_CRED_I could not be resolved into CRED_I.");
-                    CoAPError::bad_request()
-                })?;
+                error!("Peer's ID_CRED_I could not be resolved into CRED_I.");
+                return Err(CoAPError::bad_request());
+            };
+
+            if let Some(ead_3) = ead_3 {
+                if ead_3.is_critical {
+                    error!("Critical EAD3 item received, aborting");
+                    // FIXME: send error message
+                    return Err(CoAPError::bad_request());
+                }
+            }
 
             let (mut responder, _prk_out) =
                 responder.verify_message_3(cred_i).map_err(render_error)?;
+
+            // Once this gets updated beyond Lakers 0.7.2 (likely to 0.8), this will be needed:
+            // let mut responder = responder.completed_without_message_4()
+            //     .map_err(render_error)?;
 
             let oscore_secret = responder.edhoc_exporter(0u8, &[], 16); // label is 0
             let oscore_salt = responder.edhoc_exporter(1u8, &[], 8); // label is 1

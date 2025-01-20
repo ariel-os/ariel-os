@@ -149,7 +149,7 @@ type SignedCwt<'a> = CoseSign1<'a>;
 #[non_exhaustive]
 pub struct CwtClaimsSet<'a> {
     #[n(3)]
-    aud: Option<&'a str>,
+    pub(crate) aud: Option<&'a str>,
     #[cfg_attr(
         not(defmt),
         expect(
@@ -435,4 +435,77 @@ pub fn process_acecbor_authz_info<Scope>(
     };
 
     Ok((response, scope, derived))
+}
+
+pub fn process_edhoc_token<Scope>(
+    ead3: &[u8],
+    authorities: &impl crate::seccfg::ServerSecurityConfig<Scope = Scope>,
+) -> Result<(lakers::Credential, Scope), CredentialError> {
+    let sign1: SignedCwt = minicbor::decode(ead3)?;
+    let protected: HeaderMap = minicbor::decode(sign1.protected)?;
+    trace!(
+        "Decoded protected header map {:?} inside sign1 container {:?}",
+        &protected,
+        &sign1
+    );
+    let headers = sign1.unprotected.updated_with(protected);
+
+    #[derive(minicbor::Encode)]
+    struct SigStructureForSignature1<'a> {
+        #[n(0)]
+        context: &'static str,
+        #[cbor(b(1), with = "minicbor::bytes")]
+        body_protected: &'a [u8],
+        #[cbor(b(2), with = "minicbor::bytes")]
+        external_aad: &'a [u8],
+        #[cbor(b(3), with = "minicbor::bytes")]
+        payload: &'a [u8],
+    }
+    let aad = SigStructureForSignature1 {
+        context: "Signature1",
+        body_protected: sign1.protected,
+        external_aad: &[],
+        payload: sign1.payload,
+    };
+    let mut signed_data = heapless::Vec::<u8, MAX_SUPPORTED_ACCESSTOKEN_LEN>::new();
+    minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut signed_data))?;
+    trace!("Serialized AAD: {:#02x}", signed_data);
+
+    let (scope, claims) = authorities.verify_asymmetric_token(
+        &headers,
+        &signed_data,
+        sign1.signature,
+        sign1.payload,
+        crate::PrivateMethod,
+    )?;
+
+    // FIXME: Check iat/exp against raytime
+
+    let Cnf {
+        osc: None,
+        cose_key: Some(cose_key),
+    } = claims.cnf
+    else {
+        return Err(CredentialErrorDetail::InconsistentDetails.into());
+    };
+
+    let mut prefixed = lakers::BufferCred::new();
+    // The prefix for naked COSE_Keys from Section 3.5.2 of RFC9528
+    prefixed
+        .extend_from_slice(&[0xa1, 0x08, 0xa1, 0x01])
+        .unwrap();
+    prefixed
+        .extend_from_slice(&cose_key.opaque)
+        .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
+    let credential = lakers::Credential::new_ccs(
+        prefixed,
+        cose_key
+            .parsed
+            .x
+            .ok_or(CredentialErrorDetail::InconsistentDetails)?
+            .try_into()
+            .map_err(|_| CredentialErrorDetail::InconsistentDetails)?,
+    );
+
+    Ok((credential, scope))
 }
