@@ -147,7 +147,6 @@ type SignedCwt<'a> = CoseSign1<'a>;
 ///
 /// Full attribute references are in the [CWT Claims
 /// registry](https://www.iana.org/assignments/cwt/cwt.xhtml#claims-registry).
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
 #[allow(
     dead_code,
@@ -182,7 +181,6 @@ pub struct CwtClaimsSet<'a> {
 /// of](https://www.rfc-editor.org/rfc/rfc8747.html#name-confirmation-claim) "At most one of the
 /// `COSE_Key` and `Encrypted_COSE_Key` […] may be present", doesn't rule out that items without
 /// key material can't be attached.
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
 #[cbor(map)]
 #[non_exhaustive]
