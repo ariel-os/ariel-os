@@ -1,10 +1,12 @@
 # Introduction
 
-Ariel OS is an operating system for secure, memory-safe, low-power Internet of Things (IoT).
+Ariel OS is an operating system for secure, memory-safe, networked applications
+running on low-power microcontrollers.
 Ariel OS is based on Rust from the ground up.
-Targeted hardware includes various hardware based on 32-bit microcontroller architectures (such as Cortex-M, RISC-V, Xtensa).
-Features provided by Ariel OS can be enabled and disabled at build time to tune resource consumption by the operating system.
-The targeted **power consumption** levels enable applications lasting 1+ years on a small battery.
+Currently [supported hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware_functionality_support.html) consists of various boards
+based on 32-bit microcontroller architectures Cortex-M, RISC-V, or Xtensa.
+Features provided by Ariel OS can be enabled or disabled at build time
+in order to minimize resource consumption.
 
 Ariel OS builds on top of existing projects in the Embedded Rust ecosystem, including
 [Embassy](https://github.com/embassy-rs/embassy), [esp-hal](https://github.com/esp-rs/esp-hal),
@@ -34,4 +36,7 @@ And this is a joyful and welcoming open-source community, so: [join us](https://
 
 ### Further Reading
 
-If you want to know more about the embedded Rust ecosystem that Ariel OS builds on top of, you could take a look at the [Rust book](https://doc.rust-lang.org/book/), the [Embedded Rust book](https://docs.rust-embedded.org/book/) and the [Embassy book](https://embassy.dev/book/).
+As Ariel OS builds on top of the embedded Rust ecosystem, readers of this book
+could benefit from also reading the [Rust book](https://doc.rust-lang.org/book/),
+the [Embedded Rust book](https://docs.rust-embedded.org/book/)
+and the [Embassy book](https://embassy.dev/book/).
