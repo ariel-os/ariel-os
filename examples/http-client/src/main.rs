@@ -5,9 +5,10 @@
 #![feature(used_with_arg)]
 
 use ariel_os::{
-    debug::{exit, log::*, EXIT_SUCCESS},
-    network,
+    debug::{exit, log::*, ExitCode},
+    net,
     reexports::embassy_net,
+    config,
 };
 use embassy_net::{
     dns::DnsSocket,
@@ -31,8 +32,11 @@ const HTTP_BUFFER_SIZE: usize = 1024;
 
 const MAX_CONCURRENT_CONNECTIONS: usize = 2;
 
-// Endpoint to send the GET request to.
-const ENDPOINT_URL: Option<&str> = option_env!("ENDPOINT_URL");
+const ENDPOINT_URL: &str = config::str_from_env_or!(
+    "ENDPOINT_URL",
+    "https://crab.ariel-os.org",
+    "endpoint to send the GET request to",
+);
 
 #[ariel_os::config(network)]
 const NETWORK_CONFIG: embassy_net::Config = {
@@ -47,7 +51,7 @@ const NETWORK_CONFIG: embassy_net::Config = {
 
 #[ariel_os::task(autostart)]
 async fn main() {
-    let stack = network::network_stack().await.unwrap();
+    let stack = net::network_stack().await.unwrap();
 
     let tcp_client_state =
         TcpClientState::<MAX_CONCURRENT_CONNECTIONS, TCP_BUFFER_SIZE, TCP_BUFFER_SIZE>::new();
@@ -68,15 +72,14 @@ async fn main() {
 
     stack.wait_config_up().await;
 
-    let url = ENDPOINT_URL.unwrap_or("https://crab.ariel-os.org");
-    if let Err(err) = send_http_get_request(&mut client, url).await {
+    if let Err(err) = send_http_get_request(&mut client, ENDPOINT_URL).await {
         error!(
             "Error while sending an HTTP request: {:?}",
             defmt::Debug2Format(&err)
         );
     }
 
-    exit(EXIT_SUCCESS);
+    exit(ExitCode::SUCCESS);
 }
 
 async fn send_http_get_request(
