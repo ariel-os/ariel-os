@@ -5,6 +5,7 @@
 
 # User Guide
 
+- [Getting Started](./getting_started.md)
 - [Build System](./build_system.md)
 - [Building an Application](./application.md)
 - [Debug Logging](./debug_logging.md)
