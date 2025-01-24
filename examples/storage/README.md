@@ -42,6 +42,7 @@ When run, this example shows the following output:
     INFO  
     INFO  Old 'another_counter' value at 0
     INFO  
+    INFO  Don't try this in your code!
     INFO  Storing "string_key": "string_value" into storage
     INFO  got heapless string value: "string_value"
     INFO  Attempting to retrieve string value as ArrayString: [73, 74, 72, 69, 6e, 67, 5f, 76, 61, 6c, 75, 65]
