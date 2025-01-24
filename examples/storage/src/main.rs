@@ -57,6 +57,7 @@ async fn main() {
 
     // Storing a string value
     // For insertion, a literal can be used.
+    info!("Don't try this in your code!");
     info!("Storing \"string_key\": \"string_value\" into storage");
     storage::insert("string_key", "string_value").await.unwrap();
 
