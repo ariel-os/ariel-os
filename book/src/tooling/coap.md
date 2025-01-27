@@ -1,7 +1,5 @@
 # CoAP
 
-> **Warning**: This documentation is currently ahead of the implementation roadmap.
-
 [CoAP] is an **application layer protocol similar to HTTP** in its use
 (eg. you could POST data onto a resource on a server that is identified by a URL)
 but geared towards IoT devices in its format and its security mechanisms.
@@ -16,6 +14,10 @@ and offers features exceeding the classical REST set such as [observation].
 for implementing clients, servers or both in a single device.
 As part of our mission for strong security,
 we use encrypted CoAP traffic by default as explained below.
+*Currently*, Ariel OS supports CoAP on its original UDP transport.
+Its CoAP server implementation support several security mechansisms,
+whereas client support is not mature yet, and lacks security support.
+Static keys are hard-coded while the configuration framework is being finalized.
 
 [CoAP]: https://coap.space/
 [over UDP]: https://datatracker.ietf.org/doc/html/rfc7252
@@ -38,7 +40,7 @@ The handler needs to concern itself with security aspects of the request content
 but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
 
 [provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
-[its `run()` function]: https://github.com/ariel-os/ariel-os/blob/2b76e560394884d3c8f7eaae51beefd59a316d7b/examples/coap/src/main.rs#L70
+[its `coap_run()` function]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
 
 
 ## Usage: Client side
@@ -88,7 +90,7 @@ Thus, they work homogeneously across all CoAP transports,
 and provide end-to-end security across untrusted proxies.
 
 Alternatives are possible (for instance DTLS, TLS, IPsec or link-layer encryption)
-but are currently not implemented / not yet supported in Ariel OS.
+but are currently not implemented in Ariel OS.
 
 ### Server access policy
 
@@ -99,7 +101,13 @@ Examples of described policy entries are:
 * The device has a shared secret from its authorization server, with which the authorization server secures the tokens it issues to clients. Clients may perform any action as long as they securely present a token that allows it. For example, a token may allow GET on `/limit` and PUT on `/led/0`.
 * Any (even unauthenticated) device may GET `/hello/`.
 
-#### Interacting with an Ariel OS CoAP server from the host
+*Currently*, the access policies are hard-coded matching the examples.
+There is [ongoing work] to fix this soon:
+
+
+#### Outlook: Interacting with an Ariel OS CoAP server from the host
+
+*This section is currently not implemented.*
 
 A convenient policy (which is the default of Ariel OS's examples)
 is to grant the user who flashes the device all access on it.
@@ -131,9 +139,11 @@ Examples of policies that can be available are
   "establish an encrypted connection and trust the peer's key on first use",
   down to "do not use any encryption".
 
+*Currently*, the only available client security policy is "use an insecure request".
+
 ### Available security mechanisms
 
-These components are optional, but enabled by default --
+These components are conceptionally optional, but enabled by default --
 when all are disabled, the only sensible policy that is left <!-- "deny everything" is not sensible, could just not include CoAP then -->
 is to allow unauthenticated access everywhere.
 For example, this may make sense on a link layer with tight access control.
@@ -141,6 +151,9 @@ The components also have internal dependencies:
 EDHOC can only practically be used in combination with OSCORE;
 ACE comes with profiles with individual dependencies
 (eg. using the ACE-EDHOC profile requires EDHOC).
+
+*Currently*, all mechanisms described here are included in the build configuration.
+Most of those that are not configured are excluded from the build through dead-code eliminiation.
 
 #### Symmetric encryption: OSCORE
 
@@ -174,7 +187,7 @@ that uses asymmetric keys to obtain mutual authentication and forward secrecy.
 In particular, two CoAP devices can run EDHOC over CoAP to obtain key material for OSCORE,
 which can then be used for fast communication.
 
-Unless ACE or certificate chains are used,
+Unless ACE (or, later, certificate chains) are used,
 the main use of EDHOC in Ariel OS is with raw public keys:
 Devices (including the host machine) generate a private key,
 make the corresponding public key known,
@@ -183,7 +196,8 @@ This is similar to how SSH keys are commonly used.
 
 Policies described in terms of EDHOC keys include the public key of the peer,
 which private key to use,
-and whether our public key needs to be sent as a full public key or can be sent by key ID.
+whether the own public key needs to be sent as a full public key or can be sent by key ID,
+and what the peer is authorized to do.
 
 [RFC9528]: https://datatracker.ietf.org/doc/html/rfc9528
 
@@ -233,12 +247,15 @@ It differs from the ACE-OSCORE profile
 in that the AS does not provide symmetric key material
 but only points out the respective peer's public keys.
 
-The token is not sent in plain,
-but as part of the EDHOC exchange.
+The token may be signed or symmetrically encrypted.
+It is sent to the server as part of the EDHOC exchange,
+after the client has authenticated the server.
 
 [under development in the ACE working group]: https://datatracker.ietf.org/doc/draft-ietf-ace-edhoc-oscore-profile/
 
-##### Using ACE from the host during development
+##### Outlook: Using ACE from the host during development
+
+*This section is currently not implemented.*
 
 While full operation of ACE requires having an AS as part of the network,
 CoAP servers running on Ariel OS can be used in the ACE framework without a live server.
