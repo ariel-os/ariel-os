@@ -33,7 +33,7 @@ default = ["ariel-os-rt/_panic-handler"]
 external-interrupts = ["ariel-os-embassy/external-interrupts"]
 ## Enables storage support.
 storage = ["dep:ariel-os-storage", "ariel-os-embassy/storage"]
-## Enables threading support, see the [`macro@thread`] attribute macro.
+# Enables threading support, see the [`macro@thread`] attribute macro.
 threading = [
   "dep:ariel-os-threads",
   "ariel-os-rt/threading",
@@ -83,30 +83,30 @@ override-usb-config = ["ariel-os-embassy/override-usb-config"]
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).
 core-affinity = ["multi-core", "ariel-os-threads?/core-affinity"]
-#! Exactly one of the features below must be enabled at once.
-#! Selection of these should be done through laze configuration.
-## Enables one single core, even if the hardware provides multiple cores.
+# Exactly one of the features below must be enabled at once.
+# Selection of these should be done through laze configuration.
+# Enables one single core, even if the hardware provides multiple cores.
 single-core = ["ariel-os-rt/single-core"]
-## Enables support for SMP.
+# Enables support for SMP.
 multi-core = ["ariel-os-threads?/multi-core", "ariel-os-rt/multi-core"]
 
-#! ## Network type selection
-#! At most one of the features below can be enabled at once.
-#! These features are normally automatically selected by
-#! [laze](https://github.com/kaspar030/laze) based on what the board supports,
-#! and don't need to be selected manually.
-## Selects Ethernet over USB (USB CDC-NCM).
+# ## Network type selection
+# At most one of the features below can be enabled at once.
+# These features are normally automatically selected by
+# [laze](https://github.com/kaspar030/laze) based on what the board supports,
+# and don't need to be selected manually.
+# Selects Ethernet over USB (USB CDC-NCM).
 usb-ethernet = ["ariel-os-embassy/usb-ethernet"]
-## Selects Wi-Fi (with the CYW43 chip).
+# Selects Wi-Fi (with the CYW43 chip).
 wifi-cyw43 = ["ariel-os-embassy/wifi-cyw43"]
-## Selects Wi-Fi (on ESP chips).
+# Selects Wi-Fi (on ESP chips).
 wifi-esp = ["ariel-os-embassy/wifi-esp"]
 
 #! ## Development and debugging
 ## Enables the debug console, required to use
 ## [`println!`](ariel_os_debug::println).
 debug-console = ["ariel-os-rt/debug-console"]
-## Enables logging support through `defmt`, see [`debug::log`]..
+# Enables logging support through `defmt`, see [`debug::log`]..
 defmt = [
   "ariel-os-coap?/defmt",
   "ariel-os-debug/defmt",
@@ -114,7 +114,7 @@ defmt = [
   "ariel-os-threads?/defmt",
   "ariel-os-bench?/defmt",
 ]
-## Enables logging support through `log`, see [`debug::log`].
+# Enables logging support through `log`, see [`debug::log`].
 log = ["ariel-os-debug/log", "ariel-os-embassy/log"]
 ## Enables benchmarking facilities.
 bench = ["dep:ariel-os-bench"]
@@ -130,13 +130,13 @@ semihosting = ["ariel-os-debug/semihosting"]
 
 net = ["ariel-os-embassy/net"]
 
-#! ## Executor type selection for the (autostarted) main executor
-#! Exactly one of the features below must be enabled at once.
-## Enables the interrupt executor.
+# ## Executor type selection for the (autostarted) main executor
+# Exactly one of the features below must be enabled at once.
+# Enables the interrupt executor.
 executor-interrupt = ["ariel-os-embassy/executor-interrupt"]
-## Enables the single thread-mode executor.
+# Enables the single thread-mode executor.
 executor-single-thread = ["ariel-os-embassy/executor-single-thread"]
-## Enables the ariel-os-threading thread executor.
+# Enables the ariel-os-threading thread executor.
 executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 # Don't start any executor automatically.
 # *Used for internal testing only.*
