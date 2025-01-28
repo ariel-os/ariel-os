@@ -1,10 +1,29 @@
 //! Ariel OS is an operating system for secure, memory-safe, low-power Internet of Things (IoT).
+//! Supported hardware includes various 32-bit microcontrollers.
 //!
-//! See the [README](https://github.com/ariel-os/ariel-os) for more details.
+//! This is the API documentation for Ariel OS.
+//! Orher resources available are:
+//! - 📔 Extensive documentation Ariel OS can be found in the
+//!   [book](https://ariel-os.github.io/ariel-os/dev/docs/book/).
+//! - ⚙️  The git repository is available on
+//!   [GitHub](https://github.com/ariel-os/ariel-os).
+//! - ✨ [Examples](https://github.com/ariel-os/ariel-os/tree/main/examples)
+//!   demonstrating various features of Ariel OS.
+//! - 🧪 A set of [test cases](https://github.com/ariel-os/ariel-os/tree/main/tests)
+//!   to further verify the capabilities of Ariel OS.
 //!
-//! # Examples
+//! # Structure
 //!
-//! Application examples can be found in the [`examples` directory](https://github.com/ariel-os/ariel-os/tree/main/examples).
+//! Ariel OS is highly modular with a significant number of feature flags
+//! to configure the operating system.
+//!
+//! ## Feature flags
+//!
+//! The overview of feature flags is shown
+//! [below](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/#cargo-features).
+//!
+//! While more feature flags are used in Ariel OS,
+//! the list below is pruned to only contain the feature flags relevant for developers
 //!
 //! # Cargo features
 #![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
