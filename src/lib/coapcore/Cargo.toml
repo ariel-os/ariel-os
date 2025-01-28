@@ -18,7 +18,7 @@ workspace = true
 coap-handler = "0.2.0"
 coap-message = "0.3.2"
 lakers = { version = "0.7.2", default-features = false }
-rand_core = "0.6.4"
+rand_core = { workspace = true }
 
 # private
 arrayvec = { version = "0.7.4", default-features = false }

@@ -2976,7 +2976,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "heapless 0.8.0",
- "rand",
+ "rand_core",
  "reqwless",
 ]
 

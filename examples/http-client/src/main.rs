@@ -47,7 +47,7 @@ async fn main() {
     let tcp_client = TcpClient::new(stack, &tcp_client_state);
     let dns_client = DnsSocket::new(stack);
 
-    let tls_seed: u64 = rand::Rng::gen(&mut ariel_os::random::crypto_rng());
+    let tls_seed: u64 = rand_core::RngCore::next_u64(&mut ariel_os::random::crypto_rng());
 
     let mut tls_rx_buffer = [0; TLS_READ_BUFFER_SIZE];
     let mut tls_tx_buffer = [0; TLS_WRITE_BUFFER_SIZE];
