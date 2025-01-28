@@ -8,6 +8,12 @@ support_keys:
   - name: supported_with_caveats
     icon: ☑️
     description: supported with some caveats
+  - name: needs_testing
+    icon: 🚦
+    description: needs testing
+  - name: trivial_porting
+    icon: 🧩
+    description: needs trivial porting
   - name: not_currently_supported
     icon: ❌
     description: available in hardware, but not currently supported by Ariel OS
@@ -74,8 +80,8 @@ chips:
       storage: supported
       wifi: not_available
 
-  nrf53xx:
-    name: nRF53xx
+  nrf5340:
+    name: nRF5340
     support:
       gpio: supported
       debug_output: supported
@@ -98,7 +104,7 @@ chips:
       storage: supported
       wifi: not_available
 
-  esp32-c6:
+  esp32c6:
     name: ESP32-C6
     support:
       gpio: supported
@@ -113,20 +119,16 @@ chips:
         comments:
           - not currently compatible with threading
 
-  esp32-s3:
+  esp32s3:
     name: ESP32-S3
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller:
-        status: not_currently_supported
-        comments:
-          - needs testing
+        status: trivial_porting
       spi_main:
-        status: not_currently_supported
-        comments:
-          - needs testing
+        status: trivial_porting
       logging: supported
       storage: not_currently_supported
       wifi:
@@ -140,8 +142,8 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: not_available
-      i2c_controller: not_currently_supported
-      spi_main: not_currently_supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
       logging: supported
       storage: not_currently_supported
       wifi: not_available
@@ -181,7 +183,7 @@ boards:
       user_usb: not_available
       ethernet_over_usb: not_available
 
-  nrf52840-dk:
+  nrf52840dk:
     name: nRF52840-DK
     url: https://web.archive.org/web/20250112154748/https://www.nordicsemi.com/Products/Development-hardware/nrf52840-dk
     chip: nrf52840
@@ -189,15 +191,15 @@ boards:
       user_usb: supported
       ethernet_over_usb: supported
 
-  nrf5340-dk:
+  nrf5340dk:
     name: nRF5340-DK
     url: https://web.archive.org/web/20250115224621/https://www.nordicsemi.com/Products/Development-hardware/nrf5340-dk
-    chip: nrf53xx
+    chip: nrf5340
     support:
       user_usb: supported
       ethernet_over_usb: supported
 
-  rp-pico:
+  rpi-pico:
     name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
@@ -205,7 +207,7 @@ boards:
       user_usb: supported
       ethernet_over_usb: supported
 
-  rp-pico-w:
+  rpi-pico-w:
     name: Raspberry Pi Pico W
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
@@ -214,10 +216,10 @@ boards:
       wifi: supported
       ethernet_over_usb: supported
 
-  esp32-c6-devkitc-1:
+  espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
     url: https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en
-    chip: esp32-c6
+    chip: esp32c6
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
@@ -225,7 +227,7 @@ boards:
   espressif-esp32-s3-devkitc-1:
     name: Espressif ESP32-S3-DevKitC-1
     url: https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en
-    chip: esp32-s3
+    chip: esp32s3
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported

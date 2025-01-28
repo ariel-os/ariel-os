@@ -19,16 +19,18 @@ use miette::Diagnostic;
 
 const TABLE_TEMPLATE: &str =
 r##"<!-- This table is auto-generated. Do not edit manually. -->
-<table>
+<table class="support-matrix">
   <thead>
     <tr>
-      <th>Chip</th>
-      <th>Testing Board</th>
+      <th colspan="2">Chip</th>
+      <th colspan="2">Testing Board</th>
       <th colspan="{{ matrix.functionalities|length }}">Functionality</th>
     </tr>
     <tr>
-      <th></th>
-      <th></th>
+      <th>Manufacturer Name</th>
+      <th>Ariel OS Name</th>
+      <th>Manufacturer Name</th>
+      <th>Ariel OS Name</th>
       {%- for functionality in matrix.functionalities %}
       <th>{{ functionality.title }}</th>
       {%- endfor %}
@@ -38,7 +40,9 @@ r##"<!-- This table is auto-generated. Do not edit manually. -->
     {%- for board in boards %}
     <tr>
       <td>{{ board.chip }}</td>
+      <td><code>{{ board.chip_technical_name }}</code></td>
       <td><a href="{{ board.url }}">{{ board.name }}</a></td>
+      <td><code>{{ board.technical_name }}</code></td>
       {%- for functionality in board.functionalities %}
       <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
       {%- endfor %}
@@ -47,6 +51,11 @@ r##"<!-- This table is auto-generated. Do not edit manually. -->
   </tbody>
 </table>
 <style>
+.support-matrix {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
 .support-cell {
   text-align: center;
 }
@@ -207,7 +216,9 @@ fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
     #[derive(Debug, Serialize)]
     struct BoardSupport {
         chip: String,
+        chip_technical_name: String,
         url: String,
+        technical_name: String,
         name: String,
         functionalities: Vec<FunctionalitySupport>,
     }
@@ -220,7 +231,7 @@ fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
         // TODO: add the PR link
     }
 
-    let mut boards = matrix.boards.iter().map(|(_, board_info)| {
+    let mut boards = matrix.boards.iter().map(|(board_technical_name, board_info)| {
         let board_name = &board_info.name;
 
         let functionalities = matrix.functionalities
@@ -278,14 +289,15 @@ fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
 
         Ok(BoardSupport {
             chip: chip.name.to_owned(),
+            chip_technical_name: board_info.chip.to_owned(),
             url: board_info.url.to_owned(),
+            technical_name: board_technical_name.to_owned(),
             name: board_name.to_owned(),
             functionalities,
         })
     }).collect::<Result<Vec<_>, Error>>()?;
     // TODO: read the order from the YAML file instead?
     boards.sort_unstable_by_key(|b| b.name.to_lowercase());
-    dbg!(&boards);
 
     let mut env = Environment::new();
     env.add_template("matrix", TABLE_TEMPLATE).unwrap();
