@@ -528,24 +528,34 @@ pub unsafe fn start_threading() {
 }
 
 /// Trait for types that fit into a single register.
-pub trait Arguable {
+///
+/// # Safety
+///
+/// This trait must only be implemented on types whose binary representation fits into a single
+/// general-purpose register on *all supported architectures*.
+pub unsafe trait Arguable {
+    /// Returns the ABI representation.
     fn into_arg(self) -> arch::Uword;
 }
 
-impl Arguable for arch::Uword {
+// SAFETY: this is the identity.
+unsafe impl Arguable for arch::Uword {
     fn into_arg(self) -> arch::Uword {
         self
     }
 }
 
-/// [`Arguable`] is only implemented on *static* references because the references passed to a
-/// thread must be valid for its entire lifetime.
-impl<T> Arguable for &'static T {
+// SAFETY:
+// This is only implemented on *static* references because the references passed to a thread must
+// be valid for its entire lifetime.
+unsafe impl<T: Sync + Sized> Arguable for &'static T {
     fn into_arg(self) -> arch::Uword {
+        let address = self as *const T as usize;
+        // Ensure that a pointer does fit into a single machine word.
         const {
             assert!(size_of::<*const T>() == size_of::<arch::Uword>());
         }
-        self as *const T as arch::Uword
+        address as arch::Uword
     }
 }
 
