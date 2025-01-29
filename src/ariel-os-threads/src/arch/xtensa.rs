@@ -6,6 +6,9 @@ use esp_hal::{
 
 use crate::{cleanup, Arch, SCHEDULER};
 
+// Represents a machine word.
+pub type Uword = u32;
+
 pub struct Cpu;
 
 impl Arch for Cpu {
@@ -23,14 +26,14 @@ impl Arch for Cpu {
         crate::smp::schedule_on_core(crate::core_id())
     }
 
-    fn setup_stack(thread: &mut crate::thread::Thread, stack: &mut [u8], func: usize, arg: usize) {
+    fn setup_stack(thread: &mut crate::thread::Thread, stack: &mut [u8], func: usize, arg: Uword) {
         let stack_start = stack.as_ptr() as usize;
         let task_stack_ptr = stack_start + stack.len();
         // 16 byte alignment.
         let stack_pos = task_stack_ptr - (task_stack_ptr % 0x10);
 
         thread.data.A1 = stack_pos as u32;
-        thread.data.A6 = arg as u32;
+        thread.data.A6 = arg;
         // Usually A0 holds the return address.
         // However, xtensa features so-called Windowed registers, which allow
         // to shift the used registers when calling procedure.

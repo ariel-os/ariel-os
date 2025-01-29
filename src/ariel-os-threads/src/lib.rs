@@ -192,7 +192,7 @@ impl Scheduler {
     fn create(
         &mut self,
         func: usize,
-        arg: usize,
+        arg: arch::Uword,
         stack: &'static mut [u8],
         prio: RunqueueId,
         _core_affinity: Option<CoreAffinity>,
@@ -529,27 +529,23 @@ pub unsafe fn start_threading() {
 
 /// Trait for types that fit into a single register.
 pub trait Arguable {
-    #[doc(hidden)]
-    fn into_arg(self) -> usize;
+    fn into_arg(self) -> arch::Uword;
 }
 
-impl Arguable for usize {
-    fn into_arg(self) -> usize {
+impl Arguable for arch::Uword {
+    fn into_arg(self) -> arch::Uword {
         self
-    }
-}
-
-impl Arguable for () {
-    fn into_arg(self) -> usize {
-        0
     }
 }
 
 /// [`Arguable`] is only implemented on *static* references because the references passed to a
 /// thread must be valid for its entire lifetime.
 impl<T> Arguable for &'static T {
-    fn into_arg(self) -> usize {
-        self as *const T as usize
+    fn into_arg(self) -> arch::Uword {
+        const {
+            assert!(size_of::<*const T>() == size_of::<arch::Uword>());
+        }
+        self as *const T as arch::Uword
     }
 }
 
@@ -595,7 +591,7 @@ pub fn create_noarg(
 #[doc(hidden)]
 pub unsafe fn create_raw(
     func: usize,
-    arg: usize,
+    arg: arch::Uword,
     stack: &'static mut [u8],
     prio: u8,
     core_affinity: Option<CoreAffinity>,

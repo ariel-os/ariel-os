@@ -5,6 +5,9 @@ use cortex_m::peripheral::{scb::SystemHandler, SCB};
 #[cfg(not(any(armv6m, armv7m, armv8m)))]
 compile_error!("no supported ARM variant selected");
 
+// Represents a machine word.
+pub type Uword = u32;
+
 pub struct Cpu;
 
 #[derive(Default, Debug)]
@@ -36,7 +39,7 @@ impl Arch for Cpu {
     /// |   PC    |
     /// |   PSR   |
     /// +---------+
-    fn setup_stack(thread: &mut Thread, stack: &mut [u8], func: usize, arg: usize) {
+    fn setup_stack(thread: &mut Thread, stack: &mut [u8], func: usize, arg: Uword) {
         let stack_start = stack.as_ptr() as usize;
 
         // 1. The stack starts at the highest address and grows downwards.
@@ -45,6 +48,9 @@ impl Arch for Cpu {
         // 3. Cortex-M expects the SP to be 8 byte aligned, so we chop the lowest
         //    7 bits by doing `& 0xFFFFFFF8`.
         let stack_pos = ((stack_start + stack.len() - 36) & 0xFFFFFFF8) as *mut usize;
+
+        // The address bus is the same size as the data bus on this architecture.
+        let arg = arg as usize;
 
         unsafe {
             write_volatile(stack_pos.offset(0), arg); // -> R0
