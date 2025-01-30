@@ -527,7 +527,7 @@ pub unsafe fn start_threading() {
     Cpu::start_threading();
 }
 
-/// Trait for types that fit into a single register.
+/// Trait for types that can be used as argument for threads.
 ///
 /// # Safety
 ///
