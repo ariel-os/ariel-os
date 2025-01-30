@@ -22,7 +22,7 @@ contexts:
     selects:
       - executor-default
       - ?critical-section
-      - ?debug-logging-facade-default
+      - ?debug-logging-facade
       - ?lto
       - ?semihosting
     env:
@@ -460,16 +460,16 @@ modules:
 
   # This module should be hard-selected when an application *requires* debug
   # logging.
-  - name: debug-logging-facade-default
+  - name: debug-logging-facade
     selects:
       - ?defmt
       - ?log
-      - debug-logging-facade
+      - debug-logging-facade-default
 
   - name: defmt
     help: Use the `defmt` crate as the debug logging facade
     provides_unique:
-      - debug-logging-facade
+      - debug-logging-facade-default
     env:
       global:
         FEATURES:
@@ -486,7 +486,7 @@ modules:
   - name: log
     help: Use the `log` crate as the debug logging facade
     provides_unique:
-      - debug-logging-facade
+      - debug-logging-facade-default
     env:
       global:
         FEATURES:
