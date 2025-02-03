@@ -25,16 +25,14 @@
 #![no_std]
 #![deny(clippy::pedantic)]
 
-use core::marker::PhantomData;
+use core::{cell::RefCell, marker::PhantomData};
 
+use embassy_sync::once_lock::OnceLock;
 use rand_core::{RngCore, SeedableRng};
 
 /// A global RNG.
 // The Mutex<RefCell> can probably be simplified
-static RNG: embassy_sync::blocking_mutex::Mutex<
-    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    core::cell::RefCell<Option<SelectedRng>>,
-> = embassy_sync::blocking_mutex::Mutex::new(core::cell::RefCell::new(None));
+static RNG: OnceLock<RefCell<SelectedRng>> = OnceLock::new();
 
 /// Type of the global RNG when needing the ability to produce cryptographically secure random
 /// numbers.
@@ -58,13 +56,10 @@ pub(crate) type SelectedRng = rand_pcg::Pcg32;
 ///
 /// … if the action attempts to lock RNG.
 fn with_global<R>(action: impl FnOnce(&mut SelectedRng) -> R) -> R {
-    RNG.lock(|i| {
-        action(
-            i.borrow_mut()
-                .as_mut()
-                .expect("Initialization should have populated RNG"),
-        )
-    })
+    let rng = RNG
+        .try_get()
+        .expect("Initialization should have populated RNG");
+    action(&mut rng.borrow_mut())
 }
 
 /// The OS provided fast random number generator.
@@ -134,17 +129,15 @@ mod csprng {
 
 /// Populates the global RNG from a seed value.
 ///
-/// This is called by Ariel OS's initialization functions.
-///
 /// # Panics
 ///
-/// Panics if the underlying RNG returns an error.
+/// - Panics if the underlying RNG returns an error.
+/// - Panics if this function is called multiple times.
 pub fn construct_rng(hwrng: impl RngCore) {
-    RNG.lock(|r| {
-        r.replace(Some(
-            SelectedRng::from_rng(hwrng).expect("Hardware RNG failed to provide entropy"),
-        ))
-    });
+    RNG.init(RefCell::new(
+        SelectedRng::from_rng(hwrng).expect("Hardware RNG failed to provide entropy"),
+    ))
+    .unwrap();
 }
 
 /// Returns a suitably initialized fast random number generator.
