@@ -1,6 +1,6 @@
 style = "conventional"
 ignore_author_re = "(dependabot|renovate)"
-subject_length = 80
+subject_length = 72
 line_length = 80
 subject_capitalized = false
 allowed_types = [
