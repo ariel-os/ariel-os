@@ -133,6 +133,7 @@ mod csprng {
 ///
 /// - Panics if the underlying RNG returns an error.
 /// - Panics if this function is called multiple times.
+#[doc(hidden)]
 pub fn construct_rng(hwrng: impl RngCore) {
     RNG.init(RefCell::new(
         SelectedRng::from_rng(hwrng).expect("Hardware RNG failed to provide entropy"),
