@@ -10,7 +10,6 @@ workspace = true
 
 [dependencies]
 cfg-if = { workspace = true }
-embassy-embedded-hal = { workspace = true }
 embassy-sync = { workspace = true }
 once_cell = { workspace = true }
 ariel-os-debug = { workspace = true }
