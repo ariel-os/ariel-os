@@ -11,7 +11,7 @@ workspace = true
 [dependencies]
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
-embassy-embedded-hal = { workspace = true }
+embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false }
 embassy-time = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
@@ -84,7 +84,7 @@ hwrng = ["dep:ariel-os-random"]
 i2c = ["dep:fugit", "ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
-spi = ["dep:fugit", "ariel-os-embassy-common/spi"]
+spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "esp-hal/defmt", "esp-wifi?/defmt", "fugit?/defmt"]

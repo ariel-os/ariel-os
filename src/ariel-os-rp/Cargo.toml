@@ -11,7 +11,7 @@ workspace = true
 [dependencies]
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
-embassy-embedded-hal = { workspace = true }
+embassy-embedded-hal = { workspace = true, optional = true }
 embassy-net-driver-channel = { workspace = true, optional = true }
 embassy-rp = { workspace = true, default-features = false, features = [
   "optfield",
@@ -53,7 +53,7 @@ hwrng = ["dep:ariel-os-random"]
 i2c = ["ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
-spi = ["ariel-os-embassy-common/spi"]
+spi = ["dep:embassy-embedded-hal", "ariel-os-embassy-common/spi"]
 
 ## Enables storage support.
 storage = []

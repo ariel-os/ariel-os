@@ -414,7 +414,6 @@ dependencies = [
  "ariel-os-hal",
  "arrayvec",
  "cfg-if",
- "embassy-embedded-hal",
  "embassy-sync 0.6.2",
  "embassy-time",
  "embedded-storage-async",

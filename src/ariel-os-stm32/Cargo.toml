@@ -11,7 +11,7 @@ workspace = true
 [dependencies]
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
-embassy-embedded-hal = { workspace = true }
+embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
 ] }
@@ -44,10 +44,14 @@ stm32-rng = []
 
 ## Enables I2C support.
 # Time-related features are required for timeout support.
-i2c = ["ariel-os-embassy-common/i2c", "embassy-stm32/time"]
+i2c = [
+  "dep:embassy-embedded-hal",
+  "ariel-os-embassy-common/i2c",
+  "embassy-stm32/time",
+]
 
 ## Enables SPI support.
-spi = ["ariel-os-embassy-common/spi"]
+spi = ["dep:embassy-embedded-hal", "ariel-os-embassy-common/spi"]
 
 ## Enables USB support.
 usb = []
