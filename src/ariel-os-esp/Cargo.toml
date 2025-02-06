@@ -17,7 +17,7 @@ embassy-time = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 esp-alloc = { workspace = true, default-features = false, optional = true }
-esp-hal = { workspace = true, default-features = false }
+esp-hal = { workspace = true, default-features = false, features = ["optfield"] }
 esp-hal-embassy = { workspace = true, default-features = false }
 esp-wifi = { workspace = true, default-features = false, features = [
   "esp-alloc",
