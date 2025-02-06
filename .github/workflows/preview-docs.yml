@@ -52,4 +52,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.pr.outputs.pr }}
           message: |
-            🚀 PR preview deployed to <https://${{ github.repository_owner }}-docs-preview-pr${{ steps.pr.outputs.pr }}.surge.sh>
+            🚀 Documentation preview deployed to <https://${{ github.repository_owner }}-docs-preview-pr${{ steps.pr.outputs.pr }}.surge.sh/dev/docs/api/ariel_os/>
+            📔 Book preview deployed to <https://${{ github.repository_owner }}-docs-preview-pr${{ steps.pr.outputs.pr }}.surge.sh/dev/docs/book/>
