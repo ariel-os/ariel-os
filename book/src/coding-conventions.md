@@ -82,15 +82,15 @@ TODO: how to name error types/error enum variants (`CannotDoSth` vs `DoingSth`)?
 
 If the same dependency is used in multiples crates within the workspace, that dependency SHOULD be specified in the *workspace*'s `Cargo.toml` file and workspace crates should import them from there.
 
-## Adding a new workspace crate, exposed by `riot-rs`
+## Adding a new workspace crate, exposed by `ariel-os`
 
-To add a new workspace crate re-exported by `riot-rs`, follow these steps:
+To add a new workspace crate re-exported by `ariel-os`, follow these steps:
 
 1. Create the new crate's directory in `src/`.
 1. Run `cargo init --lib` in that directory.
 1. Add `#![deny(missing_docs)]` and `#![deny(clippy::pedantic)]` to the crate; some lints are already inherited from the workspace and do not need to be added to the new crate.
 1. In the workspace's `Cargo.toml` `workspace.members` array, ensure the new entry preserves the lexicographic order of that array.
-1. Re-export the crate from the `riot-rs` crate, inline it in the docs as done for the other crates, and feature-gate it if necessary.
+1. Re-export the crate from the `ariel-os` crate, inline it in the docs as done for the other crates, and feature-gate it if necessary.
 1. Add the crate to the list of crates checked by Clippy in `.github/workflows/main.yml`, preserving lexicographic order.
 1. If the crate has tests that can be run with `cargo test`:
 1.1. Add a feature named `_test` that enables all features that can be tested.
