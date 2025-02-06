@@ -62,7 +62,14 @@ mod demo_setup {
 
 /// Runs a CoAP server with the given handler on the system's CoAP transports.
 ///
-/// As the CoAP stack gets ready, it also unblocks [`coap_client`].
+/// # Note
+///
+/// The application needs to run this in a task; otherwise, other components (e.g., system
+/// components that also run on the CoAP server, or the CoAP client that depends on the server
+/// loop to run) get stalled.
+///
+/// As the CoAP stack gets ready (which may take some time if the network is not ready yet), it also
+/// unblocks [`coap_client()`].
 ///
 /// # Panics
 ///
@@ -168,7 +175,7 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
 
 /// Returns a CoAP client requester.
 ///
-/// This asynchronously blocks until [`coap_run`] has been called (which happens at startup
+/// This asynchronously blocks until [`coap_run()`] has been called (which happens at startup
 /// when the corresponding feature `coap-server` is not active), and the CoAP stack is operational.
 ///
 /// # Panics

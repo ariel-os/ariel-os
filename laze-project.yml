@@ -777,7 +777,7 @@ modules:
   - name: coap-server
     help: Support for applications to set up CoAP server handlers.
 
-      When an application selects this, it needs to run `ariel_os::coap_run()`
+      When an application selects this, it needs to run `ariel_os::coap::coap_run()`
       in a task; otherwise, other components (eg. system components that also
       run on the CoAP server, or the CoAP client that depends on the server
       loop to run) get stalled.

@@ -59,12 +59,8 @@ dns = ["ariel-os-embassy/dns"]
 mdns = ["ariel-os-embassy/mdns"]
 ## Enables support for [CoAP](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html).
 coap = ["dep:ariel-os-coap", "random"]
-## Support for applications to set up CoAP server handlers.
-##
-## When an application selects this, it needs to run `ariel_os::coap_run()`
-## in a task; otherwise, other components (eg. system components that also
-## run on the CoAP server, or the CoAP client that depends on the server
-## loop to run) get stalled.
+## Enables applications to set up CoAP server handlers.
+## See [`coap::coap_run()`].
 coap-server = ["coap", "ariel-os-coap/coap-server"]
 ## Selects static IP configuration.
 network-config-static = ["ariel-os-embassy/network-config-static"]
