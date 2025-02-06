@@ -329,3 +329,9 @@ jobs:
 
       - name: Check that the HTML support matrix is up to date
         run: ./doc/gen_support_matrix_html.rs check doc/support_matrix.yml book/src/support_matrix.html
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --include-verbatim README.md book/book
+          fail: true
