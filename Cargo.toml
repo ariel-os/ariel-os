@@ -94,6 +94,7 @@ esp-hal = { version = "0.23.1", default-features = false, features = [
 esp-hal-embassy = { version = "0.6.0", default-features = false }
 esp-println = { version = "0.13.0" }
 esp-wifi = { version = "0.12.0", default-features = false }
+esp-wifi-sys = { version = "0.7.1", default-features = false }
 
 esp-storage = { version = "0.4.0" }
 xtensa-lx-rt = { version = "0.18.0", default-features = false }
@@ -119,6 +120,7 @@ ariel-os-rt = { path = "src/ariel-os-rt" }
 ariel-os-runqueue = { path = "src/ariel-os-runqueue" }
 ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
+ariel-os-threads = { path = "src/ariel-os-threads" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 const_panic = { version = "0.2.8", default-features = false }
