@@ -76,6 +76,13 @@ storage = [
   #"ariel-os-stm32/storage",
 ]
 
+threading = [
+  "ariel-os-esp/threading",
+  #"ariel-os-nrf/threading",
+  #"ariel-os-rp/threading",
+  #"ariel-os-stm32/threading",
+]
+
 wifi-cyw43 = ["ariel-os-rp/wifi-cyw43"]
 wifi-esp = ["ariel-os-esp/wifi-esp"]
 

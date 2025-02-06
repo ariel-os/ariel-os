@@ -37,6 +37,9 @@ pub mod usb;
 #[doc(hidden)]
 pub mod wifi;
 
+#[cfg(all(feature = "wifi", feature = "threading"))]
+mod preempt;
+
 #[doc(hidden)]
 pub mod peripheral {
     pub use esp_hal::peripheral::Peripheral;
