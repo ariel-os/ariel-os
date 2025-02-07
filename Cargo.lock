@@ -1637,8 +1637,8 @@ dependencies = [
 
 [[package]]
 name = "embassy-rp"
-version = "0.3.0"
-source = "git+https://github.com/ariel-os/embassy?branch=embassy-rp-v0.3.0%2Bariel-os#029f8ab7c2b99ae0db55a4290b492b357344f5dc"
+version = "0.3.1"
+source = "git+https://github.com/ariel-os/embassy?branch=embassy-rp-v0.3.1%2Bariel-os#ed3bfe9bbffc6daec3acce3beae77a5eec34afad"
 dependencies = [
  "atomic-polyfill",
  "cfg-if",

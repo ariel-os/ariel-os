@@ -187,6 +187,7 @@ fn from_error(err: embassy_rp::i2c::Error) -> ariel_os_embassy_common::i2c::cont
         InvalidReadBufferLength => Error::Other,
         InvalidWriteBufferLength => Error::Other,
         AddressOutOfRange(_) => Error::Other,
+        #[allow(deprecated)]
         AddressReserved(_) => Error::Other,
     }
 }

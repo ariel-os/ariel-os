@@ -22,7 +22,7 @@ embassy-executor = { git = "https://github.com/ariel-os/embassy", branch = "emba
 embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", branch = "embassy-hal-internal-v0.2.0+ariel-os" }
 embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "embassy-nrf-v0.3.1+ariel-os" }
 embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "embassy-net-v0.6.0+ariel-os" }
-embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "embassy-rp-v0.3.0+ariel-os" }
+embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "embassy-rp-v0.3.1+ariel-os" }
 embassy-stm32 = { git = "https://github.com/ariel-os/embassy", branch = "embassy-stm32-v0.2.0+ariel-os" }
 
 # ariel-os esp-hal fork
