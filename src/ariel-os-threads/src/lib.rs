@@ -121,7 +121,7 @@ pub static THREAD_FNS: [ThreadFn] = [..];
 struct Scheduler {
     /// Global thread runqueue.
     #[cfg(not(feature = "infini-core"))]
-    runqueue: RunQueue<SCHED_PRIO_LEVELS, THREADS_COUNT>,
+    runqueue: RunQueue<SCHED_PRIO_LEVELS, THREAD_COUNT>,
 
     /// The actual TCBs.
     threads: [Thread; THREAD_COUNT],
