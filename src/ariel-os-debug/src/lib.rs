@@ -1,21 +1,20 @@
 //! Provides debug interface facilities.
 
-#![cfg_attr(not(test), no_std)]
-#![cfg_attr(test, no_main)]
+#![cfg_attr(not(any(test, context = "native")), no_std)]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
 
-#[cfg(all(feature = "rtt-target", feature = "esp-println"))]
+#[cfg(all(feature = "rtt-target", feature = "esp-println", feature = "std"))]
 compile_error!(
-    r#"feature "rtt-target" and feature "esp-println" cannot be enabled at the same time"#
+    r#"features "rtt-target", "esp-println" or "std" cannot be enabled at the same time"#
 );
 
 #[cfg(all(
     feature = "debug-console",
-    not(any(feature = "rtt-target", feature = "esp-println"))
+    not(any(feature = "rtt-target", feature = "esp-println", feature = "std"))
 ))]
 compile_error!(
-    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target" or feature "esp-println"."#
+    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target", "esp-println" or "std"."#
 );
 
 #[doc(inline)]
@@ -53,6 +52,9 @@ impl ExitCode {
 pub fn exit(code: ExitCode) {
     #[cfg(feature = "semihosting")]
     semihosting::process::exit(code.to_semihosting_code());
+
+    #[cfg(feature = "std")]
+    std::process::exit(code.to_semihosting_code());
 
     #[allow(unreachable_code, reason = "stop nagging")]
     let _ = code;
@@ -107,6 +109,17 @@ mod backend {
 #[cfg(all(feature = "debug-console", feature = "esp-println"))]
 mod backend {
     pub use esp_println::{print, println};
+
+    #[doc(hidden)]
+    pub fn init() {
+        #[cfg(feature = "log")]
+        crate::logger::init();
+    }
+}
+
+#[cfg(all(feature = "debug-console", feature = "std"))]
+mod backend {
+    pub use std::{print, println};
 
     #[doc(hidden)]
     pub fn init() {
