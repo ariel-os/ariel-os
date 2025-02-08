@@ -131,7 +131,7 @@ struct Scheduler {
 
     /// The currently running thread(s).
     #[cfg(feature = "multi-core")]
-    current_threads: [Option<ThreadId>; CORES_COUNT],
+    current_threads: [Option<ThreadId>; CORE_COUNT],
     #[cfg(feature = "single-core")]
     current_thread: Option<ThreadId>,
 }
@@ -144,7 +144,7 @@ impl Scheduler {
             threads: [const { Thread::default() }; THREAD_COUNT],
             thread_blocklist: [const { None }; THREAD_COUNT],
             #[cfg(feature = "multi-core")]
-            current_threads: [None; CORES_COUNT],
+            current_threads: [None; CORE_COUNT],
             #[cfg(feature = "single-core")]
             current_thread: None,
         }
