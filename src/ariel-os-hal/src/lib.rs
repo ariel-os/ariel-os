@@ -7,7 +7,7 @@
 //! | Espressif            | ESP32       | ESP32-C6          | [`ariel-os-esp::*`](../../ariel_os_esp/index.html)     |
 //! | Nordic Semiconductor | nRF         | nRF52840          | [`ariel-os-nrf::*`](../../ariel_os_nrf/index.html)     |
 //! | Raspberry Pi         | RP          | RP2040            | [`ariel-os-rp::*`](../../ariel_os_rp/index.html)       |
-//! | STMicroelectronics   | STM32       | STM32W55RGVX      | [`ariel-os-stm32::*`](../../ariel_os_stm32/index.html) |
+//! | STMicroelectronics   | STM32       | STM32WB55RGVX     | [`ariel-os-stm32::*`](../../ariel_os_stm32/index.html) |
 //!
 //! Documentation is only rendered for the MCUs listed in the table above, but [many others are
 //! supported](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware_functionality_support.html).
