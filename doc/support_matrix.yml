@@ -159,7 +159,7 @@ chips:
       wifi: not_available
 
   stm32wb55rgvx:
-    name: STM32W55RGVX
+    name: STM32WB55RGVX
     support:
       gpio: supported
       debug_output: supported
