@@ -147,7 +147,7 @@ chips:
       wifi: not_available
 
   stm32h755zitx:
-    name: STM32F755ZITX
+    name: STM32H755ZITX
     support:
       gpio: supported
       debug_output: supported
