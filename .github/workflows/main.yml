@@ -333,5 +333,5 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --require-https --no-progress --include-fragments --include-verbatim -v README.md book/book
+          args: --offline --require-https --no-progress --include-fragments --include-verbatim -v README.md ./book/book
           fail: true
