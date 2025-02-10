@@ -1,4 +1,5 @@
-# Ariel OS
+<p align="center"> <img src="book/src/figures/ariel-os-logo-cube-slant.svg" alt="logo" height="300"/> </p>
+
 [![Build Status][build-badge]][build-info]
 [![Book][book-badge]][documentation-mdbook]
 [![Documentation][rustdoc-badge]][documentation-dev-rustdoc]
