@@ -93,7 +93,7 @@ To add a new workspace crate re-exported by `ariel-os`, follow these steps:
 1. In the workspace's `Cargo.toml` `dependencies` array, add a (properly sorted) entry.
 1. Re-export the crate from the `ariel-os` crate, inline it in the docs as done for the other crates, and feature-gate it if necessary.
 1. Add the crate to the list of crates checked by Clippy in `.github/workflows/main.yml`, preserving lexicographic order.
-1. If the crate has tests that can be run with `cargo test`:
+1. If the crate is expected to have tests that can be run with `cargo test`:
     1. Add a feature named `_test` that enables all features that can be tested.
     1. Add a `laze.yml` with an application for the crate named `crates/your-crate-name` that selects the `host-test-only` module (see e.g., `src/ariel-os/laze.yml`)
     1. Add the crate's directory to its parent's `laze.yml` `subdirs`.
