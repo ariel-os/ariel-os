@@ -100,7 +100,7 @@ wifi = []
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 
-threading = ["dep:ariel-os-threads"]
+threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
