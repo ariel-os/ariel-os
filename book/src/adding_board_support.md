@@ -62,7 +62,7 @@ builders:
 - In `laze-project.yml`:
   - Add a context for the MCU (if it does not already exist).
     - `parent`: The closest Embassy HAL's context.
-    - `selects`: A [rustc-target](#adding-support-for-a-processor-architecture) module.
+    - `selects`: A [rustc-target](#add-support-for-a-processor-architecture) module.
 
 MCU-specific items inside Ariel OS crates are gated behind
 `#[cfg(context = $CONTEXT)]` attributes, where `$CONTEXT` is the [MCU's `laze
