@@ -15,7 +15,7 @@ pub trait Arch {
     /// it starts executing `func` with argument `arg`.
     /// Furthermore, it sets up the link-register with the [`crate::cleanup`] function that
     /// will be executed after the thread function returned.
-    fn setup_stack(thread: &mut Thread, stack: &mut [u8], func: usize, arg: usize);
+    fn setup_stack(thread: &mut Thread, stack: &mut [u8], func: usize, arg: Uword);
 
     /// Trigger a context switch.
     fn schedule();
@@ -31,20 +31,23 @@ pub trait Arch {
 cfg_if::cfg_if! {
     if #[cfg(context = "cortex-m")] {
         mod cortex_m;
-        pub use cortex_m::Cpu;
+        pub use cortex_m::{Cpu, Uword};
     } else if #[cfg(context = "riscv")] {
         mod riscv;
-        pub use riscv::Cpu;
+        pub use riscv::{Cpu, Uword};
     } else if #[cfg(context = "xtensa")] {
         mod xtensa;
-        pub use xtensa::Cpu;
+        pub use xtensa::{Cpu, Uword};
     } else {
+        // Represents a machine word.
+        pub type Uword = u32;
+
         pub struct Cpu;
         impl Arch for Cpu {
             type ThreadData = ();
             const DEFAULT_THREAD_DATA: Self::ThreadData = ();
 
-            fn setup_stack( _: &mut Thread, _: &mut [u8], _: usize, _: usize) {
+            fn setup_stack( _: &mut Thread, _: &mut [u8], _: usize, _: Uword) {
                 unimplemented!()
             }
             fn start_threading() {

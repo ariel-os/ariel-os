@@ -192,7 +192,7 @@ impl Scheduler {
     fn create(
         &mut self,
         func: usize,
-        arg: usize,
+        arg: arch::Uword,
         stack: &'static mut [u8],
         prio: RunqueueId,
         _core_affinity: Option<CoreAffinity>,
@@ -527,29 +527,35 @@ pub unsafe fn start_threading() {
     Cpu::start_threading();
 }
 
-/// Trait for types that fit into a single register.
-pub trait Arguable {
-    #[doc(hidden)]
-    fn into_arg(self) -> usize;
+/// Trait for types that can be used as argument for threads.
+///
+/// # Safety
+///
+/// This trait must only be implemented on types whose binary representation fits into a single
+/// general-purpose register on *all supported architectures*.
+pub unsafe trait Arguable {
+    /// Returns the ABI representation.
+    fn into_arg(self) -> arch::Uword;
 }
 
-impl Arguable for usize {
-    fn into_arg(self) -> usize {
+// SAFETY: this is the identity.
+unsafe impl Arguable for arch::Uword {
+    fn into_arg(self) -> arch::Uword {
         self
     }
 }
 
-impl Arguable for () {
-    fn into_arg(self) -> usize {
-        0
-    }
-}
-
-/// [`Arguable`] is only implemented on *static* references because the references passed to a
-/// thread must be valid for its entire lifetime.
-impl<T> Arguable for &'static T {
-    fn into_arg(self) -> usize {
-        self as *const T as usize
+// SAFETY:
+// This is only implemented on *static* references because the references passed to a thread must
+// be valid for its entire lifetime.
+unsafe impl<T: Sync + Sized> Arguable for &'static T {
+    fn into_arg(self) -> arch::Uword {
+        let address = self as *const T as usize;
+        // Ensure that a pointer does fit into a single machine word.
+        const {
+            assert!(size_of::<*const T>() == size_of::<arch::Uword>());
+        }
+        address as arch::Uword
     }
 }
 
@@ -595,7 +601,7 @@ pub fn create_noarg(
 #[doc(hidden)]
 pub unsafe fn create_raw(
     func: usize,
-    arg: usize,
+    arg: arch::Uword,
     stack: &'static mut [u8],
     prio: u8,
     core_affinity: Option<CoreAffinity>,
