@@ -41,7 +41,7 @@ impl Scheduler for ArielScheduler {
         let stack_slice: &'static mut [u8] =
             unsafe { core::slice::from_raw_parts_mut(stack as *mut u8, task_stack_size as usize) };
 
-        let prio = 8; // same as ariel executor thread
+        let prio = ariel_os_embassy_common::executor_thread::PRIORITY;
         let core_affinity = None;
         // # Safety
         // We know what we are doing.
