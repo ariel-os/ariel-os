@@ -2,9 +2,6 @@
 //!
 //! On the long run, those might contribute to
 //! <https://github.com/namib-project/dcaf-rs/issues/29>.
-//!
-//! The module is private, but contains a few pub items so that they can be used in the
-//! [`seccfg`][crate::seccfg] crate on sealed traits.
 
 use defmt_or_log::trace;
 
@@ -413,12 +410,8 @@ pub(crate) fn process_acecbor_authz_info<GC: crate::GeneralClaims>(
         return Err(CredentialErrorDetail::UnsupportedAlgorithm.into());
     }
 
-    let (processed, parsed) = authorities.decrypt_symmetric_token(
-        &headers,
-        aad_encoded.as_ref(),
-        buffer,
-        crate::PrivateMethod,
-    )?;
+    let (processed, parsed) =
+        authorities.decrypt_symmetric_token(&headers, aad_encoded.as_ref(), buffer)?;
 
     // Currently disabled because no formatting is available while there; works with
     // <https://codeberg.org/chrysn/minicbor-adapters/pulls/1>
@@ -461,12 +454,7 @@ pub(crate) fn process_edhoc_token<GeneralClaims>(
     let (processed, parsed) = if let Ok(encrypt0) = minicbor::decode::<EncryptedCwt>(ead3) {
         let (headers, aad_encoded, buffer) = encrypt0.prepare_decryption(&mut buffer)?;
 
-        authorities.decrypt_symmetric_token(
-            &headers,
-            aad_encoded.as_ref(),
-            buffer,
-            crate::PrivateMethod,
-        )?
+        authorities.decrypt_symmetric_token(&headers, aad_encoded.as_ref(), buffer)?
     } else if let Ok(sign1) = minicbor::decode::<SignedCwt>(ead3) {
         let protected: HeaderMap = minicbor::decode(sign1.protected)?;
         trace!(
@@ -497,13 +485,7 @@ pub(crate) fn process_edhoc_token<GeneralClaims>(
         minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut buffer))?;
         trace!("Serialized AAD: {:#02x}", buffer);
 
-        authorities.verify_asymmetric_token(
-            &headers,
-            &buffer,
-            sign1.signature,
-            sign1.payload,
-            crate::PrivateMethod,
-        )?
+        authorities.verify_asymmetric_token(&headers, &buffer, sign1.signature, sign1.payload)?
     } else {
         return Err(CredentialErrorDetail::UnsupportedExtension.into());
     };

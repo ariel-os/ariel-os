@@ -22,7 +22,7 @@ pub(crate) const MAX_AUD_SIZE: usize = 8;
 pub struct NotAllowedRenderingFailed;
 
 /// A single or collection of authorization servers that a handler trusts to create ACE tokens.
-pub trait ServerSecurityConfig: crate::Sealed {
+pub trait ServerSecurityConfig {
     /// True if the type will at any time need to process tokens at /authz-info
     ///
     /// This is used by the handler implementation to shortcut through some message processing
@@ -75,7 +75,6 @@ pub trait ServerSecurityConfig: crate::Sealed {
         headers: &HeaderMap,
         aad: &[u8],
         ciphertext_buffer: &'buf mut [u8],
-        _: crate::PrivateMethod,
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
         Err(CredentialErrorDetail::KeyNotPresent.into())
     }
@@ -100,7 +99,6 @@ pub trait ServerSecurityConfig: crate::Sealed {
         signed_data: &[u8],
         signature: &[u8],
         signed_payload: &'b [u8],
-        _: crate::PrivateMethod,
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'b>), CredentialError> {
         Err(CredentialErrorDetail::KeyNotPresent.into())
     }
@@ -152,8 +150,6 @@ pub trait ServerSecurityConfig: crate::Sealed {
 /// The default empty configuration that denies all access.
 pub struct DenyAll;
 
-impl crate::Sealed for DenyAll {}
-
 impl ServerSecurityConfig for DenyAll {
     const PARSES_TOKENS: bool = false;
     const HAS_EDHOC: bool = false;
@@ -163,8 +159,6 @@ impl ServerSecurityConfig for DenyAll {
 
 /// An SSC representing unconditionally allowed access without the option for opportunistic EDHOC.
 pub struct AllowAll;
-
-impl crate::Sealed for AllowAll {}
 
 impl ServerSecurityConfig for AllowAll {
     const PARSES_TOKENS: bool = false;
@@ -199,8 +193,6 @@ pub struct ConfigBuilder {
     request_creation_hints: &'static [u8],
 }
 
-impl crate::Sealed for ConfigBuilder {}
-
 impl ServerSecurityConfig for ConfigBuilder {
     // We can't know at build time, assume yes
     const PARSES_TOKENS: bool = true;
@@ -213,7 +205,6 @@ impl ServerSecurityConfig for ConfigBuilder {
         headers: &HeaderMap,
         aad: &[u8],
         ciphertext_buffer: &'buf mut [u8],
-        _: crate::PrivateMethod,
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
         use ccm::aead::AeadInPlace;
         use ccm::KeyInit;
@@ -284,7 +275,6 @@ impl ServerSecurityConfig for ConfigBuilder {
         signed_data: &[u8],
         signature: &[u8],
         signed_payload: &'b [u8],
-        _: crate::PrivateMethod,
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'b>), CredentialError> {
         if headers.alg != Some(-7) {
             // ES256
