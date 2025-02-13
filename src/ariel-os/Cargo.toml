@@ -67,6 +67,7 @@ coap-server = ["coap", "ariel-os-coap/coap-server"]
 # Plain forwarded features that are not documented as features but just as laze
 # modules, because while those here work without any extra help from laze, most
 # later ones will likely need some build system help.
+coap-server-config-storage = ["ariel-os-coap/coap-server-config-storage"]
 coap-server-config-demokeys = ["ariel-os-coap/coap-server-config-demokeys"]
 coap-server-config-unprotected = [
   "ariel-os-coap/coap-server-config-unprotected",

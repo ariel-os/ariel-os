@@ -815,6 +815,17 @@ modules:
         FEATURES:
           - ariel-os/coap-server
 
+  - name: coap-server-config-storage
+    help: Configure the CoAP server to accept requests depending on runtime configuration
+    depends:
+      - coap
+      - sw/storage
+    provides_unique: [coap-server-config]
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-server-config-storage
+
   - name: coap-server-config-unprotected
     help: Configure the CoAP server to accept any request without authorization checks.
 
