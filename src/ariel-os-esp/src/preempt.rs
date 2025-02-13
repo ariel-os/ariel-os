@@ -2,7 +2,7 @@
 /// with the Ariel OS scheduler.
 use core::ffi::c_void;
 
-use ariel_os_debug::log::trace;
+use ariel_os_debug::log::{trace, warn};
 use ariel_os_threads::{create_raw, current_tid, yield_same, THREAD_COUNT};
 use esp_wifi::{preempt::Scheduler, TimeBase};
 use esp_wifi_sys::include::malloc;
