@@ -239,6 +239,7 @@ name = "ariel-os-embassy-common"
 version = "0.1.0"
 dependencies = [
  "ariel-os-buildinfo",
+ "ariel-os-utils",
  "const-sha1",
  "defmt",
  "embassy-futures",
