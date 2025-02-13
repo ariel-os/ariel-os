@@ -27,16 +27,13 @@
 #![no_std]
 #![cfg_attr(feature = "_nightly_docs", feature(doc_auto_cfg))]
 
-mod sealed;
-use sealed::{PrivateMethod, Sealed};
-
 mod iana;
 
 mod helpers;
 
 pub mod time;
 
-mod ace;
+pub mod ace;
 mod generalclaims;
 pub mod scope;
 pub use generalclaims::GeneralClaims;
