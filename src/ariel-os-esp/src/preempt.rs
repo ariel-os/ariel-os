@@ -25,6 +25,8 @@ impl Scheduler for ArielScheduler {
     }
 
     fn current_task(&self) -> *mut c_void {
+        // NOTE(no-panic): this is always called from within a thread, so the `unwrap()` doesn't
+        // panic.
         usize::from(current_tid().unwrap()) as *mut c_void
     }
 
@@ -41,6 +43,8 @@ impl Scheduler for ArielScheduler {
 
         let prio = 8; // same as ariel executor thread
         let core_affinity = None;
+        // # Safety
+        // We know what we are doing.
         let tid = unsafe {
             create_raw(
                 task as usize,
@@ -54,12 +58,19 @@ impl Scheduler for ArielScheduler {
     }
 
     fn schedule_task_deletion(&self, _task_handle: *mut c_void) {
-        trace!("{}:{} schedule_task_deletion()", file!(), line!());
-        todo!()
+        // TODO: not called from `esp-wifi` until the stack is de-initialized,
+        // which Ariel currently doesn't do. This is safe but leaks the stack.
+        warn!(
+            "{}:{} schedule_task_deletion(): probably leaking stack",
+            file!(),
+            line!()
+        );
     }
 
     fn current_task_thread_semaphore(&self) -> *mut c_void {
         trace!("{}:{} current_task_thread_semaphore()", file!(), line!());
+        // NOTE(no-panic): this is always called from within a thread, so the `unwrap()` doesn't
+        // panic.
         let tid = usize::from(current_tid().unwrap());
         &THREAD_SEMAPHORES[tid] as *const usize as *mut c_void
     }
