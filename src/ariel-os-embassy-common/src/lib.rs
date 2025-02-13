@@ -10,6 +10,9 @@ pub mod gpio;
 #[cfg(context = "cortex-m")]
 pub mod executor_swi;
 
+#[cfg(feature = "executor-thread")]
+pub mod executor_thread;
+
 #[cfg(feature = "i2c")]
 pub mod i2c;
 

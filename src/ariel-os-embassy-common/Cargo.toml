@@ -10,6 +10,7 @@ workspace = true
 
 [dependencies]
 ariel-os-buildinfo = { workspace = true }
+ariel-os-utils = { workspace = true }
 defmt = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
 embassy-futures = { workspace = true }
@@ -29,5 +30,7 @@ i2c = ["dep:fugit"]
 spi = ["dep:fugit"]
 
 defmt = ["dep:defmt", "fugit?/defmt"]
+
+executor-thread = []
 
 _test = ["i2c", "spi", "external-interrupts"]

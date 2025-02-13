@@ -9,6 +9,9 @@ pub mod gpio;
 
 pub use ariel_os_hal as hal;
 
+#[cfg(feature = "executor-thread")]
+use ariel_os_embassy_common::executor_thread;
+
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
@@ -144,21 +147,6 @@ fn init() -> ! {
     EXECUTOR
         .init_with(|| hal::Executor::new())
         .run(|spawner| spawner.must_spawn(init_task(p)))
-}
-
-#[cfg(feature = "executor-thread")]
-mod executor_thread {
-    pub(crate) const STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
-        "CONFIG_EXECUTOR_THREAD_STACKSIZE",
-        16384,
-        "executor thread stack size"
-    );
-
-    pub(crate) const PRIORITY: u8 = ariel_os_utils::u8_from_env_or!(
-        "CONFIG_EXECUTOR_THREAD_PRIORITY",
-        8,
-        "executor thread priority"
-    );
 }
 
 #[cfg(feature = "executor-thread")]
