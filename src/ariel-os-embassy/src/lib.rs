@@ -149,11 +149,13 @@ fn init() -> ! {
 
 #[cfg(feature = "executor-thread")]
 mod executor_thread {
-    pub(crate) const STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
-        "CONFIG_EXECUTOR_THREAD_STACKSIZE",
+    const CONFIG_EXECUTOR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
+        "CONFIG_EXECUTOR_STACKSIZE",
         16384,
-        "executor thread stack size"
+        "System executor stack size (in bytes)"
     );
+
+    pub(crate) const STACKSIZE: usize = CONFIG_EXECUTOR_STACKSIZE;
 
     pub(crate) const PRIORITY: u8 = ariel_os_utils::u8_from_env_or!(
         "CONFIG_EXECUTOR_THREAD_PRIORITY",
@@ -167,7 +169,10 @@ mod executor_thread {
 fn init() {
     use static_cell::StaticCell;
 
-    debug!("ariel-os-embassy::init(): using thread executor");
+    debug!(
+        "ariel-os-embassy::init(): using thread executor with thread stack size {}",
+        executor_thread::STACKSIZE
+    );
     let p = hal::init();
 
     static EXECUTOR: StaticCell<thread_executor::Executor> = StaticCell::new();

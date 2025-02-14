@@ -34,10 +34,11 @@ contexts:
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
-      # laze doesn't know the concept of "export" as make does, so each variable
-      # that needs to be passed via environment needs to be listed in that rule
-      # or task's command list.
-      # "CARGO_ENV" is used for that.
+          # While laze allows "export:" in rules and tasks to export laze
+          # variables to a rule's recipe shell environment, this would require
+          # those to be listed for *all* rules and tasks where they are needed.
+          # So until laze allows "global shell exporting of variables",
+          # "CARGO_ENV" is used for that.
       CARGO_ENV:
         - >-
           OPENOCD_ARGS="${OPENOCD_ARGS}"
@@ -47,6 +48,8 @@ contexts:
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
+          CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
+          CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       BOARD: ${builder}
       PROFILE: release
       riot_binary: ${app}
@@ -59,6 +62,17 @@ contexts:
         -kernel
       PROBE_RS_PROTOCOL: swd
 
+      # Stack size config
+      executor_stack_required:
+        # These defines the defaults. Other modules can append their needs,
+        # the maximum value will be chosen.
+        # Note: make sure to append to the list, not set single value!
+        - "8192"
+      isr_stack_required:
+        - "8192"
+      CONFIG_EXECUTOR_STACKSIZE: $(max (0, ${executor_stack_required}))
+      CONFIG_ISR_STACKSIZE: $(max (0, ${isr_stack_required}))
+
     var_options:
       # this turns ${FEATURES} from a list to "--features=feature1,feature2"
       FEATURES:
@@ -70,6 +84,10 @@ contexts:
       # this prefixes `--protocol=` to `PROBE_RS_PROTOCOL`
       PROBE_RS_PROTOCOL:
         start: --protocol=
+
+      # Executor stacksize helper
+      executor_stack_required:
+        joiner: ", "
 
     rules:
       - name: LINK
