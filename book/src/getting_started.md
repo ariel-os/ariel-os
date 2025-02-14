@@ -10,11 +10,21 @@ It explains how to compile and run the `hello-word` example to verify your setup
 1. Install the needed build dependencies.
    On Ubuntu, the following is sufficient:
 
+   <!-- gcc and curl are only required for espup, gut it doesn't hurt to install those here. -->
+
     ```sh
-    apt install git rustup ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi
+    apt install git rustup ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc curl
     ```
 
 1. Install the Rust installer [rustup](https://rustup.rs/) using the website's instructions or through your distribution package manager.
+
+1. Only for using ESP devices, install [espup](https://github.com/esp-rs/espup) and related tools:
+
+   ```sh
+   cargo install espup
+   espup install
+   cargo install espflash
+   ```
 
 1. Install the build system [laze](https://github.com/kaspar030/laze):
 
@@ -36,8 +46,8 @@ It explains how to compile and run the `hello-word` example to verify your setup
     laze build install-toolchain
     ```
 
-    This invokes rustup to add all easy-to-install targets and components;
-    the ESP toolchain needs additional manual installation steps.
+    This invokes rustup to add all easy-to-install targets and components,
+    and invokes espup if it is installed.
 
 ## Running the `hello-world` example
 
