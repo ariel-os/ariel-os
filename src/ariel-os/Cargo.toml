@@ -71,6 +71,10 @@ coap-server-config-demokeys = ["ariel-os-coap/coap-server-config-demokeys"]
 coap-server-config-unprotected = [
   "ariel-os-coap/coap-server-config-unprotected",
 ]
+# Forwarded features that are not even user selected, but influenced by the
+# build system that knows who provides an abort and assert handler.
+liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
+liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
 ## Selects static IP configuration.
 network-config-static = ["ariel-os-embassy/network-config-static"]
 

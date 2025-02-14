@@ -26,7 +26,7 @@ coap-message-implementations = { version = "0.1.2", features = ["downcast"] }
 coap-message-utils = "0.3.3"
 coap-numbers = "0.2.3"
 lakers-crypto-rustcrypto = "0.7.2"
-liboscore = "0.2.4"
+liboscore = { version = "0.2.4", default-features = false }
 
 # actually we depend on <https://github.com/twittner/minicbor/pull/9> so it
 # should be
@@ -63,6 +63,21 @@ defmt = ["defmt-or-log/defmt", "dep:defmt", "lakers/defmt"]
 # `log` is not a link because we can't build docs with --all-features, see also
 # https://github.com/t-moe/defmt-or-log/issues/4
 log = ["defmt-or-log/log", "dep:log"]
+
+## Select the liboscore default features
+#
+# libOSCORE generally provides abort and assert symbols for its C code. When
+# used in environments where they are provided by other code (eg. ESP32 some
+# variants), this default feature can be disabled, leaving the user to manually
+# select the right libOSCORE features.
+liboscore-defaults = ["liboscore-provide-abort", "liboscore-provide-assert"]
+
+## Feature passed on to libOSCORE (see `liboscore-defaults`)
+liboscore-provide-abort = ["liboscore/provide-abort"]
+## Feature passed on to libOSCORE (see `liboscore-defaults`)
+liboscore-provide-assert = ["liboscore/provide-assert"]
+
+default = ["liboscore-defaults"]
 
 # Private feature that enables doc_auto_cfg
 _nightly_docs = []
