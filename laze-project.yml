@@ -302,6 +302,7 @@ contexts:
     parent: esp
     selects:
       - xtensa
+      - something-inside-the-esp32s3-blobs-that-contains-a-c-abort
     env:
       CARGO_TOOLCHAIN: +esp
       RUSTFLAGS:
@@ -452,6 +453,9 @@ modules:
       global:
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
+
+  - name: something-inside-the-esp32s3-blobs-that-contains-a-c-abort
+    provides_unique: [c-function-abort]
 
   - name: riscv
     env:
@@ -794,6 +798,8 @@ modules:
     depends:
       - random
       - network
+      - c-function-assert
+      - c-function-abort
     env:
       global:
         FEATURES:
@@ -847,6 +853,22 @@ modules:
     help: Support for CoAP client functionality.
     depends:
       - coap
+
+  - name: liboscore-provide-abort
+    help: Make liboscore provide an implementation of the `abort` C function that it needs.
+    env:
+      global:
+        FEATURES:
+          - ariel-os/liboscore-provide-abort
+    provides_unique: [c-function-abort]
+
+  - name: liboscore-provide-assert
+    help: Make liboscore provide an implementation of the `assert` C function that it needs.
+    env:
+      global:
+        FEATURES:
+          - ariel-os/liboscore-provide-assert
+    provides_unique: [c-function-assert]
 
   - name: random
     help: A system-wide RNG is available (through the ariel_os::random module).
