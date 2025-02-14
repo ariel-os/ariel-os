@@ -1,4 +1,4 @@
-//! Executor thread configuration configuration.
+//! Executor thread configuration.
 
 /// Stacksize used by main executor thread.
 pub const STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
