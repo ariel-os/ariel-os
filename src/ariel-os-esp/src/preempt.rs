@@ -39,7 +39,7 @@ impl Scheduler for ArielScheduler {
         trace!("{}:{} task_create()", file!(), line!());
         // SAFETY: might return NULL, we assert it didn't below.
         let stack = unsafe { malloc(task_stack_size as u32) };
-        assert!(stack as usize != 0);
+        assert!(!stack.is_null());
 
         // SAFETY: We checked that `stack` has been allocated (is not NULL).
         let stack_slice: &'static mut [u8] =
