@@ -14,6 +14,9 @@
 // Moving work from https://github.com/embassy-rs/embassy/pull/2519 in here for the time being
 mod udp_nal;
 
+#[cfg(feature = "coap-server-config-storage")]
+mod stored;
+
 use ariel_os_debug::log::info;
 use ariel_os_embassy::sendcell::SendCell;
 use coap_handler_implementations::ReportingHandlerBuilder;
@@ -144,7 +147,9 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
         .unwrap();
 
     cfg_if::cfg_if! {
-        if #[cfg(feature = "coap-server-config-demokeys")] {
+        if #[cfg(feature = "coap-server-config-storage")] {
+            let security_config = stored::server_security_config().await;
+        } else if #[cfg(feature = "coap-server-config-demokeys")] {
             let security_config = demo_setup::build_demo_ssc();
         } else if #[cfg(feature = "coap-server-config-unprotected")] {
             let security_config = coapcore::seccfg::AllowAll;

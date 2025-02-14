@@ -569,8 +569,10 @@ impl<
                 }
             }
 
-            let (mut responder, _prk_out) =
+            let (responder, _prk_out) =
                 responder.verify_message_3(cred_i).map_err(render_error)?;
+
+            let mut responder = responder.completed_without_message_4().map_err(render_error)?;
 
             // Once this gets updated beyond Lakers 0.7.2 (likely to 0.8), this will be needed:
             // let mut responder = responder.completed_without_message_4()

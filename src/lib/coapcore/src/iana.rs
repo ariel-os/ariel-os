@@ -12,7 +12,7 @@ pub(crate) mod edhoc_ead {
     /// **Not an official value yet**; described in
     /// [Section 10.8 of the ACE-EDHOC
     /// profile](https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-06#section-10.8).
-    pub(crate) const ACETOKEN: u8 = 20;
+    pub(crate) const ACETOKEN: u16 = 20;
 }
 
 /// The [COSE Algorithms](https://www.iana.org/assignments/cose/cose.xhtml#algorithms) registry
