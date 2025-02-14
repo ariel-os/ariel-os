@@ -1,4 +1,4 @@
-name: Build
+name: Build (on Depot)
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: depot-ubuntu-24.04
 
     env:
       SCCACHE_GHA_ENABLED: "true"
@@ -50,6 +50,16 @@ jobs:
         with:
           path: .tree-hash
           key: success-${{ steps.get-tree-hash.outputs.hash }}-${{ matrix.partition }}-${{ github.event_name == 'schedule' && 'full' || 'limited' }}
+
+      - name: laze build cache
+        if: steps.result-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        id: laze-cache
+        with:
+          path: build
+          key: laze-${{ github.ref_name }}-${{ matrix.partition }}-${{ github.event_name == 'schedule' && 'full' || 'limited' }}
+          restore-keys: |
+              laze-main-${{ matrix.partition }}-${{ github.event_name == 'schedule' && 'full' || 'limited' }}
 
       - name: Run sccache-cache
         if: steps.result-cache.outputs.cache-hit != 'true'
@@ -144,7 +154,7 @@ jobs:
 
   build-success:
     if: ${{ always() }}
-    runs-on: ubuntu-latest
+    runs-on: depot-ubuntu-24.04
     name: Final Results
     needs: [build]
     steps:
