@@ -838,7 +838,7 @@ modules:
           - ariel-os/wifi-esp
 
   - name: wifi-esp-xor-threads
-    help: Helper module to conditionally conflict esp-wifi and threads on esp32 riscv
+    help: Helper module to conditionally make esp-wifi conflict with threads on esp32 riscv
     depends: # using depends so the following syntax works
       - sw/threading:
           - wifi-with-threads-currently-broken-on-esp-riscv
