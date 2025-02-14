@@ -37,14 +37,18 @@ impl Scheduler for ArielScheduler {
         task_stack_size: usize,
     ) -> *mut c_void {
         trace!("{}:{} task_create()", file!(), line!());
+        // SAFETY: might return NULL, we assert it didn't below.
         let stack = unsafe { malloc(task_stack_size as u32) };
+        assert!(stack as usize != 0);
+
+        // SAFETY: We checked that `stack` has been allocated (is not NULL.
         let stack_slice: &'static mut [u8] =
             unsafe { core::slice::from_raw_parts_mut(stack as *mut u8, task_stack_size as usize) };
 
         let prio = ariel_os_embassy_common::executor_thread::PRIORITY;
         let core_affinity = None;
-        // # Safety
-        // We know what we are doing.
+
+        // SAFETY: Upholding `create_raw()` invariants: We know what we are doing.
         let tid = unsafe {
             create_raw(
                 task as usize,
@@ -60,8 +64,8 @@ impl Scheduler for ArielScheduler {
     fn schedule_task_deletion(&self, _task_handle: *mut c_void) {
         // TODO: not called from `esp-wifi` until the stack is de-initialized,
         // which Ariel currently doesn't do. This is safe but leaks the stack.
-        warn!(
-            "{}:{} schedule_task_deletion(): probably leaking stack",
+        debug!(
+            "{}:{} schedule_task_deletion(): leaking stack",
             file!(),
             line!()
         );
