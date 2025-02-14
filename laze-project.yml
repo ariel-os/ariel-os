@@ -455,6 +455,7 @@ modules:
           - --cfg context=\"xtensa\"
 
   - name: something-inside-the-esp32s3-blobs-that-contains-a-c-abort
+    context: esp32s3
     provides_unique: [c-function-abort]
 
   - name: riscv
