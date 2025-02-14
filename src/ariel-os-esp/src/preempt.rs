@@ -41,7 +41,7 @@ impl Scheduler for ArielScheduler {
         let stack = unsafe { malloc(task_stack_size as u32) };
         assert!(stack as usize != 0);
 
-        // SAFETY: We checked that `stack` has been allocated (is not NULL.
+        // SAFETY: We checked that `stack` has been allocated (is not NULL).
         let stack_slice: &'static mut [u8] =
             unsafe { core::slice::from_raw_parts_mut(stack as *mut u8, task_stack_size as usize) };
 
