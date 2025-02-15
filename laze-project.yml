@@ -78,7 +78,7 @@ contexts:
         always: true
         cmd: >-
           test "${SKIP_CARGO_BUILD}" = "1" && exit 0;
-          cd ${relpath} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --${PROFILE} ${FEATURES}
+          cd ${relpath} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --${PROFILE} ${FEATURES}
           && cp ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE}/${riot_binary} ${relroot}/${out}
           ${POST_LINK}
 
@@ -89,26 +89,26 @@ contexts:
       exec:
         build: false
         cmd:
-          - ${CARGO_ENV}
+          - ${CARGO_PRESHELL} ${CARGO_ENV}
 
       cargo:
         cmd:
-          - cd ${relpath} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS}
+          - cd ${relpath} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS}
         build: false
 
       run:
         build: false
         cmd:
-          - cd ${appdir} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
+          - cd ${appdir} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
 
       clippy:
         build: false
         cmd:
-          - cd ${appdir} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} clippy ${FEATURES}
+          - cd ${appdir} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} clippy ${FEATURES}
 
       debug:
         cmd:
-          - cd ${appdir} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
+          - cd ${appdir} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
         build: false
         ignore_ctrl_c: true
 
@@ -120,12 +120,12 @@ contexts:
 
       bloat:
         cmd:
-          - cd ${appdir} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} bloat --${PROFILE} ${FEATURES}
+          - cd ${appdir} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} bloat --${PROFILE} ${FEATURES}
         build: false
 
       tree:
         cmd:
-          - cd ${appdir} && ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} tree ${FEATURES}
+          - cd ${appdir} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} tree ${FEATURES}
         build: false
 
       size:
@@ -484,6 +484,11 @@ modules:
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
         CFLAGS: -mlongcalls
+        CARGO_PRESHELL:
+          # ~/export-esp.sh is the common location, but espup install can
+          # override it with its --export-file argument, which is done in CI;
+          # the environment variable use for it is also the one which espup uses.
+          - '. $\\${ESPUP_EXPORT_FILE:-~/export-esp.sh} &&'
 
   - name: riscv
     env:
