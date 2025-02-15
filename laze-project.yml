@@ -273,6 +273,7 @@ contexts:
         - --cfg context=\"esp32\"
       RUSTC_TARGET: xtensa-esp32-none-elf
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32_NONE_ELF
+      CC: xtensa-esp32-elf-gcc
 
   - name: esp-wroom-32
     parent: esp32
@@ -328,6 +329,8 @@ contexts:
       PROBE_RS_CHIP: esp32s3
       PROBE_RS_PROTOCOL: jtag
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32S3_NONE_ELF
+      CFLAGS: -mlongcalls
+      CC: xtensa-esp32s3-elf-gcc
 
   - name: esp32-s3-wroom-1
     parent: esp32s3
@@ -480,6 +483,7 @@ modules:
       global:
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
+        CFLAGS: -mlongcalls
 
   - name: riscv
     env:
@@ -502,6 +506,19 @@ modules:
       global:
         FEATURES:
           - ariel-os/alloc
+
+  - name: c-compiler
+    help: Configures a C compiler (which is used by build crates such as `cc`).
+    # This may later also check for whether a C compiler is present on the
+    # selected platform in the first place.
+    env:
+      global:
+        # It's fine if either is not set -- that is how the ARM platforms work,
+        # the `cc` crate figures out a good compiler. On ESP, things are not so
+        # solid, and the context contributes variables.
+        CARGO_ENV:
+          - CC="${CC}"
+          - CFLAGS="${CFLAGS}"
 
   - name: debug-console
     context: ariel-os
@@ -833,6 +850,10 @@ modules:
     depends:
       - random
       - network
+      # A NoSec version (coap-server-config-unprotected) could be made to be
+      # buildable without a C compiler, but right now it's easier to just make
+      # the C compiler a prerequisite.
+      - c-compiler
     env:
       global:
         FEATURES:
