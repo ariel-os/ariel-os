@@ -75,6 +75,7 @@ jobs:
         with:
           version: "1.84.0.0"
           buildtargets: esp32s3
+          override: false
 
       - name: Keep general build environment clean of Xtensa peculiarities
         if: steps.result-cache.outputs.cache-hit != 'true'
