@@ -110,6 +110,8 @@ jobs:
           laze --version
           arm-none-eabi-gcc --version
           clang --version
+          cat ${ESPUP_EXPORT_FILE:-~/export-esp.sh}
+          (. ${ESPUP_EXPORT_FILE:-~/export-esp.sh}; xtensa-esp32s3-elf-gcc --version)
           set +x
           # Check which alternative versions are installed
           IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
