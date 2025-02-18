@@ -24,6 +24,7 @@ nrf52840-mdk = { optional = true, path = "nrf52840-mdk" }
 nrf52840dk = { optional = true, path = "nrf52840dk" }
 nrf52dk = { optional = true, path = "nrf52dk" }
 nrf5340dk = { optional = true, path = "nrf5340dk" }
+st-nucleo-c031c6 = { optional = true, path = "st-nucleo-c031c6" }
 st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
 st-nucleo-wb55 = { optional = true, path = "st-nucleo-wb55" }
 st-nucleo-wba55 = { optional = true, path = "st-nucleo-wba55" }

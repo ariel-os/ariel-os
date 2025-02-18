@@ -16,7 +16,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
 
     // Take all I2c peripherals and do nothing with them.
     cfg_if::cfg_if! {
-        if #[cfg(context = "stm32f401retx")] {
+        if #[cfg(context = "stm32c031c6tx")] {
+            take_all_i2c_peripherals!(I2C1);
+        } else if #[cfg(context = "stm32f401retx")] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
         } else if #[cfg(context = "stm32h755zitx")] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3, I2C4);

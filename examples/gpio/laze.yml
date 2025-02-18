@@ -7,6 +7,7 @@ apps:
       - nrf52840dk
       - nrf5340dk
       - rp
+      - st-nucleo-c031c6
       - st-nucleo-f401re
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
