@@ -8,17 +8,17 @@ edition.workspace = true
 [lints]
 workspace = true
 
-[dependencies]
-nrf51 = { optional = true, path = "nrf51" }
-nrf52 = { optional = true, path = "nrf52" }
-nrf5340 = { optional = true, path = "nrf5340" }
-rp = { optional = true, path = "rp" }
-stm32 = { optional = true, path = "stm32" }
+[target.'cfg(context = "nrf51")'.dependencies]
+nrf51 = { path = "nrf51" }
 
-[features]
-esp = []
-nrf51 = ["dep:nrf51"]
-nrf52 = ["dep:nrf52"]
-nrf5340 = ["dep:nrf5340"]
-rp = ["dep:rp"]
-stm32 = ["dep:stm32"]
+[target.'cfg(context = "nrf52")'.dependencies]
+nrf52 = { path = "nrf52" }
+
+[target.'cfg(context = "nrf5340")'.dependencies]
+nrf5340 = { path = "nrf5340" }
+
+[target.'cfg(context = "rp")'.dependencies]
+rp = { path = "rp" }
+
+[target.'cfg(context = "stm32")'.dependencies]
+stm32 = { path = "stm32" }

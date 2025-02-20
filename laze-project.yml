@@ -28,8 +28,6 @@ contexts:
     env:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
-      FEATURES:
-        - ariel-os-chips/${CHIP_FAMILY}
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
@@ -163,7 +161,6 @@ contexts:
     selects:
       - thumbv6m-none-eabi
     env:
-      CHIP_FAMILY: nrf51
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -180,7 +177,6 @@ contexts:
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     env:
-      CHIP_FAMILY: nrf52
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:
@@ -192,7 +188,6 @@ contexts:
     selects:
       - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     env:
-      CHIP_FAMILY: nrf5340
       PROBE_RS_CHIP: nrf5340_xxAA
 
   - name: nrf52832
@@ -253,7 +248,6 @@ contexts:
       - ?debug-console
       - ?esp-println
     env:
-      CHIP_FAMILY: esp
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
@@ -325,7 +319,6 @@ contexts:
     selects:
       - ?probe-rs
     env:
-      CHIP_FAMILY: stm32
       OPENOCD_ARGS: foo
 
   - name: stm32f401retx

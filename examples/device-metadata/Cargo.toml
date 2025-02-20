@@ -9,4 +9,4 @@ workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
