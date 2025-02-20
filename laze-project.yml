@@ -217,6 +217,7 @@ contexts:
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     env:
+      CHIP_FAMILY: rp
       RUSTFLAGS:
         - --cfg context=\"rp\"
 
