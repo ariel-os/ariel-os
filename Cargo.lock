@@ -190,7 +190,6 @@ dependencies = [
  "rpi-pico",
  "rpi-pico2",
  "st-nucleo-f401re",
- "st-nucleo-wba55",
 ]
 
 [[package]]
@@ -4995,16 +4994,6 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-debug",
  "ariel-os-rt",
- "embassy-stm32",
-]
-
-[[package]]
-name = "st-nucleo-wba55"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ariel-os-stm32",
  "embassy-stm32",
 ]
 

@@ -20,3 +20,7 @@ embassy-stm32 = { workspace = true, features = [
 [target.'cfg(context = "stm32wb55rgvx")'.dependencies]
 ariel-os-stm32 = { workspace = true, features = ["stm32-rng", "stm32-usb"] }
 embassy-stm32 = { workspace = true, features = ["stm32wb55rg"] }
+
+[target.'cfg(context = "stm32wba55cgux")'.dependencies]
+ariel-os-stm32 = { workspace = true, features = ["stm32-rng", "stm32-usb"] }
+embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
