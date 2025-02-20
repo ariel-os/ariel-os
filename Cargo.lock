@@ -202,7 +202,6 @@ dependencies = [
  "espressif-esp32-s3-devkitc-1",
  "linkme",
  "nrf52840-mdk",
- "nrf52840dk",
  "nrf52dk",
  "nrf5340dk",
  "particle-xenon",
@@ -3950,17 +3949,6 @@ dependencies = [
 
 [[package]]
 name = "nrf52840-mdk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
-]
-
-[[package]]
-name = "nrf52840dk"
 version = "0.1.0"
 dependencies = [
  "ariel-os-debug",
