@@ -9,7 +9,9 @@ edition.workspace = true
 workspace = true
 
 [dependencies]
+nrf52 = { optional = true, path = "nrf52" }
 stm32f4xx = { optional = true, path = "stm32f4xx" }
 
 [features]
+nrf52 = ["dep:nrf52"]
 stm32f401 = ["stm32f4xx/stm32f401"]
