@@ -139,7 +139,6 @@ dependencies = [
  "linkme",
  "nrf52840-mdk",
  "nrf52dk",
- "nrf5340dk",
  "particle-xenon",
  "rpi-pico",
  "rpi-pico2",
@@ -161,6 +160,7 @@ name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
  "nrf52",
+ "nrf5340",
  "stm32f4xx",
 ]
 
@@ -3698,16 +3698,6 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-debug",
  "ld-memory",
-]
-
-[[package]]
-name = "nrf5340dk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "cortex-m",
- "cortex-m-rt",
- "nrf5340",
 ]
 
 [[package]]
