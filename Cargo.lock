@@ -136,7 +136,6 @@ dependencies = [
  "espressif-esp32-devkitc",
  "espressif-esp32-s3-devkitc-1",
  "linkme",
- "particle-xenon",
  "rpi-pico",
  "rpi-pico2",
  "st-nucleo-f401re",
@@ -3819,17 +3818,6 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-targets",
-]
-
-[[package]]
-name = "particle-xenon"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
 ]
 
 [[package]]
