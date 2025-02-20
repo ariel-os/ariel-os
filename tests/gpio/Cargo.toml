@@ -14,5 +14,4 @@ harness = false
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["external-interrupts"] }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }
 embedded-test = { workspace = true }

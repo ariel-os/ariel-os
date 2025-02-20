@@ -13,4 +13,3 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "external-interrupts",
   "time",
 ] }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }

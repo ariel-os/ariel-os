@@ -10,4 +10,3 @@ workspace = true
 [dependencies]
 heapless = { workspace = true }
 ariel-os = { path = "../../src/ariel-os", features = ["udp"] }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }

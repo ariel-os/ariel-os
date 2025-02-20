@@ -12,4 +12,3 @@ ariel-os = { workspace = true, default-features = true, features = [
   "bench",
   "threading",
 ] }
-ariel-os-chips = { workspace = true }

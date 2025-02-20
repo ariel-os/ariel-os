@@ -15,7 +15,6 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "tcp",
   "time",
 ] }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }
 heapless = { workspace = true }
 rand_core = { workspace = true }
 reqwless = { version = "0.13.0", default-features = true, features = [

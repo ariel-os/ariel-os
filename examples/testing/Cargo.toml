@@ -6,7 +6,6 @@ publish = false
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
-ariel-os-chips = { path = "../../src/ariel-os-chips" }
 
 [dev-dependencies]
 embedded-test = { workspace = true }
