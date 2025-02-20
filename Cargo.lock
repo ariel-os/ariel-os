@@ -100,6 +100,7 @@ name = "ariel-os-alloc"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
+ "ariel-os-chips",
  "ariel-os-debug",
  "embedded-alloc",
  "embedded-test",
@@ -114,15 +115,6 @@ dependencies = [
  "cortex-m",
  "defmt",
  "esp-hal",
-]
-
-[[package]]
-name = "ariel-os-boards"
-version = "0.1.0"
-dependencies = [
- "ariel-os-rt",
- "cfg-if",
- "linkme",
 ]
 
 [[package]]
@@ -294,7 +286,7 @@ name = "ariel-os-identity"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "ariel-os-embassy",
  "ariel-os-embassy-common",
  "embedded-test",
@@ -556,7 +548,7 @@ name = "bench_sched_flags"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -564,7 +556,7 @@ name = "bench_sched_yield"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -572,7 +564,7 @@ name = "benchmark"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -651,7 +643,7 @@ name = "blinky"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -887,7 +879,7 @@ name = "coap-blinky"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "coap-handler-implementations",
  "heapless 0.8.0",
  "riot-coap-handler-demos",
@@ -2359,7 +2351,7 @@ name = "example-alloc"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -2367,7 +2359,7 @@ name = "example-coap-client"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "coap-handler-implementations",
  "coap-request",
  "coap-request-implementations",
@@ -2380,7 +2372,7 @@ name = "example-coap-server"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "coap-handler",
  "coap-handler-implementations",
  "coap-message",
@@ -2394,7 +2386,7 @@ name = "example-log"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -2402,7 +2394,7 @@ name = "example-random"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "rand",
 ]
 
@@ -2637,7 +2629,7 @@ name = "gpio"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-futures",
 ]
 
@@ -2646,7 +2638,7 @@ name = "gpio-interrupt-nrf"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -2654,7 +2646,7 @@ name = "gpio-interrupt-stm32"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -2831,7 +2823,7 @@ name = "hello-world-threading"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -2875,7 +2867,7 @@ name = "http-client"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "heapless 0.8.0",
  "rand_core",
  "reqwless",
@@ -2886,7 +2878,7 @@ name = "http-server"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
  "heapless 0.8.0",
  "picoserve",
@@ -2904,7 +2896,7 @@ name = "i2c-controller"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -3464,7 +3456,7 @@ name = "minimal"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -4590,7 +4582,7 @@ name = "spi-loopback"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
  "embedded-hal-async",
  "once_cell",
@@ -4602,7 +4594,7 @@ name = "spi-main"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
  "embedded-hal-async",
  "once_cell",
@@ -4681,7 +4673,7 @@ name = "storage"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "arrayvec",
  "heapless 0.8.0",
  "serde",
@@ -4844,7 +4836,7 @@ name = "test-coap"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "ariel-os-coap",
  "coap-handler",
  "coap-handler-implementations",
@@ -4865,7 +4857,7 @@ name = "testing"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embedded-test",
 ]
 
@@ -4874,7 +4866,7 @@ name = "tests_gpio"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embedded-test",
 ]
 
@@ -4923,7 +4915,7 @@ name = "thread-async-interop"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
 ]
 
@@ -4932,7 +4924,7 @@ name = "threading"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -4940,7 +4932,7 @@ name = "threading-channel"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -4948,7 +4940,7 @@ name = "threading-dynamic-prios"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "portable-atomic",
 ]
 
@@ -4957,7 +4949,7 @@ name = "threading-event"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -4965,7 +4957,7 @@ name = "threading-lock"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "portable-atomic",
 ]
 
@@ -4974,7 +4966,7 @@ name = "threading-multicore"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]
@@ -4982,7 +4974,7 @@ name = "threading-mutex"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-executor",
  "portable-atomic",
 ]
@@ -5114,7 +5106,7 @@ name = "udp-echo"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "heapless 0.8.0",
 ]
 
@@ -5179,7 +5171,7 @@ name = "usb-keyboard"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
  "embassy-sync 0.6.2",
  "static_cell",
 ]
@@ -5189,7 +5181,7 @@ name = "usb-serial"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]

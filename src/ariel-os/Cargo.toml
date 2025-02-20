@@ -138,8 +138,6 @@ log = ["ariel-os-debug/log", "ariel-os-embassy/log"]
 bench = ["dep:ariel-os-bench"]
 # Prints panic messages on the debug console.
 panic-printing = ["ariel-os-rt/panic-printing"]
-## Allows to have no boards selected, useful to run target-independent tooling.
-no-boards = ["ariel-os-boards/no-boards", "executor-none"]
 
 # These are selected by laze
 rtt-target = ["ariel-os-debug/rtt-target"]
@@ -161,4 +159,4 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts"]
+_test = ["i2c", "spi", "external-interrupts"]

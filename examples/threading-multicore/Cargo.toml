@@ -6,4 +6,4 @@ publish = false
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["core-affinity"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-chips = { path = "../../src/ariel-os-chips" }

@@ -11,7 +11,7 @@ workspace = true
 embassy-sync = { workspace = true }
 heapless = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-chips = { path = "../../src/ariel-os-chips" }
 coap-message = "0.3.2"
 coap-message-demos = { version = "0.4.0", default-features = false }
 coap-handler = "0.2.0"

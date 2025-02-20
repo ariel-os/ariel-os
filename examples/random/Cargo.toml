@@ -11,5 +11,5 @@ workspace = true
 # Enabling the feature "random" is somewhat redundant with laze.yml's selects:
 # random, but helps with interactive tools.
 ariel-os = { path = "../../src/ariel-os", features = ["random"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-chips = { path = "../../src/ariel-os-chips" }
 rand = { workspace = true }

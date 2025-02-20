@@ -9,4 +9,4 @@ workspace = true
 
 [dependencies]
 ariel-os = { workspace = true, default-features = true, features = ["bench"] }
-ariel-os-boards = { workspace = true }
+ariel-os-chips = { workspace = true }

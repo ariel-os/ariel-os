@@ -10,7 +10,7 @@ workspace = true
 [dependencies]
 heapless = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-chips = { path = "../../src/ariel-os-chips" }
 embedded-nal-coap = { workspace = true }
 coap-request = "0.2.0-alpha.2"
 coap-request-implementations = "0.1.0-alpha.4"

@@ -12,5 +12,5 @@ embassy-sync = { workspace = true }
 embedded-hal-async = { workspace = true }
 once_cell = { workspace = true }
 ariel-os = { path = "../../src/ariel-os", features = ["spi"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-chips = { path = "../../src/ariel-os-chips" }
 static_cell = { workspace = true }
