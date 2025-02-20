@@ -20,7 +20,6 @@ espressif-esp32-s3-devkitc-1 = { optional = true, path = "espressif-esp32-s3-dev
 espressif-esp32-devkitc = { optional = true, path = "espressif-esp32-devkitc" }
 dwm1001 = { optional = true, path = "dwm1001" }
 nrf52840-mdk = { optional = true, path = "nrf52840-mdk" }
-nrf52840dk = { optional = true, path = "nrf52840dk" }
 nrf52dk = { optional = true, path = "nrf52dk" }
 nrf5340dk = { optional = true, path = "nrf5340dk" }
 st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
