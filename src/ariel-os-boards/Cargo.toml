@@ -13,10 +13,6 @@ linkme.workspace = true
 
 ariel-os-rt = { path = "../ariel-os-rt" }
 
-ai-c3 = { optional = true, path = "ai-c3" }
-espressif-esp32-c6-devkitc-1 = { optional = true, path = "espressif-esp32-c6-devkitc-1" }
-espressif-esp32-s3-devkitc-1 = { optional = true, path = "espressif-esp32-s3-devkitc-1" }
-espressif-esp32-devkitc = { optional = true, path = "espressif-esp32-devkitc" }
 st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
 st-nucleo-wb55 = { optional = true, path = "st-nucleo-wb55" }
 st-nucleo-wba55 = { optional = true, path = "st-nucleo-wba55" }

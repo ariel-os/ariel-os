@@ -253,6 +253,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     env:
+      CHIP_FAMILY: esp
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x

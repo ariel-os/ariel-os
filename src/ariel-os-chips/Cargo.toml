@@ -15,6 +15,7 @@ nrf5340 = { optional = true, path = "nrf5340" }
 stm32f4xx = { optional = true, path = "stm32f4xx" }
 
 [features]
+esp = []
 nrf51 = ["dep:nrf51"]
 nrf52 = ["dep:nrf52"]
 nrf5340 = ["dep:nrf5340"]
