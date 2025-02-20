@@ -11,4 +11,4 @@ cortex-m.workspace = true
 ariel-os-debug.workspace = true
 ariel-os-rt.workspace = true
 
-nrf52 = { path = "../nrf52", features = ["nrf52832"] }
+nrf52 = { path = "../../ariel-os-chips/nrf52", features = ["nrf52832"] }
