@@ -263,6 +263,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     env:
+      CHIP_FAMILY: esp
       RUSTFLAGS:
         - --cfg context=\"esp\"
         # linkall first

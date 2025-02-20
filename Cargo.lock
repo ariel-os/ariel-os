@@ -59,14 +59,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ai-c3"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
 name = "aligned"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -128,12 +120,8 @@ dependencies = [
 name = "ariel-os-boards"
 version = "0.1.0"
 dependencies = [
- "ai-c3",
  "ariel-os-rt",
  "cfg-if",
- "espressif-esp32-c6-devkitc-1",
- "espressif-esp32-devkitc",
- "espressif-esp32-s3-devkitc-1",
  "linkme",
  "rpi-pico",
  "rpi-pico2",
@@ -2413,30 +2401,6 @@ dependencies = [
  "critical-section",
  "defmt",
  "vcell",
-]
-
-[[package]]
-name = "espressif-esp32-c6-devkitc-1"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "espressif-esp32-devkitc"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "espressif-esp32-s3-devkitc-1"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
 ]
 
 [[package]]
