@@ -29,7 +29,7 @@ contexts:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
       FEATURES:
-        - ariel-os-boards/${BOARD}
+        - ariel-os-chips/${CHIP_FAMILY}
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
@@ -178,6 +178,7 @@ contexts:
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     env:
+      CHIP_FAMILY: nrf52
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:

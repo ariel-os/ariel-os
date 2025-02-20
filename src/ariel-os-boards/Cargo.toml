@@ -15,7 +15,6 @@ ariel-os-rt = { path = "../ariel-os-rt" }
 
 ai-c3 = { optional = true, path = "ai-c3" }
 bbc-microbit = { optional = true, path = "bbc-microbit" }
-bbc-microbit-v2 = { optional = true, path = "bbc-microbit-v2" }
 espressif-esp32-c6-devkitc-1 = { optional = true, path = "espressif-esp32-c6-devkitc-1" }
 espressif-esp32-s3-devkitc-1 = { optional = true, path = "espressif-esp32-s3-devkitc-1" }
 espressif-esp32-devkitc = { optional = true, path = "espressif-esp32-devkitc" }

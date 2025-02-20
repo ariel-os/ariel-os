@@ -53,7 +53,7 @@ pub use ariel_os_macros::task;
 pub use ariel_os_macros::thread;
 
 // ensure this gets linked
-use ariel_os_boards as _;
+use ariel_os_rt as _;
 
 pub use ariel_os_embassy::api::*;
 
