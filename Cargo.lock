@@ -1566,7 +1566,6 @@ name = "device-metadata"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-chips",
 ]
 
 [[package]]
@@ -3039,7 +3038,6 @@ name = "hello-world"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-chips",
 ]
 
 [[package]]
@@ -5128,7 +5126,6 @@ name = "tcp-echo"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-chips",
  "embedded-io-async",
  "heapless 0.8.0",
 ]
