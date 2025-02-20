@@ -187,8 +187,6 @@ dependencies = [
  "ariel-os-rt",
  "cfg-if",
  "linkme",
- "rpi-pico",
- "rpi-pico2",
 ]
 
 [[package]]
@@ -205,6 +203,7 @@ dependencies = [
  "nrf51",
  "nrf52",
  "nrf5340",
+ "rp",
  "stm32",
 ]
 
@@ -4554,6 +4553,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "rp"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-rp",
+]
+
+[[package]]
 name = "rp-binary-info"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4570,49 +4576,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "rp2040"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
- "ariel-os-rt",
-]
-
-[[package]]
 name = "rp2040-boot2"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c92f344f63f950ee36cf4080050e4dce850839b9175da38f9d2ffb69b4dbb21"
 dependencies = [
  "crc-any",
-]
-
-[[package]]
-name = "rp235x"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "rpi-pico"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "rp2040",
-]
-
-[[package]]
-name = "rpi-pico2"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rp",
- "ariel-os-rt",
- "rp235x",
 ]
 
 [[package]]
