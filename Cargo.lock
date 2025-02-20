@@ -86,8 +86,8 @@ name = "ariel-os"
 version = "0.1.0"
 dependencies = [
  "ariel-os-bench",
- "ariel-os-boards",
  "ariel-os-buildinfo",
+ "ariel-os-chips",
  "ariel-os-coap",
  "ariel-os-debug",
  "ariel-os-embassy",
@@ -108,7 +108,6 @@ name = "ariel-os-alloc"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
  "ariel-os-debug",
  "embedded-alloc",
  "embedded-test",
@@ -132,7 +131,6 @@ dependencies = [
  "ai-c3",
  "ariel-os-rt",
  "bbc-microbit",
- "bbc-microbit-v2",
  "cfg-if",
  "dwm1001",
  "espressif-esp32-c6-devkitc-1",
@@ -163,6 +161,7 @@ dependencies = [
 name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
+ "nrf52",
  "stm32f4xx",
 ]
 
@@ -589,17 +588,6 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "nrf51",
-]
-
-[[package]]
-name = "bbc-microbit-v2"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
 ]
 
 [[package]]
@@ -2957,7 +2945,7 @@ name = "hello-world"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
- "ariel-os-boards",
+ "ariel-os-chips",
 ]
 
 [[package]]

@@ -1,11 +1,11 @@
 use ld_memory::{Memory, MemorySection};
 
 fn main() {
-    let (ram, rom) = if std::env::var_os("CARGO_FEATURE_NRF52832").is_some() {
+    let (ram, rom) = if is_in_current_contexts(&["nrf52832"]) {
         (64, 256)
-    } else if std::env::var_os("CARGO_FEATURE_NRF52833").is_some() {
+    } else if is_in_current_contexts(&["nrf52833"]) {
         (128, 512)
-    } else if std::env::var_os("CARGO_FEATURE_NRF52840").is_some() {
+    } else if is_in_current_contexts(&["nrf52840"]) {
         (256, 1024)
     } else {
         panic!("nrf52: please set MCU feature");
@@ -23,4 +23,14 @@ fn main() {
     memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
 
     println!("cargo:rerun-if-changed=build.rs");
+}
+
+/// Returns whether any of the current `cfg` contexts is one of the given contexts.
+fn is_in_current_contexts(contexts: &[&str]) -> bool {
+    let Ok(context_var) = std::env::var("CARGO_CFG_CONTEXT") else {
+        return false;
+    };
+
+    // Contexts cannot include commas.
+    context_var.split(',').any(|c| contexts.contains(&c))
 }

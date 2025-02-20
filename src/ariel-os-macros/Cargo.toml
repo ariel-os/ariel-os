@@ -23,7 +23,6 @@ embassy-executor = { workspace = true, features = [
 heapless = { workspace = true }
 ariel-os = { workspace = true, features = [
   "threading",
-  "no-boards",
   "usb-ethernet",
   "network-config-override",
 ] }
