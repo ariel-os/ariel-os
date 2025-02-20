@@ -10,4 +10,4 @@ cortex-m-rt.workspace = true
 
 ariel-os-debug.workspace = true
 
-nrf5340 = { path = "../nrf5340" }
+nrf5340 = { path = "../../ariel-os-chips/nrf5340" }
