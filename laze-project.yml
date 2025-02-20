@@ -190,6 +190,7 @@ contexts:
     selects:
       - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     env:
+      CHIP_FAMILY: nrf5340
       PROBE_RS_CHIP: nrf5340_xxAA
 
   - name: nrf52832
