@@ -17,7 +17,6 @@ st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
 st-nucleo-wba55 = { optional = true, path = "st-nucleo-wba55" }
 rpi-pico = { optional = true, path = "rpi-pico" }
 rpi-pico2 = { optional = true, path = "rpi-pico2" }
-st-nucleo-h755zi-q = { optional = true, path = "st-nucleo-h755zi-q" }
 
 [features]
 # Allows to have no boards selected, useful to run platform-independent tooling
