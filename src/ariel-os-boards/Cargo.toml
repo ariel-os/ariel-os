@@ -14,7 +14,6 @@ linkme.workspace = true
 ariel-os-rt = { path = "../ariel-os-rt" }
 
 st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
-st-nucleo-wb55 = { optional = true, path = "st-nucleo-wb55" }
 st-nucleo-wba55 = { optional = true, path = "st-nucleo-wba55" }
 rpi-pico = { optional = true, path = "rpi-pico" }
 rpi-pico2 = { optional = true, path = "rpi-pico2" }

@@ -325,6 +325,7 @@ contexts:
     selects:
       - ?probe-rs
     env:
+      CHIP_FAMILY: stm32
       OPENOCD_ARGS: foo
 
   - name: stm32f401retx
