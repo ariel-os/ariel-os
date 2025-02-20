@@ -194,7 +194,6 @@ version = "0.1.0"
 dependencies = [
  "ai-c3",
  "ariel-os-rt",
- "bbc-microbit",
  "cfg-if",
  "espressif-esp32-c6-devkitc-1",
  "espressif-esp32-devkitc",
@@ -219,6 +218,7 @@ dependencies = [
 name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
+ "nrf51",
  "nrf52",
  "nrf5340",
  "stm32f4xx",
@@ -645,17 +645,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "823388e228f614e9558c6804262db37960ec8821856535f5c3f59913140558f8"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "bbc-microbit"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf51",
 ]
 
 [[package]]
