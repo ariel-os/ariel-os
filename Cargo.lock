@@ -201,7 +201,6 @@ name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
  "nrf51",
- "nrf52",
  "nrf5340",
  "rp",
  "stm32",
@@ -401,6 +400,7 @@ dependencies = [
  "embassy-executor",
  "embassy-nrf",
  "embedded-hal-async",
+ "ld-memory",
  "paste",
  "portable-atomic",
 ]
@@ -3813,15 +3813,6 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "vcell",
-]
-
-[[package]]
-name = "nrf52"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ld-memory",
 ]
 
 [[package]]
