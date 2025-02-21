@@ -152,6 +152,8 @@ contexts:
     parent: nrf
     selects:
       - thumbv6m-none-eabi
+    provides:
+      - hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -169,6 +171,8 @@ contexts:
     parent: nrf
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - hwrng
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -214,6 +218,8 @@ contexts:
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
+    provides:
+      - hwrng
     env:
       RUSTFLAGS:
         - --cfg context=\"rp\"
@@ -264,6 +270,8 @@ contexts:
     selects:
       - ?debug-console
       - ?esp-println
+    provides:
+      - hwrng
     env:
       RUSTFLAGS:
         - --cfg context=\"esp\"
@@ -409,6 +417,7 @@ contexts:
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     provides:
+      - hwrng
       - sw/storage
     env:
       PROBE_RS_CHIP: STM32H755ZITx
@@ -834,18 +843,11 @@ modules:
         RUSTFLAGS:
           - --cfg capability=\"hw/device-identity\"
 
+    # Provided on contexts for which the hwrng feature of ariel-os-embassy
+    # builds, which would fail if the big if(context=...) doesn't have an entry
+    # in the cfg(feature = "hwrng") part of init_task
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
-    context:
-      # these are precisely those for which the hwrng feature of
-      # ariel-os-embassy builds, which would fail if the big if(context=...)
-      # doesn't have an entry in the cfg(feature = "hwrng") part of init_task
-      - esp
-      - nrf51
-      - nrf52
-      - rp
-      - stm32h755zitx
-      - stm32wb55rgvx
     env:
       global:
         FEATURES:
@@ -1281,6 +1283,7 @@ builders:
     parent: stm32wb55rgvx
     provides:
       - hw/usb-device-port
+      - hwrng
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
