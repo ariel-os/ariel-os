@@ -7,8 +7,18 @@ fn main() {
         (128, 512)
     } else if is_in_current_contexts(&["nrf52840"]) {
         (256, 1024)
+    } else if is_in_current_contexts(&["nrf5340"]) {
+        (512, 1024)
     } else {
         panic!("nrf52: please set MCU feature");
+    };
+
+    let slot_prefix = if is_in_current_contexts(&["nrf52"]) {
+        "NRF52_FLASH"
+    } else if is_in_current_contexts(&["nrf5340"]) {
+        "NRF5340_FLASH"
+    } else {
+        unreachable!();
     };
 
     // generate linker script
@@ -17,7 +27,7 @@ fn main() {
         .add_section(
             MemorySection::new("FLASH", 0x0, rom * 1024)
                 .pagesize(4096)
-                .from_env_with_prefix("NRF52_FLASH"),
+                .from_env_with_prefix(slot_prefix),
         );
 
     memory.to_cargo_outdir("memory.x").expect("wrote memory.x");

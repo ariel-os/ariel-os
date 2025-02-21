@@ -201,7 +201,6 @@ name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
  "nrf51",
- "nrf5340",
  "rp",
  "stm32",
 ]
@@ -3813,14 +3812,6 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "vcell",
-]
-
-[[package]]
-name = "nrf5340"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ld-memory",
 ]
 
 [[package]]
