@@ -567,9 +567,6 @@ modules:
           - -Clink-arg=-Tdefmt.x
         ESPFLASH_LOG_FORMAT: "--log-format defmt"
         CARGO_ENV:
-          # For some reason, `sccache` makes the build not realize changes to
-          # `DEFMT_LOG`. Painful as it is, hard-disable `sccache` here.
-          - RUSTC_WRAPPER=""
           - DEFMT_LOG=info,${LOG}
 
   - name: log

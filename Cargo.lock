@@ -1351,8 +1351,7 @@ dependencies = [
 [[package]]
 name = "defmt-macros"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d135dd939bad62d7490b0002602d35b358dce5fd9233a709d3c1ef467d4bde6"
+source = "git+https://github.com/kaspar030/defmt?branch=fix-sccache-deps#bc87d7c22a673f78419165845700f3c4400719b9"
 dependencies = [
  "defmt-parser",
  "proc-macro-error2",
@@ -1386,8 +1385,7 @@ dependencies = [
 [[package]]
 name = "defmt-parser"
 version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3983b127f13995e68c1e29071e5d115cd96f215ccb5e6812e3728cd6f92653b3"
+source = "git+https://github.com/kaspar030/defmt?branch=fix-sccache-deps#bc87d7c22a673f78419165845700f3c4400719b9"
 dependencies = [
  "thiserror 2.0.11",
 ]

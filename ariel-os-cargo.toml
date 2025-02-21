@@ -42,3 +42,5 @@ embedded-test = { git = "https://github.com/ariel-os/embedded-test", branch = "v
 
 # see src/lib/coapcore/Cargo.toml: Support for negative integers <https://github.com/twittner/minicbor/pull/9>
 minicbor = { git = "https://github.com/chrysn-pull-requests/minicbor", branch = "negativ-indices" }
+
+defmt-macros = { git = "https://github.com/kaspar030/defmt", branch = "fix-sccache-deps" }
