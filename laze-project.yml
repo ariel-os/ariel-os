@@ -1265,6 +1265,7 @@ builders:
     parent: stm32h755zitx
     provides:
       - hw/usb-device-port
+      - hwrng
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
