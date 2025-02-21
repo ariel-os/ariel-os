@@ -127,7 +127,6 @@ dependencies = [
 name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
- "rp",
  "stm32",
 ]
 
@@ -4177,13 +4176,6 @@ dependencies = [
  "const-default",
  "libc",
  "svgbobdoc",
-]
-
-[[package]]
-name = "rp"
-version = "0.1.0"
-dependencies = [
- "ariel-os-rp",
 ]
 
 [[package]]
