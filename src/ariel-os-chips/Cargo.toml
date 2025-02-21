@@ -8,9 +8,6 @@ edition.workspace = true
 [lints]
 workspace = true
 
-[target.'cfg(context = "nrf51")'.dependencies]
-nrf51 = { path = "nrf51" }
-
 [target.'cfg(context = "rp")'.dependencies]
 rp = { path = "rp" }
 
