@@ -143,6 +143,7 @@ contexts:
     selects:
       - ?probe-rs
     provides:
+      - executor-interrupt
       - hw/device-identity
     env:
       RUSTFLAGS:
@@ -219,6 +220,7 @@ contexts:
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     provides:
+      - executor-interrupt
       - hwrng
     env:
       RUSTFLAGS:
@@ -1019,9 +1021,6 @@ modules:
   # interrupt.
   - name: executor-interrupt
     help: use the Embassy interrupt executor
-    context:
-      - nrf
-      - rp
     provides_unique:
       - executor
     env:
