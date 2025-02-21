@@ -75,10 +75,6 @@ At least the following crates may need to be updated:
 - `ariel-os-storage`
 - `ariel-os-embassy`
 
-It may also be needed to introduce a new crate in `src/ariel-os-chips`.
-
-> The `ariel-os-chips` crate should eventually not be needed anymore.
-
 ## Adding Support for an Embassy HAL/MCU family
 
 As of this writing, Ariel OS supports most HALs that Embassy supports,

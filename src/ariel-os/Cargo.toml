@@ -12,7 +12,6 @@ document-features = { workspace = true }
 linkme = { workspace = true }
 ariel-os-bench = { workspace = true, optional = true }
 ariel-os-buildinfo = { workspace = true }
-ariel-os-chips = { path = "../ariel-os-chips" }
 ariel-os-coap = { path = "../ariel-os-coap", optional = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy = { path = "../ariel-os-embassy" }

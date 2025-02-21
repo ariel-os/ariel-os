@@ -143,7 +143,6 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-bench",
  "ariel-os-buildinfo",
- "ariel-os-chips",
  "ariel-os-coap",
  "ariel-os-debug",
  "ariel-os-embassy",
@@ -195,10 +194,6 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-utils",
 ]
-
-[[package]]
-name = "ariel-os-chips"
-version = "0.1.0"
 
 [[package]]
 name = "ariel-os-coap"
