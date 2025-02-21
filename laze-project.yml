@@ -275,6 +275,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
+      - executor-single-thread
       - hwrng
       - wifi-esp
     env:
@@ -1002,8 +1003,6 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
-    context:
-      - esp
     provides_unique:
       - executor
     conflicts:
