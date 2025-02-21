@@ -275,6 +275,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
+      - esp-println
       - executor-single-thread
       - hwrng
       - wifi-esp
@@ -1063,8 +1064,6 @@ modules:
 
   - name: esp-println
     help: use esp-println in ariel-os-debug
-    context:
-      - esp
     provides_unique:
       - ariel-os-debug-backend
     env:
