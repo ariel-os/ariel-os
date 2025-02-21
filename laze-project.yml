@@ -402,6 +402,7 @@ contexts:
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
     provides:
+      - hwrng
       - sw/storage
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
@@ -1265,13 +1266,11 @@ builders:
     parent: stm32h755zitx
     provides:
       - hw/usb-device-port
-      - hwrng
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
     provides:
       - hw/usb-device-port
-      - hwrng
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
