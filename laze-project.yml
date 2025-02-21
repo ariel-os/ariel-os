@@ -231,6 +231,7 @@ contexts:
       - thumbv6m-none-eabi
       - ?probe-rs
     provides:
+      - multi-core
       - sw/storage
     env:
       RUSTFLAGS:
@@ -251,6 +252,7 @@ contexts:
       - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
       - ?probe-rs
     provides:
+      - multi-core
       - sw/storage
     env:
       RUSTFLAGS:
@@ -342,6 +344,8 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - multi-core
     provides_unique: [c-function-abort]
     env:
       CARGO_TOOLCHAIN: +esp
@@ -1046,10 +1050,6 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
-    context:
-      - rp2040
-      - rp235xa
-      - esp32s3
     provides_unique:
       - critical-section
     env:
