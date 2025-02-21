@@ -199,9 +199,6 @@ dependencies = [
 [[package]]
 name = "ariel-os-chips"
 version = "0.1.0"
-dependencies = [
- "stm32",
-]
 
 [[package]]
 name = "ariel-os-coap"
@@ -4928,14 +4925,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d89b0684884a883431282db1e4343f34afc2ff6996fe1f4a1664519b66e14c1e"
 dependencies = [
  "portable-atomic",
-]
-
-[[package]]
-name = "stm32"
-version = "0.1.0"
-dependencies = [
- "ariel-os-stm32",
- "embassy-stm32",
 ]
 
 [[package]]

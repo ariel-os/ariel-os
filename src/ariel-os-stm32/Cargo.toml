@@ -16,6 +16,7 @@ embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
 ] }
 embassy-stm32 = { workspace = true, default-features = false, features = [
+  "memory-x",
   "optfield",
   "rt",
   "time-driver-any",
@@ -27,6 +28,18 @@ portable-atomic = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
+
+[target.'cfg(context = "stm32f401retx")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401re"] }
+
+[target.'cfg(context = "stm32h755zitx")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h755zi-cm7"] }
+
+[target.'cfg(context = "stm32wb55rgvx")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55rg"] }
+
+[target.'cfg(context = "stm32wba55cgux")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
 
 [features]
 ## Enables GPIO interrupt support.

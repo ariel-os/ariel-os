@@ -7,6 +7,3 @@ edition.workspace = true
 
 [lints]
 workspace = true
-
-[target.'cfg(context = "stm32")'.dependencies]
-stm32 = { path = "stm32" }

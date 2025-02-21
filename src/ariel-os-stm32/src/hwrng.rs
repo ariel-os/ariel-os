@@ -2,7 +2,7 @@ use embassy_stm32::rng::Rng;
 use embassy_stm32::{bind_interrupts, peripherals, rng};
 
 #[cfg(not(any(capability = "hw/stm32-hash-rng", capability = "hw/stm32-rng")))]
-compile_error!("no stm32 RNG capability enabled");
+compile_error!("no stm32 RNG capability selected");
 
 #[cfg(capability = "hw/stm32-hash-rng")]
 bind_interrupts!(struct Irqs {
