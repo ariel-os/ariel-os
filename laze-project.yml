@@ -276,6 +276,7 @@ contexts:
       - ?esp-println
     provides:
       - hwrng
+      - wifi-esp
     env:
       RUSTFLAGS:
         - --cfg context=\"esp\"
@@ -977,8 +978,6 @@ modules:
     depends: # using depends so the following syntax works
       - riscv:
           - wifi-esp-xor-threads
-    context:
-      - esp
     provides_unique:
       - network_device
     env:
