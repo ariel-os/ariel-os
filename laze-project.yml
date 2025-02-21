@@ -142,6 +142,8 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - hw/device-identity
     env:
       RUSTFLAGS:
         - --cfg context=\"nrf\"
@@ -354,6 +356,8 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - hw/device-identity
     env:
       OPENOCD_ARGS: foo
       RUSTFLAGS:
@@ -825,9 +829,6 @@ modules:
 
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
-    context:
-      - nrf
-      - stm32
     env:
       global:
         RUSTFLAGS:
