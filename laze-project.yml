@@ -152,7 +152,6 @@ contexts:
     parent: nrf
     selects:
       - thumbv6m-none-eabi
-    env:
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
