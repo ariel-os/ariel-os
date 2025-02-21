@@ -44,7 +44,6 @@ contexts:
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
-      BOARD: ${builder}
       PROFILE: release
       QEMU_SYSTEM_ARM: >-
         qemu-system-arm

@@ -8,10 +8,6 @@ edition.workspace = true
 workspace = true
 
 [dependencies]
-cfg-if.workspace = true
-linkme.workspace = true
-
-ariel-os-rt = { path = "../ariel-os-rt" }
 
 [features]
 # Allows to have no boards selected, useful to run platform-independent tooling
