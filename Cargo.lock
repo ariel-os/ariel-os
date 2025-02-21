@@ -100,7 +100,6 @@ name = "ariel-os-alloc"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
- "ariel-os-chips",
  "ariel-os-debug",
  "embedded-alloc",
  "embedded-test",
@@ -129,7 +128,6 @@ name = "ariel-os-chips"
 version = "0.1.0"
 dependencies = [
  "nrf51",
- "nrf52",
  "nrf5340",
  "rp",
  "stm32",
@@ -286,7 +284,6 @@ name = "ariel-os-identity"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
- "ariel-os-chips",
  "ariel-os-embassy",
  "ariel-os-embassy-common",
  "embedded-test",
@@ -320,6 +317,7 @@ dependencies = [
  "embassy-executor",
  "embassy-nrf",
  "embedded-hal-async",
+ "ld-memory",
  "paste",
  "portable-atomic",
 ]
@@ -3510,15 +3508,6 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "vcell",
-]
-
-[[package]]
-name = "nrf52"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ld-memory",
 ]
 
 [[package]]
