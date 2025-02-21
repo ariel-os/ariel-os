@@ -1,6 +1,11 @@
 use ld_memory::{Memory, MemorySection};
 
 fn main() {
+    if !is_in_current_contexts(&["ariel-os"]) {
+        // Platform-independent tooling.
+        return;
+    }
+
     let (ram, rom) = if is_in_current_contexts(&["nrf52832"]) {
         (64, 256)
     } else if is_in_current_contexts(&["nrf52833"]) {
@@ -17,9 +22,6 @@ fn main() {
         "NRF52_FLASH"
     } else if is_in_current_contexts(&["nrf5340"]) {
         "NRF5340_FLASH"
-    } else if !is_in_current_contexts(&["ariel-os"]) {
-        // Platform-independent tooling.
-        return;
     } else {
         unreachable!();
     };
