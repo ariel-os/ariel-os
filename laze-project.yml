@@ -145,6 +145,7 @@ contexts:
     provides:
       - executor-interrupt
       - hw/device-identity
+      - sw/benchmark
     env:
       RUSTFLAGS:
         - --cfg context=\"nrf\"
@@ -222,6 +223,7 @@ contexts:
     provides:
       - executor-interrupt
       - hwrng
+      - sw/benchmark
     env:
       RUSTFLAGS:
         - --cfg context=\"rp\"
@@ -278,6 +280,7 @@ contexts:
       - esp-println
       - executor-single-thread
       - hwrng
+      - sw/benchmark
       - wifi-esp
     env:
       RUSTFLAGS:
@@ -375,6 +378,7 @@ contexts:
       - ?probe-rs
     provides:
       - hw/device-identity
+      - sw/benchmark
     env:
       OPENOCD_ARGS: foo
       RUSTFLAGS:
@@ -962,19 +966,6 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
-    context:
-      # The Cortex-M implementation is using Systick.
-      - nrf
-      - rp
-      - stm32
-      # The esp32 implementation is using systimer.
-      - esp32c3
-      - esp32c6
-      - esp32s3
-      # These esp32 also have a systimer, uncomment when support is added.
-      # - esp32c2
-      # - esp32h2
-      # - esp32s2
 
   - name: wifi-esp
     depends: # using depends so the following syntax works
