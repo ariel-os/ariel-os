@@ -805,8 +805,6 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
-    context:
-      - rpi-pico-w
     provides_unique:
       - network_device
     env:
@@ -1241,6 +1239,8 @@ builders:
 
   - name: rpi-pico-w
     parent: rpi-pico
+    provides:
+      - wifi-cyw43
     env:
       BOARD: rpi-pico-w
 
