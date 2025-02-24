@@ -146,6 +146,10 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - executor-interrupt
+      - hw/device-identity
+      - sw/benchmark
     env:
       RUSTFLAGS:
         - --cfg context=\"nrf\"
@@ -154,6 +158,8 @@ contexts:
     parent: nrf
     selects:
       - thumbv6m-none-eabi
+    provides:
+      - hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -171,6 +177,8 @@ contexts:
     parent: nrf
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - hwrng
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -184,6 +192,8 @@ contexts:
     parent: nrf
     selects:
       - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - sw/storage
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
       RUSTFLAGS:
@@ -204,6 +214,8 @@ contexts:
 
   - name: nrf52840
     parent: nrf52
+    provides:
+      - sw/storage
     env:
       RUSTFLAGS:
         - --cfg context=\"nrf52840\"
@@ -212,6 +224,10 @@ contexts:
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
+    provides:
+      - executor-interrupt
+      - hwrng
+      - sw/benchmark
     env:
       RUSTFLAGS:
         - --cfg context=\"rp\"
@@ -222,6 +238,9 @@ contexts:
       - rp-link-arg
       - thumbv6m-none-eabi
       - ?probe-rs
+    provides:
+      - multi-core
+      - sw/storage
     env:
       RUSTFLAGS:
         - --cfg context=\"rp2040\"
@@ -240,6 +259,9 @@ contexts:
     selects:
       - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
       - ?probe-rs
+    provides:
+      - multi-core
+      - sw/storage
     env:
       RUSTFLAGS:
         - --cfg context=\"rp235xa\"
@@ -258,6 +280,12 @@ contexts:
     selects:
       - ?debug-console
       - ?esp-println
+    provides:
+      - esp-println
+      - executor-single-thread
+      - hwrng
+      - sw/benchmark
+      - wifi-esp
     env:
       RUSTFLAGS:
         - --cfg context=\"esp\"
@@ -328,6 +356,8 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - multi-core
     provides_unique: [c-function-abort]
     env:
       CARGO_TOOLCHAIN: +esp
@@ -350,6 +380,9 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - hw/device-identity
+      - sw/benchmark
     env:
       OPENOCD_ARGS: foo
       RUSTFLAGS:
@@ -372,6 +405,9 @@ contexts:
     parent: stm32
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - hwrng
+      - sw/storage
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
@@ -398,6 +434,9 @@ contexts:
     parent: stm32
     selects:
       - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - hwrng
+      - sw/storage
     env:
       PROBE_RS_CHIP: STM32H755ZITx
       PROBE_RS_PROTOCOL: swd
@@ -762,13 +801,6 @@ modules:
           - ariel-os/network-config-static
 
   - name: sw/storage
-    context:
-      - rp2040
-      - rp235xa
-      - nrf52840
-      - nrf5340
-      - stm32h755zitx
-      - stm32wb55rgvx
     env:
       global:
         FEATURES:
@@ -785,8 +817,6 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
-    context:
-      - rpi-pico-w
     provides_unique:
       - network_device
     env:
@@ -817,16 +847,6 @@ modules:
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
-    context:
-      - espressif-esp32-s3-devkitc-1
-      - nrf5340dk
-      - nrf52840dk
-      - rpi-pico
-      - rpi-pico-w
-      - rpi-pico2
-      - particle-xenon
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
     env:
       global:
         RUSTFLAGS:
@@ -834,26 +854,16 @@ modules:
 
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
-    context:
-      - nrf
-      - stm32
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/device-identity\"
 
+    # Provided on contexts for which the hwrng feature of ariel-os-embassy
+    # builds, which would fail if the big if(context=...) doesn't have an entry
+    # in the cfg(feature = "hwrng") part of init_task
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
-    context:
-      # these are precisely those for which the hwrng feature of
-      # ariel-os-embassy builds, which would fail if the big if(context=...)
-      # doesn't have an entry in the cfg(feature = "hwrng") part of init_task
-      - esp
-      - nrf51
-      - nrf52
-      - rp
-      - stm32h755zitx
-      - stm32wb55rgvx
     env:
       global:
         FEATURES:
@@ -961,26 +971,11 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
-    context:
-      # The Cortex-M implementation is using Systick.
-      - nrf
-      - rp
-      - stm32
-      # The esp32 implementation is using systimer.
-      - esp32c3
-      - esp32c6
-      - esp32s3
-      # These esp32 also have a systimer, uncomment when support is added.
-      # - esp32c2
-      # - esp32h2
-      # - esp32s2
 
   - name: wifi-esp
     depends: # using depends so the following syntax works
       - riscv:
           - wifi-esp-xor-threads
-    context:
-      - esp
     provides_unique:
       - network_device
     env:
@@ -1005,8 +1000,6 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
-    context:
-      - esp
     provides_unique:
       - executor
     conflicts:
@@ -1021,9 +1014,6 @@ modules:
   # interrupt.
   - name: executor-interrupt
     help: use the Embassy interrupt executor
-    context:
-      - nrf
-      - rp
     provides_unique:
       - executor
     env:
@@ -1052,10 +1042,6 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
-    context:
-      - rp2040
-      - rp235xa
-      - esp32s3
     provides_unique:
       - critical-section
     env:
@@ -1074,8 +1060,6 @@ modules:
 
   - name: esp-println
     help: use esp-println in ariel-os-debug
-    context:
-      - esp
     provides_unique:
       - ariel-os-debug-backend
     env:
@@ -1197,6 +1181,8 @@ builders:
 
   - name: nrf52840dk
     parent: nrf52840
+    provides:
+      - hw/usb-device-port
 
   - name: dwm1001
     parent: nrf52832
@@ -1235,19 +1221,27 @@ builders:
 
   - name: particle-xenon
     parent: nrf52840
+    provides:
+      - hw/usb-device-port
 
   - name: rpi-pico
     parent: rp2040
+    provides:
+      - hw/usb-device-port
     env:
       BOARD: rpi-pico
 
   - name: rpi-pico-w
     parent: rpi-pico
+    provides:
+      - wifi-cyw43
     env:
       BOARD: rpi-pico-w
 
   - name: rpi-pico2
     parent: rp235xa
+    provides:
+      - hw/usb-device-port
     env:
       BOARD: rpi-pico2
 
@@ -1262,18 +1256,26 @@ builders:
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
+    provides:
+      - hw/usb-device-port
 
   - name: nrf5340dk
     parent: nrf5340
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
 
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
