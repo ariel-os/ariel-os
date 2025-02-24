@@ -910,6 +910,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/coap-server-config-storage
+        CARGO_ENV:
+          - PEERS_YML=$\\${PWD}/peers.yml
 
   - name: coap-server-config-unprotected
     help: Configure the CoAP server to accept any request without authorization checks.

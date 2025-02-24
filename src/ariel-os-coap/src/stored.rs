@@ -4,6 +4,10 @@ use ariel_os_debug::log::{debug, info};
 use cbor_macro::cbo;
 use coapcore::seccfg::ServerSecurityConfig;
 
+mod flash_peers {
+    include!(concat!(env!("OUT_DIR"), "/peers.rs"));
+}
+
 pub async fn server_security_config() -> impl ServerSecurityConfig {
     StoredPolicy::load().await
 }
@@ -18,10 +22,26 @@ impl ServerSecurityConfig for StoredPolicy {
     // FIXME: Both could really be optional
     const PARSES_TOKENS: bool = true;
     const HAS_EDHOC: bool = true;
-    type GeneralClaims = coapcore::seccfg::ConfigBuilderClaims;
+    type GeneralClaims = StoredClaims;
 
     fn own_edhoc_credential(&self) -> Option<(lakers::Credential, lakers::BytesP256ElemLen)> {
         Some(self.own_edhoc_credential)
+    }
+
+    fn expand_id_cred_x(
+        &self,
+        id_cred_x: lakers::IdCred,
+    ) -> Option<(lakers::Credential, StoredClaims)> {
+        for (credential, scope) in flash_peers::kccs() {
+            if credential.by_kid().is_ok_and(|by_kid| by_kid == id_cred_x)
+                || credential
+                    .by_value()
+                    .is_ok_and(|by_value| by_value == id_cred_x)
+            {
+                return Some((credential, StoredClaims { scope }));
+            }
+        }
+        None
     }
 }
 

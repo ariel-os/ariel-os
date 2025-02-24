@@ -27,6 +27,19 @@ This application is a work in progress demo of running CoAP with OSCORE/EDHOC se
     * Add `-s coap-server-config-unprotected` to the laze invocation; this replaces the demokeys setup.
     * All resources are now only accessible without `--credentials`. (The "fauxhoc" script does not work in that mode).
 
+* CoAP with more than just demo keys:
+    * Add `-s coap-server-config-storage` to the laze invocation; this replaces the demokeys setup.
+    * Alter the client.diag file have the `peer_cred` reflect the "CoAP server identity" line it procduces at startup
+      <!-- FIXME: should be trivial after https://github.com/knurling-rs/defmt/pull/916 -->
+      after running the hex values there through https://cbor.me's bytes to diagnostic converter.
+
+    The build system now reads `peers.yml`, which currently encodes the same authorization for the demo key as the demo setup,
+    but in a user configurable way:
+    You can add your own private key there, or replace the demo key, and configure resources that should be accessible.
+
+    Instead of using a hard-coded key, the device generates one at first startup,
+    and reports the credential that contains its public key in the standard output.
+
 ## Roadmap
 
 Eventually, all of this should be covered by 20-line examples.
