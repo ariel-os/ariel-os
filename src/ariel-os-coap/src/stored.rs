@@ -50,6 +50,8 @@ impl StoredPolicy {
                     r#"{
                     /cnf/ 8: {/ COSE_Key / 1: {
                         1: 2,
+                        / empty key ID is handy because it enables sending by reference /
+                        2: '',
                         -1: 1,
                         -2: h'0000000000000000000000000000000000000000000000000000000000000000'
                     }}
