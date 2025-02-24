@@ -7,5 +7,4 @@ publish = false
 [dependencies]
 embassy-executor = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
 portable-atomic = "1.6.0"

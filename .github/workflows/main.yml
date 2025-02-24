@@ -114,7 +114,6 @@ jobs:
                 i2c,
                 mdns,
                 net,
-                no-boards,
                 spi,
                 storage,
                 tcp,
@@ -124,8 +123,6 @@ jobs:
                 "
             -p ariel-os
             -p ariel-os-alloc
-            -p ariel-os-boards
-            -p ariel-os-chips
             -p ariel-os-coap
             -p ariel-os-debug
             -p ariel-os-debug-log
@@ -234,7 +231,6 @@ jobs:
                     i2c,
                     mdns,
                     net,
-                    no-boards,
                     random,
                     ariel-os-coap/doc,
                     spi,

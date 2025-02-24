@@ -1,9 +1,0 @@
-[package]
-name = "espressif-esp32-s3-devkitc-1"
-version = "0.1.0"
-license.workspace = true
-edition.workspace = true
-
-[dependencies]
-ariel-os-rt = { workspace = true }
-ariel-os-debug.workspace = true

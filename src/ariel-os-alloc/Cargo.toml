@@ -24,7 +24,6 @@ esp-alloc = { workspace = true, default-features = false }
 
 [target.'cfg(context = "ariel-os")'.dev-dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["alloc"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
 
 embedded-test = { workspace = true }
 

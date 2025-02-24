@@ -78,7 +78,6 @@ jobs:
                   i2c,
                   mdns,
                   net,
-                  no-boards,
                   random,
                   ariel-os-coap/doc,
                   spi,

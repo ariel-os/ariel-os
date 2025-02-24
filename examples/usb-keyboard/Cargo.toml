@@ -13,6 +13,5 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "override-usb-config",
   "usb-hid",
 ] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embassy-sync = { workspace = true }
 static_cell = { workspace = true }

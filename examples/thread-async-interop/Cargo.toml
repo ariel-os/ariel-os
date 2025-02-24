@@ -10,4 +10,3 @@ workspace = true
 [dependencies]
 embassy-sync = { workspace = true, default-features = false }
 ariel-os = { path = "../../src/ariel-os", features = ["time"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }

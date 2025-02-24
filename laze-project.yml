@@ -28,8 +28,6 @@ contexts:
       RUSTFLAGS:
         - --cfg context=\"${builder}\"
         - --cfg context=\"ariel-os\"
-      FEATURES:
-        - ariel-os-boards/${BOARD}
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
@@ -46,7 +44,6 @@ contexts:
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
-      BOARD: ${builder}
       PROFILE: release
       riot_binary: ${app}
       QEMU_SYSTEM_ARM: >-
@@ -162,8 +159,6 @@ contexts:
     selects:
       - "bbc-microbit disabled due to missing nrf51 support in embassy"
     env:
-      # override "${builder}"
-      BOARD: bbc-microbit
       OPENOCD_ARGS:
         - "-f board/nordic_nrf52_dk.cfg"
 
@@ -377,6 +372,8 @@ contexts:
       PROBE_RS_PROTOCOL: swd
       RUSTFLAGS:
         - --cfg context=\"stm32wb55rgvx\"
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
@@ -390,6 +387,7 @@ contexts:
       PROBE_RS_PROTOCOL: swd
       RUSTFLAGS:
         - --cfg context=\"stm32wba55cgux\"
+        - --cfg capability=\"hw/stm32-rng\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
@@ -404,6 +402,8 @@ contexts:
       RUSTFLAGS:
         - --cfg context=\"stm32h755zitx\"
         - --cfg capability=\"hw/stm32-dual-core\"
+        - --cfg capability=\"hw/stm32-hash-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=UART5
@@ -1238,18 +1238,12 @@ builders:
 
   - name: rpi-pico
     parent: rp2040
-    env:
-      BOARD: rpi-pico
 
   - name: rpi-pico-w
     parent: rpi-pico
-    env:
-      BOARD: rpi-pico-w
 
   - name: rpi-pico2
     parent: rp235xa
-    env:
-      BOARD: rpi-pico2
 
   - name: ai-c3
     parent: esp-c3-01m

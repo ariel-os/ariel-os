@@ -51,12 +51,6 @@ builders:
     parent: stm32f401retx
 ```
 
-- `src/ariel-os-boards/$BOARD`: Add a crate that matches the board's name.
-  - This crate should inject the board-specific dependencies to the HAL crates.
-- `src/ariel-os-boards`:
-  - `Cargo.toml`: Add a Cargo feature that matches the board's name.
-  - `src/lib.rs`: Add the board to the dispatch logic.
-
 ## Adding Support for an MCU from a Supported MCU family
 
 - In `laze-project.yml`:
