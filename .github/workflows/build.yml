@@ -2,6 +2,12 @@ name: Build
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
     branches:
       - main
   merge_group:
@@ -36,8 +42,42 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
+      # Need to get two commits so we can get the PR's commit, not just the
+      # merge commit.
       - name: Check out repository code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # Get the second parent of the merge commit created by the `checkout`
+      # action.
+      - name: "Get the commit ID of the pull request branch"
+        id: get-commit-id
+        shell: bash
+        run: echo "commit_id=$(git rev-parse HEAD^2)" >> $GITHUB_OUTPUT
+
+      # We use this instead of accessing the PR labels through the trigger event
+      # because that would not work for the merge queue.
+      - name: "Get PR build labels through the commit hash of the pull request"
+        id: get-pr-labels
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const commitId = "${{ steps.get-commit-id.outputs.commit_id }}";
+            console.log(`Commit ID: ${commitId}`);
+            const { data: { items } } = await github.rest.search.issuesAndPullRequests({
+              q: `${commitId} type:pr`,
+            });
+            const prLabels = items[0].labels.map((label) => label.name);
+            console.log(`The PR labels are ${prLabels}`);
+            const VALID_LABELS = ['ci-build:skip', 'ci-build:small', 'ci-build:large'];
+            const buildLabels = prLabels.filter((label) => VALID_LABELS.includes(label));
+            if (buildLabels.length > 1) { throw 'Only one build label must be attached.'; }
+            const buildLabel = buildLabels[0];
+            if (!buildLabel) { throw 'A build label must be attached'; }
+            console.log(`The build label is ${buildLabel}`);
+            return buildLabel;
 
       - name: Get git tree hash
         id: get-tree-hash
@@ -51,16 +91,21 @@ jobs:
           path: .tree-hash
           key: success-${{ steps.get-tree-hash.outputs.hash }}-${{ matrix.partition }}-${{ github.event_name == 'schedule' && 'full' || 'limited' }}
 
+      - name: Whether to skip next steps
+        id: should-skip
+        run: |
+          echo "result=${{ steps.result-cache.outputs.cache-hit == 'true' || steps.get-pr-labels.outputs.result == 'ci-build:skip' }}" >> $GITHUB_OUTPUT
+
       - name: Run sccache-cache
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         uses: mozilla-actions/sccache-action@v0.0.4
 
       - id: get_toolchain
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install toolchain
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -70,7 +115,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -80,19 +125,19 @@ jobs:
           export: false
 
       - name: rust cache
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         uses: Swatinem/rust-cache@v2
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@v2
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         with:
           tool: laze
 
       - name: "installing prerequisites"
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
@@ -113,13 +158,13 @@ jobs:
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
 
-      - name: "limit build unless nightly build"
-        if: github.event_name != 'schedule' && steps.result-cache.outputs.cache-hit != 'true'
+      - name: "limit build"
+        if: github.event_name != 'schedule' && steps.get-pr-labels.outputs.result == 'ci-build:small'
         run: |
           echo "LAZE_BUILDERS=ai-c3,espressif-esp32-devkitc,espressif-esp32-c6-devkitc-1,espressif-esp32-s3-devkitc-1,bbc-microbit-v2,nrf52840dk,nrf5340dk,rpi-pico,rpi-pico-w,st-nucleo-h755zi-q,st-nucleo-wb55" >> "$GITHUB_ENV"
 
       - name: "ariel-os compilation test"
-        if: steps.result-cache.outputs.cache-hit != 'true'
+        if: steps.should-skip.outputs.result != 'true'
         run: |
           sccache --start-server || true # work around https://github.com/ninja-build/ninja/issues/2052
 
