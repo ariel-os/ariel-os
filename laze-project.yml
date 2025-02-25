@@ -167,8 +167,6 @@ contexts:
     selects:
       - "bbc-microbit disabled due to missing nrf51 support in embassy"
     env:
-      # override "${builder}"
-      BOARD: bbc-microbit
       OPENOCD_ARGS:
         - "-f board/nordic_nrf52_dk.cfg"
 
@@ -1197,18 +1195,12 @@ builders:
 
   - name: rpi-pico
     parent: rp2040
-    env:
-      BOARD: rpi-pico
 
   - name: rpi-pico-w
     parent: rpi-pico
-    env:
-      BOARD: rpi-pico-w
 
   - name: rpi-pico2
     parent: rp235xa
-    env:
-      BOARD: rpi-pico2
 
   - name: ai-c3
     parent: esp-c3-01m
