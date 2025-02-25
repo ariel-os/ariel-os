@@ -36,6 +36,9 @@ cortex-m = { workspace = true, features = ["critical-section-single-core"] }
 [target.'cfg(context = "stm32")'.dependencies]
 cortex-m = { workspace = true, features = ["critical-section-single-core"] }
 
+[target.'cfg(context = "stm32c031c6tx")'.dependencies]
+portable-atomic = { workspace = true, features = ["critical-section"] }
+
 [features]
 alloc = ["dep:ariel-os-alloc"]
 threading = ["dep:ariel-os-threads"]

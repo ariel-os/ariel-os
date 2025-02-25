@@ -319,6 +319,19 @@ contexts:
     env:
       OPENOCD_ARGS: foo
 
+  - name: stm32c031c6tx
+    parent: stm32
+    selects:
+      - thumbv6m-none-eabi
+    env:
+      PROBE_RS_CHIP: STM32C031C6Tx
+      PROBE_RS_PROTOCOL: swd
+      RUSTFLAGS:
+        - --cfg context=\"stm32c031c6tx\"
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+
   - name: stm32f401retx
     parent: stm32
     selects:
@@ -724,6 +737,7 @@ modules:
       - rp235xa
       - nrf52840
       - nrf5340
+      - stm32c031c6tx
       - stm32h755zitx
       - stm32wb55rgvx
     env:
@@ -1224,6 +1238,9 @@ builders:
 
   - name: nrf5340dk
     parent: nrf5340
+
+  - name: st-nucleo-c031c6
+    parent: stm32c031c6tx
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
