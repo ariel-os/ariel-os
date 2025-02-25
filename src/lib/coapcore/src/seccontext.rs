@@ -289,12 +289,9 @@ impl<
         response: &mut M,
         c_r: COwn,
     ) -> Result<(), Result<CoAPError, M::UnionError>> {
-        // FIXME: Why does the From<O> not do the map_err?
-        response.set_code(M::Code::new(coap_numbers::code::CHANGED).map_err(|x| Err(x.into()))?);
-
         let message_2 = self.pool.lookup(
             |c| c.corresponding_cown() == Some(c_r),
-            |matched| {
+            |matched| -> Result<_, lakers::EDHOCError> {
                 // temporary default will not live long (and may be only constructed if
                 // prepare_message_2 fails)
                 let taken = core::mem::take(matched);
@@ -323,9 +320,7 @@ impl<
                         lakers::CredentialTransfer::ByReference,
                         Some(c_r.into()),
                         &None,
-                    )
-                    // FIXME error handling
-                    .unwrap();
+                    )?;
                 *matched = SecContextState {
                     protocol_stage: SecContextStage::EdhocResponderSentM2 {
                         responder,
@@ -334,16 +329,29 @@ impl<
                     },
                     authorization,
                 };
-                message_2
+                Ok(message_2)
             },
         );
 
-        let Some(message_2) = message_2 else {
-            // FIXME render late error (it'd help if CoAPError also offered a type that unions it
-            // with an arbitrary other error). As it is, depending on the CoAP stack, there may be
-            // DoS if a peer can send many requests before the server starts rendering responses.
-            panic!("State vanished before response was built.");
+        let message_2 = match message_2 {
+            Some(Ok(m)) => m,
+            Some(Err(e)) => {
+                render_error(e).render(response).map_err(Err)?;
+                return Ok(());
+            }
+            // Can't happen with the current CoAP stack, but might happen when there is some
+            // possibly possible concurrency.
+            None => {
+                response.set_code(
+                    M::Code::new(coap_numbers::code::INTERNAL_SERVER_ERROR)
+                        .map_err(|x| Err(x.into()))?,
+                );
+                return Ok(());
+            }
         };
+
+        // FIXME: Why does the From<O> not do the map_err?
+        response.set_code(M::Code::new(coap_numbers::code::CHANGED).map_err(|x| Err(x.into()))?);
 
         response
             .set_payload(message_2.as_slice())
@@ -569,8 +577,10 @@ impl<
                 }
             }
 
-            let (mut responder, _prk_out) =
+            let (responder, _prk_out) =
                 responder.verify_message_3(cred_i).map_err(render_error)?;
+
+            let mut responder = responder.completed_without_message_4().map_err(render_error)?;
 
             // Once this gets updated beyond Lakers 0.7.2 (likely to 0.8), this will be needed:
             // let mut responder = responder.completed_without_message_4()
