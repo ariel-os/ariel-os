@@ -10,6 +10,8 @@ use sequential_storage::{
     map::{fetch_item, remove_item, store_item, Value},
 };
 
+use crate::error::Error;
+
 pub use crate::postcard_value::PostcardValue;
 pub use serde::{Deserialize, Serialize};
 
@@ -37,40 +39,32 @@ impl<F: NorFlash> Storage<F> {
     }
 
     /// Gets a [`Value`] from this [`Storage`] instance.
-    ///
-    /// # Panics
-    ///
-    /// Currently panics if `key.len() > MAX_KEY_LEN`.
     pub async fn get_raw<V: for<'d> Value<'d>>(
         &mut self,
         key: &str,
-    ) -> Result<Option<V>, sequential_storage::Error<<F as ErrorType>::Error>> {
-        let key = ArrayString::<MAX_KEY_LEN>::from(key).unwrap();
+    ) -> Result<Option<V>, Error<<F as ErrorType>::Error>> {
+        let key = ArrayString::<MAX_KEY_LEN>::from(key)?;
         let mut data_buffer = [0; DATA_BUFFER_SIZE];
 
-        fetch_item::<_, V, _>(
+        Ok(fetch_item::<_, V, _>(
             &mut self.flash,
             self.storage_range.clone(),
             &mut NoCache::new(),
             &mut data_buffer,
             &key,
         )
-        .await
+        .await?)
     }
 
     /// Inserts a [`Value`] into this [`Storage`] instance.
-    ///
-    /// # Panics
-    ///
-    /// Currently panics if `key.len() > MAX_KEY_LEN`.
     pub async fn insert_raw<'d, V: Value<'d>>(
         &mut self,
         key: &str,
         value: V,
-    ) -> Result<(), sequential_storage::Error<<F as ErrorType>::Error>> {
-        let key = ArrayString::<MAX_KEY_LEN>::from(key).unwrap();
+    ) -> Result<(), Error<<F as ErrorType>::Error>> {
+        let key = ArrayString::<MAX_KEY_LEN>::from(key)?;
         let mut data_buffer = [0; DATA_BUFFER_SIZE];
-        store_item(
+        Ok(store_item(
             &mut self.flash,
             self.storage_range.clone(),
             &mut NoCache::new(),
@@ -78,7 +72,7 @@ impl<F: NorFlash> Storage<F> {
             &key,
             &value,
         )
-        .await
+        .await?)
     }
 
     /// Stores a key-value pair into flash memory.
@@ -88,7 +82,7 @@ impl<F: NorFlash> Storage<F> {
         &mut self,
         key: &str,
         value: V,
-    ) -> Result<(), sequential_storage::Error<<F as ErrorType>::Error>>
+    ) -> Result<(), Error<<F as ErrorType>::Error>>
     where
         V: Serialize + Deserialize<'d> + Into<PostcardValue<V>>,
     {
@@ -98,18 +92,11 @@ impl<F: NorFlash> Storage<F> {
     /// Gets the last stored value from the flash that is associated with the given key.
     ///
     /// If no value with the key is found, `None` is returned.
-    ///
-    /// # Panics
-    ///
-    /// Currently panics if `key.len() > MAX_KEY_LEN`.
-    pub async fn get<V>(
-        &mut self,
-        key: &str,
-    ) -> Result<Option<V>, sequential_storage::Error<<F as ErrorType>::Error>>
+    pub async fn get<V>(&mut self, key: &str) -> Result<Option<V>, Error<<F as ErrorType>::Error>>
     where
         V: Serialize + for<'d> Deserialize<'d> + Into<PostcardValue<V>>,
     {
-        let key = ArrayString::<MAX_KEY_LEN>::from(key).unwrap();
+        let key = ArrayString::<MAX_KEY_LEN>::from(key)?;
         let mut data_buffer = [0; DATA_BUFFER_SIZE];
 
         let postcard_value = fetch_item::<_, PostcardValue<V>, _>(
@@ -124,10 +111,8 @@ impl<F: NorFlash> Storage<F> {
     }
 
     /// Resets the flash in the entire flash range of this [`Storage`] instance.
-    pub async fn erase_all(
-        &mut self,
-    ) -> Result<(), sequential_storage::Error<<F as ErrorType>::Error>> {
-        erase_all(&mut self.flash, self.storage_range.clone()).await
+    pub async fn erase_all(&mut self) -> Result<(), Error<<F as ErrorType>::Error>> {
+        Ok(erase_all(&mut self.flash, self.storage_range.clone()).await?)
     }
 }
 
@@ -143,23 +128,16 @@ impl<F: MultiwriteNorFlash> Storage<F> {
     /// All items in flash have to be read and deserialized to find the items with the key.
     /// This is unlikely to be cached well.
     /// </div>
-    ///
-    /// # Panics
-    ///
-    /// Currently panics if `key.len() > MAX_KEY_LEN`.
-    pub async fn remove(
-        &mut self,
-        key: &str,
-    ) -> Result<(), sequential_storage::Error<<F as ErrorType>::Error>> {
-        let key = ArrayString::<MAX_KEY_LEN>::from(key).unwrap();
+    pub async fn remove(&mut self, key: &str) -> Result<(), Error<<F as ErrorType>::Error>> {
+        let key = ArrayString::<MAX_KEY_LEN>::from(key)?;
         let mut data_buffer = [0; DATA_BUFFER_SIZE];
-        remove_item(
+        Ok(remove_item(
             &mut self.flash,
             self.storage_range.clone(),
             &mut NoCache::new(),
             &mut data_buffer,
             &key,
         )
-        .await
+        .await?)
     }
 }
