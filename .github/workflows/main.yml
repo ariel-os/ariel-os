@@ -212,8 +212,26 @@ jobs:
             --
             --deny warnings
 
-      # Reset `RUSTFLAGS`
-      - run: echo 'RUSTFLAGS=' >> $GITHUB_ENV
+  lint-rustdoc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - id: get_toolchain
+        run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
+
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+          # Required for checking ariel-os-esp
+          targets: riscv32imac-unknown-none-elf
+          components: clippy, rustfmt
+
+      - name: rust cache
+        uses: Swatinem/rust-cache@v2
 
       - name: rustdoc
         run: |
@@ -298,14 +316,35 @@ jobs:
                     " \
                 -p ariel-os-stm32
 
+  lint-rustfmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: rustfmt
         run: cargo fmt --check --all
+
+  lint-yamllint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
       - name: yamllint
         uses: karancode/yamllint-github-action@master
         with:
           yamllint_comment: true # Insert inline PR comments
           yamllint_strict: true # Set error code on warnings
+
+  lint-taplo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
       - name: Install taplo
         uses: taiki-e/install-action@v2
@@ -315,10 +354,24 @@ jobs:
       - name: Check toml formatting
         run: taplo fmt --check
 
+  lint-ruff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: Ruff
         uses: chartboost/ruff-action@v1
         with:
           args: format --check # Only check formatting for now
+
+  lint-spell:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
       - name: typos
         uses: crate-ci/typos@v1.22.0
