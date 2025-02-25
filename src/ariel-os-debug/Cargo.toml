@@ -28,7 +28,7 @@ esp-println = { workspace = true, optional = true, features = ["log"] }
 log = { version = "0.4.20" }
 
 [target.'cfg(context = "esp32")'.dependencies]
-esp-println = { workspace = true, features = ["esp32"] }
+esp-println = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["esp32c3"] }
@@ -42,12 +42,10 @@ esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 [features]
 debug-console = []
 
-defmt = [
-  "ariel-os-debug-log/defmt",
-  "esp-println?/defmt-espflash",
-  "rtt-target?/defmt",
-]
+defmt = ["ariel-os-debug-log/defmt", "esp-println?/defmt-espflash", "rtt-target?/defmt"]
 log = ["dep:log", "ariel-os-debug-log/log"]
 
-rtt-target = ["dep:rtt-target"]
 semihosting = ["dep:semihosting"]
+
+esp-println = ["dep:esp-println"]
+rtt-target = ["dep:rtt-target"]
