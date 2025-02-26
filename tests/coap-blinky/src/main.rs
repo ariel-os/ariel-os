@@ -23,8 +23,7 @@ async fn coap_run(peripherals: pins::LedPeripherals) {
         .at(
             &["led"],
             riot_coap_handler_demos::gpio::handler_for_output(led),
-        )
-        .with_wkc();
+        );
 
     ariel_os::coap::coap_run(handler).await;
 }
