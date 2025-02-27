@@ -1,4 +1,6 @@
 //! Expressions for access policy as evaluated for a particular security context.
+//!
+//! This module provides the [`Scope`] trait, and generic implementations thereof.
 
 use coap_message::{MessageOption, ReadableMessage};
 

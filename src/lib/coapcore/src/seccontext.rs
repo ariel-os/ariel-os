@@ -132,7 +132,7 @@ impl<Crypto: lakers::Crypto, GeneralClaims: generalclaims::GeneralClaims>
     }
 }
 
-/// A CoAP handler wrapping inner resources, and adding EDHOC and OSCORE and ACE support.
+/// A CoAP handler wrapping inner resources, and adding EDHOC, OSCORE and ACE support.
 ///
 /// While the ACE (authz-info) and EDHOC parts could be implemented as a handler that is to be
 /// added into the tree, the OSCORE part needs to wrap the inner handler anyway, and EDHOC and
@@ -178,11 +178,21 @@ impl<
         TP: TimeProvider,
     > OscoreEdhocHandler<H, Crypto, CryptoFactory, SSC, RNG, TP>
 {
-    /// Creates a new CoAP server implementation (a [Handler][coap_handler::Handler]).
+    /// Creates a new CoAP server implementation (a [Handler][coap_handler::Handler]), wrapping an
+    /// inner (application) handler.
+    ///
+    /// The main configuration is passed in as `authorities`; the [`seccfg`][crate::seccfg] module
+    /// has suitable implementations.
     ///
     /// The time provider is used to evaluate any time limited tokens leniently; choosing a "bad"
-    /// time source here (in particular [`crate::time::TimeUnknown`] leads to acceptance of expired
+    /// time source here (in particular [`crate::time::TimeUnknown`]) leads to acceptance of expired
     /// tokens.
+    ///
+    /// `rng` and `crypto_factory` are used to pass in platform specific implementations of what
+    /// may be accelerated by hardware or reuse operating system infrastructure. Any CSPRNG is
+    /// suitable for `rng` (Ariel OS picks `rand_chacha::ChaCha20Rng` at the time of writing); the
+    /// crypto factory can come from the `lakers_crypto_rustcrypto::Crypto` or any more specialized
+    /// hardware based implementation.
     pub fn new(
         inner: H,
         authorities: SSC,
@@ -804,6 +814,7 @@ pub enum AuthorizationChecked<I> {
 ///
 /// Other crates should not rely on this (but making it an enum wrapped in a struct for privacy is
 /// considered excessive at this point).
+#[doc(hidden)]
 pub enum OwnRequestData<I> {
     // Taking a small state here: We already have a slot in the pool, storing the big data there
     #[expect(private_interfaces, reason = "should be addressed eventually")]

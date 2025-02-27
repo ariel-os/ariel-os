@@ -1,5 +1,8 @@
-//! Descriptions of ACE Authorization Servers (AS) and other trust anchors, as viewed from the
-//! Resource Server (RS) which coapcore runs on.
+//! Descriptions of trust sources for the Resource Server (RS) which coapcore runs on.
+//!
+//! These descriptions, expressed in implementations of the [`ServerSecurityConfig`] trait,
+//! typically encode known credentials (effectively raw public keys) or ACE Authorization Servers
+//! (AS).
 
 use defmt_or_log::{debug, error, trace};
 
@@ -23,13 +26,13 @@ pub struct NotAllowedRenderingFailed;
 
 /// A single or collection of authorization servers that a handler trusts to create ACE tokens.
 pub trait ServerSecurityConfig {
-    /// True if the type will at any time need to process tokens at /authz-info
+    /// True if the type will at any time need to process tokens at `/authz-info`.
     ///
     /// This is used by the handler implementation to shortcut through some message processing
     /// paths.
     const PARSES_TOKENS: bool;
 
-    /// True if the type will at any time need to process requests to /.well-known/edhoc
+    /// True if the type will at any time need to process requests to `/.well-known/edhoc`.
     ///
     /// This is used by the handler implementation to shortcut through some message processing
     /// paths.
@@ -99,6 +102,8 @@ pub trait ServerSecurityConfig {
         Err(CredentialErrorDetail::KeyNotPresent.into())
     }
 
+    /// The credential (by value or by reference) and key that the server reports (and uses) in
+    /// incoming EDHOC exchanges (i.e., in the role of the responder).
     fn own_edhoc_credential(&self) -> Option<(lakers::Credential, lakers::BytesP256ElemLen)> {
         None
     }
@@ -153,7 +158,8 @@ impl ServerSecurityConfig for DenyAll {
     type GeneralClaims = core::convert::Infallible;
 }
 
-/// An SSC representing unconditionally allowed access without the option for opportunistic EDHOC.
+/// A [`ServerSecurityConfig`] representing unconditionally allowed access without the option for
+/// opportunistic EDHOC.
 pub struct AllowAll;
 
 impl ServerSecurityConfig for AllowAll {

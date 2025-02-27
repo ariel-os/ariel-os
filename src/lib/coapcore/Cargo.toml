@@ -1,6 +1,6 @@
 [package]
 name = "coapcore"
-version = "0.0.1"
+version = "0.1.0"
 license.workspace = true
 edition.workspace = true
 
@@ -49,7 +49,7 @@ p256 = { version = "0.13.2", features = ["ecdsa"], default-features = false }
 #! # Cargo features
 
 ## Sends the output of the crate's log statements to the `defmt` ecosystem.
-# `defmt` is not a link because we can't build docs with --all-features, see also
+#`defmt` is not a link because we can't build docs with --all-features, see also
 # https://github.com/t-moe/defmt-or-log/issues/4
 defmt = ["defmt-or-log/defmt", "dep:defmt", "lakers/defmt"]
 
@@ -58,12 +58,12 @@ defmt = ["defmt-or-log/defmt", "dep:defmt", "lakers/defmt"]
 # https://github.com/t-moe/defmt-or-log/issues/4
 log = ["defmt-or-log/log", "dep:log"]
 
-## Select the liboscore default features
-#
-# libOSCORE generally provides abort and assert symbols for its C code. When
-# used in environments where they are provided by other code (eg. ESP32 some
-# variants), this default feature can be disabled, leaving the user to manually
-# select the right libOSCORE features.
+## Selects the libOSCORE default features.
+##
+## libOSCORE generally provides abort and assert symbols for its C code. When
+## used in environments where they are provided by other code (eg. ESP32 some
+## variants), this default feature can be disabled, leaving the user to manually
+## select the right libOSCORE features.
 liboscore-defaults = ["liboscore-provide-abort", "liboscore-provide-assert"]
 
 ## Feature passed on to libOSCORE (see `liboscore-defaults`)

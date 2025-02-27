@@ -1,8 +1,31 @@
-//! A CoAP security for embedded devices, supporting OSCORE/EDHOC and managing credentials.
+//! A CoAP security tool for embedded devices, supporting OSCORE/EDHOC and managing credentials.
 //!
-//! The crate is under heavy development: Its API is in flux. So far, it has hidden dependencies on a
-//! particular implementation of the [`coap-message`] provided (it needs to be a
-//! [`coap_message_implementations::inmemory_write::Message`]).
+//! This crate is under active development; breaking changes will be made as necessary. It
+//! currently only handles the server side of CoAP exchanges. At runtime, there is more copying of
+//! messages than is generally preferred; those result from limitations of underlying tools and are
+//! being addressed there.
+//!
+//! This crate builds on several components technically and logically:
+//!
+//! * [libOSCORE](https://gitlab.com/oscore/liboscore/) provides the OSCORE implementation.
+//! * [Lakers](https://github.com/openwsn-berkeley/lakers) provides the EDHOC implementation.
+//! * The combined handling of OSCORE and EDHOC was originally explored in [EDF's CoAP/ACE-OAuth
+//!   proof-of-concept firmware](https://gitlab.com/oscore/coap-ace-poc-firmware/). Since this
+//!   crate matured, that firmware now uses coapcore.
+//! * The crate is maintained as part of [Ariel OS](https://ariel-os.org/), whose CoAP stack
+//!   integrates it and [manages server access
+//!   policies](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html#server-access-policy).
+//!   Nothing in this crate depends on Ariel OS, but some examples may refer to it.
+//!
+//! # Usage
+//!
+//! This crate is mainly used with a CoAP stack (something that takes a [`coap_handler::Handler`])
+//! and a CoAP server application (an implementation of a [`coap_handler::Handler`]). Rather than
+//! passing the handler directly to the stack (which then only applies security mechanisms built
+//! into that concrete stack, if any), a [`OscoreEdhocHandler`] is
+//! [created][OscoreEdhocHandler::new] from the application, and passed into the stack.
+//!
+//! The arguments passed to the [`OscoreEdhocHandler`] at construction guide its behavior.
 //!
 //! # Logging
 //!
@@ -19,7 +42,8 @@
 //! error is sent over the network and the details are not visible to the peer.
 //!
 //! See the book for [how defmt is configured in
-//! Ariel OS](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/defmt.html).
+//! Ariel OS](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/defmt.html); outside of
+//! that, regular [`defmt_or_log`] practica applies.
 //!
 //! **Warning**: At the Debug level, this module may show cryptographic key material. This will be
 //! revised once all components have been interop-tested.

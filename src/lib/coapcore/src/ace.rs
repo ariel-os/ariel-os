@@ -1,4 +1,6 @@
-//! Experimental types for ACE, COSE and CWT structures
+//! Types representing ACE, COSE and CWT structures.
+//!
+//! Notably, types in here be decoded (some also encoded) through [`minicbor`].
 //!
 //! On the long run, those might contribute to
 //! <https://github.com/namib-project/dcaf-rs/issues/29>.
