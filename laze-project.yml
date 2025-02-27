@@ -121,6 +121,15 @@ contexts:
         cmd:
           - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} embed --${PROFILE} ${FEATURES} --chip ${PROBE_RS_CHIP} --config-file ${EMBED_CONFIG}
 
+      provision:
+        build: false
+        workdir: ${appdir}
+        cmd:
+          # FIXME: Output to stdout just clashes badly with
+          - ${relroot}/scripts/provisioning-processor > /tmp/logged 2>&1
+          # just like embed
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} embed --${PROFILE} ${FEATURES} --chip ${PROBE_RS_CHIP} --config-file ${EMBED_CONFIG}
+
       clippy:
         build: false
         workdir: ${appdir}

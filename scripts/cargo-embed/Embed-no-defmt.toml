@@ -5,7 +5,7 @@ gdb.enabled = true
 enabled = true
 
 up_channels = [
-  { channel = 0},
+  { channel = 0, socket = "[::1]:1338" },
 ]
 
 tabs = [

@@ -5,7 +5,7 @@ gdb.enabled = true
 enabled = true
 
 up_channels = [
-  { channel = 0, format = "Defmt" },
+  { channel = 0, format = "Defmt", socket = "[::1]:1338" },
   { channel = 1 },
 ]
 
