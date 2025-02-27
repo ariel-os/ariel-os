@@ -1,0 +1,13 @@
+[default]
+gdb.enabled = true
+
+[default.rtt]
+enabled = true
+
+up_channels = [
+  { channel = 0},
+]
+
+tabs = [
+    { up_channel = 0, name = "Terminal including log" },
+]
