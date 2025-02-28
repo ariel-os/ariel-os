@@ -797,6 +797,7 @@ modules:
           - ariel-os/network-config-static
 
   - name: sw/storage
+    contextual: true
     env:
       global:
         FEATURES:
@@ -813,6 +814,7 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
+    contextual: true
     provides_unique:
       - network_device
     env:
@@ -843,6 +845,7 @@ modules:
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
+    contextual: true
     env:
       global:
         RUSTFLAGS:
@@ -850,6 +853,7 @@ modules:
 
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
+    contextual: true
     env:
       global:
         RUSTFLAGS:
@@ -860,6 +864,7 @@ modules:
     # in the cfg(feature = "hwrng") part of init_task
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
+    contextual: true
     env:
       global:
         FEATURES:
@@ -967,8 +972,10 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
+    contextual: true
 
   - name: wifi-esp
+    contextual: true
     depends: # using depends so the following syntax works
       - riscv:
           - wifi-esp-xor-threads
@@ -996,6 +1003,7 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
+    contextual: true
     provides_unique:
       - executor
     conflicts:
@@ -1010,6 +1018,7 @@ modules:
   # interrupt.
   - name: executor-interrupt
     help: use the Embassy interrupt executor
+    contextual: true
     provides_unique:
       - executor
     env:
@@ -1038,6 +1047,7 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
+    contextual: true
     provides_unique:
       - critical-section
     env:
@@ -1056,6 +1066,7 @@ modules:
 
   - name: esp-println
     help: use esp-println in ariel-os-debug
+    contextual: true
     provides_unique:
       - ariel-os-debug-backend
     env:
