@@ -86,20 +86,20 @@ mod backend {
                 up: {
                     0: {
                         size: 1024,
-                        mode: NoBlockTrim,
-                        name: "Terminal"
-                    }
-                    1: {
-                        size: 1024,
                         mode: NoBlockSkip,
                         // probe-run autodetects whether defmt is in use based on this channel name
                         name: "defmt"
                     }
+                    1: {
+                        size: 1024,
+                        mode: NoBlockTrim,
+                        name: "Terminal"
+                    }
                 }
             };
 
-            rtt_target::set_print_channel(channels.up.0);
-            rtt_target::set_defmt_channel(channels.up.1);
+            rtt_target::set_print_channel(channels.up.1);
+            rtt_target::set_defmt_channel(channels.up.0);
         }
     }
 }
