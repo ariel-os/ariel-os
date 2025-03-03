@@ -182,13 +182,6 @@ contexts:
         - "-f board/nordic_nrf52_dk.cfg"
       PROBE_RS_CHIP: nrf52832_xxAA
 
-  - name: nrf5340
-    parent: nrf
-    selects:
-      - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
-    env:
-      PROBE_RS_CHIP: nrf5340_xxAA
-
   - name: nrf52832
     parent: nrf52
 
@@ -201,6 +194,13 @@ contexts:
     parent: nrf52
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
+
+  - name: nrf5340
+    parent: nrf
+    selects:
+      - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    env:
+      PROBE_RS_CHIP: nrf5340_xxAA
 
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
