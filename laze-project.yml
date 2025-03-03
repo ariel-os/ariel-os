@@ -333,6 +333,19 @@ contexts:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2
 
+  - name: stm32h755zitx
+    parent: stm32
+    selects:
+      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    env:
+      PROBE_RS_CHIP: STM32H755ZITx
+      PROBE_RS_PROTOCOL: swd
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-dual-core\"
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=UART5
+
   - name: stm32wb55rgvx
     parent: stm32
     selects:
@@ -354,19 +367,6 @@ contexts:
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
-
-  - name: stm32h755zitx
-    parent: stm32
-    selects:
-      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
-    env:
-      PROBE_RS_CHIP: STM32H755ZITx
-      PROBE_RS_PROTOCOL: swd
-      RUSTFLAGS:
-        - --cfg capability=\"hw/stm32-dual-core\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=UART5
 
 modules:
   - name: thumbv6m-none-eabi
