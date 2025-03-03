@@ -365,22 +365,6 @@ contexts:
         - CONFIG_SWI=UART5
 
 modules:
-  - name: cortex-m
-    env:
-      global:
-        OBJCOPY: arm-none-eabi-objcopy
-        RUSTFLAGS:
-          - -Clink-arg=${LINK_ARG_PREFIX}--nmagic
-          - -Clink-arg=${LINK_ARG_PREFIX}--no-eh-frame-hdr
-          - -Clink-arg=-Tlinkme.x
-          - -Clink-arg=-Tlink.x
-          - -Clink-arg=-Teheap.x
-          - -Clink-arg=-Tdevice.x
-          - -Clink-arg=-Tisr_stack.x
-          - -Clink-arg=-Tkeep-stack-sizes.x
-          - --cfg context=\"cortex-m\"
-          - -Z emit-stack-sizes
-
   - name: thumbv6m-none-eabi
     selects:
       - cortex-m
@@ -390,6 +374,16 @@ modules:
         CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV6M_NONE_EABI
         RUSTFLAGS:
           - --cfg armv6m
+
+  - name: thumbv7m-none-eabi
+    selects:
+      - cortex-m
+    env:
+      global:
+        RUSTC_TARGET: thumbv7m-none-eabi
+        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV7M_NONE_EABI
+        RUSTFLAGS:
+          - --cfg armv7m
 
   - name: thumbv7em-none-eabi
     selects:
@@ -401,13 +395,13 @@ modules:
         RUSTFLAGS:
           - --cfg armv7m
 
-  - name: thumbv7m-none-eabi
+  - name: thumbv7em-none-eabihf
     selects:
       - cortex-m
     env:
       global:
-        RUSTC_TARGET: thumbv7m-none-eabi
-        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV7M_NONE_EABI
+        RUSTC_TARGET: thumbv7em-none-eabihf
+        CARGO_ENV_TARGET: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
         RUSTFLAGS:
           - --cfg armv7m
 
@@ -431,15 +425,21 @@ modules:
         RUSTFLAGS:
           - --cfg armv8m
 
-  - name: thumbv7em-none-eabihf
-    selects:
-      - cortex-m
+  - name: cortex-m
     env:
       global:
-        RUSTC_TARGET: thumbv7em-none-eabihf
-        CARGO_ENV_TARGET: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
+        OBJCOPY: arm-none-eabi-objcopy
         RUSTFLAGS:
-          - --cfg armv7m
+          - -Clink-arg=${LINK_ARG_PREFIX}--nmagic
+          - -Clink-arg=${LINK_ARG_PREFIX}--no-eh-frame-hdr
+          - -Clink-arg=-Tlinkme.x
+          - -Clink-arg=-Tlink.x
+          - -Clink-arg=-Teheap.x
+          - -Clink-arg=-Tdevice.x
+          - -Clink-arg=-Tisr_stack.x
+          - -Clink-arg=-Tkeep-stack-sizes.x
+          - --cfg context=\"cortex-m\"
+          - -Z emit-stack-sizes
 
   - name: xtensa
     env:
