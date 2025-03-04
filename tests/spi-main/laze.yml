@@ -1,9 +1,5 @@
 apps:
   - name: spi-main
-    env:
-      global:
-        CARGO_ENV:
-          - CONFIG_ISR_STACKSIZE=16384
     context:
       - esp
       - nrf52840
