@@ -206,9 +206,6 @@ contexts:
     parent: ariel-os
     provides:
       - has_swi
-    env:
-      RUSTFLAGS:
-        - --cfg context=\"rp\"
 
   - name: rp2040
     parent: rp
