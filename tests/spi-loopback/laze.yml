@@ -1,9 +1,5 @@
 apps:
   - name: spi-loopback
-    env:
-      global:
-        CARGO_ENV:
-          - CONFIG_ISR_STACKSIZE=16384
     context:
       - bbc-microbit-v2
       - esp
