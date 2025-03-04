@@ -14,11 +14,11 @@ fn main() {
         panic!("unsupported RP MCU");
     };
 
-    copy(memory_script, out.join(memory_script)).unwrap();
+    copy(memory_script, out.join("memory.x")).unwrap();
 
     println!("cargo:rustc-link-search={}", out.display());
 
-    println!("cargo:rerun-if-changed={memory_script}");
+    println!("cargo:rerun-if-changed=memory.x");
     println!("cargo:rerun-if-changed=build.rs");
 }
 
