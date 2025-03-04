@@ -42,14 +42,17 @@ pub enum Frequency {
 
 #[doc(hidden)]
 impl Frequency {
+    #[must_use]
     pub const fn first() -> Self {
         Self::UpTo100k(Kilohertz::kHz(1))
     }
 
+    #[must_use]
     pub const fn last() -> Self {
         Self::UpTo400k(Kilohertz::kHz(400))
     }
 
+    #[must_use]
     pub const fn next(self) -> Option<Self> {
         match self {
             Self::UpTo100k(f) => {
@@ -71,6 +74,7 @@ impl Frequency {
         }
     }
 
+    #[must_use]
     pub const fn prev(self) -> Option<Self> {
         match self {
             Self::UpTo100k(f) => {
@@ -92,6 +96,7 @@ impl Frequency {
         }
     }
 
+    #[must_use]
     pub const fn khz(self) -> u32 {
         match self {
             Self::UpTo100k(f) | Self::UpTo400k(f) => f.to_kHz(),
