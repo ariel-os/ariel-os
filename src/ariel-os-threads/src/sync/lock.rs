@@ -20,6 +20,7 @@ enum LockState {
 
 impl Lock {
     /// Creates new **unlocked** Lock.
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             state: UnsafeCell::new(LockState::Unlocked),
@@ -27,6 +28,7 @@ impl Lock {
     }
 
     /// Creates new **locked** Lock.
+    #[must_use]
     pub const fn new_locked() -> Self {
         Self {
             state: UnsafeCell::new(LockState::Locked(ThreadList::new())),

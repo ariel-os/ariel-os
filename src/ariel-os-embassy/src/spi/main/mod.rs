@@ -43,6 +43,7 @@ pub type SpiDevice =
 ///
 /// This function is only intended to be used in a `const` context.
 /// It panics if no suitable frequency can be found.
+#[must_use]
 pub const fn highest_freq_in(
     range: core::ops::RangeInclusive<ariel_os_embassy_common::spi::main::Kilohertz>,
 ) -> hal::spi::main::Frequency {

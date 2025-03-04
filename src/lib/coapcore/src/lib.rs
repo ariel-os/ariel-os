@@ -26,6 +26,7 @@
 #![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
 #![no_std]
 #![cfg_attr(feature = "_nightly_docs", feature(doc_auto_cfg))]
+#![expect(clippy::pedantic)]
 
 mod iana;
 

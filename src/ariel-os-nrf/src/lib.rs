@@ -60,6 +60,7 @@ pub use embassy_nrf::peripherals;
 pub static EXECUTOR: Executor = Executor::new();
 
 #[doc(hidden)]
+#[must_use]
 pub fn init() -> OptionalPeripherals {
     let peripherals = embassy_nrf::init(Config::default());
     OptionalPeripherals::from(peripherals)

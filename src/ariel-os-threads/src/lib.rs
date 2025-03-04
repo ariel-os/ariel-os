@@ -623,6 +623,7 @@ pub fn current_tid() -> Option<ThreadId> {
 }
 
 /// Returns the id of the CPU that this thread is running on.
+#[must_use]
 pub fn core_id() -> CoreId {
     #[cfg(not(feature = "multi-core"))]
     {

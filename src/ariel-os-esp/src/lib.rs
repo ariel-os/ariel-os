@@ -115,6 +115,7 @@ pub use esp_hal::peripherals::OptionalPeripherals;
 pub use esp_hal_embassy::Executor;
 
 #[doc(hidden)]
+#[must_use]
 pub fn init() -> OptionalPeripherals {
     let mut config = esp_hal::Config::default();
     config.cpu_clock = esp_hal::clock::CpuClock::max();

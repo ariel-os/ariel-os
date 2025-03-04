@@ -47,6 +47,7 @@ impl<T> !Send for Delegate<T> {}
 
 impl<T> Delegate<T> {
     /// Creates a new [`Delegate`].
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             send: Signal::new(),

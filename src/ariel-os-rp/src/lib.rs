@@ -68,6 +68,7 @@ ariel_os_embassy_common::executor_swi!(SWI_IRQ_1);
 pub static EXECUTOR: Executor = Executor::new();
 
 #[doc(hidden)]
+#[must_use]
 pub fn init() -> OptionalPeripherals {
     #[cfg(feature = "executor-interrupt")]
     {

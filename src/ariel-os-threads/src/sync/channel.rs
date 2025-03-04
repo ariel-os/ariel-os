@@ -23,6 +23,7 @@ pub struct Channel<T> {
 unsafe impl<T> Sync for Channel<T> {}
 
 impl<T: Copy + Send> Channel<T> {
+    #[must_use]
     pub const fn new() -> Self {
         Channel {
             state: UnsafeCell::new(ChannelState::Idle),
