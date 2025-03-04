@@ -9,9 +9,4 @@ workspace = true
 
 [dependencies]
 ariel-os = { workspace = true, default-features = true, features = ["bench"] }
-<<<<<<< HEAD
 ariel-os-boards = { workspace = true }
-||||||| parent of f09e87af (refactor(chips)!: avoid the direct dependency on `ariel-os-chips`)
-ariel-os-chips = { workspace = true }
-=======
->>>>>>> f09e87af (refactor(chips)!: avoid the direct dependency on `ariel-os-chips`)
