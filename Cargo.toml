@@ -163,5 +163,9 @@ missing_safety_doc = { level = "warn" }
 too_long_first_doc_paragraph = "warn"
 unused_result_ok = "deny"
 
+# TODO: remove these when we enable pedantic
+must_use_candidate = "warn"
+return_self_not_must_use = "warn"
+
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"
