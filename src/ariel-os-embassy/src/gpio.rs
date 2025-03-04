@@ -32,16 +32,19 @@ pub use ariel_os_embassy_common::gpio::{DriveStrength, Level, Pull, Speed};
 macro_rules! inner_impl_input_methods {
     ($inner:ident) => {
         /// Returns whether the input level is high.
+        #[must_use]
         pub fn is_high(&self) -> bool {
             self.$inner.is_high()
         }
 
         /// Returns whether the input level is low.
+        #[must_use]
         pub fn is_low(&self) -> bool {
             self.$inner.is_low()
         }
 
         /// Returns the input level.
+        #[must_use]
         pub fn get_level(&self) -> Level {
             #[cfg(context = "esp")]
             let level = hal::gpio::input::into_level(self.$inner.level());
@@ -211,6 +214,7 @@ pub mod input {
         ///
         /// Fails to compile if the HAL does not support configuring Schmitt trigger on
         /// inputs.
+        #[must_use]
         pub fn schmitt_trigger(self, enable: bool) -> Self {
             #[expect(
                 clippy::assertions_on_constants,
@@ -233,6 +237,7 @@ pub mod input {
         // commit to them being part of our API for now.
         // We may remove them in the future if we realize they are never useful.
         #[doc(hidden)]
+        #[must_use]
         pub fn opt_schmitt_trigger(self, enable: bool) -> Self {
             if hal::gpio::input::SCHMITT_TRIGGER_CONFIGURABLE {
                 // We cannot reuse the non-`opt_*()`, otherwise the const assert inside it would always
@@ -358,6 +363,7 @@ pub mod output {
                 ///
                 /// Fails to compile if the HALs does not support configuring drive strength of
                 /// outputs.
+                #[must_use]
                 pub fn drive_strength(
                     self,
                     drive_strength: DriveStrength<HalDriveStrength>,
@@ -380,6 +386,7 @@ pub mod output {
                 // We may remove them in the future if we realize they are never useful.
                 #[doc(hidden)]
                 // TODO: or `drive_strength_opt`?
+                #[must_use]
                 pub fn opt_drive_strength(
                     self,
                     drive_strength: DriveStrength<HalDriveStrength>,
@@ -401,6 +408,7 @@ pub mod output {
                 /// # Note
                 ///
                 /// Fails to compile if the HAL does not support configuring speed of outputs.
+                #[must_use]
                 pub fn speed(self, speed: Speed<HalSpeed>) -> Self {
                     const {
                         assert!(
@@ -417,6 +425,7 @@ pub mod output {
                 // We may remove them in the future if we realize they are never useful.
                 #[doc(hidden)]
                 // TODO: or `speed_opt`?
+                #[must_use]
                 pub fn opt_speed(self, speed: Speed<HalSpeed>) -> Self {
                     if hal::gpio::output::SPEED_CONFIGURABLE {
                         // We cannot reuse the non-`opt_*()`, otherwise the const assert inside it would always

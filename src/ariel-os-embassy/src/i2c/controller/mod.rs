@@ -39,6 +39,7 @@ pub type I2cDevice = InnerI2cDevice<'static, CriticalSectionRawMutex, hal::i2c::
 ///
 /// This function is only intended to be used in a `const` context.
 /// It panics if no suitable frequency can be found.
+#[must_use]
 pub const fn highest_freq_in(
     range: core::ops::RangeInclusive<ariel_os_embassy_common::i2c::controller::Kilohertz>,
 ) -> hal::i2c::controller::Frequency {
