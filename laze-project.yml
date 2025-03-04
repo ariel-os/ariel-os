@@ -880,9 +880,12 @@ modules:
       global:
         FEATURES:
           - ariel-os/coap-server-config-storage
-        PEERS_YML: ${appdir}/peers.yml
+        # Path is relative to the appdir from which CARGO_ENV will be interpreted
+        PEERS_YML: peers.yml
         CARGO_ENV:
-          - PEERS_YML=${PEERS_YML}
+          # By the time a build script sees this, Cargo has chdir'd into *its*
+          # source, so we better pass an absolute path.
+          - PEERS_YML=$$(realpath ${PEERS_YML})
 
   - name: coap-server-config-unprotected
     help: Configure the CoAP server to accept any request without authorization checks.

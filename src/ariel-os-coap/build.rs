@@ -64,8 +64,16 @@ fn main() {
     let peers_yml = std::path::PathBuf::from(std::env::var("PEERS_YML").unwrap());
 
     build::rerun_if_changed(&peers_yml);
-    let peers_file =
-        std::fs::File::open(peers_yml).expect("no peers.yml usable in specified location");
+    let peers_file = std::fs::File::open(&peers_yml)
+        .map_err(|e| {
+            format!(
+                "{} while opening {} inside {}",
+                e,
+                peers_yml.display(),
+                std::env::current_dir().unwrap().display()
+            )
+        })
+        .expect("no peers.yml usable in specified location");
 
     let peers: Vec<Peer> = serde_yml::from_reader(peers_file).expect("failed to parse peers.yml");
 
