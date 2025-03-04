@@ -142,6 +142,7 @@ name = "ariel-os"
 version = "0.1.0"
 dependencies = [
  "ariel-os-bench",
+ "ariel-os-boards",
  "ariel-os-buildinfo",
  "ariel-os-coap",
  "ariel-os-debug",
@@ -163,6 +164,7 @@ name = "ariel-os-alloc"
 version = "0.1.0"
 dependencies = [
  "ariel-os",
+ "ariel-os-boards",
  "ariel-os-debug",
  "embedded-alloc",
  "embedded-test",
@@ -182,11 +184,6 @@ dependencies = [
 [[package]]
 name = "ariel-os-boards"
 version = "0.1.0"
-dependencies = [
- "ariel-os-rt",
- "cfg-if",
- "linkme",
-]
 
 [[package]]
 name = "ariel-os-buildinfo"
