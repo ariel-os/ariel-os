@@ -45,16 +45,16 @@ pub mod hwrng;
 
 #[cfg(feature = "usb")]
 cfg_if::cfg_if! {
-    if #[cfg(feature = "stm32-usb")] {
+    if #[cfg(capability = "hw/stm32-usb")] {
         #[doc(hidden)]
         #[path = "usb.rs"]
         pub mod usb;
-    } else if #[cfg(feature = "stm32-usb-synopsis")] {
+    } else if #[cfg(capability = "hw/stm32-usb-synopsis")] {
         #[doc(hidden)]
         #[path = "usb_synopsis_otg.rs"]
         pub mod usb;
     } else {
-        compile_error!("stm32: usb enabled but no flavor selected. Choose `stm32-usb` or `stm32-usb-synopsis`.");
+        compile_error!("stm32: USB enabled but no capability selected`.");
     }
 }
 

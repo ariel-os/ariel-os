@@ -344,6 +344,9 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
@@ -360,6 +363,8 @@ contexts:
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
 
   - name: stm32h755zitx
     parent: stm32
@@ -372,6 +377,8 @@ contexts:
       PROBE_RS_PROTOCOL: swd
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-dual-core\"
+        - --cfg capability=\"hw/stm32-hash-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=UART5

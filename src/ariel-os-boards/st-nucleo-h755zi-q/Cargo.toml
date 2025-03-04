@@ -12,8 +12,5 @@ embassy-stm32 = { workspace = true, features = [
 ] }
 ariel-os-debug = { workspace = true, features = ["rtt-target"] }
 ariel-os-rt.workspace = true
-ariel-os-stm32 = { workspace = true, features = [
-  "stm32-hash-rng",
-  "stm32-usb-synopsis",
-] }
+ariel-os-stm32 = { workspace = true }
 stm32 = { path = "../../ariel-os-chips/stm32" }

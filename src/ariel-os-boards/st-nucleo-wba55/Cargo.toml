@@ -8,5 +8,5 @@ edition.workspace = true
 [dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
 ariel-os-debug = { workspace = true, features = ["rtt-target"] }
-ariel-os-stm32 = { workspace = true, features = ["stm32-rng"] }
+ariel-os-stm32 = { workspace = true }
 ariel-os-rt.workspace = true

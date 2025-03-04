@@ -37,10 +37,6 @@ external-interrupts = [
 
 ## Enables seeding the random number generator from hardware.
 hwrng = ["dep:ariel-os-random"]
-# These are chosen automatically by ariel-os-boards and select the correct stm32
-# rng peripheral support.
-stm32-hash-rng = []
-stm32-rng = []
 
 ## Enables I2C support.
 # Time-related features are required for timeout support.
@@ -58,10 +54,6 @@ storage = ["dep:embassy-embedded-hal"]
 
 ## Enables USB support.
 usb = []
-# These are chosen automatically by ariel-os-boards and select the correct stm32
-# usb peripheral support.
-stm32-usb = []
-stm32-usb-synopsis = []
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-stm32/defmt"]
