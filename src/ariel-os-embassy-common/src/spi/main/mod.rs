@@ -62,14 +62,17 @@ macro_rules! impl_spi_frequency_const_functions {
     ($MAX_FREQUENCY:ident) => {
         #[doc(hidden)]
         impl Frequency {
+            #[must_use]
             pub const fn first() -> Self {
                 Self::F(Kilohertz::kHz(1))
             }
 
+            #[must_use]
             pub const fn last() -> Self {
                 Self::F(MAX_FREQUENCY)
             }
 
+            #[must_use]
             pub const fn next(self) -> Option<Self> {
                 match self {
                     Self::F(kilohertz) => {
@@ -83,6 +86,7 @@ macro_rules! impl_spi_frequency_const_functions {
                 }
             }
 
+            #[must_use]
             pub const fn prev(self) -> Option<Self> {
                 const MIN_FREQUENCY: Kilohertz = Kilohertz::kHz(1);
 
@@ -98,6 +102,7 @@ macro_rules! impl_spi_frequency_const_functions {
                 }
             }
 
+            #[must_use]
             pub const fn khz(self) -> u32 {
                 match self {
                     Self::F(kilohertz) => kilohertz.to_kHz(),
