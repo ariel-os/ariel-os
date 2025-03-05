@@ -45,7 +45,7 @@ pub mod hwrng;
 
 #[cfg(feature = "usb")]
 cfg_if::cfg_if! {
-    if #[cfg(capability = "hw/stm32-usb")] {
+    if #[cfg(any(capability = "hw/stm32-usb", capability = "hw/stm32-usb-lp"))] {
         #[doc(hidden)]
         #[path = "usb.rs"]
         pub mod usb;
