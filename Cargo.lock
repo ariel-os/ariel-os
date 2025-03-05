@@ -210,6 +210,7 @@ dependencies = [
  "particle-xenon",
  "rpi-pico",
  "rpi-pico2",
+ "st-nucleo-c031c6",
  "st-nucleo-f401re",
  "st-nucleo-h755zi-q",
  "st-nucleo-wb55",
@@ -5184,6 +5185,15 @@ checksum = "f3e6ad23b128192ed337dfa4f1b8099ced0c2bf30d61e551b65fda5916dbb850"
 dependencies = [
  "encode_unicode",
  "serde",
+]
+
+[[package]]
+name = "st-nucleo-c031c6"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-rt",
+ "embassy-stm32",
 ]
 
 [[package]]

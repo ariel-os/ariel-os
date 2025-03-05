@@ -213,6 +213,10 @@ fn from_error(err: embassy_stm32::i2c::Error) -> ariel_os_embassy_common::i2c::c
 }
 
 // Define a driver per peripheral
+#[cfg(context = "stm32c031c6tx")]
+define_i2c_drivers!(
+   I2C1_EV + I2C1_ER => I2C1,
+);
 #[cfg(context = "stm32f401retx")]
 define_i2c_drivers!(
    I2C1_EV + I2C1_ER => I2C1,

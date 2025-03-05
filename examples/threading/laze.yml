@@ -1,4 +1,8 @@
 apps:
   - name: threading
+    env:
+      global:
+        CARGO_ENV:
+          - CONFIG_ISR_STACKSIZE=1024
     selects:
       - sw/threading

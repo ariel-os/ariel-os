@@ -140,6 +140,23 @@ chips:
       storage: not_currently_supported
       wifi: supported
 
+  stm32c031c6tx:
+    name: STM32C031C6TX
+    support:
+      gpio: supported
+      debug_output: supported
+      ethernet_over_usb: not_available
+      hwrng: not_available
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - would need to allocate some flash
+      user_usb: not_available
+      wifi: not_available
+
   stm32f401retx:
     name: STM32F401RETX
     support:
@@ -252,6 +269,12 @@ boards:
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
+
+  st-nucleo-c031c6:
+    name: ST NUCLEO-C031C6
+    url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html
+    chip: stm32c031c6tx
+    support:
 
   st-nucleo-f401re:
     name: ST NUCLEO-F401RE

@@ -1,9 +1,5 @@
 apps:
   - name: spi-loopback
-    env:
-      global:
-        CARGO_ENV:
-          - CONFIG_ISR_STACKSIZE=16384
     context:
       - bbc-microbit-v2
       - esp
@@ -11,6 +7,7 @@ apps:
       - nrf5340
       - rp2040
       - rp235xa
+      - st-nucleo-c031c6
       - st-nucleo-f401re
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
