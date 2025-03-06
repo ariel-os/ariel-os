@@ -14,11 +14,13 @@ embassy-sync = { workspace = true }
 once_cell = { workspace = true }
 ariel-os-debug = { workspace = true }
 ariel-os-hal = { workspace = true, features = ["storage"] }
-arrayvec = { version = "0.7.4", default-features = false }
 embedded-storage-async = { workspace = true }
 postcard = { version = "1.0.8", features = ["postcard-derive"] }
-sequential-storage = { version = "4.0.1", features = ["arrayvec"] }
+sequential-storage = { version = "4.0.1" }
 serde = { workspace = true, default-features = false }
+minicbor = "0.25.1"
+heapless = { workspace = true }
+minicbor-adapters = "0.0.3"
 
 [target.'cfg(context = "rp")'.dependencies]
 embassy-time = { workspace = true, default-features = false }
