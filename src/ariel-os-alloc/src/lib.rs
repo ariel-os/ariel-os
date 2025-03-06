@@ -49,7 +49,7 @@ mod alloc {
         #[global_allocator]
         static HEAP: Heap = const { Heap::empty() };
 
-        extern "C" {
+        unsafe extern "C" {
             static __sheap: u32;
             static __eheap: u32;
         }
