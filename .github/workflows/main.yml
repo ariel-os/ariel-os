@@ -37,6 +37,9 @@ jobs:
       - name: Install prerequisites
         run: sudo apt-get install ninja-build gcc-arm-none-eabi
 
+      - name: rust cache
+        uses: Swatinem/rust-cache@v2
+
       - name: Run host-side crate tests
         run: laze build --builders host --multiple-tasks --global --keep-going=0 test
 
