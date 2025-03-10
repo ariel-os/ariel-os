@@ -182,17 +182,11 @@ contexts:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:
         - "-f board/nordic_nrf52_dk.cfg"
-      PROBE_RS_CHIP: nrf52832_xxAA
-
-  - name: nrf5340
-    parent: nrf
-    selects:
-      - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
-    env:
-      PROBE_RS_CHIP: nrf5340_xxAA
 
   - name: nrf52832
     parent: nrf52
+    env:
+      PROBE_RS_CHIP: nrf52832_xxAA
 
   - name: nrf52833
     parent: nrf52
@@ -203,6 +197,16 @@ contexts:
     parent: nrf52
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
+
+  - name: nrf53
+    parent: nrf
+    selects:
+      - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+
+  - name: nrf5340
+    parent: nrf53
+    env:
+      PROBE_RS_CHIP: nrf5340_xxAA
 
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
@@ -337,6 +341,23 @@ contexts:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2
 
+  - name: stm32h755zitx
+    parent: stm32
+    selects:
+      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+    provides:
+      - has_swi
+    env:
+      PROBE_RS_CHIP: STM32H755ZITx
+      PROBE_RS_PROTOCOL: swd
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-dual-core\"
+        - --cfg capability=\"hw/stm32-hash-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis\"
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=UART5
+
   - name: stm32wb55rgvx
     parent: stm32
     selects:
@@ -368,40 +389,7 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
 
-  - name: stm32h755zitx
-    parent: stm32
-    selects:
-      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
-    provides:
-      - has_swi
-    env:
-      PROBE_RS_CHIP: STM32H755ZITx
-      PROBE_RS_PROTOCOL: swd
-      RUSTFLAGS:
-        - --cfg capability=\"hw/stm32-dual-core\"
-        - --cfg capability=\"hw/stm32-hash-rng\"
-        - --cfg capability=\"hw/stm32-usb-synopsis\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=UART5
-
 modules:
-  - name: cortex-m
-    env:
-      global:
-        OBJCOPY: arm-none-eabi-objcopy
-        RUSTFLAGS:
-          - -Clink-arg=${LINK_ARG_PREFIX}--nmagic
-          - -Clink-arg=${LINK_ARG_PREFIX}--no-eh-frame-hdr
-          - -Clink-arg=-Tlinkme.x
-          - -Clink-arg=-Tlink.x
-          - -Clink-arg=-Teheap.x
-          - -Clink-arg=-Tdevice.x
-          - -Clink-arg=-Tisr_stack.x
-          - -Clink-arg=-Tkeep-stack-sizes.x
-          - --cfg context=\"cortex-m\"
-          - -Z emit-stack-sizes
-
   - name: thumbv6m-none-eabi
     selects:
       - cortex-m
@@ -411,6 +399,16 @@ modules:
         CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV6M_NONE_EABI
         RUSTFLAGS:
           - --cfg armv6m
+
+  - name: thumbv7m-none-eabi
+    selects:
+      - cortex-m
+    env:
+      global:
+        RUSTC_TARGET: thumbv7m-none-eabi
+        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV7M_NONE_EABI
+        RUSTFLAGS:
+          - --cfg armv7m
 
   - name: thumbv7em-none-eabi
     selects:
@@ -422,13 +420,13 @@ modules:
         RUSTFLAGS:
           - --cfg armv7m
 
-  - name: thumbv7m-none-eabi
+  - name: thumbv7em-none-eabihf
     selects:
       - cortex-m
     env:
       global:
-        RUSTC_TARGET: thumbv7m-none-eabi
-        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV7M_NONE_EABI
+        RUSTC_TARGET: thumbv7em-none-eabihf
+        CARGO_ENV_TARGET: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
         RUSTFLAGS:
           - --cfg armv7m
 
@@ -452,15 +450,21 @@ modules:
         RUSTFLAGS:
           - --cfg armv8m
 
-  - name: thumbv7em-none-eabihf
-    selects:
-      - cortex-m
+  - name: cortex-m
     env:
       global:
-        RUSTC_TARGET: thumbv7em-none-eabihf
-        CARGO_ENV_TARGET: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
+        OBJCOPY: arm-none-eabi-objcopy
         RUSTFLAGS:
-          - --cfg armv7m
+          - -Clink-arg=${LINK_ARG_PREFIX}--nmagic
+          - -Clink-arg=${LINK_ARG_PREFIX}--no-eh-frame-hdr
+          - -Clink-arg=-Tlinkme.x
+          - -Clink-arg=-Tlink.x
+          - -Clink-arg=-Teheap.x
+          - -Clink-arg=-Tdevice.x
+          - -Clink-arg=-Tisr_stack.x
+          - -Clink-arg=-Tkeep-stack-sizes.x
+          - --cfg context=\"cortex-m\"
+          - -Z emit-stack-sizes
 
   - name: xtensa
     env:
