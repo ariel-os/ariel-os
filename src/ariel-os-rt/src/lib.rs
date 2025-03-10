@@ -41,11 +41,27 @@ cfg_if::cfg_if! {
 
 #[cfg(any(context = "cortex-m", context = "riscv"))]
 mod isr_stack {
-    const ISR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
-        "CONFIG_ISR_STACKSIZE",
-        8192,
-        "ISR stack size (in bytes)"
-    );
+    pub(crate) const ISR_STACKSIZE: usize = {
+        const CONFIG_ISR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
+            "CONFIG_ISR_STACKSIZE",
+            2048,
+            "ISR stack size (in bytes)"
+        );
+
+        #[cfg(feature = "executor-interrupt")]
+        {
+            const CONFIG_EXECUTOR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
+                "CONFIG_EXECUTOR_STACKSIZE",
+                8192,
+                "System executor stack size (in bytes)"
+            );
+
+            CONFIG_ISR_STACKSIZE + CONFIG_EXECUTOR_STACKSIZE
+        }
+
+        #[cfg(not(feature = "executor-interrupt"))]
+        CONFIG_ISR_STACKSIZE
+    };
 
     #[link_section = ".isr_stack"]
     #[used(linker)]
@@ -78,6 +94,9 @@ fn startup() -> ! {
     ariel_os_debug::init();
 
     debug!("ariel_os_rt::startup()");
+
+    #[cfg(any(context = "cortex-m", context = "riscv"))]
+    debug!("ariel_os_rt: ISR_STACKSIZE={}", isr_stack::ISR_STACKSIZE);
 
     #[cfg(feature = "alloc")]
     // SAFETY: *this* is the only place alloc should be initialized.

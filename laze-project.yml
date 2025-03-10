@@ -33,9 +33,10 @@ contexts:
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
-      # laze doesn't know the concept of "export" as make does, so each variable
-      # that needs to be passed via environment needs to be listed in that rule
-      # or task's command list.
+      # While laze allows "export:" in rules and tasks to export laze
+      # variables to a rule's recipe shell environment, this would require
+      # those to be listed for *all* rules and tasks where they are needed.
+      # So until laze allows "global shell exporting of variables",
       # "CARGO_ENV" is used for that.
       CARGO_ENV:
         - >-
@@ -46,6 +47,8 @@ contexts:
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
+          CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
+          CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       BOARD: ${builder}
       PROFILE: release
       QEMU_SYSTEM_ARM: >-
@@ -57,6 +60,17 @@ contexts:
         -kernel
       PROBE_RS_PROTOCOL: swd
       CARGO_PRESHELL: []
+
+      # Stack size config
+      executor_stacksize_required:
+        # These defines the defaults. Other modules can append their needs,
+        # the maximum value will be chosen.
+        # Note: make sure to append to the list, not set single value!
+        - "8192"
+      isr_stacksize_required:
+        - "2048"
+      CONFIG_EXECUTOR_STACKSIZE: $(max (0, ${executor_stacksize_required}))
+      CONFIG_ISR_STACKSIZE: $(max (0, ${isr_stacksize_required}))
 
     var_options:
       # this turns ${FEATURES} from a list to "--features=feature1,feature2"
@@ -78,6 +92,12 @@ contexts:
       # this prefixes `--protocol=` to `PROBE_RS_PROTOCOL`
       PROBE_RS_PROTOCOL:
         start: --protocol=
+
+      # Executor / ISR stacksize helpers
+      executor_stacksize_required:
+        joiner: ", "
+      isr_stacksize_required:
+        joiner: ", "
 
     rules:
       - name: LINK
@@ -897,7 +917,8 @@ modules:
           - PEERS_YML=$$(realpath ${PEERS_YML})
 
   - name: coap-server-config-unprotected
-    help: Configure the CoAP server to accept any request without authorization checks.
+    help:
+      Configure the CoAP server to accept any request without authorization checks.
 
       The device will have no cryptographic identity for CoAP, and not even
       accept opportunistic EDHOC.
@@ -910,7 +931,8 @@ modules:
           - ariel-os/coap-server-config-unprotected
 
   - name: coap-server-config-demokeys
-    help: Configure the CoAP server as expected by simple examples that expect a fixed server key.
+    help:
+      Configure the CoAP server as expected by simple examples that expect a fixed server key.
 
       This configuration may change over time, in lockstep with the examples' setup.
     selects:

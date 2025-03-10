@@ -2,7 +2,7 @@ apps:
   - name: udp-echo
     env:
       global:
-        CARGO_ENV:
-          - CONFIG_ISR_STACKSIZE=16384
+        executor_stacksize_required:
+          - "16384"
     selects:
       - network
