@@ -13,7 +13,7 @@ pub mod peripheral {
     pub use embassy_rp::Peripheral;
 }
 
-#[cfg(feature = "picotool")]
+#[cfg(context = "rp235xa")]
 mod picotool;
 
 #[cfg(feature = "wifi")]

@@ -125,7 +125,6 @@ jobs:
             -p ariel-os
             -p ariel-os-alloc
             -p ariel-os-boards
-            -p ariel-os-chips
             -p ariel-os-coap
             -p ariel-os-debug
             -p ariel-os-debug-log

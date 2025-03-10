@@ -54,7 +54,7 @@ cfg_if::cfg_if! {
         #[path = "usb_synopsis_otg.rs"]
         pub mod usb;
     } else {
-        compile_error!("stm32: USB enabled but no capability selected`.");
+        compile_error!("stm32: USB enabled but no capability selected");
     }
 }
 

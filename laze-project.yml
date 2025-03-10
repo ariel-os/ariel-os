@@ -28,8 +28,6 @@ contexts:
     env:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
-      FEATURES:
-        - ariel-os-boards/${BOARD}
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
         - --config ${root}/${relroot}/ariel-os-cargo.toml
@@ -46,7 +44,6 @@ contexts:
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
-      BOARD: ${builder}
       PROFILE: release
       QEMU_SYSTEM_ARM: >-
         qemu-system-arm
@@ -347,6 +344,7 @@ contexts:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
       RUSTFLAGS:
+        - --cfg context=\"stm32wb55rgvx\"
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb\"
       CARGO_ENV:
@@ -362,11 +360,12 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32WBA55CGUx
       PROBE_RS_PROTOCOL: swd
+      RUSTFLAGS:
+        - --cfg context=\"stm32wba55cgux\"
+        - --cfg capability=\"hw/stm32-rng\"
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=LPUART1
-      RUSTFLAGS:
-        - --cfg capability=\"hw/stm32-rng\"
 
   - name: stm32h755zitx
     parent: stm32
