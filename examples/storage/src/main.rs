@@ -131,6 +131,15 @@ async fn main() {
     }
     info!("");
 
+    info!("Accessing an object by composite key");
+    let key1: Option<usize> = storage::get(("key", 1)).await.unwrap();
+    info!("Original element with key (\"key\", 1) was: {:?}", key1);
+    if key1 != Some(42) {
+        info!("Storing 42 there.");
+        storage::insert(("key", 1), 42usize).await.unwrap();
+    }
+    info!("");
+
     info!("Exit storage example");
 
     exit(ExitCode::SUCCESS);
