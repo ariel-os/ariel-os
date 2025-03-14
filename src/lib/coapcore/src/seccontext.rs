@@ -727,7 +727,7 @@ impl<
                     .lookup(|c| c.corresponding_cown() == Some(kid), |matched| {
                         // Not checking authorization any more: we don't even have access to the
                         // request any more, that check was done.
-                        let SecContextState { protocol_stage: SecContextStage::Oscore(ref mut oscore_context), .. } = matched else {
+                        let SecContextState { protocol_stage: SecContextStage::Oscore(oscore_context), .. } = matched else {
                             // State vanished before response was built.
                             //
                             // As it is, depending on the CoAP stack, there may be DoS if a peer
