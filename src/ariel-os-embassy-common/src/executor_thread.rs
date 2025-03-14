@@ -2,7 +2,7 @@
 
 /// Stack size used by the main executor thread.
 pub const STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
-    "CONFIG_EXECUTOR_THREAD_STACKSIZE",
+    "CONFIG_EXECUTOR_STACKSIZE",
     16384,
     "executor thread stack size"
 );

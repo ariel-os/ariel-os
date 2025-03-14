@@ -152,7 +152,10 @@ net = ["ariel-os-embassy/net"]
 # ## Executor type selection for the (autostarted) main executor
 # Exactly one of the features below must be enabled at once.
 # Enables the interrupt executor.
-executor-interrupt = ["ariel-os-embassy/executor-interrupt"]
+executor-interrupt = [
+  "ariel-os-embassy/executor-interrupt",
+  "ariel-os-rt/executor-interrupt",
+]
 # Enables the single thread-mode executor.
 executor-single-thread = ["ariel-os-embassy/executor-single-thread"]
 # Enables the ariel-os-threading thread executor.

@@ -155,7 +155,10 @@ fn init() -> ! {
 fn init() {
     use static_cell::StaticCell;
 
-    debug!("ariel-os-embassy::init(): using thread executor");
+    debug!(
+        "ariel-os-embassy::init(): using thread executor with thread stack size {}",
+        executor_thread::STACKSIZE
+    );
     let p = hal::init();
 
     static EXECUTOR: StaticCell<thread_executor::Executor> = StaticCell::new();
