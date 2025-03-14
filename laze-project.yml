@@ -1154,6 +1154,28 @@ modules:
         CARGO_WRAPPER:
           - criticalup run
 
+# capabilities start here
+  - name: ariel-os-debug-backend
+    must_provide: true
+  - name: has_swi
+    must_provide: true
+  - name: c-function-abort
+    must_provide: true
+  - name: c-function-assert
+    must_provide: true
+  - name: critical-section
+    must_provide: true
+  - name: debug-logging-facade
+    must_provide: true
+  - name: executor
+    must_provide: true
+  - name: network-config
+    must_provide: true
+  - name: network_device
+    must_provide: true
+  - name: coap-server-config
+    must_provide: true
+
 builders:
   # host builder (for housekeeping tasks)
   - name: host
