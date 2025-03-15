@@ -3,20 +3,25 @@
 This guide is intended to get you started in about 5 minutes.
 It explains how to compile and run the `hello-word` example to verify your setup, and how to bootstrap a new application.
 
-> Currently only GNU/Linux is supported in this guide.
-
 ## Installing the build prerequisites
 
 1. Install the needed build dependencies.
-   On Ubuntu, the following is sufficient:
+
+    **Ubuntu (GNU/Linux)**
 
    <!-- gcc and curl are only required for espup, but it doesn't hurt to install those here. -->
 
     ```sh
-    apt install git rustup ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
+    apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
     ```
 
-1. Install the Rust installer [rustup](https://rustup.rs/) using the website's instructions or through your distribution package manager.
+    **macOS (Apple Silicon)**
+
+    ```sh
+    brew install git ninja pkg-config llvm gcc curl
+    ```
+
+1. Install the Rust installer [rustup](https://rustup.rs/) using the website's instructions.
 
 1. Only for using ESP devices, install [espup](https://github.com/esp-rs/espup) and related tools:
 
