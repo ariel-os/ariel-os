@@ -3,6 +3,14 @@
 # <https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html#outlook-interacting-with-an-ariel-os-coap-server-from-the-host>);
 # the general gist is that it lists who may do what on the device.
 
+- from: unauthenticated
+  scope:
+    # Authorizations assigned to matching clients (here: everyone). Keys are
+    # paths on the device, values are single or lists of CoAP methods that may
+    # be performed.
+    /.well-known/core: GET
+    /poem: GET
+
 - kccs: |
     # The CWT Claims Set that needs to be used (by value or by reference) by
     # the client to gain access to the device.
@@ -10,13 +18,5 @@
     # It is expressed in CBOR diagnostic notation (which at the YAML level is
     # just a string), and compatible with aiocoap's credentials.
     {2: "42-50-31-FF-EF-37-32-39", 8: {1: {1: 2, 2: h'2b', -1: 1, -2: h'ac75e9ece3e50bfc8ed60399889522405c47bf16df96660a41298cb4307f7eb6', -3: h'6e5de611388a4b8a8211334ac7d37ecb52a387d257e6db3c2a93df21ff3affc8'}}}
-  scope:
-    # Authorizations assigned to clients authenticating with the credential
-    # above. Keys are paths on the device, values are single or lists of CoAP
-    # methods that may be performed.
-    #
-    # Instead of a dictionary, the scope can also be a single string
-    # "allow-all".
-    /stdout: [GET, FETCH]
-    /.well-known/core: GET
-    /poem: GET
+  # This simple alternative to per-resource permission allows all requests.
+  scope: allow-all

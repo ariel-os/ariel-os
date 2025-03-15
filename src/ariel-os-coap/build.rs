@@ -6,14 +6,15 @@ use std::fmt::Write;
 /// (The top level is a list thereof).
 #[derive(Deserialize)]
 struct Peer {
-    kccs: String,
+    kccs: Option<String>,
+    from: Option<KnownSource>,
     scope: Scope,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]
 enum Scope {
-    String(String),
+    KnownScope(KnownScope),
     Aif(std::collections::HashMap<String, Permission>),
 }
 
@@ -55,6 +56,18 @@ impl SinglePermission {
     }
 }
 
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "kebab-case")]
+enum KnownScope {
+    AllowAll,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "kebab-case")]
+enum KnownSource {
+    Unauthenticated,
+}
+
 fn main() {
     if !build::cargo_feature("coap-server-config-storage") {
         return;
@@ -77,17 +90,14 @@ fn main() {
 
     let peers: Vec<Peer> = serde_yml::from_reader(peers_file).expect("failed to parse peers.yml");
 
+    let mut unauthenticated_scope = None;
     let mut chain_once_per_kccs = String::new();
     for peer in peers {
-        let kccs = cbor_edn::StandaloneItem::parse(&peer.kccs)
-            .expect("data in kccs is not valid CBOR Diagnostic Notation (EDN)")
-            .to_cbor()
-            .expect("CBOR Diagnostic Notation (EDN) is not expressible in CBOR");
         // FIXME: Should we pre-parse the KCCS and have the parsed credentials as const in flash? Or
         // just parsed enough that there is no CBOR parsing but credential and material point to
         // overlapping slices?
         let scope = match peer.scope {
-            Scope::String(s) if s == "allow-all" => {
+            Scope::KnownScope(KnownScope::AllowAll) => {
                 "coapcore::scope::UnionScope::AllowAll".to_string()
             }
             Scope::Aif(aif) => {
@@ -99,23 +109,48 @@ fn main() {
                 minicbor::encode(data, &mut bytes).unwrap();
                 format!("coapcore::scope::UnionScope::AifValue(coapcore::scope::AifValue::parse(&{bytes:?}).unwrap())")
             }
-            e => panic!("Scope configuration {e:?} is not recognized"),
         };
-        write!(
-            chain_once_per_kccs,
-            ".chain(core::iter::once((lakers::Credential::parse_ccs(
+
+        match (peer.kccs, peer.from) {
+            (Some(kccs), None) => {
+                let kccs = cbor_edn::StandaloneItem::parse(&kccs)
+                    .expect("data in kccs is not valid CBOR Diagnostic Notation (EDN)")
+                    .to_cbor()
+                    .expect("CBOR Diagnostic Notation (EDN) is not expressible in CBOR");
+
+                write!(
+                    chain_once_per_kccs,
+                    ".chain(core::iter::once((lakers::Credential::parse_ccs(
                             &{kccs:?}).unwrap(),
                             {scope},
                             )))"
-        )
-        .expect("writing to String is infallible");
+                )
+                .expect("writing to String is infallible");
+            }
+            (None, Some(KnownSource::Unauthenticated)) => {
+                if unauthenticated_scope.is_some() {
+                    panic!("Only a single `from: unauthenticated` record is usable.");
+                }
+
+                unauthenticated_scope = Some(format!("Some({scope})"));
+            }
+            _ => {
+                panic!("Every peer record needs to have either a `kccs: ...` or a `from: unauthenticated` key.")
+            }
+        }
     }
+
+    let unauthenticated_scope = unauthenticated_scope.unwrap_or("None".to_string());
 
     let peers_data = format!(
         "
         pub(super) fn kccs() -> impl Iterator<Item=(lakers::Credential, coapcore::scope::UnionScope)> {{
             core::iter::empty()
                 {chain_once_per_kccs}
+        }}
+
+        pub(super) fn unauthenticated_scope() -> Option<coapcore::scope::UnionScope> {{
+            {unauthenticated_scope}
         }}
     ");
 
