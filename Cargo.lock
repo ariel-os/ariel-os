@@ -59,14 +59,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ai-c3"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
 name = "aligned"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -192,42 +184,12 @@ dependencies = [
 [[package]]
 name = "ariel-os-boards"
 version = "0.1.0"
-dependencies = [
- "ai-c3",
- "ariel-os-rt",
- "bbc-microbit",
- "bbc-microbit-v2",
- "cfg-if",
- "dwm1001",
- "espressif-esp32-c6-devkitc-1",
- "espressif-esp32-devkitc",
- "espressif-esp32-s3-devkitc-1",
- "linkme",
- "nrf52840-mdk",
- "nrf52840dk",
- "nrf52dk",
- "nrf5340dk",
- "particle-xenon",
- "rpi-pico",
- "rpi-pico2",
- "st-nucleo-f401re",
- "st-nucleo-h755zi-q",
- "st-nucleo-wb55",
- "st-nucleo-wba55",
-]
 
 [[package]]
 name = "ariel-os-buildinfo"
 version = "0.1.0"
 dependencies = [
  "ariel-os-utils",
-]
-
-[[package]]
-name = "ariel-os-chips"
-version = "0.1.0"
-dependencies = [
- "stm32f4xx",
 ]
 
 [[package]]
@@ -424,6 +386,7 @@ dependencies = [
  "embassy-executor",
  "embassy-nrf",
  "embedded-hal-async",
+ "ld-memory",
  "paste",
  "portable-atomic",
 ]
@@ -621,12 +584,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bare-metal"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8fe8f5a8a398345e52358e18ff07cc17a568fbca5c6f73873d3a62056309603"
-
-[[package]]
 name = "base16ct"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -651,28 +608,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "823388e228f614e9558c6804262db37960ec8821856535f5c3f59913140558f8"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "bbc-microbit"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf51",
-]
-
-[[package]]
-name = "bbc-microbit-v2"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
 ]
 
 [[package]]
@@ -1321,7 +1256,7 @@ version = "0.7.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ec610d8f49840a5b376c69663b6369e71f4b34484b9b2eb29fb918d92516cb9"
 dependencies = [
- "bare-metal 0.2.5",
+ "bare-metal",
  "bitfield 0.13.2",
  "critical-section",
  "embedded-hal 0.2.7",
@@ -1613,15 +1548,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "deranged"
-version = "0.3.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b42b6fa04a440b495c8b04d0e71b707c585f83cb9cb28cf8cd0d976c315e31b4"
-dependencies = [
- "powerfmt",
-]
-
-[[package]]
 name = "device-metadata"
 version = "0.0.0"
 dependencies = [
@@ -1686,17 +1612,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cb6969eaabd2421f8a2775cfd2471a2b634372b4a25d41e3bd647b79912850a0"
 dependencies = [
  "litrs",
-]
-
-[[package]]
-name = "dwm1001"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
 ]
 
 [[package]]
@@ -2075,15 +1990,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "embedded-dma"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "994f7e5b5cb23521c22304927195f236813053eb9c065dd2226a32ba64695446"
-dependencies = [
- "stable_deref_trait",
-]
-
-[[package]]
 name = "embedded-graphics"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2303,26 +2209,6 @@ name = "enum-iterator-derive"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a1ab991c1362ac86c61ab6f556cff143daa22e5a15e4e189df818b2fd19fe65b"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.96",
-]
-
-[[package]]
-name = "enumflags2"
-version = "0.7.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba2f4b465f5318854c6f8dd686ede6c0a9dc67d4b1ac241cf0eb51521a309147"
-dependencies = [
- "enumflags2_derive",
-]
-
-[[package]]
-name = "enumflags2_derive"
-version = "0.7.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc4caf64a58d7a6d65ab00639b046ff54399a39f5f2554728895ace4b297cd79"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2661,30 +2547,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "espressif-esp32-c6-devkitc-1"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "espressif-esp32-devkitc"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "espressif-esp32-s3-devkitc-1"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
-]
-
-[[package]]
 name = "example-alloc"
 version = "0.0.0"
 dependencies = [
@@ -2825,16 +2687,6 @@ checksum = "17186ad64927d5ac8f02c1e77ccefa08ccd9eaa314d5a4772278aa204a22f7e7"
 dependencies = [
  "defmt",
  "gcd",
-]
-
-[[package]]
-name = "fugit-timer"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9607bfc4c388f9d629704f56ede4a007546cad417b3bcd6fc7c87dc7edce04a"
-dependencies = [
- "fugit",
- "nb 1.1.0",
 ]
 
 [[package]]
@@ -3932,86 +3784,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nrf51"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "nrf51-pac",
-]
-
-[[package]]
-name = "nrf51-pac"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "137f187dc6ee482e27312086bd3c3a83e1c273512782cf131a61957f72fc4219"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "vcell",
-]
-
-[[package]]
-name = "nrf52"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ld-memory",
-]
-
-[[package]]
-name = "nrf52840-mdk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
-]
-
-[[package]]
-name = "nrf52840dk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
-]
-
-[[package]]
-name = "nrf52dk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
-]
-
-[[package]]
-name = "nrf5340"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ld-memory",
-]
-
-[[package]]
-name = "nrf5340dk"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "cortex-m",
- "cortex-m-rt",
- "nrf5340",
-]
-
-[[package]]
 name = "num-bigint"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4020,12 +3792,6 @@ dependencies = [
  "num-integer",
  "num-traits",
 ]
-
-[[package]]
-name = "num-conv"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
 
 [[package]]
 name = "num-derive"
@@ -4166,17 +3932,6 @@ dependencies = [
  "redox_syscall",
  "smallvec",
  "windows-targets",
-]
-
-[[package]]
-name = "particle-xenon"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "cortex-m",
- "cortex-m-rt",
- "nrf52",
 ]
 
 [[package]]
@@ -4396,12 +4151,6 @@ dependencies = [
  "quote",
  "syn 1.0.109",
 ]
-
-[[package]]
-name = "powerfmt"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
 name = "ppv-lite86"
@@ -4769,49 +4518,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "rp2040"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
- "ariel-os-rt",
-]
-
-[[package]]
 name = "rp2040-boot2"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c92f344f63f950ee36cf4080050e4dce850839b9175da38f9d2ffb69b4dbb21"
 dependencies = [
  "crc-any",
-]
-
-[[package]]
-name = "rp235x"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
- "ariel-os-rt",
-]
-
-[[package]]
-name = "rpi-pico"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "rp2040",
-]
-
-[[package]]
-name = "rpi-pico2"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rp",
- "ariel-os-rt",
- "rp235x",
 ]
 
 [[package]]
@@ -5187,46 +4899,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "st-nucleo-f401re"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "embassy-stm32",
-]
-
-[[package]]
-name = "st-nucleo-h755zi-q"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ariel-os-stm32",
- "embassy-stm32",
- "stm32",
-]
-
-[[package]]
-name = "st-nucleo-wb55"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ariel-os-stm32",
- "embassy-stm32",
-]
-
-[[package]]
-name = "st-nucleo-wba55"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-rt",
- "ariel-os-stm32",
- "embassy-stm32",
-]
-
-[[package]]
 name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5248,14 +4920,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "stm32"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
-]
-
-[[package]]
 name = "stm32-fmc"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5272,53 +4936,6 @@ checksum = "dc520f60f6653a32479a95b9180b33908f0cbbdf106609465ee7dea98f4f5b37"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
-]
-
-[[package]]
-name = "stm32f4"
-version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb94729242cd1aebe6dab42a2ca0131985ae93bc3ab2751b680df724bb35528d"
-dependencies = [
- "bare-metal 1.0.0",
- "cortex-m",
- "cortex-m-rt",
- "vcell",
-]
-
-[[package]]
-name = "stm32f4xx"
-version = "0.1.0"
-dependencies = [
- "bare-metal 1.0.0",
- "cortex-m",
- "stm32f4xx-hal",
-]
-
-[[package]]
-name = "stm32f4xx-hal"
-version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ceed60591531f4da636d828701c74861a3d100e5c4e36677cadbd2eb6f46eb67"
-dependencies = [
- "bare-metal 1.0.0",
- "cortex-m",
- "cortex-m-rt",
- "document-features",
- "embedded-dma",
- "embedded-hal 0.2.7",
- "embedded-hal 1.0.0",
- "embedded-hal-nb",
- "embedded-storage",
- "enumflags2",
- "fugit",
- "fugit-timer",
- "nb 1.1.0",
- "rand_core",
- "stm32f4",
- "time",
- "vcell",
- "void",
 ]
 
 [[package]]
@@ -5631,24 +5248,6 @@ dependencies = [
  "embassy-executor",
  "portable-atomic",
 ]
-
-[[package]]
-name = "time"
-version = "0.3.37"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35e7868883861bd0e56d9ac6efcaaca0d6d5d82a2a7ec8209ff492c07cf37b21"
-dependencies = [
- "deranged",
- "num-conv",
- "powerfmt",
- "time-core",
-]
-
-[[package]]
-name = "time-core"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef927ca75afb808a4d64dd374f00a2adf8d0fcff8e7b184af886c3c87ec4a3f3"
 
 [[package]]
 name = "tiny-keccak"

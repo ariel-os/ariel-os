@@ -48,6 +48,9 @@ embassy-nrf = { workspace = true, features = [
   "nrf5340-app-s",
 ] }
 
+[build-dependencies]
+ld-memory = { workspace = true, features = ["build-rs"] }
+
 [features]
 ## Enables GPIO interrupt support.
 external-interrupts = [

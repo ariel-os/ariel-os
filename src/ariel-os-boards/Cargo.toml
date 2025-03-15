@@ -8,32 +8,7 @@ edition.workspace = true
 workspace = true
 
 [dependencies]
-cfg-if.workspace = true
-linkme.workspace = true
-
-ariel-os-rt = { path = "../ariel-os-rt" }
-
-ai-c3 = { optional = true, path = "ai-c3" }
-bbc-microbit = { optional = true, path = "bbc-microbit" }
-bbc-microbit-v2 = { optional = true, path = "bbc-microbit-v2" }
-espressif-esp32-c6-devkitc-1 = { optional = true, path = "espressif-esp32-c6-devkitc-1" }
-espressif-esp32-s3-devkitc-1 = { optional = true, path = "espressif-esp32-s3-devkitc-1" }
-espressif-esp32-devkitc = { optional = true, path = "espressif-esp32-devkitc" }
-dwm1001 = { optional = true, path = "dwm1001" }
-nrf52840-mdk = { optional = true, path = "nrf52840-mdk" }
-nrf52840dk = { optional = true, path = "nrf52840dk" }
-nrf52dk = { optional = true, path = "nrf52dk" }
-nrf5340dk = { optional = true, path = "nrf5340dk" }
-st-nucleo-f401re = { optional = true, path = "st-nucleo-f401re" }
-st-nucleo-wb55 = { optional = true, path = "st-nucleo-wb55" }
-st-nucleo-wba55 = { optional = true, path = "st-nucleo-wba55" }
-rpi-pico = { optional = true, path = "rpi-pico" }
-rpi-pico2 = { optional = true, path = "rpi-pico2" }
-particle-xenon = { optional = true, path = "particle-xenon" }
-st-nucleo-h755zi-q = { optional = true, path = "st-nucleo-h755zi-q" }
 
 [features]
 # Allows to have no boards selected, useful to run platform-independent tooling
 no-boards = []
-# both "rpi-pico" and "rpi-pico-w" are valid, so no "dep:rpi-pico"
-rpi-pico-w = ["rpi-pico/rpi-pico-w"]
