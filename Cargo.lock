@@ -203,6 +203,7 @@ dependencies = [
  "espressif-esp32-devkitc",
  "espressif-esp32-s3-devkitc-1",
  "linkme",
+ "native",
  "nrf52840-mdk",
  "nrf52840dk",
  "nrf52dk",
@@ -373,6 +374,7 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-esp",
+ "ariel-os-native",
  "ariel-os-nrf",
  "ariel-os-rp",
  "ariel-os-stm32",
@@ -409,6 +411,23 @@ dependencies = [
  "quote",
  "syn 2.0.96",
  "trybuild",
+]
+
+[[package]]
+name = "ariel-os-native"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-embassy-common",
+ "ariel-os-random",
+ "cfg-if",
+ "defmt",
+ "embassy-embedded-hal",
+ "embassy-executor",
+ "embassy-time",
+ "embedded-hal-async",
+ "paste",
+ "portable-atomic",
 ]
 
 [[package]]
@@ -526,6 +545,7 @@ dependencies = [
  "ariel-os-debug",
  "ariel-os-runqueue",
  "ariel-os-utils",
+ "atomic-wait",
  "cfg-if",
  "cortex-m",
  "cortex-m-rt",
@@ -597,6 +617,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4"
 dependencies = [
  "critical-section",
+]
+
+[[package]]
+name = "atomic-wait"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a55b94919229f2c42292fd71ffa4b75e83193bffdd77b1e858cd55fd2d0b0ea8"
+dependencies = [
+ "libc",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
@@ -1984,14 +2014,14 @@ dependencies = [
 [[package]]
 name = "embassy-time"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f820157f198ada183ad62e0a66f554c610cdcd1a9f27d4b316358103ced7a1f8"
+source = "git+https://github.com/ariel-os/embassy?branch=embassy-time-v0.4.0%2Bariel-os#f9b4c8132b07ef696668005846ee2240a8f57573"
 dependencies = [
  "cfg-if",
  "critical-section",
  "defmt",
  "document-features",
  "embassy-time-driver",
+ "embassy-time-queue-utils",
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -3883,6 +3913,14 @@ name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+
+[[package]]
+name = "native"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-rt",
+]
 
 [[package]]
 name = "nb"

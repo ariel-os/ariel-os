@@ -1,0 +1,9 @@
+[package]
+name = "native"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+ariel-os-debug.workspace = true
+ariel-os-rt.workspace = true

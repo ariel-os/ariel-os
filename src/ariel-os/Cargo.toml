@@ -26,8 +26,6 @@ ariel-os-utils = { workspace = true }
 static_cell = { workspace = true }
 
 [features]
-default = ["ariel-os-rt/_panic-handler"]
-
 #! ## System functionality
 ## Enables a global system allocator.
 alloc = ["ariel-os-rt/alloc"]
@@ -105,9 +103,11 @@ core-affinity = ["multi-core", "ariel-os-threads?/core-affinity"]
 # Exactly one of the features below must be enabled at once.
 # Selection of these should be done through laze configuration.
 # Enables one single core, even if the hardware provides multiple cores.
-single-core = ["ariel-os-rt/single-core"]
+single-core = ["ariel-os-threads?/single-core", "ariel-os-rt/single-core"]
 # Enables support for SMP.
 multi-core = ["ariel-os-threads?/multi-core", "ariel-os-rt/multi-core"]
+# Enables support for infinite cores.
+infini-core = ["ariel-os-threads?/infini-core"]
 
 # ## Network type selection
 # At most one of the features below can be enabled at once.
