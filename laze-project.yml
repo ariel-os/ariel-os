@@ -849,8 +849,8 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
-    context:
-      - rpi-pico-w
+    selects:
+      - no-autoprovide
     provides_unique:
       - network_device
     env:
@@ -1315,6 +1315,7 @@ builders:
     parent: rpi-pico
     provides:
       - hw/usb-device-port
+      - wifi-cyw43
 
   - name: rpi-pico2
     parent: rp235xa
