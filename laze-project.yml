@@ -173,8 +173,8 @@ contexts:
     selects:
       - ?probe-rs
     provides:
+      - has_device_identity
       - has_swi
-      - hw/device-identity
       - sw/benchmark
 
   - name: nrf51
@@ -370,7 +370,7 @@ contexts:
     selects:
       - ?probe-rs
     provides:
-      - hw/device-identity
+      - has_device_identity
       - sw/benchmark
     env:
       OPENOCD_ARGS: foo
@@ -912,11 +912,15 @@ modules:
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
     selects:
-      - no-autoprovide
+      - has_device_identity
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/device-identity\"
+
+  - name: has_device_identity
+    selects:
+      - doc-only
 
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
