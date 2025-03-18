@@ -287,6 +287,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
+      - executor-single-thread
       - hwrng
     env:
       RUSTFLAGS:
@@ -1072,8 +1073,8 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
-    context:
-      - esp
+    selects:
+      - no-autoprovide
     provides_unique:
       - executor
     conflicts:
