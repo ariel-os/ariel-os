@@ -252,7 +252,7 @@ contexts:
       - ?probe-rs
     provides:
       - multi-core
-      - sw/storage
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP2040
       CARGO_RUNNER:
@@ -271,7 +271,7 @@ contexts:
       - ?probe-rs
     provides:
       - multi-core
-      - sw/storage
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP235x
       CARGO_RUNNER:
@@ -398,7 +398,7 @@ contexts:
     provides:
       - has_swi
       - hwrng
-      - sw/storage
+      - has_storage_support
     env:
       PROBE_RS_CHIP: STM32H755ZITx
       PROBE_RS_PROTOCOL: swd
@@ -417,7 +417,7 @@ contexts:
     provides:
       - has_swi
       - hwrng
-      - sw/storage
+      - has_storage_support
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
@@ -841,13 +841,17 @@ modules:
 
   - name: sw/storage
     selects:
-      - no-autoprovide
+      - has_storage_support
     env:
       global:
         FEATURES:
           - ariel-os/storage
         RUSTFLAGS:
           - -Clink-arg=-Tstorage.x
+
+  - name: has_storage_support
+    selects:
+      - doc-only
 
   - name: sw/threading
     selects:
@@ -1262,7 +1266,7 @@ builders:
     parent: nrf52840
     provides:
       - hw/usb-device-port
-      - sw/storage
+      - has_storage_support
 
   - name: dwm1001
     parent: nrf52832
@@ -1338,7 +1342,7 @@ builders:
     parent: nrf5340
     provides:
       - hw/usb-device-port
-      - sw/storage
+      - has_storage_support
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
