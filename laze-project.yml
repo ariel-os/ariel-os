@@ -180,6 +180,8 @@ contexts:
     parent: nrf
     selects:
       - cortex-m0
+    provides:
+      - hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -193,6 +195,8 @@ contexts:
 
   - name: nrf52
     parent: nrf
+    provides:
+      - hwrng
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -235,6 +239,7 @@ contexts:
     parent: ariel-os
     provides:
       - has_swi
+      - hwrng
 
   - name: rp2040
     parent: rp
@@ -279,6 +284,8 @@ contexts:
     selects:
       - ?debug-console
       - ?esp-println
+    provides:
+      - hwrng
     env:
       RUSTFLAGS:
         # linkall first
@@ -377,6 +384,7 @@ contexts:
       - cortex-m7f
     provides:
       - has_swi
+      - hwrng
       - sw/storage
     env:
       PROBE_RS_CHIP: STM32H755ZITx
@@ -395,6 +403,7 @@ contexts:
       - cortex-m4f
     provides:
       - has_swi
+      - hwrng
       - sw/storage
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
@@ -412,6 +421,7 @@ contexts:
       - cortex-m33f
     provides:
       - has_swi
+      - hwrng
     env:
       PROBE_RS_CHIP: STM32WBA55CGUx
       PROBE_RS_PROTOCOL: swd
@@ -885,17 +895,8 @@ modules:
 
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
-    context:
-      # these are precisely those for which the hwrng feature of
-      # ariel-os-embassy builds, which would fail if the big if(context=...)
-      # doesn't have an entry in the cfg(feature = "hwrng") part of init_task
-      - esp
-      - nrf51
-      - nrf52
-      - rp
-      - stm32h755zitx
-      - stm32wb55rgvx
-      - stm32wba55cgux
+    selects:
+      - no-autoprovide
     env:
       global:
         FEATURES:
