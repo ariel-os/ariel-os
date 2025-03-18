@@ -863,13 +863,17 @@ modules:
 
   - name: wifi-cyw43
     selects:
-      - no-autoprovide
+      - has_wifi_cyw43
     provides_unique:
       - network_device
     env:
       global:
         FEATURES:
           - ariel-os/wifi-cyw43
+
+  - name: has_wifi_cyw43
+    selects:
+      - doc-only
 
   - name: usb-ethernet
     provides_unique:
@@ -1316,8 +1320,8 @@ builders:
   - name: rpi-pico-w
     parent: rpi-pico
     provides:
+      - has_wifi_cyw43
       - hw/usb-device-port
-      - wifi-cyw43
 
   - name: rpi-pico2
     parent: rp235xa
