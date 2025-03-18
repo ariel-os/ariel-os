@@ -899,11 +899,15 @@ modules:
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
     selects:
-      - no-autoprovide
+      - has_usb_device_port
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/usb-device-port\"
+
+  - name: has_usb_device_port
+    selects:
+      - doc-only
 
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
@@ -1269,8 +1273,8 @@ builders:
   - name: nrf52840dk
     parent: nrf52840
     provides:
-      - hw/usb-device-port
       - has_storage_support
+      - has_usb_device_port
 
   - name: dwm1001
     parent: nrf52832
@@ -1310,23 +1314,23 @@ builders:
   - name: particle-xenon
     parent: nrf52840
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: rpi-pico
     parent: rp2040
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: rpi-pico-w
     parent: rpi-pico
     provides:
       - has_wifi_cyw43
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: rpi-pico2
     parent: rp235xa
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: ai-c3
     parent: esp-c3-01m
@@ -1340,13 +1344,13 @@ builders:
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: nrf5340dk
     parent: nrf5340
     provides:
-      - hw/usb-device-port
       - has_storage_support
+      - has_usb_device_port
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
@@ -1354,12 +1358,12 @@ builders:
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
     provides:
-      - hw/usb-device-port
+      - has_usb_device_port
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
