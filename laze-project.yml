@@ -863,16 +863,8 @@ modules:
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
-    context:
-      - espressif-esp32-s3-devkitc-1
-      - nrf5340dk
-      - nrf52840dk
-      - rpi-pico
-      - rpi-pico-w
-      - rpi-pico2
-      - particle-xenon
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
+    selects:
+      - no-autoprovide
     env:
       global:
         RUSTFLAGS:
@@ -1264,6 +1256,8 @@ builders:
 
   - name: nrf52840dk
     parent: nrf52840
+    provides:
+      - hw/usb-device-port
 
   - name: dwm1001
     parent: nrf52832
@@ -1302,15 +1296,23 @@ builders:
 
   - name: particle-xenon
     parent: nrf52840
+    provides:
+      - hw/usb-device-port
 
   - name: rpi-pico
     parent: rp2040
+    provides:
+      - hw/usb-device-port
 
   - name: rpi-pico-w
     parent: rpi-pico
+    provides:
+      - hw/usb-device-port
 
   - name: rpi-pico2
     parent: rp235xa
+    provides:
+      - hw/usb-device-port
 
   - name: ai-c3
     parent: esp-c3-01m
@@ -1323,18 +1325,26 @@ builders:
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
+    provides:
+      - hw/usb-device-port
 
   - name: nrf5340dk
     parent: nrf5340
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
 
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
+    provides:
+      - hw/usb-device-port
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
