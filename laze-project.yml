@@ -182,7 +182,7 @@ contexts:
     selects:
       - cortex-m0
     provides:
-      - hwrng
+      - has_hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -197,7 +197,7 @@ contexts:
   - name: nrf52
     parent: nrf
     provides:
-      - hwrng
+      - has_hwrng
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -239,8 +239,8 @@ contexts:
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     provides:
+      - has_hwrng
       - has_swi
-      - hwrng
       - sw/benchmark
 
   - name: rp2040
@@ -290,7 +290,7 @@ contexts:
       - ?esp-println
     provides:
       - executor-single-thread
-      - hwrng
+      - has_hwrng
     env:
       RUSTFLAGS:
         # linkall first
@@ -396,8 +396,8 @@ contexts:
       # TODO: also has a cortex-m4f
       - cortex-m7f
     provides:
+      - has_hwrng
       - has_swi
-      - hwrng
       - has_storage_support
     env:
       PROBE_RS_CHIP: STM32H755ZITx
@@ -415,8 +415,8 @@ contexts:
     selects:
       - cortex-m4f
     provides:
+      - has_hwrng
       - has_swi
-      - hwrng
       - has_storage_support
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
@@ -433,8 +433,8 @@ contexts:
     selects:
       - cortex-m33f
     provides:
+      - has_hwrng
       - has_swi
-      - hwrng
     env:
       PROBE_RS_CHIP: STM32WBA55CGUx
       PROBE_RS_PROTOCOL: swd
@@ -925,11 +925,15 @@ modules:
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
     selects:
-      - no-autoprovide
+      - has_hwrng
     env:
       global:
         FEATURES:
           - ariel-os/hwrng
+
+  - name: has_hwrng
+    selects:
+      - doc-only
 
   - name: coap
     help: Basic support for the CoAP protocol.
