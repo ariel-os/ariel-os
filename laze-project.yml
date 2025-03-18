@@ -175,6 +175,7 @@ contexts:
     provides:
       - has_swi
       - hw/device-identity
+      - sw/benchmark
 
   - name: nrf51
     parent: nrf
@@ -240,6 +241,7 @@ contexts:
     provides:
       - has_swi
       - hwrng
+      - sw/benchmark
 
   - name: rp2040
     parent: rp
@@ -315,6 +317,8 @@ contexts:
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imc-unknown-none-elf
@@ -329,6 +333,8 @@ contexts:
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imac-unknown-none-elf
@@ -345,6 +351,7 @@ contexts:
       - xtensa
     provides:
       - multi-core
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       CARGO_TOOLCHAIN: +esp
@@ -364,6 +371,7 @@ contexts:
       - ?probe-rs
     provides:
       - hw/device-identity
+      - sw/benchmark
     env:
       OPENOCD_ARGS: foo
 
@@ -1029,19 +1037,8 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
-    context:
-      # The Cortex-M implementation is using Systick.
-      - nrf
-      - rp
-      - stm32
-      # The esp32 implementation is using systimer.
-      - esp32c3
-      - esp32c6
-      - esp32s3
-      # These esp32 also have a systimer, uncomment when support is added.
-      # - esp32c2
-      # - esp32h2
-      # - esp32s2
+    selects:
+      - no-autoprovide
 
   - name: wifi-esp
     selects:
