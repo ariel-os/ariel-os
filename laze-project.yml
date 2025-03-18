@@ -249,6 +249,7 @@ contexts:
       - cortex-m0-plus
       - ?probe-rs
     provides:
+      - multi-core
       - sw/storage
     env:
       PROBE_RS_CHIP: RP2040
@@ -267,6 +268,7 @@ contexts:
       - cortex-m33f
       - ?probe-rs
     provides:
+      - multi-core
       - sw/storage
     env:
       PROBE_RS_CHIP: RP235x
@@ -340,6 +342,8 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - multi-core
     provides_unique: [c-function-abort]
     env:
       CARGO_TOOLCHAIN: +esp
@@ -1114,10 +1118,8 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
-    context:
-      - rp2040
-      - rp235xa
-      - esp32s3
+    selects:
+      - no-autoprovide
     provides_unique:
       - critical-section
     env:
