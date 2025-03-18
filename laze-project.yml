@@ -1058,7 +1058,7 @@ modules:
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
     selects:
-      - no-autoprovide
+      - doc-only
 
   - name: wifi-esp
     selects:
