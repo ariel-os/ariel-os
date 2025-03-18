@@ -242,6 +242,8 @@ contexts:
       - rp-link-arg
       - cortex-m0-plus
       - ?probe-rs
+    provides:
+      - sw/storage
     env:
       PROBE_RS_CHIP: RP2040
       CARGO_RUNNER:
@@ -258,6 +260,8 @@ contexts:
     selects:
       - cortex-m33f
       - ?probe-rs
+    provides:
+      - sw/storage
     env:
       PROBE_RS_CHIP: RP235x
       CARGO_RUNNER:
@@ -370,6 +374,7 @@ contexts:
       - cortex-m7f
     provides:
       - has_swi
+      - sw/storage
     env:
       PROBE_RS_CHIP: STM32H755ZITx
       PROBE_RS_PROTOCOL: swd
@@ -387,6 +392,7 @@ contexts:
       - cortex-m4f
     provides:
       - has_swi
+      - sw/storage
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
@@ -808,13 +814,8 @@ modules:
           - ariel-os/network-config-static
 
   - name: sw/storage
-    context:
-      - rp2040
-      - rp235xa
-      - nrf52840
-      - nrf5340
-      - stm32h755zitx
-      - stm32wb55rgvx
+    selects:
+      - no-autoprovide
     env:
       global:
         FEATURES:
@@ -1258,6 +1259,7 @@ builders:
     parent: nrf52840
     provides:
       - hw/usb-device-port
+      - sw/storage
 
   - name: dwm1001
     parent: nrf52832
@@ -1332,6 +1334,7 @@ builders:
     parent: nrf5340
     provides:
       - hw/usb-device-port
+      - sw/storage
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
