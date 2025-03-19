@@ -57,13 +57,13 @@ This makes it possible to use the `#[cfg]` attribute to introduce feature-gates 
 
 ## Out-of-tree applications
 
-New application projects should be [started from a template](./getting_started.md#starting-an-application-project-from-a-template-repository).
+New application projects should be [started from a template](./getting-started.md#starting-an-application-project-from-a-template-repository).
 Out-of-tree applications use the `laze-project.yml` file for configuration through laze.
 
 ### Importing Ariel OS
 
 Ariel OS's source and configuration are imported using [laze's `imports`][laze-imports-book] feature.
-The [project templates](./getting_started.md#starting-an-application-project-from-a-template-repository) use a [`git` import][laze-git-import-book] to ask laze to clone Ariel OS's repository.
+The [project templates](./getting-started.md#starting-an-application-project-from-a-template-repository) use a [`git` import][laze-git-import-book] to ask laze to clone Ariel OS's repository.
 The cloned repository is stored inside `build/imports`.
 
 > It is currently recommended to use Ariel OS's commit ID to track the repository, to avoid surprising changes.

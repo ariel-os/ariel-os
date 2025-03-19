@@ -5,7 +5,7 @@
 
 # User Guide
 
-- [Getting Started](./getting_started.md)
+- [Getting Started](./getting-started.md)
 - [Build System](./build_system.md)
 - [Building an Application](./application.md)
 - [Async Executors](./async_support.md)
