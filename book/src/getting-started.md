@@ -124,7 +124,7 @@ laze build -b nrf52840dk run
 
 > The board name needs to be replaced with your board's.
 
-See the [Build System page](./build_system.md) to learn more about laze and how to work with out-of-tree applications.
+See the [Build System page](./build-system.md) to learn more about laze and how to work with out-of-tree applications.
 
 [ariel-os-repo]: https://github.com/ariel-os/ariel-os
 [ariel-os-hello-repo]: https://github.com/ariel-os/ariel-os-hello

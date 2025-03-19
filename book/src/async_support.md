@@ -35,7 +35,7 @@ Running multiple executors allows running them with different priorities.
 
 <!-- TODO: Power consumption optimization -->
 
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules
 [multithreading-book]: ./multithreading.md
 [interrupt-executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.InterruptExecutor.html
 [executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.Executor.html

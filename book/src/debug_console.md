@@ -66,6 +66,6 @@ Ariel OS's logger for `log` supports configuring the log level globally, but do
 [defmt]: https://github.com/knurling-rs/defmt
 [defmt documentation]: https://defmt.ferrous-systems.com/
 [log]: https://github.com/rust-lang/log
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules
 [print-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/macro.print.html
 [println-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/macro.println.html

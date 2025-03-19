@@ -6,7 +6,7 @@
 # User Guide
 
 - [Getting Started](./getting-started.md)
-- [Build System](./build_system.md)
+- [Build System](./build-system.md)
 - [Building an Application](./application.md)
 - [Async Executors](./async_support.md)
 - [Debug Console](./debug_console.md)
