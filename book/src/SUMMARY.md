@@ -9,7 +9,7 @@
 - [Build System](./build-system.md)
 - [Building an Application](./application.md)
 - [Async Executors](./async-support.md)
-- [Debug Console](./debug_console.md)
+- [Debug Console](./debug-console.md)
 - [Networking](./networking.md)
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
