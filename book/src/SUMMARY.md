@@ -8,7 +8,7 @@
 - [Getting Started](./getting-started.md)
 - [Build System](./build-system.md)
 - [Building an Application](./application.md)
-- [Async Executors](./async_support.md)
+- [Async Executors](./async-support.md)
 - [Debug Console](./debug_console.md)
 - [Networking](./networking.md)
 - [Randomness and Entropy](./randomness.md)
