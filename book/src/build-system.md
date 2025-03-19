@@ -48,7 +48,7 @@ To specify laze modules for an out-of-tree application, see [below](#enabling-la
 ## laze contexts
 
 The laze configuration defines a laze context for each MCU, MCU family, and board.
-These can be found in the [support matrix](./hardware_functionality_support.html), where they are called “Ariel OS name”.
+These can be found in the [support matrix](./hardware-functionality-support.html), where they are called “Ariel OS name”.
 
 Out-of-tree applications can be restricted to specific laze contexts, see [below](#restricting-an-application-to-specific-mcusboards).
 

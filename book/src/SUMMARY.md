@@ -1,7 +1,7 @@
 # Summary
 
 - [Introduction](./introduction.md)
-- [Hardware & Functionality Support](./hardware_functionality_support.md)
+- [Hardware & Functionality Support](./hardware-functionality-support.md)
 
 # User Guide
 

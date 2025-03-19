@@ -10,7 +10,7 @@
 //! | STMicroelectronics   | STM32       | STM32WB55RGVX     | [`ariel-os-stm32::*`](../../ariel_os_stm32/index.html) |
 //!
 //! Documentation is only rendered for the MCUs listed in the table above, but [many others are
-//! supported](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware_functionality_support.html).
+//! supported](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware-functionality-support.html).
 //! To render the docs locally for the MCU of your choice, adapt [the `cargo doc` command used to
 //! generate documentation for the relevant
 //! crate](https://github.com/ariel-os/ariel-os/blob/main/.github/workflows/build-deploy-docs.yml).
