@@ -5,8 +5,8 @@
 
 use core::marker::PhantomData;
 
-use ariel_os_threads::{current_tid, thread_flags, thread_flags::ThreadFlags, ThreadId};
-use embassy_executor::{raw, Spawner};
+use ariel_os_threads::{ThreadId, current_tid, thread_flags, thread_flags::ThreadFlags};
+use embassy_executor::{Spawner, raw};
 
 // This is only used between `__pender` and `Executor::run( )`, actual flag
 // doesn't matter.

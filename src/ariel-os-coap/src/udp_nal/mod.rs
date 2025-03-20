@@ -19,7 +19,7 @@
 use core::future::poll_fn;
 use core::net::SocketAddr;
 
-use embassy_net::{udp, IpAddress, IpEndpoint};
+use embassy_net::{IpAddress, IpEndpoint, udp};
 use embedded_nal_async as nal;
 
 mod util;

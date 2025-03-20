@@ -21,11 +21,7 @@ impl From<Level> for bool {
 
 impl From<bool> for Level {
     fn from(boolean: bool) -> Self {
-        if boolean {
-            Level::High
-        } else {
-            Level::Low
-        }
+        if boolean { Level::High } else { Level::Low }
     }
 }
 

@@ -1,5 +1,5 @@
 use cortex_m as _;
-use cortex_m_rt::{entry, exception, ExceptionFrame, __RESET_VECTOR};
+use cortex_m_rt::{__RESET_VECTOR, ExceptionFrame, entry, exception};
 
 // Table 2.5
 // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/CHDBIBGJ.html

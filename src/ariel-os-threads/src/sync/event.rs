@@ -5,7 +5,7 @@
 
 use core::cell::UnsafeCell;
 
-use crate::{threadlist::ThreadList, ThreadState};
+use crate::{ThreadState, threadlist::ThreadList};
 
 /// An [`Event`], allowing to notify multiple threads that some event has happened.
 ///

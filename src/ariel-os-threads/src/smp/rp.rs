@@ -4,13 +4,13 @@ use cortex_m::peripheral::SCB;
 use embassy_rp::{
     interrupt,
     interrupt::InterruptExt as _,
-    multicore::{spawn_core1, Stack},
+    multicore::{Stack, spawn_core1},
     peripherals::CORE1,
 };
 use rp_pac::SIO;
 use static_cell::ConstStaticCell;
 
-use super::{CoreId, Multicore, ISR_STACKSIZE_CORE1};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
 
 pub struct Chip;
 

@@ -4,7 +4,7 @@ use esp_hal::{
     trapframe::TrapFrame,
 };
 
-use crate::{cleanup, Arch, SCHEDULER};
+use crate::{Arch, SCHEDULER, cleanup};
 
 pub struct Cpu;
 

@@ -6,7 +6,7 @@
 
 use ariel_os::{
     config,
-    debug::{exit, log::*, ExitCode},
+    debug::{ExitCode, exit, log::*},
     net,
     reexports::embassy_net,
 };

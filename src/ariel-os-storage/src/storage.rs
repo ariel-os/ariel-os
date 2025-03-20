@@ -7,7 +7,7 @@ use embedded_storage_async::nor_flash::{ErrorType, MultiwriteNorFlash, NorFlash}
 use sequential_storage::{
     cache::NoCache,
     erase_all,
-    map::{fetch_item, remove_item, store_item, Value},
+    map::{Value, fetch_item, remove_item, store_item},
 };
 
 pub use crate::postcard_value::PostcardValue;

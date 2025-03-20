@@ -2,9 +2,9 @@
 
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_rp::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     i2c::{InterruptHandler, SclPin, SdaPin},
-    peripherals, Peripheral,
+    peripherals,
 };
 
 const KHZ_TO_HZ: u32 = 1000;

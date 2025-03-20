@@ -51,7 +51,7 @@ ariel_os_embassy_common::executor_swi!(EGU0);
 use embassy_nrf::config::Config;
 
 #[doc(hidden)]
-pub use embassy_nrf::{interrupt, OptionalPeripherals};
+pub use embassy_nrf::{OptionalPeripherals, interrupt};
 
 pub use embassy_nrf::peripherals;
 

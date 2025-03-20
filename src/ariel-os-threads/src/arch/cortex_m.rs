@@ -1,6 +1,6 @@
-use crate::{cleanup, Arch, Thread, SCHEDULER};
+use crate::{Arch, SCHEDULER, Thread, cleanup};
 use core::{arch::naked_asm, ptr::write_volatile};
-use cortex_m::peripheral::{scb::SystemHandler, SCB};
+use cortex_m::peripheral::{SCB, scb::SystemHandler};
 
 #[cfg(not(any(armv6m, armv7m, armv8m)))]
 compile_error!("no supported ARM variant selected");

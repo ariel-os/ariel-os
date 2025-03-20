@@ -6,7 +6,7 @@
 #[ariel_os::task(autostart)]
 async fn coap_run() {
     use coap_handler_implementations::{
-        new_dispatcher, HandlerBuilder, ReportingHandlerBuilder, SimpleRendered,
+        HandlerBuilder, ReportingHandlerBuilder, SimpleRendered, new_dispatcher,
     };
 
     let handler = new_dispatcher()

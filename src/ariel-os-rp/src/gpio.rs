@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_rp::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[cfg(feature = "external-interrupts")]
@@ -59,7 +59,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_rp::{gpio::Level, Peripheral};
+    use embassy_rp::{Peripheral, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_rp::gpio::{Output, Pin as OutputPin};

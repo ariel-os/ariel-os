@@ -1,12 +1,13 @@
-use crate::{cleanup, Arch, Thread, SCHEDULER};
+use crate::{Arch, SCHEDULER, Thread, cleanup};
 #[cfg(context = "esp32c6")]
 use esp_hal::peripherals::INTPRI as SYSTEM;
 #[cfg(context = "esp32c3")]
 use esp_hal::peripherals::SYSTEM;
 use esp_hal::{
+    Cpu as EspHalCpu,
     interrupt::{self, TrapFrame},
     peripherals::Interrupt,
-    riscv, Cpu as EspHalCpu,
+    riscv,
 };
 
 pub struct Cpu;

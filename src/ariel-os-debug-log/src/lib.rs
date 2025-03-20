@@ -36,7 +36,7 @@ pub mod defmt {
     pub use defmt::{Debug2Format, Display2Format, Format};
 
     // These are required "internally" by `defmt`.
-    pub use defmt::{export, unreachable, Formatter, Str};
+    pub use defmt::{Formatter, Str, export, unreachable};
 }
 
 #[cfg(feature = "log")]

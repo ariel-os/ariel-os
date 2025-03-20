@@ -15,8 +15,8 @@ mod storage;
 use core::ops::Range;
 
 use ariel_os_hal::{
-    storage::{init as flash_init, Flash, FlashError},
     OptionalPeripherals,
+    storage::{Flash, FlashError, init as flash_init},
 };
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex,

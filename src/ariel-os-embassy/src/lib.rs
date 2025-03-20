@@ -34,7 +34,7 @@ use linkme::distributed_slice;
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{asynch, delegate, gpio, hal, EMBASSY_TASKS};
+    pub use crate::{EMBASSY_TASKS, asynch, delegate, gpio, hal};
 
     pub mod cell {
         //! Shareable containers.
@@ -47,7 +47,7 @@ pub mod api {
         //! Provides time-related facilities.
         // NOTE: we may want to re-export more items in the future, but not re-export the whole
         // crate.
-        pub use embassy_time::{Delay, Duration, Instant, Timer, TICK_HZ};
+        pub use embassy_time::{Delay, Duration, Instant, TICK_HZ, Timer};
     }
 
     #[cfg(feature = "i2c")]
@@ -235,7 +235,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let device = {
         use ariel_os_embassy_common::identity::DeviceId;
         use embassy_usb::class::cdc_ncm::{
-            embassy_net::State as NetState, CdcNcmClass, State as CdcNcmState,
+            CdcNcmClass, State as CdcNcmState, embassy_net::State as NetState,
         };
         use static_cell::StaticCell;
 

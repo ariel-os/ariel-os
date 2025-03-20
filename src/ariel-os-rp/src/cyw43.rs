@@ -8,7 +8,7 @@ use embassy_rp::{
     gpio::{Level, Output},
     pio::Pio,
 };
-use rpi_pico_w::{CywSpi, Irqs, DEFAULT_CLOCK_DIVIDER};
+use rpi_pico_w::{CywSpi, DEFAULT_CLOCK_DIVIDER, Irqs};
 use static_cell::StaticCell;
 
 pub type NetworkDevice = cyw43::NetDriver<'static>;

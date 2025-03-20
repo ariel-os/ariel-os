@@ -4,7 +4,7 @@
 #![feature(used_with_arg)]
 
 use ariel_os::{
-    debug::{exit, log::info, ExitCode},
+    debug::{ExitCode, exit, log::info},
     gpio::{self, Input, Pull},
     hal::peripherals,
 };

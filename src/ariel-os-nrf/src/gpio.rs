@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_nrf::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[doc(hidden)]
@@ -50,8 +50,8 @@ pub mod output {
     //! Output-specific types.
 
     use embassy_nrf::{
-        gpio::{Level, OutputDrive},
         Peripheral,
+        gpio::{Level, OutputDrive},
     };
 
     use super::DriveStrength;

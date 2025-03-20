@@ -97,7 +97,9 @@ fn main() {
                     .collect();
                 let mut bytes = vec![];
                 minicbor::encode(data, &mut bytes).unwrap();
-                format!("coapcore::scope::UnionScope::AifValue(coapcore::scope::AifValue::parse(&{bytes:?}).unwrap())")
+                format!(
+                    "coapcore::scope::UnionScope::AifValue(coapcore::scope::AifValue::parse(&{bytes:?}).unwrap())"
+                )
             }
             e => panic!("Scope configuration {e:?} is not recognized"),
         };

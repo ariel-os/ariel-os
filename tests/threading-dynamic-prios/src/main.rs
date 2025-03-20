@@ -6,7 +6,7 @@
 use portable_atomic::{AtomicUsize, Ordering};
 
 use ariel_os::{
-    debug::{exit, ExitCode},
+    debug::{ExitCode, exit},
     thread::{RunqueueId, ThreadId},
 };
 

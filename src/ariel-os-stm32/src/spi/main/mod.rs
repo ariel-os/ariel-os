@@ -2,16 +2,15 @@
 
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
-    spi::{main::Kilohertz, BitOrder, Mode},
+    spi::{BitOrder, Mode, main::Kilohertz},
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    gpio,
+    Peripheral, gpio,
     mode::Blocking,
     peripherals,
     spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi},
     time::Hertz,
-    Peripheral,
 };
 
 // TODO: we could consider making this `pub`

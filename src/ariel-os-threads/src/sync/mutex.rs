@@ -9,7 +9,7 @@ use core::{
 use ariel_os_runqueue::{RunqueueId, ThreadId};
 use critical_section::CriticalSection;
 
-use crate::{thread::ThreadState, threadlist::ThreadList, SCHEDULER};
+use crate::{SCHEDULER, thread::ThreadState, threadlist::ThreadList};
 
 /// A basic mutex with priority inheritance.
 pub struct Mutex<T> {

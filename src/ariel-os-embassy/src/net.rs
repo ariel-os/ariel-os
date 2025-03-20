@@ -9,7 +9,7 @@
 use embassy_net::{Runner, Stack};
 use embassy_sync::once_lock::OnceLock;
 
-use crate::{cell::SameExecutorCell, NetworkDevice};
+use crate::{NetworkDevice, cell::SameExecutorCell};
 
 #[allow(dead_code)]
 pub(crate) const ETHERNET_MTU: usize = 1514;

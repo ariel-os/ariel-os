@@ -2,8 +2,8 @@
 #![no_std]
 #![feature(used_with_arg)]
 
-use ariel_os::debug::{log::*, ExitCode};
-use ariel_os::thread::{sync::Event, ThreadId};
+use ariel_os::debug::{ExitCode, log::*};
+use ariel_os::thread::{ThreadId, sync::Event};
 
 static EVENT: Event = Event::new();
 

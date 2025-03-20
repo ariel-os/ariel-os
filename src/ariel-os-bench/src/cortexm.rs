@@ -1,6 +1,6 @@
 use cortex_m::{
-    peripheral::{syst::SystClkSource, SYST},
     Peripherals,
+    peripheral::{SYST, syst::SystClkSource},
 };
 
 use crate::Error;

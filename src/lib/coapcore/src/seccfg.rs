@@ -224,8 +224,8 @@ impl ServerSecurityConfig for ConfigBuilder {
         aad: &[u8],
         ciphertext_buffer: &'buf mut [u8],
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'buf>), CredentialError> {
-        use ccm::aead::AeadInPlace;
         use ccm::KeyInit;
+        use ccm::aead::AeadInPlace;
 
         pub type Aes256Ccm = ccm::Ccm<aes::Aes256, ccm::consts::U16, ccm::consts::U13>;
         // FIXME: should be something Aes256Ccm::TagLength
@@ -294,7 +294,7 @@ impl ServerSecurityConfig for ConfigBuilder {
         signature: &[u8],
         signed_payload: &'b [u8],
     ) -> Result<(Self::GeneralClaims, crate::ace::CwtClaimsSet<'b>), CredentialError> {
-        use p256::ecdsa::{signature::Verifier, VerifyingKey};
+        use p256::ecdsa::{VerifyingKey, signature::Verifier};
 
         if headers.alg != Some(-7) {
             // ES256

@@ -378,11 +378,7 @@ mod clist {
         while i < N && slice[i] != search_item {
             i += 1;
         }
-        if i < N {
-            Some(i)
-        } else {
-            None
-        }
+        if i < N { Some(i) } else { None }
     }
 
     #[cfg(test)]
