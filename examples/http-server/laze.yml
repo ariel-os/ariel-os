@@ -13,6 +13,7 @@ modules:
     context:
       - nrf52840dk
       - nrf5340dk
+      - nrf9160dk
       - st-nucleo-wb55
     env:
       global:
