@@ -149,6 +149,7 @@ dependencies = [
  "ariel-os-embassy",
  "ariel-os-identity",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-random",
  "ariel-os-rt",
  "ariel-os-storage",
@@ -392,6 +393,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-power"
+version = "0.1.0"
+dependencies = [
+ "cfg-if",
+ "cortex-m",
+ "esp-hal",
+]
+
+[[package]]
 name = "ariel-os-random"
 version = "0.1.0"
 dependencies = [
@@ -620,14 +630,6 @@ dependencies = [
 
 [[package]]
 name = "bench_sched_yield"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
-]
-
-[[package]]
-name = "benchmark"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
@@ -2555,6 +2557,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-benchmark"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "example-coap-client"
 version = "0.0.0"
 dependencies = [
@@ -2590,12 +2600,56 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-power"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "example-random"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "rand",
+]
+
+[[package]]
+name = "example-storage"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "arrayvec",
+ "heapless 0.8.0",
+ "serde",
+]
+
+[[package]]
+name = "example-testing"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embedded-test",
+]
+
+[[package]]
+name = "example-threading"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
+name = "example-usb-serial"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
 ]
 
 [[package]]
@@ -4939,17 +4993,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "storage"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "arrayvec",
- "heapless 0.8.0",
- "serde",
-]
-
-[[package]]
 name = "string_cache"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5123,15 +5166,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "testing"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "embedded-test",
-]
-
-[[package]]
 name = "tests_gpio"
 version = "0.0.0"
 dependencies = [
@@ -5187,14 +5221,6 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "embassy-sync 0.6.2",
-]
-
-[[package]]
-name = "threading"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
 ]
 
 [[package]]
@@ -5444,14 +5470,6 @@ dependencies = [
  "ariel-os-boards",
  "embassy-sync 0.6.2",
  "static_cell",
-]
-
-[[package]]
-name = "usb-serial"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
 ]
 
 [[package]]

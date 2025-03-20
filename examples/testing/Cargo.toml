@@ -1,5 +1,5 @@
 [package]
-name = "testing"
+name = "example-testing"
 edition.workspace = true
 license.workspace = true
 publish = false

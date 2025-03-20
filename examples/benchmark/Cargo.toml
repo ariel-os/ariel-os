@@ -1,5 +1,5 @@
 [package]
-name = "benchmark"
+name = "example-benchmark"
 license.workspace = true
 edition.workspace = true
 
