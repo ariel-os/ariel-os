@@ -14,6 +14,8 @@ fn main() {
         (256, 1024)
     } else if is_in_current_contexts(&["nrf5340"]) {
         (512, 1024)
+    } else if is_in_current_contexts(&["nrf9160"]) {
+        (256, 1024)
     } else {
         panic!("nrf52: please set MCU feature");
     };
@@ -22,6 +24,8 @@ fn main() {
         "NRF52_FLASH"
     } else if is_in_current_contexts(&["nrf5340"]) {
         "NRF5340_FLASH"
+    } else if is_in_current_contexts(&["nrf9160"]) {
+        "NRF9160_FLASH"
     } else {
         unreachable!();
     };
