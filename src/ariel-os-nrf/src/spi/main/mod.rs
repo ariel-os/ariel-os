@@ -238,3 +238,9 @@ define_spi_drivers!(
     SERIAL2 => SERIAL2,
     SERIAL3 => SERIAL3,
 );
+// FIXME: arbitrary selected peripherals
+#[cfg(context = "nrf9160")]
+define_spi_drivers!(
+    SERIAL2 => SERIAL2,
+    SERIAL3 => SERIAL3,
+);
