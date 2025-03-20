@@ -83,7 +83,8 @@ const SCHEDULE_TOKEN: u32 = 0x11;
 ///
 /// This method is injected into the `embassy_rp` interrupt handler
 /// for FIFO messages.
-// SAFETY: symbol required by our fork of `embassy_rp`.
+// SAFETY: symbol required by our fork of `embassy_rp`; the function signature matches the expected
+// one.
 #[unsafe(no_mangle)]
 // SAFETY: this function is placed in RAM to improve execution latency.
 #[unsafe(link_section = ".data.ram_func")]

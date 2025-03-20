@@ -136,7 +136,8 @@ pub(crate) fn init() {
     EXECUTOR.run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
-// SAFETY: the symbol name is unique enough to avoid accidental collisions.
+// SAFETY: the symbol name is unique enough to avoid accidental collisions and the function
+// signature matches the one expected in `ariel-os-rt`.
 #[cfg(feature = "executor-single-thread")]
 #[unsafe(export_name = "__ariel_os_embassy_init")]
 fn init() -> ! {

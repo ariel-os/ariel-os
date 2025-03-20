@@ -159,7 +159,8 @@ impl embassy_net::driver::RxToken for DummyDriver {
 
 #[cfg(feature = "network-config-static")]
 // SAFETY: the compiler prevents from defining multiple functions with the same name in the
-// same crate.
+// same crate; the function signature is checked by the compiler as it is in the same crate as the
+// FFI declaration.
 #[unsafe(no_mangle)]
 fn __ariel_os_network_config() -> embassy_net::Config {
     use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};

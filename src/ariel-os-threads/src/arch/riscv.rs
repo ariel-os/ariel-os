@@ -104,6 +104,7 @@ fn copy_registers(src: &TrapFrame, dst: &mut TrapFrame) {
 }
 
 /// Handler for software interrupt 0, which we use for context switching.
+// SAFETY: symbol required by `esp-pacs`.
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {

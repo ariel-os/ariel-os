@@ -77,7 +77,7 @@ pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
         #config_const
 
         // SAFETY: the compiler prevents from defining multiple functions with the same name in the
-        // same crate.
+        // same crate and the function signatures match the ones expected in `ariel-os-embassy`.
         #[unsafe(no_mangle)]
         fn #config_fn_name() -> #return_type {
             #config_const_name

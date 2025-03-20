@@ -12,7 +12,8 @@ use embassy_executor::{raw, Spawner};
 // doesn't matter.
 const THREAD_FLAG_WAKEUP: ThreadFlags = 0x01;
 
-// SAFETY: this name is required by embassy-executor.
+// SAFETY: this name is required by embassy-executor and the function signature matches the
+// expected one.
 #[unsafe(no_mangle)]
 fn __pender(context: *mut ()) {
     // SAFETY: `context` is a `ThreadId` passed by `ThreadExecutor::new`.
