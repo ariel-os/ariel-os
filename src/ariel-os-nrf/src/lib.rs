@@ -45,7 +45,7 @@ pub use embassy_executor::InterruptExecutor as Executor;
 ariel_os_embassy_common::executor_swi!(EGU0_SWI0);
 
 #[cfg(feature = "executor-interrupt")]
-#[cfg(context = "nrf5340")]
+#[cfg(any(context = "nrf5340", context = "nrf9160"))]
 ariel_os_embassy_common::executor_swi!(EGU0);
 
 use embassy_nrf::config::Config;
