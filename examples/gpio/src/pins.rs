@@ -13,6 +13,12 @@ ariel_os::hal::define_peripherals!(Peripherals {
     btn1: P0_14
 });
 
+#[cfg(context = "nordic-thingy-91")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    led1: P0_29,
+    btn1: P0_26
+});
+
 #[cfg(context = "nrf5340dk")]
 ariel_os::hal::define_peripherals!(Peripherals {
     led1: P0_28,
