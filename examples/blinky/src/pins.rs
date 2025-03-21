@@ -6,11 +6,17 @@ ariel_os::hal::define_peripherals!(LedPeripherals {
     led: P0_21,
 });
 
+#[cfg(context = "nordic-thingy-91")]
+ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_29 });
+
 #[cfg(context = "nrf52840dk")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_13 });
 
 #[cfg(context = "nrf5340dk")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_28 });
+
+#[cfg(context = "nrf9160dk")]
+ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_02 });
 
 #[cfg(context = "particle-xenon")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: P1_12 });

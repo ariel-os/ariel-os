@@ -229,6 +229,16 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
 
+  - name: nrf91
+    parent: nrf
+
+  - name: nrf9160
+    parent: nrf91
+    selects:
+      - cortex-m33f
+    env:
+      PROBE_RS_CHIP: nRF9160_xxAA
+
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
@@ -813,6 +823,7 @@ modules:
       - rp235xa
       - nrf52840
       - nrf5340
+      - nrf9160
       - stm32h755zitx
       - stm32wb55rgvx
     env:
@@ -1326,6 +1337,14 @@ builders:
 
   - name: nrf5340dk
     parent: nrf5340
+
+  # TODO: there also is a companion nrf52840 on this board
+  - name: nrf9160dk
+    parent: nrf9160
+
+  # TODO: there also is a companion nrf52840 on this board
+  - name: nordic-thingy-91
+    parent: nrf9160
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
