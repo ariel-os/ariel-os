@@ -89,7 +89,7 @@ jobs:
         uses: taiki-e/install-action@v2
         if: steps.result-cache.outputs.cache-hit != 'true'
         with:
-          tool: laze@0.1
+          tool: laze@0.2
 
       - name: "installing prerequisites"
         if: steps.result-cache.outputs.cache-hit != 'true'
