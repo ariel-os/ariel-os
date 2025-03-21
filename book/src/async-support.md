@@ -9,7 +9,7 @@ It comes in three different flavors, identified by their laze module names:
 
 | laze module              | Embassy executor | Description |
 | ------------------------ | ---------------- | ----------- |
-| `executor-interrupt`     | [InterruptExecutor][interrupt-executor-rustdoc] | Runs in handler mode. A software interrupt (SWI) handler is used when the MCU provides one, otherwise the [board configuration must specify](./adding_board_support.md#adding-support-for-a-board-1) which peripheral interrupt to dedicate to this executor. |
+| `executor-interrupt`     | [InterruptExecutor][interrupt-executor-rustdoc] | Runs in handler mode. A software interrupt (SWI) handler is used when the MCU provides one, otherwise the [board configuration must specify](./adding-board-support.md#adding-support-for-a-board-1) which peripheral interrupt to dedicate to this executor. |
 | `executor-single-thread` | [Executor][executor-rustdoc] | Runs in thread mode in place of threads. Therefore not compatible with [multithreading][multithreading-book]. |
 | `executor-thread`        | [Custom, based on `raw::Executor`][asynch-thread-executor-rustdoc] | Runs inside a dedicated thread automatically started at startup. |
 
@@ -35,7 +35,7 @@ Running multiple executors allows running them with different priorities.
 
 <!-- TODO: Power consumption optimization -->
 
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules
 [multithreading-book]: ./multithreading.md
 [interrupt-executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.InterruptExecutor.html
 [executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.Executor.html

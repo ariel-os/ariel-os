@@ -62,7 +62,7 @@ It explains how to compile and run the `hello-word` example to verify your setup
 To check that everything is installed correctly, the `hello-word` example can be compiled and run from the `ariel-os` directory.
 The following assumes you have your target board connected to your host computer.
 
-Find the Ariel OS name of your supported board in the [support matrix](./hardware_functionality_support.html).
+Find the Ariel OS name of your supported board in the [support matrix](./hardware-functionality-support.html).
 
 > The following assumes the Nordic nRF52840-DK, whose Ariel OS name is `nrf52840dk`.
 > Replace that name with your board's.
@@ -124,7 +124,7 @@ laze build -b nrf52840dk run
 
 > The board name needs to be replaced with your board's.
 
-See the [Build System page](./build_system.md) to learn more about laze and how to work with out-of-tree applications.
+See the [Build System page](./build-system.md) to learn more about laze and how to work with out-of-tree applications.
 
 [ariel-os-repo]: https://github.com/ariel-os/ariel-os
 [ariel-os-hello-repo]: https://github.com/ariel-os/ariel-os-hello

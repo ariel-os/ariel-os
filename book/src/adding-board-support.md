@@ -60,7 +60,7 @@ builders:
 
 MCU-specific items inside Ariel OS crates are gated behind
 `#[cfg(context = $CONTEXT)]` attributes, where `$CONTEXT` is the [MCU's `laze
-context` name](./build_system.md#laze-contexts).
+context` name](./build-system.md#laze-contexts).
 These need to be expanded for adding support for the new MCU.
 
 At least the following crates may need to be updated:

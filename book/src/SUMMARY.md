@@ -1,15 +1,15 @@
 # Summary
 
 - [Introduction](./introduction.md)
-- [Hardware & Functionality Support](./hardware_functionality_support.md)
+- [Hardware & Functionality Support](./hardware-functionality-support.md)
 
 # User Guide
 
-- [Getting Started](./getting_started.md)
-- [Build System](./build_system.md)
+- [Getting Started](./getting-started.md)
+- [Build System](./build-system.md)
 - [Building an Application](./application.md)
-- [Async Executors](./async_support.md)
-- [Debug Console](./debug_console.md)
+- [Async Executors](./async-support.md)
+- [Debug Console](./debug-console.md)
 - [Networking](./networking.md)
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
@@ -22,6 +22,6 @@
 
 # Developer Guide
 
-- [Adding Support for a Board](./adding_board_support.md)
+- [Adding Support for a Board](./adding-board-support.md)
 - [Coding Conventions](./coding-conventions.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)

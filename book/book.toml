@@ -14,4 +14,7 @@ title = "Ariel OS manual"
 git-repository-url = "https://github.com/ariel-os/ariel-os"
 edit-url-template = "https://github.com/ariel-os/ariel-os/edit/main/book/{path}"
 
+[output.html.redirect]
+"/getting_started.html" = "getting-started.html"
+
 [preprocessor.cmdrun]

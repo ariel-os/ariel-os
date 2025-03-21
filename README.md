@@ -7,7 +7,7 @@
 
 Ariel OS is an operating system for secure, memory-safe, low-power Internet of Things (IoT).
 It is based on Rust from the ground up
-and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware_functionality_support.html)
+and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware-functionality-support.html)
 based on 32-bit microcontroller architectures (Cortex-M, RISC-V, and Xtensa).
 
 ## Goals and Design
@@ -70,5 +70,5 @@ Thanks to all the people who already contributed!
 [rustdoc-badge]: https://img.shields.io/badge/Documentation-%F0%9F%93%94-blue
 [documentation-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/
 [documentation-dev-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/
-[getting-started-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/getting_started.html
+[getting-started-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html
 [hello-world-example]: https://github.com/ariel-os/ariel-os/tree/main/examples/hello-world

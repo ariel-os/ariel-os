@@ -56,4 +56,4 @@ It allows to restrict the execution of a thread to a specific core and prevent i
 [max-thread-count-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/constant.THREAD_COUNT.html
 [set-priority-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/fn.set_priority.html
 [sched-prio-levels-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/constant.SCHED_PRIO_LEVELS.html
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules

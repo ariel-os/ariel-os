@@ -31,9 +31,9 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 ### Network Configuration
 
 DHCPv4 is used by default for network configuration, including for IP address allocation.
-This is enabled by the `network-config-dhcp` [laze module](./build_system.md#laze-modules), selected by default.
+This is enabled by the `network-config-dhcp` [laze module](./build-system.md#laze-modules), selected by default.
 
-In order to provide a static configuration, select the `network-config-static` [laze module](./build_system.md#laze-modules), which will take precedence.
+In order to provide a static configuration, select the `network-config-static` [laze module](./build-system.md#laze-modules), which will take precedence.
 The configuration can be customized with the following environment variables:
 
 | Variable                                 | Default      |
@@ -87,4 +87,4 @@ a second cable.
 [network-stack-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/net/fn.network_stack.html
 [embassy-net-reexport-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/embassy_net/index.html
 [examples-dir-repo]: https://github.com/ariel-os/ariel-os/tree/main/examples
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules

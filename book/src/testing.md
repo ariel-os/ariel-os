@@ -66,7 +66,7 @@ name = "test"
 harness = false
 ```
 
-3. Enable the `embedded-test` or `embedded-test-only` [laze module](./build_system.md#laze-modules):
+3. Enable the `embedded-test` or `embedded-test-only` [laze module](./build-system.md#laze-modules):
 
 ```yaml
 apps:
