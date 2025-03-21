@@ -10,7 +10,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 #[cfg(any(context = "nrf52833", context = "nrf52840"))]
 pub type SensorI2c = i2c::controller::TWISPI0;
-#[cfg(context = "nrf5340")]
+#[cfg(any(context = "nrf5340", context = "nrf9160"))]
 pub type SensorI2c = i2c::controller::SERIAL0;
 #[cfg(all(context = "nrf", not(context = "bbc-microbit-v2")))]
 ariel_os::hal::define_peripherals!(Peripherals {
