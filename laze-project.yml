@@ -947,6 +947,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/coap
+        executor_stacksize_required:
+          - "32768"
 
   - name: coap-server
     help: Support for applications to set up CoAP server handlers.
