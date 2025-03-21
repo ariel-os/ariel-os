@@ -175,12 +175,16 @@ contexts:
     selects:
       - ?probe-rs
     provides:
+      - has_device_identity
       - has_swi
+      - sw/benchmark
 
   - name: nrf51
     parent: nrf
     selects:
       - cortex-m0
+    provides:
+      - has_hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -194,6 +198,9 @@ contexts:
 
   - name: nrf52
     parent: nrf
+    provides:
+      - has_hwrng
+      - has_storage_support
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -226,6 +233,8 @@ contexts:
 
   - name: nrf5340
     parent: nrf53
+    provides:
+      - has_storage_support
     selects:
       - cortex-m33f
     env:
@@ -235,7 +244,9 @@ contexts:
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     provides:
+      - has_hwrng
       - has_swi
+      - sw/benchmark
 
   - name: rp2040
     parent: rp
@@ -244,6 +255,9 @@ contexts:
       - rp-link-arg
       - cortex-m0-plus
       - ?probe-rs
+    provides:
+      - has_multi_core_support
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP2040
       CARGO_RUNNER:
@@ -260,6 +274,9 @@ contexts:
     selects:
       - cortex-m33f
       - ?probe-rs
+    provides:
+      - has_multi_core_support
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP235x
       CARGO_RUNNER:
@@ -276,6 +293,9 @@ contexts:
     selects:
       - ?debug-console
       - ?esp-println
+    provides:
+      - has_executor_single_thread_support
+      - has_hwrng
     env:
       RUSTFLAGS:
         # linkall first
@@ -302,6 +322,8 @@ contexts:
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imc-unknown-none-elf
@@ -316,6 +338,8 @@ contexts:
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imac-unknown-none-elf
@@ -330,6 +354,9 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - has_multi_core_support
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       CARGO_TOOLCHAIN: +esp
@@ -347,6 +374,9 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - has_device_identity
+      - sw/benchmark
     env:
       OPENOCD_ARGS: foo
 
@@ -389,7 +419,9 @@ contexts:
       # TODO: also has a cortex-m4f
       - cortex-m7f
     provides:
+      - has_hwrng
       - has_swi
+      - has_storage_support
     env:
       PROBE_RS_CHIP: STM32H755ZITx
       PROBE_RS_PROTOCOL: swd
@@ -406,7 +438,9 @@ contexts:
     selects:
       - cortex-m4f
     provides:
+      - has_hwrng
       - has_swi
+      - has_storage_support
     env:
       PROBE_RS_CHIP: STM32WB55RGVx
       PROBE_RS_PROTOCOL: swd
@@ -422,6 +456,7 @@ contexts:
     selects:
       - cortex-m33f
     provides:
+      - has_hwrng
       - has_swi
     env:
       PROBE_RS_CHIP: STM32WBA55CGUx
@@ -828,19 +863,18 @@ modules:
           - ariel-os/network-config-static
 
   - name: sw/storage
-    context:
-      - rp2040
-      - rp235xa
-      - nrf52840
-      - nrf5340
-      - stm32h755zitx
-      - stm32wb55rgvx
+    selects:
+      - has_storage_support
     env:
       global:
         FEATURES:
           - ariel-os/storage
         RUSTFLAGS:
           - -Clink-arg=-Tstorage.x
+
+  - name: has_storage_support
+    selects:
+      - doc-only
 
   - name: sw/threading
     selects:
@@ -851,14 +885,18 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
-    context:
-      - rpi-pico-w
+    selects:
+      - has_wifi_cyw43
     provides_unique:
       - network_device
     env:
       global:
         FEATURES:
           - ariel-os/wifi-cyw43
+
+  - name: has_wifi_cyw43
+    selects:
+      - doc-only
 
   - name: usb-ethernet
     provides_unique:
@@ -883,48 +921,42 @@ modules:
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
-    context:
-      - espressif-esp32-s3-devkitc-1
-      - nrf5340dk
-      - nrf52840dk
-      - rpi-pico
-      - rpi-pico-w
-      - rpi-pico2
-      - particle-xenon
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
+    selects:
+      - has_usb_device_port
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/usb-device-port\"
 
+  - name: has_usb_device_port
+    selects:
+      - doc-only
+
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
-    context:
-      - nrf
-      - stm32
+    selects:
+      - has_device_identity
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/device-identity\"
 
+  - name: has_device_identity
+    selects:
+      - doc-only
+
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
-    context:
-      # these are precisely those for which the hwrng feature of
-      # ariel-os-embassy builds, which would fail if the big if(context=...)
-      # doesn't have an entry in the cfg(feature = "hwrng") part of init_task
-      - esp
-      - nrf51
-      - nrf52
-      - rp
-      - stm32h755zitx
-      - stm32wb55rgvx
-      - stm32wba55cgux
+    selects:
+      - has_hwrng
     env:
       global:
         FEATURES:
           - ariel-os/hwrng
+
+  - name: has_hwrng
+    selects:
+      - doc-only
 
   - name: coap
     help: Basic support for the CoAP protocol.
@@ -1048,19 +1080,8 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
-    context:
-      # The Cortex-M implementation is using Systick.
-      - nrf
-      - rp
-      - stm32
-      # The esp32 implementation is using systimer.
-      - esp32c3
-      - esp32c6
-      - esp32s3
-      # These esp32 also have a systimer, uncomment when support is added.
-      # - esp32c2
-      # - esp32h2
-      # - esp32s2
+    selects:
+      - doc-only
 
   - name: wifi-esp
     selects:
@@ -1092,8 +1113,8 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
-    context:
-      - esp
+    selects:
+      - has_executor_single_thread_support
     provides_unique:
       - executor
     conflicts:
@@ -1102,6 +1123,10 @@ modules:
       global:
         FEATURES:
           - ariel-os/executor-single-thread
+
+  - name: has_executor_single_thread_support
+    selects:
+      - doc-only
 
   # Enabled for MCU families that provide a dedicated software interrupt (SWI),
   # and thus do not require to sacrifice another, arbitrarily-chosen peripheral
@@ -1138,16 +1163,18 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
-    context:
-      - rp2040
-      - rp235xa
-      - esp32s3
+    selects:
+      - has_multi_core_support
     provides_unique:
       - critical-section
     env:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: has_multi_core_support
+    selects:
+      - doc-only
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
@@ -1284,6 +1311,8 @@ builders:
 
   - name: nrf52840dk
     parent: nrf52840
+    provides:
+      - has_usb_device_port
 
   - name: dwm1001
     parent: nrf52832
@@ -1322,15 +1351,24 @@ builders:
 
   - name: particle-xenon
     parent: nrf52840
+    provides:
+      - has_usb_device_port
 
   - name: rpi-pico
     parent: rp2040
+    provides:
+      - has_usb_device_port
 
   - name: rpi-pico-w
     parent: rpi-pico
+    provides:
+      - has_wifi_cyw43
+      - has_usb_device_port
 
   - name: rpi-pico2
     parent: rp235xa
+    provides:
+      - has_usb_device_port
 
   - name: ai-c3
     parent: esp-c3-01m
@@ -1343,9 +1381,13 @@ builders:
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
+    provides:
+      - has_usb_device_port
 
   - name: nrf5340dk
     parent: nrf5340
+    provides:
+      - has_usb_device_port
 
   - name: st-nucleo-c031c6
     parent: stm32c031c6tx
@@ -1355,9 +1397,13 @@ builders:
 
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
+    provides:
+      - has_usb_device_port
 
   - name: st-nucleo-wb55
     parent: stm32wb55rgvx
+    provides:
+      - has_usb_device_port
 
   - name: st-nucleo-wba55
     parent: stm32wba55cgux
