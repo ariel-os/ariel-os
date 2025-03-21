@@ -63,9 +63,9 @@ contexts:
         # These defines the defaults. Other modules can append their needs,
         # the maximum value will be chosen.
         # Note: make sure to append to the list, not set single value!
-        - "8192"
+        - "3072"
       isr_stacksize_required:
-        - "2048"
+        - "1024"
       CONFIG_EXECUTOR_STACKSIZE: $(max (0, ${executor_stacksize_required}))
       CONFIG_ISR_STACKSIZE: $(max (0, ${isr_stacksize_required}))
 
