@@ -4,6 +4,7 @@ apps:
       # list of contexts that have an entry in `pins.rs`
       - bbc-microbit-v2
       - esp
+      - nordic-thingy-91
       - nrf52840dk
       - nrf5340dk
       - nrf9160dk
