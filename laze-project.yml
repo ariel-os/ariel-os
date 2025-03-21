@@ -198,6 +198,7 @@ contexts:
     parent: nrf
     provides:
       - has_hwrng
+      - has_storage_support
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -230,6 +231,8 @@ contexts:
 
   - name: nrf5340
     parent: nrf53
+    provides:
+      - has_storage_support
     selects:
       - cortex-m33f
     env:
@@ -1289,7 +1292,6 @@ builders:
   - name: nrf52840dk
     parent: nrf52840
     provides:
-      - has_storage_support
       - has_usb_device_port
 
   - name: dwm1001
@@ -1365,7 +1367,6 @@ builders:
   - name: nrf5340dk
     parent: nrf5340
     provides:
-      - has_storage_support
       - has_usb_device_port
 
   - name: st-nucleo-f401re
