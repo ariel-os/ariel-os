@@ -29,6 +29,10 @@ pub mod spi;
 #[doc(hidden)]
 pub mod storage;
 
+#[cfg(feature = "usb")]
+#[doc(hidden)]
+pub mod usb;
+
 use embassy_stm32::Config;
 
 #[doc(hidden)]
@@ -42,21 +46,6 @@ pub(crate) use embassy_executor::InterruptExecutor as Executor;
 #[cfg(feature = "hwrng")]
 #[doc(hidden)]
 pub mod hwrng;
-
-#[cfg(feature = "usb")]
-cfg_if::cfg_if! {
-    if #[cfg(any(capability = "hw/stm32-usb", capability = "hw/stm32-usb-lp"))] {
-        #[doc(hidden)]
-        #[path = "usb.rs"]
-        pub mod usb;
-    } else if #[cfg(capability = "hw/stm32-usb-synopsis")] {
-        #[doc(hidden)]
-        #[path = "usb_synopsis_otg.rs"]
-        pub mod usb;
-    } else {
-        compile_error!("stm32: USB enabled but no capability selected");
-    }
-}
 
 #[cfg(feature = "executor-interrupt")]
 include!(concat!(env!("OUT_DIR"), "/swi.rs"));
