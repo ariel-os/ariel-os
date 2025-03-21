@@ -1395,6 +1395,10 @@ builders:
   - name: nrf9160dk
     parent: nrf9160
 
+  # TODO: there also is a companion nrf52840 on this board
+  - name: nordic-thingy-91
+    parent: nrf9160
+
   - name: st-nucleo-f401re
     parent: stm32f401re
     provides:
