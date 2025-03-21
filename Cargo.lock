@@ -464,6 +464,7 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-random",
+ "ariel-os-stm32-mapping",
  "cfg-if",
  "defmt",
  "embassy-embedded-hal",
@@ -473,6 +474,13 @@ dependencies = [
  "paste",
  "portable-atomic",
  "static_cell",
+]
+
+[[package]]
+name = "ariel-os-stm32-mapping"
+version = "0.1.0"
+dependencies = [
+ "embassy-stm32",
 ]
 
 [[package]]
