@@ -3,8 +3,8 @@
 use core::ffi::c_void;
 
 use ariel_os_debug::log::{debug, trace};
-use ariel_os_threads::{create_raw, current_tid, yield_same, THREAD_COUNT};
-use esp_wifi::{preempt::Scheduler, TimeBase};
+use ariel_os_threads::{THREAD_COUNT, create_raw, current_tid, yield_same};
+use esp_wifi::{TimeBase, preempt::Scheduler};
 use esp_wifi_sys::include::malloc;
 
 static THREAD_SEMAPHORES: [usize; THREAD_COUNT] = [0; THREAD_COUNT];

@@ -1,13 +1,13 @@
 use esp_hal::{
+    Cpu,
     cpu_control::{CpuControl, Stack},
     interrupt,
-    peripherals::{Interrupt, CPU_CTRL, SYSTEM},
-    Cpu,
+    peripherals::{CPU_CTRL, Interrupt, SYSTEM},
 };
 
 use static_cell::ConstStaticCell;
 
-use super::{CoreId, Multicore, ISR_STACKSIZE_CORE1};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
 
 impl From<Cpu> for CoreId {
     fn from(value: Cpu) -> Self {

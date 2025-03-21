@@ -4,13 +4,13 @@ use cortex_m::peripheral::SCB;
 use embassy_rp::{
     interrupt,
     interrupt::InterruptExt as _,
-    multicore::{spawn_core1, Stack},
+    multicore::{Stack, spawn_core1},
     peripherals::CORE1,
 };
 use rp_pac::SIO;
 use static_cell::ConstStaticCell;
 
-use super::{CoreId, Multicore, ISR_STACKSIZE_CORE1};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
 
 pub struct Chip;
 
@@ -83,8 +83,11 @@ const SCHEDULE_TOKEN: u32 = 0x11;
 ///
 /// This method is injected into the `embassy_rp` interrupt handler
 /// for FIFO messages.
-#[no_mangle]
-#[link_section = ".data.ram_func"]
+// SAFETY: symbol required by our fork of `embassy_rp`; the function signature matches the expected
+// one.
+#[unsafe(no_mangle)]
+// SAFETY: this function is placed in RAM to improve execution latency.
+#[unsafe(link_section = ".data.ram_func")]
 #[inline]
 fn handle_fifo_token(token: u32) -> bool {
     if token != SCHEDULE_TOKEN {

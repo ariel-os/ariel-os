@@ -2,7 +2,7 @@
 
 use core::net::{SocketAddr, SocketAddrV4, SocketAddrV6};
 
-use embassy_net::{udp, IpAddress, IpEndpoint};
+use embassy_net::{IpAddress, IpEndpoint, udp};
 
 /// Converts socket address types between [`embedded_nal_async`] and [`embassy_net`] (internally
 /// `smol`).

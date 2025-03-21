@@ -101,7 +101,7 @@ pub struct CryptoRng {
 
 #[cfg(feature = "csprng")]
 mod csprng {
-    use super::{with_global, CryptoRng, RngCore, SelectedRng};
+    use super::{CryptoRng, RngCore, SelectedRng, with_global};
 
     // Re-implementing the trait rather than Deref'ing into inner: This avoids leaking implementation
     // details to users who might otherwise come to depend on platform specifics of the CryptoRng.

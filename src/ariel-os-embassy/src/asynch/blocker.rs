@@ -1,7 +1,6 @@
 //! Provides a [`block_on()`] function to use futures from a thread.
 
-use ariel_os_threads::{current_tid, flags, flags::ThreadFlags, ThreadId};
-use core::future::Future;
+use ariel_os_threads::{ThreadId, current_tid, flags, flags::ThreadFlags};
 use core::pin::Pin;
 use core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
 

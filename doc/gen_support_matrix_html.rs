@@ -1,7 +1,7 @@
 #!/usr/bin/env -S cargo -Zscript
 ---cargo
 [package]
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 argh = { version = "0.1.12" }

@@ -7,11 +7,11 @@
 use core::marker::PhantomData;
 
 use coap_message::{
-    error::RenderableOnMinimal, Code, MessageOption, MinimalWritableMessage,
-    MutableWritableMessage, ReadableMessage,
+    Code, MessageOption, MinimalWritableMessage, MutableWritableMessage, ReadableMessage,
+    error::RenderableOnMinimal,
 };
 use coap_message_utils::{Error as CoAPError, OptionsExt as _};
-use defmt_or_log::{debug, error, trace, Debug2Format};
+use defmt_or_log::{Debug2Format, debug, error, trace};
 
 use crate::generalclaims::{self, GeneralClaims as _};
 use crate::helpers::COwn;
@@ -192,13 +192,13 @@ pub struct OscoreEdhocHandler<
 }
 
 impl<
-        H: coap_handler::Handler,
-        Crypto: lakers::Crypto,
-        CryptoFactory: Fn() -> Crypto,
-        SSC: ServerSecurityConfig,
-        RNG: rand_core::RngCore + rand_core::CryptoRng,
-        TP: TimeProvider,
-    > OscoreEdhocHandler<H, Crypto, CryptoFactory, SSC, RNG, TP>
+    H: coap_handler::Handler,
+    Crypto: lakers::Crypto,
+    CryptoFactory: Fn() -> Crypto,
+    SSC: ServerSecurityConfig,
+    RNG: rand_core::RngCore + rand_core::CryptoRng,
+    TP: TimeProvider,
+> OscoreEdhocHandler<H, Crypto, CryptoFactory, SSC, RNG, TP>
 {
     /// Creates a new CoAP server implementation (a [Handler][coap_handler::Handler]), wrapping an
     /// inner (application) handler.
@@ -540,7 +540,16 @@ impl<
             protocol_stage: SecContextStage::Oscore(oscore_context),
             authorization: Some(authorization),
         });
-        debug_assert!(matches!(_evicted, Some(SecContextState { protocol_stage: SecContextStage::Empty, .. }) | None), "A Default (Empty) was placed when an item was taken, which should have the lowest priority");
+        debug_assert!(
+            matches!(
+                _evicted,
+                Some(SecContextState {
+                    protocol_stage: SecContextStage::Empty,
+                    ..
+                }) | None
+            ),
+            "A Default (Empty) was placed when an item was taken, which should have the lowest priority"
+        );
 
         let Ok((correlation, extracted)) = decrypted else {
             // FIXME is that the right code?
@@ -727,7 +736,7 @@ impl<
                     .lookup(|c| c.corresponding_cown() == Some(kid), |matched| {
                         // Not checking authorization any more: we don't even have access to the
                         // request any more, that check was done.
-                        let SecContextState { protocol_stage: SecContextStage::Oscore(ref mut oscore_context), .. } = matched else {
+                        let SecContextState { protocol_stage: SecContextStage::Oscore(oscore_context), .. } = matched else {
                             // State vanished before response was built.
                             //
                             // As it is, depending on the CoAP stack, there may be DoS if a peer
@@ -845,7 +854,11 @@ impl<
                     .map_or(CoAPError::bad_request(), CoAPError::bad_request_with_rbep)
             })?;
 
-        debug!("Established OSCORE context with recipient ID {:?} and authorization {:?} through ACE-OSCORE", oscore.recipient_id(), Debug2Format(&generalclaims));
+        debug!(
+            "Established OSCORE context with recipient ID {:?} and authorization {:?} through ACE-OSCORE",
+            oscore.recipient_id(),
+            Debug2Format(&generalclaims)
+        );
         // FIXME: This should be flagged as "unconfirmed" for rapid eviction, as it could be part
         // of a replay.
         let _evicted = self.pool.force_insert(SecContextState {
@@ -999,13 +1012,13 @@ impl<O: RenderableOnMinimal, I: RenderableOnMinimal> RenderableOnMinimal for OrI
 }
 
 impl<
-        H: coap_handler::Handler,
-        Crypto: lakers::Crypto,
-        CryptoFactory: Fn() -> Crypto,
-        SSC: ServerSecurityConfig,
-        RNG: rand_core::RngCore + rand_core::CryptoRng,
-        TP: TimeProvider,
-    > coap_handler::Handler for OscoreEdhocHandler<H, Crypto, CryptoFactory, SSC, RNG, TP>
+    H: coap_handler::Handler,
+    Crypto: lakers::Crypto,
+    CryptoFactory: Fn() -> Crypto,
+    SSC: ServerSecurityConfig,
+    RNG: rand_core::RngCore + rand_core::CryptoRng,
+    TP: TimeProvider,
+> coap_handler::Handler for OscoreEdhocHandler<H, Crypto, CryptoFactory, SSC, RNG, TP>
 {
     type RequestData = OrInner<
         OwnRequestData<Result<H::RequestData, H::ExtractRequestError>>,

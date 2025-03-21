@@ -1,5 +1,5 @@
 use ariel_os_embassy_common::gpio::input::InterruptError;
-use embassy_nrf::{gpio::Pin, Peripheral};
+use embassy_nrf::{Peripheral, gpio::Pin};
 use portable_atomic::{AtomicU8, Ordering};
 
 #[cfg(context = "nrf51")]

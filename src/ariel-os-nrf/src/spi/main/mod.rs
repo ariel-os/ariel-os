@@ -6,11 +6,10 @@ use ariel_os_embassy_common::{
 };
 
 use embassy_nrf::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     gpio::Pin as GpioPin,
     peripherals,
     spim::{InterruptHandler, Spim},
-    Peripheral,
 };
 
 /// SPI bus configuration.

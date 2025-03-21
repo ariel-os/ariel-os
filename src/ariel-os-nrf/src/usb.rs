@@ -2,9 +2,8 @@ use ariel_os_debug::log::debug;
 use embassy_nrf::{
     bind_interrupts, pac, peripherals,
     usb::{
-        self,
+        self, Driver,
         vbus_detect::{self, HardwareVbusDetect},
-        Driver,
     },
 };
 

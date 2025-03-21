@@ -66,13 +66,13 @@ pub use thread_flags as flags;
 #[cfg(feature = "core-affinity")]
 pub use smp::CoreAffinity;
 
-use arch::{schedule, Arch, Cpu, ThreadData};
+use arch::{Arch, Cpu, ThreadData, schedule};
 use ariel_os_runqueue::RunQueue;
 use ensure_once::EnsureOnce;
 use thread::{Thread, ThreadState};
 
 #[cfg(feature = "multi-core")]
-use smp::{schedule_on_core, Multicore};
+use smp::{Multicore, schedule_on_core};
 #[cfg(feature = "multi-core")]
 use static_cell::ConstStaticCell;
 

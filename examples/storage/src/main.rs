@@ -4,9 +4,8 @@
 #![feature(used_with_arg)]
 
 use ariel_os::debug::{
-    exit,
+    ExitCode, exit,
     log::{defmt, info},
-    ExitCode,
 };
 
 // Imports for using [`ariel_os::storage`]

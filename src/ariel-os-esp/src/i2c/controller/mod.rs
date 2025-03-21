@@ -2,10 +2,11 @@
 
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 use esp_hal::{
+    Async,
     gpio::interconnect::PeripheralOutput,
     i2c::master::{BusTimeout, I2c as EspI2c},
     peripheral::Peripheral,
-    peripherals, Async,
+    peripherals,
 };
 
 /// I2C bus configuration.

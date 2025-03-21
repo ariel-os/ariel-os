@@ -1,8 +1,9 @@
 use ariel_os_embassy_common::gpio::input::InterruptError;
 use embassy_stm32::{
+    OptionalPeripherals, Peripheral,
     exti::{AnyChannel, Channel},
     gpio::Pin,
-    peripherals, OptionalPeripherals, Peripheral,
+    peripherals,
 };
 use portable_atomic::{AtomicBool, AtomicU16, Ordering};
 

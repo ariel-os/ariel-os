@@ -14,14 +14,13 @@ mod pins;
 
 use ariel_os::{
     debug::{
-        exit,
+        ExitCode, exit,
         log::{debug, info},
-        ExitCode,
     },
     gpio, hal,
     spi::{
-        main::{highest_freq_in, Kilohertz, SpiDevice},
         Mode,
+        main::{Kilohertz, SpiDevice, highest_freq_in},
     },
 };
 

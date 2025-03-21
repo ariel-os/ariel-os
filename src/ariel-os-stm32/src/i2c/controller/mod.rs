@@ -3,12 +3,11 @@
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     i2c::{ErrorInterruptHandler, EventInterruptHandler, I2c as InnerI2c, SclPin, SdaPin},
     mode::Blocking,
     peripherals,
     time::Hertz,
-    Peripheral,
 };
 
 /// I2C bus configuration.

@@ -3,11 +3,10 @@
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 
 use embassy_nrf::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     gpio::Pin as GpioPin,
     peripherals,
     twim::{InterruptHandler, Twim},
-    Peripheral,
 };
 
 /// I2C bus configuration.

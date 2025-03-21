@@ -14,12 +14,11 @@ mod pins;
 
 use ariel_os::{
     debug::{
-        exit,
+        ExitCode, exit,
         log::{debug, info},
-        ExitCode,
     },
     hal,
-    i2c::controller::{highest_freq_in, I2cDevice, Kilohertz},
+    i2c::controller::{I2cDevice, Kilohertz, highest_freq_in},
 };
 use embassy_sync::mutex::Mutex;
 use embedded_hal_async::i2c::I2c as _;

@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_stm32::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[doc(hidden)]
@@ -49,7 +49,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_stm32::{gpio::Level, Peripheral};
+    use embassy_stm32::{Peripheral, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_stm32::gpio::{Output, Pin as OutputPin};

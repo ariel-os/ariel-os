@@ -15,8 +15,8 @@ mod storage;
 use core::ops::Range;
 
 use ariel_os_hal::{
-    storage::{init as flash_init, Flash, FlashError},
     OptionalPeripherals,
+    storage::{Flash, FlashError, init as flash_init},
 };
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex,
@@ -48,7 +48,7 @@ fn flash_range_from_linker() -> Range<u32> {
     #[cfg(not(context = "ariel-os"))]
     const OFFSET: usize = 0x0;
 
-    extern "C" {
+    unsafe extern "C" {
         static __storage_start: u32;
         static __storage_end: u32;
     }

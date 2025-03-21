@@ -58,6 +58,7 @@
 #![cfg_attr(feature = "_nightly_docs", feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
+#![allow(clippy::too_many_lines)]
 
 mod iana;
 

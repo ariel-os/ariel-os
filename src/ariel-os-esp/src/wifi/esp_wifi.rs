@@ -2,12 +2,12 @@ use ariel_os_debug::log::{debug, info};
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
 use esp_wifi::{
+    EspWifiController,
     config::PowerSaveMode,
     wifi::{
         ClientConfiguration, Configuration, WifiController, WifiDevice, WifiEvent, WifiStaDevice,
         WifiState,
     },
-    EspWifiController,
 };
 use once_cell::sync::OnceCell;
 

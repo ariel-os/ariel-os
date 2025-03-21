@@ -1,6 +1,6 @@
 use critical_section::CriticalSection;
 
-use crate::{thread::Thread, RunqueueId, ThreadId, ThreadState, SCHEDULER};
+use crate::{RunqueueId, SCHEDULER, ThreadId, ThreadState, thread::Thread};
 
 /// Manages blocked [`super::Thread`]s for a resource, and triggering the scheduler when needed.
 #[derive(Debug, Default)]

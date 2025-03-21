@@ -1,6 +1,6 @@
-use crate::{cleanup, Arch, Thread, SCHEDULER};
+use crate::{Arch, SCHEDULER, Thread, cleanup};
 use core::{arch::naked_asm, ptr::write_volatile};
-use cortex_m::peripheral::{scb::SystemHandler, SCB};
+use cortex_m::peripheral::{SCB, scb::SystemHandler};
 
 #[cfg(not(any(armv6m, armv7m, armv8m)))]
 compile_error!("no supported ARM variant selected");
@@ -91,7 +91,7 @@ impl Arch for Cpu {
 /// - must not be called manually
 #[cfg(any(armv7m, armv8m))]
 #[naked]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 unsafe extern "C" fn PendSV() {
     unsafe {
@@ -133,7 +133,7 @@ unsafe extern "C" fn PendSV() {
 /// - must not be called manually
 #[cfg(armv6m)]
 #[naked]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 unsafe extern "C" fn PendSV() {
     unsafe {
@@ -233,7 +233,7 @@ unsafe extern "C" fn sched() -> u64 {
             // The returned `r1` therefore will be null, and saving/ restoring
             // the context is skipped.
             let mut current_high_regs = core::ptr::null();
-            if let Some(ref mut current_tid_ref) = scheduler.current_tid_mut() {
+            if let Some(current_tid_ref) = scheduler.current_tid_mut() {
                 if next_tid == *current_tid_ref {
                     return Some((0, 0));
                 }

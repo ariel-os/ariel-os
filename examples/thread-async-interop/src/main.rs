@@ -7,7 +7,7 @@ use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal}
 
 use ariel_os::{
     asynch::{blocker, spawner},
-    debug::{exit, log::*, ExitCode},
+    debug::{ExitCode, exit, log::*},
     time::{Duration, Instant, Timer},
 };
 

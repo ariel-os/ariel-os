@@ -7,7 +7,7 @@ mod pins;
 
 #[allow(unused_imports)]
 use ariel_os::{
-    debug::{exit, log::info, ExitCode},
+    debug::{ExitCode, exit, log::info},
     gpio::{DriveStrength, Input, Level, Output, Pull, Speed},
 };
 

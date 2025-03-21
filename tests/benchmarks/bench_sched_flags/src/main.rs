@@ -5,7 +5,7 @@
 
 use ariel_os::{
     debug::log::*,
-    thread::{current_tid, sync::Channel, thread_flags, ThreadId},
+    thread::{ThreadId, current_tid, sync::Channel, thread_flags},
 };
 
 static ID_EXCHANGE: Channel<ThreadId> = Channel::new();

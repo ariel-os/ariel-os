@@ -32,7 +32,7 @@ pub mod storage;
 use embassy_stm32::Config;
 
 #[doc(hidden)]
-pub use embassy_stm32::{interrupt, OptionalPeripherals, Peripherals};
+pub use embassy_stm32::{OptionalPeripherals, Peripherals, interrupt};
 
 pub use embassy_stm32::peripherals;
 

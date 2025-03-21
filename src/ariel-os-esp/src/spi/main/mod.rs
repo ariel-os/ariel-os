@@ -2,7 +2,7 @@
 
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
-    spi::{main::Kilohertz, BitOrder, Mode},
+    spi::{BitOrder, Mode, main::Kilohertz},
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use esp_hal::{
