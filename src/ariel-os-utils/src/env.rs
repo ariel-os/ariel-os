@@ -29,8 +29,38 @@ macro_rules! define_env_with_default_macro {
     };
 }
 
+macro_rules! define_env_macro {
+    ($macro_name:ident, $parse_fn_name:ident, $output_type_name:literal) => {
+        #[macro_export]
+        macro_rules! $macro_name {
+            // $doc is currently unused
+            // TODO: $$(,)? should be added to allow trailing commas if this gets re-exported
+            // for users, but that requires the unstable `macro_metavar_expr` feature
+            ($env_var:literal, $doc:literal) => {
+                if let Some(str_value) = option_env!($env_var) {
+                    if let Ok(value) = $crate::env::konst::primitive::$parse_fn_name(str_value) {
+                        value
+                    } else {
+                        $crate::env::const_panic::concat_panic!(
+                            "Could not parse environment variable `",
+                            $env_var,
+                            "=",
+                            str_value,
+                            "` as ",
+                            $output_type_name,
+                        );
+                    }
+                } else {
+                    $crate::env::const_panic::concat_panic!("there is not the environment variable")
+                }
+            };
+        }
+    };
+}
+
 define_env_with_default_macro!(usize_from_env_or, parse_usize, "a usize");
 define_env_with_default_macro!(u8_from_env_or, parse_u8, "a u8");
+define_env_macro!(u8_from_env , parse_u8, "a u8");
 
 /// Reads a value at compile time from the given environment variable, with a default.
 ///
@@ -74,6 +104,8 @@ macro_rules! str_from_env {
         }
     };
 }
+
+
 #[expect(unused_imports, reason = "used for docs of str_from_env_or")]
 pub(crate) use str_from_env;
 

@@ -23,6 +23,8 @@ embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
   "dhcpv4",
   "medium-ethernet",
+  "proto-ipv4",
+  "proto-ipv6"
 ] }
 embassy-sync = { workspace = true }
 embassy-time = { workspace = true, optional = true }

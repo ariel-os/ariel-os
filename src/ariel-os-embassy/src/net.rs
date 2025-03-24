@@ -74,13 +74,15 @@ pub(crate) fn config() -> embassy_net::Config {
     {
         embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
-    #[cfg(feature = "network-config-override")]
+    #[cfg(all(feature = "network-config-override",feature= "network-config-static"))]
     {
         extern "Rust" {
             fn __ariel_os_network_config() -> embassy_net::Config;
         }
         unsafe { __ariel_os_network_config() }
     }
+    
+    
 }
 
 /// Constructor for [`DummyDriver`]
@@ -161,29 +163,63 @@ impl embassy_net::driver::RxToken for DummyDriver {
 #[cfg(feature = "network-config-static")]
 #[no_mangle]
 fn __ariel_os_network_config() -> embassy_net::Config {
-    use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
+    use ariel_os_utils::{ipv4_addr_from_env, u8_from_env};
+    use ariel_os_utils::ipv6_addr_from_env;
+    use embassy_net::{ConfigV4,Ipv6Cidr, StaticConfigV4, StaticConfigV6};
+    use embassy_net::ConfigV6;
 
-    let ipaddr = ipv4_addr_from_env_or!(
+    let ipaddr = ipv4_addr_from_env!(
         "CONFIG_NET_IPV4_STATIC_ADDRESS",
-        "10.42.0.61",
         "static IPv4 address",
     );
 
-    let gw_addr = ipv4_addr_from_env_or!(
+    let gw_addr = ipv4_addr_from_env!(
         "CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS",
-        "10.42.0.1",
         "static IPv4 gateway address",
     );
 
-    let prefix_len = u8_from_env_or!(
+    let prefix_len = u8_from_env!(
         "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
-        24,
         "static IPv4 CIDR prefix length"
     );
 
-    embassy_net::Config::ipv4_static(embassy_net::StaticConfigV4 {
+    
+
+    let ipaddr_v6 = ipv6_addr_from_env!(
+        "CONFIG_NET_IPV6_STATIC_ADDRESS",
+        "static IPv6 address",
+    );
+
+    let gw_addr_v6 = ipv6_addr_from_env!(
+        "CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS",
+        "static IPv6 gateway address",
+    );
+
+    let prefix_len_v6 = u8_from_env!(
+        "CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN",
+        "static IPv6 CIDR prefix length"
+    );
+
+    
+
+    let mut config = embassy_net::Config::default();
+
+    
+    config.ipv4 = ConfigV4::Static(StaticConfigV4 {
         address: embassy_net::Ipv4Cidr::new(ipaddr, prefix_len),
         dns_servers: heapless::Vec::new(),
         gateway: Some(gw_addr),
-    })
+    });
+
+    
+    config.ipv6 = ConfigV6::Static(StaticConfigV6 {
+        address: embassy_net::Ipv6Cidr::new(ipaddr_v6, prefix_len_v6),
+        dns_servers: heapless::Vec::new(),
+        gateway: Some(gw_addr_v6),
+    });
+
+    config
+
+    
 }
+
