@@ -65,10 +65,12 @@ impl<T> Delegate<T> {
     /// This must only be called *once* per [`Delegate`] instance.
     pub async unsafe fn lend<'a, 'b: 'a>(&'a self, something: &'b mut T) {
         let spawner = Spawner::for_current_executor().await;
-        self.send
-            .signal(SameExecutorCell::new(something as *mut T, spawner));
+        self.send.signal(SameExecutorCell::new(
+            core::ptr::from_mut::<T>(something),
+            spawner,
+        ));
 
-        self.reply.wait().await
+        self.reply.wait().await;
     }
 
     /// Calls a closure on a lent object.

@@ -72,7 +72,7 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 pub(crate) fn config() -> embassy_net::Config {
     #[cfg(not(feature = "network-config-override"))]
     {
-        embassy_net::Config::dhcpv4(Default::default())
+        embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
     #[cfg(all(feature = "network-config-override",feature= "network-config-static"))]
     {
@@ -93,6 +93,7 @@ pub(crate) fn config() -> embassy_net::Config {
     dead_code,
     reason = "constructor is only used in linter / documentation situations"
 )]
+#[expect(clippy::missing_panics_doc)]
 pub(crate) fn new_dummy() -> DummyDriver {
     panic!(
         "DummyDriver must only ever be constructed for documentation and linting, not for running"

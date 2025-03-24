@@ -41,7 +41,21 @@ impl ServerSecurityConfig for StoredPolicy {
                 return Some((credential, StoredClaims { scope }));
             }
         }
+
+        // FIXME: This should be a default behavior -- but should it be part of a utility function
+        // for expand_id_cred_x, or should it be where that is called?
+        if let Some(credential_by_value) = id_cred_x.get_ccs() {
+            if let Some(unauthorized_claims) = self.nosec_authorization() {
+                #[expect(clippy::clone_on_copy, reason = "Lakers items are overly copy happy")]
+                return Some((credential_by_value.clone(), unauthorized_claims));
+            }
+        }
+
         None
+    }
+
+    fn nosec_authorization(&self) -> Option<Self::GeneralClaims> {
+        flash_peers::unauthenticated_scope().map(|scope| StoredClaims { scope })
     }
 }
 

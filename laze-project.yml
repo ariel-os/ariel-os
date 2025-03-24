@@ -59,13 +59,15 @@ contexts:
       CARGO_PRESHELL: []
 
       # Stack size config
+      executor_stacksize_required_default: "8192"
+      isr_stacksize_required_default: "2048"
       executor_stacksize_required:
         # These defines the defaults. Other modules can append their needs,
         # the maximum value will be chosen.
         # Note: make sure to append to the list, not set single value!
-        - "8192"
+        - ${executor_stacksize_required_default}
       isr_stacksize_required:
-        - "2048"
+        - ${isr_stacksize_required_default}
       CONFIG_EXECUTOR_STACKSIZE: $(max (0, ${executor_stacksize_required}))
       CONFIG_ISR_STACKSIZE: $(max (0, ${isr_stacksize_required}))
 
@@ -347,6 +349,24 @@ contexts:
       - ?probe-rs
     env:
       OPENOCD_ARGS: foo
+
+  - name: stm32c031c6tx
+    parent: stm32
+    selects:
+      - cortex-m0-plus
+    provides:
+      - has_swi
+    disables:
+      # TODO: embedded-test currently hard-codes 16k for its thread
+      - embedded-test
+    env:
+      isr_stacksize_required_default: "1024"
+      executor_stacksize_required_default: "3072"
+      PROBE_RS_CHIP: STM32C031C6Tx
+      PROBE_RS_PROTOCOL: swd
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
 
   - name: stm32f401retx
     parent: stm32
@@ -927,6 +947,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/coap
+        executor_stacksize_required:
+          - "32768"
 
   - name: coap-server
     help: Support for applications to set up CoAP server handlers.
@@ -1326,6 +1348,9 @@ builders:
 
   - name: nrf5340dk
     parent: nrf5340
+
+  - name: st-nucleo-c031c6
+    parent: stm32c031c6tx
 
   - name: st-nucleo-f401re
     parent: stm32f401retx

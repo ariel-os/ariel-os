@@ -14,7 +14,7 @@ fn thread0() {
     CHANNEL.send(&42);
 }
 
-#[ariel_os::thread(autostart, stacksize = 4096, priority = 2)]
+#[ariel_os::thread(autostart, priority = 2)]
 fn thread1() {
     let my_id = ariel_os::thread::current_tid().unwrap();
     info!("[Thread {}] Waiting to receive a message...", my_id);

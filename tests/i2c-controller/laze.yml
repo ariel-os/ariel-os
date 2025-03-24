@@ -1,9 +1,5 @@
 apps:
   - name: i2c-controller
-    env:
-      global:
-        CARGO_ENV:
-          - CONFIG_ISR_STACKSIZE=16384
     context:
       - bbc-microbit-v2
       - esp

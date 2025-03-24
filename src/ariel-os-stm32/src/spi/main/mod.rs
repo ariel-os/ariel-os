@@ -17,6 +17,8 @@ use embassy_stm32::{
 // TODO: we could consider making this `pub`
 // NOTE(hal): values from the datasheets.
 // When peripherals support different frequencies, the smallest one is used.
+#[cfg(context = "stm32c031c6tx")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(24);
 #[cfg(context = "stm32f401retx")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
 #[cfg(context = "stm32h755zitx")]
@@ -134,6 +136,10 @@ macro_rules! define_spi_drivers {
 }
 
 // Define a driver per peripheral
+#[cfg(context = "stm32c031c6tx")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+);
 #[cfg(context = "stm32f401retx")]
 define_spi_drivers!(
    SPI1 => SPI1,

@@ -1,9 +1,5 @@
 apps:
   - name: example-coap-server
-    env:
-      global:
-        executor_stacksize_required:
-          - "32768"
     selects:
       - coap-server
       - ?coap-server-config-demokeys

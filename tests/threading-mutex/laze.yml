@@ -4,3 +4,5 @@ apps:
       - ?release
       - single-core
       - sw/threading
+      - "context::stm32c031c6tx":
+          - too-little-memory

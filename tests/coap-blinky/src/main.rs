@@ -10,7 +10,7 @@ use ariel_os::gpio::{Level, Output};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn coap_run(peripherals: pins::LedPeripherals) {
-    use coap_handler_implementations::{new_dispatcher, HandlerBuilder, ReportingHandlerBuilder};
+    use coap_handler_implementations::{new_dispatcher, HandlerBuilder};
 
     let led = Output::new(peripherals.led, Level::Low);
 
