@@ -1,8 +1,4 @@
 apps:
   - name: example-coap-client
-    env:
-      global:
-        executor_stacksize_required:
-          - "32768"
     selects:
       - coap-client

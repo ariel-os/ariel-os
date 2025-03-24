@@ -1,4 +1,4 @@
 apps:
-  - name: threading
+  - name: example-threading
     selects:
       - sw/threading

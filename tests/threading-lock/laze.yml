@@ -3,3 +3,5 @@ apps:
     selects:
       - executor-thread
       - sw/threading
+      - "context::stm32c031c6tx":
+          - too-little-memory

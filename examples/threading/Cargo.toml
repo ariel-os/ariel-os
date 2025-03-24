@@ -1,5 +1,5 @@
 [package]
-name = "threading"
+name = "example-threading"
 license.workspace = true
 edition.workspace = true
 publish = false

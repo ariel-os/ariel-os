@@ -17,6 +17,7 @@ subdirs:
   - http-server
   - log
   - minimal
+  - power
   - random
   - storage
   - tcp-echo

@@ -29,6 +29,9 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
 
+[target.'cfg(context = "stm32c031c6tx")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031c6"] }
+
 [target.'cfg(context = "stm32f401retx")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f401re"] }
 

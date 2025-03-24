@@ -256,9 +256,9 @@ pub mod input {
     impl<P: Peripheral<P: HalInputPin> + 'static> InputBuilder<P> {
         /// Returns an [`Input`] by finalizing the builder.
         pub fn build(self) -> Input {
-            let input = match hal::gpio::input::new(self.pin, self.pull, self.schmitt_trigger) {
-                Ok(input) => input,
-                Err(_) => unreachable!(),
+            #[allow(irrefutable_let_patterns, reason = "conditional compilation")]
+            let Ok(input) = hal::gpio::input::new(self.pin, self.pull, self.schmitt_trigger) else {
+                unreachable!()
             };
 
             Input { input }

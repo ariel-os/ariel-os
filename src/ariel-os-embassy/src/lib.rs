@@ -5,6 +5,7 @@
 #![feature(used_with_arg)]
 #![feature(doc_auto_cfg)]
 #![feature(negative_impls)]
+#![deny(clippy::pedantic)]
 
 pub mod gpio;
 
@@ -168,6 +169,7 @@ fn init() {
 }
 
 #[embassy_executor::task]
+#[allow(clippy::too_many_lines)]
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let spawner = asynch::Spawner::for_current_executor().await;
     asynch::set_spawner(spawner.make_send());
@@ -188,8 +190,10 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     // Clock startup and entropy collection may lend themselves to parallelization, provided that
     // doesn't impact runtime RAM or flash use.
 
+    // Block on this Future to reduce the size of this startup task, which is statically
+    // allocated.
     #[cfg(feature = "storage")]
-    ariel_os_storage::init(&mut peripherals).await;
+    embassy_futures::block_on(ariel_os_storage::init(&mut peripherals));
 
     #[cfg(all(feature = "usb", context = "nrf"))]
     hal::usb::init();
@@ -208,14 +212,15 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let mut usb_builder = {
         use static_cell::ConstStaticCell;
 
-        let usb_config = usb::config();
-
-        let usb_driver = hal::usb::driver(usb_peripherals);
-
         static CONFIG_DESC: ConstStaticCell<[u8; 256]> = ConstStaticCell::new([0; 256]);
         static BOS_DESC: ConstStaticCell<[u8; 256]> = ConstStaticCell::new([0; 256]);
         static MSOS_DESC: ConstStaticCell<[u8; 128]> = ConstStaticCell::new([0; 128]);
         static CONTROL_BUF: ConstStaticCell<[u8; 128]> = ConstStaticCell::new([0; 128]);
+
+        let usb_config = usb::config();
+
+        let usb_driver = hal::usb::driver(usb_peripherals);
+
         // Create embassy-usb DeviceBuilder using the driver and config.
         let builder = usb::UsbBuilder::new(
             usb_driver,
@@ -237,13 +242,15 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         };
         use static_cell::StaticCell;
 
+        static CDC_ECM_STATE: StaticCell<CdcNcmState> = StaticCell::new();
+        static NET_STATE: StaticCell<NetState<{ net::ETHERNET_MTU }, 4, 4>> = StaticCell::new();
+
         // Host's MAC addr. This is the MAC the host "thinks" its USB-to-ethernet adapter has.
         let host_mac_addr = crate::hal::identity::DeviceId::get()
             .map(|d| d.interface_eui48(1).0)
             .unwrap_or([0x8A, 0x88, 0x88, 0x88, 0x88, 0x88]);
 
         // Create classes on the builder.
-        static CDC_ECM_STATE: StaticCell<CdcNcmState> = StaticCell::new();
         let usb_cdc_ecm = CdcNcmClass::new(
             &mut usb_builder,
             CDC_ECM_STATE.init_with(CdcNcmState::new),
@@ -255,7 +262,6 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             .map(|d| d.interface_eui48(0).0)
             .unwrap_or([0xCA, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC]);
 
-        static NET_STATE: StaticCell<NetState<{ net::ETHERNET_MTU }, 4, 4>> = StaticCell::new();
         let (runner, device) = usb_cdc_ecm.into_embassy_net_device::<{ net::ETHERNET_MTU }, 4, 4>(
             NET_STATE.init_with(NetState::new),
             our_mac_addr,
@@ -300,6 +306,8 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             "maximum number of concurrent sockets allowed by the network stack"
         );
 
+        static RESOURCES: StaticCell<StackResources<MAX_CONCURRENT_SOCKETS>> = StaticCell::new();
+
         #[cfg(not(any(feature = "usb-ethernet", feature = "wifi-cyw43", feature = "wifi-esp")))]
         // The creation of `device` is not organized in such a way that they could be put in a
         // cfg-if without larger refactoring; relying on unused variable lints to keep the
@@ -312,7 +320,6 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         debug!("Network stack seed: {:#x}", seed);
 
         // Init network stack
-        static RESOURCES: StaticCell<StackResources<MAX_CONCURRENT_SOCKETS>> = StaticCell::new();
         let (stack, runner) = embassy_net::new(
             device,
             config,

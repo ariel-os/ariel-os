@@ -5,9 +5,7 @@
 
 #[ariel_os::task(autostart)]
 async fn coap_run() {
-    use coap_handler_implementations::{
-        new_dispatcher, HandlerBuilder, ReportingHandlerBuilder, SimpleRendered,
-    };
+    use coap_handler_implementations::{new_dispatcher, HandlerBuilder, SimpleRendered};
 
     let handler = new_dispatcher()
         // We offer a single resource: /hello, which responds just with a text string.

@@ -87,7 +87,7 @@ pub async fn init(p: &mut OptionalPeripherals) {
     // interferes with flash write operations.
     // https://github.com/knurling-rs/defmt/pull/683
     #[cfg(context = "rp")]
-    embassy_time::Timer::after_millis(10).await;
+    embassy_time::block_for(embassy_time::Duration::from_millis(10));
 
     // Use a marker to ensure that this storage is initialized.
     match get::<u8>(MARKER_KEY).await {

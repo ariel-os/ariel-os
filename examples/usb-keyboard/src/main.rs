@@ -10,7 +10,7 @@ use ariel_os::{
     debug::log::*,
     reexports::{embassy_usb, usbd_hid},
     time::{Duration, Timer},
-    usb::{UsbBuilderHook, UsbDriver},
+    usb::UsbDriver,
 };
 use embassy_usb::class::hid::{self, HidReaderWriter};
 use usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor};

@@ -18,6 +18,7 @@ ariel-os-debug = { workspace = true }
 ariel-os-embassy = { path = "../ariel-os-embassy" }
 ariel-os-identity = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
+ariel-os-power = { path = "../ariel-os-power" }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
 ariel-os-storage = { workspace = true, optional = true }

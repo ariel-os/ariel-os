@@ -33,9 +33,15 @@ This application is a work in progress demo of running CoAP with OSCORE/EDHOC se
       <!-- FIXME: should be trivial after https://github.com/knurling-rs/defmt/pull/916 -->
       after running the hex values there through https://cbor.me's bytes to diagnostic converter.
 
-    The build system now reads `peers.yml`, which currently encodes the same authorization for the demo key as the demo setup,
+    The build system now reads `peers.yml`, which currently encodes similar authorizations for the demo key as the demo setup,
     but in a user configurable way:
     You can add your own private key there, or replace the demo key, and configure resources that should be accessible.
+
+    That file also describes that unauthenticated users may access the `/poem` resource.
+    You can access that in an unauthenticated way by running aiocoap without `--credentials` as in NoSec mode.
+    You can also access them over an encrypted connection:
+    Remove the `own_cred`, `own_cred_style` and `private_key_file` from `client.diag` and replace them with `"own_cred": {"unauthenticated": true}`.
+    Now, the request is encrypted, and the client tool verifies the server's identity without identifying itself.
 
     Instead of using a hard-coded key, the device generates one at first startup,
     and reports the credential that contains its public key in the standard output.

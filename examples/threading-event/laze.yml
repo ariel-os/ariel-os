@@ -2,3 +2,5 @@ apps:
   - name: threading-event
     selects:
       - sw/threading
+      - "context::stm32c031c6tx":
+          - too-little-memory

@@ -1,5 +1,5 @@
 [package]
-name = "storage"
+name = "example-storage"
 license.workspace = true
 edition.workspace = true
 publish = false

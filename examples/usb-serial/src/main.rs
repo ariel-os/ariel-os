@@ -3,12 +3,7 @@
 #![feature(impl_trait_in_assoc_type)]
 #![feature(used_with_arg)]
 
-use ariel_os::{
-    cell::StaticCell,
-    debug::log::info,
-    reexports::embassy_usb,
-    usb::{UsbBuilderHook, UsbDriver},
-};
+use ariel_os::{cell::StaticCell, debug::log::info, reexports::embassy_usb, usb::UsbDriver};
 use embassy_usb::{
     class::cdc_acm::{CdcAcmClass, State},
     driver::EndpointError,

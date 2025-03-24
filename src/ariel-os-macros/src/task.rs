@@ -24,8 +24,6 @@
 /// # Examples
 ///
 /// ```ignore
-/// use ariel_os::usb::UsbBuilderHook;
-///
 /// #[ariel_os::task(autostart, peripherals, usb_builder_hook)]
 /// async fn task(peripherals: /* your peripheral type */) {}
 /// ```
@@ -185,9 +183,9 @@ mod task {
             }
         }
 
-        pub fn type_name(&self) -> &'static str {
+        pub fn type_path(&self) -> proc_macro2::TokenStream {
             match self {
-                Self::UsbBuilder => "UsbBuilderHook",
+                Self::UsbBuilder => quote::quote!{ usb::UsbBuilderHook },
             }
         }
 
@@ -244,7 +242,7 @@ mod task {
 
             let delegate_ident = kind.delegate_ident();
 
-            let type_name = format_ident!("{}", kind.type_name());
+            let type_path = kind.type_path();
             let delegate_hook_ident = format_ident!("{delegate_ident}");
             let delegate_hook_ref_ident = format_ident!("{delegate_ident}_REF");
 
@@ -254,7 +252,7 @@ mod task {
 
                 #[#ariel_os_crate::reexports::linkme::distributed_slice(#distributed_slice_type)]
                 #[linkme(crate=#ariel_os_crate::reexports::linkme)]
-                    static #delegate_hook_ref_ident: #type_name = &#delegate_hook_ident;
+                    static #delegate_hook_ref_ident: #ariel_os_crate::#type_path = &#delegate_hook_ident;
                 }
             }
         );

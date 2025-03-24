@@ -34,7 +34,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
 
     // Take all SPI peripherals and do nothing with them.
     cfg_if::cfg_if! {
-        if #[cfg(context = "stm32f401retx")] {
+        if #[cfg(context = "stm32c031c6tx")] {
+            take_all_spi_peripherals!(Peripherals, SPI1);
+        } else if #[cfg(context = "stm32f401retx")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
         } else if #[cfg(context = "stm32h755zitx")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3, SPI4, SPI5, SPI6);
