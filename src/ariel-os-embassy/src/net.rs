@@ -167,34 +167,34 @@ fn __ariel_os_network_config() -> embassy_net::Config {
     use embassy_net::{ConfigV4,Ipv6Cidr, StaticConfigV4, StaticConfigV6};
     use embassy_net::ConfigV6;
 
-    let ipaddr = ipv4_addr_from_env_or!(
+    let ipaddr = ipv4_addr_from_env!(
         "CONFIG_NET_IPV4_STATIC_ADDRESS",
         "static IPv4 address",
     );
 
-    let gw_addr = ipv4_addr_from_env_or!(
+    let gw_addr = ipv4_addr_from_env!(
         "CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS",
         "static IPv4 gateway address",
     );
 
-    let prefix_len = u8_from_env_or!(
+    let prefix_len = u8_from_env!(
         "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
         "static IPv4 CIDR prefix length"
     );
 
     
 
-    let ipaddr_v6 = ipv6_addr_from_env_or!(
+    let ipaddr_v6 = ipv6_addr_from_env!(
         "CONFIG_NET_IPV6_STATIC_ADDRESS",
         "static IPv6 address",
     );
 
-    let gw_addr_v6 = ipv6_addr_from_env_or!(
+    let gw_addr_v6 = ipv6_addr_from_env!(
         "CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS",
         "static IPv6 gateway address",
     );
 
-    let prefix_len_v6 = u8_from_env_or!(
+    let prefix_len_v6 = u8_from_env!(
         "CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN",
         "static IPv6 CIDR prefix length"
     );
