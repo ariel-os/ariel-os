@@ -60,13 +60,6 @@ if you use `git commit -s`.
 The email address used in your Sign-off
 must match the email used for commit author
 
-To permanently add the 'Sign-off' to your commits contributed to Ariel OS,
-use the following command from your Ariel OS git checkout:
-
-    git config --local format.signOff true
-
-The `--local` flag ensures that only your Ariel OS repo receives the 'Sign-off'.
-
 ### Altering existing commits
 
 When altering an existing commit from a different contributor(s),
