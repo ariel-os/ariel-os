@@ -1362,7 +1362,7 @@ builders:
       - has_usb_device_port
 
   - name: rpi-pico-w
-    parent: rpi-pico
+    parent: rp2040
     provides:
       - has_usb_device_port
       - has_wifi_cyw43
