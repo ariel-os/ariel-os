@@ -64,7 +64,6 @@ To permanently add the 'Sign-off' to your commits contributed to Ariel OS,
 it is easiest to use a commit template.
 Create a simple text file, e.g. `.git/commitmessage` with the following content
 
-    
     Signed-off-by: Random J Developer <random@developer.example.org>
 
 and enable it in your git config:
