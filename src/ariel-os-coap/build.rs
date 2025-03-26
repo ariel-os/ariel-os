@@ -51,8 +51,8 @@ impl Permission {
 impl SinglePermission {
     /// The `Tperm` unsigned integer representation of the REST-specific AIF model described in
     /// RFC9237.
-    fn mask(&self) -> u32 {
-        1 << (*self as u8 - 1)
+    fn mask(self) -> u32 {
+        1 << (self as u8 - 1)
     }
 }
 
@@ -128,9 +128,10 @@ fn main() {
                 .expect("writing to String is infallible");
             }
             (None, Some(KnownSource::Unauthenticated)) => {
-                if unauthenticated_scope.is_some() {
-                    panic!("Only a single `from: unauthenticated` record is usable.");
-                }
+                assert!(
+                    unauthenticated_scope.is_none(),
+                    "Only a single `from: unauthenticated` record is usable.",
+                );
 
                 unauthenticated_scope = Some(format!("Some({scope})"));
             }
