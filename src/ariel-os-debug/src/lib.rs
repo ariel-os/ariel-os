@@ -3,7 +3,6 @@
 #![cfg_attr(not(test), no_std)]
 #![cfg_attr(test, no_main)]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 #[cfg(all(feature = "rtt-target", feature = "esp-println"))]
 compile_error!(

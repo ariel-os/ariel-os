@@ -15,7 +15,6 @@
 #![feature(macro_metavar_expr)]
 #![feature(doc_auto_cfg)]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 #[featurecomb::comb]
 mod _featurecomb {}

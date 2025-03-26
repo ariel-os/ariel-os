@@ -2,7 +2,6 @@
 
 #![no_std]
 #![feature(doc_auto_cfg)]
-#![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 
 pub mod gpio;

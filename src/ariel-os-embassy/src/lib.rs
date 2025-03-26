@@ -5,7 +5,6 @@
 #![feature(used_with_arg)]
 #![feature(doc_auto_cfg)]
 #![feature(negative_impls)]
-#![deny(clippy::pedantic)]
 
 pub mod gpio;
 

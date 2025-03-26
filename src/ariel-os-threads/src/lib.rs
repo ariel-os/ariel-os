@@ -27,7 +27,6 @@
 #![feature(negative_impls)]
 #![cfg_attr(target_arch = "xtensa", feature(asm_experimental_arch))]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // Disable indexing lints for now, possible panics are documented or rely on internally-enforced
 // invariants
 #![allow(clippy::indexing_slicing)]

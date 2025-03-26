@@ -5,7 +5,6 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
