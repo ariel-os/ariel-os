@@ -1,7 +1,6 @@
 //! This module provides an event that can be waited for.
 
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 use core::cell::UnsafeCell;
 

@@ -2,6 +2,7 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
+#![expect(clippy::cast_possible_truncation)]
 
 mod runqueue;
 pub use runqueue::{RunQueue, RunqueueId, ThreadId};

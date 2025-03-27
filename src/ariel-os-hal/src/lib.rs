@@ -23,7 +23,6 @@
 //! application.
 
 #![no_std]
-#![deny(clippy::pedantic)]
 
 #[doc(hidden)]
 pub mod define_peripherals;

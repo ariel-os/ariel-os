@@ -23,7 +23,6 @@
 //! [`rand_pcg::Pcg32`] is decided yet for the fast one. Neither the algorithm nor the size of
 //! [`FastRng`] or [`CryptoRng`] is guaranteed.
 #![no_std]
-#![deny(clippy::pedantic)]
 
 use core::{cell::RefCell, marker::PhantomData};
 
