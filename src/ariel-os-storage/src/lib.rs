@@ -9,13 +9,14 @@
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
+mod error;
 mod postcard_value;
 mod storage;
 
 use core::ops::Range;
 
 use ariel_os_hal::{
-    storage::{init as flash_init, Flash, FlashError},
+    storage::{init as flash_init, Flash},
     OptionalPeripherals,
 };
 use embassy_sync::{
@@ -104,7 +105,7 @@ pub async fn init(p: &mut OptionalPeripherals) {
 /// Stores a key-value pair into flash memory.
 ///
 /// It will overwrite the last value that has the same key.
-pub async fn insert<'d, V>(key: &str, value: V) -> Result<(), sequential_storage::Error<FlashError>>
+pub async fn insert<'d, V>(key: &str, value: V) -> Result<(), error::Error>
 where
     V: Serialize + Deserialize<'d> + Into<PostcardValue<V>>,
 {
@@ -116,7 +117,7 @@ where
 /// Note: Always [`get()`] the same value type that was [`insert()`]!
 ///
 /// If no value with the key is found, `None` is returned.
-pub async fn get<V>(key: &str) -> Result<Option<V>, sequential_storage::Error<FlashError>>
+pub async fn get<V>(key: &str) -> Result<Option<V>, error::Error>
 where
     V: Serialize + for<'d> Deserialize<'d> + Into<PostcardValue<V>>,
 {
@@ -136,12 +137,12 @@ where
 /// </div>
 // STM32 flash drivers do not implement `MultiwriteNorFlash`.
 #[cfg(not(context = "stm32"))]
-pub async fn remove(key: &str) -> Result<(), sequential_storage::Error<FlashError>> {
+pub async fn remove(key: &str) -> Result<(), error::Error> {
     lock().await.remove(key).await
 }
 
 /// Resets the flash in the entire flash range.
-pub async fn erase_all() -> Result<(), sequential_storage::Error<FlashError>> {
+pub async fn erase_all() -> Result<(), error::Error> {
     let mut s = lock().await;
     s.erase_all().await?;
     s.insert(MARKER_KEY, MARKER_VALUE).await
