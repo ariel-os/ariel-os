@@ -16,6 +16,14 @@ ariel_os::hal::define_peripherals!(Peripherals {
     pin_3: P0_05,
 });
 
+#[cfg(context = "nrf91")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    pin_0: P0_00,
+    pin_1: P0_01,
+    pin_2: P0_02,
+    pin_3: P0_03,
+});
+
 #[cfg(context = "rp")]
 ariel_os::hal::define_peripherals!(Peripherals {
     pin_0: PIN_0,

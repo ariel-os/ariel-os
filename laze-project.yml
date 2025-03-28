@@ -240,6 +240,18 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
 
+  - name: nrf91
+    parent: nrf
+
+  - name: nrf9160
+    parent: nrf91
+    provides:
+      - has_storage_support
+    selects:
+      - cortex-m33f
+    env:
+      PROBE_RS_CHIP: nRF9160_xxAA
+
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
@@ -1393,6 +1405,10 @@ builders:
 
   - name: st-nucleo-c031c6
     parent: stm32c031c6tx
+
+  # TODO: there also is a companion nrf52840 on this board
+  - name: nrf9160dk
+    parent: nrf9160
 
   - name: st-nucleo-f401re
     parent: stm32f401retx

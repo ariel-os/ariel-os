@@ -89,6 +89,21 @@ chips:
       storage: supported
       wifi: not_available
 
+  nrf9160:
+    name: nRF9160
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng:
+        status: not_currently_supported
+        comments:
+          - only available through the CryptoCell
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage: supported
+      wifi: not_available
+
   rp2040:
     name: RP2040
     support:
@@ -228,6 +243,14 @@ boards:
     support:
       user_usb: supported
       ethernet_over_usb: supported
+
+  nrf9160dk:
+    name: nRF9160-DK
+    url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
+    chip: nrf9160
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
 
   rpi-pico:
     name: Raspberry Pi Pico

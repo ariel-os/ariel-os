@@ -6,6 +6,7 @@ apps:
       - esp
       - nrf52840dk
       - nrf5340dk
+      - nrf9160dk
       - rp
       - st-nucleo-c031c6
       - st-nucleo-f401re

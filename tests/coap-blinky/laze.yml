@@ -9,6 +9,7 @@ apps:
       - esp
       - nrf52840dk
       - nrf5340dk
+      - nrf9160dk
       - particle-xenon
       - rp
       - st-nucleo-f401re
