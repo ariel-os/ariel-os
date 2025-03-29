@@ -11,7 +11,7 @@
 //! feature; please refer to the documentation of those crates for details on the supported syntax.
 
 #![cfg_attr(not(test), no_std)]
-#![feature(doc_auto_cfg)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
 
