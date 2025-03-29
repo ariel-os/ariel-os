@@ -1,6 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(used_with_arg)]
 
 use ariel_os::debug::{ExitCode, log::*};
 use ariel_os::thread::{ThreadId, sync::Event};

@@ -4,10 +4,6 @@
 #![allow(incomplete_features)]
 // - const_generics
 
-// features
-// linkme
-#![feature(used_with_arg)]
-
 #[cfg(feature = "threading")]
 mod threading;
 
@@ -65,7 +61,7 @@ mod isr_stack {
 
     // SAFETY: a linker script inserts this section in RAM.
     #[unsafe(link_section = ".isr_stack")]
-    #[used(linker)]
+    #[used]
     static ISR_STACK: [u8; ISR_STACKSIZE] = [0u8; ISR_STACKSIZE];
 }
 

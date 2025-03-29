@@ -90,7 +90,6 @@ apps:
 # This goes to the top of the file
 #![no_main]
 #![no_std]
-#![feature(used_with_arg)]
 #![feature(impl_trait_in_assoc_type)]
 ```
 

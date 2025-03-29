@@ -23,7 +23,6 @@
 
 #![cfg_attr(not(test), no_std)]
 #![feature(naked_functions)]
-#![feature(used_with_arg)]
 #![feature(negative_impls)]
 #![cfg_attr(target_arch = "xtensa", feature(asm_experimental_arch))]
 #![deny(missing_docs)]

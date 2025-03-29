@@ -1,7 +1,6 @@
 #![no_main]
 #![no_std]
 #![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 mod pins;
 
