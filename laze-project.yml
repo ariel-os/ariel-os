@@ -517,6 +517,8 @@ modules:
           - --cfg armv8m
 
   - name: cortex-m
+    selects:
+      - ?emit-stack-sizes
     env:
       global:
         OBJCOPY: arm-none-eabi-objcopy
@@ -528,9 +530,7 @@ modules:
           - -Clink-arg=-Teheap.x
           - -Clink-arg=-Tdevice.x
           - -Clink-arg=-Tisr_stack.x
-          - -Clink-arg=-Tkeep-stack-sizes.x
           - --cfg context=\"cortex-m\"
-          - -Z emit-stack-sizes
 
   - name: cortex-m0
     selects:
@@ -649,6 +649,15 @@ modules:
       global:
         FEATURES:
           - ariel-os/debug-console
+
+  - name: emit-stack-sizes
+    conflicts:
+      - stable
+    env:
+      global:
+        RUSTFLAGS:
+          - -Clink-arg=-Tkeep-stack-sizes.x
+          - -Z emit-stack-sizes
 
   - name: stable
     help: build with stable Rust
