@@ -254,6 +254,14 @@ boards:
       user_usb: supported
       ethernet_over_usb: supported
 
+  rpi-pico2-w:
+    name: Raspberry Pi Pico 2 W
+    url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
+    chip: rp235xa
+    support:
+      user_usb: supported
+      ethernet_over_usb: supported
+
   espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
     url: https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en

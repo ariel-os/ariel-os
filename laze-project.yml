@@ -1372,6 +1372,12 @@ builders:
     provides:
       - has_usb_device_port
 
+  - name: rpi-pico2-w
+    parent: rp235xa
+    provides:
+      - has_usb_device_port
+      - has_wifi_cyw43
+
   - name: ai-c3
     parent: esp-c3-01m
 
