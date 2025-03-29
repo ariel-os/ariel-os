@@ -32,7 +32,7 @@ jobs:
       - name: Install laze
         uses: taiki-e/install-action@v2
         with:
-          tool: laze@0.1
+          tool: laze@0.2
 
       - name: Install prerequisites
         run: sudo apt-get install ninja-build gcc-arm-none-eabi
