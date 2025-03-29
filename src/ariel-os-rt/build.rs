@@ -41,6 +41,17 @@ fn main() {
         println!("cargo:rerun-if-changed=isr_stack.ld.in");
     }
 
+    if context("riscv") {
+        let region_alias = if context("esp32c3") {
+            "REGION_ALIAS(FLASH, DROM)"
+        } else if context("esp32c6") {
+            "REGION_ALIAS(FLASH, ROM)"
+        } else {
+            panic!("unexpected riscv platform");
+        };
+        std::fs::write(out.join("linkme-region-alias.x"), region_alias).unwrap();
+    }
+
     std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
     std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
     std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
