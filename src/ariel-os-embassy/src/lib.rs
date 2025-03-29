@@ -2,7 +2,6 @@
 
 #![no_std]
 #![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 #![feature(doc_auto_cfg)]
 #![feature(negative_impls)]
 #![deny(clippy::pedantic)]

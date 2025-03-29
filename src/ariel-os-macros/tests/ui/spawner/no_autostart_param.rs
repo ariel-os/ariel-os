@@ -1,5 +1,4 @@
 #![no_main]
-#![feature(used_with_arg)]
 
 // As the macro will fail, this import will not get used
 #[allow(unused_imports)]
