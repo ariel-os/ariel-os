@@ -40,6 +40,7 @@ pub mod input {
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
     ) -> Result<IntEnabledInput<'static>, InterruptError> {
+        #[expect(clippy::used_underscore_binding, reason = "just propagating")]
         match new(pin, pull, _schmitt_trigger) {
             Ok(input) => Ok(input),
             Err(err) => match err {
@@ -111,16 +112,14 @@ impl From<DriveStrength> for esp_hal::gpio::DriveStrength {
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
     fn from(drive_strength: ariel_os_embassy_common::gpio::DriveStrength<Self>) -> Self {
-        use ariel_os_embassy_common::gpio::DriveStrength::*;
-
         // ESPs are able to output up to 40 mA, so we somewhat normalize this.
         match drive_strength {
-            Hal(drive_strength) => drive_strength,
-            Lowest => Self::_5mA,
-            Standard => Self::_10mA,
-            Medium => Self::_10mA,
-            High => Self::_20mA,
-            Highest => Self::_40mA,
+            ariel_os_embassy_common::gpio::DriveStrength::Hal(drive_strength) => drive_strength,
+            ariel_os_embassy_common::gpio::DriveStrength::Lowest => Self::_5mA,
+            ariel_os_embassy_common::gpio::DriveStrength::Standard
+            | ariel_os_embassy_common::gpio::DriveStrength::Medium => Self::_10mA,
+            ariel_os_embassy_common::gpio::DriveStrength::High => Self::_20mA,
+            ariel_os_embassy_common::gpio::DriveStrength::Highest => Self::_40mA,
         }
     }
 }
