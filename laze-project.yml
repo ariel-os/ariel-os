@@ -650,6 +650,25 @@ modules:
         FEATURES:
           - ariel-os/debug-console
 
+  - name: stable
+    help: build with stable Rust
+    conflicts:
+      - nightly
+    env:
+      global:
+        CARGO_TOOLCHAIN: +stable
+        RUSTFLAGS:
+          - --cfg stable
+
+  - name: nightly
+    help: build with nightly Rust
+    conflicts:
+      - stable
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg stable
+
   # This module should be hard-selected when an application *requires* debug
   # logging.
   - name: debug-logging-facade-default
