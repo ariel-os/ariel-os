@@ -98,7 +98,7 @@ esp-wifi-sys = { version = "0.7.1", default-features = false }
 esp-storage = { version = "0.4.0" }
 xtensa-lx-rt = { version = "0.18.0", default-features = false }
 
-linkme = { version = "0.3.31", features = ["used_linker"] }
+linkme = { version = "0.3.32" }
 
 ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
