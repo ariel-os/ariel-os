@@ -13,7 +13,7 @@
 #![cfg_attr(not(test), no_std)]
 // Required for nested macros with repetitions in the inner macro.
 #![feature(macro_metavar_expr)]
-#![feature(doc_auto_cfg)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
 
