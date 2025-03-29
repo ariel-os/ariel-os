@@ -9,7 +9,7 @@
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
 // for #[ariel_os_macros::task(autostart)]
-#![feature(impl_trait_in_assoc_type, used_with_arg)]
+#![feature(impl_trait_in_assoc_type)]
 
 // Moving work from https://github.com/embassy-rs/embassy/pull/2519 in here for the time being
 mod udp_nal;
