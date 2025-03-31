@@ -58,7 +58,7 @@ you just add a line at the bottom of your commit messages saying:
 using a known identity. This will be done for you automatically
 if you use `git commit -s`.
 The email address used in your Sign-off
-must match the email address used for by commit author
+must match the email address used for by commit author.
 
 To permanently add the 'Sign-off' to your commits contributed to Ariel OS,
 it is easiest to use a commit template.
