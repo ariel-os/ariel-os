@@ -3,7 +3,7 @@
 Ariel OS supports persistent storage on a number of boards.
 It provides a key–value pair store based on [sequential-storage].
 
-This storage module is responsible for setting up the the flash storage,
+This storage module is responsible for setting up the flash storage,
 and provides the functions to interact with the key–value pair store in the storage.
 
 ## Use Cases
