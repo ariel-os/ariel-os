@@ -33,7 +33,7 @@ ariel_os::hal::define_peripherals!(LedPeripherals { led: PA5 });
 #[cfg(context = "st-nucleo-f401re")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: PA5 });
 
-#[cfg(context = "stm32f401cd")]
+#[cfg(any(context = "stm32f401ceux", context = "stm32f401cdux"))]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: PC13 });
 
 #[cfg(context = "st-nucleo-h755zi-q")]
