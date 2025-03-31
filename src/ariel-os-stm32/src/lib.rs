@@ -78,6 +78,29 @@ pub fn init() -> OptionalPeripherals {
 
 // TODO: find better place for this
 fn board_config(config: &mut Config) {
+    #[cfg(context = "stm32f401cx")]
+    {
+        use embassy_stm32::rcc::*;
+
+        config.rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(25_000_000),
+            mode: HseMode::Oscillator,
+        });
+        config.rcc.pll_src = PllSource::HSE;
+        config.rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV25,  // 1Hz
+            mul: PllMul::MUL336,       // 336Hz
+            divp: Some(PllPDiv::DIV4), // 84Hz
+            divq: Some(PllQDiv::DIV6), //48Hz
+            divr: None,
+        });
+        config.rcc.ahb_pre = AHBPrescaler::DIV1;
+        config.rcc.apb1_pre = APBPrescaler::DIV2;
+        config.rcc.apb2_pre = APBPrescaler::DIV1;
+        config.rcc.sys = Sysclk::PLL1_P;
+        config.rcc.mux.clk48sel = mux::Clk48sel::PLL1_Q;
+    }
+
     #[cfg(context = "st-nucleo-wb55")]
     {
         use embassy_stm32::rcc::*;

@@ -425,6 +425,14 @@ contexts:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2
 
+  - name: stm32f401cx
+    parent: stm32
+    selects:
+      - cortex-m4f
+    env:
+      PROBE_RS_CHIP: STM32F401CD
+      PROBE_RS_PROTOCOL: swd
+
   - name: stm32h755zitx
     parent: stm32
     selects:
@@ -1412,6 +1420,18 @@ builders:
 
   - name: st-nucleo-f401re
     parent: stm32f401retx
+
+  - name: stm32f401cd
+    parent: stm32f401cx
+    env:
+      RUSTFLAGS:
+        - --cfg context=\"stm32f401cdux\"
+
+  - name: stm32f401ce
+    parent: stm32f401cx
+    env:
+      RUSTFLAGS:
+        - --cfg context=\"stm32f401ceux\"
 
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
