@@ -78,7 +78,7 @@ pub fn init() -> OptionalPeripherals {
 
 // TODO: find better place for this
 fn board_config(config: &mut Config) {
-    #[cfg(context = "stm32f401cx")]
+    #[cfg(any(context = "stm32f401ceux", context = "stm32f401cdux"))]
     {
         use embassy_stm32::rcc::*;
 
@@ -90,8 +90,8 @@ fn board_config(config: &mut Config) {
         config.rcc.pll = Some(Pll {
             prediv: PllPreDiv::DIV25,  // 1Hz
             mul: PllMul::MUL336,       // 336Hz
-            divp: Some(PllPDiv::DIV4), // 84Hz
-            divq: Some(PllQDiv::DIV6), //48Hz
+            divp: Some(PllPDiv::DIV4), // sysclk 84MHz
+            divq: Some(PllQDiv::DIV6), // USB 48MHz
             divr: None,
         });
         config.rcc.ahb_pre = AHBPrescaler::DIV1;
