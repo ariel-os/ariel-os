@@ -41,7 +41,7 @@ Here is the full [text of the DCO], reformatted for readability:
 >    in the file; or
 >
 > 3. The contribution was provided directly to me by some other
->    person who certified (a), (b) or (c) and I have not modified
+>    person who certified (1), (2) or (3) and I have not modified
 >    it.
 >
 > 4. I understand and agree that this project and the contribution
@@ -58,11 +58,11 @@ you just add a line at the bottom of your commit messages saying:
 using a known identity. This will be done for you automatically
 if you use `git commit -s`.
 The email address used in your Sign-off
-must match the email used for commit author
+must match the email address used for by commit author
 
 To permanently add the 'Sign-off' to your commits contributed to Ariel OS,
 it is easiest to use a commit template.
-Create a simple text file, e.g. `.git/commitmessage` with the following content
+Create a simple text file, e.g. `.git/commitmessage` with the following content:
 
     Signed-off-by: Random J Developer <random@developer.example.org>
 
@@ -72,7 +72,7 @@ and enable it in your git config:
 
 ### Altering existing commits
 
-When altering an existing commit from a different contributor(s),
+When altering an existing commit from (a) different contributor(s),
 you must add your own 'Sign-off' line, without removing the existing ones.
 
 ## Roadmap
