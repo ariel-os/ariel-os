@@ -168,6 +168,7 @@ timer-generic-queue-128 = ["embassy-time?/generic-queue-128"]
 network-config-ipv4-static = ["network-config-override"]
 network-config-ipv6-static = ["network-config-override"]
 network-config-override = []
+rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 override-usb-config = []
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
