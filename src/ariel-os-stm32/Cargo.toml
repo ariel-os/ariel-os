@@ -84,6 +84,8 @@ defmt = ["dep:defmt", "embassy-stm32/defmt"]
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
 
+rcc-config-override = []
+
 _test = ["embassy-stm32/stm32wb55rg", "external-interrupts", "i2c", "spi"]
 
 [lints]
