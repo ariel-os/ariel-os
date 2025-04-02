@@ -423,26 +423,27 @@ contexts:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2
 
-  - name: stm32f401cx
+  - name: stm32f401cdux
     parent: stm32
     selects:
       - cortex-m4f
     provides:
       - has_swi
     env:
-      PROBE_RS_PROTOCOL: swd
+      PROBE_RS_CHIP: STM32F401CD
       CARGO_ENV:
         - CONFIG_SWI=USART2
 
-  - name: stm32f401cdux
-    parent: stm32f401cx
-    env:
-      PROBE_RS_CHIP: STM32F401CD
-
   - name: stm32f401ceux
-    parent: stm32f401cx
+    parent: stm32
+    selects:
+      - cortex-m4f
+    provides:
+      - has_swi
     env:
       PROBE_RS_CHIP: STM32F401CE
+      CARGO_ENV:
+        - CONFIG_SWI=USART2
 
   - name: stm32h755zitx
     parent: stm32
