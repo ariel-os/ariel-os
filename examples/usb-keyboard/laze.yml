@@ -3,5 +3,7 @@ apps:
     context:
       - nrf52840dk
       - nrf5340dk
+      - stm32f401cdux
+      - stm32f401ceux
     selects:
       - usb

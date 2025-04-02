@@ -15,3 +15,6 @@ ariel_os::hal::define_peripherals!(Buttons {
     btn3: P0_08,
     btn4: P0_09,
 });
+
+#[cfg(any(context = "stm32f401cdux", context = "stm32f401ceux"))]
+ariel_os::hal::define_peripherals!(Buttons { btn1: PA0 });

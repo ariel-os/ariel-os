@@ -443,6 +443,7 @@ contexts:
       - cortex-m4f
     provides:
       - has_swi
+      - has_usb_device_port
     env:
       PROBE_RS_CHIP: STM32F401CE
       RUSTFLAGS:

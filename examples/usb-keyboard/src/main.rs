@@ -106,18 +106,13 @@ mod buttons {
 
     const PULL: Pull = Pull::Up;
 
-    pub const KEY_COUNT: usize = 4;
+    pub const KEY_COUNT: usize = 1;
 
     pub struct Buttons([Input; KEY_COUNT]);
 
     impl Buttons {
         pub fn new(button_peripherals: crate::pins::Buttons) -> Self {
-            Self([
-                Input::new(button_peripherals.btn1, PULL),
-                Input::new(button_peripherals.btn2, PULL),
-                Input::new(button_peripherals.btn3, PULL),
-                Input::new(button_peripherals.btn4, PULL),
-            ])
+            Self([Input::new(button_peripherals.btn1, PULL)])
         }
 
         pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut Input> {
