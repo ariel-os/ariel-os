@@ -14,5 +14,5 @@ apps:
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
       - st-nucleo-wba55
-      - stm32f401ce
       - stm32f401cd
+      - stm32f401ce
