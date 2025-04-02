@@ -429,8 +429,11 @@ contexts:
       - cortex-m4f
     provides:
       - has_swi
+      - has_usb_device_port
     env:
       PROBE_RS_CHIP: STM32F401CD
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-usb-synopsis\"
       CARGO_ENV:
         - CONFIG_SWI=USART2
 
@@ -442,6 +445,8 @@ contexts:
       - has_swi
     env:
       PROBE_RS_CHIP: STM32F401CE
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-usb-synopsis\"
       CARGO_ENV:
         - CONFIG_SWI=USART2
 
