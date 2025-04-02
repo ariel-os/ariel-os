@@ -51,12 +51,18 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 #[cfg(context = "st-nucleo-h755zi-q")]
 ariel_os::hal::define_peripherals!(Peripherals {
-    btn1: PC13,
-    led1: PB0
+    led1: PB0,
+    btn1: PC13
 });
 
 #[cfg(context = "st-nucleo-wb55")]
 ariel_os::hal::define_peripherals!(Peripherals {
     led1: PB5,
     btn1: PC4
+});
+
+#[cfg(any(context = "stm32f401cdux", context = "stm32f401ceux"))]
+ariel_os::hal::define_peripherals!(Peripherals {
+    led1: PC13,
+    btn1: PA0
 });

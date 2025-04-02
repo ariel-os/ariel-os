@@ -429,9 +429,22 @@ contexts:
     parent: stm32
     selects:
       - cortex-m4f
+    provides:
+      - has_swi
+    env:
+      PROBE_RS_PROTOCOL: swd
+      CARGO_ENV:
+        - CONFIG_SWI=USART2
+
+  - name: stm32f401cdux
+    parent: stm32f401cx
     env:
       PROBE_RS_CHIP: STM32F401CD
-      PROBE_RS_PROTOCOL: swd
+
+  - name: stm32f401ceux
+    parent: stm32f401cx
+    env:
+      PROBE_RS_CHIP: STM32F401CE
 
   - name: stm32h755zitx
     parent: stm32
@@ -1422,16 +1435,10 @@ builders:
     parent: stm32f401retx
 
   - name: stm32f401cd
-    parent: stm32f401cx
-    env:
-      RUSTFLAGS:
-        - --cfg context=\"stm32f401cdux\"
+    parent: stm32f401cdux
 
   - name: stm32f401ce
-    parent: stm32f401cx
-    env:
-      RUSTFLAGS:
-        - --cfg context=\"stm32f401ceux\"
+    parent: stm32f401ceux
 
   - name: st-nucleo-h755zi-q
     parent: stm32h755zitx
