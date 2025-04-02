@@ -1,5 +1,5 @@
 use crate::{Arch, SCHEDULER, Thread, cleanup};
-use core::{arch::naked_asm, ptr::write_volatile};
+use core::{arch::global_asm, ptr::write_volatile};
 use cortex_m::peripheral::{SCB, scb::SystemHandler};
 
 #[cfg(not(any(armv6m, armv7m, armv8m)))]
@@ -86,107 +86,93 @@ impl Arch for Cpu {
     }
 }
 
-/// # Safety
-///
-/// - must not be called manually
 #[cfg(any(armv7m, armv8m))]
-#[naked]
-#[unsafe(no_mangle)]
-#[allow(non_snake_case)]
-unsafe extern "C" fn PendSV() {
-    unsafe {
-        naked_asm!(
-            "
-            bl {sched}
+global_asm!(
+    "
+    .thumb_func
+    .global PendSV
+    PendSV:
+        bl {sched}
 
-            // r0 == 0 means that
-            // a) there was no previous thread, or
-            // This is only the case if the scheduler was triggered for the first time,
-            // which also means that next thread has no stored context yet.
-            // b) the current thread didn't change.
-            //
-            // In both cases, storing and loading of r4-r11 can be skipped.
-            cmp r0, #0
+        // r0 == 0 means that
+        // a) there was no previous thread, or
+        // This is only the case if the scheduler was triggered for the first time,
+        // which also means that next thread has no stored context yet.
+        // b) the current thread didn't change.
+        //
+        // In both cases, storing and loading of r4-r11 can be skipped.
+        cmp r0, #0
 
-            /* label rules:
-             * - number only
-             * - no combination of *only* [01]
-             * - add f or b for 'next matching forward/backward'
-             */
-            beq 99f
+        /* label rules:
+         * - number only
+         * - no combination of *only* [01]
+         * - add f or b for 'next matching forward/backward'
+         */
+        beq 99f
 
-            stmia r0, {{r4-r11}}
-            ldmia r1, {{r4-r11}}
+        stmia r0, {{r4-r11}}
+        ldmia r1, {{r4-r11}}
 
-            99:
-            movw LR, #0xFFFd
-            movt LR, #0xFFFF
-            bx LR
-            ",
-            sched = sym sched,
-        )
-    };
-}
+        99:
+        movw LR, #0xFFFd
+        movt LR, #0xFFFF
+        bx LR
+    ",
+    sched = sym sched,
+);
 
-/// # Safety
-///
-/// - must not be called manually
 #[cfg(armv6m)]
-#[naked]
-#[unsafe(no_mangle)]
-#[allow(non_snake_case)]
-unsafe extern "C" fn PendSV() {
-    unsafe {
-        naked_asm!(
-            "
-            bl {sched}
+global_asm!(
+    "
+    .thumb_func
+    .global PendSV
+    PendSV:
+        bl {sched}
 
-            // r0 == 0 means that
-            // a) there was no previous thread, or
-            // This is only the case if the scheduler was triggered for the first time,
-            // which also means that next thread has no stored context yet.
-            // b) the current thread didn't change.
-            //
-            // In both cases, storing and loading of r4-r11 can be skipped.
-            cmp r0, #0
+        // r0 == 0 means that
+        // a) there was no previous thread, or
+        // This is only the case if the scheduler was triggered for the first time,
+        // which also means that next thread has no stored context yet.
+        // b) the current thread didn't change.
+        //
+        // In both cases, storing and loading of r4-r11 can be skipped.
+        cmp r0, #0
 
-            //stmia r1!, {{r4-r7}}
-            str r4, [r0, #16]
-            str r5, [r0, #20]
-            str r6, [r0, #24]
-            str r7, [r0, #28]
+        //stmia r1!, {{r4-r7}}
+        str r4, [r0, #16]
+        str r5, [r0, #20]
+        str r6, [r0, #24]
+        str r7, [r0, #28]
 
-            mov  r4, r8
-            mov  r5, r9
-            mov  r6, r10
-            mov  r7, r11
+        mov  r4, r8
+        mov  r5, r9
+        mov  r6, r10
+        mov  r7, r11
 
-            str r4, [r0, #0]
-            str r5, [r0, #4]
-            str r6, [r0, #8]
-            str r7, [r0, #12]
+        str r4, [r0, #0]
+        str r5, [r0, #4]
+        str r6, [r0, #8]
+        str r7, [r0, #12]
 
-            //
-            ldmia r1!, {{r4-r7}}
-            mov r11, r7
-            mov r10, r6
-            mov r9,  r5
-            mov r8,  r4
-            ldmia r1!, {{r4-r7}}
+        //
+        ldmia r1!, {{r4-r7}}
+        mov r11, r7
+        mov r10, r6
+        mov r9,  r5
+        mov r8,  r4
+        ldmia r1!, {{r4-r7}}
 
-            99:
-            ldr r0, 999f
-            mov LR, r0
-            bx lr
+        99:
+        ldr r0, 999f
+        mov LR, r0
+        bx lr
 
-            .align 4
-            999:
-            .word 0xFFFFFFFD
-            ",
-            sched = sym sched,
-        )
-    };
-}
+        .align 4
+        999:
+        .word 0xFFFFFFFD
+    ",
+    sched = sym sched,
+);
 
 /// Schedule the next thread.
 ///
