@@ -88,10 +88,10 @@ fn board_config(config: &mut Config) {
         });
         config.rcc.pll_src = PllSource::HSE;
         config.rcc.pll = Some(Pll {
-            prediv: PllPreDiv::DIV25,  // 1Hz
-            mul: PllMul::MUL336,       // 336Hz
-            divp: Some(PllPDiv::DIV4), // sysclk 84MHz
-            divq: Some(PllQDiv::DIV6), // USB 48MHz
+            prediv: PllPreDiv::DIV25,  // 1MHz
+            mul: PllMul::MUL168,       // 168MHz
+            divp: Some(PllPDiv::DIV2), // sysclk 84MHz
+            divq: Some(PllQDiv::DIV3), // USB 48MHz
             divr: None,
         });
         config.rcc.ahb_pre = AHBPrescaler::DIV1;
