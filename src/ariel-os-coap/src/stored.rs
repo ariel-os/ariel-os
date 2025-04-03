@@ -106,7 +106,7 @@ impl StoredPolicy {
             }
         };
 
-        info!("CoAP server identity: {=[u8]:02x}", credential); // :02x could be :cbor
+        info!("CoAP server identity: {=[u8]:cbor}", credential);
 
         let credential =
             lakers::Credential::parse_ccs(&credential).expect("Processable by construction");
