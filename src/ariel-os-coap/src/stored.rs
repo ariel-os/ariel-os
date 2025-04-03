@@ -1,6 +1,6 @@
 //! Credential and key configuration backed by ariel-os storage
 
-use ariel_os_debug::log::{debug, info};
+use ariel_os_debug::log::{Cbor, debug, info};
 use cbor_macro::cbo;
 use coapcore::seccfg::ServerSecurityConfig;
 
@@ -106,7 +106,7 @@ impl StoredPolicy {
             }
         };
 
-        info!("CoAP server identity: {=[u8]:02x}", credential); // :02x could be :cbor
+        info!("CoAP server identity: {}", Cbor(&credential));
 
         let credential =
             lakers::Credential::parse_ccs(&credential).expect("Processable by construction");
