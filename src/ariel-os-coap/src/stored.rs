@@ -32,12 +32,18 @@ impl ServerSecurityConfig for StoredPolicy {
         &self,
         id_cred_x: lakers::IdCred,
     ) -> Option<(lakers::Credential, StoredClaims)> {
+        debug!(
+            "Peer presented ID_CRED_x {}",
+            Cbor(id_cred_x.as_full_value())
+        );
+
         for (credential, scope) in flash_peers::kccs() {
             if credential.by_kid().is_ok_and(|by_kid| by_kid == id_cred_x)
                 || credential
                     .by_value()
                     .is_ok_and(|by_value| by_value == id_cred_x)
             {
+                debug!("Credential recognized.");
                 return Some((credential, StoredClaims { scope }));
             }
         }
@@ -46,6 +52,7 @@ impl ServerSecurityConfig for StoredPolicy {
         // for expand_id_cred_x, or should it be where that is called?
         if let Some(credential_by_value) = id_cred_x.get_ccs() {
             if let Some(unauthorized_claims) = self.nosec_authorization() {
+                debug!("Credential by value accepted at nosec level.");
                 #[expect(clippy::clone_on_copy, reason = "Lakers items are overly copy happy")]
                 return Some((credential_by_value.clone(), unauthorized_claims));
             }
