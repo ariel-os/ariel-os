@@ -252,6 +252,14 @@ boards:
       user_usb: not_available
       ethernet_over_usb: not_available
 
+  nordic-thingy-91:
+    name: Nordic Thingy:91
+    url: https://web.archive.org/web/20250319142848/https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91
+    chip: nrf9160
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
+
   rpi-pico:
     name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
