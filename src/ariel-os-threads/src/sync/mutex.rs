@@ -3,6 +3,7 @@
 
 use core::{
     cell::UnsafeCell,
+    marker::PhantomData,
     ops::{Deref, DerefMut},
 };
 
@@ -15,6 +16,7 @@ use crate::{SCHEDULER, thread::ThreadState, threadlist::ThreadList};
 pub struct Mutex<T> {
     state: UnsafeCell<LockState>,
     inner: UnsafeCell<T>,
+    _not_send: PhantomData<*const ()>,
 }
 
 /// State of a [`Mutex`].
@@ -58,6 +60,7 @@ impl<T> Mutex<T> {
         Self {
             state: UnsafeCell::new(LockState::Unlocked),
             inner: UnsafeCell::new(value),
+            _not_send: PhantomData,
         }
     }
 }
@@ -201,7 +204,5 @@ impl<T> Drop for MutexGuard<'_, T> {
         self.mutex.release();
     }
 }
-
-impl<T> !Send for MutexGuard<'_, T> {}
 
 unsafe impl<T: Sync> Sync for MutexGuard<'_, T> {}

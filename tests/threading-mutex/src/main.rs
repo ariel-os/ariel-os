@@ -1,6 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
 
 use ariel_os::thread::{self, RunqueueId, ThreadId, sync::Mutex, thread_flags};
 use portable_atomic::{AtomicUsize, Ordering};

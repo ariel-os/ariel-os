@@ -1,7 +1,7 @@
 //! HAL-agnostic types shared between HALs.
 
 #![no_std]
-#![feature(doc_auto_cfg)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 

@@ -18,7 +18,8 @@ opt-level = 3
 [patch.crates-io]
 # ariel-os embassy forks
 embassy-embedded-hal = { git = "https://github.com/ariel-os/embassy", branch = "embassy-embedded-hal-v0.3.0+ariel-os" }
-embassy-executor = { git = "https://github.com/ariel-os/embassy", branch = "embassy-executor-v0.7.0+ariel-os" }
+embassy-executor = { git = "https://github.com/ariel-os/embassy", branch = "embassy-executor-v0.7.0+04.04.25+ariel-os" }
+embassy-executor-macros = { git = "https://github.com/ariel-os/embassy", branch = "embassy-executor-macros-v0.6.2+04.04.25" }
 embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", branch = "embassy-hal-internal-v0.2.0+ariel-os" }
 embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "embassy-nrf-v0.3.1+ariel-os" }
 embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "embassy-net-v0.6.0+ariel-os" }

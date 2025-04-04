@@ -1,8 +1,7 @@
 //! Items specific to the STMicroelectronics STM32 MCUs.
 
 #![no_std]
-#![feature(doc_auto_cfg)]
-#![feature(type_alias_impl_trait)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
