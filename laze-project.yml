@@ -342,6 +342,8 @@ contexts:
       PROBE_RS_CHIP: esp32c3
       PROBE_RS_PROTOCOL: jtag
       CARGO_TARGET_PREFIX: CARGO_TARGET_RISCV32IMC_UNKNOWN_NONE_ELF
+      # c3 needs a bit more isr stack.
+      isr_stacksize_required_default: "4096"
 
   - name: esp-c3-01m
     parent: esp32c3
