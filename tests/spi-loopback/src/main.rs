@@ -4,7 +4,6 @@
 //! HAL-agnostic.
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
 
 mod pins;
 

@@ -2,7 +2,6 @@
 
 #![no_std]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
-#![feature(type_alias_impl_trait)]
 #![deny(missing_docs)]
 
 #[cfg(all(feature = "threading", feature = "wifi"))]

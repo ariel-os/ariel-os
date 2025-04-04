@@ -6,7 +6,6 @@
 //! This example requires a LIS3DH sensor (3-axis accelerometer).
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
 
 mod pins;
 
