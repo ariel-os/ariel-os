@@ -43,8 +43,10 @@ pub struct Delegate<T> {
     send: Signal<CriticalSectionRawMutex, SameExecutorCell<*mut T>>,
     reply: Signal<CriticalSectionRawMutex, ()>,
     was_exercised: AtomicBool,
-    _not_send: PhantomData<*const ()>,
+    _not_send: PhantomData<T>,
 }
+
+unsafe impl<T> Sync for Delegate<T> {}
 
 impl<T> Delegate<T> {
     /// Creates a new [`Delegate`].
