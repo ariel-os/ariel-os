@@ -617,7 +617,7 @@ impl<
                 match crate::ace::process_edhoc_token(value.as_slice(), &self.authorities) {
                     Ok(ci_and_a) => cred_i_and_authorization = Some(ci_and_a),
                     Err(e) => {
-                        error!("Received unprocessable token {=[u8]:02x}, error: {}", value.as_slice(), Debug2Format(&e)); // :02x could be :cbor
+                        error!("Received unprocessable token {=[u8]:cbor}, error: {}", value.as_slice(), Debug2Format(&e));
                     }
                 }
             }
