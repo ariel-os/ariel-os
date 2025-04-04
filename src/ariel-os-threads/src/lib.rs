@@ -22,7 +22,6 @@
 //! - [`thread_flags`]: thread-flag implementation for signaling between threads
 
 #![cfg_attr(not(test), no_std)]
-#![feature(negative_impls)]
 #![cfg_attr(target_arch = "xtensa", feature(asm_experimental_arch))]
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
