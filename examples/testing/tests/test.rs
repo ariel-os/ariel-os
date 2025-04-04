@@ -1,6 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
 
 #[cfg(test)]
 #[embedded_test::tests]

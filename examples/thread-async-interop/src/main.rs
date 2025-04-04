@@ -1,6 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
 
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal};
 

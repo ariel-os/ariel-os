@@ -1,6 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(impl_trait_in_assoc_type)]
 
 use ariel_os::{cell::StaticCell, debug::log::info, reexports::embassy_usb, usb::UsbDriver};
 use embassy_usb::{

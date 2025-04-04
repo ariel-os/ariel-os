@@ -5,7 +5,6 @@
 #![deny(clippy::pedantic)]
 // required for tests:
 #![cfg_attr(test, no_main)]
-#![cfg_attr(test, feature(impl_trait_in_assoc_type))]
 
 // With embedded-test enabled, this crate gets built *twice*, once regularly
 // as the system alloc it is supposed to be, and once as test application.

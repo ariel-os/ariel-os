@@ -1,7 +1,6 @@
 //! This module provides an opinionated integration of `embassy`.
 
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(clippy::pedantic)]
 
