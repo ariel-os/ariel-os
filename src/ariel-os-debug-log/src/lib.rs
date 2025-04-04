@@ -55,7 +55,11 @@ mod log_macros {
     macro_rules! trace {
         ($($arg:tt)*) => {{
             use $crate::defmt::hidden::defmt;
-            defmt::trace!($($arg)*);
+            if true {
+                defmt::trace!($($arg)*);
+            } else {
+                drop(format_args!($($arg)*));
+            }
         }};
     }
 
@@ -64,7 +68,11 @@ mod log_macros {
     macro_rules! debug {
         ($($arg:tt)*) => {{
             use $crate::defmt::hidden::defmt;
-            defmt::debug!($($arg)*);
+            if true {
+                defmt::debug!($($arg)*);
+            } else {
+                drop(format_args!($($arg)*));
+            }
         }};
     }
 
@@ -73,7 +81,11 @@ mod log_macros {
     macro_rules! info {
         ($($arg:tt)*) => {{
             use $crate::defmt::hidden::defmt;
-            defmt::info!($($arg)*);
+            if true {
+                defmt::info!($($arg)*);
+            } else {
+                drop(format_args!($($arg)*));
+            }
         }};
     }
 
@@ -82,7 +94,11 @@ mod log_macros {
     macro_rules! warn {
         ($($arg:tt)*) => {{
             use $crate::defmt::hidden::defmt;
-            defmt::warn!($($arg)*);
+            if true {
+                defmt::warn!($($arg)*);
+            } else {
+                drop(format_args!($($arg)*));
+            }
         }};
     }
 
@@ -91,7 +107,11 @@ mod log_macros {
     macro_rules! error {
         ($($arg:tt)*) => {{
             use $crate::defmt::hidden::defmt;
-            defmt::error!($($arg)*);
+            if true {
+                defmt::error!($($arg)*);
+            } else {
+                drop(format_args!($($arg)*));
+            }
         }};
     }
 }
