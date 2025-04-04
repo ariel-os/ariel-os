@@ -1661,7 +1661,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor"
 version = "0.7.0"
-source = "git+https://github.com/ariel-os/embassy?branch=embassy-executor-v0.7.0%2Bariel-os#a3c1bb2878df6b977f086356688033fe585683e4"
+source = "git+https://github.com/ariel-os/embassy?branch=embassy-executor-v0.7.0%2B04.04.25%2Bariel-os#b552a87578479a92b3027bd208c712445499589c"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -1672,8 +1672,7 @@ dependencies = [
 [[package]]
 name = "embassy-executor-macros"
 version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3577b1e9446f61381179a330fc5324b01d511624c55f25e3c66c9e3c626dbecf"
+source = "git+https://github.com/ariel-os/embassy?branch=embassy-executor-macros-v0.6.2%2B04.04.25#1b08496e441cfd2b2e9660fe0cc589c3bc5f0824"
 dependencies = [
  "darling",
  "proc-macro2",
