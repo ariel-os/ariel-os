@@ -36,6 +36,7 @@ members = [
   "tests/threading-dynamic-prios",
   "tests/threading-lock",
   "tests/threading-mutex",
+  "tests/uart-loopback",
 ]
 
 exclude = ["src/lib", "doc"]
@@ -79,6 +80,8 @@ embassy-usb = { version = "0.4.0", default-features = false }
 
 embedded-hal = { version = "1.0.0", default-features = false }
 embedded-hal-async = { version = "1.0.0", default-features = false }
+embedded-io = { version = "0.6.1", default-features = false }
+embedded-io-async = { version = "0.6.1", default-features = false }
 embedded-nal-coap = "0.1.0-alpha.4"
 embedded-storage = { version = "0.3.1" }
 embedded-storage-async = { version = "0.4.1" }

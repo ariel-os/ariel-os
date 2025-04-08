@@ -74,6 +74,9 @@ spi = [
   "ariel-os-hal/spi",
 ]
 
+## Enables UART support.
+uart = ["ariel-os-embassy-common/uart", "ariel-os-hal/uart"]
+
 ## Enables USB support.
 usb = ["dep:embassy-usb", "ariel-os-hal/usb"]
 usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
