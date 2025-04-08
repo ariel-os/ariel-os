@@ -4,6 +4,8 @@
 #![allow(incomplete_features)]
 // - const_generics
 
+pub mod stack;
+
 #[cfg(feature = "threading")]
 mod threading;
 
@@ -28,9 +30,13 @@ cfg_if::cfg_if! {
         compile_error!("no runtime is defined for this MCU family");
     } else {
         // Provide a default implementation, for arch-independent tooling
+        #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
         mod arch {
-            #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
+            use crate::stack::Stack;
+
             pub fn init() {}
+            pub fn sp() -> usize { 0 }
+            pub fn stack() -> Stack { Stack::default() }
         }
     }
 }
@@ -66,6 +72,27 @@ mod isr_stack {
         "#,
         size = const ISR_STACKSIZE
     );
+
+    pub fn limits() -> (usize, usize) {
+        // ISR stack
+        // TODO: multicore!
+        unsafe extern "C" {
+            static _stack_bottom: u32;
+            static _stack_start: u32;
+        }
+
+        let bottom = &raw const _stack_bottom as usize;
+        let top = &raw const _stack_start as usize;
+        (bottom, top)
+    }
+
+    pub fn init() {
+        let stack = crate::stack::Stack::get();
+        crate::debug!("ariel-os-rt: ISR stacksize: {}", stack.size());
+
+        // initial stack paint
+        stack.repaint();
+    }
 }
 
 #[cfg(feature = "_panic-handler")]
@@ -96,7 +123,7 @@ fn startup() -> ! {
     debug!("ariel_os_rt::startup()");
 
     #[cfg(any(context = "cortex-m", context = "riscv"))]
-    debug!("ariel_os_rt: ISR_STACKSIZE={}", isr_stack::ISR_STACKSIZE);
+    crate::isr_stack::init();
 
     #[cfg(feature = "alloc")]
     // SAFETY: *this* is the only place alloc should be initialized.
