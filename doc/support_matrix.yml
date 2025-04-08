@@ -321,7 +321,7 @@ chips:
       hwrng: not_available
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -339,7 +339,7 @@ chips:
       hwrng: not_available
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -357,7 +357,7 @@ chips:
       hwrng: not_available
       i2c_controller: needs_testing
       spi_main: needs_testing
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -375,7 +375,7 @@ chips:
       hwrng: not_available
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -398,7 +398,7 @@ chips:
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -420,7 +420,7 @@ chips:
       hwrng: supported
       i2c_controller: needs_testing
       spi_main: needs_testing
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -453,7 +453,7 @@ chips:
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -475,7 +475,7 @@ chips:
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
@@ -488,7 +488,7 @@ chips:
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -504,7 +504,7 @@ chips:
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
-      uart: not_currently_supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -522,7 +522,10 @@ chips:
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
-      uart: not_currently_supported
+      uart:
+        status: supported
+        comments:
+          - USART2 is used for SWI on this board and cannot be used as UART peripheral
       logging: supported
       storage: supported
       wifi: not_available
