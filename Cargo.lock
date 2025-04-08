@@ -5396,6 +5396,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e36a83ea2b3c704935a01b4642946aadd445cea40b10935e3f8bd8052b8193d6"
 
 [[package]]
+name = "uart-loopback"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-sync 0.6.2",
+ "embedded-hal-async",
+ "embedded-io-async",
+ "once_cell",
+ "static_cell",
+]
+
+[[package]]
 name = "udp-echo"
 version = "0.0.0"
 dependencies = [
