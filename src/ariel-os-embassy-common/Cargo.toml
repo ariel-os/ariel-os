@@ -31,10 +31,13 @@ i2c = ["dep:fugit"]
 ## Enables SPI support.
 spi = ["dep:fugit"]
 
+## Enables UART support.
+uart = []
+
 defmt = ["dep:defmt", "fugit?/defmt"]
 
 executor-thread = []
 
-_test = ["i2c", "spi", "external-interrupts"]
+_test = ["i2c", "spi", "external-interrupts", "uart"]
 
 ble = ["dep:static_cell", "dep:trouble-host"]
