@@ -24,6 +24,7 @@ pub trait Multicore {
     const CORES: u32;
     /// Stack size for the idle threads.
     const IDLE_THREAD_STACK_SIZE: usize = 256;
+    type Stack;
 
     /// Returns the ID of the current core.
     fn core_id() -> CoreId;
@@ -31,7 +32,10 @@ pub trait Multicore {
     /// Starts other available cores.
     ///
     /// This is called at boot time by the first core.
-    fn startup_other_cores();
+    ///
+    /// TODO: This passes *one* stack as argument, assuming the first core
+    /// already has a stack and there is only one more core to initialize.
+    fn startup_other_cores(stack: &'static mut Self::Stack);
 
     /// Triggers the scheduler on core `id`.
     fn schedule_on_core(id: CoreId);
@@ -49,14 +53,22 @@ cfg_if::cfg_if! {
         use crate::{Arch as _, Cpu};
 
         pub struct Chip;
+
+        // need something that has a `new()`
+        pub struct Dummy;
+        impl Dummy {
+            pub fn new() -> Self { Self {}}
+        }
+
         impl Multicore for Chip {
             const CORES: u32 = 1;
+            type Stack = Dummy;
 
             fn core_id() -> CoreId {
                 CoreId(0)
             }
 
-            fn startup_other_cores() {}
+            fn startup_other_cores(_stack: &'static mut Self::Stack) {}
 
             fn schedule_on_core(_id: CoreId) {
                 Cpu::schedule();

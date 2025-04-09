@@ -525,7 +525,10 @@ pub unsafe fn start_threading() {
             create_noarg(idle_thread, stack.take(), 0, None);
         }
 
-        smp::Chip::startup_other_cores();
+        type StackType = <smp::Chip as Multicore>::Stack;
+        static STACK: ConstStaticCell<StackType> = ConstStaticCell::new(StackType::new());
+
+        smp::Chip::startup_other_cores(STACK.take());
     }
     Cpu::start_threading();
 }
