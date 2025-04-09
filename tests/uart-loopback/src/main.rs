@@ -9,11 +9,8 @@
 mod pins;
 
 use ariel_os::{
-    debug::{
-        ExitCode, exit,
-        log::{debug, info},
-    },
-    gpio, hal,
+    debug::{ExitCode, exit, log::info},
+    hal,
     time::Delay,
 };
 
@@ -23,8 +20,10 @@ use embedded_io_async::Write;
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
+    // Delay to segment individual runs on the logic analyzer.
     Delay {}.delay_ms(500).await;
     info!("Starting UART test");
+
     let mut config = hal::uart::Config::default();
     config.baudrate = 9600;
     let mut rx_buf: [u8; 32] = [0u8; 32];
@@ -38,21 +37,18 @@ async fn main(peripherals: pins::Peripherals) {
         config,
     );
 
-    const out: &str = &"Test Message";
-    let mut in_ = [0u8; out.len()];
+    const OUT: &str = &"Test Message";
+    let mut in_ = [0u8; OUT.len()];
 
-    let _ = uart.write_all(out.as_bytes()).await;
+    let _ = uart.write_all(OUT.as_bytes()).await;
     let _ = uart.flush().await;
     info!("written bytes");
-    let _ = uart.read(&mut in_).await;
+    let _ = uart.read_exact(&mut in_).await;
 
     info!("got: '{:x}'", &in_);
-
-    assert_eq!(out.as_bytes(), in_);
-
+    assert_eq!(OUT.as_bytes(), in_);
     info!("Test passed!");
 
     Delay {}.delay_ms(500).await;
-
     exit(ExitCode::SUCCESS);
 }
