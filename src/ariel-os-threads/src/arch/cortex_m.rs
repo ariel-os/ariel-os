@@ -63,12 +63,8 @@ impl Arch for Cpu {
         thread.stack_bottom = stack_start;
         thread.stack_top = stack_top;
 
-        // Safety: just created this thread and it's stack, writing to unused stack space is fine.
-        unsafe {
-            for pos in stack_start..stack_pos as usize {
-                write_volatile(pos as *mut u8, 0xCC);
-            }
-        }
+        // Safety: This is the place to initialize stack painting.
+        unsafe { thread.stack_paint_init(stack_pos as usize) };
     }
 
     /// Triggers a PendSV exception.

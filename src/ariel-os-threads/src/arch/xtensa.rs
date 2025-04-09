@@ -44,6 +44,12 @@ impl Arch for Cpu {
 
         // For windowed ABI set WOE and CALLINC (pretend task was 'call4'd).
         thread.data.PS = 0x00040000 | (1 & 3) << 16;
+
+        thread.stack_bottom = stack_start;
+        thread.stack_top = stack_pos;
+
+        // Safety: This is the place to initialize stack painting.
+        unsafe { thread.stack_paint_init(stack_pos) };
     }
 
     fn start_threading() {
