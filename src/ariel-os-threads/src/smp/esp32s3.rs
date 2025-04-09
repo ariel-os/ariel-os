@@ -5,8 +5,6 @@ use esp_hal::{
     peripherals::{CPU_CTRL, Interrupt, SYSTEM},
 };
 
-use static_cell::ConstStaticCell;
-
 use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
 
 impl From<Cpu> for CoreId {
@@ -23,15 +21,13 @@ pub struct Chip;
 impl Multicore for Chip {
     const CORES: u32 = 2;
     const IDLE_THREAD_STACK_SIZE: usize = 2048;
+    type Stack = Stack<ISR_STACKSIZE_CORE1>;
 
     fn core_id() -> CoreId {
         esp_hal::Cpu::current().into()
     }
 
-    fn startup_other_cores() {
-        // TODO: How much stack do we really need here?
-        static STACK: ConstStaticCell<Stack<ISR_STACKSIZE_CORE1>> =
-            ConstStaticCell::new(Stack::new());
+    fn startup_other_cores(stack: &'static mut Self::Stack) {
         // Trigger scheduler.
         let start_threading = move || {
             // Use `CPU_INTR1` to trigger the scheduler on our second core.
@@ -47,7 +43,7 @@ impl Multicore for Chip {
         };
 
         let mut cpu_ctrl = unsafe { CpuControl::new(CPU_CTRL::steal()) };
-        let guard = cpu_ctrl.start_app_core(STACK.take(), start_threading);
+        let guard = cpu_ctrl.start_app_core(stack, start_threading);
 
         // Dropping the guard would park the other core.
         core::mem::forget(guard)
