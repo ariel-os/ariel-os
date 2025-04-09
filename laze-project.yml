@@ -585,6 +585,7 @@ modules:
       global:
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
+          - -Clink-arg=-Tisr_stack.x
         CFLAGS:
           - -mlongcalls
         CARGO_PRESHELL:
