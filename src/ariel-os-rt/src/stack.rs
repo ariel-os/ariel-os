@@ -97,8 +97,12 @@ impl Stack {
 
         // Safety: `Stack` being `!Send` should ensure that is only ever used on the stack
         // it was created on and belongs to. The assert double-checks this.
-        // Given that `bottom` doesn't change (which it never does in Ariel OS),
-        // overwriting `bottom..sp` is safe on all our platforms.
+        // Given that `bottom` doesn't change (which it never does in Ariel OS while a stack is
+        // in use), overwriting `bottom..sp` is safe on all our platforms, when `sp` points to the
+        // current stack frame's stack pointer.
+        // This does not prevent this from being interrupted by an ISR, in which case
+        // the stack is dirtied again, but that doesn't cause any unsafety and just
+        // makes any following `used_max()` call include whatever the ISR wrote on this stack.
         unsafe {
             for pos in self.bottom..sp {
                 write_volatile(pos as *mut u8, 0xCC);
