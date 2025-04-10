@@ -95,7 +95,8 @@ impl Stack {
         // sanity check
         assert!(self.bottom <= sp && sp <= self.top);
 
-        // Safety: writing to inactive part of active is fine.
+        // Safety: writing below the stack pointer of the currently active stack
+        // is fine.
         unsafe {
             for pos in self.bottom..sp {
                 write_volatile(pos as *mut u8, 0xCC);
