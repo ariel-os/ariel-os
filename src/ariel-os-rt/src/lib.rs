@@ -3,6 +3,7 @@
 //
 #![allow(incomplete_features)]
 // - const_generics
+#![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
 pub mod stack;
 
@@ -21,9 +22,13 @@ cfg_if::cfg_if! {
         mod cortexm;
         use cortexm as arch;
     }
-    else if #[cfg(context = "esp")] {
-        mod esp;
-        use esp as arch;
+    else if #[cfg(context = "xtensa")] {
+        mod xtensa;
+        use xtensa as arch;
+    }
+    else if #[cfg(context = "riscv")] {
+        mod riscv;
+        use riscv as arch;
     }
     else if #[cfg(context = "ariel-os")] {
         // When run with laze but the MCU family is not supported
@@ -41,7 +46,6 @@ cfg_if::cfg_if! {
     }
 }
 
-#[cfg(any(context = "cortex-m", context = "riscv"))]
 mod isr_stack {
     pub(crate) const ISR_STACKSIZE: usize = {
         const CONFIG_ISR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
@@ -122,7 +126,6 @@ fn startup() -> ! {
 
     debug!("ariel_os_rt::startup()");
 
-    #[cfg(any(context = "cortex-m", context = "riscv"))]
     crate::isr_stack::init();
 
     #[cfg(feature = "alloc")]
