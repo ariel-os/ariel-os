@@ -1,5 +1,31 @@
 use crate::CoreId;
 use ariel_os_utils::usize_from_env_or;
+use portable_atomic::{AtomicUsize, Ordering};
+
+pub(crate) static STACK_BOTTOM_CORE1: AtomicUsize = AtomicUsize::new(0);
+pub(crate) static STACK_TOP_CORE1: AtomicUsize = AtomicUsize::new(0);
+
+// (just an alias to save typing)
+pub(crate) type StackType = <Chip as Multicore>::Stack;
+
+pub(crate) fn isr_stack_core1_set_limits(stack: &StackType) {
+    let (bottom, top) = stack.limits();
+
+    // set bottom first so just in case both are read in between,
+    // the `bottom <= top` is invalid during that time, which is checked
+    // where needed.
+    STACK_BOTTOM_CORE1.store(bottom, Ordering::Release);
+    STACK_TOP_CORE1.store(top, Ordering::Release);
+}
+
+/// Returns the isr stack limits for the second core as `(bottom, top)`.
+pub fn isr_stack_core1_get_limits() -> (usize, usize) {
+    // read top first so that when this is called before `isr_stack_core1_set_limits()`,
+    // `bottom > top` -> invalid, which is checked elsewhere.
+    let top = STACK_TOP_CORE1.load(Ordering::Acquire);
+    let bottom = STACK_BOTTOM_CORE1.load(Ordering::Acquire);
+    (bottom, top)
+}
 
 impl CoreId {
     /// Creates a new [`CoreId`].
@@ -41,6 +67,13 @@ pub trait Multicore {
     fn schedule_on_core(id: CoreId);
 }
 
+pub trait StackLimits {
+    /// Returns (bottom, top) of this stack.
+    fn limits(&self) -> (usize, usize) {
+        (0, 0)
+    }
+}
+
 cfg_if::cfg_if! {
     if #[cfg(context = "rp")] {
         mod rp;
@@ -57,8 +90,9 @@ cfg_if::cfg_if! {
         // need something that has a `new()`
         pub struct Dummy;
         impl Dummy {
-            pub fn new() -> Self { Self {}}
+            pub const fn new() -> Self { Self {}}
         }
+        impl StackLimits for Dummy {}
 
         impl Multicore for Chip {
             const CORES: u32 = 1;

@@ -9,7 +9,7 @@ use embassy_rp::{
 };
 use rp_pac::SIO;
 
-use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore, StackLimits};
 
 pub struct Chip;
 
@@ -92,4 +92,12 @@ fn handle_fifo_token(token: u32) -> bool {
     }
     crate::schedule();
     true
+}
+
+impl<const SIZE: usize> StackLimits for Stack<SIZE> {
+    fn limits(&self) -> (usize, usize) {
+        let bottom = self.mem.as_ptr() as usize;
+        let top = bottom + SIZE;
+        (bottom, top)
+    }
 }
