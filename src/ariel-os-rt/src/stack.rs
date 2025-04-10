@@ -48,7 +48,7 @@ impl Stack {
         stack
     }
 
-    pub const fn default() -> Self {
+    pub(crate) const fn default() -> Self {
         Self {
             bottom: 0,
             top: 0,
