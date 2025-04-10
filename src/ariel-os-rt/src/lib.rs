@@ -135,6 +135,7 @@ fn panic(_info: &core::panic::PanicInfo) -> ! {
 
 use linkme::distributed_slice;
 
+#[doc(hidden)]
 #[distributed_slice]
 pub static INIT_FUNCS: [fn()] = [..];
 
