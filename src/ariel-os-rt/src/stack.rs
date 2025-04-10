@@ -4,6 +4,22 @@ use core::{marker::PhantomData, ptr::write_volatile};
 use crate::arch::sp;
 
 /// Struct representing the currently active stack.
+///
+/// # Note
+///
+/// The machinery for stack painting has a couple of assumptions:
+///
+/// 1. It is safe for an active stack to *overwrite* unused stack space from its limit (bottom,
+///    including) to its stack pointer (not including).
+/// 2. It is safe to *read* unused stack space below the stack pointer down to its limit (bottom).
+/// 3. The limits of an active stack never change.
+/// 4. It is fine to specify zero for both `bottom` and `top`, in which case usage data is invalid
+///    (always zero), but no unsafety arises.
+/// 5. `!Send` keeps `Stack` on the stack it was created for.
+///
+/// Both 1. and 2. are the case on cortex-m, risc-v and xtensa, as an ISR could technically do so at any time
+///    anyways.
+/// 3. is true on Ariel.
 #[derive(Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Stack {
@@ -12,8 +28,9 @@ pub struct Stack {
     /// Highest stack address
     pub top: usize,
 
-    /// We'll be implementing nasty stuff on this Struct that requires it to
-    /// not get sent across stacks.
+    /// Basically we need to ensure that `bottom` and `top` precisely correspond
+    /// to the currently active stack. `!Send` ensures that the object will
+    /// be sent to another thread (or ISR), which implies it stays on the same stack.
     _not_send: PhantomData<*const ()>,
 }
 
@@ -92,11 +109,13 @@ impl Stack {
             return;
         }
 
-        // sanity check, should never happen.
+        // sanity check, should never happen with `Stack` being `!Send`.
+        // (This assert would not catch the case where a thread stack is created
+        // on another thread's stack. `!Send` still prevents this.)
         assert!(self.bottom <= sp && sp <= self.top);
 
-        // Safety: `Stack` being `!Send` should ensure that is only ever used on the stack
-        // it was created on and belongs to. The assert double-checks this.
+        // Safety: `Stack` being `!Send` should ensure that `repaint()` is only ever called from the stack
+        // `self` was created on and belongs to. The assert above double-checks this.
         // Given that `bottom` doesn't change (which it never does in Ariel OS while a stack is
         // in use), overwriting `bottom..sp` is safe on all our platforms, when `sp` points to the
         // current stack frame's stack pointer.
