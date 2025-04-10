@@ -1,7 +1,12 @@
 #![no_std]
 #![no_main]
 
-use ariel_os::{cell::StaticCell, debug::log::info, reexports::embassy_usb, usb::UsbDriver};
+use ariel_os::{
+    cell::StaticCell,
+    debug::log::{Hex, info},
+    reexports::embassy_usb,
+    usb::UsbDriver,
+};
 use embassy_usb::{
     class::cdc_acm::{CdcAcmClass, State},
     driver::EndpointError,
@@ -68,7 +73,7 @@ async fn echo(class: &mut CdcAcmClass<'static, UsbDriver>) -> Result<(), Disconn
     loop {
         let n = class.read_packet(&mut buf).await?;
         let data = &buf[..n];
-        info!("data: {:x}", data);
+        info!("data: {}", Hex(data));
         class.write_packet(data).await?;
     }
 }

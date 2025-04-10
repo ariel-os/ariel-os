@@ -20,7 +20,7 @@ async fn run_client_operations() {
         .with_request_payload_slice(b"This is Ariel OS")
         .processing_response_payload_through(|p| {
             info!(
-                "Uppercase response is {}",
+                "Uppercase response is {:?}",
                 core::str::from_utf8(p).map_err(|_| "not Unicode?")
             );
         });
