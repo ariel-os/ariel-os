@@ -21,6 +21,9 @@ pub mod identity;
 #[cfg(feature = "spi")]
 pub mod spi;
 
+#[cfg(feature = "uart")]
+pub mod uart;
+
 pub mod reexports {
     //! Crate re-exports.
 

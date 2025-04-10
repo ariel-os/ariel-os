@@ -11,3 +11,4 @@ subdirs:
   - threading-dynamic-prios
   - threading-lock
   - threading-mutex
+  - uart-loopback
