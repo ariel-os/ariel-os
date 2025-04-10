@@ -1131,7 +1131,7 @@ modules:
     env:
       global:
         # esp-wifi needs a lot of ISR stack.
-        isr_stacksize_required_default: "65536"
+        isr_stacksize_required: "65536"
         FEATURES:
           - ariel-os/wifi-esp
 
