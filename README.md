@@ -29,8 +29,7 @@ See the [Getting Started page][getting-started-mdbook] in the User Guide to get 
 
 ## Minimum Supported Rust Version (MSRV)
 
-Ariel OS makes use of selected Rust unstable features. For the time being, it is
-recommended to use the nightly version pinned by [`rust-toolchain.toml`](rust-toolchain.toml).
+Ariel OS currently requires at least Rust version 1.85.
 
 ## Security
 
