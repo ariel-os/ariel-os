@@ -92,11 +92,13 @@ impl Stack {
             return;
         }
 
-        // sanity check
+        // sanity check, should never happen.
         assert!(self.bottom <= sp && sp <= self.top);
 
-        // Safety: writing below the stack pointer of the currently active stack
-        // is fine.
+        // Safety: `Stack` being `!Send` should ensure that is only ever used on the stack
+        // it was created on and belongs to. The assert double-checks this.
+        // Given that `bottom` doesn't change (which it never does in Ariel OS),
+        // overwriting `bottom..sp` is safe on all our platforms.
         unsafe {
             for pos in self.bottom..sp {
                 write_volatile(pos as *mut u8, 0xCC);
