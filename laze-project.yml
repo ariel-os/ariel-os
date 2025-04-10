@@ -25,8 +25,8 @@ contexts:
       - ?hw/device-identity
       - ?lto
       - ?semihosting
-      - ?nightly
       - ?stable
+      - ?nightly
     env:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
