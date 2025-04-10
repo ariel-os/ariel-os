@@ -4,6 +4,9 @@ version = "0.1.0"
 license.workspace = true
 edition.workspace = true
 
+# This should be the Ariel OS MSRV.
+rust-version = "1.85"
+
 [lints]
 workspace = true
 
