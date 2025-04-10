@@ -29,7 +29,7 @@ See the [Getting Started page][getting-started-mdbook] in the User Guide to get 
 
 ## Minimum Supported Rust Version (MSRV)
 
-Ariel OS currently requires at least Rust version 1.86.
+Ariel OS currently requires at least Rust version 1.85.
 
 ## Security
 
