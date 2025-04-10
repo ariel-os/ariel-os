@@ -5,7 +5,7 @@ use esp_hal::{
     peripherals::{CPU_CTRL, Interrupt, SYSTEM},
 };
 
-use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore, StackLimits};
 
 impl From<Cpu> for CoreId {
     fn from(value: Cpu) -> Self {
@@ -81,5 +81,13 @@ impl Multicore for Chip {
                 .write(|w| w.cpu_intr_from_cpu_1().set_bit()),
             _ => unreachable!(),
         };
+    }
+}
+
+impl<const SIZE: usize> StackLimits for Stack<SIZE> {
+    fn limits(&self) -> (usize, usize) {
+        let bottom = self.mem.as_ptr() as usize;
+        let top = bottom + self.len();
+        (bottom, top)
     }
 }

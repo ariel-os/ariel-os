@@ -78,8 +78,24 @@ mod isr_stack {
     );
 
     pub fn limits() -> (usize, usize) {
-        // ISR stack
-        // TODO: multicore!
+        #[cfg(not(feature = "multi-core"))]
+        {
+            crate::isr_stack::limits_core0()
+        }
+
+        #[cfg(feature = "multi-core")]
+        {
+            use ariel_os_threads::{CoreId, core_id};
+            if core_id() == CoreId::new(0) {
+                crate::isr_stack::limits_core0()
+            } else {
+                crate::isr_stack::limits_core1()
+            }
+        }
+    }
+
+    pub fn limits_core0() -> (usize, usize) {
+        // ISR stack for core0 is defined via linker script.
         unsafe extern "C" {
             static _stack_bottom: u32;
             static _stack_start: u32;
@@ -88,6 +104,12 @@ mod isr_stack {
         let bottom = &raw const _stack_bottom as usize;
         let top = &raw const _stack_start as usize;
         (bottom, top)
+    }
+
+    #[cfg(feature = "multi-core")]
+    pub fn limits_core1() -> (usize, usize) {
+        // ISR stack for core1 is exported from the threading module.
+        ariel_os_threads::isr_stack_core1_get_limits()
     }
 
     pub fn init() {

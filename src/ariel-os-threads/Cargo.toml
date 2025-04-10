@@ -18,6 +18,7 @@ paste.workspace = true
 ariel-os-debug.workspace = true
 ariel-os-runqueue.workspace = true
 ariel-os-utils.workspace = true
+portable-atomic.workspace = true
 static_cell.workspace = true
 
 defmt = { workspace = true, optional = true }
