@@ -10,8 +10,8 @@ use crate::arch::sp;
 /// The machinery for stack painting has a couple of assumptions:
 ///
 /// 1. It is safe for an active stack to *overwrite* unused stack space from its limit (bottom,
-///    including) to its stack pointer (not including).
-/// 2. It is safe to *read* unused stack space below the stack pointer down to its limit (bottom).
+///    including) to its stack pointer (not including) through raw pointers.
+/// 2. It is safe to *read* unused stack space below the raw stack pointer down to its limit (bottom).
 /// 3. The limits of an active stack never change.
 /// 4. It is fine to specify zero for both `bottom` and `top`, in which case usage data is invalid
 ///    (always zero), but no unsafety arises.
@@ -86,6 +86,7 @@ impl Stack {
         let mut free = 0usize;
         for pos in self.bottom..self.top {
             // Safety: dereferencing ptr to valid memory, read only
+            // See assumptions in Struct level documentation.
             if unsafe { *(pos as *const u8) } == 0xCC {
                 free += 1;
             }
