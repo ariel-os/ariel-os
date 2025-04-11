@@ -235,6 +235,7 @@ dependencies = [
  "ariel-os-debug-log",
  "ariel-os-utils",
  "const-str",
+ "critical-section",
  "esp-println",
  "log",
  "rtt-target",

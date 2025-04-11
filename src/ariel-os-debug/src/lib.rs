@@ -177,8 +177,32 @@ mod logger {
     };
 
     pub fn init() {
-        log::set_logger(&LOGGER).unwrap();
-        log::set_max_level(MAX_LEVEL);
+        #[cfg(target_has_atomic = "ptr")]
+        {
+            log::set_logger(&LOGGER).unwrap();
+            log::set_max_level(MAX_LEVEL);
+        }
+
+        // The non-racy functions are not available on architectures with no pointer-wide atomics.
+        #[cfg(not(target_has_atomic = "ptr"))]
+        {
+            critical_section::with(|_| {
+                // NOTE: these calls do not need to be made atomically but this still uses a single
+                // critical section.
+
+                // SAFETY: the critical section prevents concurrent calls of `set_logger_racy()` or
+                // `logger()`.
+                unsafe {
+                    log::set_logger_racy(&LOGGER).unwrap();
+                }
+                // SAFETY: the critical section prevents concurrent calls of `set_max_level_racy()`
+                // or `max_level()`.
+                unsafe {
+                    log::set_max_level_racy(MAX_LEVEL);
+                }
+            });
+        }
+
         log::trace!("debug logging enabled");
     }
 
