@@ -101,8 +101,8 @@ fn startup() -> ! {
     #[cfg(feature = "alloc")]
     // SAFETY: *this* is the only place alloc should be initialized.
     unsafe {
-        ariel_os_alloc::init()
-    };
+        ariel_os_alloc::init();
+    }
 
     #[cfg(test)]
     debug!("ariel_os_rt::startup() cfg(test)");
