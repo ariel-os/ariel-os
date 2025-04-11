@@ -2,7 +2,7 @@
 #![cfg_attr(test, no_main)]
 //
 #![allow(incomplete_features)]
-// - const_generics
+#![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
 #[cfg(feature = "threading")]
 mod threading;
@@ -35,7 +35,7 @@ cfg_if::cfg_if! {
     }
 }
 
-#[cfg(any(context = "cortex-m", context = "riscv"))]
+#[cfg(any(context = "cortex-m", context = "riscv", context = "xtensa"))]
 mod isr_stack {
     pub(crate) const ISR_STACKSIZE: usize = {
         const CONFIG_ISR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
@@ -95,7 +95,7 @@ fn startup() -> ! {
 
     debug!("ariel_os_rt::startup()");
 
-    #[cfg(any(context = "cortex-m", context = "riscv"))]
+    #[cfg(any(context = "cortex-m", context = "riscv", context = "xtensa"))]
     debug!("ariel_os_rt: ISR_STACKSIZE={}", isr_stack::ISR_STACKSIZE);
 
     #[cfg(feature = "alloc")]
