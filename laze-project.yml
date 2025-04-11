@@ -606,6 +606,7 @@ modules:
         CARGO_TOOLCHAIN: +esp
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
+          - -Clink-arg=-Tisr_stack.x
         CFLAGS:
           - -mlongcalls
         CARGO_ARGS:
