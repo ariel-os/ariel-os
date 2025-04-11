@@ -45,7 +45,7 @@ pub static I2C_BUS: once_cell::sync::OnceCell<
 async fn main(peripherals: pins::Peripherals) {
     let mut i2c_config = hal::i2c::controller::Config::default();
     i2c_config.frequency = const { highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(400)) };
-    debug!("Selected frequency: {}", i2c_config.frequency);
+    debug!("Selected frequency: {:?}", i2c_config.frequency);
 
     let i2c_bus = pins::SensorI2c::new(peripherals.i2c_sda, peripherals.i2c_scl, i2c_config);
 

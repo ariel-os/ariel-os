@@ -8,7 +8,7 @@ async fn main() {
     info!("Available information:");
     info!("Board type: {}", ariel_os::buildinfo::BOARD);
     if let Ok(id) = ariel_os::identity::device_id_bytes() {
-        info!("Device ID: {=[u8]:02x}", id.as_ref());
+        info!("Device ID: {}", Hex(id));
     } else {
         info!("Device ID is unavailable.");
     }

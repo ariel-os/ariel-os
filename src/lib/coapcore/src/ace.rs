@@ -9,6 +9,7 @@ use coap_message::Code as _;
 use defmt_or_log::trace;
 
 use crate::error::{CredentialError, CredentialErrorDetail};
+use crate::log_helpers::Cbor;
 
 use crate::helpers::COwn;
 
@@ -170,7 +171,7 @@ impl CoseEncrypt0<'_> {
         let mut aad_encoded = heapless::Vec::<u8, AADSIZE>::new();
         minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut aad_encoded))
             .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
-        trace!("Serialized AAD: {:02x}", aad_encoded); // :02x could be :cbor
+        trace!("Serialized AAD: {}", Cbor(&aad_encoded));
 
         buffer.clear();
         // Copying around is not a constraint of this function (well that too but that could
@@ -427,7 +428,7 @@ pub(crate) fn process_acecbor_authz_info<GC: crate::GeneralClaims>(
     nonce2: [u8; OWN_NONCE_LEN],
     server_recipient_id: impl FnOnce(&[u8]) -> COwn,
 ) -> Result<(AceCborAuthzInfoResponse, liboscore::PrimitiveContext, GC), CredentialError> {
-    trace!("Processing authz_info {=[u8]:02x}", payload); // :02x could be :cbor
+    trace!("Processing authz_info {}", Cbor(payload));
 
     let decoded: UnprotectedAuthzInfoPost = minicbor::decode(payload)?;
     // FIXME: The `..` should be "all others are None"; se also comment on UnprotectedAuthzInfoPost

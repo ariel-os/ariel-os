@@ -43,7 +43,7 @@ pub static SPI_BUS: once_cell::sync::OnceCell<
 async fn main(peripherals: pins::Peripherals) {
     let mut spi_config = hal::spi::main::Config::default();
     spi_config.frequency = const { highest_freq_in(Kilohertz::kHz(1000)..=Kilohertz::kHz(2000)) };
-    debug!("Selected frequency: {}", spi_config.frequency);
+    debug!("Selected frequency: {:?}", spi_config.frequency);
     spi_config.mode = if !cfg!(context = "esp") {
         Mode::Mode3
     } else {
