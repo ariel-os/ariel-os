@@ -38,9 +38,12 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 // Side UART0 of Arduino v3 connector
 #[cfg(context = "stm32c031c6")]
-pub type TestUart<'a> = uart::UART0<'a>;
+pub type TestUart<'a> = uart::USART1<'a>;
 #[cfg(context = "stm32c031c6")]
-ariel_os::hal::define_peripherals!(Peripherals {});
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PB7,
+    uart_tx: PB6,
+});
 
 // Side UART0 of Arduino v3 connector
 #[cfg(context = "stm32h755zi")]

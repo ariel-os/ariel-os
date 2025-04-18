@@ -126,7 +126,12 @@ macro_rules! define_uart_drivers {
     }
 }
 
-#[cfg(context = "stm32f401retx")]
+#[cfg(context = "stm32c031c6")]
+define_uart_drivers!(
+   USART1 => USART1,
+   // USART2 => USART2, // Often used as SWI
+);
+#[cfg(context = "stm32f401re")]
 define_uart_drivers!(
    USART1 => USART1,
 );
