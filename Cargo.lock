@@ -3122,7 +3122,6 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embedded-io-async",
 ]
 
 [[package]]
@@ -5606,11 +5605,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
- "embedded-hal-async",
  "embedded-io-async",
- "once_cell",
- "static_cell",
 ]
 
 [[package]]
