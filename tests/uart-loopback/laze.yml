@@ -1,6 +1,5 @@
 apps:
   - name: uart-loopback
-    selects:
     context:
       - bbc-microbit-v2
       - esp
