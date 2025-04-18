@@ -45,7 +45,7 @@ async fn main(peripherals: pins::Peripherals) {
     info!("Wrote bytes");
     uart.read_exact(&mut in_).await.unwrap();
 
-    info!("Got: '{:x}'", &in_);
+    info!("Got: {:x}", &in_);
     assert_eq!(OUT.as_bytes(), in_);
     info!("Test passed!");
 
