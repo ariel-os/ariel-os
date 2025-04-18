@@ -52,21 +52,27 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // Side UART of Arduino v3 connector
-#[cfg(context = "stm32h755zi")]
-pub type TestUart<'a> = uart::UART0<'a>;
-#[cfg(context = "stm32h755zi")]
-ariel_os::hal::define_peripherals!(Peripherals {});
-
-// Side UART of Arduino v3 connector
-#[cfg(context = "stm32wb55rg")]
-pub type TestUart<'a> = uart::UART0<'a>;
-#[cfg(context = "stm32wb55rg")]
-ariel_os::hal::define_peripherals!(Peripherals {});
-
-// Side UART of Arduino v3 connector
 #[cfg(context = "stm32f401re")]
 pub type TestUart<'a> = uart::USART1<'a>;
 #[cfg(context = "stm32f401re")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PA10,
+    uart_tx: PA9,
+});
+
+// Side UART of Arduino v3 connector
+#[cfg(context = "stm32h755zi")]
+pub type TestUart<'a> = uart::USART1<'a>;
+#[cfg(context = "stm32h755zi")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PB7,
+    uart_tx: PB6,
+});
+
+// Side UART of Arduino v3 connector
+#[cfg(context = "stm32wb55rg")]
+pub type TestUart<'a> = uart::USART1<'a>;
+#[cfg(context = "stm32wb55rg")]
 ariel_os::hal::define_peripherals!(Peripherals {
     uart_rx: PA10,
     uart_tx: PA9,
