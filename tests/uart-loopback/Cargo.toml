@@ -8,10 +8,6 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
-embassy-sync = { workspace = true }
-embedded-hal-async = { workspace = true }
-embedded-io-async = { workspace = true }
-once_cell = { workspace = true }
-ariel-os = { path = "../../src/ariel-os", features = ["uart", "time"] }
+ariel-os = { path = "../../src/ariel-os", features = ["time", "uart"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-static_cell = { workspace = true }
+embedded-io-async = { workspace = true }
