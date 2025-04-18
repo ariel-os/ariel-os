@@ -135,3 +135,18 @@ define_uart_drivers!(
 define_uart_drivers!(
    USART1 => USART1,
 );
+#[cfg(context = "stm32wb55rg")]
+define_uart_drivers!(
+   USART1 => USART1,
+);
+#[cfg(context = "stm32h755zi")]
+define_uart_drivers!(
+   USART1 => USART1,
+   USART2 => USART2,
+   USART3 => USART3,
+   UART4 => UART4,
+   // UART5 => UART5, // Often used as SWI
+   USART6 => USART6,
+   UART7 => UART7,
+   UART8 => UART8,
+);
