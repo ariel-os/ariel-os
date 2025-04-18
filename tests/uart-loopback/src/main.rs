@@ -24,9 +24,11 @@ async fn main(peripherals: pins::Peripherals) {
 
     let mut config = hal::uart::Config::default();
     config.baudrate = 9600;
-    let mut rx_buf: [u8; 32] = [0u8; 32];
-    let mut tx_buf: [u8; 32] = [0u8; 32];
     info!("Selected baud rate: {}", config.baudrate);
+
+    let mut rx_buf = [0u8; 32];
+    let mut tx_buf = [0u8; 32];
+
     let mut uart = pins::TestUart::new(
         peripherals.uart_rx,
         peripherals.uart_tx,
@@ -40,10 +42,10 @@ async fn main(peripherals: pins::Peripherals) {
 
     let _ = uart.write_all(OUT.as_bytes()).await;
     let _ = uart.flush().await;
-    info!("written bytes");
+    info!("Wrote bytes");
     let _ = uart.read_exact(&mut in_).await;
 
-    info!("got: '{:x}'", &in_);
+    info!("Got: '{:x}'", &in_);
     assert_eq!(OUT.as_bytes(), in_);
     info!("Test passed!");
 
