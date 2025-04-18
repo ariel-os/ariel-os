@@ -37,7 +37,7 @@ async fn main(peripherals: pins::Peripherals) {
         config,
     );
 
-    const OUT: &str = &"Test Message";
+    const OUT: &str = "Test Message";
     let mut in_ = [0u8; OUT.len()];
 
     uart.write_all(OUT.as_bytes()).await.unwrap();
