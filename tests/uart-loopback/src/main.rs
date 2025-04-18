@@ -40,10 +40,10 @@ async fn main(peripherals: pins::Peripherals) {
     const OUT: &str = &"Test Message";
     let mut in_ = [0u8; OUT.len()];
 
-    let _ = uart.write_all(OUT.as_bytes()).await;
-    let _ = uart.flush().await;
+    uart.write_all(OUT.as_bytes()).await.unwrap();
+    uart.flush().await.unwrap();
     info!("Wrote bytes");
-    let _ = uart.read_exact(&mut in_).await;
+    uart.read_exact(&mut in_).await.unwrap();
 
     info!("Got: '{:x}'", &in_);
     assert_eq!(OUT.as_bytes(), in_);
