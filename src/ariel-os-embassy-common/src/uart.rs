@@ -23,9 +23,9 @@ pub enum StopBits {
 /// UART number of data bits.
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum DataBits {
-    /// 7 bits per transfer.
+    /// 7 bits per character.
     Data7,
-    /// 8 bits per transfer.
+    /// 8 bits per character.
     Data8,
 }
 
