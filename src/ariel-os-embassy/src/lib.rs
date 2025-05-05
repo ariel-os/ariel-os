@@ -17,6 +17,9 @@ pub mod i2c;
 #[cfg(feature = "spi")]
 pub mod spi;
 
+#[cfg(feature = "uart")]
+pub mod uart;
+
 #[cfg(feature = "usb")]
 pub mod usb;
 
@@ -57,6 +60,8 @@ pub mod api {
     pub use crate::net;
     #[cfg(feature = "spi")]
     pub use crate::spi;
+    #[cfg(feature = "uart")]
+    pub use crate::uart;
     #[cfg(feature = "usb")]
     pub use crate::usb;
 }

@@ -92,6 +92,8 @@ spi = ["ariel-os-embassy/spi"]
 usb = ["ariel-os-embassy/usb"]
 ## Enables USB HID support.
 usb-hid = ["ariel-os-embassy/usb-hid"]
+## Enables UART support.
+uart = ["ariel-os-embassy/uart"]
 
 #! ## System configuration
 #! The [`macro@config`] attribute macro allows to provide configuration for
@@ -171,4 +173,4 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts"]
+_test = ["i2c", "no-boards", "spi", "external-interrupts", "uart"]

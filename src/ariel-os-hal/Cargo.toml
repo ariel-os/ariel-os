@@ -62,6 +62,13 @@ usb = [
   "ariel-os-stm32/usb",
 ]
 
+uart = [
+  "ariel-os-esp/uart",
+  "ariel-os-nrf/uart",
+  "ariel-os-rp/uart",
+  "ariel-os-stm32/uart",
+]
+
 hwrng = [
   "ariel-os-esp/hwrng",
   "ariel-os-nrf/hwrng",

@@ -319,6 +319,7 @@ dependencies = [
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
+ "embedded-io-async",
  "esp-alloc",
  "esp-hal",
  "esp-hal-embassy",
@@ -386,6 +387,7 @@ dependencies = [
  "embassy-executor",
  "embassy-nrf",
  "embedded-hal-async",
+ "embedded-io-async",
  "ld-memory",
  "paste",
  "portable-atomic",
@@ -427,6 +429,7 @@ dependencies = [
  "embassy-net-driver-channel",
  "embassy-rp",
  "embedded-hal-async",
+ "embedded-io-async",
  "paste",
  "static_cell",
 ]
@@ -470,6 +473,7 @@ dependencies = [
  "embassy-executor",
  "embassy-stm32",
  "embedded-hal-async",
+ "embedded-io-async",
  "paste",
  "portable-atomic",
  "static_cell",
@@ -5388,6 +5392,15 @@ name = "typewit_proc_macros"
 version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e36a83ea2b3c704935a01b4642946aadd445cea40b10935e3f8bd8052b8193d6"
+
+[[package]]
+name = "uart-loopback"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embedded-io-async",
+]
 
 [[package]]
 name = "udp-echo"
