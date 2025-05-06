@@ -5,6 +5,22 @@ use crate::arch::sp;
 
 /// Struct representing the currently active stack.
 ///
+/// # Stack painting
+///
+/// [`Stack`] allows to measure the amount of stack effectively used through a technique called
+/// stack painting:
+///
+/// 1. When initializing the memory stack, it is filled with a sequence of bytes of known values:
+///    the paint.
+/// 2. This paint gets covered during execution with the values stored on stack.
+/// 3. When requested, the amount of covered paint is measured to estimate the amount of stack used
+///    during execution.
+///
+/// Note that this technique only provides a lower bound of stack usage, as the values stored in
+/// the stack may "collide" with the paint values.
+/// In the current implementation, and assuming the stack data follows a uniform distribution, this
+/// is unlikely to result in an underestimation of more than one byte.
+///
 /// # Note
 ///
 /// The machinery for stack painting has a couple of assumptions:
