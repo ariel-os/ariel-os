@@ -40,7 +40,7 @@ pub use ariel_os_power as power;
 #[cfg(feature = "random")]
 #[doc(inline)]
 pub use ariel_os_random as random;
-#[doc(inline)]
+#[doc(hidden)]
 pub use ariel_os_rt as rt;
 #[cfg(feature = "storage")]
 #[doc(inline)]
