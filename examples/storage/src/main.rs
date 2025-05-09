@@ -4,7 +4,7 @@
 
 use ariel_os::debug::{
     ExitCode, exit,
-    log::{Hex, defmt, info},
+    log::{Debug2Format, Hex, info},
 };
 
 // Imports for using [`ariel_os::storage`]
@@ -14,7 +14,9 @@ use serde::{Deserialize, Serialize};
 /// Example object.
 ///
 /// The serde Serialize / Deserialize traits are required for storage
-#[derive(Serialize, Deserialize, Debug, defmt::Format)]
+#[derive(Serialize, Deserialize, Debug)]
+// FIXME: How should a user's application that may or may not run on defmt but has a custom type
+// such as this derive Format?
 struct MyConfig {
     val_one: heapless::String<64>,
     val_two: u64,
@@ -83,14 +85,14 @@ async fn main() {
         val_one: heapless::String::<64>::try_from("some value").unwrap(),
         val_two: 99,
     };
-    info!("Storing cfg object {:?} as struct", cfg);
+    info!("Storing cfg object {:?} as struct", Debug2Format(&cfg));
     storage::insert("my_config", cfg).await.unwrap();
 
     // Getting an object
     // Type used for `get()` needs to match what was used for `insert()`.
     let cfg: Option<MyConfig> = storage::get("my_config").await.unwrap();
     if let Some(cfg) = cfg {
-        info!("got cfg object: {:?}", cfg);
+        info!("got cfg object: {:?}", Debug2Format(&cfg));
     }
 
     // Getting a value as raw bytes probably does not return what you want due
