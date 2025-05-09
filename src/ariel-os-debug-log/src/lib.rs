@@ -37,13 +37,38 @@ pub mod defmt {
     pub use defmt::{Formatter, Str, export, unreachable};
 }
 
+#[cfg(feature = "defmt")]
+pub use defmt::{Debug2Format, Display2Format};
+
 #[cfg(feature = "log")]
 #[doc(hidden)]
 pub mod log {
     // Re-export only the minimum set of items to minimize breaking changes in case `log`
     // adds/removes any items.
     pub use log::{debug, error, info, trace, warn};
+
+    /// Pass-through wrapper for the [`Debug`][core::fmt::Debug] trait that shims the like-named
+    /// type of `defmt`.
+    pub struct Debug2Format<T: core::fmt::Debug>(pub T);
+    /// Pass-through wrapper for the [`Display`][core::fmt::Display] trait that shims the
+    /// like-named type of `defmt`.
+    pub struct Display2Format<T: core::fmt::Display>(pub T);
+
+    impl<T: core::fmt::Debug> core::fmt::Debug for Debug2Format<T> {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            core::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+
+    impl<T: core::fmt::Display> core::fmt::Display for Display2Format<T> {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            core::fmt::Display::fmt(&self.0, f)
+        }
+    }
 }
+
+#[cfg(feature = "log")]
+pub use log::{Debug2Format, Display2Format};
 
 // NOTE: log macros are defined within private modules so that `doc_auto_cfg` does not produce
 // "feature flairs" on them.
