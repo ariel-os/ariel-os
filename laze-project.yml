@@ -143,6 +143,8 @@ contexts:
         workdir: ${appdir}
         cmd:
           - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} expand ${FEATURES}
+        required_modules:
+          - nightly
 
       debug:
         workdir: ${appdir}
@@ -162,6 +164,8 @@ contexts:
         cmd:
           - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} bloat --${PROFILE} ${FEATURES}
         build: false
+        required_modules:
+          - nightly
 
       tree:
         workdir: ${appdir}
