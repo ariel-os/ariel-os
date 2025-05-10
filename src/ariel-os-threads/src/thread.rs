@@ -24,6 +24,11 @@ pub struct Thread {
     /// Core affinity of the thread.
     #[cfg(feature = "core-affinity")]
     pub core_affinity: crate::CoreAffinity,
+
+    /// Lowest stack address
+    pub stack_bottom: usize,
+    /// Highest stack address
+    pub stack_top: usize,
 }
 
 /// Possible states of a thread
@@ -60,6 +65,20 @@ impl Thread {
             tid: ThreadId::new(0),
             #[cfg(feature = "core-affinity")]
             core_affinity: crate::CoreAffinity::no_affinity(),
+            stack_top: 0,
+            stack_bottom: 0,
+        }
+    }
+
+    /// Paints a stack.
+    ///
+    /// # Safety
+    /// - must only be called before the stack is active (within `arch::setup_stack()`).
+    pub(crate) unsafe fn stack_paint_init(&mut self, sp: usize) {
+        unsafe {
+            for pos in self.stack_bottom..sp {
+                core::ptr::write_volatile(pos as *mut u8, 0xCC);
+            }
         }
     }
 }

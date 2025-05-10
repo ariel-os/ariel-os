@@ -1,6 +1,8 @@
 use cortex_m as _;
 use cortex_m_rt::{__RESET_VECTOR, ExceptionFrame, entry, exception};
 
+use crate::stack::Stack;
+
 // Table 2.5
 // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/CHDBIBGJ.html
 pub fn ipsr_isr_number_to_str(isr_number: usize) -> &'static str {
@@ -205,4 +207,36 @@ pub fn init() {
             .vtor
             .write(&__RESET_VECTOR as *const _ as u32 - 4)
     };
+}
+
+/// Returns a `Stack` handle for the currently active thread.
+pub(crate) fn stack() -> crate::stack::Stack {
+    #[cfg(feature = "threading")]
+    let (bottom, top) = if cortex_m::register::control::read().spsel().is_psp() {
+        // thread stack
+        // Never panics when psp is active.
+        ariel_os_threads::current_stack_limits().unwrap()
+    } else {
+        crate::isr_stack::limits()
+    };
+
+    // When threading is disabled, the isr stack is used.
+    #[cfg(not(feature = "threading"))]
+    let (bottom, top) = crate::isr_stack::limits();
+
+    Stack::new(bottom, top)
+}
+
+/// Returns the current `SP` register value
+pub(crate) fn sp() -> usize {
+    let sp: usize;
+    // Safety: reading SP is safe
+    unsafe {
+        core::arch::asm!(
+            "mov {}, sp",
+            out(reg) sp,
+            options(nomem, nostack, preserves_flags)
+        )
+    };
+    sp
 }
