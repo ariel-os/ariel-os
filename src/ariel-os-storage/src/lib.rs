@@ -29,7 +29,7 @@ pub use storage::*;
 static STORAGE: OnceLock<Mutex<CriticalSectionRawMutex, Storage<Flash>>> = OnceLock::new();
 
 const MARKER_KEY: &str = "ARIEL_INIT_MARK";
-const MARKER_VALUE: u8 = 0;
+const MARKER_VALUE: u8 = 1;
 
 /// Gets a [`Range`] from the linker that can be used for a global [`Storage`].
 ///
@@ -104,7 +104,10 @@ pub async fn init(p: &mut OptionalPeripherals) {
 /// Stores a key-value pair into flash memory.
 ///
 /// It will overwrite the last value that has the same key.
-pub async fn insert<'d, V>(key: &str, value: V) -> Result<(), sequential_storage::Error<FlashError>>
+pub async fn insert<'d, V>(
+    key: impl Key,
+    value: V,
+) -> Result<(), sequential_storage::Error<FlashError>>
 where
     V: Serialize + Deserialize<'d> + Into<PostcardValue<V>>,
 {
@@ -116,7 +119,7 @@ where
 /// Note: Always [`get()`] the same value type that was [`insert()`]!
 ///
 /// If no value with the key is found, `None` is returned.
-pub async fn get<V>(key: &str) -> Result<Option<V>, sequential_storage::Error<FlashError>>
+pub async fn get<V>(key: impl Key) -> Result<Option<V>, sequential_storage::Error<FlashError>>
 where
     V: Serialize + for<'d> Deserialize<'d> + Into<PostcardValue<V>>,
 {
@@ -136,7 +139,7 @@ where
 /// </div>
 // STM32 flash drivers do not implement `MultiwriteNorFlash`.
 #[cfg(not(context = "stm32"))]
-pub async fn remove(key: &str) -> Result<(), sequential_storage::Error<FlashError>> {
+pub async fn remove(key: impl Key) -> Result<(), sequential_storage::Error<FlashError>> {
     lock().await.remove(key).await
 }
 
@@ -169,3 +172,8 @@ pub async fn erase_all() -> Result<(), sequential_storage::Error<FlashError>> {
 pub async fn lock() -> MutexGuard<'static, CriticalSectionRawMutex, storage::Storage<Flash>> {
     STORAGE.get().await.lock().await
 }
+
+/// Item that is suitable for using as a storage key.
+///
+/// The recommended type to use with this is `&str`.
+pub trait Key: storage::SealedKey {}
