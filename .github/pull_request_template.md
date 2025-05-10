@@ -19,8 +19,10 @@ is merged. See https://help.github.com/articles/closing-issues-using-keywords/.
 ## Change checklist
 
 <!--
-We don't enforce a strict convention for commit messages, but please make sure that
-the commit history is clear and informative.
+We don't enforce a strict convention for commit messages,
+but please make sure that:
+- the commit history is clear and informative.
+- the DCO Sign-off is present in your commits. 
 -->
 - [ ] I have cleaned up my commit history and squashed fixup commits.
 - [ ] I have followed the [Coding Conventions](https://ariel-os.github.io/ariel-os/dev/docs/book/coding-conventions.html).
