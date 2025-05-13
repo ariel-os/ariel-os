@@ -923,7 +923,7 @@ modules:
     help: use probe-rs as runner
     selects:
       - ?debug-console
-      - rtt-target
+      - ?rtt-target
 
     env:
       global:
@@ -1357,6 +1357,17 @@ modules:
         FEATURES:
           - ariel-os/rtt-target
 
+  - name: debug-uart
+    help: use UART in ariel-os-debug
+    selects:
+      - log # We could later support defmt as well
+    provides_unique:
+      - ariel-os-debug-backend
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-uart
+
   - name: esp-println
     help: use esp-println in ariel-os-debug
     context:
@@ -1402,7 +1413,6 @@ modules:
       # There is an issue with multi-core on esp.
       - ?esp-single-core
       - sw/threading
-      - rtt-target
       - probe-rs
     tasks:
       test:

@@ -11,7 +11,7 @@ repository.workspace = true
 workspace = true
 
 [package.metadata.feature-groups]
-debug-backend.xor = { features = ["esp-println", "rtt-target"] }
+debug-backend.xor = { features = ["esp-println", "rtt-target", "uart"] }
 
 [package.metadata.features]
 debug-console = { groups = ["debug-backend"] }
@@ -21,6 +21,7 @@ ariel-os-debug-log = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-str = { workspace = true }
 critical-section = { workspace = true, optional = true }
+embassy-sync = { workspace = true }
 featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
 rtt-target = { workspace = true, optional = true }
@@ -62,5 +63,7 @@ log = ["dep:critical-section", "dep:log", "ariel-os-debug-log/log"]
 
 semihosting = ["dep:semihosting"]
 
+# Debug output backends
 esp-println = ["dep:esp-println"]
 rtt-target = ["dep:rtt-target"]
+uart = []
