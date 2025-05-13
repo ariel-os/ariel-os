@@ -5,18 +5,8 @@
 #![deny(missing_docs)]
 #![deny(clippy::pedantic)]
 
-#[cfg(all(feature = "rtt-target", feature = "esp-println"))]
-compile_error!(
-    r#"feature "rtt-target" and feature "esp-println" cannot be enabled at the same time"#
-);
-
-#[cfg(all(
-    feature = "debug-console",
-    not(any(feature = "rtt-target", feature = "esp-println"))
-))]
-compile_error!(
-    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target" or feature "esp-println"."#
-);
+#[featurecomb::comb]
+mod _featurecomb {}
 
 #[doc(inline)]
 pub use ariel_os_debug_log as log;

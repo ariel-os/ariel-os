@@ -10,11 +10,18 @@ repository.workspace = true
 [lints]
 workspace = true
 
+[package.metadata.feature-groups]
+debug-backend.xor = { features = ["esp-println", "rtt-target"] }
+
+[package.metadata.features]
+debug-console = { groups = ["debug-backend"] }
+
 [dependencies]
 ariel-os-debug-log = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-str = { workspace = true }
 critical-section = { workspace = true, optional = true }
+featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
 rtt-target = { workspace = true, optional = true }
 semihosting = { workspace = true, optional = true }

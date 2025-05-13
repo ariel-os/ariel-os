@@ -237,6 +237,7 @@ dependencies = [
  "const-str",
  "critical-section",
  "esp-println",
+ "featurecomb",
  "log",
  "rtt-target",
  "semihosting",
