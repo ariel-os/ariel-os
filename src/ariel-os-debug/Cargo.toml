@@ -21,6 +21,7 @@ ariel-os-debug-log = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-str = { workspace = true }
 critical-section = { workspace = true, optional = true }
+embassy-sync = { workspace = true }
 featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
 rtt-target = { workspace = true, optional = true }

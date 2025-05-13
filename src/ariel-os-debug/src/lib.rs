@@ -108,10 +108,10 @@ mod backend {
 #[cfg(all(feature = "debug-console", feature = "uart"))]
 #[doc(hidden)]
 pub mod backend {
-    unsafe extern "Rust" {
-        // TODO: could consider taking a &str instead
-        fn __ariel_os_debug_uart_write(buffer: &[u8]);
-    }
+    use embassy_sync::once_lock::OnceLock;
+
+    #[doc(hidden)]
+    pub static DEBUG_UART_WRITE_FN: OnceLock<fn(&[u8])> = OnceLock::new();
 
     struct DebugUart;
 
@@ -119,9 +119,8 @@ pub mod backend {
         fn write_str(&mut self, s: &str) -> core::fmt::Result {
             let bytes = s.as_bytes();
 
-            // Relying on the FFI seems like the only way to keep this crate HAL-agnostic.
-            unsafe {
-                __ariel_os_debug_uart_write(bytes);
+            if let Some(debug_uart_write_fn) = DEBUG_UART_WRITE_FN.try_get() {
+                debug_uart_write_fn(bytes);
             }
 
             Ok(())

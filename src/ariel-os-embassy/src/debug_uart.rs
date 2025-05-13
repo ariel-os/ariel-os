@@ -44,12 +44,11 @@ pub fn init(peripherals: &mut crate::hal::OptionalPeripherals) {
     };
 
     let _ = DEBUG_UART.init(embassy_sync::mutex::Mutex::new(uart));
+
+    let _ = ariel_os_debug::DEBUG_UART_WRITE_FN.init(write_debug_uart);
 }
 
-// SAFETY: the compiler prevents from defining multiple functions with the same name in the same
-// crate.
-#[unsafe(no_mangle)]
-fn __ariel_os_debug_uart_write(buffer: &[u8]) {
+fn write_debug_uart(buffer: &[u8]) {
     use embedded_io_async::Write;
     // use embedded_io::Write;
 
