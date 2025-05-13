@@ -105,6 +105,57 @@ mod backend {
     }
 }
 
+#[cfg(all(feature = "debug-console", feature = "uart"))]
+#[doc(hidden)]
+pub mod backend {
+    unsafe extern "Rust" {
+        // TODO: could consider taking a &str instead
+        fn __ariel_os_debug_uart_write(buffer: &[u8]);
+    }
+
+    struct DebugUart;
+
+    impl core::fmt::Write for DebugUart {
+        fn write_str(&mut self, s: &str) -> core::fmt::Result {
+            let bytes = s.as_bytes();
+
+            // Relying on the FFI seems like the only way to keep this crate HAL-agnostic.
+            unsafe {
+                __ariel_os_debug_uart_write(bytes);
+            }
+
+            Ok(())
+        }
+    }
+
+    pub fn init() {
+        crate::logger::init();
+    }
+
+    #[doc(hidden)]
+    pub fn _print(args: core::fmt::Arguments) {
+        use core::fmt::Write;
+
+        DebugUart.write_fmt(args).unwrap();
+    }
+
+    #[macro_export]
+    macro_rules! print {
+        ($($arg:tt)*) => {{
+            #[expect(clippy::used_underscore_items, reason = "consistency with std::print")]
+            $crate::backend::_print(format_args!($($arg)*));
+        }};
+    }
+
+    #[macro_export]
+    macro_rules! println {
+        ($($arg:tt)*) => {{
+            #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
+            $crate::backend::_print(format_args!("{}\n", format_args!($($arg)*)));
+        }};
+    }
+}
+
 #[cfg(not(feature = "debug-console"))]
 mod backend {
     #[doc(hidden)]
