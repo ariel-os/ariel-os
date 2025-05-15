@@ -5,8 +5,9 @@
 //! In the context of this abstraction:
 //!
 //! - A *sensor device* is a device measuring one or multiple physical quantities and reporting
-//!   them as one or more digital values. - Sensor devices measuring the same physical quantity are
-//!   said to be part of the same *sensor category*.
+//!   them as one or more digital values—we call these values *samples*.
+//! - Sensor devices measuring the same physical quantity are said to be part of the same *sensor
+//!   category*.
 //!   A sensor device may be part of multiple sensor categories.
 //! - A *measurement* is the physical operation of measuring one or several physical quantities.
 //! - A *reading* is the digital result returned by a sensor device after carrying out a
