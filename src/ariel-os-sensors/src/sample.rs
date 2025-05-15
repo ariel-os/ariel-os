@@ -25,7 +25,7 @@
 /// The accuracy can be obtained with [`Self::accuracy()`].
 // NOTE(derive): we do not implement `Eq` or `PartialOrd` on purpose: `Eq` would prevent us from
 // possibly adding floats in the future and `PartialOrd` does not make sense because interpreting
-// the value requires the `ReadingAxis` associated with this `Sample`.
+// the sample requires the `ReadingAxis` associated with this `Sample`.
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Sample {
@@ -34,7 +34,7 @@ pub struct Sample {
 }
 
 impl Sample {
-    /// Creates a new value.
+    /// Creates a new sample.
     ///
     /// This constructor is intended for sensor driver implementors only.
     #[must_use]
