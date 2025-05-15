@@ -3,8 +3,8 @@
 ///
 /// # Scaling
 ///
-/// The [scaling value](crate::sensor::ReadingAxis::scaling()) obtained from the sensor driver with
-/// [`Sensor::reading_axes()`](crate::Sensor::reading_axes) must be taken into account using the
+/// The [scaling value](crate::sensor::ReadingChannel::scaling()) obtained from the sensor driver with
+/// [`Sensor::reading_channels()`](crate::Sensor::reading_channels) must be taken into account using the
 /// following formula:
 ///
 /// <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi mathvariant="monospace">Sample::value()</mi></mrow><mo>·</mo><msup><mn>10</mn><mrow><mi mathvariant="monospace">scaling</mi></mrow></msup></math>
@@ -18,14 +18,14 @@
 /// # Unit of measurement
 ///
 /// The unit of measurement can be obtained using
-/// [`ReadingAxis::unit()`](crate::sensor::ReadingAxis::unit).
+/// [`ReadingChannel::unit()`](crate::sensor::ReadingChannel::unit).
 ///
 /// # Accuracy
 ///
 /// The accuracy can be obtained with [`Self::accuracy()`].
 // NOTE(derive): we do not implement `Eq` or `PartialOrd` on purpose: `Eq` would prevent us from
 // possibly adding floats in the future and `PartialOrd` does not make sense because interpreting
-// the sample requires the `ReadingAxis` associated with this `Sample`.
+// the sample requires the `ReadingChannel` associated with this `Sample`.
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Sample {
@@ -65,7 +65,7 @@ pub enum Accuracy {
     NoError,
     /// Measurement error symmetrical around the [`bias`](Accuracy::SymmetricalError::bias).
     ///
-    /// The unit of measurement is provided by the [`ReadingAxis`](crate::sensor::ReadingAxis)
+    /// The unit of measurement is provided by the [`ReadingChannel`](crate::sensor::ReadingChannel)
     /// associated to the [`Sample`].
     /// The `scaling` value is used for both `deviation` and `bias`.
     /// The accuracy error is thus given by the following formulas:

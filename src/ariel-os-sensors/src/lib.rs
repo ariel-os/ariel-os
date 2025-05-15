@@ -27,20 +27,20 @@
 //!
 //! After triggering a measurement with [`Sensor::trigger_measurement()`], a reading can be
 //! obtained using [`Sensor::wait_for_reading()`].
-//! It is additionally necessary to use [`Sensor::reading_axes()`] to make sense of the obtained
+//! It is additionally necessary to use [`Sensor::reading_channels()`] to make sense of the obtained
 //! reading:
 //!
 //! - [`Sensor::wait_for_reading()`] returns a [`Samples`](sensor::Samples), a data "tuple"
 //!   containing values returned by the sensor driver.
-//! - [`Sensor::reading_axes()`] returns a [`ReadingAxes`](sensor::ReadingAxes) which
+//! - [`Sensor::reading_channels()`] returns a [`ReadingChannels`](sensor::ReadingChannels) which
 //!   indicates which physical quantity each [`Sample`](sample::Sample) from that tuple corresponds
 //!   to, using a [`Label`].
 //!   For instance, this allows to disambiguate the values provided by a temperature & humidity
 //!   sensor.
 //!
 //! To avoid handling floats, [`Sample`](sample::Sample)s returned by [`Sensor::wait_for_reading()`]
-//! are integers, and a fixed scaling value is provided in [`ReadingAxis`](sensor::ReadingAxis),
-//! for each [`Sample`](sample::Sample) returned.
+//! are integers, and a fixed scaling value is provided in
+//! [`ReadingChannel`](sensor::ReadingChannel), for each [`Sample`](sample::Sample) returned.
 //! See [`Sample`](sample::Sample) for more details.
 //!
 //! # For implementors

@@ -40,7 +40,7 @@ pub trait Sensor: Send + Sync {
     /// Waits for the reading and returns it asynchronously.
     /// Depending on the sensor device and the sensor driver, this may use a sensor interrupt or
     /// data polling.
-    /// Interpretation of the reading requires data from [`Sensor::reading_axes()`] as well.
+    /// Interpretation of the reading requires data from [`Sensor::reading_channels()`] as well.
     /// See [the module level documentation](crate) for more.
     ///
     /// # Note
@@ -58,7 +58,7 @@ pub trait Sensor: Send + Sync {
 
     /// Provides information about the reading returned by [`Sensor::wait_for_reading()`].
     #[must_use]
-    fn reading_axes(&self) -> ReadingAxes;
+    fn reading_channels(&self) -> ReadingChannels;
 
     /// Sets the sensor driver mode and returns the previous state.
     /// Allows to put the sensor device to sleep if supported.
@@ -232,14 +232,14 @@ impl core::error::Error for TryFromIntError {}
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 // NOTE(derive): we do not implement `Eq` on purpose: its would prevent us from possibly adding
 // floats in the future.
-pub struct ReadingAxis {
+pub struct ReadingChannel {
     label: Label,
     scaling: i8,
     unit: MeasurementUnit,
 }
 
-impl ReadingAxis {
-    /// Creates a new [`ReadingAxis`].
+impl ReadingChannel {
+    /// Creates a new [`ReadingChannel`].
     ///
     /// This constructor is intended for sensor driver implementors only.
     #[must_use]
@@ -251,19 +251,19 @@ impl ReadingAxis {
         }
     }
 
-    /// Returns the [`Label`] for this axis.
+    /// Returns the [`Label`] for this channel.
     #[must_use]
     pub fn label(&self) -> Label {
         self.label
     }
 
-    /// Returns the [scaling](Sample) for this axis.
+    /// Returns the [scaling](Sample) for this channel.
     #[must_use]
     pub fn scaling(&self) -> i8 {
         self.scaling
     }
 
-    /// Returns the unit of measurement for this axis.
+    /// Returns the unit of measurement for this channel.
     #[must_use]
     pub fn unit(&self) -> MeasurementUnit {
         self.unit
