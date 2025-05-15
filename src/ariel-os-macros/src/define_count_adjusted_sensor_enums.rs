@@ -48,9 +48,9 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         }
     });
 
-    let reading_axes_variants = (1..=count).map(|i| {
+    let reading_channels_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
-        quote! { #variant([ReadingAxis; #i]) }
+        quote! { #variant([ReadingChannel; #i]) }
     });
 
     let samples_iter = (1..=count)
@@ -94,26 +94,26 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         ///
         /// This type is automatically generated, the number of variants is automatically adjusted.
         #[derive(Debug, Copy, Clone)]
-        pub enum ReadingAxes {
+        pub enum ReadingChannels {
             #[doc(hidden)]
-            #(#reading_axes_variants),*,
+            #(#reading_channels_variants),*,
         }
 
-        impl ReadingAxes {
-            /// Returns an iterator over the underlying [`ReadingAxis`] items.
+        impl ReadingChannels {
+            /// Returns an iterator over the underlying [`ReadingChannel`] items.
             ///
             /// For a given sensor driver, the number and order of items match the one of
             /// [`Samples`].
             /// [`Iterator::zip()`] can be useful to zip the returned iterator with the one
             /// obtained with [`Reading::samples()`].
-            pub fn iter(&self) -> impl Iterator<Item = ReadingAxis> + '_ {
+            pub fn iter(&self) -> impl Iterator<Item = ReadingChannel> + '_ {
                 match self {
                     #(#samples_iter),*,
                 }
             }
 
-            /// Returns the first [`ReadingAxis`].
-            pub fn first(&self) -> ReadingAxis {
+            /// Returns the first [`ReadingChannel`].
+            pub fn first(&self) -> ReadingChannel {
                 if let Some(sample) = self.iter().next() {
                     sample
                 } else {
