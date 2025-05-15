@@ -1,5 +1,5 @@
 /// Generates sensor-related enums whose number of variants needs to be adjusted based on Cargo
-/// features, to accommodate the sensor driver returning the largest number of values.
+/// features, to accommodate the sensor driver returning the largest number of samples.
 ///
 /// One single type must be defined so that it can be used in the Future returned by sensor
 /// drivers, which must be the same for every sensor driver so it can be part of the `Sensor`
@@ -15,33 +15,33 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     // be mutually exclusive.
     #[allow(unused_variables, reason = "overridden by feature selection")]
     let count = 1;
-    #[cfg(feature = "max-reading-value-min-count-2")]
+    #[cfg(feature = "max-sample-min-count-2")]
     let count = 2;
-    #[cfg(feature = "max-reading-value-min-count-3")]
+    #[cfg(feature = "max-sample-min-count-3")]
     let count = 3;
-    #[cfg(feature = "max-reading-value-min-count-4")]
+    #[cfg(feature = "max-sample-min-count-4")]
     let count = 4;
-    #[cfg(feature = "max-reading-value-min-count-6")]
+    #[cfg(feature = "max-sample-min-count-6")]
     let count = 6;
-    #[cfg(feature = "max-reading-value-min-count-7")]
+    #[cfg(feature = "max-sample-min-count-7")]
     let count = 7;
-    #[cfg(feature = "max-reading-value-min-count-9")]
+    #[cfg(feature = "max-sample-min-count-9")]
     let count = 9;
-    #[cfg(feature = "max-reading-value-min-count-12")]
+    #[cfg(feature = "max-sample-min-count-12")]
     let count = 12;
 
-    let physical_values_variants = (1..=count).map(|i| {
+    let samples_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
-        quote! { #variant([Value; #i]) }
+        quote! { #variant([Sample; #i]) }
     });
-    let physical_values_first_value = (1..=count).map(|i| {
+    let samples_first_sample = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! {
-            Self::#variant(values) => {
-                if let Some(value) = values.first() {
-                    *value
+            Self::#variant(samples) => {
+                if let Some(sample) = samples.first() {
+                    *sample
                 } else {
-                    // NOTE(no-panic): there is always at least one value
+                    // NOTE(no-panic): there is always at least one sample
                     unreachable!();
                 }
             }
@@ -53,42 +53,42 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         quote! { #variant([ReadingAxis; #i]) }
     });
 
-    let values_iter = (1..=count)
+    let samples_iter = (1..=count)
         .map(|i| {
             let variant = variant_name(i);
-            quote! { Self::#variant(values) => values.iter().copied() }
+            quote! { Self::#variant(samples) => samples.iter().copied() }
         })
         .collect::<Vec<_>>();
 
     let expanded = quote! {
-        /// Values returned by a sensor driver.
+        /// Samples returned by a sensor driver.
         ///
-        /// This type implements [`Reading`] to iterate over the values.
+        /// This type implements [`Reading`] to iterate over the samples.
         ///
         /// # Note
         ///
         /// This type is automatically generated, the number of variants is automatically adjusted.
         #[derive(Debug, Copy, Clone)]
-        pub enum Values {
+        pub enum Samples {
             #[doc(hidden)]
-            #(#physical_values_variants),*
+            #(#samples_variants),*
         }
 
-        impl Reading for Values {
-            fn value(&self) -> Value {
+        impl Reading for Samples {
+            fn sample(&self) -> Sample {
                 match self {
-                    #(#physical_values_first_value),*
+                    #(#samples_first_sample),*
                 }
             }
 
-            fn values(&self) -> impl ExactSizeIterator<Item = Value> {
+            fn samples(&self) -> impl ExactSizeIterator<Item = Sample> {
                 match self {
-                    #(#values_iter),*
+                    #(#samples_iter),*
                 }
             }
         }
 
-        /// Metadata required to interpret values returned by [`Sensor::wait_for_reading()`].
+        /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
         ///
         /// # Note
         ///
@@ -103,21 +103,21 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             /// Returns an iterator over the underlying [`ReadingAxis`] items.
             ///
             /// For a given sensor driver, the number and order of items match the one of
-            /// [`Values`].
+            /// [`Samples`].
             /// [`Iterator::zip()`] can be useful to zip the returned iterator with the one
-            /// obtained with [`Reading::values()`].
+            /// obtained with [`Reading::samples()`].
             pub fn iter(&self) -> impl Iterator<Item = ReadingAxis> + '_ {
                 match self {
-                    #(#values_iter),*,
+                    #(#samples_iter),*,
                 }
             }
 
             /// Returns the first [`ReadingAxis`].
             pub fn first(&self) -> ReadingAxis {
-                if let Some(value) = self.iter().next() {
-                    value
+                if let Some(sample) = self.iter().next() {
+                    sample
                 } else {
-                    // NOTE(no-panic): there is always at least one value.
+                    // NOTE(no-panic): there is always at least one sample.
                     unreachable!();
                 }
             }

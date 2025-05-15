@@ -1,5 +1,5 @@
-/// Label of a [`Value`](crate::sensor::Value) part of a
-/// [`Values`](crate::sensor::Values) tuple.
+/// Label of a [`Sample`](crate::sensor::Sample) part of a
+/// [`Samples`](crate::sensor::Samples) tuple.
 ///
 /// # For sensor driver implementors
 ///
@@ -7,16 +7,16 @@
 /// Please open an issue to discuss it.
 ///
 /// [`Label::Main`] must be used for sensor drivers returning a single
-/// [`Value`](crate::sensor::Value), even if a more specific label exists for the
+/// [`Sample`](crate::sensor::Sample), even if a more specific label exists for the
 /// physical quantity.
 /// This allows consumers displaying the label to ignore it for sensor drivers returning a single
-/// [`Value`](crate::sensor::Value).
+/// [`Sample`](crate::sensor::Sample).
 /// Other labels are reserved for sensor drivers returning multiple physical quantities.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum Label {
-    /// Used for sensor drivers returning a single [`Value`](crate::sensor::Value).
+    /// Used for sensor drivers returning a single [`Sample`](crate::sensor::Sample).
     Main,
     /// Humidity.
     Humidity,
