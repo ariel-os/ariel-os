@@ -83,7 +83,6 @@ jobs:
                   no-boards,
                   random,
                   ariel-os-coap/doc,
-                  sensors,
                   spi,
                   storage,
                   tcp,
