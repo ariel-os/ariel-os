@@ -7,7 +7,7 @@
 /// [`Sensor::reading_axes()`](crate::Sensor::reading_axes) must be taken into account using the
 /// following formula:
 ///
-/// <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi mathvariant="monospace">Value::value()</mi></mrow><mo>·</mo><msup><mn>10</mn><mrow><mi mathvariant="monospace">scaling</mi></mrow></msup></math>
+/// <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi mathvariant="monospace">Sample::value()</mi></mrow><mo>·</mo><msup><mn>10</mn><mrow><mi mathvariant="monospace">scaling</mi></mrow></msup></math>
 ///
 /// For instance, in the case of a temperature sensor, if [`Self::value()`] returns `2225` and the
 /// scaling value is `-2`, this means that the temperature measured and returned by the sensor
@@ -25,15 +25,15 @@
 /// The accuracy can be obtained with [`Self::accuracy()`].
 // NOTE(derive): we do not implement `Eq` or `PartialOrd` on purpose: `Eq` would prevent us from
 // possibly adding floats in the future and `PartialOrd` does not make sense because interpreting
-// the value requires the `ReadingAxis` associated with this `Value`.
+// the value requires the `ReadingAxis` associated with this `Sample`.
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct Value {
+pub struct Sample {
     value: i32,
     accuracy: Accuracy,
 }
 
-impl Value {
+impl Sample {
     /// Creates a new value.
     ///
     /// This constructor is intended for sensor driver implementors only.
@@ -42,7 +42,7 @@ impl Value {
         Self { value, accuracy }
     }
 
-    /// Returns the value.
+    /// Returns the sample value.
     #[must_use]
     pub fn value(&self) -> i32 {
         self.value
@@ -66,7 +66,7 @@ pub enum Accuracy {
     /// Measurement error symmetrical around the [`bias`](Accuracy::SymmetricalError::bias).
     ///
     /// The unit of measurement is provided by the [`ReadingAxis`](crate::sensor::ReadingAxis)
-    /// associated to the [`Value`].
+    /// associated to the [`Sample`].
     /// The `scaling` value is used for both `deviation` and `bias`.
     /// The accuracy error is thus given by the following formulas:
     ///
@@ -98,22 +98,22 @@ pub enum Accuracy {
     },
 }
 
-/// Implemented on [`Values`](crate::sensor::Values), returned by
+/// Implemented on [`Samples`](crate::sensor::Samples), returned by
 /// [`Sensor::wait_for_reading()`](crate::Sensor::wait_for_reading).
 pub trait Reading: core::fmt::Debug {
-    /// Returns the first value returned by [`Reading::values()`].
-    fn value(&self) -> Value;
+    /// Returns the first value returned by [`Reading::samples()`].
+    fn sample(&self) -> Sample;
 
-    /// Returns an iterator over [`Value`]s of a sensor reading.
+    /// Returns an iterator over [`Sample`]s of a sensor reading.
     ///
-    /// The order of [`Value`]s is not significant, but is fixed.
+    /// The order of [`Sample`]s is not significant, but is fixed.
     ///
     /// # For implementors
     ///
     /// The default implementation must be overridden on types containing multiple
-    /// [`Value`]s.
-    fn values(&self) -> impl ExactSizeIterator<Item = Value> {
-        [self.value()].into_iter()
+    /// [`Sample`]s.
+    fn samples(&self) -> impl ExactSizeIterator<Item = Sample> {
+        [self.sample()].into_iter()
     }
 }
 
@@ -125,6 +125,6 @@ mod tests {
     fn assert_type_sizes() {
         assert!(size_of::<Accuracy>() <= size_of::<u32>());
         // Make sure the type is small enough.
-        assert!(size_of::<Value>() <= 2 * size_of::<u32>());
+        assert!(size_of::<Sample>() <= 2 * size_of::<u32>());
     }
 }

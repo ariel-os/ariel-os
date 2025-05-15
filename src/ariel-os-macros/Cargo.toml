@@ -31,12 +31,12 @@ proc-macro = true
 
 [features]
 # These features could be codegened
-max-reading-value-min-count-2 = []
-max-reading-value-min-count-3 = []
-max-reading-value-min-count-4 = []
-max-reading-value-min-count-6 = []
-max-reading-value-min-count-7 = []
-max-reading-value-min-count-9 = []
-max-reading-value-min-count-12 = []
+max-sample-min-count-2 = []
+max-sample-min-count-3 = []
+max-sample-min-count-4 = []
+max-sample-min-count-6 = []
+max-sample-min-count-7 = []
+max-sample-min-count-9 = []
+max-sample-min-count-12 = []
 
 _test = []

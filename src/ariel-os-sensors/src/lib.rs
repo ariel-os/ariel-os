@@ -11,7 +11,7 @@
 //! - A *measurement* is the physical operation of measuring one or several physical quantities.
 //! - A *reading* is the digital result returned by a sensor device after carrying out a
 //!   measurement.
-//!   Values of different physical quantities can therefore be part of the same reading.
+//!   Samples of different physical quantities can therefore be part of the same reading.
 //! - A *sensor driver* refers to a sensor device as exposed by the sensor abstraction layer.
 //! - A *sensor driver instance* is an instance of a sensor driver.
 //!
@@ -29,18 +29,18 @@
 //! It is additionally necessary to use [`Sensor::reading_axes()`] to make sense of the obtained
 //! reading:
 //!
-//! - [`Sensor::wait_for_reading()`] returns a [`Values`](sensor::Values), a data "tuple"
+//! - [`Sensor::wait_for_reading()`] returns a [`Samples`](sensor::Samples), a data "tuple"
 //!   containing values returned by the sensor driver.
 //! - [`Sensor::reading_axes()`] returns a [`ReadingAxes`](sensor::ReadingAxes) which
-//!   indicates which physical quantity each [`Value`](value::Value) from that tuple corresponds
+//!   indicates which physical quantity each [`Sample`](sample::Sample) from that tuple corresponds
 //!   to, using a [`Label`].
 //!   For instance, this allows to disambiguate the values provided by a temperature & humidity
 //!   sensor.
 //!
-//! To avoid handling floats, [`Value`](value::Value)s returned by [`Sensor::wait_for_reading()`]
+//! To avoid handling floats, [`Sample`](sample::Sample)s returned by [`Sensor::wait_for_reading()`]
 //! are integers, and a fixed scaling value is provided in [`ReadingAxis`](sensor::ReadingAxis),
-//! for each [`Value`](value::Value) returned.
-//! See [`Value`](value::Value) for more details.
+//! for each [`Sample`](sample::Sample) returned.
+//! See [`Sample`](sample::Sample) for more details.
 //!
 //! # For implementors
 //!
@@ -56,12 +56,12 @@ mod category;
 mod label;
 mod measurement_unit;
 pub mod registry;
+mod sample;
 pub mod sensor;
-mod value;
 
 pub use category::Category;
 pub use label::Label;
 pub use measurement_unit::MeasurementUnit;
 pub use registry::{REGISTRY, SENSOR_REFS};
+pub use sample::Reading;
 pub use sensor::Sensor;
-pub use value::Reading;

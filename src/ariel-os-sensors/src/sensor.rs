@@ -10,8 +10,8 @@ use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, channel::Receiv
 use crate::{Category, Label, MeasurementUnit};
 
 pub use crate::{
-    value::{Accuracy, Value},
     Reading,
+    sample::{Accuracy, Sample},
 };
 
 ariel_os_macros::define_count_adjusted_sensor_enums!();
@@ -109,7 +109,7 @@ pub enum ReadingWaiter {
     #[doc(hidden)]
     Waiter {
         #[pin]
-        waiter: ReceiveFuture<'static, CriticalSectionRawMutex, ReadingResult<Values>, 1>,
+        waiter: ReceiveFuture<'static, CriticalSectionRawMutex, ReadingResult<Samples>, 1>,
     },
     #[doc(hidden)]
     Err(ReadingError),
@@ -118,7 +118,7 @@ pub enum ReadingWaiter {
 }
 
 impl Future for ReadingWaiter {
-    type Output = ReadingResult<Values>;
+    type Output = ReadingResult<Samples>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let this = self.as_mut().project();
@@ -227,7 +227,7 @@ impl core::fmt::Display for TryFromIntError {
 
 impl core::error::Error for TryFromIntError {}
 
-/// Provides metadata about a [`Value`].
+/// Provides metadata about a [`Sample`].
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 // NOTE(derive): we do not implement `Eq` on purpose: its would prevent us from possibly adding
@@ -257,7 +257,7 @@ impl ReadingAxis {
         self.label
     }
 
-    /// Returns the [scaling](Value) for this axis.
+    /// Returns the [scaling](Sample) for this axis.
     #[must_use]
     pub fn scaling(&self) -> i8 {
         self.scaling
