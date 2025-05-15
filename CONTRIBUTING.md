@@ -15,7 +15,7 @@ Welcome and thanks for your interest in contributing to Ariel OS! We appreciate 
 
 ## Roadmap
 
-We use a [roadmap](https://github.com/ariel-os/ariel-os/issues/242) to track issues. If you are looking for an issue to contribute, please check our roadmap and our [current list of issues](https://github.com/ariel-os/ariel-os/issues).
+We use a [roadmap](./ROADMAP.md) to track issues. If you are looking for an issue to contribute, please check our roadmap and our [current list of issues](https://github.com/ariel-os/ariel-os/issues).
 
 
 ## Ask for help
