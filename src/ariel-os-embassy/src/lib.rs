@@ -10,6 +10,9 @@ pub use ariel_os_hal as hal;
 #[cfg(feature = "executor-thread")]
 use ariel_os_embassy_common::executor_thread;
 
+#[cfg(feature = "debug-uart")]
+pub mod debug_uart;
+
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
@@ -176,6 +179,9 @@ fn init() {
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let spawner = asynch::Spawner::for_current_executor().await;
     asynch::set_spawner(spawner.make_send());
+
+    #[cfg(feature = "debug-uart")]
+    debug_uart::init(&mut peripherals);
 
     debug!("ariel-os-embassy::init_task()");
 
