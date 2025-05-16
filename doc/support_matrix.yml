@@ -247,6 +247,21 @@ chips:
           - removing items not supported
       wifi: not_available
 
+  stm32l475vg:
+    name: STM32L475VG
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+
   stm32u083mc:
     name: STM32U083MC
     support:
@@ -378,6 +393,21 @@ boards:
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
+
+  st-b-l475e-iot01a:
+    name: ST B-L475E-IOT01A
+    url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html
+    chip: stm32l475vg
+    support:
+      user_usb:
+        status: supported_with_caveats
+        comments:
+          - Only OTG USB is available
+      wifi:
+        status: not_available
+        comments:
+          - An external wifi module is present on the board
+      ethernet_over_usb: not_available
 
   st-nucleo-c031c6:
     name: ST NUCLEO-C031C6

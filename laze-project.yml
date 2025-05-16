@@ -467,6 +467,19 @@ contexts:
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsis\"
 
+  - name: stm32l475vg
+    parent: stm32
+    selects:
+      - cortex-m4f
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32L475VG
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis\" # USB OTG, needs an LSE (32.768 kHz crystal) to have a stable clock
+
   - name: stm32u083mc
     parent: stm32
     selects:
@@ -1517,6 +1530,18 @@ builders:
   # TODO: there also is a companion nrf5340 on this board
   - name: nordic-thingy-91-x-nrf9151
     parent: nrf9151
+
+  - name: st-b-l475e-iot01a
+    parent: stm32l475vg
+    provides:
+      - has_swi
+      # USB port only used for OTG FS, need MSI clock to be calibrated
+      - has_usb_device_port
+
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=UART5
 
   - name: st-nucleo-f401re
     parent: stm32f401re

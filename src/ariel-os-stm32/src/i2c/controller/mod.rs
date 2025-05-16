@@ -230,6 +230,13 @@ define_i2c_drivers!(
    I2C3_EV + I2C3_ER => I2C3,
    I2C4_EV + I2C4_ER => I2C4,
 );
+#[cfg(context = "stm32l475vg")]
+define_i2c_drivers!(
+    I2C1_EV + I2C1_ER => I2C1,
+    I2C2_EV + I2C2_ER => I2C2,
+    I2C3_EV + I2C3_ER => I2C3,
+);
+
 #[cfg(context = "stm32u083mc")]
 define_i2c_drivers!(
    I2C1 => I2C1,

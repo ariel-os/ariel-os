@@ -8,6 +8,7 @@ apps:
       - nrf9160
       - rp2040
       - rp235xa
+      - st-b-l475e-iot01a
       - st-nucleo-c031c6
       - st-nucleo-f411re
       - st-nucleo-h755zi-q
