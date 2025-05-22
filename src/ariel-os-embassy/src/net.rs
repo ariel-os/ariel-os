@@ -70,7 +70,7 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    #[cfg(not(feature = "network-config-override"))]
+    #[cfg(feature = "dhcpv4")]
     {
         embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
