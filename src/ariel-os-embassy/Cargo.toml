@@ -96,6 +96,10 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 ## Use a hardware RNG to seed into the ariel-os-random system-wide RNG
 hwrng = ["ariel-os-hal/hwrng"]
 
+## Enables support for IPv4.
+ipv4 = ["embassy-net/proto-ipv4"]
+## Enables support for IPv6.
+ipv6 = ["embassy-net/proto-ipv6"]
 ## Enables support for DHCPv4.
 dhcpv4 = ["embassy-net/dhcpv4"]
 ## Enables support for TCP.

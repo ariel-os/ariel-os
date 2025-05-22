@@ -67,6 +67,10 @@ csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 hwrng = ["ariel-os-embassy/hwrng"]
 
 #! ## Network protocols
+## Enables support for IPv4.
+ipv4 = ["ariel-os-embassy/ipv4"]
+## Enables support for IPv6.
+ipv6 = ["ariel-os-embassy/ipv6"]
 ## Enables support for DHCPv4.
 dhcpv4 = ["ariel-os-embassy/dhcpv4"]
 ## Enables support for TCP.

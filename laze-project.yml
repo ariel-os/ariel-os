@@ -989,6 +989,7 @@ modules:
 
   - name: network
     selects:
+      - ?ipv4
       - network_device
       - network-config-default
 
@@ -1020,6 +1021,18 @@ modules:
       global:
         FEATURES:
           - ariel-os/network-config-static
+
+  - name: ipv4
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv4
+
+  - name: ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv6
 
   - name: sw/storage
     selects:
