@@ -70,10 +70,11 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    #[cfg(not(feature = "network-config-override"))]
+    #[cfg(all(not(feature = "network-config-override"), feature = "dhcpv4"))]
     {
         embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
+
     #[cfg(feature = "network-config-override")]
     {
         unsafe extern "Rust" {
@@ -81,6 +82,10 @@ pub(crate) fn config() -> embassy_net::Config {
         }
         unsafe { __ariel_os_network_config() }
     }
+
+    // For platform-independent tooling.
+    #[cfg(not(context = "ariel-os"))]
+    embassy_net::Config::default()
 }
 
 /// Constructor for [`DummyDriver`]
