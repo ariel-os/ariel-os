@@ -74,7 +74,7 @@ pub(crate) fn config() -> embassy_net::Config {
     {
         embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
-    #[cfg(feature = "network-config-override")]
+    #[cfg(not(feature = "dhcpv4"))]
     {
         unsafe extern "Rust" {
             fn __ariel_os_network_config() -> embassy_net::Config;
