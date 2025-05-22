@@ -1080,9 +1080,14 @@ modules:
   - name: network-config-dhcp
     help: use DHCPv4 for network configuration
     selects:
+      - ipv4
       - network
     provides_unique:
       - network-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/dhcpv4
 
   - name: network-config-static
     help: use static IP network configuration
