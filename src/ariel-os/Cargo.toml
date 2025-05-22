@@ -70,6 +70,8 @@ hwrng = ["ariel-os-embassy/hwrng"]
 sensors = ["dep:ariel-os-sensors"]
 
 #! ## Network protocols
+# Enables support for DHCPv4.
+dhcpv4 = ["ariel-os-embassy/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["ariel-os-embassy/tcp"]
 ## Enables support for UDP.

@@ -21,6 +21,7 @@ heapless = { workspace = true }
 ariel-os = { workspace = true, features = [
   "threading",
   "no-boards",
+  "dhcpv4",
   "usb-ethernet",
   "network-config-override",
 ] }
