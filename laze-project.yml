@@ -1005,6 +1005,10 @@ modules:
       - network
     provides_unique:
       - network-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/dhcpv4
 
   - name: network-config-static
     help: use static IP network configuration
