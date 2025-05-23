@@ -316,6 +316,7 @@ boards:
     name: BBC micro:bit V2
     url: https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/
     chip: nrf52833
+    tier: "1"
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
@@ -324,6 +325,7 @@ boards:
     name: Nordic Thingy:91 X
     url: https://web.archive.org/web/20250329185651/https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91-X
     chip: nrf9151
+    tier: "2"
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
@@ -333,6 +335,7 @@ boards:
     name: nRF52840-DK
     url: https://web.archive.org/web/20250112154748/https://www.nordicsemi.com/Products/Development-hardware/nrf52840-dk
     chip: nrf52840
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -341,6 +344,7 @@ boards:
     name: nRF5340-DK
     url: https://web.archive.org/web/20250115224621/https://www.nordicsemi.com/Products/Development-hardware/nrf5340-dk
     chip: nrf5340
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -349,6 +353,7 @@ boards:
     name: nRF9160-DK
     url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
     chip: nrf9160
+    tier: "2"
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
@@ -357,6 +362,7 @@ boards:
     name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
+    tier: "2"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -365,6 +371,7 @@ boards:
     name: Raspberry Pi Pico W
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
+    tier: "1"
     support:
       user_usb: supported
       wifi: supported
@@ -374,6 +381,7 @@ boards:
     name: Raspberry Pi Pico 2
     url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
     chip: rp235xa
+    tier: "2"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -382,6 +390,7 @@ boards:
     name: Raspberry Pi Pico 2 W
     url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
     chip: rp235xa
+    tier: "1"
     support:
       user_usb: supported
       wifi: supported
@@ -391,6 +400,7 @@ boards:
     name: Espressif ESP32-C3-LCDkit
     url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en
     chip: esp32c3
+    tier: "1"
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
@@ -399,6 +409,7 @@ boards:
     name: Espressif ESP32-C6-DevKitC-1
     url: https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en
     chip: esp32c6
+    tier: "1"
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
@@ -407,6 +418,7 @@ boards:
     name: Espressif ESP32-S3-DevKitC-1
     url: https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en
     chip: esp32s3
+    tier: "1"
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
@@ -415,6 +427,7 @@ boards:
     name: ST B-L475E-IOT01A
     url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html
     chip: stm32l475vg
+    tier: "2"
     support:
       user_usb:
         status: supported
@@ -428,18 +441,21 @@ boards:
     name: ST NUCLEO-C031C6
     url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html
     chip: stm32c031c6
+    tier: "1"
     support:
 
   st-nucleo-f042k6:
     name: ST NUCLEO-F042K6
     url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f042k6.html
     chip: stm32f042k6
+    tier: "2"
     support:
 
   st-nucleo-f401re:
     name: ST NUCLEO-F401RE
     url: https://web.archive.org/web/20250115005425/https://www.st.com/en/evaluation-tools/nucleo-f401re.html
     chip: stm32f401re
+    tier: "2"
     support:
       user_usb: not_available
       wifi: not_available
@@ -449,6 +465,7 @@ boards:
     name: ST NUCLEO-F411RE
     url: https://web.archive.org/web/20250311221905/https://www.st.com/en/evaluation-tools/nucleo-f411re.html
     chip: stm32f411re
+    tier: "2"
     support:
       user_usb: not_available
       wifi: not_available
@@ -458,6 +475,7 @@ boards:
     name: ST NUCLEO-H755ZI-Q
     url: https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html
     chip: stm32h755zi
+    tier: "1"
     support:
       user_usb: supported
       wifi: not_available
@@ -467,6 +485,7 @@ boards:
     name: ST NUCLEO-WB55RG
     url: https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html
     chip: stm32wb55rg
+    tier: "1"
     support:
       user_usb: supported
       wifi: not_available
@@ -476,6 +495,7 @@ boards:
     name: STM32U083C-DK
     url: https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html
     chip: stm32u083mc
+    tier: "1"
     support:
       user_usb: supported
       wifi: not_available

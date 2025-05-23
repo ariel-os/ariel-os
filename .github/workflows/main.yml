@@ -388,7 +388,9 @@ jobs:
         uses: crate-ci/typos@v1.31.1
 
       - name: Check the support matrix generation exit code
-        run: ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null
+        run: |
+          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 1
+          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 2
 
       - name: Install mdbook and mdbook utils
         uses: taiki-e/install-action@v2
