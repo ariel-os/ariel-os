@@ -139,14 +139,6 @@ pub mod backend {
     }
 
     #[macro_export]
-    macro_rules! print {
-        ($($arg:tt)*) => {{
-            #[expect(clippy::used_underscore_items, reason = "consistency with std::print")]
-            $crate::backend::_print(format_args!($($arg)*));
-        }};
-    }
-
-    #[macro_export]
     macro_rules! println {
         ($($arg:tt)*) => {{
             #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
