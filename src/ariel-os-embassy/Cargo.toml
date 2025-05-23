@@ -151,4 +151,4 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["executor-none", "i2c", "ipv4", "spi", "external-interrupts", "dhcpv4"]
+_test = ["dhcpv4", "executor-none", "i2c", "ipv4", "spi", "external-interrupts"]
