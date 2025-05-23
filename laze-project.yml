@@ -991,9 +991,8 @@ modules:
     selects:
       - ?ipv4
       - network_device
-      - network-config-default
 
-  - name: network-config-default
+  - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
       - ?network-config-dhcp
@@ -1023,6 +1022,8 @@ modules:
           - ariel-os/network-config-static
 
   - name: ipv4
+    selects:
+      - network-config-ipv4-default
     env:
       global:
         FEATURES:
