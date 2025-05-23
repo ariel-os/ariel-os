@@ -54,3 +54,6 @@ panic-printing = []
 _panic-handler = []
 single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
+
+# features needed for `cargo test`
+_test = []

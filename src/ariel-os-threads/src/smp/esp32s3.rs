@@ -5,9 +5,7 @@ use esp_hal::{
     peripherals::{CPU_CTRL, Interrupt, SYSTEM},
 };
 
-use static_cell::ConstStaticCell;
-
-use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore, StackLimits};
 
 impl From<Cpu> for CoreId {
     fn from(value: Cpu) -> Self {
@@ -23,15 +21,13 @@ pub struct Chip;
 impl Multicore for Chip {
     const CORES: u32 = 2;
     const IDLE_THREAD_STACK_SIZE: usize = 2048;
+    type Stack = Stack<ISR_STACKSIZE_CORE1>;
 
     fn core_id() -> CoreId {
         esp_hal::Cpu::current().into()
     }
 
-    fn startup_other_cores() {
-        // TODO: How much stack do we really need here?
-        static STACK: ConstStaticCell<Stack<ISR_STACKSIZE_CORE1>> =
-            ConstStaticCell::new(Stack::new());
+    fn startup_other_cores(stack: &'static mut Self::Stack) {
         // Trigger scheduler.
         let start_threading = move || {
             // Use `CPU_INTR1` to trigger the scheduler on our second core.
@@ -47,7 +43,7 @@ impl Multicore for Chip {
         };
 
         let mut cpu_ctrl = unsafe { CpuControl::new(CPU_CTRL::steal()) };
-        let guard = cpu_ctrl.start_app_core(STACK.take(), start_threading);
+        let guard = cpu_ctrl.start_app_core(stack, start_threading);
 
         // Dropping the guard would park the other core.
         core::mem::forget(guard)
@@ -85,5 +81,13 @@ impl Multicore for Chip {
                 .write(|w| w.cpu_intr_from_cpu_1().set_bit()),
             _ => unreachable!(),
         };
+    }
+}
+
+impl<const SIZE: usize> StackLimits for Stack<SIZE> {
+    fn limits(&self) -> (usize, usize) {
+        let lowest = self.mem.as_ptr() as usize;
+        let highest = lowest + self.len();
+        (lowest, highest)
     }
 }

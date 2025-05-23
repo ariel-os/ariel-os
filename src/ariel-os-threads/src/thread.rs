@@ -24,6 +24,11 @@ pub struct Thread {
     /// Core affinity of the thread.
     #[cfg(feature = "core-affinity")]
     pub core_affinity: crate::CoreAffinity,
+
+    /// Lowest stack address.
+    pub stack_lowest: usize,
+    /// Highest stack address.
+    pub stack_highest: usize,
 }
 
 /// Possible states of a thread
@@ -60,6 +65,25 @@ impl Thread {
             tid: ThreadId::new(0),
             #[cfg(feature = "core-affinity")]
             core_affinity: crate::CoreAffinity::no_affinity(),
+            stack_highest: 0,
+            stack_lowest: 0,
+        }
+    }
+
+    /// Paints a stack.
+    ///
+    /// # Safety
+    /// - must only be called before the stack is active (within `arch::setup_stack()`).
+    #[allow(dead_code, reason = "not used in all configurations")]
+    pub(crate) unsafe fn stack_paint_init(&mut self, sp: usize) {
+        // Byte that's used to pain stacks.
+        const STACK_PAINT_COLOR: u8 = 0xCC;
+
+        for pos in self.stack_lowest..sp {
+            // SAFETY: Writing to the slice that was passed to `setup_stack()` is fine
+            unsafe {
+                core::ptr::write_volatile(pos as *mut u8, STACK_PAINT_COLOR);
+            }
         }
     }
 }
@@ -73,6 +97,6 @@ mod tests {
         // `ThreadData` is arch-specific, and is replaced with a dummy value in tests; its size is
         // non-zero otherwise.
         assert_eq!(size_of::<ThreadData>(), 0);
-        assert_eq!(size_of::<Thread>(), size_of::<ThreadData>() + 24);
+        assert_eq!(size_of::<Thread>(), size_of::<ThreadData>() + 40);
     }
 }

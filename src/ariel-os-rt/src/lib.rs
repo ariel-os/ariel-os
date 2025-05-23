@@ -4,6 +4,8 @@
 #![allow(incomplete_features)]
 #![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
+pub mod stack;
+
 #[cfg(feature = "threading")]
 mod threading;
 
@@ -19,18 +21,26 @@ cfg_if::cfg_if! {
         mod cortexm;
         use cortexm as arch;
     }
-    else if #[cfg(context = "esp")] {
-        mod esp;
-        use esp as arch;
+    else if #[cfg(context = "xtensa")] {
+        mod xtensa;
+        use xtensa as arch;
+    }
+    else if #[cfg(context = "riscv")] {
+        mod riscv;
+        use riscv as arch;
     }
     else if #[cfg(context = "ariel-os")] {
         // When run with laze but the MCU family is not supported
         compile_error!("no runtime is defined for this MCU family");
     } else {
         // Provide a default implementation, for arch-independent tooling
+        #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
         mod arch {
-            #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
+            use crate::stack::Stack;
+
             pub fn init() {}
+            pub fn sp() -> usize { 0 }
+            pub fn stack() -> Stack { Stack::default() }
         }
     }
 }
@@ -66,9 +76,52 @@ mod isr_stack {
         "#,
         size = const ISR_STACKSIZE
     );
+
+    pub fn limits() -> (usize, usize) {
+        #[cfg(not(feature = "multi-core"))]
+        {
+            crate::isr_stack::limits_core0()
+        }
+
+        #[cfg(feature = "multi-core")]
+        {
+            use ariel_os_threads::{CoreId, core_id};
+            if core_id() == CoreId::new(0) {
+                crate::isr_stack::limits_core0()
+            } else {
+                crate::isr_stack::limits_core1()
+            }
+        }
+    }
+
+    pub fn limits_core0() -> (usize, usize) {
+        // ISR stack for core0 is defined via linker script.
+        unsafe extern "C" {
+            static _stack_lowest: u32;
+            static _stack_highest: u32;
+        }
+
+        let lowest = &raw const _stack_lowest as usize;
+        let highest = &raw const _stack_highest as usize;
+        (lowest, highest)
+    }
+
+    #[cfg(feature = "multi-core")]
+    pub fn limits_core1() -> (usize, usize) {
+        // ISR stack for core1 is exported from the threading module.
+        ariel_os_threads::isr_stack_core1_get_limits()
+    }
+
+    pub fn init() {
+        let stack = crate::stack::Stack::get();
+        crate::debug!("ariel-os-rt: ISR stacksize: {}", stack.size());
+
+        // initial stack paint
+        stack.repaint();
+    }
 }
 
-#[cfg(feature = "_panic-handler")]
+#[cfg(all(feature = "_panic-handler", not(feature = "_test")))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
     #[cfg(feature = "panic-printing")]
@@ -82,6 +135,7 @@ fn panic(_info: &core::panic::PanicInfo) -> ! {
 
 use linkme::distributed_slice;
 
+#[doc(hidden)]
 #[distributed_slice]
 pub static INIT_FUNCS: [fn()] = [..];
 
@@ -96,7 +150,7 @@ fn startup() -> ! {
     debug!("ariel_os_rt::startup()");
 
     #[cfg(any(context = "cortex-m", context = "riscv", context = "xtensa"))]
-    debug!("ariel_os_rt: ISR_STACKSIZE={}", isr_stack::ISR_STACKSIZE);
+    crate::isr_stack::init();
 
     #[cfg(feature = "alloc")]
     // SAFETY: *this* is the only place alloc should be initialized.

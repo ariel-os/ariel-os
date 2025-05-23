@@ -8,23 +8,20 @@ use embassy_rp::{
     peripherals::CORE1,
 };
 use rp_pac::SIO;
-use static_cell::ConstStaticCell;
 
-use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore};
+use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore, StackLimits};
 
 pub struct Chip;
 
 impl Multicore for Chip {
     const CORES: u32 = 2;
+    type Stack = Stack<ISR_STACKSIZE_CORE1>;
 
     fn core_id() -> CoreId {
         CoreId(SIO.cpuid().read() as u8)
     }
 
-    fn startup_other_cores() {
-        // TODO: How much stack do we really need here?
-        static STACK: ConstStaticCell<Stack<ISR_STACKSIZE_CORE1>> =
-            ConstStaticCell::new(Stack::new());
+    fn startup_other_cores(stack: &'static mut Self::Stack) {
         // Trigger scheduler.
         let start_threading = move || {
             unsafe {
@@ -37,7 +34,7 @@ impl Multicore for Chip {
             unreachable!()
         };
         unsafe {
-            spawn_core1(CORE1::steal(), STACK.take(), start_threading);
+            spawn_core1(CORE1::steal(), stack, start_threading);
             #[cfg(context = "rp2040")]
             interrupt::SIO_IRQ_PROC0.enable();
             #[cfg(context = "rp235xa")]
@@ -95,4 +92,12 @@ fn handle_fifo_token(token: u32) -> bool {
     }
     crate::schedule();
     true
+}
+
+impl<const SIZE: usize> StackLimits for Stack<SIZE> {
+    fn limits(&self) -> (usize, usize) {
+        let lowest = self.mem.as_ptr() as usize;
+        let highest = lowest + SIZE;
+        (lowest, highest)
+    }
 }

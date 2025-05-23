@@ -40,11 +40,13 @@ impl Arch for Cpu {
         let stack_start = stack.as_ptr() as usize;
 
         // 1. The stack starts at the highest address and grows downwards.
-        // 2. A full stored context also contains R4-R11 and the stack pointer,
-        //    thus an additional 36 bytes need to be reserved.
-        // 3. Cortex-M expects the SP to be 8 byte aligned, so we chop the lowest
+        // 2. Cortex-M expects the SP to be 8 byte aligned, so we chop the lowest
         //    7 bits by doing `& 0xFFFFFFF8`.
-        let stack_pos = ((stack_start + stack.len() - 36) & 0xFFFFFFF8) as *mut usize;
+        let stack_highest = (stack_start + stack.len()) & 0xFFFFFFF8;
+
+        // 3. A full stored context also contains R4-R11 and the stack pointer,
+        //    thus an additional 36 bytes need to be reserved.
+        let stack_pos = (stack_highest - 36) as *mut usize;
 
         unsafe {
             write_volatile(stack_pos.offset(0), arg); // -> R0
@@ -58,6 +60,11 @@ impl Arch for Cpu {
         }
 
         thread.data.sp = stack_pos as usize;
+        thread.stack_lowest = stack_start;
+        thread.stack_highest = stack_highest;
+
+        // Safety: This is the place to initialize stack painting.
+        unsafe { thread.stack_paint_init(stack_pos as usize) };
     }
 
     /// Triggers a PendSV exception.
@@ -235,6 +242,13 @@ unsafe extern "C" fn sched() -> u64 {
             let next = scheduler.get_unchecked(next_tid);
             // SAFETY: changing the PSP as part of context switch
             unsafe { cortex_m::register::psp::write(next.data.sp as u32) };
+
+            #[cfg(armv8m)]
+            // SAFETY: changing the PSPLIM as part of context switch
+            unsafe {
+                cortex_m::register::psplim::write(next.stack_lowest as u32)
+            };
+
             let next_high_regs = next.data.high_regs.as_ptr();
 
             Some((current_high_regs as u32, next_high_regs as u32))
