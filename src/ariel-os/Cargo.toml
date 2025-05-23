@@ -106,6 +106,8 @@ liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
 liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
 # Selects static IPv4 configuration.
 network-config-ipv4-static = ["ariel-os-embassy/network-config-ipv4-static"]
+# Selects static IPv6 configuration.
+network-config-ipv6-static = ["ariel-os-embassy/network-config-ipv6-static"]
 
 #! ## Serial communication
 ## Enables I2C support.
