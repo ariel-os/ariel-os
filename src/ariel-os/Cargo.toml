@@ -98,8 +98,10 @@ coap-server-config-unprotected = [
 # build system that knows who provides an abort and assert handler.
 liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
 liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
-# Selects static IP configuration.
-network-config-static = ["ariel-os-embassy/network-config-static"]
+# Selects static IPv4 configuration.
+network-config-static-ipv4 = ["ariel-os-embassy/network-config-static-ipv4"]
+# Selects static IPv6 configuration.
+network-config-static-ipv6 = ["ariel-os-embassy/network-config-static-ipv6"]
 
 #! ## Serial communication
 ## Enables I2C support.
