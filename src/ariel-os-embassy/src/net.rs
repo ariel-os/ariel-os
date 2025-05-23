@@ -158,7 +158,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
     }
 }
 
-#[cfg(feature = "network-config-static")]
+#[cfg(any(feature = "ipv6", feature = "network-config-static"))]
 // SAFETY: the compiler prevents from defining multiple functions with the same name in the
 // same crate; the function signature is checked by the compiler as it is in the same crate as the
 // FFI declaration.
