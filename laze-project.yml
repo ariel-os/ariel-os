@@ -1357,6 +1357,17 @@ modules:
         FEATURES:
           - ariel-os/rtt-target
 
+  - name: debug-uart
+    help: use UART in ariel-os-debug
+    selects:
+      - log # We could later support defmt as well
+    provides_unique:
+      - ariel-os-debug-backend
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-uart
+
   - name: esp-println
     help: use esp-println in ariel-os-debug
     context:

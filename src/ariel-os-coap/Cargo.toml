@@ -43,7 +43,7 @@ cboritem = "0.1.2"
 hexlit = "0.5.5"
 
 # For the udp_nal
-embedded-io-async = "0.6.1"
+embedded-io-async = { workspace = true }
 
 [build-dependencies]
 serde_yml = "0.0.12"

@@ -30,6 +30,8 @@ embassy-usb = { workspace = true, optional = true }
 
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
+embedded-io = { workspace = true }
+embedded-io-async = { workspace = true }
 
 ariel-os-buildinfo = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
@@ -52,6 +54,12 @@ usbd-hid = { version = "0.8.2", optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
 ] }
+
+[target.'cfg(context = "nrf")'.dependencies]
+embassy-nrf = { workspace = true }
+
+[target.'cfg(context = "stm32")'.dependencies]
+embassy-stm32 = { workspace = true }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -97,6 +105,8 @@ mdns = ["embassy-net?/mdns"]
 
 ## Enable storage support [`ariel-os::storage`].
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
+
+debug-uart = []
 
 wifi = []
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]

@@ -4,18 +4,8 @@
 #![cfg_attr(test, no_main)]
 #![deny(missing_docs)]
 
-#[cfg(all(feature = "rtt-target", feature = "esp-println"))]
-compile_error!(
-    r#"feature "rtt-target" and feature "esp-println" cannot be enabled at the same time"#
-);
-
-#[cfg(all(
-    feature = "debug-console",
-    not(any(feature = "rtt-target", feature = "esp-println"))
-))]
-compile_error!(
-    r#"feature "debug-console" enabled but no backend. Select feature "rtt-target" or feature "esp-println"."#
-);
+#[featurecomb::comb]
+mod _featurecomb {}
 
 #[doc(inline)]
 pub use ariel_os_debug_log as log;
@@ -110,6 +100,48 @@ mod backend {
     pub fn init() {
         #[cfg(feature = "log")]
         crate::logger::init();
+    }
+}
+
+#[cfg(all(feature = "debug-console", feature = "uart"))]
+#[doc(hidden)]
+pub mod backend {
+    use embassy_sync::once_lock::OnceLock;
+
+    #[doc(hidden)]
+    pub static DEBUG_UART_WRITE_FN: OnceLock<fn(&[u8])> = OnceLock::new();
+
+    struct DebugUart;
+
+    impl core::fmt::Write for DebugUart {
+        fn write_str(&mut self, s: &str) -> core::fmt::Result {
+            let bytes = s.as_bytes();
+
+            if let Some(debug_uart_write_fn) = DEBUG_UART_WRITE_FN.try_get() {
+                debug_uart_write_fn(bytes);
+            }
+
+            Ok(())
+        }
+    }
+
+    pub fn init() {
+        crate::logger::init();
+    }
+
+    #[doc(hidden)]
+    pub fn _print(args: core::fmt::Arguments) {
+        use core::fmt::Write;
+
+        DebugUart.write_fmt(args).unwrap();
+    }
+
+    #[macro_export]
+    macro_rules! println {
+        ($($arg:tt)*) => {{
+            #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
+            $crate::backend::_print(format_args!("{}\n", format_args!($($arg)*)));
+        }};
     }
 }
 
