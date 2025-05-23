@@ -982,10 +982,10 @@ modules:
 
   - name: network
     selects:
+      - ?ipv4
       - network_device
-      - network-config-default
 
-  - name: network-config-default
+  - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
       - ?network-config-dhcp
@@ -998,6 +998,10 @@ modules:
       - network
     provides_unique:
       - network-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/dhcpv4
 
   - name: network-config-static
     help: use static IP network configuration
@@ -1009,6 +1013,20 @@ modules:
       global:
         FEATURES:
           - ariel-os/network-config-static
+
+  - name: ipv4
+    selects:
+      - network-config-ipv4-default
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv4
+
+  - name: ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv6
 
   - name: sw/storage
     selects:
