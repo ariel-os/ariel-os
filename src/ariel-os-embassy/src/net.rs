@@ -164,7 +164,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
 // FFI declaration.
 #[unsafe(no_mangle)]
 fn __ariel_os_network_config() -> embassy_net::Config {
-    use ariel_os_utils::u8_from_env_or;
+    let mut config = embassy_net::Config::default();
 
     #[cfg(feature = "ipv4")]
     {
@@ -180,17 +180,17 @@ fn __ariel_os_network_config() -> embassy_net::Config {
             "static IPv4 gateway address",
         );
 
-        let prefix_len = u8_from_env_or!(
+        let prefix_len = ariel_os_utils::u8_from_env_or!(
             "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
             24,
             "static IPv4 CIDR prefix length"
         );
 
-        embassy_net::Config::ipv4_static(embassy_net::StaticConfigV4 {
+        config.ipv4 = embassy_net::ConfigV4::Static(embassy_net::StaticConfigV4 {
             address: embassy_net::Ipv4Cidr::new(ipaddr, prefix_len),
             dns_servers: heapless::Vec::new(),
             gateway: Some(gw_addr),
-        })
+        });
     }
 
     #[cfg(feature = "ipv6")]
@@ -205,16 +205,18 @@ fn __ariel_os_network_config() -> embassy_net::Config {
             "static IPv6 gateway address",
         );
 
-        let prefix_len = u8_from_env_or!(
+        let prefix_len = ariel_os_utils::u8_from_env_or!(
             "CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN",
             64,
             "static IPv6 CIDR prefix length"
         );
 
-        embassy_net::Config::ipv6_static(embassy_net::StaticConfigV6 {
+        config.ipv6 = embassy_net::ConfigV6::Static(embassy_net::StaticConfigV6 {
             address: embassy_net::Ipv6Cidr::new(ipaddr, prefix_len),
             dns_servers: heapless::Vec::new(),
             gateway: Some(gw_addr),
-        })
+        });
     }
+
+    config
 }
