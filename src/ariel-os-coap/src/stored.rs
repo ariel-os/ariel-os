@@ -106,6 +106,14 @@ impl StoredPolicy {
             }
         };
 
+        use ariel_os_embassy_common::identity::DeviceId;
+        info!(
+            "Device provisioned: board={}\tdevice_id={}\tedhoc_kccs={}",
+            ariel_os_buildinfo::BOARD,
+            ariel_os_hal::identity::DeviceId::get().unwrap().bytes(),
+            credential
+        );
+
         info!("CoAP server identity: {=[u8]:02x}", credential); // :02x could be :cbor
 
         let credential =
