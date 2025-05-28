@@ -205,6 +205,11 @@ contexts:
     provides:
       - has_hwrng
 
+  - name: nrf51822-xxaa
+    parent: nrf51
+    env:
+      PROBE_RS_CHIP: nrf51822_xxAA
+
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
     # "bbc-microbit-qemu"
@@ -1518,6 +1523,9 @@ builders:
 
     disables:
       - periph_rtt
+
+  - name: bbc-microbit-v1
+    parent: nrf51822-xxaa
 
   - name: bbc-microbit-v2
     parent: nrf52833

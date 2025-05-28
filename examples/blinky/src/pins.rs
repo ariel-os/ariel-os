@@ -1,5 +1,11 @@
 use ariel_os::hal::peripherals;
 
+#[cfg(context = "bbc-microbit-v1")]
+ariel_os::hal::define_peripherals!(LedPeripherals {
+    led_col1: P0_04,
+    led: P0_13,
+});
+
 #[cfg(context = "bbc-microbit-v2")]
 ariel_os::hal::define_peripherals!(LedPeripherals {
     led_col1: P0_28,

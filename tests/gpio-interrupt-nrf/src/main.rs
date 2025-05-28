@@ -8,7 +8,17 @@ use ariel_os::{
 };
 
 #[cfg(context = "nrf51")]
-todo!();
+ariel_os::hal::define_peripherals!(ButtonPeripherals {
+    btn_0: P0_00,
+    btn_1: P0_01,
+    btn_2: P0_02,
+    btn_3: P0_03,
+    btn_4: P0_04,
+    btn_5: P0_05,
+    btn_6: P0_06,
+    btn_7: P0_07,
+    btn_8: P0_08,
+});
 
 #[cfg(context = "nrf52")]
 ariel_os::hal::define_peripherals!(ButtonPeripherals {

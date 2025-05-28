@@ -2,6 +2,7 @@ apps:
   - name: blinky
     context:
       # list of contexts that have an entry in `pins.rs`
+      - bbc-microbit-v1
       - bbc-microbit-v2
       - esp
       - nordic-thingy-91-x-nrf9151

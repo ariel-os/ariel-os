@@ -1,5 +1,13 @@
 use ariel_os::hal::peripherals;
 
+#[cfg(context = "nrf51")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    pin_0: P0_00,
+    pin_1: P0_01,
+    pin_2: P0_02,
+    pin_3: P0_03,
+});
+
 #[cfg(context = "nrf52")]
 ariel_os::hal::define_peripherals!(Peripherals {
     pin_0: P0_00,

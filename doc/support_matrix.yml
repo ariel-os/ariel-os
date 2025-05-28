@@ -53,6 +53,18 @@ functionalities:
 
 # Encodes support status for each chip.
 chips:
+  nrf51822-xxaa:
+    name: nRF51822_xxAA
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      logging: supported
+      storage: not_currently_supported
+      wifi: not_available
+
   nrf52832:
     name: nRF52832
     support:
@@ -343,6 +355,15 @@ chips:
 # Encodes support status for each board.
 # Boards inherit support statuses of their chip, but can also override them.
 boards:
+  bbc-microbit-v1:
+    name: BBC micro:bit V1
+    url: https://web.archive.org/web/20250109121140/https://microbit.org/get-started/features/overview/#original-micro:bit
+    chip: nrf51822-xxaa
+    tier: "3"
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
+
   bbc-microbit-v2:
     name: BBC micro:bit V2
     url: https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/

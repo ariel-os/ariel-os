@@ -6,7 +6,9 @@ fn main() {
         return;
     }
 
-    let (ram, flash) = if is_in_current_contexts(&["nrf52832"]) {
+    let (ram, flash) = if is_in_current_contexts(&["nrf51822-xxaa"]) {
+        (16, 256)
+    } else if is_in_current_contexts(&["nrf52832"]) {
         (64, 256)
     } else if is_in_current_contexts(&["nrf52833"]) {
         (128, 512)
@@ -20,7 +22,9 @@ fn main() {
         panic!("nrf52: please set MCU feature");
     };
 
-    let slot_prefix = if is_in_current_contexts(&["nrf52"]) {
+    let slot_prefix = if is_in_current_contexts(&["nrf51"]) {
+        "NRF51_FLASH"
+    } else if is_in_current_contexts(&["nrf52"]) {
         "NRF52_FLASH"
     } else if is_in_current_contexts(&["nrf5340"]) {
         "NRF5340_FLASH"
