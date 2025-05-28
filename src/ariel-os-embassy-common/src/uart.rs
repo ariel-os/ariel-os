@@ -1,7 +1,7 @@
 //! Provides HAL-agnostic UART-related types.
 
 /// UART parity.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Parity {
     /// No parity bit.
     None,
@@ -11,8 +11,31 @@ pub enum Parity {
     Odd,
 }
 
+impl core::fmt::Display for Parity {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::None => write!(f, "N"),
+            Self::Even => write!(f, "E"),
+            Self::Odd => write!(f, "O"),
+        }
+
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Parity {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            Self::None => write!(f, "N"),
+            Self::Even => write!(f, "E"),
+            Self::Odd => write!(f, "O"),
+        }
+    }
+}
+
 /// UART number of stop bits.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum StopBits {
     /// One stop bit.
     Stop1,
@@ -20,13 +43,72 @@ pub enum StopBits {
     Stop2,
 }
 
+impl core::fmt::Display for StopBits {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Stop1 => write!(f, "1"),
+            Self::Stop2 => write!(f, "2"),
+        }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for StopBits {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            Self::Stop1 => write!(f, "1"),
+            Self::Stop2 => write!(f, "2"),
+        }
+    }
+}
+
 /// UART number of data bits.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum DataBits {
     /// 7 bits per character.
     Data7,
     /// 8 bits per character.
     Data8,
+}
+
+impl core::fmt::Display for DataBits {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Data7 => write!(f, "7"),
+            Self::Data8 => write!(f, "8"),
+        }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for DataBits {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            Self::Data7 => write!(f, "7"),
+            Self::Data8 => write!(f, "8"),
+        }
+    }
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! impl_defmt_display_for_config {
+    () => {
+        impl core::fmt::Display for Config {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                write!(f, "{} {}{}{}", self.baudrate, self.data_bits, self.parity, self.stop_bits)
+            }
+        }
+        #[cfg(feature = "defmt")]
+        impl defmt::Format for Config {
+            fn format(&self, f: defmt::Formatter<'_>) {
+                use defmt::write;
+                write!(f, "{} {}{}{}", self.baudrate, self.data_bits, self.parity, self.stop_bits)
+            }
+        }
+    }
 }
 
 #[doc(hidden)]
