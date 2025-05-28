@@ -21,7 +21,7 @@ async fn main(peripherals: pins::Peripherals) {
 
     let mut config = hal::uart::Config::default();
     config.baudrate = 9600;
-    info!("Selected baud rate: {}", config.baudrate);
+    info!("Selected configuration: {}", config);
 
     let mut rx_buf = [0u8; 32];
     let mut tx_buf = [0u8; 32];
