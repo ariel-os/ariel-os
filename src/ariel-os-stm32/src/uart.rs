@@ -1,6 +1,7 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
     impl_async_uart_for_driver_enum,
+    impl_defmt_display_for_config,
     uart::{DataBits, Parity, StopBits},
 };
 use embassy_stm32::{
@@ -54,6 +55,8 @@ fn from_data_bits(data_bits: DataBits) -> embassy_stm32::usart::DataBits {
         DataBits::Data8 => embassy_stm32::usart::DataBits::DataBits8,
     }
 }
+
+impl_defmt_display_for_config!();
 
 macro_rules! define_uart_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
