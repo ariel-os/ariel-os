@@ -59,6 +59,8 @@ fn from_data_bits(data_bits: DataBits) -> esp_hal::uart::DataBits {
     }
 }
 
+impl_defmt_display_for_config!();
+
 macro_rules! define_uart_drivers {
     ($( $peripheral:ident ),* $(,)?) => {
         $(
