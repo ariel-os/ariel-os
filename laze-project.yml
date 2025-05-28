@@ -195,11 +195,9 @@ contexts:
         export:
           - FEATURES
           - CARGO_TARGET_PREFIX
-          - RUSTFLAGS
           - CARGO_ARGS
-          - CARGO_TOOLCHAIN
-        cmd:
-          - ${CARGO_ENV} ${SCRIPTS}/vscode.sh
+        cmd: # we have to obfuscate the variables to avoid cargo intepreting them since we're running a rust script
+          - CONFIG_BOARD=${builder} _RUSTC_TARGET=${RUSTC_TARGET} _RUSTFLAGS="${RUSTFLAGS}" _CARGO_TOOLCHAIN='${CARGO_TOOLCHAIN}' ${SCRIPTS}/vscode.rs
 
   - name: nrf
     help: Nordic MCU support (based on embassy-nrf)
