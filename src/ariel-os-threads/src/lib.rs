@@ -61,6 +61,8 @@ pub use thread_flags as flags;
 
 #[cfg(feature = "core-affinity")]
 pub use smp::CoreAffinity;
+#[cfg(feature = "multi-core")]
+pub use smp::isr_stack_core1_get_limits;
 
 use arch::{Arch, Cpu, ThreadData, schedule};
 use ariel_os_runqueue::RunQueue;
@@ -512,18 +514,26 @@ pub unsafe fn start_threading() {
             }
         }
 
+        // ISR stack for the second core
+        static ISR_STACK_CORE1: ConstStaticCell<smp::StackType> =
+            ConstStaticCell::new(smp::StackType::new());
+
         // Stacks for the idle threads.
         // Creating them inside the below for-loop is not possible because it would result in
         // duplicate identifiers for the created `static`.
-        static STACKS: [ConstStaticCell<[u8; IDLE_THREAD_STACK_SIZE]>; CORE_COUNT] =
+        static IDLE_THREAD_STACKS: [ConstStaticCell<[u8; IDLE_THREAD_STACK_SIZE]>; CORE_COUNT] =
             [const { ConstStaticCell::new([0u8; IDLE_THREAD_STACK_SIZE]) }; CORE_COUNT];
 
         // Create one idle thread for each core with lowest priority.
-        for stack in &STACKS {
+        for stack in &IDLE_THREAD_STACKS {
             create_noarg(idle_thread, stack.take(), 0, None);
         }
 
-        smp::Chip::startup_other_cores();
+        let isr_stack_core1 = ISR_STACK_CORE1.take();
+
+        smp::isr_stack_core1_set_limits(isr_stack_core1);
+
+        smp::Chip::startup_other_cores(ISR_STACK_CORE1.take());
     }
     Cpu::start_threading();
 }
@@ -736,4 +746,13 @@ pub fn get_priority(thread_id: ThreadId) -> Option<RunqueueId> {
 /// This might trigger a context switch.
 pub fn set_priority(thread_id: ThreadId, prio: RunqueueId) {
     SCHEDULER.with_mut(|mut scheduler| scheduler.set_priority(thread_id, prio));
+}
+
+/// Returns the current thread's stack limits (lowest, highest).
+pub fn current_stack_limits() -> Option<(usize, usize)> {
+    SCHEDULER.with_mut(|mut scheduler| {
+        scheduler
+            .current()
+            .map(|thread| (thread.stack_lowest, thread.stack_highest))
+    })
 }

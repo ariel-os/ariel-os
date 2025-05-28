@@ -40,6 +40,8 @@ pub use ariel_os_power as power;
 #[cfg(feature = "random")]
 #[doc(inline)]
 pub use ariel_os_random as random;
+#[doc(hidden)]
+pub use ariel_os_rt as rt;
 #[cfg(feature = "storage")]
 #[doc(inline)]
 pub use ariel_os_storage as storage;
@@ -53,10 +55,6 @@ pub use ariel_os_macros::spawner;
 pub use ariel_os_macros::task;
 #[cfg(any(feature = "threading", doc))]
 pub use ariel_os_macros::thread;
-
-// ensure this gets linked
-#[cfg(not(test))]
-use ariel_os_rt as _;
 
 pub use ariel_os_embassy::api::*;
 

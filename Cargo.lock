@@ -520,6 +520,7 @@ dependencies = [
  "linkme",
  "panic-semihosting",
  "paste",
+ "portable-atomic",
  "rp-pac",
  "static_cell",
  "xtensa-lx-rt",

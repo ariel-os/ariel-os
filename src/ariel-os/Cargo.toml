@@ -183,4 +183,4 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts"]
+_test = ["i2c", "no-boards", "spi", "external-interrupts", "ariel-os-rt/_test"]
