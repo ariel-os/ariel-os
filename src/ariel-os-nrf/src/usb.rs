@@ -1,23 +1,10 @@
 use ariel_os_debug::log::debug;
 use embassy_nrf::{
-    bind_interrupts, pac, peripherals,
-    usb::{
-        self, Driver,
-        vbus_detect::{self, HardwareVbusDetect},
-    },
+    pac, peripherals,
+    usb::{Driver, vbus_detect::HardwareVbusDetect},
 };
 
-#[cfg(context = "nrf52")]
-bind_interrupts!(struct Irqs {
-    USBD => usb::InterruptHandler<peripherals::USBD>;
-    CLOCK_POWER => vbus_detect::InterruptHandler;
-});
-
-#[cfg(context = "nrf5340")]
-bind_interrupts!(struct Irqs {
-    USBD => usb::InterruptHandler<peripherals::USBD>;
-    USBREGULATOR => vbus_detect::InterruptHandler;
-});
+use crate::irqs::Irqs;
 
 pub type UsbDriver = Driver<'static, peripherals::USBD, HardwareVbusDetect>;
 
