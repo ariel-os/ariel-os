@@ -56,6 +56,8 @@ fn from_data_bits(data_bits: DataBits) -> embassy_rp::uart::DataBits {
     }
 }
 
+impl_defmt_display_for_config!();
+
 macro_rules! define_uart_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
         $(
