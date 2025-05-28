@@ -1,5 +1,5 @@
 //! UART bus configuration.
-use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::Parity};
+use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, impl_defmt_display_for_config, uart::Parity};
 use embassy_nrf::{
     Peripheral, bind_interrupts,
     buffered_uarte::{Baudrate, BufferedUarte, InterruptHandler},
@@ -55,6 +55,19 @@ impl Default for Config {
             baudrate: 9600,
             parity: Parity::None,
         }
+    }
+}
+
+impl core::fmt::Display for Config {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{} 8{}1", self.baudrate, self.parity)
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for Config {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        write!(f, "{} 8{}1", self.baudrate, self.parity)
     }
 }
 
