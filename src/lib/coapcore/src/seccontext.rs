@@ -15,6 +15,7 @@ use defmt_or_log::{Debug2Format, debug, error, trace};
 
 use crate::generalclaims::{self, GeneralClaims as _};
 use crate::helpers::COwn;
+use crate::log_helpers::Cbor;
 use crate::scope::Scope;
 use crate::seccfg::ServerSecurityConfig;
 
@@ -617,7 +618,7 @@ impl<
                 match crate::ace::process_edhoc_token(value.as_slice(), &self.authorities) {
                     Ok(ci_and_a) => cred_i_and_authorization = Some(ci_and_a),
                     Err(e) => {
-                        error!("Received unprocessable token {=[u8]:02x}, error: {}", value.as_slice(), Debug2Format(&e)); // :02x could be :cbor
+                        error!("Received unprocessable token {}, error: {}", Cbor(value.as_slice()), Debug2Format(&e));
                     }
                 }
             }
