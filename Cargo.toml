@@ -145,6 +145,9 @@ rtt-target = { version = "0.6.0" }
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.0.0", features = ["nightly"] }
+trouble-host = "0.1"
+bt-hci = { version = "0.2.0" }
+embedded-io = { version = "0.6" }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html

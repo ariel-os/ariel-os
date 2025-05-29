@@ -90,7 +90,8 @@ jobs:
                   udp,
                   usb,
                   usb-hid,
-                  coapcore/_nightly_docs
+                  coapcore/_nightly_docs,
+                  ble,
                   "
           RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly' cargo doc \
               --target=riscv32imac-unknown-none-elf \

@@ -114,6 +114,8 @@ usb-hid = ["ariel-os-embassy/usb-hid"]
 network-config-override = ["ariel-os-embassy/network-config-override"]
 ## Enables custom USB configuration.
 override-usb-config = ["ariel-os-embassy/override-usb-config"]
+## Enables custom BLE configuration.
+ble-config-override = ["ariel-os-embassy/ble-config-override"]
 
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).
@@ -138,6 +140,13 @@ wifi-cyw43 = ["ariel-os-embassy/wifi-cyw43"]
 wifi-esp = ["ariel-os-embassy/wifi-esp"]
 # Selects STM32 Ethernet
 eth-stm32 = ["ariel-os-embassy/eth-stm32"]
+
+# ## Bluetooth support
+ble = ["ariel-os-embassy/ble"]
+# BLE peripheral
+ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
+# BLE central
+ble-central = ["ble", "ariel-os-embassy/ble-central"]
 
 #! ## Development and debugging
 # Enables the debug console, required to use
