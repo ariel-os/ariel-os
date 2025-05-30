@@ -45,7 +45,7 @@ resolver = "2"
 
 [workspace.package]
 license = "MIT OR Apache-2.0"
-edition = "2021"
+edition = "2024"
 repository = "https://github.com/ariel-os/ariel-os"
 
 [workspace.dependencies]
@@ -53,10 +53,10 @@ cfg-if = { version = "1.0.0" }
 cortex-m = { version = "0.7", default-features = false, features = [
   "inline-asm",
 ] }
-cortex-m-rt = { version = "=0.7.3" }
+cortex-m-rt = { version = "0.7.5" }
 cortex-m-semihosting = { version = "0.5" }
 critical-section = { version = "1.1.2" }
-featurecomb = "0.1.1"
+featurecomb = "0.1.3"
 # Disabling default features may reduce the code size by not providing atomics
 # for types larger than the pointer width, which we do not use.
 portable-atomic = { version = "1.11.0", default-features = false, features = [
@@ -71,7 +71,7 @@ embassy-hal-internal = { version = "0.2.0", default-features = false }
 embassy-net = { version = "0.6", default-features = false }
 embassy-net-driver-channel = { version = "0.3.0", default-features = false }
 embassy-nrf = { version = "0.3.1", default-features = false }
-embassy-rp = { version = "0.3", default-features = false }
+embassy-rp = { version = "0.4", default-features = false }
 embassy-stm32 = { version = "0.2", default-features = false }
 embassy-sync = { version = "0.6.1", default-features = false }
 embassy-time = { version = "0.4.0", default-features = false }
@@ -82,8 +82,9 @@ embedded-hal-async = { version = "1.0.0", default-features = false }
 embedded-nal-coap = "0.1.0-alpha.4"
 embedded-storage = { version = "0.3.1" }
 embedded-storage-async = { version = "0.4.1" }
-embedded-test = { version = "0.6.0", default-features = false, features = [
+embedded-test = { version = "0.6.1", default-features = false, features = [
   "ariel-os",
+  "semihosting",
 ] }
 
 esp-alloc = { version = "0.6.0", default-features = false }
@@ -91,14 +92,14 @@ esp-hal = { version = "0.23.1", default-features = false, features = [
   "unstable",
 ] }
 esp-hal-embassy = { version = "0.6.0", default-features = false }
-esp-println = { version = "0.13.0" }
+esp-println = { version = "0.13.0", default-features = false }
 esp-wifi = { version = "0.12.0", default-features = false }
 esp-wifi-sys = { version = "0.7.1", default-features = false }
 
 esp-storage = { version = "0.4.0" }
 xtensa-lx-rt = { version = "0.18.0", default-features = false }
 
-linkme = { version = "0.3.31", features = ["used_linker"] }
+linkme = { version = "0.3.32" }
 
 ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
@@ -126,7 +127,7 @@ ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 const_panic = { version = "0.2.8", default-features = false }
 const-str = "0.6.0"
-defmt = { version = "0.3.7" }
+defmt = { version = "1.0.0" }
 document-features = "0.2.8"
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.8.0", default-features = false }
@@ -159,12 +160,9 @@ unexpected_cfgs = "allow"
 # Clippy lints are documented here: https://rust-lang.github.io/rust-clippy/master/index.html
 indexing_slicing = "deny"
 missing_safety_doc = { level = "warn" }
+pedantic = { level = "warn", priority = -1 }
 too_long_first_doc_paragraph = "warn"
 unused_result_ok = "deny"
-
-# TODO: remove these when we enable pedantic
-must_use_candidate = "warn"
-return_self_not_must_use = "warn"
 
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"

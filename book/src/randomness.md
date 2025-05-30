@@ -20,4 +20,4 @@ When the `random` module is selected, the `hwrng` [laze module][laze-modules-boo
 
 [fast-rng-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/random/fn.fast_rng.html
 [crypto-rng-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/random/fn.crypto_rng.html
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules

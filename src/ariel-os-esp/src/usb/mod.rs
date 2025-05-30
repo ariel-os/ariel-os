@@ -22,7 +22,7 @@ impl Peripherals {
     }
 }
 pub fn driver(peripherals: Peripherals) -> UsbDriver {
-    use esp_hal::otg_fs::{asynch::Config, Usb};
+    use esp_hal::otg_fs::{Usb, asynch::Config};
 
     let usb = Usb::new(peripherals.usb, peripherals.usbdp, peripherals.usbdm);
 

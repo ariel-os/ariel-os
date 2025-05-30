@@ -1,15 +1,15 @@
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 use core::{
     cell::UnsafeCell,
+    marker::PhantomData,
     ops::{Deref, DerefMut},
 };
 
 use ariel_os_runqueue::{RunqueueId, ThreadId};
 use critical_section::CriticalSection;
 
-use crate::{thread::ThreadState, threadlist::ThreadList, SCHEDULER};
+use crate::{SCHEDULER, thread::ThreadState, threadlist::ThreadList};
 
 /// A basic mutex with priority inheritance.
 pub struct Mutex<T> {
@@ -118,7 +118,7 @@ impl<T> Mutex<T> {
         // to the waitlist. In the latter case, it only continues running here after it was popped again
         // from the waitlist and the thread acquired the mutex.
 
-        MutexGuard { mutex: self }
+        MutexGuard::new(self)
     }
 
     /// Attempts to acquire this lock, in a non-blocking fashion.
@@ -131,7 +131,7 @@ impl<T> Mutex<T> {
             let state = unsafe { &mut *self.state.get() };
             if let LockState::Unlocked = *state {
                 *state = LockState::locked_with_current(cs);
-                Some(MutexGuard { mutex: self })
+                Some(MutexGuard::new(self))
             } else {
                 None
             }
@@ -177,6 +177,16 @@ unsafe impl<T> Sync for Mutex<T> {}
 /// Dropping the [`MutexGuard`] will unlock the [`Mutex`];
 pub struct MutexGuard<'a, T> {
     mutex: &'a Mutex<T>,
+    _not_send: PhantomData<*const ()>,
+}
+
+impl<'a, T> MutexGuard<'a, T> {
+    fn new(mutex: &'a Mutex<T>) -> Self {
+        Self {
+            mutex,
+            _not_send: PhantomData,
+        }
+    }
 }
 
 impl<T> Deref for MutexGuard<'_, T> {
@@ -201,7 +211,5 @@ impl<T> Drop for MutexGuard<'_, T> {
         self.mutex.release();
     }
 }
-
-impl<T> !Send for MutexGuard<'_, T> {}
 
 unsafe impl<T: Sync> Sync for MutexGuard<'_, T> {}

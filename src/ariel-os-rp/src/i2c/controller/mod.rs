@@ -2,9 +2,9 @@
 
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_rp::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     i2c::{InterruptHandler, SclPin, SdaPin},
-    peripherals, Peripheral,
+    peripherals,
 };
 
 const KHZ_TO_HZ: u32 = 1000;
@@ -124,6 +124,13 @@ macro_rules! define_i2c_drivers {
                     scl_pin: impl Peripheral<P: SclPin<peripherals::$peripheral>> + 'static,
                     config: Config,
                 ) -> I2c {
+                    // Make this struct a compile-time-enforced singleton: having multiple statics
+                    // defined with the same name would result in a compile-time error.
+                    paste::paste! {
+                        #[allow(dead_code)]
+                        static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
+                    }
+
                     let mut i2c_config = embassy_rp::i2c::Config::default();
                     i2c_config.frequency = config.frequency.khz() * KHZ_TO_HZ;
 
@@ -132,13 +139,6 @@ macro_rules! define_i2c_drivers {
                             $interrupt => InterruptHandler<peripherals::$peripheral>;
                         }
                     );
-
-                    // Make this struct a compile-time-enforced singleton: having multiple statics
-                    // defined with the same name would result in a compile-time error.
-                    paste::paste! {
-                        #[allow(dead_code)]
-                        static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
-                    }
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -178,7 +178,14 @@ macro_rules! define_i2c_drivers {
 
 // We cannot impl From because both types are external to this crate.
 fn from_error(err: embassy_rp::i2c::Error) -> ariel_os_embassy_common::i2c::controller::Error {
-    use embassy_rp::i2c::{AbortReason, Error::*};
+    #[allow(deprecated)]
+    use embassy_rp::i2c::{
+        AbortReason,
+        Error::{
+            Abort, AddressOutOfRange, AddressReserved, InvalidReadBufferLength,
+            InvalidWriteBufferLength,
+        },
+    };
 
     use ariel_os_embassy_common::i2c::controller::{Error, NoAcknowledgeSource};
 
@@ -186,14 +193,13 @@ fn from_error(err: embassy_rp::i2c::Error) -> ariel_os_embassy_common::i2c::cont
         Abort(reason) => match reason {
             AbortReason::NoAcknowledge => Error::NoAcknowledge(NoAcknowledgeSource::Unknown),
             AbortReason::ArbitrationLoss => Error::ArbitrationLoss,
-            AbortReason::TxNotEmpty(_) => Error::Other,
-            AbortReason::Other(_) => Error::Other,
+            AbortReason::TxNotEmpty(_) | AbortReason::Other(_) => Error::Other,
         },
-        InvalidReadBufferLength => Error::Other,
-        InvalidWriteBufferLength => Error::Other,
-        AddressOutOfRange(_) => Error::Other,
         #[allow(deprecated)]
-        AddressReserved(_) => Error::Other,
+        AddressReserved(_)
+        | InvalidWriteBufferLength
+        | AddressOutOfRange(_)
+        | InvalidReadBufferLength => Error::Other,
     }
 }
 

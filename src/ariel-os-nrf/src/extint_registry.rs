@@ -1,5 +1,5 @@
 use ariel_os_embassy_common::gpio::input::InterruptError;
-use embassy_nrf::{gpio::Pin, Peripheral};
+use embassy_nrf::{Peripheral, gpio::Pin};
 use portable_atomic::{AtomicU8, Ordering};
 
 #[cfg(context = "nrf51")]
@@ -22,6 +22,9 @@ impl ExtIntRegistry {
         }
     }
 
+    /// # Errors
+    ///
+    /// Returns `Err(InterruptError::NoIntChannelAvailable)` if an interrupt channel is not available.
     pub fn use_interrupt_for_pin<PIN: Peripheral<P: Pin>>(
         &self,
         _pin: &mut PIN, // Require the caller to have the peripheral

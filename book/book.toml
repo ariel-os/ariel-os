@@ -6,12 +6,19 @@ authors = [
   "Elena Frank",
 ]
 language = "en"
-multilingual = false
 src = "src"
 title = "Ariel OS manual"
 
 [output.html]
 git-repository-url = "https://github.com/ariel-os/ariel-os"
 edit-url-template = "https://github.com/ariel-os/ariel-os/edit/main/book/{path}"
+
+[output.html.redirect]
+"/adding_board_support.html" = "adding-board-support.html"
+"/async_support.html" = "async-support.html"
+"/build_system.html" = "build-system.html"
+"/debug_console.html" = "debug-console.html"
+"/getting_started.html" = "getting-started.html"
+"/hardware_functionality_support.html" = "hardware-functionality-support.html"
 
 [preprocessor.cmdrun]

@@ -1,13 +1,11 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 mod pins;
 
 #[allow(unused_imports)]
 use ariel_os::{
-    debug::{exit, log::info, ExitCode},
+    debug::{ExitCode, exit, log::info},
     gpio::{DriveStrength, Input, Level, Output, Pull, Speed},
 };
 

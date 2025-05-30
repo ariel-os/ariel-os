@@ -1,5 +1,5 @@
 //! Thread flags.
-use crate::{Scheduler, ThreadId, ThreadState, SCHEDULER};
+use crate::{SCHEDULER, Scheduler, ThreadId, ThreadState};
 
 /// Bitmask that represent the flags that are set for a thread.
 pub type ThreadFlags = u16;

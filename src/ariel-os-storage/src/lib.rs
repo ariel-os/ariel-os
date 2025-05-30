@@ -5,7 +5,6 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
@@ -15,8 +14,8 @@ mod storage;
 use core::ops::Range;
 
 use ariel_os_hal::{
-    storage::{init as flash_init, Flash, FlashError},
     OptionalPeripherals,
+    storage::{Flash, FlashError, init as flash_init},
 };
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex,
@@ -48,7 +47,7 @@ fn flash_range_from_linker() -> Range<u32> {
     #[cfg(not(context = "ariel-os"))]
     const OFFSET: usize = 0x0;
 
-    extern "C" {
+    unsafe extern "C" {
         static __storage_start: u32;
         static __storage_end: u32;
     }
@@ -65,7 +64,7 @@ fn flash_range_from_linker() -> Range<u32> {
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_debug::log::info;
     let flash_range = flash_range_from_linker();
-    info!("storage: using flash range {:#x}", &flash_range);
+    info!("storage: using flash range {:?}", &flash_range);
 
     let flash = flash_init(p);
     let _ = STORAGE.init(Mutex::new(Storage::new(flash, flash_range)));
@@ -90,14 +89,9 @@ pub async fn init(p: &mut OptionalPeripherals) {
     embassy_time::block_for(embassy_time::Duration::from_millis(10));
 
     // Use a marker to ensure that this storage is initialized.
-    match get::<u8>(MARKER_KEY).await {
-        Ok(Some(val)) if val == MARKER_VALUE => {
-            // all good
-        }
-        _ => {
-            ariel_os_debug::log::info!("storage: initializing");
-            erase_all().await.unwrap();
-        }
+    if Ok(Some(MARKER_VALUE)) != get::<u8>(MARKER_KEY).await {
+        ariel_os_debug::log::info!("storage: initializing");
+        erase_all().await.unwrap();
     }
 }
 

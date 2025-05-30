@@ -2,7 +2,7 @@
 
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
-    spi::{main::Kilohertz, BitOrder, Mode},
+    spi::{BitOrder, Mode, main::Kilohertz},
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use esp_hal::{
@@ -87,18 +87,18 @@ macro_rules! define_spi_drivers {
                     mosi_pin: impl Peripheral<P: PeripheralOutput> + 'static,
                     config: Config,
                 ) -> Spi {
-                    let mut spi_config = esp_hal::spi::master::Config::default();
-                    spi_config.frequency = config.frequency.into();
-                    spi_config.mode = crate::spi::from_mode(config.mode);
-                    spi_config.read_bit_order = crate::spi::from_bit_order(config.bit_order);
-                    spi_config.write_bit_order = crate::spi::from_bit_order(config.bit_order);
-
                     // Make this struct a compile-time-enforced singleton: having multiple statics
                     // defined with the same name would result in a compile-time error.
                     paste::paste! {
                         #[allow(dead_code)]
                         static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
                     }
+
+                    let mut spi_config = esp_hal::spi::master::Config::default();
+                    spi_config.frequency = config.frequency.into();
+                    spi_config.mode = crate::spi::from_mode(config.mode);
+                    spi_config.read_bit_order = crate::spi::from_bit_order(config.bit_order);
+                    spi_config.write_bit_order = crate::spi::from_bit_order(config.bit_order);
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the

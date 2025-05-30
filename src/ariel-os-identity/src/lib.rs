@@ -26,11 +26,8 @@
 //! derived from the main identity, but have different properties.
 #![no_std]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // required for tests:
 #![cfg_attr(test, no_main)]
-#![cfg_attr(test, feature(impl_trait_in_assoc_type))]
-#![cfg_attr(test, feature(used_with_arg))]
 
 pub use ariel_os_embassy_common::identity::Eui48;
 

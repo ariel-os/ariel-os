@@ -22,12 +22,8 @@
 //! - [`thread_flags`]: thread-flag implementation for signaling between threads
 
 #![cfg_attr(not(test), no_std)]
-#![feature(naked_functions)]
-#![feature(used_with_arg)]
-#![feature(negative_impls)]
 #![cfg_attr(target_arch = "xtensa", feature(asm_experimental_arch))]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // Disable indexing lints for now, possible panics are documented or rely on internally-enforced
 // invariants
 #![allow(clippy::indexing_slicing)]
@@ -66,13 +62,13 @@ pub use thread_flags as flags;
 #[cfg(feature = "core-affinity")]
 pub use smp::CoreAffinity;
 
-use arch::{schedule, Arch, Cpu, ThreadData};
+use arch::{Arch, Cpu, ThreadData, schedule};
 use ariel_os_runqueue::RunQueue;
 use ensure_once::EnsureOnce;
 use thread::{Thread, ThreadState};
 
 #[cfg(feature = "multi-core")]
-use smp::{schedule_on_core, Multicore};
+use smp::{Multicore, schedule_on_core};
 #[cfg(feature = "multi-core")]
 use static_cell::ConstStaticCell;
 

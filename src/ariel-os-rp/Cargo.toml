@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-rp"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -30,7 +30,7 @@ static_cell = { workspace = true, optional = true }
 
 # rpi-pico-w cyw43
 cyw43 = { version = "0.3.0", features = ["firmware-logs"], optional = true }
-cyw43-pio = { version = "0.3.0", optional = true }
+cyw43-pio = { version = "0.4.0", optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [

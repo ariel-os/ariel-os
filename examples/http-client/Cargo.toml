@@ -16,7 +16,6 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "time",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-heapless = { workspace = true }
 rand_core = { workspace = true }
 reqwless = { version = "0.13.0", default-features = true, features = [
   "embedded-tls",

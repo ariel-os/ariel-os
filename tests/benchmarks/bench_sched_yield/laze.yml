@@ -1,5 +1,7 @@
 apps:
   - name: bench_sched_yield
     selects:
-      - sw/benchmark
       - sw/threading
+      - sw/benchmark
+    conflicts:
+      - ram-tiny

@@ -10,6 +10,6 @@ In this directory, run
 
     laze build -b rpi-pico run
 
-The application will start two threads that each print their ID and the core that they are running on, before
-entering a busy loop.
-The thread that is started first in pinned to Core 1 using core affinities.
+The application will start two threads that each print their ID and the core
+that they are running on, before entering a busy loop.
+The thread that is started first is pinned to Core 1 using core affinities.

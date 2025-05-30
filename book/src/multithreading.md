@@ -19,6 +19,7 @@ The maximum number of threads is defined by the [`THREAD_COUNT`][max-thread-coun
 Ariel OS currently supports symmetric multiprocessing (SMP) on the following MCUs:
   - ESP32-S3
   - RP2040
+  - RP235XA
 
 When the `sw/threading` [laze module][laze-modules-book] is selected and when available on the MCU, the `multi-core` laze module automatically gets selected, which enables SMP.
 To disable multicore, disable the `multi-core` [laze module][laze-modules-book].
@@ -56,4 +57,4 @@ It allows to restrict the execution of a thread to a specific core and prevent i
 [max-thread-count-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/constant.THREAD_COUNT.html
 [set-priority-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/fn.set_priority.html
 [sched-prio-levels-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/constant.SCHED_PRIO_LEVELS.html
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules

@@ -7,6 +7,9 @@ ariel_os::hal::define_peripherals!(Button { btn1: P0_11 });
 #[cfg(context = "nrf5340dk")]
 ariel_os::hal::define_peripherals!(Button { btn1: P0_23 });
 
+#[cfg(context = "nrf9160dk-nrf9160")]
+ariel_os::hal::define_peripherals!(Button { btn1: P0_06 });
+
 #[cfg(context = "st-nucleo-wb55")]
 ariel_os::hal::define_peripherals!(Button { btn1: PC4 });
 

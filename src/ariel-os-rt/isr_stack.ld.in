@@ -9,12 +9,16 @@ SECTIONS
     } > ${STACK_REGION}
 }
 
-INSERT BEFORE ${INSERT_BEFORE};
+${INSERT_SOMEWHERE}
 
 /* using `_tmp` helpers so this overrides other linker script variables */
 _stack_end = _stack_bottom_tmp;
 _stack_bottom = _stack_bottom_tmp;
 _stack_start = _stack_start_tmp;
+
+/* used by xtensa. grep for `xtensa_lx::set_stack_pointer` in esp-hal repo. */
+_stack_end_cpu0 = _stack_bottom_tmp;
+_stack_start_cpu0 = _stack_start_tmp;
 
 ASSERT(_stack_start != _stack_bottom, "ERROR(ariel-os-rt): isr stack too small");
 ASSERT(_stack_start == _stack_start_tmp, "ERROR(ariel-os-rt): _stack_start not used!");

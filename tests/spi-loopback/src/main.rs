@@ -4,22 +4,18 @@
 //! HAL-agnostic.
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
-#![feature(used_with_arg)]
-#![feature(impl_trait_in_assoc_type)]
 
 mod pins;
 
 use ariel_os::{
     debug::{
-        exit,
-        log::{debug, info},
-        ExitCode,
+        ExitCode, exit,
+        log::{Hex, debug, info},
     },
     gpio, hal,
     spi::{
-        main::{highest_freq_in, Kilohertz, SpiDevice},
         Mode,
+        main::{Kilohertz, SpiDevice, highest_freq_in},
     },
 };
 use embassy_sync::mutex::Mutex;
@@ -33,7 +29,7 @@ pub static SPI_BUS: once_cell::sync::OnceCell<
 async fn main(peripherals: pins::Peripherals) {
     let mut spi_config = hal::spi::main::Config::default();
     spi_config.frequency = const { highest_freq_in(Kilohertz::kHz(1000)..=Kilohertz::kHz(2000)) };
-    debug!("Selected frequency: {}", spi_config.frequency);
+    debug!("Selected frequency: {:?}", spi_config.frequency);
     spi_config.mode = if !cfg!(context = "esp") {
         Mode::Mode3
     } else {
@@ -57,7 +53,7 @@ async fn main(peripherals: pins::Peripherals) {
     let mut in_ = [0u8; 8];
     spi_device.transfer(&mut in_, &out).await.unwrap();
 
-    info!("got 0x{:x}", &in_);
+    info!("got {}", Hex(in_));
 
     assert_eq!(out, in_);
 

@@ -51,8 +51,8 @@ impl Permission {
 impl SinglePermission {
     /// The `Tperm` unsigned integer representation of the REST-specific AIF model described in
     /// RFC9237.
-    fn mask(&self) -> u32 {
-        1 << (*self as u8 - 1)
+    fn mask(self) -> u32 {
+        1 << (self as u8 - 1)
     }
 }
 
@@ -107,7 +107,9 @@ fn main() {
                     .collect();
                 let mut bytes = vec![];
                 minicbor::encode(data, &mut bytes).unwrap();
-                format!("coapcore::scope::UnionScope::AifValue(coapcore::scope::AifValue::parse(&{bytes:?}).unwrap())")
+                format!(
+                    "coapcore::scope::UnionScope::AifValue(coapcore::scope::AifValue::parse(&{bytes:?}).unwrap())"
+                )
             }
         };
 
@@ -128,14 +130,17 @@ fn main() {
                 .expect("writing to String is infallible");
             }
             (None, Some(KnownSource::Unauthenticated)) => {
-                if unauthenticated_scope.is_some() {
-                    panic!("Only a single `from: unauthenticated` record is usable.");
-                }
+                assert!(
+                    unauthenticated_scope.is_none(),
+                    "Only a single `from: unauthenticated` record is usable.",
+                );
 
                 unauthenticated_scope = Some(format!("Some({scope})"));
             }
             _ => {
-                panic!("Every peer record needs to have either a `kccs: ...` or a `from: unauthenticated` key.")
+                panic!(
+                    "Every peer record needs to have either a `kccs: ...` or a `from: unauthenticated` key."
+                )
             }
         }
     }

@@ -22,7 +22,7 @@ For example, to run the hello-world example from the `ariel-os` directory, the c
 
 Tasks available in Ariel OS include:
 
-- `run`: Compiles, flashes, and runs an application. The [debug output](./debug_console.md) is printed in the terminal.
+- `run`: Compiles, flashes, and runs an application. The [debug output](./debug-console.md) is printed in the terminal.
 - `flash`: Compiles and flashes an application.
 - `debug`: Starts a GDB debug session for the selected application.
   The application needs to be flashed using the `flash` task beforehand.
@@ -48,7 +48,7 @@ To specify laze modules for an out-of-tree application, see [below](#enabling-la
 ## laze contexts
 
 The laze configuration defines a laze context for each MCU, MCU family, and board.
-These can be found in the [support matrix](./hardware_functionality_support.html), where they are called “Ariel OS name”.
+These can be found in the [support matrix](./hardware-functionality-support.html), where they are called “Ariel OS name”.
 
 Out-of-tree applications can be restricted to specific laze contexts, see [below](#restricting-an-application-to-specific-mcusboards).
 
@@ -57,13 +57,13 @@ This makes it possible to use the `#[cfg]` attribute to introduce feature-gates 
 
 ## Out-of-tree applications
 
-New application projects should be [started from a template](./getting_started.md#starting-an-application-project-from-a-template-repository).
+New application projects should be [started from a template](./getting-started.md#starting-an-application-project-from-a-template-repository).
 Out-of-tree applications use the `laze-project.yml` file for configuration through laze.
 
 ### Importing Ariel OS
 
 Ariel OS's source and configuration are imported using [laze's `imports`][laze-imports-book] feature.
-The [project templates](./getting_started.md#starting-an-application-project-from-a-template-repository) use a [`git` import][laze-git-import-book] to ask laze to clone Ariel OS's repository.
+The [project templates](./getting-started.md#starting-an-application-project-from-a-template-repository) use a [`git` import][laze-git-import-book] to ask laze to clone Ariel OS's repository.
 The cloned repository is stored inside `build/imports`.
 
 > It is currently recommended to use Ariel OS's commit ID to track the repository, to avoid surprising changes.

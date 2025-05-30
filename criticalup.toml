@@ -4,7 +4,8 @@
 manifest-version = 1
 
 [products.ferrocene]
-release = "nightly-2025-02-25"
+# First release to contain https://github.com/ferrocene/ferrocene/pull/1440.
+release = "nightly-2025-04-30"
 packages = [
   "rust-std-thumbv6m-none-eabi",
   "rust-std-thumbv7em-none-eabi",

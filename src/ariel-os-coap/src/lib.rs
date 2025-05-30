@@ -7,9 +7,6 @@
 //! implementations.
 #![no_std]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
-// for #[ariel_os_macros::task(autostart)]
-#![feature(impl_trait_in_assoc_type, used_with_arg)]
 
 // Moving work from https://github.com/embassy-rs/embassy/pull/2519 in here for the time being
 mod udp_nal;
@@ -38,7 +35,9 @@ mod demo_setup {
     use hexlit::hex;
 
     /// Credential presented by any demo device.
-    const DEVICE_CREDENTIAL: &[u8] = &hex!("A2026008A101A5010202410A2001215820BBC34960526EA4D32E940CAD2A234148DDC21791A12AFBCBAC93622046DD44F02258204519E257236B2A0CE2023F0931F1F386CA7AFDA64FCDE0108C224C51EABF6072");
+    const DEVICE_CREDENTIAL: &[u8] = &hex!(
+        "A2026008A101A5010202410A2001215820BBC34960526EA4D32E940CAD2A234148DDC21791A12AFBCBAC93622046DD44F02258204519E257236B2A0CE2023F0931F1F386CA7AFDA64FCDE0108C224C51EABF6072"
+    );
     /// Private key for `DEVICE_CREDENTIAL`.
     const DEVICE_KEY: [u8; 32] =
         hex!("72cc4761dbd4c78f758931aa589d348d1ef874a7e303ede2f140dcf3e6aa4aac");
@@ -61,7 +60,9 @@ mod demo_setup {
     /// Credential by which the administrator of any demo device is recognized.
     ///
     /// The corresponding private key is shipped in `tests/coap/client.cosekey`.
-    const ADMIN_CREDENTIAL: &[u8] = &hex!("A2027734322D35302D33312D46462D45462D33372D33322D333908A101A5010202412B2001215820AC75E9ECE3E50BFC8ED60399889522405C47BF16DF96660A41298CB4307F7EB62258206E5DE611388A4B8A8211334AC7D37ECB52A387D257E6DB3C2A93DF21FF3AFFC8");
+    const ADMIN_CREDENTIAL: &[u8] = &hex!(
+        "A2027734322D35302D33312D46462D45462D33372D33322D333908A101A5010202412B2001215820AC75E9ECE3E50BFC8ED60399889522405C47BF16DF96660A41298CB4307F7EB62258206E5DE611388A4B8A8211334AC7D37ECB52A387D257E6DB3C2A93DF21FF3AFFC8"
+    );
 
     /// Assembles this module's components into a server security configuration.
     pub(super) fn build_demo_ssc() -> coapcore::seccfg::ConfigBuilder {
@@ -210,8 +211,8 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
 /// This is currently only available from the thread that hosts the network stack, and panics
 /// otherwise. This restriction will be lifted in the future (by generalization in
 /// [`embedded_nal_coap`] to allow different mutexes).
-pub async fn coap_client(
-) -> &'static embedded_nal_coap::CoAPRuntimeClient<'static, CONCURRENT_REQUESTS> {
+pub async fn coap_client()
+-> &'static embedded_nal_coap::CoAPRuntimeClient<'static, CONCURRENT_REQUESTS> {
     let mut receiver = CLIENT_READY
         .receiver()
         .expect("Too many CoAP clients are waiting for the network to come up.");

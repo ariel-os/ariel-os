@@ -1,11 +1,9 @@
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
-#![feature(used_with_arg)]
 
 use ariel_os::{
     debug::log::*,
-    thread::{current_tid, sync::Channel, thread_flags, ThreadId},
+    thread::{ThreadId, current_tid, sync::Channel, thread_flags},
 };
 
 static ID_EXCHANGE: Channel<ThreadId> = Channel::new();

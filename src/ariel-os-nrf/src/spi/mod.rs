@@ -33,6 +33,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         } else if #[cfg(context = "nrf5340")] {
             let _ = peripherals.SERIAL2.take().unwrap();
             let _ = peripherals.SERIAL3.take().unwrap();
+        } else if #[cfg(context = "nrf91")] {
+            let _ = peripherals.SERIAL2.take().unwrap();
+            let _ = peripherals.SERIAL3.take().unwrap();
         } else {
             compile_error!("this nRF chip is not supported");
         }

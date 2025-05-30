@@ -2,11 +2,8 @@
 
 #![no_std]
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 // required for tests:
 #![cfg_attr(test, no_main)]
-#![cfg_attr(test, feature(impl_trait_in_assoc_type))]
-#![cfg_attr(test, feature(used_with_arg))]
 
 // With embedded-test enabled, this crate gets built *twice*, once regularly
 // as the system alloc it is supposed to be, and once as test application.
@@ -17,6 +14,9 @@ pub use alloc::init;
 
 #[cfg(not(test))]
 mod alloc {
+    const CONFIG_HEAPSIZE: usize =
+        ariel_os_utils::usize_from_env_or!("CONFIG_HEAPSIZE", 2048, "heap size (in bytes)");
+
     /// Initializes the heap.
     ///
     /// This is called by `ariel-os-rt` early during system initialization.
@@ -49,13 +49,17 @@ mod alloc {
         #[global_allocator]
         static HEAP: Heap = const { Heap::empty() };
 
-        extern "C" {
+        unsafe extern "C" {
             static __sheap: u32;
             static __eheap: u32;
         }
 
         let start = &raw const __sheap as usize;
         let size = &raw const __eheap as usize - start;
+
+        // No `const { assert!(..) }` here unfortunately due to the use of linker
+        // values.
+        assert!(size >= CONFIG_HEAPSIZE);
 
         debug!(
             "ariel-os-alloc: initializing heap with {} bytes at 0x{:x}",
@@ -74,13 +78,12 @@ mod alloc {
     unsafe fn init_esp_alloc() {
         use ariel_os_debug::log::debug;
 
-        // TODO: figure out amount of leftover memory
-        // 112k currently works on all our supported boards.
-        const HEAP_SIZE: usize = 112 * 1024;
+        debug!(
+            "ariel-os-alloc: initializing heap with {} bytes",
+            CONFIG_HEAPSIZE
+        );
 
-        debug!("ariel-os-alloc: initializing heap with {} bytes", HEAP_SIZE);
-
-        esp_alloc::heap_allocator!(HEAP_SIZE);
+        esp_alloc::heap_allocator!(CONFIG_HEAPSIZE);
     }
 
     /// Initializes **no** heap.
@@ -92,6 +95,9 @@ mod alloc {
     /// Not actually unsafe but we don't want the caller to get in trouble.
     #[cfg(not(any(context = "esp", context = "cortex-m")))]
     unsafe fn init_none() {
+        // mark used
+        let _ = CONFIG_HEAPSIZE;
+
         // compile-fail unless building docs etc.
         #[cfg(context = "ariel-os")]
         compile_error!("ariel-os-alloc: unsupported architecture!");

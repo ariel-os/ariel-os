@@ -1,14 +1,12 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal};
 
 use ariel_os::{
     asynch::{blocker, spawner},
-    debug::{exit, log::*, ExitCode},
-    time::{Duration, Instant, Timer},
+    debug::{ExitCode, exit, log::*},
+    time::{Instant, Timer},
 };
 
 static SIGNAL: Signal<CriticalSectionRawMutex, u32> = Signal::new();
@@ -23,7 +21,7 @@ async fn async_task() {
     loop {
         info!("async_task(): signaling, counter={}", counter);
         SIGNAL.signal(counter);
-        Timer::after(Duration::from_millis(100)).await;
+        Timer::after_millis(100).await;
         counter += 1;
     }
 }

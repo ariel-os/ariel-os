@@ -38,7 +38,7 @@ impl embedded_storage_async::nor_flash::ReadNorFlash for Flash {
         todo!()
     }
 }
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct FlashError;
 impl embedded_storage_async::nor_flash::NorFlashError for FlashError {
     fn kind(&self) -> embedded_storage_async::nor_flash::NorFlashErrorKind {

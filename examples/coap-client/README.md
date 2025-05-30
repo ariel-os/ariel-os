@@ -10,7 +10,7 @@ On the CoAP client side, security is work in progress and not available for the 
 
 ## Running
 
-* [Set up networking](../README.md).
+* [Set up networking](../README.md#networking).
 * In one terminal, run `pipx run ./server.py`, which runs the server for the embedded device to interact with.
 * Run on any board with networking, eg. `laze build -b particle-xenon run`.
 

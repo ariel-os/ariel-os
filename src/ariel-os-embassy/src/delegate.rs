@@ -1,5 +1,7 @@
 //! Delegate or lend an object to another task.
 
+use core::marker::PhantomData;
+
 use embassy_executor::Spawner;
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal};
 use portable_atomic::{AtomicBool, Ordering};
@@ -41,9 +43,10 @@ pub struct Delegate<T> {
     send: Signal<CriticalSectionRawMutex, SameExecutorCell<*mut T>>,
     reply: Signal<CriticalSectionRawMutex, ()>,
     was_exercised: AtomicBool,
+    _not_send: PhantomData<*const ()>,
 }
 
-impl<T> !Send for Delegate<T> {}
+unsafe impl<T> Sync for Delegate<T> {}
 
 impl<T> Delegate<T> {
     /// Creates a new [`Delegate`].
@@ -53,6 +56,7 @@ impl<T> Delegate<T> {
             send: Signal::new(),
             reply: Signal::new(),
             was_exercised: AtomicBool::new(false),
+            _not_send: PhantomData,
         }
     }
 

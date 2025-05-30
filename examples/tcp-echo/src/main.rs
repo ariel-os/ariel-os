@@ -1,7 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 use ariel_os::{debug::log::*, net, reexports::embassy_net, time::Duration};
 use embassy_net::tcp::TcpSocket;

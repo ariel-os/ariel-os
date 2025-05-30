@@ -3,7 +3,7 @@
 Ariel OS supports persistent storage on a number of boards.
 It provides a key–value pair store based on [sequential-storage].
 
-This storage module is responsible for setting up the the flash storage,
+This storage module is responsible for setting up the flash storage,
 and provides the functions to interact with the key–value pair store in the storage.
 
 ## Use Cases
@@ -66,7 +66,7 @@ especially at startup when there is the danger of endless writing
 due to a crash leading to a reboot.
 
 [sequential-storage]: https://crates.io/crates/sequential-storage
-[laze-modules-book]: ./build_system.md#laze-modules
+[laze-modules-book]: ./build-system.md#laze-modules
 [storage-example-repo]: https://github.com/ariel-os/ariel-os/tree/main/examples/storage
 [storage module]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/storage/index.html
 [serde-serialize]: https://docs.rs/serde/latest/serde/trait.Serialize.html

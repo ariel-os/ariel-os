@@ -1,7 +1,14 @@
 use embassy_stm32::rng::Rng;
 use embassy_stm32::{bind_interrupts, peripherals, rng};
 
-#[cfg(not(any(capability = "hw/stm32-hash-rng", capability = "hw/stm32-rng")))]
+#[cfg(not(any(
+    capability = "hw/stm32-aes-rng",
+    capability = "hw/stm32-aes-rng-lpuart1",
+    capability = "hw/stm32-hash-rng",
+    capability = "hw/stm32-rng",
+    capability = "hw/stm32-rng-cryp",
+    capability = "hw/stm32-rng-lpuart1",
+)))]
 compile_error!("no stm32 RNG capability selected");
 
 bind_interrupts!(struct Irqs {
@@ -20,22 +27,14 @@ bind_interrupts!(struct Irqs {
 });
 
 pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
-    cfg_if::cfg_if! {
-        // The union of all contexts that wind up in a construct_rng should be synchronized
-        // with laze-project.yml's hwrng module.
-        if #[cfg(any(context = "stm32"))] {
-            let rng = Rng::new(
-                peripherals
-                    .RNG
-                    // We don't even have to take it out, just use it to seed the RNG
-                    .as_mut()
-                    .expect("RNG has not been previously used"),
-                Irqs,
-            );
+    let rng = Rng::new(
+        peripherals
+            .RNG
+            // We don't even have to take it out, just use it to seed the RNG
+            .as_mut()
+            .expect("RNG has not been previously used"),
+        Irqs,
+    );
 
-            ariel_os_random::construct_rng(rng);
-        } else if #[cfg(context = "ariel-os")] {
-            compile_error!("hardware RNG is not supported on this MCU family");
-        }
-    }
+    ariel_os_random::construct_rng(rng);
 }

@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-debug"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -14,6 +14,7 @@ workspace = true
 ariel-os-debug-log = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-str = { workspace = true }
+critical-section = { workspace = true, optional = true }
 log = { workspace = true, optional = true }
 rtt-target = { workspace = true, optional = true }
 semihosting = { workspace = true, optional = true }
@@ -24,11 +25,14 @@ semihosting = { workspace = true, optional = true, features = [
 ] }
 
 [target.'cfg(context = "esp")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["log"] }
-log = { version = "0.4.20" }
+esp-println = { workspace = true, optional = true, features = [
+  "auto",
+  "colors",
+  "critical-section",
+] }
 
 [target.'cfg(context = "esp32")'.dependencies]
-esp-println = { workspace = true, features = ["esp32"] }
+esp-println = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["esp32c3"] }
@@ -47,7 +51,9 @@ defmt = [
   "esp-println?/defmt-espflash",
   "rtt-target?/defmt",
 ]
-log = ["dep:log", "ariel-os-debug-log/log"]
+log = ["dep:critical-section", "dep:log", "ariel-os-debug-log/log"]
 
-rtt-target = ["dep:rtt-target"]
 semihosting = ["dep:semihosting"]
+
+esp-println = ["dep:esp-println"]
+rtt-target = ["dep:rtt-target"]

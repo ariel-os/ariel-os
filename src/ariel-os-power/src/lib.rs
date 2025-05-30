@@ -1,6 +1,5 @@
 //! Provides power management functionality.
 
-#![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 #![no_std]
 

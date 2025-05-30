@@ -52,6 +52,8 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+          components: rust-src
+          targets: riscv32imac-unknown-none-elf
 
       - name: rust cache
         uses: Swatinem/rust-cache@v2
@@ -61,7 +63,7 @@ jobs:
       # faster generation.
       - name: Build rustdoc docs
         run: |
-          cargo doc \
+          RUSTDOCFLAGS='--cfg nightly' cargo doc \
               --no-deps \
               -p ariel-os \
               -p coapcore \
@@ -90,7 +92,7 @@ jobs:
                   usb-hid,
                   coapcore/_nightly_docs
                   "
-          RUSTDOCFLAGS='-D warnings --cfg context="esp32c6"' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly' cargo doc \
               --target=riscv32imac-unknown-none-elf \
               --no-deps \
               --features "
@@ -101,7 +103,7 @@ jobs:
                   spi,
                   " \
               -p ariel-os-esp
-          RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040"' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" --cfg nightly' cargo doc \
               --no-deps \
               --features "
                   embassy-rp/rp2040,
@@ -110,7 +112,7 @@ jobs:
                   spi,
                   " \
               -p ariel-os-rp
-          RUSTDOCFLAGS='-D warnings --cfg context="nrf52840"' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="nrf52840" --cfg nightly' cargo doc \
               --no-deps \
               --features "
                   embassy-nrf/nrf52840,
@@ -119,7 +121,7 @@ jobs:
                   spi,
                   " \
               -p ariel-os-nrf
-          RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rgvx"' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" --cfg nightly' cargo doc \
               --no-deps \
               --features "
                   embassy-stm32/stm32wb55rg,
@@ -140,8 +142,8 @@ jobs:
 
       - name: Check for unexpected cmdrun uses
         run: |
-            cd book
-            ./cmdrun-check.sh
+          cd book
+          ./cmdrun-check.sh
 
       - name: Build the book
         run: |
@@ -163,8 +165,8 @@ jobs:
         continue-on-error: true
         id: check
         run: |
-            hash="$(curl https://ariel-os.github.io/ariel-os/_hash | head -n 1)"
-            test "$hash" != "$(cat ./_site/_hash)"
+          hash="$(curl https://ariel-os.github.io/ariel-os/_hash | head -n 1)"
+          test "$hash" != "$(cat ./_site/_hash)"
 
       - name: Upload artifact (PR)
         if: github.event_name == 'pull_request' && steps.check.conclusion == 'success'

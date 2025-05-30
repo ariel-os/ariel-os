@@ -1,12 +1,13 @@
-use crate::{cleanup, Arch, Thread, SCHEDULER};
+use crate::{Arch, SCHEDULER, Thread, cleanup};
 #[cfg(context = "esp32c6")]
 use esp_hal::peripherals::INTPRI as SYSTEM;
 #[cfg(context = "esp32c3")]
 use esp_hal::peripherals::SYSTEM;
 use esp_hal::{
+    Cpu as EspHalCpu,
     interrupt::{self, TrapFrame},
     peripherals::Interrupt,
-    riscv, Cpu as EspHalCpu,
+    riscv,
 };
 
 pub struct Cpu;
@@ -104,8 +105,9 @@ fn copy_registers(src: &TrapFrame, dst: &mut TrapFrame) {
 }
 
 /// Handler for software interrupt 0, which we use for context switching.
+// SAFETY: symbol required by `esp-pacs`.
 #[allow(non_snake_case)]
-#[no_mangle]
+#[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
     unsafe {
         // clear FROM_CPU_INTR0

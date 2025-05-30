@@ -1,0 +1,4208 @@
+[package]
+name = "ariel-os-stm32-mapping"
+version = "0.2.0"
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+
+# BEGIN AUTO-GENERATED STM32 MAPPING
+[target.'cfg(context = "stm32c011d6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c011d6"] }
+
+[target.'cfg(context = "stm32c011f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c011f4"] }
+
+[target.'cfg(context = "stm32c011f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c011f6"] }
+
+[target.'cfg(context = "stm32c011j4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c011j4"] }
+
+[target.'cfg(context = "stm32c011j6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c011j6"] }
+
+[target.'cfg(context = "stm32c031c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031c4"] }
+
+[target.'cfg(context = "stm32c031c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031c6"] }
+
+[target.'cfg(context = "stm32c031f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031f4"] }
+
+[target.'cfg(context = "stm32c031f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031f6"] }
+
+[target.'cfg(context = "stm32c031g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031g4"] }
+
+[target.'cfg(context = "stm32c031g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031g6"] }
+
+[target.'cfg(context = "stm32c031k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031k4"] }
+
+[target.'cfg(context = "stm32c031k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32c031k6"] }
+
+[target.'cfg(context = "stm32f030c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030c6"] }
+
+[target.'cfg(context = "stm32f030c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030c8"] }
+
+[target.'cfg(context = "stm32f030cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030cc"] }
+
+[target.'cfg(context = "stm32f030f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030f4"] }
+
+[target.'cfg(context = "stm32f030k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030k6"] }
+
+[target.'cfg(context = "stm32f030r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030r8"] }
+
+[target.'cfg(context = "stm32f030rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f030rc"] }
+
+[target.'cfg(context = "stm32f031c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031c4"] }
+
+[target.'cfg(context = "stm32f031c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031c6"] }
+
+[target.'cfg(context = "stm32f031e6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031e6"] }
+
+[target.'cfg(context = "stm32f031f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031f4"] }
+
+[target.'cfg(context = "stm32f031f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031f6"] }
+
+[target.'cfg(context = "stm32f031g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031g4"] }
+
+[target.'cfg(context = "stm32f031g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031g6"] }
+
+[target.'cfg(context = "stm32f031k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031k4"] }
+
+[target.'cfg(context = "stm32f031k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f031k6"] }
+
+[target.'cfg(context = "stm32f038c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f038c6"] }
+
+[target.'cfg(context = "stm32f038e6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f038e6"] }
+
+[target.'cfg(context = "stm32f038f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f038f6"] }
+
+[target.'cfg(context = "stm32f038g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f038g6"] }
+
+[target.'cfg(context = "stm32f038k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f038k6"] }
+
+[target.'cfg(context = "stm32f042c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042c4"] }
+
+[target.'cfg(context = "stm32f042c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042c6"] }
+
+[target.'cfg(context = "stm32f042f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042f4"] }
+
+[target.'cfg(context = "stm32f042f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042f6"] }
+
+[target.'cfg(context = "stm32f042g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042g4"] }
+
+[target.'cfg(context = "stm32f042g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042g6"] }
+
+[target.'cfg(context = "stm32f042k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042k4"] }
+
+[target.'cfg(context = "stm32f042k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042k6"] }
+
+[target.'cfg(context = "stm32f042t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f042t6"] }
+
+[target.'cfg(context = "stm32f048c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f048c6"] }
+
+[target.'cfg(context = "stm32f048g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f048g6"] }
+
+[target.'cfg(context = "stm32f048t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f048t6"] }
+
+[target.'cfg(context = "stm32f051c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051c4"] }
+
+[target.'cfg(context = "stm32f051c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051c6"] }
+
+[target.'cfg(context = "stm32f051c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051c8"] }
+
+[target.'cfg(context = "stm32f051k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051k4"] }
+
+[target.'cfg(context = "stm32f051k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051k6"] }
+
+[target.'cfg(context = "stm32f051k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051k8"] }
+
+[target.'cfg(context = "stm32f051r4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051r4"] }
+
+[target.'cfg(context = "stm32f051r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051r6"] }
+
+[target.'cfg(context = "stm32f051r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051r8"] }
+
+[target.'cfg(context = "stm32f051t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f051t8"] }
+
+[target.'cfg(context = "stm32f058c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f058c8"] }
+
+[target.'cfg(context = "stm32f058r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f058r8"] }
+
+[target.'cfg(context = "stm32f058t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f058t8"] }
+
+[target.'cfg(context = "stm32f070c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f070c6"] }
+
+[target.'cfg(context = "stm32f070cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f070cb"] }
+
+[target.'cfg(context = "stm32f070f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f070f6"] }
+
+[target.'cfg(context = "stm32f070rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f070rb"] }
+
+[target.'cfg(context = "stm32f071c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f071c8"] }
+
+[target.'cfg(context = "stm32f071cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f071cb"] }
+
+[target.'cfg(context = "stm32f071rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f071rb"] }
+
+[target.'cfg(context = "stm32f071v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f071v8"] }
+
+[target.'cfg(context = "stm32f071vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f071vb"] }
+
+[target.'cfg(context = "stm32f072c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072c8"] }
+
+[target.'cfg(context = "stm32f072cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072cb"] }
+
+[target.'cfg(context = "stm32f072r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072r8"] }
+
+[target.'cfg(context = "stm32f072rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072rb"] }
+
+[target.'cfg(context = "stm32f072v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072v8"] }
+
+[target.'cfg(context = "stm32f072vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f072vb"] }
+
+[target.'cfg(context = "stm32f078cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f078cb"] }
+
+[target.'cfg(context = "stm32f078rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f078rb"] }
+
+[target.'cfg(context = "stm32f078vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f078vb"] }
+
+[target.'cfg(context = "stm32f091cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091cb"] }
+
+[target.'cfg(context = "stm32f091cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091cc"] }
+
+[target.'cfg(context = "stm32f091rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091rb"] }
+
+[target.'cfg(context = "stm32f091rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091rc"] }
+
+[target.'cfg(context = "stm32f091vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091vb"] }
+
+[target.'cfg(context = "stm32f091vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f091vc"] }
+
+[target.'cfg(context = "stm32f098cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f098cc"] }
+
+[target.'cfg(context = "stm32f098rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f098rc"] }
+
+[target.'cfg(context = "stm32f098vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f098vc"] }
+
+[target.'cfg(context = "stm32f100c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100c4"] }
+
+[target.'cfg(context = "stm32f100c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100c6"] }
+
+[target.'cfg(context = "stm32f100c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100c8"] }
+
+[target.'cfg(context = "stm32f100cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100cb"] }
+
+[target.'cfg(context = "stm32f100r4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100r4"] }
+
+[target.'cfg(context = "stm32f100r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100r6"] }
+
+[target.'cfg(context = "stm32f100r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100r8"] }
+
+[target.'cfg(context = "stm32f100rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100rb"] }
+
+[target.'cfg(context = "stm32f100rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100rc"] }
+
+[target.'cfg(context = "stm32f100rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100rd"] }
+
+[target.'cfg(context = "stm32f100re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100re"] }
+
+[target.'cfg(context = "stm32f100v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100v8"] }
+
+[target.'cfg(context = "stm32f100vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100vb"] }
+
+[target.'cfg(context = "stm32f100vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100vc"] }
+
+[target.'cfg(context = "stm32f100vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100vd"] }
+
+[target.'cfg(context = "stm32f100ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100ve"] }
+
+[target.'cfg(context = "stm32f100zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100zc"] }
+
+[target.'cfg(context = "stm32f100zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100zd"] }
+
+[target.'cfg(context = "stm32f100ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f100ze"] }
+
+[target.'cfg(context = "stm32f101c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101c4"] }
+
+[target.'cfg(context = "stm32f101c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101c6"] }
+
+[target.'cfg(context = "stm32f101c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101c8"] }
+
+[target.'cfg(context = "stm32f101cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101cb"] }
+
+[target.'cfg(context = "stm32f101r4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101r4"] }
+
+[target.'cfg(context = "stm32f101r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101r6"] }
+
+[target.'cfg(context = "stm32f101r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101r8"] }
+
+[target.'cfg(context = "stm32f101rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101rb"] }
+
+[target.'cfg(context = "stm32f101rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101rc"] }
+
+[target.'cfg(context = "stm32f101rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101rd"] }
+
+[target.'cfg(context = "stm32f101re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101re"] }
+
+[target.'cfg(context = "stm32f101rf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101rf"] }
+
+[target.'cfg(context = "stm32f101rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101rg"] }
+
+[target.'cfg(context = "stm32f101t4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101t4"] }
+
+[target.'cfg(context = "stm32f101t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101t6"] }
+
+[target.'cfg(context = "stm32f101t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101t8"] }
+
+[target.'cfg(context = "stm32f101tb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101tb"] }
+
+[target.'cfg(context = "stm32f101v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101v8"] }
+
+[target.'cfg(context = "stm32f101vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101vb"] }
+
+[target.'cfg(context = "stm32f101vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101vc"] }
+
+[target.'cfg(context = "stm32f101vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101vd"] }
+
+[target.'cfg(context = "stm32f101ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101ve"] }
+
+[target.'cfg(context = "stm32f101vf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101vf"] }
+
+[target.'cfg(context = "stm32f101vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101vg"] }
+
+[target.'cfg(context = "stm32f101zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101zc"] }
+
+[target.'cfg(context = "stm32f101zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101zd"] }
+
+[target.'cfg(context = "stm32f101ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101ze"] }
+
+[target.'cfg(context = "stm32f101zf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101zf"] }
+
+[target.'cfg(context = "stm32f101zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f101zg"] }
+
+[target.'cfg(context = "stm32f102c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102c4"] }
+
+[target.'cfg(context = "stm32f102c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102c6"] }
+
+[target.'cfg(context = "stm32f102c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102c8"] }
+
+[target.'cfg(context = "stm32f102cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102cb"] }
+
+[target.'cfg(context = "stm32f102r4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102r4"] }
+
+[target.'cfg(context = "stm32f102r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102r6"] }
+
+[target.'cfg(context = "stm32f102r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102r8"] }
+
+[target.'cfg(context = "stm32f102rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f102rb"] }
+
+[target.'cfg(context = "stm32f103c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103c4"] }
+
+[target.'cfg(context = "stm32f103c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103c6"] }
+
+[target.'cfg(context = "stm32f103c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103c8"] }
+
+[target.'cfg(context = "stm32f103cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103cb"] }
+
+[target.'cfg(context = "stm32f103r4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103r4"] }
+
+[target.'cfg(context = "stm32f103r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103r6"] }
+
+[target.'cfg(context = "stm32f103r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103r8"] }
+
+[target.'cfg(context = "stm32f103rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103rb"] }
+
+[target.'cfg(context = "stm32f103rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103rc"] }
+
+[target.'cfg(context = "stm32f103rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103rd"] }
+
+[target.'cfg(context = "stm32f103re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103re"] }
+
+[target.'cfg(context = "stm32f103rf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103rf"] }
+
+[target.'cfg(context = "stm32f103rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103rg"] }
+
+[target.'cfg(context = "stm32f103t4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103t4"] }
+
+[target.'cfg(context = "stm32f103t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103t6"] }
+
+[target.'cfg(context = "stm32f103t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103t8"] }
+
+[target.'cfg(context = "stm32f103tb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103tb"] }
+
+[target.'cfg(context = "stm32f103v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103v8"] }
+
+[target.'cfg(context = "stm32f103vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103vb"] }
+
+[target.'cfg(context = "stm32f103vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103vc"] }
+
+[target.'cfg(context = "stm32f103vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103vd"] }
+
+[target.'cfg(context = "stm32f103ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103ve"] }
+
+[target.'cfg(context = "stm32f103vf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103vf"] }
+
+[target.'cfg(context = "stm32f103vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103vg"] }
+
+[target.'cfg(context = "stm32f103zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103zc"] }
+
+[target.'cfg(context = "stm32f103zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103zd"] }
+
+[target.'cfg(context = "stm32f103ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103ze"] }
+
+[target.'cfg(context = "stm32f103zf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103zf"] }
+
+[target.'cfg(context = "stm32f103zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f103zg"] }
+
+[target.'cfg(context = "stm32f105r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105r8"] }
+
+[target.'cfg(context = "stm32f105rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105rb"] }
+
+[target.'cfg(context = "stm32f105rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105rc"] }
+
+[target.'cfg(context = "stm32f105v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105v8"] }
+
+[target.'cfg(context = "stm32f105vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105vb"] }
+
+[target.'cfg(context = "stm32f105vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f105vc"] }
+
+[target.'cfg(context = "stm32f107rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f107rb"] }
+
+[target.'cfg(context = "stm32f107rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f107rc"] }
+
+[target.'cfg(context = "stm32f107vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f107vb"] }
+
+[target.'cfg(context = "stm32f107vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f107vc"] }
+
+[target.'cfg(context = "stm32f205rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205rb"] }
+
+[target.'cfg(context = "stm32f205rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205rc"] }
+
+[target.'cfg(context = "stm32f205re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205re"] }
+
+[target.'cfg(context = "stm32f205rf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205rf"] }
+
+[target.'cfg(context = "stm32f205rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205rg"] }
+
+[target.'cfg(context = "stm32f205vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205vb"] }
+
+[target.'cfg(context = "stm32f205vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205vc"] }
+
+[target.'cfg(context = "stm32f205ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205ve"] }
+
+[target.'cfg(context = "stm32f205vf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205vf"] }
+
+[target.'cfg(context = "stm32f205vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205vg"] }
+
+[target.'cfg(context = "stm32f205zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205zc"] }
+
+[target.'cfg(context = "stm32f205ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205ze"] }
+
+[target.'cfg(context = "stm32f205zf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205zf"] }
+
+[target.'cfg(context = "stm32f205zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f205zg"] }
+
+[target.'cfg(context = "stm32f207ic")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207ic"] }
+
+[target.'cfg(context = "stm32f207ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207ie"] }
+
+[target.'cfg(context = "stm32f207if")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207if"] }
+
+[target.'cfg(context = "stm32f207ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207ig"] }
+
+[target.'cfg(context = "stm32f207vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207vc"] }
+
+[target.'cfg(context = "stm32f207ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207ve"] }
+
+[target.'cfg(context = "stm32f207vf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207vf"] }
+
+[target.'cfg(context = "stm32f207vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207vg"] }
+
+[target.'cfg(context = "stm32f207zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207zc"] }
+
+[target.'cfg(context = "stm32f207ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207ze"] }
+
+[target.'cfg(context = "stm32f207zf")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207zf"] }
+
+[target.'cfg(context = "stm32f207zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f207zg"] }
+
+[target.'cfg(context = "stm32f215re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215re"] }
+
+[target.'cfg(context = "stm32f215rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215rg"] }
+
+[target.'cfg(context = "stm32f215ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215ve"] }
+
+[target.'cfg(context = "stm32f215vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215vg"] }
+
+[target.'cfg(context = "stm32f215ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215ze"] }
+
+[target.'cfg(context = "stm32f215zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f215zg"] }
+
+[target.'cfg(context = "stm32f217ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217ie"] }
+
+[target.'cfg(context = "stm32f217ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217ig"] }
+
+[target.'cfg(context = "stm32f217ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217ve"] }
+
+[target.'cfg(context = "stm32f217vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217vg"] }
+
+[target.'cfg(context = "stm32f217ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217ze"] }
+
+[target.'cfg(context = "stm32f217zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f217zg"] }
+
+[target.'cfg(context = "stm32f301c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301c6"] }
+
+[target.'cfg(context = "stm32f301c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301c8"] }
+
+[target.'cfg(context = "stm32f301k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301k6"] }
+
+[target.'cfg(context = "stm32f301k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301k8"] }
+
+[target.'cfg(context = "stm32f301r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301r6"] }
+
+[target.'cfg(context = "stm32f301r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f301r8"] }
+
+[target.'cfg(context = "stm32f302c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302c6"] }
+
+[target.'cfg(context = "stm32f302c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302c8"] }
+
+[target.'cfg(context = "stm32f302cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302cb"] }
+
+[target.'cfg(context = "stm32f302cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302cc"] }
+
+[target.'cfg(context = "stm32f302k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302k6"] }
+
+[target.'cfg(context = "stm32f302k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302k8"] }
+
+[target.'cfg(context = "stm32f302r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302r6"] }
+
+[target.'cfg(context = "stm32f302r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302r8"] }
+
+[target.'cfg(context = "stm32f302rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302rb"] }
+
+[target.'cfg(context = "stm32f302rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302rc"] }
+
+[target.'cfg(context = "stm32f302rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302rd"] }
+
+[target.'cfg(context = "stm32f302re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302re"] }
+
+[target.'cfg(context = "stm32f302vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302vb"] }
+
+[target.'cfg(context = "stm32f302vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302vc"] }
+
+[target.'cfg(context = "stm32f302vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302vd"] }
+
+[target.'cfg(context = "stm32f302ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302ve"] }
+
+[target.'cfg(context = "stm32f302zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302zd"] }
+
+[target.'cfg(context = "stm32f302ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f302ze"] }
+
+[target.'cfg(context = "stm32f303c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303c6"] }
+
+[target.'cfg(context = "stm32f303c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303c8"] }
+
+[target.'cfg(context = "stm32f303cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303cb"] }
+
+[target.'cfg(context = "stm32f303cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303cc"] }
+
+[target.'cfg(context = "stm32f303k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303k6"] }
+
+[target.'cfg(context = "stm32f303k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303k8"] }
+
+[target.'cfg(context = "stm32f303r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303r6"] }
+
+[target.'cfg(context = "stm32f303r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303r8"] }
+
+[target.'cfg(context = "stm32f303rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303rb"] }
+
+[target.'cfg(context = "stm32f303rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303rc"] }
+
+[target.'cfg(context = "stm32f303rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303rd"] }
+
+[target.'cfg(context = "stm32f303re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303re"] }
+
+[target.'cfg(context = "stm32f303vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303vb"] }
+
+[target.'cfg(context = "stm32f303vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303vc"] }
+
+[target.'cfg(context = "stm32f303vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303vd"] }
+
+[target.'cfg(context = "stm32f303ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303ve"] }
+
+[target.'cfg(context = "stm32f303zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303zd"] }
+
+[target.'cfg(context = "stm32f303ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f303ze"] }
+
+[target.'cfg(context = "stm32f318c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f318c8"] }
+
+[target.'cfg(context = "stm32f318k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f318k8"] }
+
+[target.'cfg(context = "stm32f328c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f328c8"] }
+
+[target.'cfg(context = "stm32f334c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334c4"] }
+
+[target.'cfg(context = "stm32f334c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334c6"] }
+
+[target.'cfg(context = "stm32f334c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334c8"] }
+
+[target.'cfg(context = "stm32f334k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334k4"] }
+
+[target.'cfg(context = "stm32f334k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334k6"] }
+
+[target.'cfg(context = "stm32f334k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334k8"] }
+
+[target.'cfg(context = "stm32f334r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334r6"] }
+
+[target.'cfg(context = "stm32f334r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f334r8"] }
+
+[target.'cfg(context = "stm32f358cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f358cc"] }
+
+[target.'cfg(context = "stm32f358rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f358rc"] }
+
+[target.'cfg(context = "stm32f358vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f358vc"] }
+
+[target.'cfg(context = "stm32f373c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373c8"] }
+
+[target.'cfg(context = "stm32f373cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373cb"] }
+
+[target.'cfg(context = "stm32f373cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373cc"] }
+
+[target.'cfg(context = "stm32f373r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373r8"] }
+
+[target.'cfg(context = "stm32f373rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373rb"] }
+
+[target.'cfg(context = "stm32f373rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373rc"] }
+
+[target.'cfg(context = "stm32f373v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373v8"] }
+
+[target.'cfg(context = "stm32f373vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373vb"] }
+
+[target.'cfg(context = "stm32f373vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f373vc"] }
+
+[target.'cfg(context = "stm32f378cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f378cc"] }
+
+[target.'cfg(context = "stm32f378rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f378rc"] }
+
+[target.'cfg(context = "stm32f378vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f378vc"] }
+
+[target.'cfg(context = "stm32f398ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f398ve"] }
+
+[target.'cfg(context = "stm32f401cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401cb"] }
+
+[target.'cfg(context = "stm32f401cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401cc"] }
+
+[target.'cfg(context = "stm32f401cd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401cd"] }
+
+[target.'cfg(context = "stm32f401ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401ce"] }
+
+[target.'cfg(context = "stm32f401rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401rb"] }
+
+[target.'cfg(context = "stm32f401rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401rc"] }
+
+[target.'cfg(context = "stm32f401rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401rd"] }
+
+[target.'cfg(context = "stm32f401re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401re"] }
+
+[target.'cfg(context = "stm32f401vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401vb"] }
+
+[target.'cfg(context = "stm32f401vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401vc"] }
+
+[target.'cfg(context = "stm32f401vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401vd"] }
+
+[target.'cfg(context = "stm32f401ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f401ve"] }
+
+[target.'cfg(context = "stm32f405oe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f405oe"] }
+
+[target.'cfg(context = "stm32f405og")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f405og"] }
+
+[target.'cfg(context = "stm32f405rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f405rg"] }
+
+[target.'cfg(context = "stm32f405vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f405vg"] }
+
+[target.'cfg(context = "stm32f405zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f405zg"] }
+
+[target.'cfg(context = "stm32f407ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407ie"] }
+
+[target.'cfg(context = "stm32f407ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407ig"] }
+
+[target.'cfg(context = "stm32f407ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407ve"] }
+
+[target.'cfg(context = "stm32f407vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407vg"] }
+
+[target.'cfg(context = "stm32f407ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407ze"] }
+
+[target.'cfg(context = "stm32f407zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f407zg"] }
+
+[target.'cfg(context = "stm32f410c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410c8"] }
+
+[target.'cfg(context = "stm32f410cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410cb"] }
+
+[target.'cfg(context = "stm32f410r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410r8"] }
+
+[target.'cfg(context = "stm32f410rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410rb"] }
+
+[target.'cfg(context = "stm32f410t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410t8"] }
+
+[target.'cfg(context = "stm32f410tb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f410tb"] }
+
+[target.'cfg(context = "stm32f411cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411cc"] }
+
+[target.'cfg(context = "stm32f411ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411ce"] }
+
+[target.'cfg(context = "stm32f411rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411rc"] }
+
+[target.'cfg(context = "stm32f411re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411re"] }
+
+[target.'cfg(context = "stm32f411vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411vc"] }
+
+[target.'cfg(context = "stm32f411ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f411ve"] }
+
+[target.'cfg(context = "stm32f412ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412ce"] }
+
+[target.'cfg(context = "stm32f412cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412cg"] }
+
+[target.'cfg(context = "stm32f412re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412re"] }
+
+[target.'cfg(context = "stm32f412rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412rg"] }
+
+[target.'cfg(context = "stm32f412ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412ve"] }
+
+[target.'cfg(context = "stm32f412vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412vg"] }
+
+[target.'cfg(context = "stm32f412ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412ze"] }
+
+[target.'cfg(context = "stm32f412zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f412zg"] }
+
+[target.'cfg(context = "stm32f413cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413cg"] }
+
+[target.'cfg(context = "stm32f413ch")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413ch"] }
+
+[target.'cfg(context = "stm32f413mg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413mg"] }
+
+[target.'cfg(context = "stm32f413mh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413mh"] }
+
+[target.'cfg(context = "stm32f413rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413rg"] }
+
+[target.'cfg(context = "stm32f413rh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413rh"] }
+
+[target.'cfg(context = "stm32f413vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413vg"] }
+
+[target.'cfg(context = "stm32f413vh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413vh"] }
+
+[target.'cfg(context = "stm32f413zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413zg"] }
+
+[target.'cfg(context = "stm32f413zh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f413zh"] }
+
+[target.'cfg(context = "stm32f415og")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f415og"] }
+
+[target.'cfg(context = "stm32f415rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f415rg"] }
+
+[target.'cfg(context = "stm32f415vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f415vg"] }
+
+[target.'cfg(context = "stm32f415zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f415zg"] }
+
+[target.'cfg(context = "stm32f417ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417ie"] }
+
+[target.'cfg(context = "stm32f417ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417ig"] }
+
+[target.'cfg(context = "stm32f417ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417ve"] }
+
+[target.'cfg(context = "stm32f417vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417vg"] }
+
+[target.'cfg(context = "stm32f417ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417ze"] }
+
+[target.'cfg(context = "stm32f417zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f417zg"] }
+
+[target.'cfg(context = "stm32f423ch")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f423ch"] }
+
+[target.'cfg(context = "stm32f423mh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f423mh"] }
+
+[target.'cfg(context = "stm32f423rh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f423rh"] }
+
+[target.'cfg(context = "stm32f423vh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f423vh"] }
+
+[target.'cfg(context = "stm32f423zh")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f423zh"] }
+
+[target.'cfg(context = "stm32f427ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427ag"] }
+
+[target.'cfg(context = "stm32f427ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427ai"] }
+
+[target.'cfg(context = "stm32f427ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427ig"] }
+
+[target.'cfg(context = "stm32f427ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427ii"] }
+
+[target.'cfg(context = "stm32f427vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427vg"] }
+
+[target.'cfg(context = "stm32f427vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427vi"] }
+
+[target.'cfg(context = "stm32f427zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427zg"] }
+
+[target.'cfg(context = "stm32f427zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f427zi"] }
+
+[target.'cfg(context = "stm32f429ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ag"] }
+
+[target.'cfg(context = "stm32f429ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ai"] }
+
+[target.'cfg(context = "stm32f429be")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429be"] }
+
+[target.'cfg(context = "stm32f429bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429bg"] }
+
+[target.'cfg(context = "stm32f429bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429bi"] }
+
+[target.'cfg(context = "stm32f429ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ie"] }
+
+[target.'cfg(context = "stm32f429ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ig"] }
+
+[target.'cfg(context = "stm32f429ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ii"] }
+
+[target.'cfg(context = "stm32f429ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ne"] }
+
+[target.'cfg(context = "stm32f429ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ng"] }
+
+[target.'cfg(context = "stm32f429ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ni"] }
+
+[target.'cfg(context = "stm32f429ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ve"] }
+
+[target.'cfg(context = "stm32f429vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429vg"] }
+
+[target.'cfg(context = "stm32f429vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429vi"] }
+
+[target.'cfg(context = "stm32f429ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429ze"] }
+
+[target.'cfg(context = "stm32f429zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429zg"] }
+
+[target.'cfg(context = "stm32f429zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f429zi"] }
+
+[target.'cfg(context = "stm32f437ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437ai"] }
+
+[target.'cfg(context = "stm32f437ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437ig"] }
+
+[target.'cfg(context = "stm32f437ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437ii"] }
+
+[target.'cfg(context = "stm32f437vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437vg"] }
+
+[target.'cfg(context = "stm32f437vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437vi"] }
+
+[target.'cfg(context = "stm32f437zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437zg"] }
+
+[target.'cfg(context = "stm32f437zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f437zi"] }
+
+[target.'cfg(context = "stm32f439ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439ai"] }
+
+[target.'cfg(context = "stm32f439bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439bg"] }
+
+[target.'cfg(context = "stm32f439bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439bi"] }
+
+[target.'cfg(context = "stm32f439ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439ig"] }
+
+[target.'cfg(context = "stm32f439ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439ii"] }
+
+[target.'cfg(context = "stm32f439ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439ng"] }
+
+[target.'cfg(context = "stm32f439ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439ni"] }
+
+[target.'cfg(context = "stm32f439vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439vg"] }
+
+[target.'cfg(context = "stm32f439vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439vi"] }
+
+[target.'cfg(context = "stm32f439zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439zg"] }
+
+[target.'cfg(context = "stm32f439zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f439zi"] }
+
+[target.'cfg(context = "stm32f446mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446mc"] }
+
+[target.'cfg(context = "stm32f446me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446me"] }
+
+[target.'cfg(context = "stm32f446rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446rc"] }
+
+[target.'cfg(context = "stm32f446re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446re"] }
+
+[target.'cfg(context = "stm32f446vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446vc"] }
+
+[target.'cfg(context = "stm32f446ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446ve"] }
+
+[target.'cfg(context = "stm32f446zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446zc"] }
+
+[target.'cfg(context = "stm32f446ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f446ze"] }
+
+[target.'cfg(context = "stm32f469ae")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ae"] }
+
+[target.'cfg(context = "stm32f469ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ag"] }
+
+[target.'cfg(context = "stm32f469ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ai"] }
+
+[target.'cfg(context = "stm32f469be")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469be"] }
+
+[target.'cfg(context = "stm32f469bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469bg"] }
+
+[target.'cfg(context = "stm32f469bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469bi"] }
+
+[target.'cfg(context = "stm32f469ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ie"] }
+
+[target.'cfg(context = "stm32f469ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ig"] }
+
+[target.'cfg(context = "stm32f469ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ii"] }
+
+[target.'cfg(context = "stm32f469ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ne"] }
+
+[target.'cfg(context = "stm32f469ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ng"] }
+
+[target.'cfg(context = "stm32f469ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ni"] }
+
+[target.'cfg(context = "stm32f469ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ve"] }
+
+[target.'cfg(context = "stm32f469vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469vg"] }
+
+[target.'cfg(context = "stm32f469vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469vi"] }
+
+[target.'cfg(context = "stm32f469ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469ze"] }
+
+[target.'cfg(context = "stm32f469zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469zg"] }
+
+[target.'cfg(context = "stm32f469zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f469zi"] }
+
+[target.'cfg(context = "stm32f479ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ag"] }
+
+[target.'cfg(context = "stm32f479ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ai"] }
+
+[target.'cfg(context = "stm32f479bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479bg"] }
+
+[target.'cfg(context = "stm32f479bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479bi"] }
+
+[target.'cfg(context = "stm32f479ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ig"] }
+
+[target.'cfg(context = "stm32f479ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ii"] }
+
+[target.'cfg(context = "stm32f479ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ng"] }
+
+[target.'cfg(context = "stm32f479ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479ni"] }
+
+[target.'cfg(context = "stm32f479vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479vg"] }
+
+[target.'cfg(context = "stm32f479vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479vi"] }
+
+[target.'cfg(context = "stm32f479zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479zg"] }
+
+[target.'cfg(context = "stm32f479zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f479zi"] }
+
+[target.'cfg(context = "stm32f722ic")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722ic"] }
+
+[target.'cfg(context = "stm32f722ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722ie"] }
+
+[target.'cfg(context = "stm32f722rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722rc"] }
+
+[target.'cfg(context = "stm32f722re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722re"] }
+
+[target.'cfg(context = "stm32f722vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722vc"] }
+
+[target.'cfg(context = "stm32f722ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722ve"] }
+
+[target.'cfg(context = "stm32f722zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722zc"] }
+
+[target.'cfg(context = "stm32f722ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f722ze"] }
+
+[target.'cfg(context = "stm32f723ic")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723ic"] }
+
+[target.'cfg(context = "stm32f723ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723ie"] }
+
+[target.'cfg(context = "stm32f723vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723vc"] }
+
+[target.'cfg(context = "stm32f723ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723ve"] }
+
+[target.'cfg(context = "stm32f723zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723zc"] }
+
+[target.'cfg(context = "stm32f723ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f723ze"] }
+
+[target.'cfg(context = "stm32f730i8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f730i8"] }
+
+[target.'cfg(context = "stm32f730r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f730r8"] }
+
+[target.'cfg(context = "stm32f730v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f730v8"] }
+
+[target.'cfg(context = "stm32f730z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f730z8"] }
+
+[target.'cfg(context = "stm32f732ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f732ie"] }
+
+[target.'cfg(context = "stm32f732re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f732re"] }
+
+[target.'cfg(context = "stm32f732ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f732ve"] }
+
+[target.'cfg(context = "stm32f732ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f732ze"] }
+
+[target.'cfg(context = "stm32f733ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f733ie"] }
+
+[target.'cfg(context = "stm32f733ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f733ve"] }
+
+[target.'cfg(context = "stm32f733ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f733ze"] }
+
+[target.'cfg(context = "stm32f745ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745ie"] }
+
+[target.'cfg(context = "stm32f745ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745ig"] }
+
+[target.'cfg(context = "stm32f745ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745ve"] }
+
+[target.'cfg(context = "stm32f745vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745vg"] }
+
+[target.'cfg(context = "stm32f745ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745ze"] }
+
+[target.'cfg(context = "stm32f745zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f745zg"] }
+
+[target.'cfg(context = "stm32f746be")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746be"] }
+
+[target.'cfg(context = "stm32f746bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746bg"] }
+
+[target.'cfg(context = "stm32f746ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ie"] }
+
+[target.'cfg(context = "stm32f746ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ig"] }
+
+[target.'cfg(context = "stm32f746ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ne"] }
+
+[target.'cfg(context = "stm32f746ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ng"] }
+
+[target.'cfg(context = "stm32f746ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ve"] }
+
+[target.'cfg(context = "stm32f746vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746vg"] }
+
+[target.'cfg(context = "stm32f746ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746ze"] }
+
+[target.'cfg(context = "stm32f746zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f746zg"] }
+
+[target.'cfg(context = "stm32f750n8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f750n8"] }
+
+[target.'cfg(context = "stm32f750v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f750v8"] }
+
+[target.'cfg(context = "stm32f750z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f750z8"] }
+
+[target.'cfg(context = "stm32f756bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f756bg"] }
+
+[target.'cfg(context = "stm32f756ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f756ig"] }
+
+[target.'cfg(context = "stm32f756ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f756ng"] }
+
+[target.'cfg(context = "stm32f756vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f756vg"] }
+
+[target.'cfg(context = "stm32f756zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f756zg"] }
+
+[target.'cfg(context = "stm32f765bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765bg"] }
+
+[target.'cfg(context = "stm32f765bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765bi"] }
+
+[target.'cfg(context = "stm32f765ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765ig"] }
+
+[target.'cfg(context = "stm32f765ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765ii"] }
+
+[target.'cfg(context = "stm32f765ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765ng"] }
+
+[target.'cfg(context = "stm32f765ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765ni"] }
+
+[target.'cfg(context = "stm32f765vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765vg"] }
+
+[target.'cfg(context = "stm32f765vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765vi"] }
+
+[target.'cfg(context = "stm32f765zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765zg"] }
+
+[target.'cfg(context = "stm32f765zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f765zi"] }
+
+[target.'cfg(context = "stm32f767bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767bg"] }
+
+[target.'cfg(context = "stm32f767bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767bi"] }
+
+[target.'cfg(context = "stm32f767ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767ig"] }
+
+[target.'cfg(context = "stm32f767ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767ii"] }
+
+[target.'cfg(context = "stm32f767ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767ng"] }
+
+[target.'cfg(context = "stm32f767ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767ni"] }
+
+[target.'cfg(context = "stm32f767vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767vg"] }
+
+[target.'cfg(context = "stm32f767vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767vi"] }
+
+[target.'cfg(context = "stm32f767zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767zg"] }
+
+[target.'cfg(context = "stm32f767zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f767zi"] }
+
+[target.'cfg(context = "stm32f768ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f768ai"] }
+
+[target.'cfg(context = "stm32f769ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ag"] }
+
+[target.'cfg(context = "stm32f769ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ai"] }
+
+[target.'cfg(context = "stm32f769bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769bg"] }
+
+[target.'cfg(context = "stm32f769bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769bi"] }
+
+[target.'cfg(context = "stm32f769ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ig"] }
+
+[target.'cfg(context = "stm32f769ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ii"] }
+
+[target.'cfg(context = "stm32f769ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ng"] }
+
+[target.'cfg(context = "stm32f769ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f769ni"] }
+
+[target.'cfg(context = "stm32f777bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f777bi"] }
+
+[target.'cfg(context = "stm32f777ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f777ii"] }
+
+[target.'cfg(context = "stm32f777ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f777ni"] }
+
+[target.'cfg(context = "stm32f777vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f777vi"] }
+
+[target.'cfg(context = "stm32f777zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f777zi"] }
+
+[target.'cfg(context = "stm32f778ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f778ai"] }
+
+[target.'cfg(context = "stm32f779ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f779ai"] }
+
+[target.'cfg(context = "stm32f779bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f779bi"] }
+
+[target.'cfg(context = "stm32f779ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f779ii"] }
+
+[target.'cfg(context = "stm32f779ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32f779ni"] }
+
+[target.'cfg(context = "stm32g030c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030c6"] }
+
+[target.'cfg(context = "stm32g030c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030c8"] }
+
+[target.'cfg(context = "stm32g030f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030f6"] }
+
+[target.'cfg(context = "stm32g030j6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030j6"] }
+
+[target.'cfg(context = "stm32g030k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030k6"] }
+
+[target.'cfg(context = "stm32g030k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g030k8"] }
+
+[target.'cfg(context = "stm32g031c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031c4"] }
+
+[target.'cfg(context = "stm32g031c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031c6"] }
+
+[target.'cfg(context = "stm32g031c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031c8"] }
+
+[target.'cfg(context = "stm32g031f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031f4"] }
+
+[target.'cfg(context = "stm32g031f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031f6"] }
+
+[target.'cfg(context = "stm32g031f8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031f8"] }
+
+[target.'cfg(context = "stm32g031g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031g4"] }
+
+[target.'cfg(context = "stm32g031g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031g6"] }
+
+[target.'cfg(context = "stm32g031g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031g8"] }
+
+[target.'cfg(context = "stm32g031j4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031j4"] }
+
+[target.'cfg(context = "stm32g031j6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031j6"] }
+
+[target.'cfg(context = "stm32g031k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031k4"] }
+
+[target.'cfg(context = "stm32g031k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031k6"] }
+
+[target.'cfg(context = "stm32g031k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031k8"] }
+
+[target.'cfg(context = "stm32g031y8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g031y8"] }
+
+[target.'cfg(context = "stm32g041c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041c6"] }
+
+[target.'cfg(context = "stm32g041c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041c8"] }
+
+[target.'cfg(context = "stm32g041f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041f6"] }
+
+[target.'cfg(context = "stm32g041f8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041f8"] }
+
+[target.'cfg(context = "stm32g041g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041g6"] }
+
+[target.'cfg(context = "stm32g041g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041g8"] }
+
+[target.'cfg(context = "stm32g041j6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041j6"] }
+
+[target.'cfg(context = "stm32g041k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041k6"] }
+
+[target.'cfg(context = "stm32g041k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041k8"] }
+
+[target.'cfg(context = "stm32g041y8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g041y8"] }
+
+[target.'cfg(context = "stm32g050c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g050c6"] }
+
+[target.'cfg(context = "stm32g050c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g050c8"] }
+
+[target.'cfg(context = "stm32g050f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g050f6"] }
+
+[target.'cfg(context = "stm32g050k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g050k6"] }
+
+[target.'cfg(context = "stm32g050k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g050k8"] }
+
+[target.'cfg(context = "stm32g051c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051c6"] }
+
+[target.'cfg(context = "stm32g051c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051c8"] }
+
+[target.'cfg(context = "stm32g051f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051f6"] }
+
+[target.'cfg(context = "stm32g051f8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051f8"] }
+
+[target.'cfg(context = "stm32g051g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051g6"] }
+
+[target.'cfg(context = "stm32g051g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051g8"] }
+
+[target.'cfg(context = "stm32g051k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051k6"] }
+
+[target.'cfg(context = "stm32g051k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g051k8"] }
+
+[target.'cfg(context = "stm32g061c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061c6"] }
+
+[target.'cfg(context = "stm32g061c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061c8"] }
+
+[target.'cfg(context = "stm32g061f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061f6"] }
+
+[target.'cfg(context = "stm32g061f8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061f8"] }
+
+[target.'cfg(context = "stm32g061g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061g6"] }
+
+[target.'cfg(context = "stm32g061g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061g8"] }
+
+[target.'cfg(context = "stm32g061k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061k6"] }
+
+[target.'cfg(context = "stm32g061k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g061k8"] }
+
+[target.'cfg(context = "stm32g070cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g070cb"] }
+
+[target.'cfg(context = "stm32g070kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g070kb"] }
+
+[target.'cfg(context = "stm32g070rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g070rb"] }
+
+[target.'cfg(context = "stm32g071c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071c6"] }
+
+[target.'cfg(context = "stm32g071c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071c8"] }
+
+[target.'cfg(context = "stm32g071cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071cb"] }
+
+[target.'cfg(context = "stm32g071eb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071eb"] }
+
+[target.'cfg(context = "stm32g071g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071g6"] }
+
+[target.'cfg(context = "stm32g071g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071g8"] }
+
+[target.'cfg(context = "stm32g071gb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071gb"] }
+
+[target.'cfg(context = "stm32g071k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071k6"] }
+
+[target.'cfg(context = "stm32g071k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071k8"] }
+
+[target.'cfg(context = "stm32g071kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071kb"] }
+
+[target.'cfg(context = "stm32g071r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071r6"] }
+
+[target.'cfg(context = "stm32g071r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071r8"] }
+
+[target.'cfg(context = "stm32g071rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g071rb"] }
+
+[target.'cfg(context = "stm32g081cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g081cb"] }
+
+[target.'cfg(context = "stm32g081eb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g081eb"] }
+
+[target.'cfg(context = "stm32g081gb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g081gb"] }
+
+[target.'cfg(context = "stm32g081kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g081kb"] }
+
+[target.'cfg(context = "stm32g081rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g081rb"] }
+
+[target.'cfg(context = "stm32g0b0ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b0ce"] }
+
+[target.'cfg(context = "stm32g0b0ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b0ke"] }
+
+[target.'cfg(context = "stm32g0b0re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b0re"] }
+
+[target.'cfg(context = "stm32g0b0ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b0ve"] }
+
+[target.'cfg(context = "stm32g0b1cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1cb"] }
+
+[target.'cfg(context = "stm32g0b1cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1cc"] }
+
+[target.'cfg(context = "stm32g0b1ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1ce"] }
+
+[target.'cfg(context = "stm32g0b1kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1kb"] }
+
+[target.'cfg(context = "stm32g0b1kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1kc"] }
+
+[target.'cfg(context = "stm32g0b1ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1ke"] }
+
+[target.'cfg(context = "stm32g0b1mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1mb"] }
+
+[target.'cfg(context = "stm32g0b1mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1mc"] }
+
+[target.'cfg(context = "stm32g0b1me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1me"] }
+
+[target.'cfg(context = "stm32g0b1ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1ne"] }
+
+[target.'cfg(context = "stm32g0b1rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1rb"] }
+
+[target.'cfg(context = "stm32g0b1rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1rc"] }
+
+[target.'cfg(context = "stm32g0b1re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1re"] }
+
+[target.'cfg(context = "stm32g0b1vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1vb"] }
+
+[target.'cfg(context = "stm32g0b1vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1vc"] }
+
+[target.'cfg(context = "stm32g0b1ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0b1ve"] }
+
+[target.'cfg(context = "stm32g0c1cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1cc"] }
+
+[target.'cfg(context = "stm32g0c1ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1ce"] }
+
+[target.'cfg(context = "stm32g0c1kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1kc"] }
+
+[target.'cfg(context = "stm32g0c1ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1ke"] }
+
+[target.'cfg(context = "stm32g0c1mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1mc"] }
+
+[target.'cfg(context = "stm32g0c1me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1me"] }
+
+[target.'cfg(context = "stm32g0c1ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1ne"] }
+
+[target.'cfg(context = "stm32g0c1rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1rc"] }
+
+[target.'cfg(context = "stm32g0c1re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1re"] }
+
+[target.'cfg(context = "stm32g0c1vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1vc"] }
+
+[target.'cfg(context = "stm32g0c1ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g0c1ve"] }
+
+[target.'cfg(context = "stm32g431c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431c6"] }
+
+[target.'cfg(context = "stm32g431c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431c8"] }
+
+[target.'cfg(context = "stm32g431cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431cb"] }
+
+[target.'cfg(context = "stm32g431k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431k6"] }
+
+[target.'cfg(context = "stm32g431k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431k8"] }
+
+[target.'cfg(context = "stm32g431kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431kb"] }
+
+[target.'cfg(context = "stm32g431m6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431m6"] }
+
+[target.'cfg(context = "stm32g431m8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431m8"] }
+
+[target.'cfg(context = "stm32g431mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431mb"] }
+
+[target.'cfg(context = "stm32g431r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431r6"] }
+
+[target.'cfg(context = "stm32g431r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431r8"] }
+
+[target.'cfg(context = "stm32g431rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431rb"] }
+
+[target.'cfg(context = "stm32g431v6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431v6"] }
+
+[target.'cfg(context = "stm32g431v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431v8"] }
+
+[target.'cfg(context = "stm32g431vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g431vb"] }
+
+[target.'cfg(context = "stm32g441cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g441cb"] }
+
+[target.'cfg(context = "stm32g441kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g441kb"] }
+
+[target.'cfg(context = "stm32g441mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g441mb"] }
+
+[target.'cfg(context = "stm32g441rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g441rb"] }
+
+[target.'cfg(context = "stm32g441vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g441vb"] }
+
+[target.'cfg(context = "stm32g471cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471cc"] }
+
+[target.'cfg(context = "stm32g471ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471ce"] }
+
+[target.'cfg(context = "stm32g471mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471mc"] }
+
+[target.'cfg(context = "stm32g471me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471me"] }
+
+[target.'cfg(context = "stm32g471qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471qc"] }
+
+[target.'cfg(context = "stm32g471qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471qe"] }
+
+[target.'cfg(context = "stm32g471rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471rc"] }
+
+[target.'cfg(context = "stm32g471re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471re"] }
+
+[target.'cfg(context = "stm32g471vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471vc"] }
+
+[target.'cfg(context = "stm32g471ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g471ve"] }
+
+[target.'cfg(context = "stm32g473cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473cb"] }
+
+[target.'cfg(context = "stm32g473cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473cc"] }
+
+[target.'cfg(context = "stm32g473ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473ce"] }
+
+[target.'cfg(context = "stm32g473mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473mb"] }
+
+[target.'cfg(context = "stm32g473mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473mc"] }
+
+[target.'cfg(context = "stm32g473me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473me"] }
+
+[target.'cfg(context = "stm32g473pb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473pb"] }
+
+[target.'cfg(context = "stm32g473pc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473pc"] }
+
+[target.'cfg(context = "stm32g473pe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473pe"] }
+
+[target.'cfg(context = "stm32g473qb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473qb"] }
+
+[target.'cfg(context = "stm32g473qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473qc"] }
+
+[target.'cfg(context = "stm32g473qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473qe"] }
+
+[target.'cfg(context = "stm32g473rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473rb"] }
+
+[target.'cfg(context = "stm32g473rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473rc"] }
+
+[target.'cfg(context = "stm32g473re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473re"] }
+
+[target.'cfg(context = "stm32g473vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473vb"] }
+
+[target.'cfg(context = "stm32g473vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473vc"] }
+
+[target.'cfg(context = "stm32g473ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g473ve"] }
+
+[target.'cfg(context = "stm32g474cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474cb"] }
+
+[target.'cfg(context = "stm32g474cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474cc"] }
+
+[target.'cfg(context = "stm32g474ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474ce"] }
+
+[target.'cfg(context = "stm32g474mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474mb"] }
+
+[target.'cfg(context = "stm32g474mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474mc"] }
+
+[target.'cfg(context = "stm32g474me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474me"] }
+
+[target.'cfg(context = "stm32g474pb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474pb"] }
+
+[target.'cfg(context = "stm32g474pc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474pc"] }
+
+[target.'cfg(context = "stm32g474pe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474pe"] }
+
+[target.'cfg(context = "stm32g474qb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474qb"] }
+
+[target.'cfg(context = "stm32g474qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474qc"] }
+
+[target.'cfg(context = "stm32g474qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474qe"] }
+
+[target.'cfg(context = "stm32g474rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474rb"] }
+
+[target.'cfg(context = "stm32g474rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474rc"] }
+
+[target.'cfg(context = "stm32g474re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474re"] }
+
+[target.'cfg(context = "stm32g474vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474vb"] }
+
+[target.'cfg(context = "stm32g474vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474vc"] }
+
+[target.'cfg(context = "stm32g474ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g474ve"] }
+
+[target.'cfg(context = "stm32g483ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483ce"] }
+
+[target.'cfg(context = "stm32g483me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483me"] }
+
+[target.'cfg(context = "stm32g483pe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483pe"] }
+
+[target.'cfg(context = "stm32g483qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483qe"] }
+
+[target.'cfg(context = "stm32g483re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483re"] }
+
+[target.'cfg(context = "stm32g483ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g483ve"] }
+
+[target.'cfg(context = "stm32g484ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484ce"] }
+
+[target.'cfg(context = "stm32g484me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484me"] }
+
+[target.'cfg(context = "stm32g484pe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484pe"] }
+
+[target.'cfg(context = "stm32g484qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484qe"] }
+
+[target.'cfg(context = "stm32g484re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484re"] }
+
+[target.'cfg(context = "stm32g484ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g484ve"] }
+
+[target.'cfg(context = "stm32g491cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491cc"] }
+
+[target.'cfg(context = "stm32g491ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491ce"] }
+
+[target.'cfg(context = "stm32g491kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491kc"] }
+
+[target.'cfg(context = "stm32g491ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491ke"] }
+
+[target.'cfg(context = "stm32g491mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491mc"] }
+
+[target.'cfg(context = "stm32g491me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491me"] }
+
+[target.'cfg(context = "stm32g491rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491rc"] }
+
+[target.'cfg(context = "stm32g491re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491re"] }
+
+[target.'cfg(context = "stm32g491vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491vc"] }
+
+[target.'cfg(context = "stm32g491ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g491ve"] }
+
+[target.'cfg(context = "stm32g4a1ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g4a1ce"] }
+
+[target.'cfg(context = "stm32g4a1ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g4a1ke"] }
+
+[target.'cfg(context = "stm32g4a1me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g4a1me"] }
+
+[target.'cfg(context = "stm32g4a1re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g4a1re"] }
+
+[target.'cfg(context = "stm32g4a1ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32g4a1ve"] }
+
+[target.'cfg(context = "stm32h503cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h503cb"] }
+
+[target.'cfg(context = "stm32h503eb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h503eb"] }
+
+[target.'cfg(context = "stm32h503kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h503kb"] }
+
+[target.'cfg(context = "stm32h503rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h503rb"] }
+
+[target.'cfg(context = "stm32h523cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523cc"] }
+
+[target.'cfg(context = "stm32h523ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523ce"] }
+
+[target.'cfg(context = "stm32h523he")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523he"] }
+
+[target.'cfg(context = "stm32h523rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523rc"] }
+
+[target.'cfg(context = "stm32h523re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523re"] }
+
+[target.'cfg(context = "stm32h523vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523vc"] }
+
+[target.'cfg(context = "stm32h523ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523ve"] }
+
+[target.'cfg(context = "stm32h523zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523zc"] }
+
+[target.'cfg(context = "stm32h523ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h523ze"] }
+
+[target.'cfg(context = "stm32h533ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h533ce"] }
+
+[target.'cfg(context = "stm32h533he")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h533he"] }
+
+[target.'cfg(context = "stm32h533re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h533re"] }
+
+[target.'cfg(context = "stm32h533ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h533ve"] }
+
+[target.'cfg(context = "stm32h533ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h533ze"] }
+
+[target.'cfg(context = "stm32h562ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562ag"] }
+
+[target.'cfg(context = "stm32h562ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562ai"] }
+
+[target.'cfg(context = "stm32h562ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562ig"] }
+
+[target.'cfg(context = "stm32h562ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562ii"] }
+
+[target.'cfg(context = "stm32h562rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562rg"] }
+
+[target.'cfg(context = "stm32h562ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562ri"] }
+
+[target.'cfg(context = "stm32h562vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562vg"] }
+
+[target.'cfg(context = "stm32h562vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562vi"] }
+
+[target.'cfg(context = "stm32h562zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562zg"] }
+
+[target.'cfg(context = "stm32h562zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h562zi"] }
+
+[target.'cfg(context = "stm32h563ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563ag"] }
+
+[target.'cfg(context = "stm32h563ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563ai"] }
+
+[target.'cfg(context = "stm32h563ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563ig"] }
+
+[target.'cfg(context = "stm32h563ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563ii"] }
+
+[target.'cfg(context = "stm32h563mi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563mi"] }
+
+[target.'cfg(context = "stm32h563rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563rg"] }
+
+[target.'cfg(context = "stm32h563ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563ri"] }
+
+[target.'cfg(context = "stm32h563vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563vg"] }
+
+[target.'cfg(context = "stm32h563vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563vi"] }
+
+[target.'cfg(context = "stm32h563zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563zg"] }
+
+[target.'cfg(context = "stm32h563zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h563zi"] }
+
+[target.'cfg(context = "stm32h573ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573ai"] }
+
+[target.'cfg(context = "stm32h573ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573ii"] }
+
+[target.'cfg(context = "stm32h573mi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573mi"] }
+
+[target.'cfg(context = "stm32h573ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573ri"] }
+
+[target.'cfg(context = "stm32h573vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573vi"] }
+
+[target.'cfg(context = "stm32h573zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h573zi"] }
+
+[target.'cfg(context = "stm32h723ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h723ve"] }
+
+[target.'cfg(context = "stm32h723vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h723vg"] }
+
+[target.'cfg(context = "stm32h723ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h723ze"] }
+
+[target.'cfg(context = "stm32h723zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h723zg"] }
+
+[target.'cfg(context = "stm32h725ae")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ae"] }
+
+[target.'cfg(context = "stm32h725ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ag"] }
+
+[target.'cfg(context = "stm32h725ie")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ie"] }
+
+[target.'cfg(context = "stm32h725ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ig"] }
+
+[target.'cfg(context = "stm32h725re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725re"] }
+
+[target.'cfg(context = "stm32h725rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725rg"] }
+
+[target.'cfg(context = "stm32h725ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ve"] }
+
+[target.'cfg(context = "stm32h725vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725vg"] }
+
+[target.'cfg(context = "stm32h725ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725ze"] }
+
+[target.'cfg(context = "stm32h725zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h725zg"] }
+
+[target.'cfg(context = "stm32h730ab")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h730ab"] }
+
+[target.'cfg(context = "stm32h730ib")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h730ib"] }
+
+[target.'cfg(context = "stm32h730vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h730vb"] }
+
+[target.'cfg(context = "stm32h730zb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h730zb"] }
+
+[target.'cfg(context = "stm32h733vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h733vg"] }
+
+[target.'cfg(context = "stm32h733zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h733zg"] }
+
+[target.'cfg(context = "stm32h735ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h735ag"] }
+
+[target.'cfg(context = "stm32h735ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h735ig"] }
+
+[target.'cfg(context = "stm32h735rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h735rg"] }
+
+[target.'cfg(context = "stm32h735vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h735vg"] }
+
+[target.'cfg(context = "stm32h735zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h735zg"] }
+
+[target.'cfg(context = "stm32h742ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742ag"] }
+
+[target.'cfg(context = "stm32h742ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742ai"] }
+
+[target.'cfg(context = "stm32h742bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742bg"] }
+
+[target.'cfg(context = "stm32h742bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742bi"] }
+
+[target.'cfg(context = "stm32h742ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742ig"] }
+
+[target.'cfg(context = "stm32h742ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742ii"] }
+
+[target.'cfg(context = "stm32h742vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742vg"] }
+
+[target.'cfg(context = "stm32h742vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742vi"] }
+
+[target.'cfg(context = "stm32h742xg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742xg"] }
+
+[target.'cfg(context = "stm32h742xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742xi"] }
+
+[target.'cfg(context = "stm32h742zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742zg"] }
+
+[target.'cfg(context = "stm32h742zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h742zi"] }
+
+[target.'cfg(context = "stm32h743ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743ag"] }
+
+[target.'cfg(context = "stm32h743ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743ai"] }
+
+[target.'cfg(context = "stm32h743bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743bg"] }
+
+[target.'cfg(context = "stm32h743bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743bi"] }
+
+[target.'cfg(context = "stm32h743ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743ig"] }
+
+[target.'cfg(context = "stm32h743ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743ii"] }
+
+[target.'cfg(context = "stm32h743vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743vg"] }
+
+[target.'cfg(context = "stm32h743vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743vi"] }
+
+[target.'cfg(context = "stm32h743xg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743xg"] }
+
+[target.'cfg(context = "stm32h743xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743xi"] }
+
+[target.'cfg(context = "stm32h743zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743zg"] }
+
+[target.'cfg(context = "stm32h743zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h743zi"] }
+
+[target.'cfg(context = "stm32h745bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745bg-cm7"] }
+
+[target.'cfg(context = "stm32h745bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745bi-cm7"] }
+
+[target.'cfg(context = "stm32h745ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745ig-cm7"] }
+
+[target.'cfg(context = "stm32h745ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745ii-cm7"] }
+
+[target.'cfg(context = "stm32h745xg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745xg-cm7"] }
+
+[target.'cfg(context = "stm32h745xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745xi-cm7"] }
+
+[target.'cfg(context = "stm32h745zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745zg-cm7"] }
+
+[target.'cfg(context = "stm32h745zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h745zi-cm7"] }
+
+[target.'cfg(context = "stm32h747ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747ag-cm7"] }
+
+[target.'cfg(context = "stm32h747ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747ai-cm7"] }
+
+[target.'cfg(context = "stm32h747bg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747bg-cm7"] }
+
+[target.'cfg(context = "stm32h747bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747bi-cm7"] }
+
+[target.'cfg(context = "stm32h747ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747ig-cm7"] }
+
+[target.'cfg(context = "stm32h747ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747ii-cm7"] }
+
+[target.'cfg(context = "stm32h747xg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747xg-cm7"] }
+
+[target.'cfg(context = "stm32h747xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747xi-cm7"] }
+
+[target.'cfg(context = "stm32h747zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h747zi-cm7"] }
+
+[target.'cfg(context = "stm32h750ib")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h750ib"] }
+
+[target.'cfg(context = "stm32h750vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h750vb"] }
+
+[target.'cfg(context = "stm32h750xb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h750xb"] }
+
+[target.'cfg(context = "stm32h750zb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h750zb"] }
+
+[target.'cfg(context = "stm32h753ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753ai"] }
+
+[target.'cfg(context = "stm32h753bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753bi"] }
+
+[target.'cfg(context = "stm32h753ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753ii"] }
+
+[target.'cfg(context = "stm32h753vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753vi"] }
+
+[target.'cfg(context = "stm32h753xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753xi"] }
+
+[target.'cfg(context = "stm32h753zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h753zi"] }
+
+[target.'cfg(context = "stm32h755bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h755bi-cm7"] }
+
+[target.'cfg(context = "stm32h755ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h755ii-cm7"] }
+
+[target.'cfg(context = "stm32h755xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h755xi-cm7"] }
+
+[target.'cfg(context = "stm32h755zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h755zi-cm7"] }
+
+[target.'cfg(context = "stm32h757ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h757ai-cm7"] }
+
+[target.'cfg(context = "stm32h757bi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h757bi-cm7"] }
+
+[target.'cfg(context = "stm32h757ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h757ii-cm7"] }
+
+[target.'cfg(context = "stm32h757xi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h757xi-cm7"] }
+
+[target.'cfg(context = "stm32h757zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h757zi-cm7"] }
+
+[target.'cfg(context = "stm32h7a3ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ag"] }
+
+[target.'cfg(context = "stm32h7a3ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ai"] }
+
+[target.'cfg(context = "stm32h7a3ig")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ig"] }
+
+[target.'cfg(context = "stm32h7a3ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ii"] }
+
+[target.'cfg(context = "stm32h7a3lg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3lg"] }
+
+[target.'cfg(context = "stm32h7a3li")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3li"] }
+
+[target.'cfg(context = "stm32h7a3ng")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ng"] }
+
+[target.'cfg(context = "stm32h7a3ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ni"] }
+
+[target.'cfg(context = "stm32h7a3qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3qi"] }
+
+[target.'cfg(context = "stm32h7a3rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3rg"] }
+
+[target.'cfg(context = "stm32h7a3ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3ri"] }
+
+[target.'cfg(context = "stm32h7a3vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3vg"] }
+
+[target.'cfg(context = "stm32h7a3vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3vi"] }
+
+[target.'cfg(context = "stm32h7a3zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3zg"] }
+
+[target.'cfg(context = "stm32h7a3zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7a3zi"] }
+
+[target.'cfg(context = "stm32h7b0ab")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b0ab"] }
+
+[target.'cfg(context = "stm32h7b0ib")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b0ib"] }
+
+[target.'cfg(context = "stm32h7b0rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b0rb"] }
+
+[target.'cfg(context = "stm32h7b0vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b0vb"] }
+
+[target.'cfg(context = "stm32h7b0zb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b0zb"] }
+
+[target.'cfg(context = "stm32h7b3ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3ai"] }
+
+[target.'cfg(context = "stm32h7b3ii")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3ii"] }
+
+[target.'cfg(context = "stm32h7b3li")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3li"] }
+
+[target.'cfg(context = "stm32h7b3ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3ni"] }
+
+[target.'cfg(context = "stm32h7b3qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3qi"] }
+
+[target.'cfg(context = "stm32h7b3ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3ri"] }
+
+[target.'cfg(context = "stm32h7b3vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3vi"] }
+
+[target.'cfg(context = "stm32h7b3zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7b3zi"] }
+
+[target.'cfg(context = "stm32h7r3a8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3a8"] }
+
+[target.'cfg(context = "stm32h7r3i8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3i8"] }
+
+[target.'cfg(context = "stm32h7r3l8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3l8"] }
+
+[target.'cfg(context = "stm32h7r3r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3r8"] }
+
+[target.'cfg(context = "stm32h7r3v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3v8"] }
+
+[target.'cfg(context = "stm32h7r3z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r3z8"] }
+
+[target.'cfg(context = "stm32h7r7a8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r7a8"] }
+
+[target.'cfg(context = "stm32h7r7i8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r7i8"] }
+
+[target.'cfg(context = "stm32h7r7l8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r7l8"] }
+
+[target.'cfg(context = "stm32h7r7z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7r7z8"] }
+
+[target.'cfg(context = "stm32h7s3a8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3a8"] }
+
+[target.'cfg(context = "stm32h7s3i8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3i8"] }
+
+[target.'cfg(context = "stm32h7s3l8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3l8"] }
+
+[target.'cfg(context = "stm32h7s3r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3r8"] }
+
+[target.'cfg(context = "stm32h7s3v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3v8"] }
+
+[target.'cfg(context = "stm32h7s3z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s3z8"] }
+
+[target.'cfg(context = "stm32h7s7a8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s7a8"] }
+
+[target.'cfg(context = "stm32h7s7i8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s7i8"] }
+
+[target.'cfg(context = "stm32h7s7l8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s7l8"] }
+
+[target.'cfg(context = "stm32h7s7z8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32h7s7z8"] }
+
+[target.'cfg(context = "stm32l010c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010c6"] }
+
+[target.'cfg(context = "stm32l010f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010f4"] }
+
+[target.'cfg(context = "stm32l010k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010k4"] }
+
+[target.'cfg(context = "stm32l010k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010k8"] }
+
+[target.'cfg(context = "stm32l010r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010r8"] }
+
+[target.'cfg(context = "stm32l010rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l010rb"] }
+
+[target.'cfg(context = "stm32l011d3")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011d3"] }
+
+[target.'cfg(context = "stm32l011d4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011d4"] }
+
+[target.'cfg(context = "stm32l011e3")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011e3"] }
+
+[target.'cfg(context = "stm32l011e4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011e4"] }
+
+[target.'cfg(context = "stm32l011f3")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011f3"] }
+
+[target.'cfg(context = "stm32l011f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011f4"] }
+
+[target.'cfg(context = "stm32l011g3")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011g3"] }
+
+[target.'cfg(context = "stm32l011g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011g4"] }
+
+[target.'cfg(context = "stm32l011k3")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011k3"] }
+
+[target.'cfg(context = "stm32l011k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l011k4"] }
+
+[target.'cfg(context = "stm32l021d4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l021d4"] }
+
+[target.'cfg(context = "stm32l021f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l021f4"] }
+
+[target.'cfg(context = "stm32l021g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l021g4"] }
+
+[target.'cfg(context = "stm32l021k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l021k4"] }
+
+[target.'cfg(context = "stm32l031c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031c4"] }
+
+[target.'cfg(context = "stm32l031c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031c6"] }
+
+[target.'cfg(context = "stm32l031e4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031e4"] }
+
+[target.'cfg(context = "stm32l031e6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031e6"] }
+
+[target.'cfg(context = "stm32l031f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031f4"] }
+
+[target.'cfg(context = "stm32l031f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031f6"] }
+
+[target.'cfg(context = "stm32l031g4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031g4"] }
+
+[target.'cfg(context = "stm32l031g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031g6"] }
+
+[target.'cfg(context = "stm32l031k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031k4"] }
+
+[target.'cfg(context = "stm32l031k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l031k6"] }
+
+[target.'cfg(context = "stm32l041c4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041c4"] }
+
+[target.'cfg(context = "stm32l041c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041c6"] }
+
+[target.'cfg(context = "stm32l041e6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041e6"] }
+
+[target.'cfg(context = "stm32l041f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041f6"] }
+
+[target.'cfg(context = "stm32l041g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041g6"] }
+
+[target.'cfg(context = "stm32l041k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l041k6"] }
+
+[target.'cfg(context = "stm32l051c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051c6"] }
+
+[target.'cfg(context = "stm32l051c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051c8"] }
+
+[target.'cfg(context = "stm32l051k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051k6"] }
+
+[target.'cfg(context = "stm32l051k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051k8"] }
+
+[target.'cfg(context = "stm32l051r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051r6"] }
+
+[target.'cfg(context = "stm32l051r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051r8"] }
+
+[target.'cfg(context = "stm32l051t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051t6"] }
+
+[target.'cfg(context = "stm32l051t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l051t8"] }
+
+[target.'cfg(context = "stm32l052c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052c6"] }
+
+[target.'cfg(context = "stm32l052c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052c8"] }
+
+[target.'cfg(context = "stm32l052k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052k6"] }
+
+[target.'cfg(context = "stm32l052k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052k8"] }
+
+[target.'cfg(context = "stm32l052r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052r6"] }
+
+[target.'cfg(context = "stm32l052r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052r8"] }
+
+[target.'cfg(context = "stm32l052t6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052t6"] }
+
+[target.'cfg(context = "stm32l052t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l052t8"] }
+
+[target.'cfg(context = "stm32l053c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l053c6"] }
+
+[target.'cfg(context = "stm32l053c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l053c8"] }
+
+[target.'cfg(context = "stm32l053r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l053r6"] }
+
+[target.'cfg(context = "stm32l053r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l053r8"] }
+
+[target.'cfg(context = "stm32l062c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l062c8"] }
+
+[target.'cfg(context = "stm32l062k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l062k8"] }
+
+[target.'cfg(context = "stm32l063c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l063c8"] }
+
+[target.'cfg(context = "stm32l063r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l063r8"] }
+
+[target.'cfg(context = "stm32l071c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071c8"] }
+
+[target.'cfg(context = "stm32l071cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071cb"] }
+
+[target.'cfg(context = "stm32l071cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071cz"] }
+
+[target.'cfg(context = "stm32l071k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071k8"] }
+
+[target.'cfg(context = "stm32l071kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071kb"] }
+
+[target.'cfg(context = "stm32l071kz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071kz"] }
+
+[target.'cfg(context = "stm32l071rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071rb"] }
+
+[target.'cfg(context = "stm32l071rz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071rz"] }
+
+[target.'cfg(context = "stm32l071v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071v8"] }
+
+[target.'cfg(context = "stm32l071vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071vb"] }
+
+[target.'cfg(context = "stm32l071vz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l071vz"] }
+
+[target.'cfg(context = "stm32l072cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072cb"] }
+
+[target.'cfg(context = "stm32l072cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072cz"] }
+
+[target.'cfg(context = "stm32l072kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072kb"] }
+
+[target.'cfg(context = "stm32l072kz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072kz"] }
+
+[target.'cfg(context = "stm32l072rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072rb"] }
+
+[target.'cfg(context = "stm32l072rz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072rz"] }
+
+[target.'cfg(context = "stm32l072v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072v8"] }
+
+[target.'cfg(context = "stm32l072vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072vb"] }
+
+[target.'cfg(context = "stm32l072vz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l072vz"] }
+
+[target.'cfg(context = "stm32l073cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073cb"] }
+
+[target.'cfg(context = "stm32l073cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073cz"] }
+
+[target.'cfg(context = "stm32l073rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073rb"] }
+
+[target.'cfg(context = "stm32l073rz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073rz"] }
+
+[target.'cfg(context = "stm32l073v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073v8"] }
+
+[target.'cfg(context = "stm32l073vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073vb"] }
+
+[target.'cfg(context = "stm32l073vz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l073vz"] }
+
+[target.'cfg(context = "stm32l081cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l081cb"] }
+
+[target.'cfg(context = "stm32l081cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l081cz"] }
+
+[target.'cfg(context = "stm32l081kz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l081kz"] }
+
+[target.'cfg(context = "stm32l082cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l082cz"] }
+
+[target.'cfg(context = "stm32l082kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l082kb"] }
+
+[target.'cfg(context = "stm32l082kz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l082kz"] }
+
+[target.'cfg(context = "stm32l083cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083cb"] }
+
+[target.'cfg(context = "stm32l083cz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083cz"] }
+
+[target.'cfg(context = "stm32l083rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083rb"] }
+
+[target.'cfg(context = "stm32l083rz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083rz"] }
+
+[target.'cfg(context = "stm32l083v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083v8"] }
+
+[target.'cfg(context = "stm32l083vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083vb"] }
+
+[target.'cfg(context = "stm32l083vz")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l083vz"] }
+
+[target.'cfg(context = "stm32l100c6-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100c6-a"] }
+
+[target.'cfg(context = "stm32l100c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100c6"] }
+
+[target.'cfg(context = "stm32l100r8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100r8-a"] }
+
+[target.'cfg(context = "stm32l100r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100r8"] }
+
+[target.'cfg(context = "stm32l100rb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100rb-a"] }
+
+[target.'cfg(context = "stm32l100rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100rb"] }
+
+[target.'cfg(context = "stm32l100rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l100rc"] }
+
+[target.'cfg(context = "stm32l151c6-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151c6-a"] }
+
+[target.'cfg(context = "stm32l151c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151c6"] }
+
+[target.'cfg(context = "stm32l151c8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151c8-a"] }
+
+[target.'cfg(context = "stm32l151c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151c8"] }
+
+[target.'cfg(context = "stm32l151cb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151cb-a"] }
+
+[target.'cfg(context = "stm32l151cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151cb"] }
+
+[target.'cfg(context = "stm32l151cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151cc"] }
+
+[target.'cfg(context = "stm32l151qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151qc"] }
+
+[target.'cfg(context = "stm32l151qd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151qd"] }
+
+[target.'cfg(context = "stm32l151qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151qe"] }
+
+[target.'cfg(context = "stm32l151r6-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151r6-a"] }
+
+[target.'cfg(context = "stm32l151r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151r6"] }
+
+[target.'cfg(context = "stm32l151r8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151r8-a"] }
+
+[target.'cfg(context = "stm32l151r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151r8"] }
+
+[target.'cfg(context = "stm32l151rb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151rb-a"] }
+
+[target.'cfg(context = "stm32l151rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151rb"] }
+
+[target.'cfg(context = "stm32l151rc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151rc-a"] }
+
+[target.'cfg(context = "stm32l151rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151rc"] }
+
+[target.'cfg(context = "stm32l151rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151rd"] }
+
+[target.'cfg(context = "stm32l151re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151re"] }
+
+[target.'cfg(context = "stm32l151uc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151uc"] }
+
+[target.'cfg(context = "stm32l151v8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151v8-a"] }
+
+[target.'cfg(context = "stm32l151v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151v8"] }
+
+[target.'cfg(context = "stm32l151vb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vb-a"] }
+
+[target.'cfg(context = "stm32l151vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vb"] }
+
+[target.'cfg(context = "stm32l151vc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vc-a"] }
+
+[target.'cfg(context = "stm32l151vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vc"] }
+
+[target.'cfg(context = "stm32l151vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vd"] }
+
+[target.'cfg(context = "stm32l151vd-x")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151vd-x"] }
+
+[target.'cfg(context = "stm32l151ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151ve"] }
+
+[target.'cfg(context = "stm32l151zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151zc"] }
+
+[target.'cfg(context = "stm32l151zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151zd"] }
+
+[target.'cfg(context = "stm32l151ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l151ze"] }
+
+[target.'cfg(context = "stm32l152c6-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152c6-a"] }
+
+[target.'cfg(context = "stm32l152c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152c6"] }
+
+[target.'cfg(context = "stm32l152c8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152c8-a"] }
+
+[target.'cfg(context = "stm32l152c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152c8"] }
+
+[target.'cfg(context = "stm32l152cb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152cb-a"] }
+
+[target.'cfg(context = "stm32l152cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152cb"] }
+
+[target.'cfg(context = "stm32l152cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152cc"] }
+
+[target.'cfg(context = "stm32l152qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152qc"] }
+
+[target.'cfg(context = "stm32l152qd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152qd"] }
+
+[target.'cfg(context = "stm32l152qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152qe"] }
+
+[target.'cfg(context = "stm32l152r6-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152r6-a"] }
+
+[target.'cfg(context = "stm32l152r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152r6"] }
+
+[target.'cfg(context = "stm32l152r8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152r8-a"] }
+
+[target.'cfg(context = "stm32l152r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152r8"] }
+
+[target.'cfg(context = "stm32l152rb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152rb-a"] }
+
+[target.'cfg(context = "stm32l152rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152rb"] }
+
+[target.'cfg(context = "stm32l152rc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152rc-a"] }
+
+[target.'cfg(context = "stm32l152rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152rc"] }
+
+[target.'cfg(context = "stm32l152rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152rd"] }
+
+[target.'cfg(context = "stm32l152re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152re"] }
+
+[target.'cfg(context = "stm32l152uc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152uc"] }
+
+[target.'cfg(context = "stm32l152v8-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152v8-a"] }
+
+[target.'cfg(context = "stm32l152v8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152v8"] }
+
+[target.'cfg(context = "stm32l152vb-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vb-a"] }
+
+[target.'cfg(context = "stm32l152vb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vb"] }
+
+[target.'cfg(context = "stm32l152vc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vc-a"] }
+
+[target.'cfg(context = "stm32l152vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vc"] }
+
+[target.'cfg(context = "stm32l152vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vd"] }
+
+[target.'cfg(context = "stm32l152vd-x")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152vd-x"] }
+
+[target.'cfg(context = "stm32l152ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152ve"] }
+
+[target.'cfg(context = "stm32l152zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152zc"] }
+
+[target.'cfg(context = "stm32l152zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152zd"] }
+
+[target.'cfg(context = "stm32l152ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l152ze"] }
+
+[target.'cfg(context = "stm32l162qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162qc"] }
+
+[target.'cfg(context = "stm32l162qd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162qd"] }
+
+[target.'cfg(context = "stm32l162rc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162rc-a"] }
+
+[target.'cfg(context = "stm32l162rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162rc"] }
+
+[target.'cfg(context = "stm32l162rd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162rd"] }
+
+[target.'cfg(context = "stm32l162re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162re"] }
+
+[target.'cfg(context = "stm32l162vc-a")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162vc-a"] }
+
+[target.'cfg(context = "stm32l162vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162vc"] }
+
+[target.'cfg(context = "stm32l162vd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162vd"] }
+
+[target.'cfg(context = "stm32l162vd-x")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162vd-x"] }
+
+[target.'cfg(context = "stm32l162ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162ve"] }
+
+[target.'cfg(context = "stm32l162zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162zc"] }
+
+[target.'cfg(context = "stm32l162zd")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162zd"] }
+
+[target.'cfg(context = "stm32l162ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l162ze"] }
+
+[target.'cfg(context = "stm32l412c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412c8"] }
+
+[target.'cfg(context = "stm32l412cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412cb"] }
+
+[target.'cfg(context = "stm32l412k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412k8"] }
+
+[target.'cfg(context = "stm32l412kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412kb"] }
+
+[target.'cfg(context = "stm32l412r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412r8"] }
+
+[target.'cfg(context = "stm32l412rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412rb"] }
+
+[target.'cfg(context = "stm32l412t8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412t8"] }
+
+[target.'cfg(context = "stm32l412tb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l412tb"] }
+
+[target.'cfg(context = "stm32l422cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l422cb"] }
+
+[target.'cfg(context = "stm32l422kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l422kb"] }
+
+[target.'cfg(context = "stm32l422rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l422rb"] }
+
+[target.'cfg(context = "stm32l422tb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l422tb"] }
+
+[target.'cfg(context = "stm32l431cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431cb"] }
+
+[target.'cfg(context = "stm32l431cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431cc"] }
+
+[target.'cfg(context = "stm32l431kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431kb"] }
+
+[target.'cfg(context = "stm32l431kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431kc"] }
+
+[target.'cfg(context = "stm32l431rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431rb"] }
+
+[target.'cfg(context = "stm32l431rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431rc"] }
+
+[target.'cfg(context = "stm32l431vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l431vc"] }
+
+[target.'cfg(context = "stm32l432kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l432kb"] }
+
+[target.'cfg(context = "stm32l432kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l432kc"] }
+
+[target.'cfg(context = "stm32l433cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l433cb"] }
+
+[target.'cfg(context = "stm32l433cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l433cc"] }
+
+[target.'cfg(context = "stm32l433rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l433rb"] }
+
+[target.'cfg(context = "stm32l433rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l433rc"] }
+
+[target.'cfg(context = "stm32l433vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l433vc"] }
+
+[target.'cfg(context = "stm32l442kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l442kc"] }
+
+[target.'cfg(context = "stm32l443cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l443cc"] }
+
+[target.'cfg(context = "stm32l443rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l443rc"] }
+
+[target.'cfg(context = "stm32l443vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l443vc"] }
+
+[target.'cfg(context = "stm32l451cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451cc"] }
+
+[target.'cfg(context = "stm32l451ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451ce"] }
+
+[target.'cfg(context = "stm32l451rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451rc"] }
+
+[target.'cfg(context = "stm32l451re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451re"] }
+
+[target.'cfg(context = "stm32l451vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451vc"] }
+
+[target.'cfg(context = "stm32l451ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l451ve"] }
+
+[target.'cfg(context = "stm32l452cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452cc"] }
+
+[target.'cfg(context = "stm32l452ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452ce"] }
+
+[target.'cfg(context = "stm32l452rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452rc"] }
+
+[target.'cfg(context = "stm32l452re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452re"] }
+
+[target.'cfg(context = "stm32l452vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452vc"] }
+
+[target.'cfg(context = "stm32l452ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l452ve"] }
+
+[target.'cfg(context = "stm32l462ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l462ce"] }
+
+[target.'cfg(context = "stm32l462re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l462re"] }
+
+[target.'cfg(context = "stm32l462ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l462ve"] }
+
+[target.'cfg(context = "stm32l471qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471qe"] }
+
+[target.'cfg(context = "stm32l471qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471qg"] }
+
+[target.'cfg(context = "stm32l471re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471re"] }
+
+[target.'cfg(context = "stm32l471rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471rg"] }
+
+[target.'cfg(context = "stm32l471ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471ve"] }
+
+[target.'cfg(context = "stm32l471vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471vg"] }
+
+[target.'cfg(context = "stm32l471ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471ze"] }
+
+[target.'cfg(context = "stm32l471zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l471zg"] }
+
+[target.'cfg(context = "stm32l475rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475rc"] }
+
+[target.'cfg(context = "stm32l475re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475re"] }
+
+[target.'cfg(context = "stm32l475rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475rg"] }
+
+[target.'cfg(context = "stm32l475vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475vc"] }
+
+[target.'cfg(context = "stm32l475ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475ve"] }
+
+[target.'cfg(context = "stm32l475vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l475vg"] }
+
+[target.'cfg(context = "stm32l476je")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476je"] }
+
+[target.'cfg(context = "stm32l476jg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476jg"] }
+
+[target.'cfg(context = "stm32l476me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476me"] }
+
+[target.'cfg(context = "stm32l476mg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476mg"] }
+
+[target.'cfg(context = "stm32l476qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476qe"] }
+
+[target.'cfg(context = "stm32l476qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476qg"] }
+
+[target.'cfg(context = "stm32l476rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476rc"] }
+
+[target.'cfg(context = "stm32l476re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476re"] }
+
+[target.'cfg(context = "stm32l476rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476rg"] }
+
+[target.'cfg(context = "stm32l476vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476vc"] }
+
+[target.'cfg(context = "stm32l476ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476ve"] }
+
+[target.'cfg(context = "stm32l476vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476vg"] }
+
+[target.'cfg(context = "stm32l476ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476ze"] }
+
+[target.'cfg(context = "stm32l476zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l476zg"] }
+
+[target.'cfg(context = "stm32l486jg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l486jg"] }
+
+[target.'cfg(context = "stm32l486qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l486qg"] }
+
+[target.'cfg(context = "stm32l486rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l486rg"] }
+
+[target.'cfg(context = "stm32l486vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l486vg"] }
+
+[target.'cfg(context = "stm32l486zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l486zg"] }
+
+[target.'cfg(context = "stm32l496ae")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496ae"] }
+
+[target.'cfg(context = "stm32l496ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496ag"] }
+
+[target.'cfg(context = "stm32l496qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496qe"] }
+
+[target.'cfg(context = "stm32l496qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496qg"] }
+
+[target.'cfg(context = "stm32l496re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496re"] }
+
+[target.'cfg(context = "stm32l496rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496rg"] }
+
+[target.'cfg(context = "stm32l496ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496ve"] }
+
+[target.'cfg(context = "stm32l496vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496vg"] }
+
+[target.'cfg(context = "stm32l496wg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496wg"] }
+
+[target.'cfg(context = "stm32l496ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496ze"] }
+
+[target.'cfg(context = "stm32l496zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l496zg"] }
+
+[target.'cfg(context = "stm32l4a6ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4a6ag"] }
+
+[target.'cfg(context = "stm32l4a6qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4a6qg"] }
+
+[target.'cfg(context = "stm32l4a6rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4a6rg"] }
+
+[target.'cfg(context = "stm32l4a6vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4a6vg"] }
+
+[target.'cfg(context = "stm32l4a6zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4a6zg"] }
+
+[target.'cfg(context = "stm32l4p5ae")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5ae"] }
+
+[target.'cfg(context = "stm32l4p5ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5ag"] }
+
+[target.'cfg(context = "stm32l4p5ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5ce"] }
+
+[target.'cfg(context = "stm32l4p5cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5cg"] }
+
+[target.'cfg(context = "stm32l4p5qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5qe"] }
+
+[target.'cfg(context = "stm32l4p5qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5qg"] }
+
+[target.'cfg(context = "stm32l4p5re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5re"] }
+
+[target.'cfg(context = "stm32l4p5rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5rg"] }
+
+[target.'cfg(context = "stm32l4p5ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5ve"] }
+
+[target.'cfg(context = "stm32l4p5vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5vg"] }
+
+[target.'cfg(context = "stm32l4p5ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5ze"] }
+
+[target.'cfg(context = "stm32l4p5zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4p5zg"] }
+
+[target.'cfg(context = "stm32l4q5ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5ag"] }
+
+[target.'cfg(context = "stm32l4q5cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5cg"] }
+
+[target.'cfg(context = "stm32l4q5qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5qg"] }
+
+[target.'cfg(context = "stm32l4q5rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5rg"] }
+
+[target.'cfg(context = "stm32l4q5vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5vg"] }
+
+[target.'cfg(context = "stm32l4q5zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4q5zg"] }
+
+[target.'cfg(context = "stm32l4r5ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5ag"] }
+
+[target.'cfg(context = "stm32l4r5ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5ai"] }
+
+[target.'cfg(context = "stm32l4r5qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5qg"] }
+
+[target.'cfg(context = "stm32l4r5qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5qi"] }
+
+[target.'cfg(context = "stm32l4r5vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5vg"] }
+
+[target.'cfg(context = "stm32l4r5vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5vi"] }
+
+[target.'cfg(context = "stm32l4r5zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5zg"] }
+
+[target.'cfg(context = "stm32l4r5zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r5zi"] }
+
+[target.'cfg(context = "stm32l4r7ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r7ai"] }
+
+[target.'cfg(context = "stm32l4r7vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r7vi"] }
+
+[target.'cfg(context = "stm32l4r7zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r7zi"] }
+
+[target.'cfg(context = "stm32l4r9ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9ag"] }
+
+[target.'cfg(context = "stm32l4r9ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9ai"] }
+
+[target.'cfg(context = "stm32l4r9vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9vg"] }
+
+[target.'cfg(context = "stm32l4r9vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9vi"] }
+
+[target.'cfg(context = "stm32l4r9zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9zg"] }
+
+[target.'cfg(context = "stm32l4r9zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4r9zi"] }
+
+[target.'cfg(context = "stm32l4s5ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s5ai"] }
+
+[target.'cfg(context = "stm32l4s5qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s5qi"] }
+
+[target.'cfg(context = "stm32l4s5vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s5vi"] }
+
+[target.'cfg(context = "stm32l4s5zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s5zi"] }
+
+[target.'cfg(context = "stm32l4s7ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s7ai"] }
+
+[target.'cfg(context = "stm32l4s7vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s7vi"] }
+
+[target.'cfg(context = "stm32l4s7zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s7zi"] }
+
+[target.'cfg(context = "stm32l4s9ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s9ai"] }
+
+[target.'cfg(context = "stm32l4s9vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s9vi"] }
+
+[target.'cfg(context = "stm32l4s9zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l4s9zi"] }
+
+[target.'cfg(context = "stm32l552cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552cc"] }
+
+[target.'cfg(context = "stm32l552ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552ce"] }
+
+[target.'cfg(context = "stm32l552me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552me"] }
+
+[target.'cfg(context = "stm32l552qc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552qc"] }
+
+[target.'cfg(context = "stm32l552qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552qe"] }
+
+[target.'cfg(context = "stm32l552rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552rc"] }
+
+[target.'cfg(context = "stm32l552re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552re"] }
+
+[target.'cfg(context = "stm32l552vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552vc"] }
+
+[target.'cfg(context = "stm32l552ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552ve"] }
+
+[target.'cfg(context = "stm32l552zc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552zc"] }
+
+[target.'cfg(context = "stm32l552ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l552ze"] }
+
+[target.'cfg(context = "stm32l562ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562ce"] }
+
+[target.'cfg(context = "stm32l562me")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562me"] }
+
+[target.'cfg(context = "stm32l562qe")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562qe"] }
+
+[target.'cfg(context = "stm32l562re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562re"] }
+
+[target.'cfg(context = "stm32l562ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562ve"] }
+
+[target.'cfg(context = "stm32l562ze")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32l562ze"] }
+
+[target.'cfg(context = "stm32u031c6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031c6"] }
+
+[target.'cfg(context = "stm32u031c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031c8"] }
+
+[target.'cfg(context = "stm32u031f4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031f4"] }
+
+[target.'cfg(context = "stm32u031f6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031f6"] }
+
+[target.'cfg(context = "stm32u031f8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031f8"] }
+
+[target.'cfg(context = "stm32u031g6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031g6"] }
+
+[target.'cfg(context = "stm32u031g8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031g8"] }
+
+[target.'cfg(context = "stm32u031k4")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031k4"] }
+
+[target.'cfg(context = "stm32u031k6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031k6"] }
+
+[target.'cfg(context = "stm32u031k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031k8"] }
+
+[target.'cfg(context = "stm32u031r6")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031r6"] }
+
+[target.'cfg(context = "stm32u031r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u031r8"] }
+
+[target.'cfg(context = "stm32u073c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073c8"] }
+
+[target.'cfg(context = "stm32u073cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073cb"] }
+
+[target.'cfg(context = "stm32u073cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073cc"] }
+
+[target.'cfg(context = "stm32u073h8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073h8"] }
+
+[target.'cfg(context = "stm32u073hb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073hb"] }
+
+[target.'cfg(context = "stm32u073hc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073hc"] }
+
+[target.'cfg(context = "stm32u073k8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073k8"] }
+
+[target.'cfg(context = "stm32u073kb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073kb"] }
+
+[target.'cfg(context = "stm32u073kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073kc"] }
+
+[target.'cfg(context = "stm32u073m8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073m8"] }
+
+[target.'cfg(context = "stm32u073mb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073mb"] }
+
+[target.'cfg(context = "stm32u073mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073mc"] }
+
+[target.'cfg(context = "stm32u073r8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073r8"] }
+
+[target.'cfg(context = "stm32u073rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073rb"] }
+
+[target.'cfg(context = "stm32u073rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u073rc"] }
+
+[target.'cfg(context = "stm32u083cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u083cc"] }
+
+[target.'cfg(context = "stm32u083hc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u083hc"] }
+
+[target.'cfg(context = "stm32u083kc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u083kc"] }
+
+[target.'cfg(context = "stm32u083mc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u083mc"] }
+
+[target.'cfg(context = "stm32u083rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u083rc"] }
+
+[target.'cfg(context = "stm32u535cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535cb"] }
+
+[target.'cfg(context = "stm32u535cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535cc"] }
+
+[target.'cfg(context = "stm32u535ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535ce"] }
+
+[target.'cfg(context = "stm32u535je")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535je"] }
+
+[target.'cfg(context = "stm32u535nc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535nc"] }
+
+[target.'cfg(context = "stm32u535ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535ne"] }
+
+[target.'cfg(context = "stm32u535rb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535rb"] }
+
+[target.'cfg(context = "stm32u535rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535rc"] }
+
+[target.'cfg(context = "stm32u535re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535re"] }
+
+[target.'cfg(context = "stm32u535vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535vc"] }
+
+[target.'cfg(context = "stm32u535ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u535ve"] }
+
+[target.'cfg(context = "stm32u545ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u545ce"] }
+
+[target.'cfg(context = "stm32u545je")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u545je"] }
+
+[target.'cfg(context = "stm32u545ne")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u545ne"] }
+
+[target.'cfg(context = "stm32u545re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u545re"] }
+
+[target.'cfg(context = "stm32u545ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u545ve"] }
+
+[target.'cfg(context = "stm32u575ag")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575ag"] }
+
+[target.'cfg(context = "stm32u575ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575ai"] }
+
+[target.'cfg(context = "stm32u575cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575cg"] }
+
+[target.'cfg(context = "stm32u575ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575ci"] }
+
+[target.'cfg(context = "stm32u575og")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575og"] }
+
+[target.'cfg(context = "stm32u575oi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575oi"] }
+
+[target.'cfg(context = "stm32u575qg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575qg"] }
+
+[target.'cfg(context = "stm32u575qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575qi"] }
+
+[target.'cfg(context = "stm32u575rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575rg"] }
+
+[target.'cfg(context = "stm32u575ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575ri"] }
+
+[target.'cfg(context = "stm32u575vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575vg"] }
+
+[target.'cfg(context = "stm32u575vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575vi"] }
+
+[target.'cfg(context = "stm32u575zg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575zg"] }
+
+[target.'cfg(context = "stm32u575zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u575zi"] }
+
+[target.'cfg(context = "stm32u585ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585ai"] }
+
+[target.'cfg(context = "stm32u585ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585ci"] }
+
+[target.'cfg(context = "stm32u585oi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585oi"] }
+
+[target.'cfg(context = "stm32u585qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585qi"] }
+
+[target.'cfg(context = "stm32u585ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585ri"] }
+
+[target.'cfg(context = "stm32u585vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585vi"] }
+
+[target.'cfg(context = "stm32u585zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u585zi"] }
+
+[target.'cfg(context = "stm32u595ai")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595ai"] }
+
+[target.'cfg(context = "stm32u595aj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595aj"] }
+
+[target.'cfg(context = "stm32u595qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595qi"] }
+
+[target.'cfg(context = "stm32u595qj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595qj"] }
+
+[target.'cfg(context = "stm32u595ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595ri"] }
+
+[target.'cfg(context = "stm32u595rj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595rj"] }
+
+[target.'cfg(context = "stm32u595vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595vi"] }
+
+[target.'cfg(context = "stm32u595vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595vj"] }
+
+[target.'cfg(context = "stm32u595zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595zi"] }
+
+[target.'cfg(context = "stm32u595zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u595zj"] }
+
+[target.'cfg(context = "stm32u599bj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599bj"] }
+
+[target.'cfg(context = "stm32u599ni")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599ni"] }
+
+[target.'cfg(context = "stm32u599nj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599nj"] }
+
+[target.'cfg(context = "stm32u599vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599vi"] }
+
+[target.'cfg(context = "stm32u599vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599vj"] }
+
+[target.'cfg(context = "stm32u599zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599zi"] }
+
+[target.'cfg(context = "stm32u599zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u599zj"] }
+
+[target.'cfg(context = "stm32u5a5aj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5aj"] }
+
+[target.'cfg(context = "stm32u5a5qi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5qi"] }
+
+[target.'cfg(context = "stm32u5a5qj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5qj"] }
+
+[target.'cfg(context = "stm32u5a5rj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5rj"] }
+
+[target.'cfg(context = "stm32u5a5vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5vj"] }
+
+[target.'cfg(context = "stm32u5a5zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a5zj"] }
+
+[target.'cfg(context = "stm32u5a9bj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a9bj"] }
+
+[target.'cfg(context = "stm32u5a9nj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a9nj"] }
+
+[target.'cfg(context = "stm32u5a9vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a9vj"] }
+
+[target.'cfg(context = "stm32u5a9zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5a9zj"] }
+
+[target.'cfg(context = "stm32u5f7vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f7vi"] }
+
+[target.'cfg(context = "stm32u5f7vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f7vj"] }
+
+[target.'cfg(context = "stm32u5f9bj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9bj"] }
+
+[target.'cfg(context = "stm32u5f9nj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9nj"] }
+
+[target.'cfg(context = "stm32u5f9vi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9vi"] }
+
+[target.'cfg(context = "stm32u5f9vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9vj"] }
+
+[target.'cfg(context = "stm32u5f9zi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9zi"] }
+
+[target.'cfg(context = "stm32u5f9zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5f9zj"] }
+
+[target.'cfg(context = "stm32u5g7vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5g7vj"] }
+
+[target.'cfg(context = "stm32u5g9bj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5g9bj"] }
+
+[target.'cfg(context = "stm32u5g9nj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5g9nj"] }
+
+[target.'cfg(context = "stm32u5g9vj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5g9vj"] }
+
+[target.'cfg(context = "stm32u5g9zj")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32u5g9zj"] }
+
+[target.'cfg(context = "stm32wb10cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb10cc"] }
+
+[target.'cfg(context = "stm32wb15cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb15cc"] }
+
+[target.'cfg(context = "stm32wb30ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb30ce"] }
+
+[target.'cfg(context = "stm32wb35cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb35cc"] }
+
+[target.'cfg(context = "stm32wb35ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb35ce"] }
+
+[target.'cfg(context = "stm32wb50cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb50cg"] }
+
+[target.'cfg(context = "stm32wb55cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55cc"] }
+
+[target.'cfg(context = "stm32wb55ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55ce"] }
+
+[target.'cfg(context = "stm32wb55cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55cg"] }
+
+[target.'cfg(context = "stm32wb55rc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55rc"] }
+
+[target.'cfg(context = "stm32wb55re")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55re"] }
+
+[target.'cfg(context = "stm32wb55rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55rg"] }
+
+[target.'cfg(context = "stm32wb55vc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55vc"] }
+
+[target.'cfg(context = "stm32wb55ve")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55ve"] }
+
+[target.'cfg(context = "stm32wb55vg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55vg"] }
+
+[target.'cfg(context = "stm32wb55vy")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wb55vy"] }
+
+[target.'cfg(context = "stm32wba50ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba50ke"] }
+
+[target.'cfg(context = "stm32wba50kg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba50kg"] }
+
+[target.'cfg(context = "stm32wba52ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba52ce"] }
+
+[target.'cfg(context = "stm32wba52cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba52cg"] }
+
+[target.'cfg(context = "stm32wba52ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba52ke"] }
+
+[target.'cfg(context = "stm32wba52kg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba52kg"] }
+
+[target.'cfg(context = "stm32wba54ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba54ce"] }
+
+[target.'cfg(context = "stm32wba54cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba54cg"] }
+
+[target.'cfg(context = "stm32wba54ke")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba54ke"] }
+
+[target.'cfg(context = "stm32wba54kg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba54kg"] }
+
+[target.'cfg(context = "stm32wba55ce")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55ce"] }
+
+[target.'cfg(context = "stm32wba55cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
+
+[target.'cfg(context = "stm32wba55he")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55he"] }
+
+[target.'cfg(context = "stm32wba55hg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55hg"] }
+
+[target.'cfg(context = "stm32wba55ue")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55ue"] }
+
+[target.'cfg(context = "stm32wba55ug")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba55ug"] }
+
+[target.'cfg(context = "stm32wl54cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wl54cc-cm4"] }
+
+[target.'cfg(context = "stm32wl54jc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wl54jc-cm4"] }
+
+[target.'cfg(context = "stm32wl55cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wl55cc-cm4"] }
+
+[target.'cfg(context = "stm32wl55jc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wl55jc-cm4"] }
+
+[target.'cfg(context = "stm32wle4c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4c8"] }
+
+[target.'cfg(context = "stm32wle4cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4cb"] }
+
+[target.'cfg(context = "stm32wle4cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4cc"] }
+
+[target.'cfg(context = "stm32wle4j8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4j8"] }
+
+[target.'cfg(context = "stm32wle4jb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4jb"] }
+
+[target.'cfg(context = "stm32wle4jc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle4jc"] }
+
+[target.'cfg(context = "stm32wle5c8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5c8"] }
+
+[target.'cfg(context = "stm32wle5cb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5cb"] }
+
+[target.'cfg(context = "stm32wle5cc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5cc"] }
+
+[target.'cfg(context = "stm32wle5j8")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5j8"] }
+
+[target.'cfg(context = "stm32wle5jb")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5jb"] }
+
+[target.'cfg(context = "stm32wle5jc")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wle5jc"] }
+# END AUTO-GENERATED STM32 MAPPING

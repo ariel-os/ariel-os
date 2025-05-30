@@ -8,6 +8,10 @@ Feel free to report anything that is unclear or missing!
 > This guide requires working on your own copy of Ariel OS.
 > You may want to fork the repository to easily upstream your changes later.
 
+> Unless documented in the User Guide, please expect the module and context names that are defined in the `laze-project.yml` file to change.
+> We're still figuring out a proper naming scheme.
+> You've been warned.
+
 ## Adding Support for a Board
 
 The more similar a board is to one that is already supported, the easier.
@@ -21,6 +25,7 @@ It is usually best to copy and adapt an existing one.
   - Ensure there is a way to flash the board:
     - If the MCU is supported by probe-rs, specify `PROBE_RS_CHIP`
       and `PROBE_RS_PROTOCOL`.
+      `PROBE_RS_PROTOCOL` can be omitted to inherit the default value from the `ariel-os` laze context.
     - If the board is based on `esp`, it should inherit the espflash support.
     - If neither of these are supported, please open an issue.
   - Add a builder for the actual board that uses the context from above as `parent`.
@@ -31,24 +36,15 @@ MCU-specific code can be re-used.
 Example for the `st-nucleo-f401re` board:
 
 ```yaml
-contexts:
-  # ...
-  - name: stm32f401retx
-    parent: stm32
-    selects:
-      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
-    env:
-      PROBE_RS_CHIP: STM32F401RETx
-      PROBE_RS_PROTOCOL: swd
-      RUSTFLAGS:
-        - --cfg context=\"stm32f401retx\"
-      CARGO_ENV:
-        - CONFIG_SWI=USART2
-
 builders:
   # ...
   - name: st-nucleo-f401re
-    parent: stm32f401retx
+    parent: stm32f401re
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        - CONFIG_SWI=USART2
 ```
 
 ## Adding Support for an MCU from a Supported MCU family
@@ -56,11 +52,11 @@ builders:
 - In `laze-project.yml`:
   - Add a context for the MCU (if it does not already exist).
     - `parent`: The closest Embassy HAL's context.
-    - `selects`: A [rustc-target](#adding-support-for-a-processor-architecture) module.
+    - `selects`: A [rustc-target](#adding-support-for-a-processor-architecture) module or one of the `cortex-m*` modules if applicable.
 
 MCU-specific items inside Ariel OS crates are gated behind
 `#[cfg(context = $CONTEXT)]` attributes, where `$CONTEXT` is the [MCU's `laze
-context` name](./build_system.md#laze-contexts).
+context` name](./build-system.md#laze-contexts).
 These need to be expanded for adding support for the new MCU.
 
 At least the following crates may need to be updated:
@@ -68,6 +64,19 @@ At least the following crates may need to be updated:
 - The Ariel OS HAL crate for the MCU family.
 - `ariel-os-storage`
 - `ariel-os-embassy`
+
+Example for the `stm32f401re` MCU:
+
+```yaml
+contexts:
+  # ...
+  - name: stm32f401re
+    parent: stm32
+    selects:
+      - cortex-m4f
+    env:
+      PROBE_RS_CHIP: STM32F401RE
+```
 
 ## Adding Support for an Embassy HAL/MCU family
 
@@ -93,8 +102,6 @@ Example:
 modules:
   # ...
   - name: thumbv6m-none-eabi
-    selects:
-      - cortex-m
     env:
       global:
         RUSTC_TARGET: thumbv6m-none-eabi

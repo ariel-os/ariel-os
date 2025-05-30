@@ -1,12 +1,10 @@
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
-#![feature(used_with_arg)]
 
 use portable_atomic::{AtomicUsize, Ordering};
 
 use ariel_os::{
-    debug::{exit, ExitCode},
+    debug::{ExitCode, exit},
     thread::{RunqueueId, ThreadId},
 };
 

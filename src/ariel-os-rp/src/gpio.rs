@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_rp::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[cfg(feature = "external-interrupts")]
@@ -59,7 +59,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_rp::{gpio::Level, Peripheral};
+    use embassy_rp::{Peripheral, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_rp::gpio::{Output, Pin as OutputPin};
@@ -121,16 +121,14 @@ impl From<DriveStrength> for embassy_rp::gpio::Drive {
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
     fn from(drive_strength: ariel_os_embassy_common::gpio::DriveStrength<Self>) -> Self {
-        use ariel_os_embassy_common::gpio::DriveStrength::*;
-
         // ESPs are able to output up to 40 mA, so we somewhat normalize this.
         match drive_strength {
-            Hal(drive_strength) => drive_strength,
-            Lowest => Self::_2mA,
-            Standard => Self::default(),
-            Medium => Self::_8mA,
-            High => Self::_12mA,
-            Highest => Self::_12mA,
+            ariel_os_embassy_common::gpio::DriveStrength::Hal(drive_strength) => drive_strength,
+            ariel_os_embassy_common::gpio::DriveStrength::Lowest => Self::_2mA,
+            ariel_os_embassy_common::gpio::DriveStrength::Standard => Self::default(),
+            ariel_os_embassy_common::gpio::DriveStrength::Medium => Self::_8mA,
+            ariel_os_embassy_common::gpio::DriveStrength::High
+            | ariel_os_embassy_common::gpio::DriveStrength::Highest => Self::_12mA,
         }
     }
 }
@@ -165,14 +163,12 @@ impl From<Speed> for embassy_rp::gpio::SlewRate {
 
 impl ariel_os_embassy_common::gpio::FromSpeed for Speed {
     fn from(speed: ariel_os_embassy_common::gpio::Speed<Self>) -> Self {
-        use ariel_os_embassy_common::gpio::Speed::*;
-
         match speed {
-            Hal(speed) => speed,
-            Low => Self::Low,
-            Medium => Self::Low,
-            High => Self::High,
-            VeryHigh => Self::High,
+            ariel_os_embassy_common::gpio::Speed::Hal(speed) => speed,
+            ariel_os_embassy_common::gpio::Speed::Low
+            | ariel_os_embassy_common::gpio::Speed::Medium => Self::Low,
+            ariel_os_embassy_common::gpio::Speed::High
+            | ariel_os_embassy_common::gpio::Speed::VeryHigh => Self::High,
         }
     }
 }

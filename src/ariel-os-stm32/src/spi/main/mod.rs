@@ -2,28 +2,33 @@
 
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
-    spi::{main::Kilohertz, BitOrder, Mode},
+    spi::{BitOrder, Mode, main::Kilohertz},
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    gpio,
+    Peripheral, gpio,
     mode::Blocking,
     peripherals,
     spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi},
     time::Hertz,
-    Peripheral,
 };
 
 // TODO: we could consider making this `pub`
 // NOTE(hal): values from the datasheets.
 // When peripherals support different frequencies, the smallest one is used.
-#[cfg(context = "stm32c031c6tx")]
+#[cfg(context = "stm32c031c6")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(24);
-#[cfg(context = "stm32f401retx")]
+#[cfg(context = "stm32f401re")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
-#[cfg(context = "stm32h755zitx")]
+#[cfg(context = "stm32f411re")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(25);
+#[cfg(context = "stm32h755zi")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(150);
-#[cfg(context = "stm32wb55rgvx")]
+#[cfg(context = "stm32l475vg")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(40);
+#[cfg(context = "stm32u083mc")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(32);
+#[cfg(context = "stm32wb55rg")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(32);
 
 /// SPI bus configuration.
@@ -87,18 +92,18 @@ macro_rules! define_spi_drivers {
                     mosi_pin: impl Peripheral<P: MosiPin<peripherals::$peripheral>> + 'static,
                     config: Config,
                 ) -> Spi {
-                    let mut spi_config = embassy_stm32::spi::Config::default();
-                    spi_config.frequency = config.frequency.into();
-                    spi_config.mode = crate::spi::from_mode(config.mode);
-                    spi_config.bit_order = crate::spi::from_bit_order(config.bit_order);
-                    spi_config.miso_pull = gpio::Pull::None;
-
                     // Make this struct a compile-time-enforced singleton: having multiple statics
                     // defined with the same name would result in a compile-time error.
                     paste::paste! {
                         #[allow(dead_code)]
                         static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
                     }
+
+                    let mut spi_config = embassy_stm32::spi::Config::default();
+                    spi_config.frequency = config.frequency.into();
+                    spi_config.mode = crate::spi::from_mode(config.mode);
+                    spi_config.bit_order = crate::spi::from_bit_order(config.bit_order);
+                    spi_config.miso_pull = gpio::Pull::None;
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -136,17 +141,25 @@ macro_rules! define_spi_drivers {
 }
 
 // Define a driver per peripheral
-#[cfg(context = "stm32c031c6tx")]
+#[cfg(context = "stm32c031c6")]
 define_spi_drivers!(
    SPI1 => SPI1,
 );
-#[cfg(context = "stm32f401retx")]
+#[cfg(context = "stm32f401re")]
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
    SPI3 => SPI3,
 );
-#[cfg(context = "stm32h755zitx")]
+#[cfg(context = "stm32f411re")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
+   SPI3 => SPI3,
+   SPI4 => SPI4,
+   SPI5 => SPI5,
+);
+#[cfg(context = "stm32h755zi")]
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
@@ -155,7 +168,18 @@ define_spi_drivers!(
    SPI5 => SPI5,
    SPI6 => SPI6,
 );
-#[cfg(context = "stm32wb55rgvx")]
+#[cfg(context = "stm32l475vg")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
+   SPI3 => SPI3,
+);
+#[cfg(context = "stm32u083mc")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   // FIXME: the other two SPI peripherals share the same interrupt
+);
+#[cfg(context = "stm32wb55rg")]
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,

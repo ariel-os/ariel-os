@@ -6,11 +6,10 @@ use ariel_os_embassy_common::{
 };
 
 use embassy_nrf::{
-    bind_interrupts,
+    Peripheral, bind_interrupts,
     gpio::Pin as GpioPin,
     peripherals,
     spim::{InterruptHandler, Spim},
-    Peripheral,
 };
 
 /// SPI bus configuration.
@@ -234,6 +233,12 @@ define_spi_drivers!(
 );
 // FIXME: arbitrary selected peripherals
 #[cfg(context = "nrf5340")]
+define_spi_drivers!(
+    SERIAL2 => SERIAL2,
+    SERIAL3 => SERIAL3,
+);
+// FIXME: arbitrary selected peripherals
+#[cfg(context = "nrf91")]
 define_spi_drivers!(
     SERIAL2 => SERIAL2,
     SERIAL3 => SERIAL3,

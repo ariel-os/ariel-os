@@ -5,9 +5,13 @@ apps:
       - esp
       - nrf52840
       - nrf5340
+      - nrf9160
       - rp2040
       - rp235xa
+      - st-b-l475e-iot01a
       - st-nucleo-c031c6
       - st-nucleo-f401re
+      - st-nucleo-f411re
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
+      - stm32u083c-dk

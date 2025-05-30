@@ -520,8 +520,7 @@ pub(crate) fn process_edhoc_token<GeneralClaims>(
         let protected: HeaderMap = minicbor::decode(sign1.protected)?;
         trace!(
             "Decoded protected header map {:?} inside sign1 container {:?}",
-            &protected,
-            &sign1
+            &protected, &sign1
         );
         let headers = sign1.unprotected.updated_with(&protected);
 

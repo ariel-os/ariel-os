@@ -5,6 +5,6 @@ apps:
     env:
       global:
         RUSTFLAGS:
-          - '--cfg context="stm32wb55rgvx"'
+          - '--cfg context="stm32wb55rg"'
         RUSTDOCFLAGS:
-          - '--cfg context="stm32wb55rgvx"'
+          - '--cfg context="stm32wb55rg"'

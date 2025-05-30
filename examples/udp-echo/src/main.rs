@@ -1,20 +1,22 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 use ariel_os::{debug::log::*, net, reexports::embassy_net};
 use embassy_net::udp::{PacketMetadata, UdpSocket};
+
+// UDP datagrams with payloads larger than this will be dropped and ignored, both when receiving
+// and sending, so the size of the three buffers needs to be the same in this echo example.
+const BUFFER_SIZE: usize = 128;
 
 #[ariel_os::task(autostart)]
 async fn udp_echo() {
     let stack = net::network_stack().await.unwrap();
 
-    let mut rx_meta = [PacketMetadata::EMPTY; 16];
-    let mut rx_buffer = [0; 4096];
-    let mut tx_meta = [PacketMetadata::EMPTY; 16];
-    let mut tx_buffer = [0; 4096];
-    let mut buf = [0; 4096];
+    let mut rx_meta = [PacketMetadata::EMPTY; 1];
+    let mut rx_buffer = [0; BUFFER_SIZE];
+    let mut tx_meta = [PacketMetadata::EMPTY; 1];
+    let mut tx_buffer = [0; BUFFER_SIZE];
+    let mut buf = [0; BUFFER_SIZE];
 
     loop {
         let mut socket = UdpSocket::new(

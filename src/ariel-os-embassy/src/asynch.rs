@@ -4,7 +4,6 @@
 //! some [Embassy](https://github.com/embassy-rs/embassy) types.
 
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 use core::cell::OnceCell;
 

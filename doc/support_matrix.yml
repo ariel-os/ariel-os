@@ -53,6 +53,20 @@ functionalities:
 
 # Encodes support status for each chip.
 chips:
+  nrf52832:
+    name: nRF52832
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      logging: supported
+      storage: not_currently_supported
+      wifi: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
+
   nrf52833:
     name: nRF52833
     support:
@@ -89,6 +103,36 @@ chips:
       storage: supported
       wifi: not_available
 
+  nrf9151:
+    name: nRF9151
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng:
+        status: not_currently_supported
+        comments:
+          - only available through the CryptoCell
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage: supported
+      wifi: not_available
+
+  nrf9160:
+    name: nRF9160
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng:
+        status: not_currently_supported
+        comments:
+          - only available through the CryptoCell
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage: supported
+      wifi: not_available
+
   rp2040:
     name: RP2040
     support:
@@ -107,11 +151,26 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: supported
       logging: supported
       storage: supported
       wifi: not_available
+
+  esp32c3:
+    name: ESP32-C3
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage: not_currently_supported
+      wifi:
+        status: supported_with_caveats
+        comments:
+          - not currently compatible with threading
 
   esp32c6:
     name: ESP32-C6
@@ -140,15 +199,15 @@ chips:
       storage: not_currently_supported
       wifi: supported
 
-  stm32c031c6tx:
-    name: STM32C031C6TX
+  stm32c031c6:
+    name: STM32C031C6
     support:
       gpio: supported
       debug_output: supported
       ethernet_over_usb: not_available
       hwrng: not_available
-      i2c_controller: needs_testing
-      spi_main: needs_testing
+      i2c_controller: supported
+      spi_main: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -157,8 +216,25 @@ chips:
       user_usb: not_available
       wifi: not_available
 
-  stm32f401retx:
-    name: STM32F401RETX
+  stm32f042k6:
+    name: STM32F042K6
+    support:
+      gpio: supported
+      debug_output: supported
+      ethernet_over_usb: not_available
+      hwrng: not_available
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - would need to allocate some flash
+      user_usb: not_available
+      wifi: not_available
+
+  stm32f401re:
+    name: STM32F401RE
     support:
       gpio: supported
       debug_output: supported
@@ -172,8 +248,23 @@ chips:
           - unsupported heterogeneous flash organization
       wifi: not_available
 
-  stm32h755zitx:
-    name: STM32H755ZITX
+  stm32f411re:
+    name: STM32F411RE
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: not_available
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - unsupported heterogeneous flash organization
+      wifi: not_available
+
+  stm32h755zi:
+    name: STM32H755ZI
     support:
       gpio: supported
       debug_output: supported
@@ -187,8 +278,23 @@ chips:
           - removing items not supported
       wifi: not_available
 
-  stm32wb55rgvx:
-    name: STM32WB55RGVX
+  stm32l475vg:
+    name: STM32L475VG
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+
+  stm32u083mc:
+    name: STM32U083MC
     support:
       gpio: supported
       debug_output: supported
@@ -201,6 +307,38 @@ chips:
         comments:
           - removing items not supported
       wifi: not_available
+
+  stm32wb55rg:
+    name: STM32WB55RG
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+
+  stm32wba55cg:
+    name: STM32WBA55CG
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - removing items not supported
+      wifi: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
 
 # Encodes support status for each board.
 # Boards inherit support statuses of their chip, but can also override them.
@@ -209,14 +347,33 @@ boards:
     name: BBC micro:bit V2
     url: https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/
     chip: nrf52833
+    tier: "1"
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
+
+  nordic-thingy-91-x-nrf9151:
+    name: Nordic Thingy:91 X
+    url: https://web.archive.org/web/20250329185651/https://www.nordicsemi.com/Products/Development-hardware/Nordic-Thingy-91-X
+    chip: nrf9151
+    tier: "2"
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
+      wifi: not_currently_supported
+
+  nrf52dk:
+    name: nRF52-DK
+    url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK
+    chip: nrf52832
+    tier: "2"
+    support:
 
   nrf52840dk:
     name: nRF52840-DK
     url: https://web.archive.org/web/20250112154748/https://www.nordicsemi.com/Products/Development-hardware/nrf52840-dk
     chip: nrf52840
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -225,14 +382,25 @@ boards:
     name: nRF5340-DK
     url: https://web.archive.org/web/20250115224621/https://www.nordicsemi.com/Products/Development-hardware/nrf5340-dk
     chip: nrf5340
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
+
+  nrf9160dk-nrf9160:
+    name: nRF9160-DK
+    url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
+    chip: nrf9160
+    tier: "2"
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
 
   rpi-pico:
     name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
@@ -241,6 +409,7 @@ boards:
     name: Raspberry Pi Pico W
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
     chip: rp2040
+    tier: "1"
     support:
       user_usb: supported
       wifi: supported
@@ -250,14 +419,35 @@ boards:
     name: Raspberry Pi Pico 2
     url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
     chip: rp235xa
+    tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
+
+  rpi-pico2-w:
+    name: Raspberry Pi Pico 2 W
+    url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
+    chip: rp235xa
+    tier: "1"
+    support:
+      user_usb: supported
+      wifi: supported
+      ethernet_over_usb: supported
+
+  espressif-esp32-c3-lcdkit:
+    name: Espressif ESP32-C3-LCDkit
+    url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en
+    chip: esp32c3
+    tier: "1"
+    support:
+      user_usb: not_currently_supported
+      ethernet_over_usb: not_currently_supported
 
   espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
     url: https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en
     chip: esp32c6
+    tier: "1"
     support:
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
@@ -266,20 +456,54 @@ boards:
     name: Espressif ESP32-S3-DevKitC-1
     url: https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en
     chip: esp32s3
+    tier: "1"
     support:
       user_usb: not_currently_supported
+      ethernet_over_usb: not_currently_supported
+
+  st-b-l475e-iot01a:
+    name: ST B-L475E-IOT01A
+    url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html
+    chip: stm32l475vg
+    tier: "2"
+    support:
+      user_usb:
+        status: supported
+      wifi:
+        status: not_currently_supported
+        comments:
+          - an external Wi-Fi module is present on the board
       ethernet_over_usb: not_currently_supported
 
   st-nucleo-c031c6:
     name: ST NUCLEO-C031C6
     url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html
-    chip: stm32c031c6tx
+    chip: stm32c031c6
+    tier: "1"
+    support:
+
+  st-nucleo-f042k6:
+    name: ST NUCLEO-F042K6
+    url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f042k6.html
+    chip: stm32f042k6
+    tier: "3"
     support:
 
   st-nucleo-f401re:
     name: ST NUCLEO-F401RE
     url: https://web.archive.org/web/20250115005425/https://www.st.com/en/evaluation-tools/nucleo-f401re.html
-    chip: stm32f401retx
+    chip: stm32f401re
+    tier: "2"
+    support:
+      user_usb: not_available
+      wifi: not_available
+      ethernet_over_usb: not_available
+
+  st-nucleo-f411re:
+    name: ST NUCLEO-F411RE
+    url: https://web.archive.org/web/20250311221905/https://www.st.com/en/evaluation-tools/nucleo-f411re.html
+    chip: stm32f411re
+    tier: "3"
     support:
       user_usb: not_available
       wifi: not_available
@@ -288,7 +512,8 @@ boards:
   st-nucleo-h755zi-q:
     name: ST NUCLEO-H755ZI-Q
     url: https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html
-    chip: stm32h755zitx
+    chip: stm32h755zi
+    tier: "1"
     support:
       user_usb: supported
       wifi: not_available
@@ -297,8 +522,29 @@ boards:
   st-nucleo-wb55:
     name: ST NUCLEO-WB55RG
     url: https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html
-    chip: stm32wb55rgvx
+    chip: stm32wb55rg
+    tier: "1"
     support:
       user_usb: supported
       wifi: not_available
       ethernet_over_usb: supported
+
+  st-nucleo-wba55:
+    name: ST NUCLEO-WBA55CG
+    url: https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wba55cg.html
+    chip: stm32wba55cg
+    tier: "3"
+    support:
+
+  stm32u083c-dk:
+    name: STM32U083C-DK
+    url: https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html
+    chip: stm32u083mc
+    tier: "1"
+    support:
+      user_usb: supported
+      wifi: not_available
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - not enough RAM

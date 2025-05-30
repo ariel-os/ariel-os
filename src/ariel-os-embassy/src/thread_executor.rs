@@ -5,15 +5,16 @@
 
 use core::marker::PhantomData;
 
-use ariel_os_threads::{current_tid, thread_flags, thread_flags::ThreadFlags, ThreadId};
-use embassy_executor::{raw, Spawner};
+use ariel_os_threads::{ThreadId, current_tid, thread_flags, thread_flags::ThreadFlags};
+use embassy_executor::{Spawner, raw};
 
 // This is only used between `__pender` and `Executor::run( )`, actual flag
 // doesn't matter.
 const THREAD_FLAG_WAKEUP: ThreadFlags = 0x01;
 
-// This name is required by embassy-executor.
-#[no_mangle]
+// SAFETY: this name is required by embassy-executor and the function signature matches the
+// expected one.
+#[unsafe(no_mangle)]
 fn __pender(context: *mut ()) {
     // SAFETY: `context` is a `ThreadId` passed by `ThreadExecutor::new`.
     let thread_id = ThreadId::new(context as usize as u8);

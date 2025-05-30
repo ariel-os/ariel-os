@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-nrf"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -47,6 +47,12 @@ embassy-nrf = { workspace = true, features = [
   "nfc-pins-as-gpio",
   "nrf5340-app-s",
 ] }
+
+[target.'cfg(context = "nrf9151")'.dependencies]
+embassy-nrf = { workspace = true, features = ["nrf9151-s"] }
+
+[target.'cfg(context = "nrf9160")'.dependencies]
+embassy-nrf = { workspace = true, features = ["nrf9160-s"] }
 
 [build-dependencies]
 ld-memory = { workspace = true, features = ["build-rs"] }

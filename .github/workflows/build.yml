@@ -36,6 +36,10 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
+      - name: Free up space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL &
+
       - name: Check out repository code
         uses: actions/checkout@v4
 
@@ -53,17 +57,27 @@ jobs:
 
       - name: Run sccache-cache
         if: steps.result-cache.outputs.cache-hit != 'true'
-        uses: mozilla-actions/sccache-action@v0.0.4
+        uses: mozilla-actions/sccache-action@v0.0.8
 
       - id: get_toolchain
         if: steps.result-cache.outputs.cache-hit != 'true'
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
-      - name: Install toolchain
+      - name: Install nightly toolchain
         if: steps.result-cache.outputs.cache-hit != 'true'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+          targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv8m.main-none-eabi
+          # rust-src: Used for -Zbuild-std.
+          # rustfmt: Used by bindgen for liboscore
+          components: rust-src, rustfmt
+
+      - name: Install stable toolchain
+        if: steps.result-cache.outputs.cache-hit != 'true'
+        # configure MSRV here:
+        uses: dtolnay/rust-toolchain@1.85
+        with:
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv8m.main-none-eabi
           # rust-src: Used for -Zbuild-std.
           # rustfmt: Used by bindgen for liboscore
@@ -105,6 +119,7 @@ jobs:
           laze --version
           arm-none-eabi-gcc --version
           clang --version
+          rustup show
           cat ${ESPUP_EXPORT_FILE:-~/export-esp.sh}
           (. ${ESPUP_EXPORT_FILE:-~/export-esp.sh}; xtensa-esp32s3-elf-gcc --version)
           set +x
@@ -118,12 +133,27 @@ jobs:
         run: |
           echo "LAZE_BUILDERS=ai-c3,espressif-esp32-devkitc,espressif-esp32-c6-devkitc-1,espressif-esp32-s3-devkitc-1,bbc-microbit-v2,nrf52840dk,nrf5340dk,rpi-pico,rpi-pico-w,st-nucleo-c031c6,st-nucleo-h755zi-q,st-nucleo-wb55" >> "$GITHUB_ENV"
 
-      - name: "ariel-os compilation test"
+      - name: "ariel-os compilation test (default toolchain)"
         if: steps.result-cache.outputs.cache-hit != 'true'
         run: |
           sccache --start-server || true # work around https://github.com/ninja-build/ninja/issues/2052
 
-          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --global --partition hash:${{ matrix.partition }}
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
+
+      # cleanup previous build artifacts. do in background (no need to wait).
+      - name: "cleanup stable build artifacts"
+        if: github.event_name == 'schedule' && steps.result-cache.outputs.cache-hit != 'true'
+        run: |
+          mv build build.tmp && rm -rf build.tmp &
+
+      # nightly build, nightly toolchain
+      # (disabling xtensa here as it gets built by the default toolchain build above)
+      - name: "ariel-os compilation test (nightly toolchain)"
+        if: github.event_name == 'schedule' && steps.result-cache.outputs.cache-hit != 'true'
+        run: |
+          sccache --start-server || true # work around https://github.com/ninja-build/ninja/issues/2052
+
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
   build-success:
     if: ${{ always() }}

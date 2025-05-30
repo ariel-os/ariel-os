@@ -4,8 +4,8 @@ use core::cell::UnsafeCell;
 use core::marker::PhantomData;
 use core::mem::MaybeUninit;
 
-use crate::threadlist::ThreadList;
 use crate::ThreadState;
+use crate::threadlist::ThreadList;
 use critical_section::with;
 
 enum ChannelState {

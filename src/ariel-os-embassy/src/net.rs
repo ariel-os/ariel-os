@@ -9,7 +9,7 @@
 use embassy_net::{Runner, Stack};
 use embassy_sync::once_lock::OnceLock;
 
-use crate::{cell::SameExecutorCell, NetworkDevice};
+use crate::{NetworkDevice, cell::SameExecutorCell};
 
 #[allow(dead_code)]
 pub(crate) const ETHERNET_MTU: usize = 1514;
@@ -76,7 +76,7 @@ pub(crate) fn config() -> embassy_net::Config {
     }
     #[cfg(all(feature = "network-config-override",feature= "network-config-static"))]
     {
-        extern "Rust" {
+        unsafe extern "Rust" {
             fn __ariel_os_network_config() -> embassy_net::Config;
         }
         unsafe { __ariel_os_network_config() }
@@ -161,7 +161,10 @@ impl embassy_net::driver::RxToken for DummyDriver {
 }
 
 #[cfg(feature = "network-config-static")]
-#[no_mangle]
+// SAFETY: the compiler prevents from defining multiple functions with the same name in the
+// same crate; the function signature is checked by the compiler as it is in the same crate as the
+// FFI declaration.
+#[unsafe(no_mangle)]
 fn __ariel_os_network_config() -> embassy_net::Config {
     use ariel_os_utils::{ipv4_addr_from_env, u8_from_env};
     use ariel_os_utils::ipv6_addr_from_env;

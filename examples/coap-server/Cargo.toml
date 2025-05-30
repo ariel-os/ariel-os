@@ -9,7 +9,6 @@ workspace = true
 
 [dependencies]
 embassy-sync = { workspace = true }
-heapless = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 coap-message = "0.3.2"

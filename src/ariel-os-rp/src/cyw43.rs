@@ -1,4 +1,7 @@
-#[cfg_attr(context = "rpi-pico-w", path = "cyw43/rpi-pico-w.rs")]
+#[cfg_attr(
+    any(context = "rpi-pico-w", context = "rpi-pico2-w"),
+    path = "cyw43/rpi-pico-w.rs"
+)]
 mod rpi_pico_w;
 
 use ariel_os_debug::log::info;
@@ -8,7 +11,7 @@ use embassy_rp::{
     gpio::{Level, Output},
     pio::Pio,
 };
-use rpi_pico_w::{CywSpi, Irqs, DEFAULT_CLOCK_DIVIDER};
+use rpi_pico_w::{CywSpi, DEFAULT_CLOCK_DIVIDER, Irqs};
 use static_cell::StaticCell;
 
 pub type NetworkDevice = cyw43::NetDriver<'static>;

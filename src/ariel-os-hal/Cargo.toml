@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-hal"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 
@@ -85,6 +85,8 @@ threading = [
 
 wifi-cyw43 = ["ariel-os-rp/wifi-cyw43"]
 wifi-esp = ["ariel-os-esp/wifi-esp"]
+
+eth-stm32 = ["ariel-os-stm32/eth-stm32"]
 
 executor-single-thread = ["ariel-os-esp/executor-single-thread"]
 

@@ -1,7 +1,5 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 #[path = "../../../examples/blinky/src/pins.rs"]
 mod pins;
@@ -10,7 +8,7 @@ use ariel_os::gpio::{Level, Output};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn coap_run(peripherals: pins::LedPeripherals) {
-    use coap_handler_implementations::{new_dispatcher, HandlerBuilder};
+    use coap_handler_implementations::{HandlerBuilder, new_dispatcher};
 
     let led = Output::new(peripherals.led, Level::Low);
 

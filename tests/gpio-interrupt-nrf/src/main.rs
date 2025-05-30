@@ -1,10 +1,8 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 use ariel_os::{
-    debug::{exit, log::info, ExitCode},
+    debug::{ExitCode, exit, log::info},
     gpio::{self, Input, Pull},
     hal::peripherals,
 };
@@ -36,6 +34,19 @@ ariel_os::hal::define_peripherals!(ButtonPeripherals {
     btn_6: P0_08,
     btn_7: P0_09,
     btn_8: P0_10,
+});
+
+#[cfg(context = "nrf91")]
+ariel_os::hal::define_peripherals!(ButtonPeripherals {
+    btn_0: P0_00,
+    btn_1: P0_01,
+    btn_2: P0_02,
+    btn_3: P0_03,
+    btn_4: P0_04,
+    btn_5: P0_05,
+    btn_6: P0_06,
+    btn_7: P0_07,
+    btn_8: P0_08,
 });
 
 #[ariel_os::task(autostart, peripherals)]

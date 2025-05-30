@@ -7,7 +7,7 @@
 
 Ariel OS is an operating system for secure, memory-safe, low-power Internet of Things (IoT).
 It is based on Rust from the ground up
-and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware_functionality_support.html)
+and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware-functionality-support.html)
 based on 32-bit microcontroller architectures (Cortex-M, RISC-V, and Xtensa).
 
 ## Goals and Design
@@ -27,10 +27,10 @@ See the [Getting Started page][getting-started-mdbook] in the User Guide to get 
 
 ![Terminal screencast of compiling and flashing the hello-world example](./book/src/hello-world_render.svg)
 
-## Minimum Supported Rust Version (MSRV)
+## Minimum Supported Rust Version (MSRV) and Policy
 
-Ariel OS makes use of selected Rust unstable features. For the time being, it is
-recommended to use the nightly version pinned by [`rust-toolchain.toml`](rust-toolchain.toml).
+Ariel OS compiles with stable Rust version 1.85 and up.
+The MSRV can be increased in patch version updates.
 
 ## Security
 
@@ -70,5 +70,5 @@ Thanks to all the people who already contributed!
 [rustdoc-badge]: https://img.shields.io/badge/Documentation-%F0%9F%93%94-blue
 [documentation-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/
 [documentation-dev-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/
-[getting-started-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/getting_started.html
+[getting-started-mdbook]: https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html
 [hello-world-example]: https://github.com/ariel-os/ariel-os/tree/main/examples/hello-world

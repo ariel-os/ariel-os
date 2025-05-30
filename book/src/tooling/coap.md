@@ -287,4 +287,4 @@ without the need for the CoAP client to create a network connection to the host.
 
 [New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
 
-[laze-modules-book]: ../build_system.md#laze-modules
+[laze-modules-book]: ../build-system.md#laze-modules

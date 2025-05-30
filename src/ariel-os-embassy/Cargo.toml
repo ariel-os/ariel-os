@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-embassy"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 
@@ -17,7 +17,7 @@ static_cell.workspace = true
 cfg-if.workspace = true
 
 embassy-embedded-hal = { workspace = true, optional = true }
-embassy-executor = { workspace = true, features = ["nightly"] }
+embassy-executor = { workspace = true }
 embassy-futures = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
@@ -103,6 +103,9 @@ storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
 wifi = []
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
+
+eth = []
+eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]

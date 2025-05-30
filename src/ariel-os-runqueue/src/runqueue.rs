@@ -48,10 +48,10 @@ impl From<ThreadId> for usize {
 /// Runqueue for `N_QUEUES`, supporting `N_THREADS` total.
 ///
 /// Assumptions:
-/// - runqueue numbers (corresponding priorities) are 0..N_QUEUES (exclusive)
+/// - runqueue numbers (corresponding priorities) are `0..N_QUEUES` (exclusive)
 /// - higher runqueue number ([`RunqueueId`]) means higher priority
 /// - runqueue numbers fit in usize bits (supporting max 32 priority levels)
-/// - [`ThreadId`]s range from 0..N_THREADS
+/// - [`ThreadId`]s range from `0..N_THREADS`
 /// - `N_THREADS` is <255 (as u8 is used to store them, but 0xFF is used as
 ///   special value)
 ///
@@ -278,6 +278,7 @@ mod clist {
             self.tail[rq as usize] == Self::sentinel()
         }
 
+        #[expect(clippy::missing_panics_doc, reason = "internal")]
         pub fn push(&mut self, n: u8, rq: u8) {
             assert!(n < Self::sentinel());
             if self.next_idxs[n as usize] != Self::sentinel() {
@@ -378,11 +379,7 @@ mod clist {
         while i < N && slice[i] != search_item {
             i += 1;
         }
-        if i < N {
-            Some(i)
-        } else {
-            None
-        }
+        if i < N { Some(i) } else { None }
     }
 
     #[cfg(test)]

@@ -1,7 +1,7 @@
 //! Items specific to the Nordic Semiconductor nRF MCUs.
 
 #![no_std]
-#![feature(doc_auto_cfg)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -45,13 +45,13 @@ pub use embassy_executor::InterruptExecutor as Executor;
 ariel_os_embassy_common::executor_swi!(EGU0_SWI0);
 
 #[cfg(feature = "executor-interrupt")]
-#[cfg(context = "nrf5340")]
+#[cfg(any(context = "nrf5340", context = "nrf91"))]
 ariel_os_embassy_common::executor_swi!(EGU0);
 
 use embassy_nrf::config::Config;
 
 #[doc(hidden)]
-pub use embassy_nrf::{interrupt, OptionalPeripherals};
+pub use embassy_nrf::{OptionalPeripherals, interrupt};
 
 pub use embassy_nrf::peripherals;
 

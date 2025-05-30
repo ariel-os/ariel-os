@@ -1,7 +1,7 @@
-#!/usr/bin/env -S cargo -Zscript
+#!/usr/bin/env -S cargo +nightly -Zscript
 ---cargo
 [package]
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 argh = { version = "0.1.12" }
@@ -51,6 +51,13 @@ r##"<!-- This table is auto-generated. Do not edit manually. -->
   </tbody>
 </table>
 <style>
+@media (min-width: 1920px) {
+  .support-matrix {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}
 .support-cell {
   text-align: center;
 }
@@ -95,6 +102,13 @@ impl Args {
             SubCommand::Check(SubCommandCheck { ref output_file, .. }) => output_file,
         }
     }
+
+    fn tier(&self) -> &SupportTier {
+        match self.command {
+            SubCommand::Generate(SubCommandGenerate { ref tier, .. }) => tier,
+            SubCommand::Check(SubCommandCheck { ref tier, .. }) => tier,
+        }
+    }
 }
 
 #[derive(argh::FromArgs)]
@@ -104,10 +118,40 @@ enum SubCommand {
     Check(SubCommandCheck),
 }
 
+enum SupportTier {
+    Tier1,
+    Tier2,
+    Tier3,
+}
+
+impl argh::FromArgValue for SupportTier {
+    fn from_arg_value(value: &str) -> Result<Self, String> {
+        match value {
+            "tier-1" | "1" => Ok(Self::Tier1),
+            "tier-2" | "2" => Ok(Self::Tier2),
+            "tier-3" | "3" => Ok(Self::Tier3),
+            _ => Err("invalid board support tier".to_string()),
+        }
+    }
+}
+
+impl ToString for SupportTier {
+    fn to_string(&self) -> String {
+        match self {
+            SupportTier::Tier1 => "1".to_string(),
+            SupportTier::Tier2 => "2".to_string(),
+            SupportTier::Tier3 => "3".to_string(),
+        }
+    }
+}
+
 #[derive(argh::FromArgs)]
 #[argh(subcommand, name = "generate")]
 /// generate the HTML support matrix
 struct SubCommandGenerate {
+    /// board support tier (1, 2, or 3)
+    #[argh(option)]
+    tier: SupportTier,
     #[argh(positional)]
     /// path of the input YAML file
     input_file: PathBuf,
@@ -120,6 +164,9 @@ struct SubCommandGenerate {
 #[argh(subcommand, name = "check")]
 /// check that the generated HTML support matrix is up to date
 struct SubCommandCheck {
+    /// board support tier (1, 2 or 3)
+    #[argh(option)]
+    tier: SupportTier,
     #[argh(positional)]
     /// path of the input YAML file
     input_file: PathBuf,
@@ -148,7 +195,7 @@ fn main() -> miette::Result<()> {
 
     validate_input(&matrix)?;
 
-    let html = render_html(&matrix)?;
+    let html = render_html(&matrix, args.tier())?;
 
     match args.command {
         SubCommand::Generate(_) => {
@@ -205,7 +252,7 @@ fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
     Ok(())
 }
 
-fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
+fn render_html(matrix: &schema::Matrix, board_support_tier: &SupportTier) -> Result<String, Error> {
     use minijinja::{Environment, context};
 
     #[derive(Debug, Serialize)]
@@ -215,6 +262,7 @@ fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
         url: String,
         technical_name: String,
         name: String,
+        tier: String,
         functionalities: Vec<FunctionalitySupport>,
     }
 
@@ -288,11 +336,17 @@ fn render_html(matrix: &schema::Matrix) -> Result<String, Error> {
             url: board_info.url.to_owned(),
             technical_name: board_technical_name.to_owned(),
             name: board_name.to_owned(),
+            tier: board_info.tier.to_owned(),
             functionalities,
         })
     }).collect::<Result<Vec<_>, Error>>()?;
     // TODO: read the order from the YAML file instead?
     boards.sort_unstable_by_key(|b| b.name.to_lowercase());
+
+    let boards = boards
+        .into_iter()
+        .filter(|board_support| board_support.tier == board_support_tier.to_string())
+        .collect::<Vec<_>>();
 
     let mut env = Environment::new();
     env.add_template("matrix", TABLE_TEMPLATE).unwrap();
@@ -418,6 +472,7 @@ mod schema {
         pub description: Option<String>,
         pub url: String,
         pub chip: String,
+        pub tier: String,
         pub support: HashMap<String, SupportInfo>,
     }
 

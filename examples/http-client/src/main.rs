@@ -1,12 +1,9 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(type_alias_impl_trait)]
-#![feature(used_with_arg)]
 
 use ariel_os::{
     config,
-    debug::{exit, log::*, ExitCode},
+    debug::{ExitCode, exit, log::*},
     net,
     reexports::embassy_net,
 };

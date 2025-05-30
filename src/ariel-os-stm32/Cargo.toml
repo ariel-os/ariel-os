@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-stm32"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -9,6 +9,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+ariel-os-stm32-mapping = { path = "../ariel-os-stm32-mapping" }
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
@@ -29,20 +30,10 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
 
-[target.'cfg(context = "stm32c031c6tx")'.dependencies]
-embassy-stm32 = { workspace = true, features = ["stm32c031c6"] }
-
-[target.'cfg(context = "stm32f401retx")'.dependencies]
-embassy-stm32 = { workspace = true, features = ["stm32f401re"] }
-
-[target.'cfg(context = "stm32h755zitx")'.dependencies]
-embassy-stm32 = { workspace = true, features = ["stm32h755zi-cm7"] }
-
-[target.'cfg(context = "stm32wb55rgvx")'.dependencies]
-embassy-stm32 = { workspace = true, features = ["stm32wb55rg"] }
-
-[target.'cfg(context = "stm32wba55cgux")'.dependencies]
-embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
+[build-dependencies]
+stm32-metapac = { version = "16.0.0", default-features = false, features = [
+  "metadata",
+] }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -70,6 +61,9 @@ storage = ["dep:embassy-embedded-hal"]
 
 ## Enables USB support.
 usb = []
+
+eth = []
+eth-stm32 = ["dep:embassy-embedded-hal", "eth"]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-stm32/defmt"]

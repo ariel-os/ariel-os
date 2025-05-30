@@ -1,7 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 mod pins;
 
@@ -9,7 +7,7 @@ use ariel_os::{
     cell::ConstStaticCell,
     debug::log::*,
     reexports::{embassy_usb, usbd_hid},
-    time::{Duration, Timer},
+    time::Timer,
     usb::UsbDriver,
 };
 use embassy_usb::class::hid::{self, HidReaderWriter};
@@ -88,7 +86,7 @@ async fn usb_keyboard(button_peripherals: pins::Buttons) {
         }
 
         // Debounce events
-        Timer::after(Duration::from_millis(50)).await;
+        Timer::after_millis(50).await;
     }
 }
 

@@ -1,8 +1,23 @@
 [package]
 name = "ariel-os"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+
+# This should be the Ariel OS MSRV.
+rust-version = "1.85"
+
+[package.metadata.release]
+# We're using this crate to mangle our workspace level `CHANGELOG.md`.
+# Apply these using `cargo +nightly release replace -p ariel-os [-x]`.
+pre-release-replacements = [
+  { file = "../../CHANGELOG.md", search = "\\(#(\\d+)\\)", replace = "([#$1](https://github.com/ariel-os/ariel-os/pull/$1))" },
+  { file = "../../CHANGELOG.md", search = "Unreleased", replace = "{{version}}" },
+  { file = "../../CHANGELOG.md", search = "\\.\\.\\.HEAD", replace = "...{{tag_name}}", exactly = 1 },
+  { file = "../../CHANGELOG.md", search = "ReleaseDate", replace = "{{date}}" },
+  { file = "../../CHANGELOG.md", search = "<!-- next-header -->", replace = "<!-- next-header -->\n\n## [Unreleased] - ReleaseDate", exactly = 1 },
+  { file = "../../CHANGELOG.md", search = "<!-- next-url -->", replace = "<!-- next-url -->\n[Unreleased]: https://github.com/ariel-os/ariel-os/compare/{{tag_name}}...HEAD", exactly = 1 },
+]
 
 [lints]
 workspace = true
@@ -45,9 +60,9 @@ threading = [
 ## Enables the internal executor's timer queue, required for timer support.
 time = ["ariel-os-embassy/time"]
 # Enables the [`random`] module.
-random = ["ariel-os-embassy/random", "ariel-os-random"]
+random = ["dep:ariel-os-random", "ariel-os-embassy/random"]
 ## Enables a cryptographically secure random number generator in the [`random`] module.
-csprng = ["ariel-os-random/csprng"]
+csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 # Enables seeding the random number generator from hardware.
 hwrng = ["ariel-os-embassy/hwrng"]
 
@@ -121,6 +136,8 @@ usb-ethernet = ["ariel-os-embassy/usb-ethernet"]
 wifi-cyw43 = ["ariel-os-embassy/wifi-cyw43"]
 # Selects Wi-Fi (on ESP chips).
 wifi-esp = ["ariel-os-embassy/wifi-esp"]
+# Selects STM32 Ethernet
+eth-stm32 = ["ariel-os-embassy/eth-stm32"]
 
 #! ## Development and debugging
 # Enables the debug console, required to use

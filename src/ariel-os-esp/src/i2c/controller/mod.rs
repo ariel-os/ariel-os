@@ -2,10 +2,11 @@
 
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 use esp_hal::{
+    Async,
     gpio::interconnect::PeripheralOutput,
     i2c::master::{BusTimeout, I2c as EspI2c},
     peripheral::Peripheral,
-    peripherals, Async,
+    peripherals,
 };
 
 /// I2C bus configuration.
@@ -101,6 +102,13 @@ macro_rules! define_i2c_drivers {
                     scl_pin: impl Peripheral<P = SCL> + 'static,
                     config: Config,
                 ) -> I2c {
+                    // Make this struct a compile-time-enforced singleton: having multiple statics
+                    // defined with the same name would result in a compile-time error.
+                    paste::paste! {
+                        #[allow(dead_code)]
+                        static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
+                    }
+
                     let mut twim_config = esp_hal::i2c::master::Config::default();
                     twim_config.frequency = config.frequency.into();
                     #[cfg(any(context = "esp32c3", context = "esp32c6", context = "esp32s3"))]
@@ -110,13 +118,6 @@ macro_rules! define_i2c_drivers {
                     let disabled_timeout = BusTimeout::Maximum;
                     // Disable timeout as we implement it at a higher level.
                     twim_config.timeout = disabled_timeout;
-
-                    // Make this struct a compile-time-enforced singleton: having multiple statics
-                    // defined with the same name would result in a compile-time error.
-                    paste::paste! {
-                        #[allow(dead_code)]
-                        static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
-                    }
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -159,6 +160,7 @@ fn from_error(err: esp_hal::i2c::master::Error) -> ariel_os_embassy_common::i2c:
 
     use ariel_os_embassy_common::i2c::controller::{Error, NoAcknowledgeSource};
 
+    #[expect(clippy::match_same_arms, reason = "non-exhaustive upstream enum")]
     match err {
         EspError::FifoExceeded => Error::Overrun,
         EspError::AcknowledgeCheckFailed(reason) => {
@@ -171,9 +173,9 @@ fn from_error(err: esp_hal::i2c::master::Error) -> ariel_os_embassy_common::i2c:
         }
         EspError::Timeout => Error::Timeout,
         EspError::ArbitrationLost => Error::ArbitrationLoss,
-        EspError::ExecutionIncomplete => Error::Other,
-        EspError::CommandNumberExceeded => Error::Other,
-        EspError::ZeroLengthInvalid => Error::Other,
+        EspError::ExecutionIncomplete
+        | EspError::CommandNumberExceeded
+        | EspError::ZeroLengthInvalid => Error::Other,
         _ => Error::Other,
     }
 }

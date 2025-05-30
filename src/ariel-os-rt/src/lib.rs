@@ -2,11 +2,7 @@
 #![cfg_attr(test, no_main)]
 //
 #![allow(incomplete_features)]
-// - const_generics
-
-// features
-// linkme
-#![feature(used_with_arg)]
+#![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
 #[cfg(feature = "threading")]
 mod threading;
@@ -39,7 +35,7 @@ cfg_if::cfg_if! {
     }
 }
 
-#[cfg(any(context = "cortex-m", context = "riscv"))]
+#[cfg(any(context = "cortex-m", context = "riscv", context = "xtensa"))]
 mod isr_stack {
     pub(crate) const ISR_STACKSIZE: usize = {
         const CONFIG_ISR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
@@ -63,9 +59,13 @@ mod isr_stack {
         CONFIG_ISR_STACKSIZE
     };
 
-    #[link_section = ".isr_stack"]
-    #[used(linker)]
-    static ISR_STACK: [u8; ISR_STACKSIZE] = [0u8; ISR_STACKSIZE];
+    core::arch::global_asm!(
+        r#"
+        .section .isr_stack, "wa"
+        .skip {size}
+        "#,
+        size = const ISR_STACKSIZE
+    );
 }
 
 #[cfg(feature = "_panic-handler")]
@@ -95,14 +95,14 @@ fn startup() -> ! {
 
     debug!("ariel_os_rt::startup()");
 
-    #[cfg(any(context = "cortex-m", context = "riscv"))]
+    #[cfg(any(context = "cortex-m", context = "riscv", context = "xtensa"))]
     debug!("ariel_os_rt: ISR_STACKSIZE={}", isr_stack::ISR_STACKSIZE);
 
     #[cfg(feature = "alloc")]
     // SAFETY: *this* is the only place alloc should be initialized.
     unsafe {
-        ariel_os_alloc::init()
-    };
+        ariel_os_alloc::init();
+    }
 
     #[cfg(test)]
     debug!("ariel_os_rt::startup() cfg(test)");
@@ -121,7 +121,7 @@ fn startup() -> ! {
 
     #[cfg(feature = "executor-single-thread")]
     {
-        extern "Rust" {
+        unsafe extern "Rust" {
             fn __ariel_os_embassy_init() -> !;
         }
         debug!("ariel_os_rt::startup() launching single thread executor");

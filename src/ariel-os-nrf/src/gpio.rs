@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_nrf::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[doc(hidden)]
@@ -50,8 +50,8 @@ pub mod output {
     //! Output-specific types.
 
     use embassy_nrf::{
-        gpio::{Level, OutputDrive},
         Peripheral,
+        gpio::{Level, OutputDrive},
     };
 
     use super::DriveStrength;
@@ -102,16 +102,14 @@ impl Default for DriveStrength {
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
     fn from(drive_strength: ariel_os_embassy_common::gpio::DriveStrength<Self>) -> Self {
-        use ariel_os_embassy_common::gpio::DriveStrength::*;
-
         // ESPs are able to output up to 40 mA, so we somewhat normalize this.
         match drive_strength {
-            Hal(drive_strength) => drive_strength,
-            Lowest => Self::Standard,
-            Standard => Self::default(),
-            Medium => Self::Standard,
-            High => Self::High,
-            Highest => Self::High,
+            ariel_os_embassy_common::gpio::DriveStrength::Hal(drive_strength) => drive_strength,
+            ariel_os_embassy_common::gpio::DriveStrength::Lowest
+            | ariel_os_embassy_common::gpio::DriveStrength::Medium => Self::Standard,
+            ariel_os_embassy_common::gpio::DriveStrength::Standard => Self::default(),
+            ariel_os_embassy_common::gpio::DriveStrength::High
+            | ariel_os_embassy_common::gpio::DriveStrength::Highest => Self::High,
         }
     }
 }

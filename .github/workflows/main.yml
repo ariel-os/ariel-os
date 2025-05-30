@@ -41,7 +41,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Run host-side crate tests
-        run: laze build --builders host --multiple-tasks --global --keep-going=0 test
+        run: laze build -DCARGO_ARGS+='--locked' --builders host --multiple-tasks --global --keep-going=0 test
 
   lint:
     runs-on: ubuntu-latest
@@ -198,7 +198,7 @@ jobs:
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rgvx"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rg"' >> $GITHUB_ENV
       - name: clippy for STM32
         uses: clechasseur/rs-clippy-check@v3
         with:
@@ -238,6 +238,8 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+          targets: riscv32imac-unknown-none-elf
+          components: rust-src
 
       - name: rust cache
         uses: Swatinem/rust-cache@v2
@@ -315,7 +317,7 @@ jobs:
 
       - name: rustdoc for STM32
         run: |
-            RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rgvx"' cargo doc \
+            RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg"' cargo doc \
                 --no-deps \
                 --features "
                     embassy-stm32/stm32wb55rg,
@@ -383,10 +385,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: typos
-        uses: crate-ci/typos@v1
+        uses: crate-ci/typos@v1.31.1
 
       - name: Check the support matrix generation exit code
-        run: ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null
+        run: |
+          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 1
+          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 2
 
       - name: Install mdbook and mdbook utils
         uses: taiki-e/install-action@v2

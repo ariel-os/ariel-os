@@ -1,12 +1,9 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 use ariel_os::debug::{
-    exit,
-    log::{defmt, info},
-    ExitCode,
+    ExitCode, exit,
+    log::{Hex, defmt, info},
 };
 
 // Imports for using [`ariel_os::storage`]
@@ -74,8 +71,8 @@ async fn main() {
     {
         // no `defmt::Format` for arrayvec, so just print length
         info!(
-            "Attempting to retrieve string value as ArrayString: {:02x}",
-            string.as_bytes()
+            "Attempting to retrieve string value as ArrayString: {}",
+            Hex(string.as_bytes())
         );
     }
     info!("");
@@ -85,7 +82,7 @@ async fn main() {
         val_one: heapless::String::<64>::try_from("some value").unwrap(),
         val_two: 99,
     };
-    info!("Storing cfg object {} as struct", cfg);
+    info!("Storing cfg object {:?} as struct", cfg);
     storage::insert("my_config", cfg).await.unwrap();
 
     // Getting an object
@@ -100,33 +97,33 @@ async fn main() {
     let cfg_array: Option<arrayvec::ArrayVec<u8, 256>> = storage::get("my_config").await.unwrap();
     if let Some(cfg) = cfg_array.as_ref() {
         info!(
-            "Attempting to retrieve cfg as ArrayVec: {:02x}",
-            cfg.as_slice()
+            "Attempting to retrieve cfg as ArrayVec: {}",
+            Hex(cfg.as_slice())
         );
     }
 
     // Same for byte arrays
     let cfg_array: Option<[u8; 10]> = storage::get("my_config").await.unwrap();
     if let Some(cfg) = cfg_array.as_ref() {
-        info!("Attempting to retrieve cfg as array: {:02x}", cfg);
+        info!("Attempting to retrieve cfg as array: {}", Hex(cfg));
     }
     info!("");
 
     // raw bytes
     let bytes: [u8; 5] = [0, 1, 2, 3, 4];
-    info!("Storing raw bytes {:02x}", bytes);
+    info!("Storing raw bytes {}", Hex(bytes));
     storage::insert("some_raw_bytes", bytes).await.unwrap();
 
     let bytes: Option<[u8; 5]> = storage::get("some_raw_bytes").await.unwrap();
     if let Some(bytes) = bytes.as_ref() {
-        info!("got bytes as array: {:02x}", bytes);
+        info!("got bytes as array: {}", Hex(bytes));
     }
 
     let bytes: Option<heapless::Vec<u8, 256>> = storage::get("some_raw_bytes").await.unwrap();
     if let Some(bytes) = bytes.as_ref() {
         info!(
-            "Attempting to retrieve bytes as heapless vec arr: {:02x}",
-            bytes
+            "Attempting to retrieve bytes as heapless vec arr: {}",
+            Hex(bytes)
         );
     }
     info!("");

@@ -1,8 +1,7 @@
 //! Items specific to the STMicroelectronics STM32 MCUs.
 
 #![no_std]
-#![feature(doc_auto_cfg)]
-#![feature(type_alias_impl_trait)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -29,10 +28,18 @@ pub mod spi;
 #[doc(hidden)]
 pub mod storage;
 
+#[cfg(feature = "usb")]
+#[doc(hidden)]
+pub mod usb;
+
+#[cfg(feature = "eth")]
+#[doc(hidden)]
+pub mod eth;
+
 use embassy_stm32::Config;
 
 #[doc(hidden)]
-pub use embassy_stm32::{interrupt, OptionalPeripherals, Peripherals};
+pub use embassy_stm32::{OptionalPeripherals, Peripherals, interrupt};
 
 pub use embassy_stm32::peripherals;
 
@@ -42,21 +49,6 @@ pub(crate) use embassy_executor::InterruptExecutor as Executor;
 #[cfg(feature = "hwrng")]
 #[doc(hidden)]
 pub mod hwrng;
-
-#[cfg(feature = "usb")]
-cfg_if::cfg_if! {
-    if #[cfg(any(capability = "hw/stm32-usb", capability = "hw/stm32-usb-lp"))] {
-        #[doc(hidden)]
-        #[path = "usb.rs"]
-        pub mod usb;
-    } else if #[cfg(capability = "hw/stm32-usb-synopsis")] {
-        #[doc(hidden)]
-        #[path = "usb_synopsis_otg.rs"]
-        pub mod usb;
-    } else {
-        compile_error!("stm32: USB enabled but no capability selected");
-    }
-}
 
 #[cfg(feature = "executor-interrupt")]
 include!(concat!(env!("OUT_DIR"), "/swi.rs"));
@@ -88,7 +80,47 @@ pub fn init() -> OptionalPeripherals {
 }
 
 // TODO: find better place for this
+#[expect(clippy::too_many_lines)]
 fn board_config(config: &mut Config) {
+    #[cfg(context = "st-b-l475e-iot01a")]
+    {
+        use embassy_stm32::rcc::*;
+
+        // This board has an LSE clock, we can use it to calibrate the MSI clock
+        config.rcc.ls = LsConfig {
+            rtc: RtcClockSource::LSE,
+            lsi: false,
+            lse: Some(LseConfig {
+                frequency: embassy_stm32::time::Hertz(32768),
+                mode: LseMode::Oscillator(LseDrive::MediumHigh),
+            }),
+        };
+        config.rcc.hsi = false;
+        // Setting the MSI range to 48 MHz crashes the system. If the source of the issue is found,
+        // we can use MSI as the clock source for the usb peripheral directly and avoid using more PLLs.
+        config.rcc.msi = Some(MSIRange::RANGE8M);
+        config.rcc.pll = Some(Pll {
+            source: PllSource::MSI,
+            prediv: PllPreDiv::DIV1, // 8 Mhz
+            mul: PllMul::MUL20,      // 160 MHz
+            divp: None,
+            divq: None,
+            divr: Some(PllRDiv::DIV2), // sysclk 80Mhz (8 / 1  * 20 / 2)
+        });
+        config.rcc.sys = Sysclk::PLL1_R;
+        config.rcc.pllsai1 = Some(Pll {
+            source: PllSource::MSI,
+            prediv: PllPreDiv::DIV1,
+            mul: PllMul::MUL12, // 8 MHz MSI * 12 = 96 MHz
+            divp: None,
+            divq: Some(PllQDiv::DIV2), // USB 48 MHz (8 / 1 * 12 / 2)
+            divr: None,
+        });
+        // With a 32.768 kHz LSE, the MSI clock will be calibrated and considered accurate enough.
+        // Embassy automatically enables MSIPLLEN if the LSE is configured.
+        config.rcc.mux.clk48sel = mux::Clk48sel::PLLSAI1_Q;
+    }
+
     #[cfg(context = "st-nucleo-wb55")]
     {
         use embassy_stm32::rcc::*;
@@ -113,7 +145,28 @@ fn board_config(config: &mut Config) {
         config.rcc.mux.clk48sel = mux::Clk48sel::HSI48;
     }
 
-    #[cfg(context = "stm32h755zitx")]
+    #[cfg(context = "st-nucleo-f767zi")]
+    {
+        use embassy_stm32::rcc::*;
+        config.rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(8000000),
+            mode: HseMode::Bypass,
+        });
+        config.rcc.pll_src = PllSource::HSE;
+        config.rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV4,
+            mul: PllMul::MUL216,
+            divp: Some(PllPDiv::DIV2),
+            divq: None,
+            divr: None,
+        });
+        config.rcc.ahb_pre = AHBPrescaler::DIV1;
+        config.rcc.apb1_pre = APBPrescaler::DIV4;
+        config.rcc.apb2_pre = APBPrescaler::DIV2;
+        config.rcc.sys = Sysclk::PLL1_P;
+    }
+
+    #[cfg(context = "stm32h755zi")]
     {
         use embassy_stm32::rcc::*;
 
@@ -144,6 +197,42 @@ fn board_config(config: &mut Config) {
         // Select the clock signal used for SPI1, SPI2, and SPI3.
         // FIXME: what to do about SPI4, SPI5, and SPI6?
         config.rcc.mux.spi123sel = mux::Saisel::PLL1_Q; // Reset value
+    }
+
+    #[cfg(context = "stm32u083mc")]
+    {
+        use embassy_stm32::rcc::*;
+
+        config.rcc.hsi48 = Some(Hsi48Config {
+            sync_from_usb: true,
+        }); // needed for USB
+        // No HSE fitted on the stm32u083c-dk board
+        config.rcc.hsi = true;
+        config.rcc.sys = Sysclk::PLL1_R;
+        config.rcc.pll = Some(Pll {
+            source: PllSource::HSI,
+            prediv: PllPreDiv::DIV1,
+            mul: PllMul::MUL7,
+            divp: None,
+            divq: None,
+            divr: Some(PllRDiv::DIV2), // sysclk 56Mhz
+        });
+        config.rcc.mux.clk48sel = mux::Clk48sel::HSI48;
+    }
+
+    #[cfg(context = "stm32f042k6")]
+    {
+        use embassy_stm32::rcc::*;
+
+        config.rcc.hsi48 = Some(Hsi48Config {
+            sync_from_usb: true,
+        }); // needed for USB
+        config.rcc.sys = Sysclk::HSI48;
+        config.rcc.pll = Some(Pll {
+            src: PllSource::HSI48,
+            prediv: PllPreDiv::DIV2,
+            mul: PllMul::MUL2,
+        });
     }
 
     // mark used

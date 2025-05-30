@@ -88,7 +88,7 @@ To add a new workspace crate re-exported by `ariel-os`, follow these steps:
 
 1. Create the new crate's directory in `src/`.
 1. Run `cargo init --lib` in that directory.
-1. Add `#![deny(missing_docs)]` and `#![deny(clippy::pedantic)]` to the crate; some lints are already inherited from the workspace and do not need to be added to the new crate.
+1. Add `#![deny(missing_docs)]` to the crate; some lints are already inherited from the workspace and do not need to be added to the new crate.
 1. In the workspace's `Cargo.toml` `workspace.members` array, ensure the new entry preserves the lexicographic order of that array.
 1. In the workspace's `Cargo.toml` `dependencies` array, add a (properly sorted) entry.
 1. Re-export the crate from the `ariel-os` crate, inline it in the docs as done for the other crates, and feature-gate it if necessary.

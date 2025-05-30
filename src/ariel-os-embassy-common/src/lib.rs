@@ -1,8 +1,7 @@
 //! HAL-agnostic types shared between HALs.
 
 #![no_std]
-#![feature(doc_auto_cfg)]
-#![deny(clippy::pedantic)]
+#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;

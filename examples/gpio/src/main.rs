@@ -1,13 +1,11 @@
 #![no_main]
 #![no_std]
-#![feature(impl_trait_in_assoc_type)]
-#![feature(used_with_arg)]
 
 mod pins;
 
 use ariel_os::{
     gpio::{Input, Level, Output, Pull},
-    time::{Duration, Timer},
+    time::Timer,
 };
 
 #[ariel_os::task(autostart, peripherals)]
@@ -29,13 +27,10 @@ async fn blinky(peripherals: pins::Peripherals) {
 
     loop {
         // Wait for the button being pressed or 300 ms, whichever comes first.
-        let _ = embassy_futures::select::select(
-            btn1.wait_for_low(),
-            Timer::after(Duration::from_millis(300)),
-        )
-        .await;
+        let _ =
+            embassy_futures::select::select(btn1.wait_for_low(), Timer::after_millis(300)).await;
 
         led1.toggle();
-        Timer::after(Duration::from_millis(100)).await;
+        Timer::after_millis(100).await;
     }
 }

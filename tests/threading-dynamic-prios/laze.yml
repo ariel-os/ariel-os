@@ -3,3 +3,5 @@ apps:
     selects:
       - single-core
       - sw/threading
+    conflicts:
+      - ram-tiny

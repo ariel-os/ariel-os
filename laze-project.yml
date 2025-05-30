@@ -25,12 +25,17 @@ contexts:
       - ?hw/device-identity
       - ?lto
       - ?semihosting
+
+      # Selecting default toolchain here. try xtensa, stable, nightly.
+      - ?xtensa
+      - ?stable
+      - ?nightly
     env:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
       SCRIPTS: ${relroot}/scripts
       CARGO_ARGS:
-        - --config ${root}/${relroot}/ariel-os-cargo.toml
+        - --config ${relroot}/${root}/ariel-os-cargo.toml
       # While laze allows "export:" in rules and tasks to export laze
       # variables to a rule's recipe shell environment, this would require
       # those to be listed for *all* rules and tasks where they are needed.
@@ -48,6 +53,7 @@ contexts:
           CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       PROFILE: release
+      PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       QEMU_SYSTEM_ARM: >-
         qemu-system-arm
         -machine ${QEMU_MACHINE}
@@ -92,11 +98,13 @@ contexts:
       PROBE_RS_PROTOCOL:
         start: --protocol=
 
-      # Executor / ISR stacksize helpers
+      # Executor / ISR stacksize and heapsize helpers
       executor_stacksize_required:
         joiner: ", "
       isr_stacksize_required:
         joiner: ", "
+      heapsize_required:
+        joiner: " + "
 
     rules:
       - name: LINK
@@ -105,8 +113,8 @@ contexts:
         always: true
         cmd: >-
           test "${SKIP_CARGO_BUILD}" = "1" && exit 0;
-          cd ${relpath} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --${PROFILE} ${FEATURES}
-          && cp ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE}/${app} ${relroot}/${out}
+          cd ${relpath} && ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} build --profile=${PROFILE} ${FEATURES}
+          && cp ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app} ${relroot}/${out}
           ${POST_LINK}
 
       - name: GIT_DOWNLOAD
@@ -128,7 +136,7 @@ contexts:
         build: false
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --profile=${PROFILE} ${FEATURES}
 
       clippy:
         build: false
@@ -136,10 +144,16 @@ contexts:
         cmd:
           - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} clippy ${FEATURES}
 
+      expand:
+        build: false
+        workdir: ${appdir}
+        cmd:
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} expand ${FEATURES}
+
       debug:
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --${PROFILE} ${FEATURES}
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --profile=${PROFILE} ${FEATURES}
         build: false
         ignore_ctrl_c: true
 
@@ -152,7 +166,7 @@ contexts:
       bloat:
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} bloat --${PROFILE} ${FEATURES}
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} bloat --profile=${PROFILE} ${FEATURES}
         build: false
 
       tree:
@@ -169,18 +183,27 @@ contexts:
         cmd:
           - rust-objdump -S ${out}
 
+      info-boards:
+        build: false
+        cmd:
+          - echo ${builder}
+
   - name: nrf
     help: Nordic MCU support (based on embassy-nrf)
     parent: ariel-os
     selects:
       - ?probe-rs
     provides:
+      - has_device_identity
       - has_swi
+      - sw/benchmark
 
   - name: nrf51
     parent: nrf
     selects:
       - cortex-m0
+    provides:
+      - has_hwrng
 
   - name: bbc-microbit-base
     # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
@@ -194,6 +217,9 @@ contexts:
 
   - name: nrf52
     parent: nrf
+    provides:
+      - has_hwrng
+      - has_storage_support
     env:
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -226,16 +252,41 @@ contexts:
 
   - name: nrf5340
     parent: nrf53
+    provides:
+      - has_storage_support
     selects:
       - cortex-m33f
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
 
+  - name: nrf91
+    parent: nrf
+    selects:
+      - cortex-m33f
+
+  - name: nrf9160
+    parent: nrf91
+    provides:
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: nRF9160_xxAA
+
+  - name: nrf9151
+    parent: nrf91
+    provides:
+      - has_storage_support
+    env:
+      # FIXME: probe-rs does not support the nRF9151_xxAA yet, because there is
+      # no CMSIS-Pack available
+      PROBE_RS_CHIP: nRF9160_xxAA
+
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
     provides:
+      - has_hwrng
       - has_swi
+      - sw/benchmark
 
   - name: rp2040
     parent: rp
@@ -244,6 +295,9 @@ contexts:
       - rp-link-arg
       - cortex-m0-plus
       - ?probe-rs
+    provides:
+      - has_multi_core_support
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP2040
       CARGO_RUNNER:
@@ -260,6 +314,9 @@ contexts:
     selects:
       - cortex-m33f
       - ?probe-rs
+    provides:
+      - has_multi_core_support
+      - has_storage_support
     env:
       PROBE_RS_CHIP: RP235x
       CARGO_RUNNER:
@@ -276,21 +333,21 @@ contexts:
     selects:
       - ?debug-console
       - ?esp-println
+    provides:
+      - has_executor_single_thread_support
+      - has_hwrng
     env:
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
         # this might be needed for backtraces. it is needed for probe-rs.
         - -C force-frame-pointers
-      CARGO_ARGS:
-        - -Zbuild-std=core,alloc
 
   - name: esp32
     parent: esp
     selects:
       - xtensa
     env:
-      CARGO_TOOLCHAIN: +esp
       RUSTC_TARGET: xtensa-esp32-none-elf
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32_NONE_ELF
       CC: xtensa-esp32-elf-gcc
@@ -298,10 +355,15 @@ contexts:
   - name: esp-wroom-32
     parent: esp32
 
+  - name: esp32-c3-mini-1
+    parent: esp32c3
+
   - name: esp32c3
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imc-unknown-none-elf
@@ -316,6 +378,8 @@ contexts:
     parent: esp
     selects:
       - riscv
+    provides:
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imac-unknown-none-elf
@@ -330,9 +394,11 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - has_multi_core_support
+      - sw/benchmark
     provides_unique: [c-function-abort]
     env:
-      CARGO_TOOLCHAIN: +esp
       RUSTC_TARGET: xtensa-esp32s3-none-elf
       PROBE_RS_CHIP: esp32s3
       PROBE_RS_PROTOCOL: jtag
@@ -347,90 +413,131 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+    provides:
+      - has_device_identity
+      - sw/benchmark
     env:
       OPENOCD_ARGS: foo
 
-  - name: stm32c031c6tx
+  - name: stm32c031c6
     parent: stm32
     selects:
       - cortex-m0-plus
-    provides:
-      - has_swi
     disables:
       # TODO: embedded-test currently hard-codes 16k for its thread
       - embedded-test
     env:
       isr_stacksize_required_default: "1024"
       executor_stacksize_required_default: "3072"
-      PROBE_RS_CHIP: STM32C031C6Tx
-      PROBE_RS_PROTOCOL: swd
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=USART2
+      PROBE_RS_CHIP: STM32C031C6
 
-  - name: stm32f401retx
+  - name: stm32f042k6
+    parent: stm32
+    selects:
+      - cortex-m0
+      - single-core
+      - ram-tiny
+    disables:
+      - semihosting
+    env:
+      isr_stacksize_required_default: "512"
+      executor_stacksize_required_default: "512"
+      PROBE_RS_CHIP: STM32F042K6
+
+  - name: stm32f401re
     parent: stm32
     selects:
       - cortex-m4f
-    provides:
-      - has_swi
     env:
-      PROBE_RS_CHIP: STM32F401RETx
-      PROBE_RS_PROTOCOL: swd
+      PROBE_RS_CHIP: STM32F401RE
       RUSTFLAGS:
         - --cfg capability=\"async-flash-driver\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=USART2
 
-  - name: stm32h755zitx
+  - name: stm32f411re
+    parent: stm32
+    selects:
+      - cortex-m4f
+    env:
+      PROBE_RS_CHIP: STM32F411RE
+
+  - name: stm32f767zi
+    parent: stm32
+    selects:
+      - cortex-m7f
+    provides:
+      - has_hwrng
+    env:
+      PROBE_RS_CHIP: STM32F767ZITx
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+
+  - name: stm32h755zi
     parent: stm32
     selects:
       # TODO: also has a cortex-m4f
       - cortex-m7f
     provides:
-      - has_swi
+      - has_hwrng
+      - has_storage_support
     env:
-      PROBE_RS_CHIP: STM32H755ZITx
-      PROBE_RS_PROTOCOL: swd
+      PROBE_RS_CHIP: STM32H755ZI
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-dual-core\"
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsis\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=UART5
 
-  - name: stm32wb55rgvx
+  - name: stm32l475vg
     parent: stm32
     selects:
       - cortex-m4f
     provides:
-      - has_swi
+      - has_hwrng
+      - has_storage_support
     env:
-      PROBE_RS_CHIP: STM32WB55RGVx
-      PROBE_RS_PROTOCOL: swd
+      PROBE_RS_CHIP: STM32L475VG
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis\" # Needs an external 32.768 kHz crystal to have a stable clock
+
+  - name: stm32u083mc
+    parent: stm32
+    selects:
+      - cortex-m0-plus
+    disables:
+      # TODO: not enough RAM
+      - network
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32U083MC
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng-cryp\"
+        - --cfg capability=\"hw/stm32-usb-drd-fs\"
+
+  - name: stm32wb55rg
+    parent: stm32
+    selects:
+      - cortex-m4f
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32WB55RG
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-lp\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=LPUART1
 
-  - name: stm32wba55cgux
+  - name: stm32wba55cg
     parent: stm32
     selects:
       - cortex-m33f
     provides:
-      - has_swi
+      - has_hwrng
     env:
-      PROBE_RS_CHIP: STM32WBA55CGUx
-      PROBE_RS_PROTOCOL: swd
+      PROBE_RS_CHIP: STM32WBA55CG
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
-      CARGO_ENV:
-        # This ISR is unused on a naked board. Configured here for testing.
-        - CONFIG_SWI=LPUART1
 
 modules:
   - name: thumbv6m-none-eabi
@@ -493,9 +600,7 @@ modules:
           - -Clink-arg=-Teheap.x
           - -Clink-arg=-Tdevice.x
           - -Clink-arg=-Tisr_stack.x
-          - -Clink-arg=-Tkeep-stack-sizes.x
           - --cfg context=\"cortex-m\"
-          - -Z emit-stack-sizes
 
   - name: cortex-m0
     selects:
@@ -552,12 +657,30 @@ modules:
           - --cfg context=\"cortex-m33f\"
 
   - name: xtensa
+    context:
+      - esp32
+      - esp32s3
+    provides_unique:
+      - cargo-toolchain
+      - nightly
+    conflicts:
+      # no xtensa in stable Rust
+      # this is implicit by `provides_unique: cargo-toolchain`, adding here for
+      # clarity
+      - stable
     env:
       global:
+        # xtensa needs a bit more isr stack.
+        isr_stacksize_required_default: "32768"
+        CARGO_TOOLCHAIN: +esp
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
+          - --cfg nightly
+          - -Clink-arg=-Tisr_stack.x
         CFLAGS:
           - -mlongcalls
+        CARGO_ARGS:
+          - -Zbuild-std=core,alloc
         CARGO_PRESHELL:
           # ~/export-esp.sh is the common location, but espup install can
           # override it with its --export-file argument, which is done in CI;
@@ -571,9 +694,13 @@ modules:
   - name: riscv
     env:
       global:
+        # riscv needs a bit more isr stack.
+        isr_stacksize_required_default: "4096"
         RUSTFLAGS:
           - --cfg context=\"riscv\"
           - -Clink-arg=-Tisr_stack.x
+          - -Clink-arg=-Tlinkme-region-alias.x
+          - -Clink-arg=-Tlinkme.x
 
   - name: rp-link-arg
     help: helper module that ensures link-rp.x is added behind cortex-m ld scripts
@@ -584,9 +711,18 @@ modules:
 
   ## System functionality modules
   - name: alloc
+    help: Enables a heap, a global allocator and the `alloc` crate.
     context: ariel-os
     env:
       global:
+        # *Append* to this array to increase the heapsize. The sum of all entries will
+        # be used. By default, all unused memory is used for the heap, and the sum
+        # is used to check if the amount of heap is actually available.
+        # On esp, it always allocates the sum of `heapsize_required`, but at least 2KiB.
+        heapsize_required:
+          - "0"
+        CARGO_ENV:
+          - CONFIG_HEAPSIZE=$(${heapsize_required})
         FEATURES:
           - ariel-os/alloc
 
@@ -613,6 +749,54 @@ modules:
         FEATURES:
           - ariel-os/debug-console
 
+  - name: emit-stack-sizes
+    conflicts:
+      - stable
+    env:
+      global:
+        RUSTFLAGS:
+          - -Clink-arg=-Tkeep-stack-sizes.x
+          - -Z emit-stack-sizes
+
+  - name: ram-tiny
+    help: This module marks boards with very little RAM (currently, <10KiB)
+    conflicts:
+      # disabling alloc until we have a usable use case
+      - alloc
+      # embedded-test currently hard-codes a 16KiB stack for its thread
+      - embedded-test
+      # disabling as the default stack sizes are too small for log (defmt works)
+      - log
+      # disabling until we do have a driver/stack combo that works
+      - network
+    env:
+      global:
+        isr_stacksize_required_default: "512"
+        executor_stacksize_required_default: "512"
+
+  - name: stable
+    help: build with stable Rust
+    provides_unique:
+      - cargo-toolchain
+    env:
+      global:
+        # Using the empty string here, as specifying "+stable" would make rustup
+        # choose the *latest* stable instead of the currently configured version.
+        CARGO_TOOLCHAIN: ""
+        RUSTFLAGS:
+          - --cfg stable
+
+  - name: nightly
+    help: build with nightly Rust
+    provides_unique:
+      - cargo-toolchain
+    env:
+      global:
+        # this pins our nightly version
+        CARGO_TOOLCHAIN: +nightly-2025-02-25
+        RUSTFLAGS:
+          - --cfg nightly
+
   # This module should be hard-selected when an application *requires* debug
   # logging.
   - name: debug-logging-facade-default
@@ -633,9 +817,6 @@ modules:
           - -Clink-arg=-Tdefmt.x
         ESPFLASH_LOG_FORMAT: "--log-format defmt"
         CARGO_ENV:
-          # For some reason, `sccache` makes the build not realize changes to
-          # `DEFMT_LOG`. Painful as it is, hard-disable `sccache` here.
-          - RUSTC_WRAPPER=""
           - DEFMT_LOG=info,${LOG}
 
   - name: log
@@ -674,6 +855,8 @@ modules:
 
   - name: build_std
     context: ariel-os
+    conflicts:
+      - stable
     env:
       global:
         CARGO_ARGS:
@@ -828,19 +1011,18 @@ modules:
           - ariel-os/network-config-static
 
   - name: sw/storage
-    context:
-      - rp2040
-      - rp235xa
-      - nrf52840
-      - nrf5340
-      - stm32h755zitx
-      - stm32wb55rgvx
+    selects:
+      - has_storage_support
     env:
       global:
         FEATURES:
           - ariel-os/storage
         RUSTFLAGS:
           - -Clink-arg=-Tstorage.x
+
+  - name: has_storage_support
+    selects:
+      - doc-only
 
   - name: sw/threading
     selects:
@@ -851,14 +1033,34 @@ modules:
           - ariel-os/threading
 
   - name: wifi-cyw43
-    context:
-      - rpi-pico-w
+    selects:
+      - has_wifi_cyw43
     provides_unique:
       - network_device
     env:
       global:
         FEATURES:
           - ariel-os/wifi-cyw43
+
+  - name: has_wifi_cyw43
+    selects:
+      - doc-only
+
+  - name: eth-stm32
+    selects:
+      - has_eth_stm32
+    provides_unique:
+      - network_device
+    env:
+      global:
+        executor_stacksize_required:
+          - "32768"
+        FEATURES:
+          - ariel-os/eth-stm32
+
+  - name: has_eth_stm32
+    selects:
+      - doc-only
 
   - name: usb-ethernet
     provides_unique:
@@ -883,48 +1085,42 @@ modules:
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
-    context:
-      - espressif-esp32-s3-devkitc-1
-      - nrf5340dk
-      - nrf52840dk
-      - rpi-pico
-      - rpi-pico-w
-      - rpi-pico2
-      - particle-xenon
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
+    selects:
+      - has_usb_device_port
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/usb-device-port\"
 
+  - name: has_usb_device_port
+    selects:
+      - doc-only
+
   - name: hw/device-identity
     help: provided if the device implements ariel-os-identity
-    context:
-      - nrf
-      - stm32
+    selects:
+      - has_device_identity
     env:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/device-identity\"
 
+  - name: has_device_identity
+    selects:
+      - doc-only
+
   - name: hwrng
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
-    context:
-      # these are precisely those for which the hwrng feature of
-      # ariel-os-embassy builds, which would fail if the big if(context=...)
-      # doesn't have an entry in the cfg(feature = "hwrng") part of init_task
-      - esp
-      - nrf51
-      - nrf52
-      - rp
-      - stm32h755zitx
-      - stm32wb55rgvx
-      - stm32wba55cgux
+    selects:
+      - has_hwrng
     env:
       global:
         FEATURES:
           - ariel-os/hwrng
+
+  - name: has_hwrng
+    selects:
+      - doc-only
 
   - name: coap
     help: Basic support for the CoAP protocol.
@@ -1050,22 +1246,12 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
-    context:
-      # The Cortex-M implementation is using Systick.
-      - nrf
-      - rp
-      - stm32
-      # The esp32 implementation is using systimer.
-      - esp32c3
-      - esp32c6
-      - esp32s3
-      # These esp32 also have a systimer, uncomment when support is added.
-      # - esp32c2
-      # - esp32h2
-      # - esp32s2
+    selects:
+      - doc-only
 
   - name: wifi-esp
     selects:
+      - alloc
       - riscv:
           - wifi-esp-xor-threads
     context:
@@ -1074,6 +1260,11 @@ modules:
       - network_device
     env:
       global:
+        # esp-wifi needs a lot of ISR stack.
+        isr_stacksize_required: "32768"
+        # esp-wifi needs 72KiB
+        heapsize_required:
+          - $(72*1024)
         FEATURES:
           - ariel-os/wifi-esp
 
@@ -1094,8 +1285,8 @@ modules:
 
   - name: executor-single-thread
     help: use Embassy executor within single "thread mode" thread
-    context:
-      - esp
+    selects:
+      - has_executor_single_thread_support
     provides_unique:
       - executor
     conflicts:
@@ -1104,6 +1295,10 @@ modules:
       global:
         FEATURES:
           - ariel-os/executor-single-thread
+
+  - name: has_executor_single_thread_support
+    selects:
+      - doc-only
 
   # Enabled for MCU families that provide a dedicated software interrupt (SWI),
   # and thus do not require to sacrifice another, arbitrarily-chosen peripheral
@@ -1140,16 +1335,18 @@ modules:
 
   - name: multi-core
     help: usage platform as multi-core system
-    context:
-      - rp2040
-      - rp235xa
-      - esp32s3
+    selects:
+      - has_multi_core_support
     provides_unique:
       - critical-section
     env:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: has_multi_core_support
+    selects:
+      - doc-only
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
@@ -1209,8 +1406,9 @@ modules:
       - probe-rs
     tasks:
       test:
+        workdir: ${appdir}
         cmd:
-          - ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} -Z unstable-options -C${appdir} test ${FEATURES}
+          - ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} test ${FEATURES}
         build: false
 
     env:
@@ -1263,15 +1461,15 @@ builders:
         build: false
         cmd:
           # If this starts doing anything else other than rustup and espup, update the book that currently claims this to be rustup only.
-          - rustup target add thumbv6m-none-eabi
-          - rustup target add thumbv7m-none-eabi
-          - rustup target add thumbv7em-none-eabi
-          - rustup target add thumbv7em-none-eabihf
-          - rustup target add thumbv8m.main-none-eabi
-          - rustup target add thumbv8m.main-none-eabihf
-          - rustup target add riscv32imc-unknown-none-elf
-          - rustup target add riscv32imac-unknown-none-elf
-          - rustup component add rust-src
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv6m-none-eabi
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv7m-none-eabi
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv7em-none-eabi
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv7em-none-eabihf
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv8m.main-none-eabi
+          - rustup ${CARGO_TOOLCHAIN} target add thumbv8m.main-none-eabihf
+          - rustup ${CARGO_TOOLCHAIN} target add riscv32imc-unknown-none-elf
+          - rustup ${CARGO_TOOLCHAIN} target add riscv32imac-unknown-none-elf
+          - rustup ${CARGO_TOOLCHAIN} component add rust-src
           - if command -v espup >/dev/null; then espup update --targets=esp32,esp32s3; fi
 
       install-c2rust:
@@ -1286,6 +1484,8 @@ builders:
 
   - name: nrf52840dk
     parent: nrf52840
+    provides:
+      - has_usb_device_port
 
   - name: dwm1001
     parent: nrf52832
@@ -1322,20 +1522,41 @@ builders:
   - name: bbc-microbit-v2
     parent: nrf52833
 
+  - name: dfrobot-firebeetle2-esp32-c6
+    parent: esp32c6
+
   - name: particle-xenon
     parent: nrf52840
+    provides:
+      - has_usb_device_port
 
   - name: rpi-pico
     parent: rp2040
+    provides:
+      - has_usb_device_port
 
   - name: rpi-pico-w
-    parent: rpi-pico
+    parent: rp2040
+    provides:
+      - has_usb_device_port
+      - has_wifi_cyw43
 
   - name: rpi-pico2
     parent: rp235xa
+    provides:
+      - has_usb_device_port
+
+  - name: rpi-pico2-w
+    parent: rp235xa
+    provides:
+      - has_usb_device_port
+      - has_wifi_cyw43
 
   - name: ai-c3
     parent: esp-c3-01m
+
+  - name: espressif-esp32-c3-lcdkit
+    parent: esp32-c3-mini-1
 
   - name: espressif-esp32-devkitc
     parent: esp-wroom-32
@@ -1345,24 +1566,117 @@ builders:
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
+    provides:
+      - has_usb_device_port
 
   - name: nrf5340dk
     parent: nrf5340
+    provides:
+      - has_usb_device_port
 
   - name: st-nucleo-c031c6
-    parent: stm32c031c6tx
+    parent: stm32c031c6
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+
+  - name: st-nucleo-f042k6
+    parent: stm32f042k6
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+
+  # TODO: there also is a companion nrf52840 on this board
+  - name: nrf9160dk-nrf9160
+    parent: nrf9160
+
+  # TODO: there also is a companion nrf5340 on this board
+  - name: nordic-thingy-91-x-nrf9151
+    parent: nrf9151
+
+  - name: st-b-l475e-iot01a
+    parent: stm32l475vg
+    provides:
+      - has_swi
+      - has_usb_device_port
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=UART5
 
   - name: st-nucleo-f401re
-    parent: stm32f401retx
+    parent: stm32f401re
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+
+  - name: st-nucleo-f411re
+    parent: stm32f411re
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+
+  - name: st-nucleo-f767zi
+    parent: stm32f767zi
+    provides:
+      - has_swi
+      - has_eth_stm32
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
 
   - name: st-nucleo-h755zi-q
-    parent: stm32h755zitx
+    parent: stm32h755zi
+    provides:
+      - has_eth_stm32
+      - has_swi
+      - has_usb_device_port
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=UART5
 
   - name: st-nucleo-wb55
-    parent: stm32wb55rgvx
+    parent: stm32wb55rg
+    provides:
+      - has_swi
+      - has_usb_device_port
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=LPUART1
 
   - name: st-nucleo-wba55
-    parent: stm32wba55cgux
+    parent: stm32wba55cg
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=LPUART1
+
+  - name: stm32u083c-dk
+    parent: stm32u083mc
+    provides:
+      - has_swi
+      - has_usb_device_port
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2_LPUART2
 
 apps:
   # define a dummy host application so the host tasks work

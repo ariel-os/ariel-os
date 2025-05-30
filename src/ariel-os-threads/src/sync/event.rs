@@ -1,11 +1,10 @@
 //! This module provides an event that can be waited for.
 
 #![deny(missing_docs)]
-#![deny(clippy::pedantic)]
 
 use core::cell::UnsafeCell;
 
-use crate::{threadlist::ThreadList, ThreadState};
+use crate::{ThreadState, threadlist::ThreadList};
 
 /// An [`Event`], allowing to notify multiple threads that some event has happened.
 ///

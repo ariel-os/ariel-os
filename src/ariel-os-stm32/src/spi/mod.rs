@@ -34,13 +34,19 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
 
     // Take all SPI peripherals and do nothing with them.
     cfg_if::cfg_if! {
-        if #[cfg(context = "stm32c031c6tx")] {
+        if #[cfg(context = "stm32c031c6")] {
             take_all_spi_peripherals!(Peripherals, SPI1);
-        } else if #[cfg(context = "stm32f401retx")] {
+        } else if #[cfg(context = "stm32f401re")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
-        } else if #[cfg(context = "stm32h755zitx")] {
+        } else if #[cfg(context = "stm32f411re")] {
+            take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3, SPI4, SPI5);
+        } else if #[cfg(context = "stm32h755zi")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3, SPI4, SPI5, SPI6);
-        } else if #[cfg(context = "stm32wb55rgvx")] {
+        }else if #[cfg(context= "stm32l475vg")]{
+            take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
+        } else if #[cfg(context = "stm32u083mc")] {
+            take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
+        } else if #[cfg(context = "stm32wb55rg")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2);
         } else {
             compile_error!("this STM32 chip is not supported");

@@ -4,8 +4,8 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_stm32::{
-        gpio::{Level, Pull},
         Peripheral,
+        gpio::{Level, Pull},
     };
 
     #[doc(hidden)]
@@ -49,7 +49,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_stm32::{gpio::Level, Peripheral};
+    use embassy_stm32::{Peripheral, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_stm32::gpio::{Output, Pin as OutputPin};
@@ -94,7 +94,10 @@ impl From<Speed> for embassy_stm32::gpio::Speed {
         match speed {
             Speed::Low => Self::Low,
             Speed::Medium => Self::Medium,
+            #[cfg(not(any(gpio_v1, syscfg_f0)))]
             Speed::High => Self::High,
+            #[cfg(any(gpio_v1, syscfg_f0))]
+            Speed::High => Self::VeryHigh,
             Speed::VeryHigh => Self::VeryHigh,
         }
     }
@@ -102,14 +105,12 @@ impl From<Speed> for embassy_stm32::gpio::Speed {
 
 impl ariel_os_embassy_common::gpio::FromSpeed for Speed {
     fn from(speed: ariel_os_embassy_common::gpio::Speed<Self>) -> Self {
-        use ariel_os_embassy_common::gpio::Speed::*;
-
         match speed {
-            Hal(speed) => speed,
-            Low => Self::Low,
-            Medium => Self::Medium,
-            High => Self::High,
-            VeryHigh => Self::VeryHigh,
+            ariel_os_embassy_common::gpio::Speed::Hal(speed) => speed,
+            ariel_os_embassy_common::gpio::Speed::Low => Self::Low,
+            ariel_os_embassy_common::gpio::Speed::Medium => Self::Medium,
+            ariel_os_embassy_common::gpio::Speed::High => Self::High,
+            ariel_os_embassy_common::gpio::Speed::VeryHigh => Self::VeryHigh,
         }
     }
 }

@@ -66,7 +66,7 @@ name = "test"
 harness = false
 ```
 
-3. Enable the `embedded-test` or `embedded-test-only` [laze module](./build_system.md#laze-modules):
+3. Enable the `embedded-test` or `embedded-test-only` [laze module](./build-system.md#laze-modules):
 
 ```yaml
 apps:
@@ -90,8 +90,6 @@ apps:
 # This goes to the top of the file
 #![no_main]
 #![no_std]
-#![feature(used_with_arg)]
-#![feature(impl_trait_in_assoc_type)]
 ```
 
 5. Write the tests:

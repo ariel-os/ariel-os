@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-alloc"
-version = "0.1.0"
+version = "0.2.0"
 license.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -13,6 +13,7 @@ harness = false
 
 [dependencies]
 ariel-os-debug = { workspace = true }
+ariel-os-utils = { workspace = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 embedded-alloc = { version = "0.6.0", default-features = false, features = [
