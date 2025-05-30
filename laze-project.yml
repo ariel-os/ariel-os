@@ -1010,6 +1010,28 @@ modules:
         FEATURES:
           - ariel-os/network-config-static
 
+  - name: network-config-static-v4
+    help: use static IPv4 network configuration
+    selects:
+      - network
+    provides_unique:
+      - network-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-static-v4
+
+  - name: network-config-static-v6
+    help: use static IPv6 network configuration
+    selects:
+      - network
+    provides_unique:
+      - network-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-static-v6
+
   - name: sw/storage
     selects:
       - has_storage_support

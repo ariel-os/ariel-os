@@ -51,7 +51,12 @@ macro_rules! define_env_macro {
                         );
                     }
                 } else {
-                    $crate::env::const_panic::concat_panic!("there is not the environment variable")
+                    $crate::env::const_panic::concat_panic!(
+                        "`",
+                        $env_var,
+                        "` environment variable was expected to provide the ",
+                        $doc,
+                    );
                 }
             };
         }

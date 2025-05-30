@@ -109,6 +109,8 @@ eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]
+network-config-static-v4 = ["network-config-override"]
+network-config-static-v6 = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
 
