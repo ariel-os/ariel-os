@@ -32,6 +32,13 @@ embedded-hal-async = { workspace = true }
 embedded-storage-async = { workspace = true }
 
 ariel-os-embassy-common = { workspace = true }
+trouble-host = { workspace = true, optional = true }
+
+# For ble dummy implementation
+static_cell = { workspace = true, optional = true }
+bt-hci = { version = "0.2.0", optional = true }
+embedded-io = { version = "0.6", optional = true }
+embassy-sync = { workspace = true, optional = true }
 
 [features]
 external-interrupts = [
@@ -61,6 +68,10 @@ usb = [
   "ariel-os-rp/usb",
   "ariel-os-stm32/usb",
 ]
+
+ble = ["trouble-host", "static_cell", "bt-hci", "embedded-io", "embassy-sync"]
+ble-peripheral = []
+ble-central = []
 
 hwrng = [
   "ariel-os-esp/hwrng",

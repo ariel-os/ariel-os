@@ -15,6 +15,9 @@ pub mod executor_thread;
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
+#[cfg(feature = "ble")]
+pub mod ble;
+
 pub mod identity;
 
 #[cfg(feature = "spi")]

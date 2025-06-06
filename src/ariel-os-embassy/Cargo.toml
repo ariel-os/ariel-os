@@ -46,6 +46,7 @@ ariel-os-utils = { workspace = true }
 heapless = "0.8.0"
 once_cell = { workspace = true }
 usbd-hid = { version = "0.8.2", optional = true }
+trouble-host = { workspace = true, optional = true }
 
 # ISA-specific
 [target.'cfg(context = "cortex-m")'.dependencies]
@@ -117,10 +118,15 @@ wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
+ble = ["ariel-os-hal/ble", "dep:trouble-host", "ariel-os-embassy-common/ble"]
+ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
+ble-central = ["ble", "ariel-os-hal/ble-central"]
+
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
+ble-config-override = []
 
 executor-single-thread = [
   "ariel-os-hal/executor-single-thread",

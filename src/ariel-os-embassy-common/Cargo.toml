@@ -18,6 +18,7 @@ embassy-time = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 const-sha1 = { version = "0.3.0", default-features = false }
+trouble-host = { workspace = true, optional = true }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -34,3 +35,5 @@ defmt = ["dep:defmt", "fugit?/defmt"]
 executor-thread = []
 
 _test = ["i2c", "spi", "external-interrupts"]
+
+ble = ["trouble-host"]
