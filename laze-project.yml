@@ -188,6 +188,19 @@ contexts:
         cmd:
           - echo ${builder}
 
+      vscode-config:
+        help: Generate a VSCode configuration for selected board (select a board with -b)
+        build: false
+        # The --config arg in CARGO_ARGS is pointing to a file relative to the appdir, it makes more sense to generate the config in the appdir
+        workdir: ${appdir}
+        export:
+          - FEATURES
+          - CARGO_TARGET_PREFIX
+          - CARGO_ARGS
+          - CARGO_ENV
+        cmd: # We have to obfuscate the variables to avoid cargo interpreting them since we're running a rust script
+          - _CARGO_TOOLCHAIN='${CARGO_TOOLCHAIN}' ${relroot}/${root}/scripts/vscode.rs
+
   - name: nrf
     help: Nordic MCU support (based on embassy-nrf)
     parent: ariel-os
