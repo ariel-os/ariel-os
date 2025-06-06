@@ -6,6 +6,8 @@
 
 pub mod gpio;
 
+mod irqs;
+
 #[doc(hidden)]
 pub mod peripheral {
     pub use embassy_nrf::Peripheral;
@@ -35,6 +37,10 @@ pub mod storage;
 #[cfg(feature = "usb")]
 #[doc(hidden)]
 pub mod usb;
+
+#[cfg(feature = "ble")]
+#[doc(hidden)]
+pub mod ble;
 
 #[cfg(feature = "executor-interrupt")]
 #[doc(hidden)]

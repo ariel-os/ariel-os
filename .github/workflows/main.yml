@@ -124,6 +124,7 @@ jobs:
                 udp,
                 usb,
                 usb-ethernet,
+                ble,
                 "
             -p ariel-os
             -p ariel-os-alloc
@@ -273,7 +274,8 @@ jobs:
                     udp,
                     usb,
                     usb-hid,
-                    coapcore/_nightly_docs
+                    coapcore/_nightly_docs,
+                    ble,
                     "
 
       - name: rustdoc for ESP32

@@ -1,6 +1,4 @@
-embassy_nrf::bind_interrupts!(struct Irqs {
-    RNG => embassy_nrf::rng::InterruptHandler<embassy_nrf::peripherals::RNG>;
-});
+use crate::irqs::Irqs;
 
 pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
     cfg_if::cfg_if! {

@@ -1,0 +1,5 @@
+apps:
+  - name: example-ble-scan
+    selects:
+      - ble
+      - ble-central

@@ -9,10 +9,11 @@
 ///
 /// - The name of the driver the constant provides configuration for.
 ///
-/// | Driver    | Expected type                  | Cargo feature to enable   |
-/// | --------- | ------------------------------ | ------------------------- |
-/// | `network` | `embassy_net::Config`          | `network-config-override` |
-/// | `usb`     | `embassy_usb::Config`          | `override-usb-config`     |
+/// | Driver    | Expected type                     | Cargo feature to enable   |
+/// | --------- | --------------------------------- | ------------------------- |
+/// | `network` | `embassy_net::Config`             | `network-config-override` |
+/// | `usb`     | `embassy_usb::Config`             | `override-usb-config`     |
+/// | `ble`     | `ariel_os::reexport::ble::Config` | `ble-config-override`     |
 ///
 /// # Note
 ///
@@ -65,6 +66,10 @@ pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
         Some(ConfigKind::Usb) => (
             format_ident!("__ariel_os_usb_config"),
             quote! {#ariel_os_crate::reexports::embassy_usb::Config<'static>},
+        ),
+        Some(ConfigKind::Ble) => (
+            format_ident!("__ariel_os_ble_config"),
+            quote! {#ariel_os_crate::reexports::ble::Config},
         ),
         None => {
             panic!("a configuration kind must be specified");
@@ -136,6 +141,7 @@ mod config_macro {
     pub enum ConfigKind {
         Network,
         Usb,
+        Ble,
     }
 
     impl ConfigKind {
@@ -143,6 +149,7 @@ mod config_macro {
             match self {
                 Self::Network => "network",
                 Self::Usb => "usb",
+                Self::Ble => "ble",
             }
         }
     }

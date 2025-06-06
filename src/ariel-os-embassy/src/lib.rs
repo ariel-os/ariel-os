@@ -22,6 +22,9 @@ pub mod spi;
 #[cfg(feature = "usb")]
 pub mod usb;
 
+#[cfg(feature = "ble")]
+pub mod ble;
+
 #[cfg(feature = "net")]
 pub mod net;
 
@@ -53,6 +56,8 @@ pub mod api {
         pub use embassy_time::{Delay, Duration, Instant, TICK_HZ, Timer};
     }
 
+    #[cfg(feature = "ble")]
+    pub use crate::ble;
     #[cfg(feature = "i2c")]
     pub use crate::i2c;
     #[cfg(feature = "net")]
@@ -65,6 +70,8 @@ pub mod api {
 
 // These are made available in `ariel_os::reexports`.
 pub mod reexports {
+    #[cfg(feature = "ble")]
+    pub use ariel_os_embassy_common::ble;
     #[cfg(feature = "net")]
     pub use embassy_net;
     #[cfg(feature = "time")]
@@ -211,10 +218,19 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(feature = "usb")]
     let usb_peripherals = hal::usb::Peripherals::new(&mut peripherals);
 
+    #[cfg(feature = "ble")]
+    let ble_peripherals = hal::ble::Peripherals::new(&mut peripherals);
+
     // Tasks have to be started before driver initializations so that the tasks are able to
     // configure the drivers using hooks.
     for task in EMBASSY_TASKS {
         task(spawner, &mut peripherals);
+    }
+
+    #[cfg(feature = "ble")]
+    {
+        let config = ble::config();
+        hal::ble::driver(ble_peripherals, &spawner, config);
     }
 
     #[cfg(feature = "usb")]

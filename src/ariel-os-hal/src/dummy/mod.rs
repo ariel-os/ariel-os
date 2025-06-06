@@ -50,6 +50,10 @@ pub mod storage;
 #[cfg(feature = "usb")]
 pub mod usb;
 
+#[doc(hidden)]
+#[cfg(feature = "ble")]
+pub mod ble;
+
 pub use executor::{Executor, Spawner};
 
 #[doc(hidden)]
