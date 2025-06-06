@@ -16,7 +16,7 @@ ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
 
 [build-dependencies]
-rustflags = "0.1"
+ld-memory = { workspace = true, features = ["build-rs"], optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 cortex-m = { workspace = true }
@@ -54,6 +54,7 @@ panic-printing = []
 _panic-handler = []
 single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
+memory-x = ["dep:ld-memory"]
 
 # features needed for `cargo test`
 _test = []
