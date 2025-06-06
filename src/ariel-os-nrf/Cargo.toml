@@ -28,6 +28,7 @@ portable-atomic = { workspace = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
@@ -56,9 +57,6 @@ embassy-nrf = { workspace = true, features = ["nrf9151-s"] }
 
 [target.'cfg(context = "nrf9160")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9160-s"] }
-
-[build-dependencies]
-ld-memory = { workspace = true, features = ["build-rs"] }
 
 [features]
 ## Enables GPIO interrupt support.

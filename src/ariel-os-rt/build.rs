@@ -1,34 +1,23 @@
-use rustflags::Flag;
 use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    let flags = rustflags::from_env();
-    let contexts = flags
-        .filter_map(|flag| match flag {
-            Flag::Cfg {
-                name,
-                value: Some(v),
-            } if name == "context" => Some(v),
-            _ => None,
-        })
-        .collect::<Vec<_>>();
-
-    let context = |name: &str| contexts.contains(&name.to_string());
-
-    let context_any = |list: &'static [&'static str]| list.iter().find(|entry| context(entry));
+    if !context("ariel-os") {
+        // Platform-independent tooling.
+        return;
+    }
 
     // Put the linker scripts somewhere the linker can find them
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
     if let Some(context) = context_any(&["cortex-m", "riscv", "xtensa"]) {
-        let insert_somewhere = match *context {
+        let insert_somewhere = match context {
             "cortex-m" => "INSERT BEFORE .data;",
             "riscv" => "INSERT BEFORE .trap;",
             _ => "",
         };
 
-        let region = match *context {
+        let region = match context {
             "cortex-m" => "RAM",
             "riscv" | "xtensa" => "RWDATA",
             _ => unreachable!(),
@@ -56,9 +45,59 @@ fn main() {
     std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
     std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
 
+    #[cfg(feature = "memory-x")]
+    write_memoryx();
+
     println!("cargo:rerun-if-changed=linkme.x");
     println!("cargo:rerun-if-changed=eheap.x");
     println!("cargo:rerun-if-changed=keep-stack-sizes.x");
 
     println!("cargo:rustc-link-search={}", out.display());
+}
+
+#[cfg(feature = "ld-memory")]
+fn write_memoryx() {
+    use ld_memory::{Memory, MemorySection};
+    let (ram, flash) = if context("nrf51822-xxaa") {
+        (16, 256)
+    } else if context("nrf52832") {
+        (64, 256)
+    } else if context("nrf52833") {
+        (128, 512)
+    } else if context("nrf52840") {
+        (256, 1024)
+    } else if context("nrf5340") {
+        (512, 1024)
+    } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
+        (256, 1024)
+    } else {
+        panic!("please set the MCU laze context");
+    };
+
+    // generate linker script
+    let memory = Memory::new()
+        .add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024))
+        .add_section(
+            MemorySection::new("FLASH", 0x0, flash * 1024)
+                .pagesize(4096)
+                .from_env(),
+        );
+
+    memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
+}
+
+/// Returns the first of the given contexts that is in the current `cfg` contexts
+fn context_any(contexts: &[&'static str]) -> Option<&'static str> {
+    // Contexts cannot include commas.
+    contexts.iter().find(|c| context(c)).map(|c| *c)
+}
+
+/// Returns whether the given context is in the current 'cfg' contexts
+fn context(context: &'static str) -> bool {
+    let Ok(context_var) = std::env::var("CARGO_CFG_CONTEXT") else {
+        return false;
+    };
+
+    // Contexts cannot include commas.
+    context_var.split(',').any(|c| c == context)
 }
