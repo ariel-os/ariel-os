@@ -266,6 +266,16 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
 
+  - name: nrf5340-net
+    parent: nrf53
+    provides:
+      - has_storage_support
+    selects:
+      - cortex-m33
+    env:
+      PROBE_RS_CHIP: nrf5340_xxAA
+    help: nRF5340 Network Core support
+
   - name: nrf91
     parent: nrf
     selects:
@@ -1591,6 +1601,11 @@ builders:
 
   - name: nrf5340dk
     parent: nrf5340
+    provides:
+      - has_usb_device_port
+
+  - name: nrf5340dk-net
+    parent: nrf5340-net
     provides:
       - has_usb_device_port
 

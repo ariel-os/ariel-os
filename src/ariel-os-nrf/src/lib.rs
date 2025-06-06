@@ -49,7 +49,7 @@ ariel_os_embassy_common::executor_swi!(SWI0);
 ariel_os_embassy_common::executor_swi!(EGU0_SWI0);
 
 #[cfg(feature = "executor-interrupt")]
-#[cfg(any(context = "nrf5340", context = "nrf91"))]
+#[cfg(any(context = "nrf53", context = "nrf91"))]
 ariel_os_embassy_common::executor_swi!(EGU0);
 
 use embassy_nrf::config::Config;

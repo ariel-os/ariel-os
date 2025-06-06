@@ -16,6 +16,8 @@ fn main() {
         (256, 1024)
     } else if is_in_current_contexts(&["nrf5340"]) {
         (512, 1024)
+    } else if is_in_current_contexts(&["nrf5340-net"]) {
+        (64, 256)
     } else if is_in_current_contexts(&["nrf9151", "nrf9160"]) {
         (256, 1024)
     } else {
@@ -26,7 +28,7 @@ fn main() {
         "NRF51_FLASH"
     } else if is_in_current_contexts(&["nrf52"]) {
         "NRF52_FLASH"
-    } else if is_in_current_contexts(&["nrf5340"]) {
+    } else if is_in_current_contexts(&["nrf5340", "nrf5340-net"]) {
         "NRF5340_FLASH"
     } else if is_in_current_contexts(&["nrf9151"]) {
         "NRF9151_FLASH"
@@ -36,12 +38,18 @@ fn main() {
         unreachable!();
     };
 
+    let (pagesize, ram_base, flash_base) = if is_in_current_contexts(&["nrf5340-net"]) {
+        (2048, 0x2100_0000, 0x0100_0000)
+    } else {
+        (4096, 0x2000_0000, 0)
+    };
+
     // generate linker script
     let memory = Memory::new()
-        .add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024))
+        .add_section(MemorySection::new("RAM", ram_base, ram * 1024))
         .add_section(
-            MemorySection::new("FLASH", 0x0, flash * 1024)
-                .pagesize(4096)
+            MemorySection::new("FLASH", flash_base, flash * 1024)
+                .pagesize(pagesize)
                 .from_env_with_prefix(slot_prefix),
         );
 
