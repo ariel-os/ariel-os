@@ -21,6 +21,7 @@ members = [
   "src/ariel-os-power",
   "src/ariel-os-random",
   "src/ariel-os-rp",
+  "src/ariel-os-sensors",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "tests/benchmarks/bench_sched_flags",
@@ -116,12 +117,14 @@ ariel-os-embassy-common = { path = "src/ariel-os-embassy-common" }
 ariel-os-esp = { path = "src/ariel-os-esp" }
 ariel-os-hal = { path = "src/ariel-os-hal", default-features = false }
 ariel-os-identity = { path = "src/ariel-os-identity" }
+ariel-os-macros = { path = "src/ariel-os-macros" }
 ariel-os-nrf = { path = "src/ariel-os-nrf" }
 ariel-os-power = { path = "src/ariel-os-power" }
 ariel-os-random = { path = "src/ariel-os-random" }
 ariel-os-rp = { path = "src/ariel-os-rp" }
 ariel-os-rt = { path = "src/ariel-os-rt" }
 ariel-os-runqueue = { path = "src/ariel-os-runqueue" }
+ariel-os-sensors = { path = "src/ariel-os-sensors" }
 ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
@@ -140,6 +143,7 @@ once_cell = { version = "=1.19.0", default-features = false, features = [
   "critical-section",
 ] }
 paste = { version = "1.0" }
+pin-project = "1.1.6"
 rand = { version = "0.8.5", default-features = false }
 rand_core = { version = "0.6.4", default-features = false }
 rtt-target = { version = "0.6.0" }
