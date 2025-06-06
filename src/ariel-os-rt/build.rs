@@ -74,27 +74,13 @@ fn write_memoryx() {
         panic!("please set the MCU laze context");
     };
 
-    let slot_prefix = if context("nrf51") {
-        "NRF51_FLASH"
-    } else if context("nrf52") {
-        "NRF52_FLASH"
-    } else if context("nrf5340") {
-        "NRF5340_FLASH"
-    } else if context("nrf9151") {
-        "NRF9151_FLASH"
-    } else if context("nrf9160") {
-        "NRF9160_FLASH"
-    } else {
-        unreachable!();
-    };
-
     // generate linker script
     let memory = Memory::new()
         .add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024))
         .add_section(
             MemorySection::new("FLASH", 0x0, flash * 1024)
                 .pagesize(4096)
-                .from_env_with_prefix(slot_prefix),
+                .from_env(),
         );
 
     memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
