@@ -12,13 +12,13 @@ workspace = true
 logging-facade.xor = { features = ["defmt", "log"] }
 
 [dependencies]
-defmt = { workspace = true, optional = true }
+defmt = { workspace = true }
 featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
 
 [features]
 ## Enables `defmt` as logging facade.
-defmt = ["dep:defmt"]
+defmt = []
 ## Enables `log` as logging facade.
 log = ["dep:log"]
 
