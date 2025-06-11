@@ -169,7 +169,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
 fn __ariel_os_network_config() -> embassy_net::Config {
     let mut config = embassy_net::Config::default();
 
-    #[cfg(feature = "ipv4")]
+    #[cfg(feature = "network-config-static-ipv4")]
     {
         let ipaddr = ariel_os_utils::ipv4_addr_from_env_or!(
             "CONFIG_NET_IPV4_STATIC_ADDRESS",
@@ -196,7 +196,7 @@ fn __ariel_os_network_config() -> embassy_net::Config {
         });
     }
 
-    #[cfg(feature = "ipv6")]
+    #[cfg(feature = "network-config-static-ipv6")]
     {
         let ipaddr = ariel_os_utils::ipv6_addr_from_env!(
             "CONFIG_NET_IPV6_STATIC_ADDRESS",
