@@ -995,31 +995,41 @@ modules:
   - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
-      - ?network-config-dhcp
-      - ?network-config-static
-      - network-config
+      - ?network-config-dhcpv4
+      - ?network-config-static-ipv4
+      - network-config-ipv4
 
   - name: network-config-dhcp
+    help: "deprecated: use `network-config-dhcpv4` instead"
+    selects:
+      - network-config-dhcpv4
+
+  - name: network-config-dhcpv4
     help: use DHCPv4 for network configuration
     selects:
       - network
     provides_unique:
-      - network-config
+      - network-config-ipv4
     env:
       global:
         FEATURES:
           - ariel-os/dhcpv4
 
   - name: network-config-static
-    help: use static IP network configuration
+    help: "deprecated: use `network-config-static-ipv4` instead"
+    selects:
+      - network-config-static-ipv4
+
+  - name: network-config-static-ipv4
+    help: use static IPv4 network configuration
     selects:
       - network
     provides_unique:
-      - network-config
+      - network-config-ipv4
     env:
       global:
         FEATURES:
-          - ariel-os/network-config-static
+          - ariel-os/network-config-static-ipv4
 
   - name: ipv4
     selects:
