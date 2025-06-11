@@ -72,18 +72,26 @@ fn write_memoryx() {
         (256, 1024)
     } else if context("nrf5340") {
         (512, 1024)
+    } else if context("nrf5340-net") {
+        (64, 256)
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
         (256, 1024)
     } else {
         panic!("please set the MCU laze context");
     };
 
+    let (pagesize, ram_base, flash_base) = if context("nrf5340-net") {
+        (2048, 0x2100_0000, 0x0100_0000)
+    } else {
+        (4096, 0x2000_0000, 0)
+    };
+
     // generate linker script
     let memory = Memory::new()
-        .add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024))
+        .add_section(MemorySection::new("RAM", ram_base, ram * 1024))
         .add_section(
-            MemorySection::new("FLASH", 0x0, flash * 1024)
-                .pagesize(4096)
+            MemorySection::new("FLASH", flash_base, flash * 1024)
+                .pagesize(pagesize)
                 .from_env(),
         );
 

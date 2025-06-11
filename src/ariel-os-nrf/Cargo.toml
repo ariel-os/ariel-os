@@ -52,6 +52,9 @@ embassy-nrf = { workspace = true, features = [
   "nrf5340-app-s",
 ] }
 
+[target.'cfg(context = "nrf5340-net")'.dependencies]
+embassy-nrf = { workspace = true, features = ["nrf5340-net"] }
+
 [target.'cfg(context = "nrf9151")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9151-s"] }
 
