@@ -1039,7 +1039,26 @@ modules:
         FEATURES:
           - ariel-os/ipv4
 
+  - name: network-config-ipv6-default
+    help: use default network configuration method
+    selects:
+      - ?network-config-static-ipv6
+      - network-config-ipv6
+
+  - name: network-config-static-ipv6
+    help: use static IPv6 network configuration
+    selects:
+      - network
+    provides_unique:
+      - network-config-ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-static-ipv6
+
   - name: ipv6
+    selects:
+      - network-config-ipv6-default
     env:
       global:
         FEATURES:
