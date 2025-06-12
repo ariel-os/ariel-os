@@ -32,6 +32,9 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 
 #### IPv4
 
+Support for IPv4 is enabled by default.
+When unneeded, it can be disabled by disabling the `ipv4` [laze module](./build-system.md#laze-modules).
+
 DHCPv4 is used by default for IPv4 network configuration, including for address allocation.
 This is enabled by the `network-config-dhcpv4` [laze module](./build-system.md#laze-modules), selected by default for IPv4.
 
@@ -46,15 +49,18 @@ The configuration can be customized with the following environment variables:
 
 #### IPv6
 
+Support for IPv6 is not currently enabled by default, but can be enabled by selecting the `ipv6` [laze module](./build-system.md#laze-modules).
+Both IPv4 and IPv6 can be enabled at the same time.
+
 IPv6 currently only supports static configuration, which can be selected with the `network-config-static-ipv6` [laze module](./build-system.md#laze-modules).
 
 The configuration can be customized with the following environment variables:
 
-| Variable                                 | Default      |
-| --                                       | --           |
-| `CONFIG_NET_IPV6_STATIC_ADDRESS`         | *No default* |
-| `CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` | `64`         |
-| `CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS` | *No default* |
+| Variable                                 | Default                     |
+| --                                       | --                          |
+| `CONFIG_NET_IPV6_STATIC_ADDRESS`         | *No default, but mandatory* |
+| `CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` | `64`                        |
+| `CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS` | *No default, but mandatory* |
 
 > Non-static IPv6 address allocation will be supported in the future.
 
