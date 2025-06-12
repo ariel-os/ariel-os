@@ -70,11 +70,11 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    #[cfg(feature = "dhcpv4")]
+    #[cfg(not(feature = "network-config-override"))]
     {
         embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
     }
-    #[cfg(not(feature = "dhcpv4"))]
+    #[cfg(feature = "network-config-override")]
     {
         unsafe extern "Rust" {
             fn __ariel_os_network_config() -> embassy_net::Config;
