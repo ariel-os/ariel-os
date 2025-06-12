@@ -30,10 +30,15 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 
 ### Network Configuration
 
-DHCPv4 is used by default for network configuration, including for IP address allocation.
-This is enabled by the `network-config-ipv4-dhcp` [laze module](./build-system.md#laze-modules), selected by default.
+#### IPv4
 
-In order to provide a static configuration, select the `network-config-ipv4-static` [laze module](./build-system.md#laze-modules), which will take precedence.
+Support for IPv4 is enabled by default.
+When unneeded, it can be disabled by disabling the `ipv4` [laze module](./build-system.md#laze-modules).
+
+DHCPv4 is used by default for IPv4 network configuration, including for address allocation.
+This is enabled by the `network-config-ipv4-dhcp` [laze module](./build-system.md#laze-modules), selected by default for IPv4.
+
+In order to provide a static configuration instead, select the `network-config-ipv4-static` [laze module](./build-system.md#laze-modules), which will take precedence.
 The configuration can be customized with the following environment variables:
 
 | Variable                                 | Default      |
