@@ -47,6 +47,21 @@ The configuration can be customized with the following environment variables:
 | `CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN` | `24`         |
 | `CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS` | `10.42.0.1`  |
 
+#### IPv6
+
+Support for IPv6 is not currently enabled by default, but can be enabled by selecting the `ipv6` [laze module](./build-system.md#laze-modules).
+IPv4 and IPv6 can both be enabled at the same time.
+
+IPv6 currently only supports static configuration, which can be selected with the `network-config-ipv6-static` [laze module](./build-system.md#laze-modules).
+
+The configuration can be customized with the following environment variables:
+
+| Variable                                 | Default                     |
+| --                                       | --                          |
+| `CONFIG_NET_IPV6_STATIC_ADDRESS`         | *No default, but mandatory* |
+| `CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` | `64`                        |
+| `CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS` | *No default, but mandatory* |
+
 > [!NOTE]
 > Non-static IPv6 address allocation will be supported in the future.
 
