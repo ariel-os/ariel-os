@@ -90,7 +90,12 @@ storage = ["dep:embassy-embedded-hal"]
 usb = []
 
 ## Enables BLE support.
-ble = ["dep:nrf-sdc", "dep:trouble-host", "hwrng"]
+ble = [
+  "dep:nrf-sdc",
+  "dep:trouble-host",
+  "hwrng",
+  "ariel-os-embassy-common/ble",
+]
 ble-peripheral = ["ble", "nrf-sdc/peripheral"]
 ble-central = ["ble", "nrf-sdc/central"]
 

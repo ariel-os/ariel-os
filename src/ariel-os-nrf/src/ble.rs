@@ -9,9 +9,10 @@ use nrf_sdc::{
     mpsl::{self, MultiprotocolServiceLayer},
 };
 use static_cell::StaticCell;
-use trouble_host::{Address, HostResources, Stack};
+use trouble_host::Stack;
 
 use ariel_os_debug::log::debug;
+use ariel_os_embassy_common::ble::MTU;
 
 use crate::irqs::Irqs;
 
@@ -27,12 +28,6 @@ const SDC_MEM_SIZE: usize = 2912;
 #[cfg(all(feature = "ble-peripheral", feature = "ble-central"))]
 const SDC_MEM_SIZE: usize = 6080;
 
-// Safe value of 27, compatible with all versions.
-const L2CAP_MTU: usize = 27;
-
-// Safe defaults used in trouble_host examples
-const MAX_CONNS: usize = 1;
-const MAX_CHANNELS: usize = 1;
 const L2CAP_TXQ: u8 = 20;
 const L2CAP_RXQ: u8 = 20;
 
@@ -125,7 +120,7 @@ pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_com
 
     let sdc = build_sdc(sdc_p, rng, mpsl, sdc_mem).expect("Failed to build SDC");
 
-    let resources = ariel_os_embassy_common::ble::get_ble_host_ressources();
+    let resources = ariel_os_embassy_common::ble::get_ble_host_resources();
 
     let stack = trouble_host::new(sdc, resources).set_random_address(config.address);
     let _ = STACK.init(stack);
@@ -162,7 +157,7 @@ fn build_sdc<'d, const N: usize>(
     #[cfg(feature = "ble-central")]
     let builder = builder.central_count(1)?;
 
-    let builder = builder.buffer_cfg(L2CAP_MTU as u8, L2CAP_MTU as u8, L2CAP_TXQ, L2CAP_RXQ)?;
+    let builder = builder.buffer_cfg(MTU as u8, MTU as u8, L2CAP_TXQ, L2CAP_RXQ)?;
 
     builder.build(p, rng, mpsl, mem)
 }

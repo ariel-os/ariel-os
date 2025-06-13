@@ -3,19 +3,24 @@
 use static_cell::StaticCell;
 use trouble_host::HostResources;
 
-// Safe value of 27, compatible with all versions.
-pub const L2CAP_MTU: usize = 27;
+/// Maximum Transmission Unit (MTU) for BLE connections. 27 should work for all BLE versions.
+// TODO: add the ability to configure this value.
+pub const MTU: usize = 27;
 
-// Safe defaults used in trouble_host examples
+/// Maximum number of concurrent connections to be handled by the BLE stack, minimum 1.
 pub const MAX_CONNS: usize = 1;
+/// Maximum number of concurrent channels to be handled by the BLE stack, minimum 1.
 pub const MAX_CHANNELS: usize = 1;
-
-pub type BleHostResource = HostResources<MAX_CONNS, MAX_CHANNELS, L2CAP_MTU>;
 
 static HOST_RESOURCES: StaticCell<BleHostResource> = StaticCell::new();
 
+/// Alias for the BLE host resources, setting the generic parameters to the constants for convenience.
+pub type BleHostResource = HostResources<MAX_CONNS, MAX_CHANNELS, MTU>;
+
 /// Initialize the BLE host resources.
-pub fn get_ble_host_ressources() -> &'static mut BleHostResource {
+///
+/// Call this function to get the `HostResources` instance that can be used to initialeze the trouBLE stack.
+pub fn get_ble_host_resources() -> &'static mut BleHostResource {
     HOST_RESOURCES.init(HostResources::new())
 }
 
