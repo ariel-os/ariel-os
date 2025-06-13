@@ -1007,6 +1007,7 @@ modules:
   - name: network-config-dhcpv4
     help: use DHCPv4 for network configuration
     selects:
+      - ipv4
       - network
     provides_unique:
       - network-config-ipv4
