@@ -74,8 +74,8 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
-          # Required for checking ariel-os-esp
-          targets: riscv32imac-unknown-none-elf
+          # Required for checking ariel-os-esp and ariel-os-nrf
+          targets: riscv32imac-unknown-none-elf, thumbv7em-none-eabi
           components: clippy, rustfmt
 
       - name: rust cache
@@ -182,7 +182,7 @@ jobs:
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="nrf52840"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52"' >> $GITHUB_ENV
       - name: clippy for nRF
         uses: clechasseur/rs-clippy-check@v3
         with:
@@ -194,9 +194,10 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
-                ble,
+                ble-central,
                 "
             -p ariel-os-nrf
+            --target=thumbv7em-none-eabi
             --
             --deny warnings
 

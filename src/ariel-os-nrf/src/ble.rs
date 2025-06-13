@@ -16,8 +16,13 @@ use ariel_os_embassy_common::ble::MTU;
 
 use crate::irqs::Irqs;
 
-pub static STACK: OnceLock<Stack<'static, SoftdeviceController<'static>>> = OnceLock::new();
+static STACK: OnceLock<Stack<'static, SoftdeviceController<'static>>> = OnceLock::new();
+static MPSL: StaticCell<MultiprotocolServiceLayer> = StaticCell::new();
+static SDC_MEM: StaticCell<sdc::Mem<SDC_MEM_SIZE>> = StaticCell::new();
+static RNG: StaticCell<embassy_nrf::rng::Rng<'static, RNG>> = StaticCell::new();
 
+// Memory to allocate to the SoftDevice Controller (SDC).
+//
 // During testing central mode needed 2912 bytes, peripheral mode needed 1448 bytes.
 // Multirole (central + peripheral) needed 6080 bytes. Allocate more here if using extended features.
 
@@ -28,7 +33,9 @@ const SDC_MEM_SIZE: usize = 2912;
 #[cfg(all(feature = "ble-peripheral", feature = "ble-central"))]
 const SDC_MEM_SIZE: usize = 6080;
 
+// Size of the TX buffer (number of packets), minimum is 1, SoftDevice default is 3 (SDC_DEFAULT_TX_PACKET_COUNT).
 const L2CAP_TXQ: u8 = 20;
+// Size of the RX buffer (number of packets), minimum is 1, SoftDevice default is 2 (SDC_DEFAULT_RX_PACKET_COUNT).
 const L2CAP_RXQ: u8 = 20;
 
 pub async fn ble_stack() -> &'static Stack<'static, SoftdeviceController<'static>> {
@@ -62,6 +69,10 @@ pub struct Peripherals {
 
 #[cfg(context = "nrf52")]
 impl Peripherals {
+    /// Reserves the necessary peripherals for the BLE stack.
+    ///
+    /// # Panics
+    /// Panics if any of the required peripherals are not available.
     #[must_use]
     pub fn new(peripherals: &mut crate::OptionalPeripherals) -> Self {
         Self {
@@ -90,10 +101,15 @@ impl Peripherals {
     }
 }
 
-pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common::ble::Config) {
+/// Configures and initializes the nRF BLE driver.
+///
+/// # Panics
+/// Panics if initialization fails on one of the components, such as MPSL or SDC.
+pub fn driver(p: Peripherals, spawner: Spawner, config: &ariel_os_embassy_common::ble::Config) {
     debug!("Initializing nRF BLE driver");
     let mpsl_p =
         mpsl::Peripherals::new(p.rtc0, p.timer0, p.temp, p.ppi_ch19, p.ppi_ch30, p.ppi_ch31);
+    #[allow(clippy::cast_possible_truncation)]
     let lfclk_cfg = mpsl::raw::mpsl_clock_lfclk_cfg_t {
         source: mpsl::raw::MPSL_CLOCK_LF_SRC_RC as u8,
         rc_ctiv: mpsl::raw::MPSL_RECOMMENDED_RC_CTIV as u8,
@@ -101,21 +117,18 @@ pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_com
         accuracy_ppm: mpsl::raw::MPSL_DEFAULT_CLOCK_ACCURACY_PPM as u16,
         skip_wait_lfclk_started: mpsl::raw::MPSL_DEFAULT_SKIP_WAIT_LFCLK_STARTED != 0,
     };
-    static MPSL: StaticCell<MultiprotocolServiceLayer> = StaticCell::new();
     let mpsl = MPSL.init(
         mpsl::MultiprotocolServiceLayer::new(mpsl_p, Irqs, lfclk_cfg)
             .expect("Failed to initialize MPSL"),
     );
     spawner.must_spawn(mpsl_task(mpsl));
 
-    static RNG: StaticCell<embassy_nrf::rng::Rng<'static, RNG>> = StaticCell::new();
     let rng = RNG.init(embassy_nrf::rng::Rng::new(p.rng, Irqs));
 
     let sdc_p = sdc::Peripherals::new(
         p.ppi_ch17, p.ppi_ch18, p.ppi_ch20, p.ppi_ch21, p.ppi_ch22, p.ppi_ch23, p.ppi_ch24,
         p.ppi_ch25, p.ppi_ch26, p.ppi_ch27, p.ppi_ch28, p.ppi_ch29,
     );
-    static SDC_MEM: StaticCell<sdc::Mem<SDC_MEM_SIZE>> = StaticCell::new();
     let sdc_mem = SDC_MEM.init(sdc::Mem::new());
 
     let sdc = build_sdc(sdc_p, rng, mpsl, sdc_mem).expect("Failed to build SDC");
@@ -134,6 +147,16 @@ async fn mpsl_task(mpsl: &'static MultiprotocolServiceLayer<'static>) -> ! {
     mpsl.run().await
 }
 
+/// Builds the SoftDevice Controller (SDC) with the given peripherals and memory.
+///
+/// # Errors
+///
+/// An error is returned if the SDC cannot be built with the provided configuration.
+/// The meaning of the errors code can be found in [nrfxlib](https://github.com/nrfconnect/sdk-nrfxlib/blob/3a14dbc326c385a0161fc122f72b6d9be308f7d6/softdevice_controller/include/sdc.h)
+#[expect(
+    clippy::doc_markdown,
+    reason = "gets wrongly triggered for 'SoftDevice'"
+)]
 fn build_sdc<'d, const N: usize>(
     p: nrf_sdc::Peripherals<'d>,
     rng: &'d mut rng::Rng<RNG>,
@@ -157,6 +180,7 @@ fn build_sdc<'d, const N: usize>(
     #[cfg(feature = "ble-central")]
     let builder = builder.central_count(1)?;
 
+    #[allow(clippy::cast_possible_truncation)]
     let builder = builder.buffer_cfg(MTU as u8, MTU as u8, L2CAP_TXQ, L2CAP_RXQ)?;
 
     builder.build(p, rng, mpsl, mem)
