@@ -125,9 +125,7 @@ pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_com
 
     let sdc = build_sdc(sdc_p, rng, mpsl, sdc_mem).expect("Failed to build SDC");
 
-    static HOST_RESOURCES: StaticCell<HostResources<MAX_CONNS, MAX_CHANNELS, L2CAP_MTU>> =
-        StaticCell::new();
-    let resources = HOST_RESOURCES.init(HostResources::new());
+    let resources = ariel_os_embassy_common::ble::get_ble_host_ressources();
 
     let stack = trouble_host::new(sdc, resources).set_random_address(config.address);
     let _ = STACK.init(stack);
