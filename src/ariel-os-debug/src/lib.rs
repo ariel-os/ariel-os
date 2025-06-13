@@ -52,6 +52,25 @@ pub fn exit(code: ExitCode) {
     }
 }
 
+/// Prints the panic on the debug output in a consistent manner across loggers.
+#[doc(hidden)]
+pub fn print_panic(info: &core::panic::PanicInfo) {
+    // `location()`'s documentation currently states that it always returns `Some(_)`.
+    // It is unclear what the panic formatting would be otherwise, because the std does not
+    // currently handle the case where the location cannot be obtained.
+    let location = info.location().unwrap();
+    let message = info.message();
+
+    // `PanicMessage` does not currently implement `defmt::Format`.
+    // We *need* to use the `Display` implementation and cannot use `PanicMessage::as_str()` as
+    // that would not work for dynamically formatted messages.
+    #[cfg(feature = "defmt")]
+    let message = ariel_os_debug_log::defmt::Display2Format(&message);
+
+    // Mimics the `Display` implementation of `core::panic::PanicInfo`.
+    println!("panicked at {}:\n{}", location, message);
+}
+
 #[cfg(all(feature = "debug-console", feature = "rtt-target"))]
 mod backend {
     #[cfg(not(feature = "defmt"))]
