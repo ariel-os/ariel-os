@@ -4,6 +4,9 @@ license.workspace = true
 edition.workspace = true
 publish = false
 
+[lints]
+workspace = true
+
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["storage"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }

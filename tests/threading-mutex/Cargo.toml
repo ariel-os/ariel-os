@@ -4,6 +4,9 @@ license.workspace = true
 edition.workspace = true
 publish = false
 
+[lints]
+workspace = true
+
 [dependencies]
 embassy-executor = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
