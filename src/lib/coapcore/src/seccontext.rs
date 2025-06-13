@@ -908,7 +908,7 @@ pub enum OwnRequestData<I> {
 // not supported in match or let destructuring. (But our is_gc_eligible should be good enough
 // anyway).
 
-/// Renders a [`lakers::MessageBufferError`] into the common Error type.
+/// Renders a [`lakers::EdhocBufferError`] into the common Error type.
 ///
 /// It is yet to be determined whether anything more informative should be returned (likely it
 /// should; maybe Request Entity Too Large or some error code about unusable credential.
@@ -920,16 +920,16 @@ pub enum OwnRequestData<I> {
     clippy::needless_pass_by_value,
     reason = "ergonomics at the call sites need this"
 )]
-fn too_small(e: lakers::MessageBufferError) -> CoAPError {
+fn too_small(e: lakers::EdhocBufferError) -> CoAPError {
     #[allow(
         clippy::match_same_arms,
         reason = "https://github.com/rust-lang/rust-clippy/issues/13522"
     )]
     match e {
-        lakers::MessageBufferError::BufferAlreadyFull => {
+        lakers::EdhocBufferError::BufferAlreadyFull => {
             error!("Lakers buffer size exceeded: Buffer full.");
         }
-        lakers::MessageBufferError::SliceTooLong => {
+        lakers::EdhocBufferError::SliceTooLong => {
             error!("Lakers buffer size exceeded: Slice too long.");
         }
     }
