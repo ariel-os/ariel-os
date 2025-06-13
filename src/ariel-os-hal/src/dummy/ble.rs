@@ -16,7 +16,7 @@ pub async fn ble_stack() -> &'static trouble_host::Stack<'static, DummyControlle
     async { unimplemented!() }.await
 }
 
-pub fn driver(_p: Peripherals, _spawner: Spawner, _config: ariel_os_embassy_common::ble::Config) {
+pub fn driver(_p: Peripherals, _spawner: Spawner, _config: &ariel_os_embassy_common::ble::Config) {
     unimplemented!();
 }
 

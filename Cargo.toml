@@ -149,6 +149,7 @@ serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.0.0", features = ["nightly"] }
 trouble-host = "0.1"
 bt-hci = { version = "0.2.0" }
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc.git", rev = "551a95436e999b4290b4a33383aa3d6747b63dd9" }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html

@@ -237,6 +237,8 @@ contexts:
     parent: nrf52
     selects:
       - cortex-m4f
+    provides:
+      - has_nrf_ble
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
 
@@ -244,6 +246,8 @@ contexts:
     parent: nrf52
     selects:
       - cortex-m4f
+    provides:
+      - has_nrf_ble
     env:
       PROBE_RS_CHIP: nrf52833_xxAA
 
@@ -251,6 +255,8 @@ contexts:
     parent: nrf52
     selects:
       - cortex-m4f
+    provides:
+      - has_nrf_ble
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
 
@@ -1098,6 +1104,13 @@ modules:
       global:
         RUSTFLAGS:
           - --cfg capability=\"hw/ble\"
+
+  - name: has_nrf_ble
+    help: Marks an incompatibility of nrf devices with the interrupt executor (MPSL crashing)
+    provides:
+      - has_ble
+    conflicts:
+      - executor-interrupt
 
   - name: ble-peripheral
     help: Enables BLE peripheral functionality
