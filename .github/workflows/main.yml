@@ -194,6 +194,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                ble,
                 "
             -p ariel-os-nrf
             --

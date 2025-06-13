@@ -2580,27 +2580,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "example-ble-advertise"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "embassy-futures",
- "trouble-host",
-]
-
-[[package]]
-name = "example-ble-scan"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "embassy-futures",
- "heapless 0.8.0",
- "trouble-host",
-]
-
-[[package]]
 name = "example-coap-client"
 version = "0.0.0"
 dependencies = [

@@ -9,7 +9,7 @@ use nrf_sdc::{
     mpsl::{self, MultiprotocolServiceLayer},
 };
 use static_cell::StaticCell;
-use trouble_host::prelude::*;
+use trouble_host::{Address, HostResources, Stack};
 
 use ariel_os_debug::log::debug;
 
@@ -17,7 +17,8 @@ use crate::irqs::Irqs;
 
 pub static STACK: OnceLock<Stack<'static, SoftdeviceController<'static>>> = OnceLock::new();
 
-// During testing central mode needed 2912 bytes, peripheral mode needed 1448 bytes. Multirole (central + peripheral) needed 6080 bytes. Allocate more here if using extended features.
+// During testing central mode needed 2912 bytes, peripheral mode needed 1448 bytes.
+// Multirole (central + peripheral) needed 6080 bytes. Allocate more here if using extended features.
 
 #[cfg(all(feature = "ble-peripheral", not(feature = "ble-central")))]
 const SDC_MEM_SIZE: usize = 2880;
@@ -39,6 +40,7 @@ pub async fn ble_stack() -> &'static Stack<'static, SoftdeviceController<'static
     STACK.get().await
 }
 
+#[cfg(context = "nrf52")]
 pub struct Peripherals {
     pub ppi_ch17: peripherals::PPI_CH17,
     pub ppi_ch18: peripherals::PPI_CH18,
@@ -63,6 +65,7 @@ pub struct Peripherals {
     pub rng: peripherals::RNG,
 }
 
+#[cfg(context = "nrf52")]
 impl Peripherals {
     #[must_use]
     pub fn new(peripherals: &mut crate::OptionalPeripherals) -> Self {
@@ -108,7 +111,7 @@ pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_com
         mpsl::MultiprotocolServiceLayer::new(mpsl_p, Irqs, lfclk_cfg)
             .expect("Failed to initialize MPSL"),
     );
-    spawner.must_spawn(mpsl_task(&*mpsl));
+    spawner.must_spawn(mpsl_task(mpsl));
 
     static RNG: StaticCell<embassy_nrf::rng::Rng<'static, RNG>> = StaticCell::new();
     let rng = RNG.init(embassy_nrf::rng::Rng::new(p.rng, Irqs));
@@ -126,13 +129,8 @@ pub fn driver<'d>(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_com
         StaticCell::new();
     let resources = HOST_RESOURCES.init(HostResources::new());
 
-    let address: Address = config.address;
-    if STACK
-        .init(trouble_host::new(sdc, resources).set_random_address(address))
-        .is_err()
-    {
-        unreachable!("BLE stack already initialized");
-    }
+    let stack = trouble_host::new(sdc, resources).set_random_address(config.address);
+    let _ = STACK.init(stack);
 
     debug!("nRF BLE driver initialized");
 }

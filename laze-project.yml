@@ -237,28 +237,28 @@ contexts:
     parent: nrf52
     selects:
       - cortex-m4f
-    env:
-      PROBE_RS_CHIP: nrf52832_xxAA
     provides:
       - has_nrf_ble
+    env:
+      PROBE_RS_CHIP: nrf52832_xxAA
 
   - name: nrf52833
     parent: nrf52
     selects:
       - cortex-m4f
-    env:
-      PROBE_RS_CHIP: nrf52833_xxAA
     provides:
       - has_nrf_ble
+    env:
+      PROBE_RS_CHIP: nrf52833_xxAA
 
   - name: nrf52840
     parent: nrf52
     selects:
       - cortex-m4f
-    env:
-      PROBE_RS_CHIP: nrf52840_xxAA
     provides:
       - has_nrf_ble
+    env:
+      PROBE_RS_CHIP: nrf52840_xxAA
 
   - name: nrf53
     parent: nrf
