@@ -575,9 +575,10 @@ modules:
     env:
       global:
         RUSTC_TARGET: thumbv7em-none-eabihf
-        CARGO_ENV_TARGET: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
+        CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV7EM_NONE_EABIHF
         RUSTFLAGS:
           - --cfg armv7m
+          - --cfg armv7m_eabihf
 
   - name: thumbv8m.main-none-eabi
     env:
@@ -594,6 +595,7 @@ modules:
         CARGO_TARGET_PREFIX: CARGO_TARGET_THUMBV8M_MAIN_NONE_EABIHF
         RUSTFLAGS:
           - --cfg armv8m
+          - --cfg armv8m_eabihf
 
   - name: cortex-m
     env:
@@ -639,7 +641,7 @@ modules:
   - name: cortex-m4f
     selects:
       - cortex-m
-      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+      - thumbv7em-none-eabihf
     env:
       global:
         RUSTFLAGS:
@@ -648,7 +650,7 @@ modules:
   - name: cortex-m7f
     selects:
       - cortex-m
-      - thumbv7em-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+      - thumbv7em-none-eabihf
     env:
       global:
         RUSTFLAGS:
@@ -657,7 +659,7 @@ modules:
   - name: cortex-m33f
     selects:
       - cortex-m
-      - thumbv8m.main-none-eabi # actually eabihf, but ariel-os doesn't support hard float yet
+      - thumbv8m.main-none-eabihf
     env:
       global:
         RUSTFLAGS:
