@@ -89,6 +89,29 @@ impl RngCore for FastRng {
     }
 }
 
+/// Same as [`FastRng`], but can be shared across threads and tasks.
+/// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+pub struct FastRngSend {
+    inner: rand_pcg::Pcg32,
+}
+
+// Re-implementing the trait rather than Deref'ing into inner: This avoids leaking implementation
+// details to users who might otherwise come to depend on platform specifics of the FastRng.
+impl RngCore for FastRngSend {
+    fn next_u32(&mut self) -> u32 {
+        self.inner.next_u32()
+    }
+    fn next_u64(&mut self) -> u64 {
+        self.inner.next_u64()
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.inner.fill_bytes(dest);
+    }
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
+        self.inner.try_fill_bytes(dest)
+    }
+}
+
 /// The OS provided cryptographically secure random number generator.
 ///
 /// Such an RNG can be requested by any component, and will always be seeded appropriately.
@@ -126,6 +149,41 @@ mod csprng {
     impl _AssertCryptoRng for SelectedRng {}
 }
 
+/// Same as [`CryptoRng`], but can be shared across threads and tasks.
+/// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+#[cfg(feature = "csprng")]
+pub struct CryptoRngSend {
+    inner: rand_chacha::ChaCha20Rng,
+}
+
+#[cfg(feature = "csprng")]
+mod csprng_send {
+    use super::{CryptoRngSend, RngCore, SelectedRng};
+
+    // Re-implementing the trait rather than Deref'ing into inner: This avoids leaking implementation
+    // details to users who might otherwise come to depend on platform specifics of the CryptoRng.
+    impl RngCore for CryptoRngSend {
+        fn next_u32(&mut self) -> u32 {
+            self.inner.next_u32()
+        }
+        fn next_u64(&mut self) -> u64 {
+            self.inner.next_u64()
+        }
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            self.inner.fill_bytes(dest);
+        }
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
+            self.inner.try_fill_bytes(dest)
+        }
+    }
+
+    impl rand_core::CryptoRng for super::CryptoRngSend {}
+
+    /// Asserts that [`SelectedRngSend`] is [`CryptoRng`], justifying the implementation above.
+    trait _AssertCryptoRng: rand_core::CryptoRng {}
+    impl _AssertCryptoRng for SelectedRng {}
+}
+
 /// Populates the global RNG from a seed value.
 ///
 /// # Panics
@@ -151,6 +209,17 @@ pub fn fast_rng() -> FastRng {
     }
 }
 
+/// Same as [`fast_rng()`], but less efficient. Can be shared across threads and tasks.
+/// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+#[expect(clippy::missing_panics_doc, reason = "does not panic")]
+#[must_use]
+#[inline]
+pub fn fast_rng_send() -> FastRngSend {
+    FastRngSend {
+        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i).expect("Global RNG is infallible")),
+    }
+}
+
 /// Returns a suitably initialized cryptographically secure random number generator.
 #[must_use]
 #[inline]
@@ -158,5 +227,19 @@ pub fn fast_rng() -> FastRng {
 pub fn crypto_rng() -> CryptoRng {
     CryptoRng {
         _private: PhantomData,
+    }
+}
+
+/// Same as [`crypto_rng()`], but less efficient. Can be shared across threads and tasks.
+/// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+#[expect(clippy::missing_panics_doc, reason = "does not panic")]
+#[must_use]
+#[inline]
+#[cfg(feature = "csprng")]
+pub fn crypto_rng_send() -> CryptoRngSend {
+    CryptoRngSend {
+        inner: with_global(|i| {
+            rand_chacha::ChaCha20Rng::from_rng(i).expect("Global RNG is infallible")
+        }),
     }
 }
