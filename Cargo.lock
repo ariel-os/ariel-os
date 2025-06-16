@@ -5271,6 +5271,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "threading-fpu"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "threading-lock"
 version = "0.0.0"
 dependencies = [
