@@ -91,6 +91,7 @@ impl RngCore for FastRng {
 
 /// Same as [`FastRng`], but can be shared across threads and tasks.
 /// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+#[doc(hidden)]
 pub struct FastRngSend {
     inner: rand_pcg::Pcg32,
 }
@@ -151,11 +152,13 @@ mod csprng {
 
 /// Same as [`CryptoRng`], but can be shared across threads and tasks.
 /// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
+#[doc(hidden)]
 #[cfg(feature = "csprng")]
 pub struct CryptoRngSend {
     inner: rand_chacha::ChaCha20Rng,
 }
 
+#[doc(hidden)]
 #[cfg(feature = "csprng")]
 mod csprng_send {
     use super::{CryptoRngSend, RngCore, SelectedRng};
@@ -211,7 +214,7 @@ pub fn fast_rng() -> FastRng {
 
 /// Same as [`fast_rng()`], but less efficient. Can be shared across threads and tasks.
 /// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
-#[expect(clippy::missing_panics_doc, reason = "does not panic")]
+#[doc(hidden)]
 #[must_use]
 #[inline]
 pub fn fast_rng_send() -> FastRngSend {
@@ -232,7 +235,7 @@ pub fn crypto_rng() -> CryptoRng {
 
 /// Same as [`crypto_rng()`], but less efficient. Can be shared across threads and tasks.
 /// This is less efficient and should only be used when necessary (e.g.) integrating with C code.
-#[expect(clippy::missing_panics_doc, reason = "does not panic")]
+#[doc(hidden)]
 #[must_use]
 #[inline]
 #[cfg(feature = "csprng")]
