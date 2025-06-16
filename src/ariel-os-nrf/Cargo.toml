@@ -95,6 +95,7 @@ ble = [
   "dep:trouble-host",
   "hwrng",
   "ariel-os-embassy-common/ble",
+  "ariel-os-random/csprng",
 ]
 ble-peripheral = ["ble", "nrf-sdc/peripheral"]
 ble-central = ["ble", "nrf-sdc/central"]

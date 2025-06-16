@@ -1,8 +1,5 @@
 use embassy_executor::Spawner;
-use embassy_nrf::{
-    peripherals::{self, RNG},
-    rng,
-};
+use embassy_nrf::peripherals;
 use embassy_sync::once_lock::OnceLock;
 use nrf_sdc::{
     self as sdc, SoftdeviceController,
@@ -19,7 +16,7 @@ use crate::irqs::Irqs;
 static STACK: OnceLock<Stack<'static, SoftdeviceController<'static>>> = OnceLock::new();
 static MPSL: StaticCell<MultiprotocolServiceLayer> = StaticCell::new();
 static SDC_MEM: StaticCell<sdc::Mem<SDC_MEM_SIZE>> = StaticCell::new();
-static RNG: StaticCell<embassy_nrf::rng::Rng<'static, RNG>> = StaticCell::new();
+static RNG: StaticCell<ariel_os_random::CryptoRngSend> = StaticCell::new();
 
 // Memory to allocate to the SoftDevice Controller (SDC).
 //
@@ -63,8 +60,6 @@ pub struct Peripherals {
     pub ppi_ch19: peripherals::PPI_CH19,
     pub ppi_ch30: peripherals::PPI_CH30,
     pub ppi_ch31: peripherals::PPI_CH31,
-
-    pub rng: peripherals::RNG,
 }
 
 #[cfg(context = "nrf52")]
@@ -95,8 +90,6 @@ impl Peripherals {
             ppi_ch19: peripherals.PPI_CH19.take().unwrap(),
             ppi_ch30: peripherals.PPI_CH30.take().unwrap(),
             ppi_ch31: peripherals.PPI_CH31.take().unwrap(),
-
-            rng: peripherals.RNG.take().unwrap(),
         }
     }
 }
@@ -123,7 +116,7 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: &ariel_os_embassy_common
     );
     spawner.must_spawn(mpsl_task(mpsl));
 
-    let rng = RNG.init(embassy_nrf::rng::Rng::new(p.rng, Irqs));
+    let rng = RNG.init(ariel_os_random::crypto_rng_send());
 
     let sdc_p = sdc::Peripherals::new(
         p.ppi_ch17, p.ppi_ch18, p.ppi_ch20, p.ppi_ch21, p.ppi_ch22, p.ppi_ch23, p.ppi_ch24,
@@ -159,7 +152,7 @@ async fn mpsl_task(mpsl: &'static MultiprotocolServiceLayer<'static>) -> ! {
 )]
 fn build_sdc<'d, const N: usize>(
     p: nrf_sdc::Peripherals<'d>,
-    rng: &'d mut rng::Rng<RNG>,
+    rng: &'d mut ariel_os_random::CryptoRngSend,
     mpsl: &'d MultiprotocolServiceLayer,
     mem: &'d mut sdc::Mem<N>,
 ) -> Result<nrf_sdc::SoftdeviceController<'d>, nrf_sdc::Error> {
