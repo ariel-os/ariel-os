@@ -1,11 +1,10 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::debug::log::*;
-use ariel_os::debug::{ExitCode, exit, log::info};
-use ariel_os::gpio::{Level, Output};
-
-use ariel_os::thread;
+use ariel_os::{
+    debug::{ExitCode, exit, log::info},
+    thread,
+};
 
 #[ariel_os::thread(autostart)]
 fn thread0() {
@@ -22,7 +21,7 @@ fn thread0() {
     }
 
     assert_eq!(test, 236.34601_f32);
-    exit(ExitCode::SUCCESS);
+    info!("Thread 0 success");
 }
 
 #[ariel_os::thread(autostart)]
@@ -41,5 +40,5 @@ fn thread1() {
     }
 
     assert_eq!(test, 8324.532_f32);
-    exit(ExitCode::SUCCESS);
+    info!("Thread 1 success");
 }
