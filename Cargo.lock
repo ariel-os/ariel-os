@@ -1059,16 +1059,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "coap-blinky"
-version = "0.0.0"
-dependencies = [
- "ariel-os",
- "ariel-os-boards",
- "coap-handler-implementations",
- "riot-coap-handler-demos",
-]
-
-[[package]]
 name = "coap-handler"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1989,15 +1979,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e9d2e857f87ac832df68fa498d18ddc679175cf3d2e4aa893988e5601baf9438"
 dependencies = [
  "nb 1.1.0",
-]
-
-[[package]]
-name = "embedded-graphics"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40a69991ceb896bd4810a0cf2bcc46fc94b7860573c71f965d8e5b3d66942fed"
-dependencies = [
- "byteorder",
 ]
 
 [[package]]
@@ -3745,9 +3726,6 @@ name = "minicbor"
 version = "0.24.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29be4f60e41fde478b36998b88821946aafac540e53591e76db53921a0cc225b"
-dependencies = [
- "minicbor-derive 0.15.3",
-]
 
 [[package]]
 name = "minicbor"
@@ -3755,7 +3733,7 @@ version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e661deac75bd438730c7335469ea8aee72a607e2bc93282386ef765b4ea7cdc0"
 dependencies = [
- "minicbor-derive 0.16.0",
+ "minicbor-derive",
 ]
 
 [[package]]
@@ -3767,17 +3745,6 @@ dependencies = [
  "cboritem",
  "heapless 0.8.0",
  "minicbor 0.26.0",
-]
-
-[[package]]
-name = "minicbor-derive"
-version = "0.15.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd2209fff77f705b00c737016a48e73733d7fbccb8b007194db148f03561fb70"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.96",
 ]
 
 [[package]]
@@ -4521,29 +4488,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "riot-coap-handler-demos"
-version = "0.2.0"
-source = "git+https://gitlab.com/etonomy/riot-module-examples?rev=09fa2d45e92ca4e46da7f18af3db3d1bcec238d3#09fa2d45e92ca4e46da7f18af3db3d1bcec238d3"
-dependencies = [
- "coap-handler",
- "coap-handler-implementations",
- "coap-message",
- "coap-message-utils",
- "coap-numbers",
- "document-features",
- "embedded-graphics",
- "embedded-hal 1.0.0",
- "embedded-hal-async",
- "heapless 0.7.17",
- "minicbor 0.24.4",
- "serde",
- "serde_bytes",
- "serde_cbor",
- "switch-hal",
- "try-lock",
-]
-
-[[package]]
 name = "riscv"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4798,15 +4742,6 @@ checksum = "5b81787e655bd59cecadc91f7b6b8651330b2be6c33246039a65e5cd6f4e0828"
 dependencies = [
  "heapless 0.8.0",
  "ryu",
- "serde",
-]
-
-[[package]]
-name = "serde_bytes"
-version = "0.10.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "defbb8a83d7f34cc8380751eeb892b825944222888aff18996ea7901f24aec88"
-dependencies = [
  "serde",
 ]
 
@@ -5095,15 +5030,6 @@ dependencies = [
  "quote",
  "syn 1.0.109",
  "unicode-width",
-]
-
-[[package]]
-name = "switch-hal"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90a4adc8cbd1726249b161898e48e0f3f1ce74d34dc784cbbc98fba4ed283fbf"
-dependencies = [
- "embedded-hal 0.2.7",
 ]
 
 [[package]]
