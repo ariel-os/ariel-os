@@ -278,6 +278,7 @@ contexts:
       - cortex-m33
     provides:
       - has_hwrng
+      - has_nrf_ble
       # Currently hard-faults.
       # - has_storage_support
     disables:
