@@ -5275,6 +5275,7 @@ name = "threading-fpu"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
+ "ariel-os-boards",
 ]
 
 [[package]]

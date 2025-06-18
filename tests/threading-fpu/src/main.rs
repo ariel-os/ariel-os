@@ -1,10 +1,7 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{
-    debug::{ExitCode, exit, log::info},
-    thread,
-};
+use ariel_os::{debug::log::info, thread};
 
 #[ariel_os::thread(autostart)]
 fn thread0() {
