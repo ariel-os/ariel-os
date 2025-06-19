@@ -1650,8 +1650,6 @@ builders:
 
   - name: nrf5340dk-net
     parent: nrf5340-net
-    provides:
-      - has_usb_device_port
 
   - name: st-nucleo-c031c6
     parent: stm32c031c6
