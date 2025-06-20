@@ -77,7 +77,7 @@ you must add your own 'Sign-off' line, without removing the existing ones.
 
 ## Roadmap
 
-We use a [roadmap](https://github.com/ariel-os/ariel-os/issues/242) to track issues. If you are looking for an issue to contribute, please check our roadmap and our [current list of issues](https://github.com/ariel-os/ariel-os/issues).
+We use a [roadmap](./ROADMAP.md) to track issues. If you are looking for an issue to contribute, please check our roadmap and our [current list of issues](https://github.com/ariel-os/ariel-os/issues).
 
 
 ## Ask for help
