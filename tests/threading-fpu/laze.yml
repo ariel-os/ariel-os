@@ -1,0 +1,8 @@
+apps:
+  - name: threading-fpu
+    selects:
+      - sw/threading
+      - "context::stm32c031c6":
+          - too-little-memory
+    conflicts:
+      - ram-tiny
