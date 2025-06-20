@@ -118,7 +118,12 @@ wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
-ble = ["ariel-os-hal/ble", "dep:trouble-host", "ariel-os-embassy-common/ble"]
+ble = [
+  "dep:trouble-host",
+  "ariel-os-hal/ble",
+  "ariel-os-embassy-common/ble",
+  "hwrng",
+]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
