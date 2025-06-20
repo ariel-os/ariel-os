@@ -30,4 +30,13 @@ trybuild = "1.0.89"
 proc-macro = true
 
 [features]
+# These features could be codegened
+max-sample-min-count-2 = []
+max-sample-min-count-3 = []
+max-sample-min-count-4 = []
+max-sample-min-count-6 = []
+max-sample-min-count-7 = []
+max-sample-min-count-9 = []
+max-sample-min-count-12 = []
+
 _test = []
