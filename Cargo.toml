@@ -144,7 +144,7 @@ rtt-target = { version = "0.6.0" }
 
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
-static_cell = { version = "2.0.0", features = ["nightly"] }
+static_cell = { version = "2.0.0", default-features = false }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html
