@@ -4,7 +4,7 @@
 mod pins;
 
 use ariel_os::{
-    cell::ConstStaticCell,
+    cell::StaticCell,
     debug::log::*,
     reexports::{embassy_usb, usbd_hid},
     time::Timer,
@@ -44,7 +44,7 @@ const USB_CONFIG: embassy_usb::Config = {
     config
 };
 
-static HID_STATE: ConstStaticCell<hid::State> = ConstStaticCell::new(hid::State::new());
+static HID_STATE: StaticCell<hid::State> = StaticCell::new();
 
 #[ariel_os::task(autostart, peripherals, usb_builder_hook)]
 async fn usb_keyboard(button_peripherals: pins::Buttons) {
@@ -57,7 +57,7 @@ async fn usb_keyboard(button_peripherals: pins::Buttons) {
         max_packet_size: 64,
     };
 
-    let hid_state = HID_STATE.take();
+    let hid_state = HID_STATE.init_with(hid::State::new);
     let hid_rw: HidReaderWriter<
         'static,
         UsbDriver,
