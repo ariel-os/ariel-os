@@ -31,7 +31,7 @@ ariel-os-embassy = { workspace = true, features = ["net"] }
 ariel-os-random = { workspace = true, features = ["csprng"] }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
-static_cell = "2.1.0"
+static_cell = { workspace = true }
 
 heapless = { workspace = true, features = ["serde"] }
 cfg-if = { workspace = true }
