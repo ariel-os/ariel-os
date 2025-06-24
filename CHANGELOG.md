@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ReleaseDate
 
+## [0.2.1] - 2025-06-24
+
+### Fixed
+
+- fix(deps): bump static_cell as it fixed a soundness issue ([#1107](https://github.com/ariel-os/ariel-os/pull/1107))
+- fix(deps): disable static cell nightly feature ([#1106](https://github.com/ariel-os/ariel-os/pull/1106))
+
 ## [0.2.0] - 2025-05-07
 
 This release allows Ariel OS to be built on stable Rust, and updates
@@ -49,6 +56,7 @@ internal polish that is not mentioned here.
 ## [0.1.0] - 2025-02-25
 
 <!-- next-url -->
-[Unreleased]: https://github.com/ariel-os/ariel-os/compare/ariel-os-v0.2.0...HEAD
+[Unreleased]: https://github.com/ariel-os/ariel-os/compare/ariel-os-v0.2.1...HEAD
+[0.2.1]: https://github.com/ariel-os/ariel-os/compare/ariel-os-v0.2.0...ariel-os-v0.2.1
 [0.2.0]: https://github.com/ariel-os/ariel-os/compare/v0.1.0...ariel-os-v0.2.0
 [0.1.0]: https://github.com/ariel-os/ariel-os/releases/tag/v0.1.0
