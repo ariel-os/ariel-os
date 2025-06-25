@@ -28,7 +28,7 @@ const MAX_SUPPORTED_ENCRYPT_PROTECTED_LEN: usize = 32;
 /// Full attribute references are in the [OAuth Parameters CBOR Mappings
 /// registry](https://www.iana.org/assignments/ace/ace.xhtml#oauth-parameters-cbor-mappings).
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[derive(minicbor::Decode, minicbor::Encode, Default)]
+#[derive(minicbor::Decode, minicbor::Encode, Default, Debug)]
 #[cbor(map)]
 #[non_exhaustive]
 struct AceCbor<'a> {
@@ -58,7 +58,7 @@ type UnprotectedAuthzInfoPost<'a> = AceCbor<'a>;
 /// Full attribute references are in the [COSE Header Parameters
 /// registry](https://www.iana.org/assignments/cose/cose.xhtml#header-parameters).
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[derive(minicbor::Decode)]
+#[derive(minicbor::Decode, Debug)]
 #[cbor(map)]
 #[non_exhaustive]
 pub struct HeaderMap<'a> {
@@ -112,7 +112,7 @@ pub(crate) struct CoseKey<'a> {
 
 /// A `COSE_Encrypt0` structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[derive(minicbor::Decode)]
+#[derive(minicbor::Decode, Debug)]
 #[cbor(tag(16))]
 #[non_exhaustive]
 struct CoseEncrypt0<'a> {
@@ -170,7 +170,7 @@ impl CoseEncrypt0<'_> {
         let mut aad_encoded = heapless::Vec::<u8, AADSIZE>::new();
         minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut aad_encoded))
             .map_err(|_| CredentialErrorDetail::ConstraintExceeded)?;
-        trace!("Serialized AAD: {:02x}", aad_encoded); // :02x could be :cbor
+        trace!("Serialized AAD: {:?}", aad_encoded); // :? could go through something like ariel_os_debug_log::Cbor
 
         buffer.clear();
         // Copying around is not a constraint of this function (well that too but that could
@@ -192,7 +192,7 @@ type EncryptedCwt<'a> = CoseEncrypt0<'a>;
 
 /// A `COSE_Sign1` structure as defined in [RFC8152](https://www.rfc-editor.org/rfc/rfc8152)
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[derive(minicbor::Decode)]
+#[derive(minicbor::Decode, Debug)]
 #[cbor(tag(18))]
 #[non_exhaustive]
 struct CoseSign1<'a> {
@@ -427,7 +427,7 @@ pub(crate) fn process_acecbor_authz_info<GC: crate::GeneralClaims>(
     nonce2: [u8; OWN_NONCE_LEN],
     server_recipient_id: impl FnOnce(&[u8]) -> COwn,
 ) -> Result<(AceCborAuthzInfoResponse, liboscore::PrimitiveContext, GC), CredentialError> {
-    trace!("Processing authz_info {=[u8]:02x}", payload); // :02x could be :cbor
+    trace!("Processing authz_info {:?}", payload); // :? could go through something like ariel_os_debug_log::Cbor
 
     let decoded: UnprotectedAuthzInfoPost = minicbor::decode(payload)?;
     // FIXME: The `..` should be "all others are None"; se also comment on UnprotectedAuthzInfoPost
@@ -532,7 +532,7 @@ pub(crate) fn process_edhoc_token<GeneralClaims>(
         };
         buffer = heapless::Vec::new();
         minicbor::encode(&aad, minicbor_adapters::WriteToHeapless(&mut buffer))?;
-        trace!("Serialized AAD: {:#02x}", buffer);
+        trace!("Serialized AAD: {:#02x?}", buffer);
 
         authorities.verify_asymmetric_token(&headers, &buffer, sign1.signature, sign1.payload)?
     } else {

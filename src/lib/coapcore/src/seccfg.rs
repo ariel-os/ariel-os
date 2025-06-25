@@ -363,7 +363,7 @@ impl ServerSecurityConfig for ConfigBuilder {
         id_cred_x: lakers::IdCred,
     ) -> Option<(lakers::Credential, Self::GeneralClaims)> {
         trace!(
-            "Evaluating peer's credential {=[u8]:02x}", // :02x could be :cbor
+            "Evaluating peer's credential {:?}", // :? could go through something like ariel_os_debug_log::Cbor
             id_cred_x.as_full_value()
         );
 
@@ -372,7 +372,7 @@ impl ServerSecurityConfig for ConfigBuilder {
             reason = "Expected to be extended to actual loop soon"
         )]
         for (credential, scope) in &[self.known_edhoc_clients.as_ref()?] {
-            trace!("Comparing to {=[u8]:02x}", credential.bytes.as_slice()); // :02x could be :cbor
+            trace!("Comparing to {:?}", credential.bytes.as_slice()); // :? could go through something like ariel_os_debug_log::Cbor
             if id_cred_x.reference_only() {
                 // ad Ok: If our credential has no KID, it can't be recognized in this branch
                 if credential.by_kid().as_ref() == Ok(&id_cred_x) {
