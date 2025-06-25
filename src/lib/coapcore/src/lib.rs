@@ -62,6 +62,7 @@
 mod iana;
 
 mod helpers;
+mod log_helpers;
 
 pub mod time;
 
