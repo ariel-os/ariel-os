@@ -119,6 +119,7 @@ jobs:
                 mdns,
                 net,
                 no-boards,
+                sensors,
                 spi,
                 storage,
                 tcp,
@@ -140,6 +141,7 @@ jobs:
             -p ariel-os-power
             -p ariel-os-random
             -p ariel-os-rt
+            -p ariel-os-sensors
             -p ariel-os-storage
             -p ariel-os-threads
             -p ariel-os-utils
@@ -268,6 +270,7 @@ jobs:
                     no-boards,
                     random,
                     ariel-os-coap/doc,
+                    sensors,
                     spi,
                     storage,
                     tcp,
