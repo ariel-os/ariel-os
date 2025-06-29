@@ -231,7 +231,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(feature = "ble")]
     {
         let config = ble::config();
-        hal::ble::driver(ble_peripherals, spawner, config);
+        hal::ble::driver(ble_peripherals, spawner, &config);
     }
 
     #[cfg(feature = "usb")]

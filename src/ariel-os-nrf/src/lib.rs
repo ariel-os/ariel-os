@@ -6,10 +6,16 @@
 
 pub mod gpio;
 
+mod irqs;
+
 #[doc(hidden)]
 pub mod peripheral {
     pub use embassy_nrf::Peripheral;
 }
+
+#[cfg(feature = "ble")]
+#[doc(hidden)]
+pub mod ble;
 
 #[cfg(feature = "external-interrupts")]
 #[doc(hidden)]
