@@ -207,6 +207,15 @@ pub fn init() {
             .vtor
             .write(&__RESET_VECTOR as *const _ as u32 - 4)
     };
+
+    #[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+    unsafe {
+        let mut p = cortex_m::Peripherals::steal();
+        // Enable fpu with full access
+        p.SCB
+            .set_fpu_access_mode(cortex_m::peripheral::scb::FpuAccessMode::Enabled);
+        p.SCB.enable_fpu();
+    }
 }
 
 /// Returns a `Stack` handle for the currently active thread.

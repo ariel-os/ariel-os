@@ -1,17 +1,27 @@
 use crate::{Arch, SCHEDULER, Thread, cleanup};
+use cfg_if::cfg_if;
 use core::{arch::global_asm, ptr::write_volatile};
 use cortex_m::peripheral::{SCB, scb::SystemHandler};
 
 #[cfg(not(any(armv6m, armv7m, armv8m)))]
 compile_error!("no supported ARM variant selected");
 
+// Default EXC_RETURN value used for newly created threads when returning to
+// Thread mode. We know FPU hasn't been used because the thread hasn't run.
+const EXC_RETURN_THREAD_NO_FPU: usize = 0xFFFFFFFD;
+
 pub struct Cpu;
 
-#[derive(Default, Debug)]
+#[derive(Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[repr(C)]
 pub struct ThreadData {
     sp: usize,
     high_regs: [usize; 8],
+    #[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+    high_regs_float: [usize; 16],
+    #[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+    exc_return: usize,
 }
 
 impl Arch for Cpu {
@@ -21,6 +31,10 @@ impl Arch for Cpu {
     const DEFAULT_THREAD_DATA: Self::ThreadData = ThreadData {
         sp: 0,
         high_regs: [0; 8],
+        #[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+        high_regs_float: [0; 16],
+        #[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+        exc_return: EXC_RETURN_THREAD_NO_FPU,
     };
 
     /// The exact order in which Cortex-M pushes the registers to the stack when
@@ -93,7 +107,9 @@ impl Arch for Cpu {
 }
 
 #[cfg(any(armv7m, armv8m))]
-global_asm!(
+macro_rules! define_pendsv_without_fpu {
+    () => {
+    global_asm!(
     "
     .thumb_func
     .global PendSV
@@ -125,7 +141,85 @@ global_asm!(
         bx LR
     ",
     sched = sym sched,
-);
+    );
+}
+}
+
+#[cfg(any(armv7m_eabihf, armv8m_eabihf))]
+macro_rules! define_pendsv_with_fpu {
+     ($fpu_directive:literal) => {
+        global_asm!(
+            concat!(
+                $fpu_directive,
+                "
+                .thumb_func
+                .global PendSV
+                // lr is EXC_RETURN of current (outgoing) thread.
+                // r0 points to current_td.high_regs
+                // r1 points to next_td.high_regs
+                PendSV:
+                    // save EXC_RETURN value, also push r2
+                    // to ensure 8 byte stack alignment
+                    stmdb sp!, {{r2, lr}}
+
+                    bl {sched}
+
+                    ldmia sp!, {{r2, lr}}
+
+                    cmp r0, #0
+                    bne _PendSV_full_context_switch
+
+                    cmp r1, #0
+                    beq _PendSV_current_thread_continues
+
+                    _PendSV_first_thread_start:
+                    movw LR, #0xFFFD
+                    movt LR, #0xFFFF
+                    bx LR
+
+                    _PendSV_current_thread_continues:
+                    bx lr
+
+                    _PendSV_full_context_switch:
+                    // store current thread's context
+                    str lr, [r0, #{exc_return_off}]
+                    stmia r0!, {{r4-r11}}
+                    // was FP extension active ? If yes, store fp registers
+                    tst lr, #0x10
+                    it eq
+                    vstmiaeq r0!, {{s16-s31}}
+
+                    // restore next thread's context
+                    ldr lr, [r1, #{exc_return_off}]
+                    ldmia r1!, {{r4-r11}}
+                    // was FP extension active ? If yes, restore fp registers
+                    tst lr, #0x10
+                    it eq
+                    vldmiaeq r1!, {{s16-s31}}
+
+                    bx lr
+            "),
+            sched = sym sched,
+            exc_return_off = const (
+                core::mem::offset_of!(ThreadData, exc_return)
+                - core::mem::offset_of!(ThreadData, high_regs)
+            )
+        );
+    }
+}
+
+#[cfg(any(armv7m, armv8m))]
+cfg_if! {
+    if #[cfg(armv7m_eabihf)] {
+        define_pendsv_with_fpu!(".fpu fpv4-sp-d16");
+    }
+    else if #[cfg(armv8m_eabihf)] {
+        define_pendsv_with_fpu!(".fpu fpv5-sp-d16");
+    }
+    else {
+        define_pendsv_without_fpu!();
+    }
+}
 
 #[cfg(armv6m)]
 global_asm!(

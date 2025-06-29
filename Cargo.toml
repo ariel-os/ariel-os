@@ -36,6 +36,7 @@ members = [
   "tests/threading-dynamic-prios",
   "tests/threading-lock",
   "tests/threading-mutex",
+  "tests/threading-fpu",
 ]
 
 exclude = ["src/lib", "doc"]

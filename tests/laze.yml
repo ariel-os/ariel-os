@@ -9,5 +9,6 @@ subdirs:
   - spi-loopback
   - spi-main
   - threading-dynamic-prios
+  - threading-fpu
   - threading-lock
   - threading-mutex
