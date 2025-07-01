@@ -1902,6 +1902,7 @@ builders:
 
     disables:
       - periph_rtt
+
 apps:
   # define a dummy host application so the host tasks work
   - name: host

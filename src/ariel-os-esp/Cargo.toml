@@ -38,7 +38,7 @@ esp-hal = { workspace = true, default-features = false, features = [
 
 esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
-  "wifi",
+  "unstable",
 ], optional = true }
 esp-radio-rtos-driver = { workspace = true, default-features = false, features = [
   "ipc-implementations",
@@ -49,6 +49,11 @@ fugit = { workspace = true, optional = true }
 once_cell = { workspace = true }
 paste = { workspace = true }
 static_cell = { workspace = true }
+
+# BLE dependencies
+bt-hci = { workspace = true, optional = true }
+embassy-sync = { workspace = true, optional = true }
+trouble-host = { workspace = true, optional = true }
 
 [target.'cfg(context = "esp32")'.dependencies]
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
@@ -131,6 +136,22 @@ log = ["esp-hal/log-04", "esp-radio-rtos-driver?/log-04", "esp-radio?/log-04"]
 # Enables USB support.
 usb = []
 
+## Enables Bluetooth support.
+ble-esp = [
+  "dep:bt-hci",
+  "dep:embassy-sync",
+  "dep:embassy-time",
+  "dep:esp-alloc",
+  "dep:esp-radio-rtos-driver",
+  "dep:trouble-host",
+  "_esp",
+  "ariel-os-embassy-common/ble",
+  "ariel-os-random/csprng",
+  "esp-radio/ble",
+  "esp-radio/esp-alloc",
+  "hwrng",
+]
+
 ## Enables Wi-Fi support.
 wifi = []
 
@@ -141,6 +162,8 @@ wifi-esp = [
   "dep:esp-alloc",
   "dep:esp-radio",
   "dep:esp-radio-rtos-driver",
+  "esp-radio/esp-alloc",
+  "esp-radio/wifi",
   "wifi",
 ]
 
