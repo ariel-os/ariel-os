@@ -23,7 +23,6 @@ esp-hal = { workspace = true, default-features = false, features = [
 esp-hal-embassy = { workspace = true, default-features = false }
 esp-wifi = { workspace = true, default-features = false, features = [
   "esp-alloc",
-  "wifi",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
@@ -36,6 +35,11 @@ ariel-os-random = { workspace = true, optional = true }
 ariel-os-threads = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
 static_cell = { workspace = true }
+
+# BLE dependencies
+embassy-sync = { workspace = true, optional = true }
+bt-hci = { workspace = true, optional = true }
+trouble-host = { workspace = true, optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [
@@ -110,11 +114,26 @@ log = ["esp-hal/log", "esp-hal-embassy/log", "esp-wifi?/log"]
 # Enables USB support.
 usb = []
 
+## Enables Bluetooth support.
+ble-esp = [
+  "dep:trouble-host",
+  "dep:bt-hci",
+  "dep:embassy-sync",
+  "dep:embassy-time",
+  "dep:esp-alloc",
+  "dep:esp-wifi",
+  "esp-wifi/esp-alloc",
+  "esp-wifi/ble",
+  "hwrng",
+  "ariel-os-random/csprng",
+  "ariel-os-embassy-common/ble",
+]
+
 ## Enables Wi-Fi support.
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "wifi"]
+wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "esp-wifi/wifi", "wifi"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.
