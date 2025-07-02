@@ -17,7 +17,11 @@ mod picotool;
 #[cfg(feature = "wifi")]
 mod wifi;
 
-#[cfg(feature = "wifi-cyw43")]
+#[cfg(feature = "ble")]
+#[doc(hidden)]
+pub mod ble;
+
+#[cfg(any(feature = "ble-cyw43", feature = "wifi-cyw43"))]
 #[doc(hidden)]
 pub mod cyw43;
 
