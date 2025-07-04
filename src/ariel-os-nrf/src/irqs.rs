@@ -24,8 +24,8 @@ bind_interrupts!(pub(crate) struct Irqs {
     // SWI0 is used for the executor interrupt
     #[cfg(all(feature = "ble", context = "nrf52"))]
     EGU1_SWI1 => nrf_sdc::mpsl::LowPrioInterruptHandler;
-    #[cfg(all(feature = "ble", context = "nrf5340"))]
-    EGU1 => nrf_sdc::mpsl::LowPrioInterruptHandler;
+    #[cfg(all(feature = "ble", context = "nrf53"))]
+    EGU0 => nrf_sdc::mpsl::LowPrioInterruptHandler;
 
     #[cfg(feature = "ble")]
     RADIO => nrf_sdc::mpsl::HighPrioInterruptHandler;

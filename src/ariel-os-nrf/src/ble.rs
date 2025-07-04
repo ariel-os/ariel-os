@@ -23,11 +23,34 @@ static RNG: StaticCell<ariel_os_random::CryptoRngSend> = StaticCell::new();
 // During testing central mode needed 2912 bytes, peripheral mode needed 1448 bytes.
 // Multirole (central + peripheral) needed 6080 bytes. Allocate more here if using extended features.
 
-#[cfg(all(feature = "ble-peripheral", not(feature = "ble-central")))]
+#[cfg(all(
+    context = "nrf52",
+    feature = "ble-peripheral",
+    not(feature = "ble-central")
+))]
 const SDC_MEM_SIZE: usize = 2880;
-#[cfg(all(feature = "ble-central", not(feature = "ble-peripheral")))]
+#[cfg(all(
+    context = "nrf52",
+    feature = "ble-central",
+    not(feature = "ble-peripheral")
+))]
 const SDC_MEM_SIZE: usize = 2912;
-#[cfg(all(feature = "ble-peripheral", feature = "ble-central"))]
+#[cfg(all(context = "nrf52", feature = "ble-peripheral", feature = "ble-central"))]
+const SDC_MEM_SIZE: usize = 6080;
+
+#[cfg(all(
+    context = "nrf53",
+    feature = "ble-peripheral",
+    not(feature = "ble-central")
+))]
+const SDC_MEM_SIZE: usize = 4768;
+#[cfg(all(
+    context = "nrf53",
+    feature = "ble-central",
+    not(feature = "ble-peripheral")
+))]
+const SDC_MEM_SIZE: usize = 4904;
+#[cfg(all(context = "nrf53", feature = "ble-peripheral", feature = "ble-central"))]
 const SDC_MEM_SIZE: usize = 6080;
 
 // Size of the TX buffer (number of packets), minimum is 1, SoftDevice default is 3 (SDC_DEFAULT_TX_PACKET_COUNT).
@@ -94,6 +117,57 @@ impl Peripherals {
     }
 }
 
+#[cfg(context = "nrf53")]
+pub struct Peripherals {
+    pub ppi_ch3: peripherals::PPI_CH3,
+    pub ppi_ch4: peripherals::PPI_CH4,
+    pub ppi_ch5: peripherals::PPI_CH5,
+    pub ppi_ch6: peripherals::PPI_CH6,
+    pub ppi_ch7: peripherals::PPI_CH7,
+    pub ppi_ch8: peripherals::PPI_CH8,
+    pub ppi_ch9: peripherals::PPI_CH9,
+    pub ppi_ch10: peripherals::PPI_CH10,
+    pub ppi_ch11: peripherals::PPI_CH11,
+    pub ppi_ch12: peripherals::PPI_CH12,
+
+    pub rtc0: peripherals::RTC0,
+    pub timer0: peripherals::TIMER0,
+    pub timer1: peripherals::TIMER1,
+    pub ppi_ch0: peripherals::PPI_CH0,
+    pub ppi_ch1: peripherals::PPI_CH1,
+    pub ppi_ch2: peripherals::PPI_CH2,
+}
+
+#[cfg(context = "nrf53")]
+impl Peripherals {
+    /// Reserves the necessary peripherals for the BLE stack.
+    ///
+    /// # Panics
+    /// Panics if any of the required peripherals are not available.
+    #[must_use]
+    pub fn new(peripherals: &mut crate::OptionalPeripherals) -> Self {
+        Self {
+            ppi_ch3: peripherals.PPI_CH3.take().unwrap(),
+            ppi_ch4: peripherals.PPI_CH4.take().unwrap(),
+            ppi_ch5: peripherals.PPI_CH5.take().unwrap(),
+            ppi_ch6: peripherals.PPI_CH6.take().unwrap(),
+            ppi_ch7: peripherals.PPI_CH7.take().unwrap(),
+            ppi_ch8: peripherals.PPI_CH8.take().unwrap(),
+            ppi_ch9: peripherals.PPI_CH9.take().unwrap(),
+            ppi_ch10: peripherals.PPI_CH10.take().unwrap(),
+            ppi_ch11: peripherals.PPI_CH11.take().unwrap(),
+            ppi_ch12: peripherals.PPI_CH12.take().unwrap(),
+
+            rtc0: peripherals.RTC0.take().unwrap(),
+            timer0: peripherals.TIMER0.take().unwrap(),
+            timer1: peripherals.TIMER1.take().unwrap(),
+            ppi_ch0: peripherals.PPI_CH0.take().unwrap(),
+            ppi_ch1: peripherals.PPI_CH1.take().unwrap(),
+            ppi_ch2: peripherals.PPI_CH2.take().unwrap(),
+        }
+    }
+}
+
 /// Configures and initializes the nRF BLE driver.
 ///
 /// # Panics
@@ -104,8 +178,12 @@ impl Peripherals {
 )]
 pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common::ble::Config) {
     debug!("Initializing nRF BLE driver");
+    #[cfg(context = "nrf52")]
     let mpsl_p =
         mpsl::Peripherals::new(p.rtc0, p.timer0, p.temp, p.ppi_ch19, p.ppi_ch30, p.ppi_ch31);
+    #[cfg(context = "nrf53")]
+    let mpsl_p =
+        mpsl::Peripherals::new(p.rtc0, p.timer0, p.timer1, p.ppi_ch0, p.ppi_ch1, p.ppi_ch2);
     #[allow(clippy::cast_possible_truncation)]
     let lfclk_cfg = mpsl::raw::mpsl_clock_lfclk_cfg_t {
         source: mpsl::raw::MPSL_CLOCK_LF_SRC_RC as u8,
@@ -122,10 +200,17 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
 
     let rng = RNG.init(ariel_os_random::crypto_rng_send());
 
+    #[cfg(context = "nrf52")]
     let sdc_p = sdc::Peripherals::new(
         p.ppi_ch17, p.ppi_ch18, p.ppi_ch20, p.ppi_ch21, p.ppi_ch22, p.ppi_ch23, p.ppi_ch24,
         p.ppi_ch25, p.ppi_ch26, p.ppi_ch27, p.ppi_ch28, p.ppi_ch29,
     );
+    #[cfg(context = "nrf53")]
+    let sdc_p = sdc::Peripherals::new(
+        p.ppi_ch3, p.ppi_ch4, p.ppi_ch5, p.ppi_ch6, p.ppi_ch7, p.ppi_ch8, p.ppi_ch9, p.ppi_ch10,
+        p.ppi_ch11, p.ppi_ch12,
+    );
+
     let sdc_mem = SDC_MEM.init(sdc::Mem::new());
 
     let sdc = build_sdc(sdc_p, rng, mpsl, sdc_mem).expect("Failed to build SDC");

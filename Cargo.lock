@@ -3890,7 +3890,7 @@ checksum = "b3c12edfda65fe16901d81d3bd93fd18ac07078b5007875a1c3b0d35f7725269"
 [[package]]
 name = "nrf-mpsl"
 version = "0.1.0"
-source = "git+https://github.com/alexmoon/nrf-sdc.git?rev=551a95436e999b4290b4a33383aa3d6747b63dd9#551a95436e999b4290b4a33383aa3d6747b63dd9"
+source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
 dependencies = [
  "cortex-m",
  "defmt 0.3.100",
@@ -3905,7 +3905,7 @@ dependencies = [
 [[package]]
 name = "nrf-mpsl-sys"
 version = "0.1.0"
-source = "git+https://github.com/alexmoon/nrf-sdc.git?rev=551a95436e999b4290b4a33383aa3d6747b63dd9#551a95436e999b4290b4a33383aa3d6747b63dd9"
+source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
 dependencies = [
  "bindgen",
  "doxygen-rs",
@@ -3924,7 +3924,7 @@ dependencies = [
 [[package]]
 name = "nrf-sdc"
 version = "0.1.0"
-source = "git+https://github.com/alexmoon/nrf-sdc.git?rev=551a95436e999b4290b4a33383aa3d6747b63dd9#551a95436e999b4290b4a33383aa3d6747b63dd9"
+source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
 dependencies = [
  "bt-hci",
  "critical-section",
@@ -3942,7 +3942,7 @@ dependencies = [
 [[package]]
 name = "nrf-sdc-sys"
 version = "0.1.0"
-source = "git+https://github.com/alexmoon/nrf-sdc.git?rev=551a95436e999b4290b4a33383aa3d6747b63dd9#551a95436e999b4290b4a33383aa3d6747b63dd9"
+source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
 dependencies = [
  "bindgen",
  "doxygen-rs",
