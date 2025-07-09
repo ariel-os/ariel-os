@@ -153,3 +153,12 @@ define_uart_drivers!(
    UART7 => UART7,
    UART8 => UART8,
 );
+#[cfg(context = "stm32u083mc")]
+define_i2c_drivers!(
+   I2C1 => I2C1,
+   // FIXME: the other three I2C peripherals share the same interrupt
+);
+#[cfg(context = "stm32wb55rg")]
+define_i2c_drivers!(
+   USART1 => USART1,
+);
