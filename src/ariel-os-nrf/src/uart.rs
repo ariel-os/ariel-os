@@ -1,10 +1,12 @@
 //! UART bus configuration.
-use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, impl_defmt_display_for_config, uart::Parity};
+use ariel_os_embassy_common::{
+    impl_async_uart_for_driver_enum, impl_defmt_display_for_config, uart::Parity,
+};
 use embassy_nrf::{
-    Peripheral, bind_interrupts,
+    bind_interrupts,
     buffered_uarte::{Baudrate, BufferedUarte, InterruptHandler},
     gpio::Pin as GpioPin,
-    peripherals,
+    peripherals, Peripheral,
 };
 
 fn from_parity(parity: Parity) -> embassy_nrf::uarte::Parity {
@@ -165,3 +167,53 @@ define_uart_drivers!(
 define_uart_drivers!(
    SERIAL3 => SERIAL3 + TIMER2 + PPI_CH18 + PPI_CH19 + PPI_GROUP5,
 );
+#[cfg(context = "nrf91")]
+define_uart_drivers!(
+   SERIAL3 => SERIAL3 + TIMER2 + PPI_CH14 + PPI_CH15 + PPI_GROUP5,
+);
+
+#[doc(hidden)]
+pub fn init(peripherals: &mut crate::OptionalPeripherals) {
+    // Take all SPI peripherals and do nothing with them.
+    cfg_if::cfg_if! {
+        if #[cfg(context = "nrf52833")] {
+            let _ = peripherals.UARTE0.take().unwrap();
+            let _ = peripherals.TIMER3.take().unwrap();
+            let _ = peripherals.PPI_CH16.take().unwrap();
+            let _ = peripherals.PPI_CH17.take().unwrap();
+            let _ = peripherals.PPI_GROUP4.take().unwrap();
+
+            let _ = peripherals.UARTE1.take().unwrap();
+            let _ = peripherals.TIMER4.take().unwrap();
+            let _ = peripherals.PPI_CH18.take().unwrap();
+            let _ = peripherals.PPI_CH19.take().unwrap();
+            let _ = peripherals.PPI_GROUP5.take().unwrap();
+        } else if #[cfg(context = "nrf52840")] {
+            let _ = peripherals.UARTE0.take().unwrap();
+            let _ = peripherals.TIMER3.take().unwrap();
+            let _ = peripherals.PPI_CH16.take().unwrap();
+            let _ = peripherals.PPI_CH17.take().unwrap();
+            let _ = peripherals.PPI_GROUP4.take().unwrap();
+
+            let _ = peripherals.UARTE1.take().unwrap();
+            let _ = peripherals.TIMER4.take().unwrap();
+            let _ = peripherals.PPI_CH18.take().unwrap();
+            let _ = peripherals.PPI_CH19.take().unwrap();
+            let _ = peripherals.PPI_GROUP5.take().unwrap();
+        } else if #[cfg(context = "nrf5340")] {
+            let _ = peripherals.SERIAL3.take().unwrap();
+            let _ = peripherals.TIMER2.take().unwrap();
+            let _ = peripherals.PPI_CH18.take().unwrap();
+            let _ = peripherals.PPI_CH19.take().unwrap();
+            let _ = peripherals.PPI_GROUP5.take().unwrap();
+        } else if #[cfg(context = "nrf91")] {
+            let _ = peripherals.SERIAL3.take().unwrap();
+            let _ = peripherals.TIMER2.take().unwrap();
+            let _ = peripherals.PPI_CH14.take().unwrap();
+            let _ = peripherals.PPI_CH15.take().unwrap();
+            let _ = peripherals.PPI_GROUP5.take().unwrap();
+        } else {
+            compile_error!("this nRF chip is not supported");
+        }
+    }
+}
