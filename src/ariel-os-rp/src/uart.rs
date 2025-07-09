@@ -134,3 +134,16 @@ define_uart_drivers!(
    UART0_IRQ => UART0,
    UART1_IRQ => UART1,
 );
+
+#[doc(hidden)]
+pub fn init(peripherals: &mut crate::OptionalPeripherals) {
+    // Take all SPI peripherals and do nothing with them.
+    cfg_if::cfg_if! {
+        if #[cfg(context = "rp")] {
+            let _ = peripherals.UART0.take().unwrap();
+            let _ = peripherals.UART1.take().unwrap();
+        } else {
+            compile_error!("this RP chip is not supported");
+        }
+    }
+}
