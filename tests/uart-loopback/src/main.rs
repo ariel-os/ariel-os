@@ -15,8 +15,6 @@ use embedded_io_async::{Read as _, Write as _};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
-    // Delay to segment individual runs on the logic analyzer.
-    Timer::after_millis(500).await;
     info!("Starting UART test");
 
     let mut config = hal::uart::Config::default();
@@ -46,6 +44,5 @@ async fn main(peripherals: pins::Peripherals) {
     assert_eq!(OUT.as_bytes(), in_);
     info!("Test passed!");
 
-    Timer::after_millis(500).await;
     exit(ExitCode::SUCCESS);
 }
