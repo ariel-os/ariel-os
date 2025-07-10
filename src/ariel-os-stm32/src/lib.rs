@@ -222,7 +222,7 @@ fn board_config(config: &mut Config) {
         config.rcc.mux.spi123sel = mux::Saisel::PLL1_Q; // Reset value
     }
 
-    #[cfg(context = "stm32u083mc")]
+    #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
     {
         use embassy_stm32::rcc::*;
 
