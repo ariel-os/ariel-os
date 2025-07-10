@@ -137,6 +137,8 @@ define_uart_drivers!(
 #[cfg(context = "stm32f401re")]
 define_uart_drivers!(
    USART1 => USART1,
+   USART2 => USART2,
+   USART6 => USART6,
 );
 #[cfg(context = "stm32wb55rg")]
 define_uart_drivers!(
@@ -155,10 +157,45 @@ define_uart_drivers!(
 );
 #[cfg(context = "stm32u083mc")]
 define_i2c_drivers!(
-   I2C1 => I2C1,
-   // FIXME: the other three I2C peripherals share the same interrupt
+   USART1 => USART1,
+   USART2 => USART2,
+   USART3 => USART3,
+   USART4 => USART4,
 );
 #[cfg(context = "stm32wb55rg")]
 define_i2c_drivers!(
    USART1 => USART1,
 );
+
+#[doc(hidden)]
+pub fn init(peripherals: &mut crate::OptionalPeripherals) {
+    // Take all SPI peripherals and do nothing with them.
+    cfg_if::cfg_if! {
+        if #[cfg(context = "stm32c031c6")] {
+            let _ = peripherals.USART1.take().unwrap();
+        } else if #[cfg(context = "stm32f401re")] {
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART6.take().unwrap();
+        } else if #[cfg(context = "stm32wb55rg")] {
+            let _ = peripherals.USART1.take().unwrap();
+        } else if #[cfg(context = "stm32h755zi")] {
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART3.take().unwrap();
+            let _ = peripherals.USART4.take().unwrap();
+            let _ = peripherals.USART6.take().unwrap();
+            let _ = peripherals.USART7.take().unwrap();
+            let _ = peripherals.USART7.take().unwrap();
+        } else if #[cfg(context = "stm32u083mc")] {
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART3.take().unwrap();
+            let _ = peripherals.USART4.take().unwrap();
+        } else if #[cfg(context = "stm32wb55rg")] {
+            let _ = peripherals.USART1.take().unwrap();
+        } else {
+            compile_error!("this STM32 chip is not supported");
+        }
+    }
+}
