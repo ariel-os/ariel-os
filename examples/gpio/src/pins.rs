@@ -111,7 +111,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
     btn1: PC4
 });
 
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 ariel_os::hal::define_peripherals!(Peripherals {
     led1: PA5,
     btn1: PC2
