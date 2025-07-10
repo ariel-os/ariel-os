@@ -11,6 +11,7 @@ codegen-units = 1
 debug = true        # Required for defmt
 lto = false
 opt-level = "s"
+#panic = "abort"
 
 [profile.release.package.esp-wifi]
 opt-level = 3
