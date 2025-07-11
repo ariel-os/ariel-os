@@ -40,6 +40,8 @@ define_env_with_default_macro!(bool_from_env_or, parse_bool, "a bool");
 /// - The `$doc` parameter allows to provide a documentation string for this tunable (see
 ///   [`str_from_env!`](str_from_env)).
 ///
+/// # Errors
+///
 /// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! str_from_env_or {
@@ -55,11 +57,13 @@ macro_rules! str_from_env_or {
 
 /// Reads a value at compile time from the given environment variable.
 ///
-/// Produces a compile-time error if the environment variable is not found.
 /// The `$doc` parameter allows to provide a documentation string for this tunable.
 /// It should complete the following sentence: "This environment variable provides the `$doc`".
 ///
-/// Produces a compile-time error when [`option_env!`](option_env) does.
+/// # Errors
+///
+/// - Produces a compile-time error if the environment variable is not found.
+/// - Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! str_from_env {
     ($env_var:literal, $doc:literal $(,)?) => {
@@ -81,11 +85,13 @@ pub(crate) use str_from_env;
 /// Reads an IPv4 address at compile time from the given environment variable, produces an
 /// [`Ipv4Addr`](core::net::Ipv4Addr).
 ///
-/// Produces a compile-time error if the environment variable is not found.
 /// The `$doc` parameter allows to provide a documentation string for this tunable (see
 ///   [`str_from_env!`](str_from_env)).
 ///
-/// Produces a compile-time error when [`option_env!`](option_env) does.
+/// # Errors
+///
+/// - Produces a compile-time error if the environment variable is not found.
+/// - Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! ipv4_addr_from_env {
     // $doc is currently unused
@@ -111,6 +117,8 @@ macro_rules! ipv4_addr_from_env {
 /// - The `$doc` parameter allows to provide a documentation string for this tunable (see
 ///   [`str_from_env!`](str_from_env)).
 ///
+/// # Errors
+///
 /// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! ipv4_addr_from_env_or {
@@ -128,11 +136,13 @@ macro_rules! ipv4_addr_from_env_or {
 /// Reads an IPv6 address at compile time from the given environment variable, produces an
 /// [`Ipv6Addr`](core::net::Ipv6Addr).
 ///
-/// Produces a compile-time error if the environment variable is not found.
 /// The `$doc` parameter allows to provide a documentation string for this tunable (see
 ///   [`str_from_env!`](str_from_env)).
 ///
-/// Produces a compile-time error when [`option_env!`](option_env) does.
+/// # Errors
+///
+/// - Produces a compile-time error if the environment variable is not found.
+/// - Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
 macro_rules! ipv6_addr_from_env {
     // $doc is currently unused
@@ -157,6 +167,8 @@ macro_rules! ipv6_addr_from_env {
 ///   is not found.
 /// - The `$doc` parameter allows to provide a documentation string for this tunable (see
 ///   [`str_from_env!`](str_from_env)).
+///
+/// # Errors
 ///
 /// Produces a compile-time error when [`option_env!`](option_env) does.
 #[macro_export]
