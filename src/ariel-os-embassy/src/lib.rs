@@ -216,7 +216,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     // Move out the peripherals required for drivers, so that tasks cannot mistakenly take them.
 
-    #[cfg(feature = "ble")]
+    #[cfg(all(feature = "ble", not(context = "rp")))]
     let ble_peripherals = hal::ble::Peripherals::new(&mut peripherals);
 
     #[cfg(feature = "usb")]
@@ -229,10 +229,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     }
 
     #[cfg(feature = "ble")]
-    {
-        let config = ble::config();
-        hal::ble::driver(ble_peripherals, spawner, config);
-    }
+    let config = ble::config();
+    #[cfg(all(feature = "ble", not(context = "rp")))]
+    hal::ble::driver(ble_peripherals, spawner, config);
 
     #[cfg(feature = "usb")]
     let mut usb_builder = {
@@ -311,7 +310,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         spawner.spawn(usb::usb_task(usb)).unwrap();
     }
 
-    #[cfg(feature = "wifi-cyw43")]
+    #[cfg(all(feature = "ble", context = "rp"))]
+    let (device, control) = hal::cyw43::device(&mut peripherals, &spawner, config).await;
+    #[cfg(all(feature = "wifi-cyw43", not(feature = "ble")))]
     let (device, control) = {
         let (net_device, control) = hal::cyw43::device(&mut peripherals, &spawner).await;
         (net_device, control)

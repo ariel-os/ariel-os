@@ -166,7 +166,7 @@ jobs:
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="rp" --cfg context="rp2040"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040"' >> $GITHUB_ENV
       - name: clippy for RP
         uses: clechasseur/rs-clippy-check@v3
         with:
@@ -178,6 +178,8 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                ble,
+                ble-cyw43,
                 "
             -p ariel-os-rp
             --

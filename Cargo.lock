@@ -446,6 +446,7 @@ dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-random",
  "ariel-os-utils",
+ "bt-hci",
  "cfg-if",
  "cyw43",
  "cyw43-pio",
@@ -454,9 +455,11 @@ dependencies = [
  "embassy-executor",
  "embassy-net-driver-channel",
  "embassy-rp",
+ "embassy-sync 0.6.2",
  "embedded-hal-async",
  "paste",
  "static_cell",
+ "trouble-host",
 ]
 
 [[package]]
@@ -1431,6 +1434,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2c998ad980bbdc3947db4951bc763d14738ab873e20b5e2d87bb683011d7f9e8"
 dependencies = [
+ "bt-hci",
  "cortex-m",
  "cortex-m-rt",
  "embassy-futures",
@@ -1438,6 +1442,7 @@ dependencies = [
  "embassy-sync 0.6.2",
  "embassy-time",
  "embedded-hal 1.0.0",
+ "embedded-io-async",
  "futures",
  "heapless 0.8.0",
  "num_enum 0.5.11",
