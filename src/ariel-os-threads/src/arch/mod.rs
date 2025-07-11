@@ -26,6 +26,14 @@ pub trait Arch {
     /// Prompts the CPU to enter deep sleep until an interrupt occurs.
     #[allow(dead_code, reason = "used in scheduler implementation")]
     fn wfi();
+
+    /// Mark thread `running`.
+    #[cfg(feature = "infini-core")]
+    fn set_running(_thread_id: crate::ThreadId) {}
+
+    /// Mark thread `stopped`.
+    #[cfg(feature = "infini-core")]
+    fn set_stopped(_thread_id: crate::ThreadId) {}
 }
 
 cfg_if::cfg_if! {
@@ -38,6 +46,9 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "xtensa")] {
         mod xtensa;
         pub use xtensa::Cpu;
+    } else if #[cfg(context = "native")] {
+        mod native;
+        pub use native::Cpu;
     } else {
         pub struct Cpu;
         impl Arch for Cpu {

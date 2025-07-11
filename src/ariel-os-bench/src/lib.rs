@@ -1,6 +1,7 @@
 //! Provides on-board benchmarking facilities.
 
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, context = "native")), no_std)]
+#![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 
 cfg_if::cfg_if! {
@@ -10,6 +11,9 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "esp")] {
         mod esp;
         use esp as bench;
+    } else if #[cfg(context = "native")] {
+        mod native;
+        use native as bench;
     } else if #[cfg(context = "ariel-os")] {
         // When run with laze but the MCU family is not supported
         compile_error!("benchmarking is not supported for this MCU family");

@@ -46,6 +46,10 @@ cortex-m-rt.workspace = true
 cortex-m-semihosting.workspace = true
 panic-semihosting = { version = "0.6.0", features = ["exit"] }
 
+[target.'cfg(context = "native")'.dependencies]
+atomic-wait = { version = "1.1.0" }
+critical-section = { workspace = true, features = ["restore-state-bool"] }
+
 [target.'cfg(context = "rp")'.dependencies]
 static_cell = { workspace = true, optional = true }
 rp-pac = { workspace = true, optional = true }
@@ -53,12 +57,14 @@ embassy-rp = { workspace = true, optional = true }
 
 [features]
 defmt = ["dep:defmt", "ariel-os-runqueue/defmt"]
+single-core = []
 multi-core = [
   "dep:static_cell",
   "dep:rp-pac",
   "dep:embassy-rp",
   "embassy-rp/fifo-handler",
 ]
+infini-core = []
 core-affinity = ["multi-core"]
 
-_test = []
+_test = ["single-core"]

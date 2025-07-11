@@ -994,6 +994,8 @@ modules:
     selects:
       - ?debug-console
       - ?rtt-target
+    provides_unique:
+      - embedded-test-runner
 
     env:
       global:
@@ -1464,6 +1466,17 @@ modules:
     selects:
       - doc-only
 
+  - name: infini-core
+    help: use platform as if it had one core per thread
+    provides_unique:
+      - critical-section
+    context:
+      - native
+    env:
+      global:
+        FEATURES:
+          - ariel-os/infini-core
+
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
     provides_unique:
@@ -1526,21 +1539,54 @@ modules:
   - name: embedded-test
     context: ariel-os
     selects:
+      - embedded-test-extra
       # There is an issue with multi-core on esp.
       - ?esp-single-core
       - sw/threading
-      - probe-rs
+      - embedded-test-runner
     tasks:
       test:
         workdir: ${appdir}
         cmd:
           - ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} test ${FEATURES} $@
         build: false
-
     env:
       global:
         RUSTFLAGS:
           - -Clink-arg=-Tembedded-test.x
+
+  - name: embedded-test-extra
+    help: Context-specific settings for embedded-test
+    context:
+      - ariel-os
+    env:
+      global:
+        FEATURES:
+          - embedded-test/semihosting
+
+  - name: embedded-test-extra
+    help: native specific settings for embedded-test
+    context:
+      # This overrides ariel-os::embedded-test-extra
+      - native
+    env:
+      global:
+        FEATURES:
+          - embedded-test/std
+
+  - name: embedded-test-runner
+    help: provided if there is an embedded-test runner
+    selects:
+      - doc-only
+
+  - name: embedded-test-runner-std
+    context: native
+    provides_unique:
+      - embedded-test-runner
+    env:
+      global:
+        # `cargo install embedded-test-std-runner`
+        CARGO_RUNNER: 'embedded-test-std-runner'
 
   # This helper module works around laze not supporting sth like "if context == foo then depend on bar".
   - name: esp-single-core
@@ -1821,6 +1867,23 @@ builders:
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2_LPUART2
+
+  - name: native
+    parent: ariel-os
+    selects:
+      - infini-core
+      - ?debug-console
+    provides:
+      - has_hwrng
+      - sw/benchmark
+    disables:
+      - semihosting
+      - defmt
+      - probe-rs
+    env:
+      RUSTC_TARGET: x86_64-unknown-linux-gnu
+      CARGO_TARGET_PREFIX: CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU
+      CARGO_RUNNER: '"sh -c"'
 
 apps:
   # define a dummy host application so the host tasks work

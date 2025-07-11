@@ -88,7 +88,8 @@ mod alloc {
 
     /// Initializes **no** heap.
     ///
-    /// Used as catch-all for tooling.
+    /// Used as catch-all for tooling or when the heap is set-up elsewhere,
+    /// as e.g., on "native".
     ///
     /// # Safety
     ///
@@ -99,7 +100,7 @@ mod alloc {
         let _ = CONFIG_HEAPSIZE;
 
         // compile-fail unless building docs etc.
-        #[cfg(context = "ariel-os")]
+        #[cfg(all(context = "ariel-os", not(context = "native")))]
         compile_error!("ariel-os-alloc: unsupported architecture!");
     }
 }

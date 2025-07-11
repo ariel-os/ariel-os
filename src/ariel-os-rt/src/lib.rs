@@ -1,4 +1,4 @@
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, context = "native")), no_std)]
 #![cfg_attr(test, no_main)]
 //
 #![allow(incomplete_features)]
@@ -28,6 +28,10 @@ cfg_if::cfg_if! {
     else if #[cfg(context = "riscv")] {
         mod riscv;
         use riscv as arch;
+    }
+    else if #[cfg(context = "native")] {
+        mod native;
+        use native as arch;
     }
     else if #[cfg(context = "ariel-os")] {
         // When run with laze but the MCU family is not supported
@@ -121,7 +125,11 @@ mod isr_stack {
     }
 }
 
-#[cfg(all(feature = "_panic-handler", not(feature = "_test")))]
+#[cfg(all(
+    feature = "_panic-handler",
+    not(feature = "_test"),
+    not(context = "native")
+))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {
     #[cfg(feature = "panic-printing")]

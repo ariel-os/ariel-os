@@ -66,4 +66,5 @@ semihosting = ["dep:semihosting"]
 # Debug output backends
 esp-println = ["dep:esp-println"]
 rtt-target = ["dep:rtt-target"]
+std = []
 uart = []

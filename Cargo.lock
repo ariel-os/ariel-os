@@ -357,6 +357,7 @@ version = "0.2.0"
 dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-esp",
+ "ariel-os-native",
  "ariel-os-nrf",
  "ariel-os-rp",
  "ariel-os-stm32",
@@ -395,6 +396,22 @@ dependencies = [
  "quote",
  "syn 2.0.96",
  "trybuild",
+]
+
+[[package]]
+name = "ariel-os-native"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-embassy-common",
+ "ariel-os-random",
+ "cfg-if",
+ "defmt 1.0.1",
+ "embassy-embedded-hal",
+ "embassy-executor",
+ "embassy-time",
+ "embedded-hal-async",
+ "rand",
 ]
 
 [[package]]
@@ -536,6 +553,7 @@ dependencies = [
  "ariel-os-debug",
  "ariel-os-runqueue",
  "ariel-os-utils",
+ "atomic-wait",
  "cfg-if",
  "cortex-m",
  "cortex-m-rt",
@@ -608,6 +626,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4"
 dependencies = [
  "critical-section",
+]
+
+[[package]]
+name = "atomic-wait"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a55b94919229f2c42292fd71ffa4b75e83193bffdd77b1e858cd55fd2d0b0ea8"
+dependencies = [
+ "libc",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
@@ -1937,14 +1965,14 @@ dependencies = [
 [[package]]
 name = "embassy-time"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f820157f198ada183ad62e0a66f554c610cdcd1a9f27d4b316358103ced7a1f8"
+source = "git+https://github.com/ariel-os/embassy?branch=embassy-time-v0.4.0%2Bariel-os#f9b4c8132b07ef696668005846ee2240a8f57573"
 dependencies = [
  "cfg-if",
  "critical-section",
  "defmt 0.3.100",
  "document-features",
  "embassy-time-driver",
+ "embassy-time-queue-utils",
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -2153,23 +2181,20 @@ dependencies = [
 
 [[package]]
 name = "embedded-test"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "457ea1f3ac1afe7e4855b61de3eabc32606679c0fc7ad0d0bf060e01c0c66b2a"
+version = "0.6.2"
+source = "git+https://github.com/ariel-os/embedded-test?branch=v0.6.2%2Bariel-os#20642538eb4e6fa44b5f37723b07946c74b5c757"
 dependencies = [
  "embassy-executor",
  "embedded-test-macros",
  "heapless 0.8.0",
- "semihosting",
  "serde",
- "serde-json-core 0.5.1",
+ "serde-json-core",
 ]
 
 [[package]]
 name = "embedded-test-macros"
 version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "832520ef06a9dd2970a9106f94aca45dc47b746d14dbecc0819a47a7b5c1b5be"
+source = "git+https://github.com/ariel-os/embedded-test?branch=v0.6.2%2Bariel-os#20642538eb4e6fa44b5f37723b07946c74b5c757"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -4244,7 +4269,7 @@ dependencies = [
  "picoserve_derive",
  "ryu",
  "serde",
- "serde-json-core 0.6.0",
+ "serde-json-core",
  "thiserror",
 ]
 
@@ -4544,6 +4569,9 @@ name = "rand_core"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
+dependencies = [
+ "getrandom",
+]
 
 [[package]]
 name = "rand_pcg"
@@ -4908,17 +4936,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6"
 dependencies = [
  "serde_derive",
-]
-
-[[package]]
-name = "serde-json-core"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3c9e1ab533c0bc414c34920ec7e5f097101d126ed5eac1a1aac711222e0bbb33"
-dependencies = [
- "heapless 0.7.17",
- "ryu",
- "serde",
 ]
 
 [[package]]

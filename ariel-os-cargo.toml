@@ -25,6 +25,7 @@ embassy-nrf = { git = "https://github.com/ariel-os/embassy", branch = "embassy-n
 embassy-net = { git = "https://github.com/ariel-os/embassy", branch = "embassy-net-v0.6.0+ariel-os" }
 embassy-rp = { git = "https://github.com/ariel-os/embassy", branch = "embassy-rp-v0.4.0+ariel-os+trng-panic-fix" }
 embassy-stm32 = { git = "https://github.com/ariel-os/embassy", branch = "embassy-stm32-v0.2.0+ariel-os" }
+embassy-time = { git = "https://github.com/ariel-os/embassy", branch = "embassy-time-v0.4.0+ariel-os" }
 
 # ariel-os esp-hal fork
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.1+ariel-os-threads" }
@@ -36,3 +37,5 @@ xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", branch = "v0.23.1+
 
 # patched to use portable-atomics <https://github.com/seanmonstar/try-lock/pull/11>
 try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "45c39685b56a4dba1b71bdbbbe5f731c3c77dc50" }
+
+embedded-test = { git = "https://github.com/ariel-os/embedded-test", branch = "v0.6.2+ariel-os" }

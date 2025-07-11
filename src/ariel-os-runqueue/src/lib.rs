@@ -1,6 +1,6 @@
 //! Provides a thread runqueue.
 
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, context = "native")), no_std)]
 #![deny(missing_docs)]
 #![expect(clippy::cast_possible_truncation)]
 

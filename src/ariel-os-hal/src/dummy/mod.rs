@@ -54,7 +54,7 @@ pub use peripheral::{OptionalPeripherals, Peripheral};
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    unimplemented!();
+    unimplemented!()
 }
 
 #[doc(hidden)]
