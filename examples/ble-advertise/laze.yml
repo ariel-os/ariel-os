@@ -1,0 +1,9 @@
+apps:
+  - name: example-ble-advertise
+    env:
+      global:
+        executor_stacksize_required:
+          - "32768"
+    selects:
+      #- network
+      - ble-peripheral
