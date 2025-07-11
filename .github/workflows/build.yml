@@ -14,32 +14,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  check-labels:
     runs-on: ubuntu-24.04
-
+    outputs:
+      labels: ${{ steps.get-pr-labels.outputs.result }}
     env:
-      SCCACHE_GHA_ENABLED: "true"
-      RUSTC_WRAPPER: "sccache"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # clang-sys and thus bindgen is sensitive to multiple installed versions
-      # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
-      #
-      # CLANG_PATH should be set to the most recent clang installed, no matter
-      # what /usr/bin/clang is, for some parts of the code will go for the
-      # newest standard library. It may also need to be aligned with the clang
-      # version which Xtensa provides.
-      CLANG_PATH: /usr/bin/clang-18
-
-    strategy:
-      fail-fast: true
-      matrix:
-        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
-      - name: Free up space
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL &
-
       # Need to get two commits so we can get the PR's commit, not just the
       # merge commit.
       - name: Check out repository code
@@ -89,6 +71,37 @@ jobs:
               return buildLabel;
             }
 
+  build:
+    needs: check-labels
+    runs-on: ubuntu-24.04
+    if: ${{ needs.check-labels.outputs.labels != 'ci-build:skip' }}
+
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # clang-sys and thus bindgen is sensitive to multiple installed versions
+      # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
+      #
+      # CLANG_PATH should be set to the most recent clang installed, no matter
+      # what /usr/bin/clang is, for some parts of the code will go for the
+      # newest standard library. It may also need to be aligned with the clang
+      # version which Xtensa provides.
+      CLANG_PATH: /usr/bin/clang-18
+
+    strategy:
+      fail-fast: true
+      matrix:
+        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
+
+    steps:
+      - name: Free up space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL &
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: Get git tree hash
         id: get-tree-hash
         run: |
@@ -104,7 +117,7 @@ jobs:
       - name: Whether to skip next steps
         id: should-skip
         run: |
-          result="result=${{ steps.result-cache.outputs.cache-hit == 'true' || steps.get-pr-labels.outputs.result == 'ci-build:skip' }}"
+          result="result=${{ steps.result-cache.outputs.cache-hit == 'true' || needs.check-labels.outputs.labels == 'ci-build:skip' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
 
@@ -212,7 +225,7 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     name: Final Results
-    needs: [build]
+    needs: [build, check-labels]
     steps:
       - run: |
           result="${{ needs.build.result }}"
