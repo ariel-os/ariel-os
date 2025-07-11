@@ -42,6 +42,9 @@ pub use ariel_os_power as power;
 pub use ariel_os_random as random;
 #[doc(hidden)]
 pub use ariel_os_rt as rt;
+#[cfg(feature = "sensors")]
+#[doc(inline)]
+pub use ariel_os_sensors as sensors;
 #[cfg(feature = "storage")]
 #[doc(inline)]
 pub use ariel_os_storage as storage;
