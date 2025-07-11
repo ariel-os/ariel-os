@@ -291,6 +291,7 @@ contexts:
       - cortex-m33
     provides:
       - has_hwrng
+      - has_nrf_ble
       # Currently hard-faults.
       # - has_storage_support
     disables:
@@ -1166,6 +1167,7 @@ modules:
     help: Marks an incompatibility of nrf devices with the interrupt executor (MPSL crashing)
     context:
       - nrf52
+      - nrf53
     selects:
       - hwrng
     provides:
