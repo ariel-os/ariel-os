@@ -1,6 +1,7 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
     impl_async_uart_for_driver_enum,
+    impl_defmt_display_for_config,
     uart::{DataBits, Parity, StopBits},
 };
 
