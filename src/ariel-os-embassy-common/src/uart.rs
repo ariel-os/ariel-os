@@ -60,7 +60,8 @@ impl core::fmt::Display for Baud {
 #[cfg(feature = "defmt")]
 impl defmt::Format for Baud {
     fn format(&self, f: defmt::Formatter<'_>) {
-        defmt::write!(f, "{=u32}", Into::<u32>::into(*self))
+        use defmt::write;
+        write!(f, "{=u32}", Into::<u32>::into(*self))
     }
 }
 
@@ -91,9 +92,9 @@ impl defmt::Format for Parity {
     fn format(&self, f: defmt::Formatter<'_>) {
         use defmt::write;
         match self {
-            Self::None => defmt::write!(f, "N"),
-            Self::Even => defmt::write!(f, "E"),
-            Self::Odd => defmt::write!(f, "O"),
+            Self::None => write!(f, "N"),
+            Self::Even => write!(f, "E"),
+            Self::Odd => write!(f, "O"),
         }
     }
 }
@@ -121,8 +122,8 @@ impl defmt::Format for StopBits {
     fn format(&self, f: defmt::Formatter<'_>) {
         use defmt::write;
         match self {
-            Self::Stop1 => defmt::write!(f, "1"),
-            Self::Stop2 => defmt::write!(f, "2"),
+            Self::Stop1 => write!(f, "1"),
+            Self::Stop2 => write!(f, "2"),
         }
     }
 }
