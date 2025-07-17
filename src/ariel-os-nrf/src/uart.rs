@@ -1,6 +1,8 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
-    impl_async_uart_for_driver_enum, impl_defmt_display_for_config, uart::Parity,
+    impl_async_uart_for_driver_enum,
+    impl_defmt_display_for_config,
+    uart::{Baud, Parity},
 };
 use embassy_nrf::{
     bind_interrupts,
@@ -46,7 +48,7 @@ fn from_baudrate(baudrate: u32) -> Baudrate {
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which the interface should operate.
-    pub baudrate: u32,
+    pub baudrate: Baud,
     /// Parity mode used for the interface.
     pub parity: Parity,
 }
@@ -54,7 +56,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: 9600,
+            baudrate: Baud::_9600,
             parity: Parity::None,
         }
     }
@@ -94,7 +96,8 @@ macro_rules! define_uart_drivers {
                     config: Config,
                 ) -> Uart<'d> {
                     let mut uart_config = embassy_nrf::uarte::Config::default();
-                    uart_config.baudrate = from_baudrate(config.baudrate);
+                    let baudrate: u32 = config.baudrate.into();
+                    uart_config.baudrate = from_baudrate(baudrate);
                     uart_config.parity = from_parity(config.parity);
 
                     bind_interrupts!(struct Irqs {
@@ -129,7 +132,7 @@ macro_rules! define_uart_drivers {
                         rx_buffer,
                         tx_buffer
                     );
-                    uart.set_baudrate(config.baudrate.into());
+                    uart.set_baudrate(baudrate.into());
 
                     Uart::$peripheral(Self { uart })
                 }
