@@ -1,7 +1,8 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
     impl_async_uart_for_driver_enum,
-    uart::{DataBits, Parity, StopBits},
+    impl_defmt_display_for_config,
+    uart::{DataBits, Parity, StopBits, Baud},
 };
 
 use embassy_rp::{
@@ -14,7 +15,7 @@ use embassy_rp::{
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which the bus should operate.
-    pub baudrate: u32,
+    pub baudrate: Baud,
     /// Number of data bits
     pub data_bits: DataBits,
     /// Number of stop bits
@@ -26,7 +27,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: 9600,
+            baudrate: Baud::_9600,
             data_bits: DataBits::Data8,
             stop_bits: StopBits::Stop1,
             parity: Parity::None,
@@ -79,7 +80,7 @@ macro_rules! define_uart_drivers {
                     config: Config,
                 ) -> Uart<'d> {
                     let mut uart_config = embassy_rp::uart::Config::default();
-                    uart_config.baudrate = config.baudrate;
+                    uart_config.baudrate = config.baudrate.into();
                     uart_config.data_bits = from_data_bits(config.data_bits);
                     uart_config.stop_bits = from_stop_bits(config.stop_bits);
                     uart_config.parity = from_parity(config.parity);
