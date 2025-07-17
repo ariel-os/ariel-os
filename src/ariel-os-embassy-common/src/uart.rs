@@ -1,5 +1,69 @@
 //! Provides HAL-agnostic UART-related types.
 
+/// Common UART baud rates.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum Baud {
+    /// Custom baud rate
+    Baud(u32),
+    /// 2400 bauds,
+    _2400,
+    /// 4800 bauds
+    _4800,
+    /// 9600 bauds
+    _9600,
+    /// 19200 bauds
+    _19200,
+    /// 38400 bauds
+    _34800,
+    /// 57600 bauds
+    _57600,
+    /// 57600 bauds
+    _115200,
+}
+
+impl Into<u32> for Baud {
+    fn into(self) -> u32 {
+        match self {
+            Baud::Baud(b) => b,
+            Baud::_2400 => 2400,
+            Baud::_4800 => 4800,
+            Baud::_9600 => 9600,
+            Baud::_19200 => 19200,
+            Baud::_34800 => 34800,
+            Baud::_57600 => 57600,
+            Baud::_115200 => 115200,
+        }
+    }
+}
+
+impl From<u32> for Baud {
+    fn from(b: u32) -> Self {
+        match b {
+            2400 => Baud::_2400,
+            4800 => Baud::_4800,
+            9600 => Baud::_9600,
+            19200 => Baud::_19200,
+            34800 => Baud::_34800,
+            57600 => Baud::_57600,
+            115200 => Baud::_115200,
+            b => Baud::Baud(b),
+        }
+    }
+}
+
+impl core::fmt::Display for Baud {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}", Into::<u32>::into(*self))
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Baud {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        defmt::write!(f, "{=u32}", Into::<u32>::into(*self))
+    }
+}
+
 /// UART parity.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Parity {
@@ -27,9 +91,9 @@ impl defmt::Format for Parity {
     fn format(&self, f: defmt::Formatter<'_>) {
         use defmt::write;
         match self {
-            Self::None => write!(f, "N"),
-            Self::Even => write!(f, "E"),
-            Self::Odd => write!(f, "O"),
+            Self::None => defmt::write!(f, "N"),
+            Self::Even => defmt::write!(f, "E"),
+            Self::Odd => defmt::write!(f, "O"),
         }
     }
 }
@@ -57,8 +121,8 @@ impl defmt::Format for StopBits {
     fn format(&self, f: defmt::Formatter<'_>) {
         use defmt::write;
         match self {
-            Self::Stop1 => write!(f, "1"),
-            Self::Stop2 => write!(f, "2"),
+            Self::Stop1 => defmt::write!(f, "1"),
+            Self::Stop2 => defmt::write!(f, "2"),
         }
     }
 }
