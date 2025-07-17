@@ -597,6 +597,18 @@ contexts:
       PROBE_RS_CHIP: STM32WBA55CG
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+  
+  - name: stm32wle5jc
+    parent: stm32
+    selects:
+      - cortex-m4f
+    provides:
+      - has_hwrng
+    env:
+      PROBE_RS_CHIP: STM32WLE5JC
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+    
 
 modules:
   - name: thumbv6m-none-eabi
@@ -1821,6 +1833,19 @@ builders:
       CARGO_ENV:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2_LPUART2
+
+  - name: lora-e5-mini
+    parent: stm32wle5jc
+    selects: # Needed for -Zbuild-std
+      - nightly
+    provides:
+      - has_swi
+    env:
+      CARGO_ENV:
+        # This ISR is unused on a naked board. Configured here for testing.
+        - CONFIG_SWI=USART2
+      CARGO_ARGS:
+        - -Zbuild-std=core,alloc
 
 apps:
   # define a dummy host application so the host tasks work
