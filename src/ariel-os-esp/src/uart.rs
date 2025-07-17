@@ -2,7 +2,7 @@
 use ariel_os_embassy_common::{
     impl_async_uart_for_driver_enum,
     impl_defmt_display_for_config,
-    uart::{DataBits, Parity, StopBits},
+    uart::{DataBits, Parity, StopBits, Baud},
 };
 
 use esp_hal::{
@@ -18,7 +18,7 @@ use esp_hal::{
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which the bus should operate.
-    pub baudrate: u32,
+    pub baudrate: Baud,
     /// Number of data bits
     pub data_bits: DataBits,
     /// Number of stop bits
@@ -30,7 +30,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: 9600,
+            baudrate: Baud::_9600,
             data_bits: DataBits::Data8,
             stop_bits: StopBits::Stop1,
             parity: Parity::None,
@@ -83,7 +83,7 @@ macro_rules! define_uart_drivers {
                     config: Config,
                 ) -> Uart<'d> {
                     let uart_config = esp_hal::uart::Config::default()
-                        .with_baudrate(config.baudrate)
+                        .with_baudrate(config.baudrate.into())
                         .with_data_bits(from_data_bits(config.data_bits))
                         .with_stop_bits(from_stop_bits(config.stop_bits))
                         .with_parity(from_parity(config.parity));
