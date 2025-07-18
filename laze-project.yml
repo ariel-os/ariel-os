@@ -1195,6 +1195,10 @@ modules:
         FEATURES:
           - ariel-os/ble-central
 
+  - name: has_ble
+    selects:
+      - doc-only
+
   - name: usb
     selects:
       - hw/usb-device-port
@@ -1740,10 +1744,13 @@ builders:
 
   - name: espressif-esp32-c6-devkitc-1
     parent: esp32-c6-wroom-1
+    provides:
+      - has_ble
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
     provides:
+      - has_ble
       - has_usb_device_port
 
   - name: nrf5340dk
