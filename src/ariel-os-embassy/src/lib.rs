@@ -19,6 +19,9 @@ pub mod i2c;
 #[cfg(feature = "spi")]
 pub mod spi;
 
+#[cfg(feature = "uart")]
+pub mod uart;
+
 #[cfg(feature = "usb")]
 pub mod usb;
 
@@ -64,6 +67,8 @@ pub mod api {
     pub use crate::net;
     #[cfg(feature = "spi")]
     pub use crate::spi;
+    #[cfg(feature = "uart")]
+    pub use crate::uart;
     #[cfg(feature = "usb")]
     pub use crate::usb;
 }
@@ -200,6 +205,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "spi")]
     hal::spi::init(&mut peripherals);
+
+    #[cfg(feature = "uart")]
+    hal::uart::init(&mut peripherals);
 
     #[cfg(feature = "hwrng")]
     hal::hwrng::construct_rng(&mut peripherals);
