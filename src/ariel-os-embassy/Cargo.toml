@@ -128,6 +128,8 @@ ble = [
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
+gps = ["ariel-os-embassy-common/gps", "ariel-os-hal/gps"]
+
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]
 network-config-override = []

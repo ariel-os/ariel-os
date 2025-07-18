@@ -1195,6 +1195,23 @@ modules:
         FEATURES:
           - ariel-os/ble-central
 
+  - name: gps
+    selects:
+      - hw/gps
+    env:
+      global:
+        FEATURES:
+          - ariel-os/gps
+
+  - name: hw/gps
+    help: provided if a device has a gps receiver
+    selects:
+      - has_gps
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg capability=\"hw/gps\"
+
   - name: usb
     selects:
       - hw/usb-device-port

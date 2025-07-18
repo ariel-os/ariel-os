@@ -315,6 +315,7 @@ dependencies = [
  "const-sha1",
  "defmt 1.0.1",
  "embassy-futures",
+ "embassy-sync 0.6.2",
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -365,6 +366,8 @@ dependencies = [
  "cfg-if",
  "embassy-executor",
  "embassy-hal-internal",
+ "embassy-sync 0.6.2",
+ "embassy-time",
  "embassy-usb",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -958,9 +961,9 @@ checksum = "2eecd087b04fde72cbb708bb68f34229e8dfad2464fb706579817a46464b2d4a"
 
 [[package]]
 name = "cc"
-version = "1.2.10"
+version = "1.2.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13208fcbb66eaeffe09b99fffbe1af420f00a7b35aa99ad683dfc1aa76145229"
+checksum = "5c1599538de2394445747c8cf7935946e3cc27e9625f889d979bfb2aaf569362"
 dependencies = [
  "shlex",
 ]

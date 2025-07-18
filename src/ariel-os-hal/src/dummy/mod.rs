@@ -26,6 +26,10 @@ pub mod peripheral;
 pub mod ble;
 
 #[doc(hidden)]
+#[cfg(feature = "gps")]
+pub mod gps;
+
+#[doc(hidden)]
 #[cfg(feature = "hwrng")]
 pub mod hwrng;
 
