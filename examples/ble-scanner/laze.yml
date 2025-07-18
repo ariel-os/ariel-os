@@ -1,4 +1,8 @@
 apps:
   - name: ble-scanner
+    env:
+      global:
+        executor_stacksize_required:
+          - "16384"
     selects:
       - ble-central

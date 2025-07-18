@@ -32,6 +32,11 @@ static_cell = { workspace = true, optional = true }
 cyw43 = { version = "0.3.0", features = ["firmware-logs"], optional = true }
 cyw43-pio = { version = "0.4.0", optional = true }
 
+# BLE dependencies
+embassy-sync = { workspace = true, optional = true }
+bt-hci = { workspace = true, optional = true }
+trouble-host = { workspace = true, optional = true }
+
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
@@ -67,22 +72,38 @@ storage = []
 ## Enables USB support.
 usb = []
 
+## Enables Bluetooth Low Energy support.
+ble = ["ariel-os-embassy-common/ble"]
+
+ble-cyw43 = [
+  "dep:trouble-host",
+  "dep:bt-hci",
+  "dep:embassy-sync",
+  "_cyw43",
+  "cyw43?/bluetooth",
+  "ariel-os-random/csprng",
+  "ble",
+]
+ble-peripheral = ["ble-cyw43"]
+ble-central = ["ble-cyw43"]
+
 ## Enables defmt support.
-defmt = ["dep:defmt", "embassy-rp/defmt"]
+defmt = ["dep:defmt", "cyw43?/defmt", "embassy-rp/defmt"]
 
 ## Enables Wi-Fi support.
 wifi = []
 
 ## Enables support for the CYW43 Wi-Fi chip.
-wifi-cyw43 = [
-  "dep:cyw43",
-  "dep:cyw43-pio",
-  "dep:embassy-net-driver-channel",
-  "dep:static_cell",
-  "wifi",
-]
+wifi-cyw43 = ["_cyw43", "wifi"]
 
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
 
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
+
+_cyw43 = [
+  "dep:cyw43",
+  "dep:cyw43-pio",
+  "dep:embassy-net-driver-channel",
+  "dep:static_cell",
+]

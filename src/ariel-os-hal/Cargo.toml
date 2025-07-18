@@ -71,8 +71,9 @@ usb = [
 ]
 
 ble = ["dep:bt-hci", "dep:embedded-io", "dep:trouble-host", "ariel-os-nrf/ble"]
-ble-peripheral = ["ariel-os-nrf/ble-peripheral"]
-ble-central = ["ariel-os-nrf/ble-central"]
+ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
+ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
+ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
 
 hwrng = [
   "ariel-os-esp/hwrng",

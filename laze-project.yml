@@ -1165,6 +1165,21 @@ modules:
         RUSTFLAGS:
           - --cfg capability=\"hw/ble\"
 
+  - name: ble-cyw43
+    selects:
+      - has_ble_cyw43
+      - hwrng
+    provides:
+      - has_ble
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ble-cyw43
+
+  - name: has_ble_cyw43
+    selects:
+      - doc_only
+
   - name: has_nrf_ble
     help: Marks an incompatibility of nrf devices with the interrupt executor (MPSL crashing)
     context:
@@ -1194,6 +1209,10 @@ modules:
       global:
         FEATURES:
           - ariel-os/ble-central
+
+  - name: has_ble
+    selects:
+      - doc-only
 
   - name: usb
     selects:
@@ -1715,6 +1734,7 @@ builders:
   - name: rpi-pico-w
     parent: rp2040
     provides:
+      - has_ble_cyw43
       - has_usb_device_port
       - has_wifi_cyw43
 
@@ -1726,6 +1746,7 @@ builders:
   - name: rpi-pico2-w
     parent: rp235xa
     provides:
+      - has_ble_cyw43
       - has_usb_device_port
       - has_wifi_cyw43
 

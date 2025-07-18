@@ -119,12 +119,13 @@ eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
 ble = [
-  "ariel-os-hal/ble",
   "dep:trouble-host",
   "ariel-os-embassy-common/ble",
   # Some HALs need hwrng to initialize the BLE stack.
   "hwrng",
+  "ariel-os-hal/ble",
 ]
+ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 

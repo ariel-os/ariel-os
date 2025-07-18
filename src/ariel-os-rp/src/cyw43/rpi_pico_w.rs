@@ -25,6 +25,15 @@ type CYW43_PIO = peripherals::PIO0;
 #[expect(non_camel_case_types)]
 type CYW43_DMA_CH = peripherals::DMA_CH0;
 
+/// # Panics
+///
+/// Panics if at least one of these pins is already taken:
+/// - `PIN_23`
+/// - `PIN_24`
+/// - `PIN_25`
+/// - `PIN_29`
+/// - `PIO0`
+/// - `DMA_CH0`
 pub fn take_pins(peripherals: &mut crate::OptionalPeripherals) -> Cyw43Periphs {
     Cyw43Periphs {
         pwr: peripherals.PIN_23.take().unwrap(),

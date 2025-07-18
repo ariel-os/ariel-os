@@ -145,6 +145,8 @@ eth-stm32 = ["ariel-os-embassy/eth-stm32"]
 
 # ## Bluetooth support
 ble = ["ariel-os-embassy/ble"]
+# Selects BLE (with the CYW43 chip).
+ble-cyw43 = ["ariel-os-embassy/ble-cyw43"]
 # Enables BLE to act as a peripheral. Can be used in conjunction with `ble-central`.
 ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
