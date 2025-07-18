@@ -36,6 +36,7 @@ ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-power = { path = "../ariel-os-power" }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
+ariel-os-sensors = { workspace = true, optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
@@ -65,6 +66,9 @@ random = ["dep:ariel-os-random", "ariel-os-embassy/random"]
 csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 # Enables seeding the random number generator from hardware.
 hwrng = ["ariel-os-embassy/hwrng"]
+# Enables support for sensors.
+# *Currently experimental and undocumented.*
+sensors = ["dep:ariel-os-sensors"]
 
 #! ## Network protocols
 ## Enables support for TCP.
