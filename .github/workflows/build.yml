@@ -209,6 +209,13 @@ jobs:
               ;;
           esac
 
+      - name: "cargo fetch"
+        if: steps.result-cache.outputs.cache-hit != 'true'
+        run: |
+            cargo fetch --config ariel-os-cargo.toml
+            cargo +esp fetch --config ariel-os-cargo.toml --target xtensa-esp32-none-elf
+            echo "CARGO_NET_OFFLINE=true" >> "$GITHUB_ENV"
+
       - name: "ariel-os compilation test (default toolchain)"
         if: steps.should-skip.outputs.result != 'true'
         run: |
