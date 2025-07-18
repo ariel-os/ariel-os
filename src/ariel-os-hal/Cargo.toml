@@ -74,6 +74,10 @@ ble = ["dep:bt-hci", "dep:embedded-io", "dep:trouble-host", "ariel-os-nrf/ble"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central"]
 
+gps = ["ariel-os-nrf/gps"]
+
+modem = ["ariel-os-nrf/modem"]
+
 hwrng = [
   "ariel-os-esp/hwrng",
   "ariel-os-native/hwrng",

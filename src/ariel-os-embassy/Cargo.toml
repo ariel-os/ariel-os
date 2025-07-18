@@ -48,6 +48,8 @@ once_cell = { workspace = true }
 usbd-hid = { version = "0.8.2", optional = true }
 trouble-host = { workspace = true, optional = true }
 
+futures = { workspace = true, default-features = false, optional = true}
+
 # ISA-specific
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [
@@ -127,6 +129,10 @@ ble = [
 ]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
+
+gps = ["dep:futures","ariel-os-embassy-common/gps","ariel-os-hal/gps"]
+
+modem = ["ariel-os-hal/modem"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]

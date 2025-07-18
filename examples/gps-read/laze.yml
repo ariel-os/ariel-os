@@ -1,0 +1,4 @@
+apps:
+  - name: gps-read
+    selects:
+      - gps

@@ -150,6 +150,12 @@ ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
 ble-central = ["ble", "ariel-os-embassy/ble-central"]
 
+# ## Experimental modem support (nrf-modem)
+modem = ["ariel-os-embassy/modem"]
+
+# ## GPS
+gps = ["ariel-os-embassy/gps"]
+
 #! ## Development and debugging
 # Enables the debug console, required to use
 # [`println!`](ariel_os_debug::println).

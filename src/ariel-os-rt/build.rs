@@ -75,19 +75,27 @@ fn write_memoryx() {
     } else if context("nrf5340-net") {
         (64, 256)
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
-        (256, 1024)
+        // (256, 1024)
+        // TODO: modem context
+        (192, 1024)
     } else {
         panic!("please set the MCU laze context");
     };
 
     let (pagesize, ram_base, flash_base) = if context("nrf5340-net") {
         (2048, 0x2100_0000, 0x0100_0000)
+    } else if context("nrf9151") {
+        // TODO: modem context
+
+        (4096, 0x2001_0000, 0)
     } else {
         (4096, 0x2000_0000, 0)
     };
 
     // generate linker script
     let memory = Memory::new()
+        // TODO: modem context
+        .add_section(MemorySection::new("MODEM", 0x2000_0000, 64 * 1024))
         .add_section(MemorySection::new("RAM", ram_base, ram * 1024))
         .add_section(
             MemorySection::new("FLASH", flash_base, flash * 1024)

@@ -310,6 +310,7 @@ contexts:
     parent: nrf91
     provides:
       - has_storage_support
+      - has_nrf_modem
     env:
       PROBE_RS_CHIP: nRF9160_xxAA
 
@@ -317,6 +318,7 @@ contexts:
     parent: nrf91
     provides:
       - has_storage_support
+      - has_nrf_modem
     env:
       # FIXME: probe-rs does not support the nRF9151_xxAA yet, because there is
       # no CMSIS-Pack available
@@ -1194,6 +1196,36 @@ modules:
       global:
         FEATURES:
           - ariel-os/ble-central
+
+  - name: gps
+    selects:
+      - hw/gps
+    env:
+      global:
+        FEATURES:
+          - ariel-os/gps
+
+  - name: hw/gps
+    help: provided if a device has a gps receiver
+    selects:
+      - has_gps
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg capability=\"hw/gps\"
+
+  - name: has_nrf_modem
+    help: Marks an incompatibility of nrf devices with the interrupt executor
+    context:
+      - nrf91
+    provides:
+      - has_gps
+    conflicts:
+      - executor-interrupt
+    env:
+      global:
+        FEATURES:
+          - ariel-os/modem
 
   - name: usb
     selects:

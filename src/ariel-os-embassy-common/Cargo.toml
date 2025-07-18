@@ -38,3 +38,5 @@ executor-thread = []
 _test = ["i2c", "spi", "external-interrupts"]
 
 ble = ["dep:static_cell", "dep:trouble-host"]
+
+gps = []
