@@ -72,6 +72,27 @@ pub static EXECUTOR: Executor = Executor::new();
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
+    enable_flash_cache();
+
     let peripherals = embassy_nrf::init(Config::default());
     OptionalPeripherals::from(peripherals)
+}
+
+fn enable_flash_cache() {
+    // (no flash cache on nrf51)
+    cfg_if::cfg_if! {
+        if #[cfg(any(
+                context = "nrf52",
+                context = "nrf5340-net",
+                context = "nrf91"
+            ))] {
+            embassy_nrf::pac::NVMC
+                .icachecnf()
+                .write(|w| w.set_cacheen(true));
+        }
+        else if #[cfg(context = "nrf5340")] {
+            embassy_nrf::pac::CACHE_S
+                .enable().write(|w| w.set_enable(true));
+        }
+    }
 }
