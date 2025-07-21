@@ -63,6 +63,10 @@ contexts:
         -kernel
       PROBE_RS_PROTOCOL: swd
       CARGO_PRESHELL: []
+      # This reflects the config of rtt_init that is active in ariel_os_debug unless defmt is selected
+      #
+      # FIXME: Should those be standalone files, or rather profiels within the file?
+      EMBED_CONFIG: ${relroot}/scripts/cargo-embed/Embed-no-defmt.toml
 
       # Stack size config
       executor_stacksize_required_default: "8192"
@@ -137,6 +141,21 @@ contexts:
         workdir: ${appdir}
         cmd:
           - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --profile=${PROFILE} ${FEATURES} $@
+
+      embed:
+        build: false
+        workdir: ${appdir}
+        cmd:
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} embed --${PROFILE} ${FEATURES} --chip ${PROBE_RS_CHIP} --config-file ${EMBED_CONFIG}
+
+      provision:
+        build: false
+        workdir: ${appdir}
+        cmd:
+          # FIXME: Output to stdout just clashes badly with
+          - ${relroot}/scripts/provisioning-processor > /tmp/logged 2>&1
+          # just like embed
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} embed --${PROFILE} ${FEATURES} --chip ${PROBE_RS_CHIP} --config-file ${EMBED_CONFIG}
 
       clippy:
         build: false
@@ -889,6 +908,7 @@ modules:
         ESPFLASH_LOG_FORMAT: "--log-format defmt"
         CARGO_ENV:
           - DEFMT_LOG=info,${LOG}
+        EMBED_CONFIG: ${relroot}/scripts/cargo-embed/Embed-defmt.toml
 
   - name: log
     help: Use the `log` crate as the debug logging facade
