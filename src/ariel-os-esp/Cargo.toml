@@ -116,24 +116,23 @@ usb = []
 
 ## Enables Bluetooth support.
 ble-esp = [
-  "dep:trouble-host",
   "dep:bt-hci",
+  "dep:trouble-host",
   "dep:embassy-sync",
-  "dep:embassy-time",
-  "dep:esp-alloc",
-  "dep:esp-wifi",
+  "_esp",
   "esp-wifi/esp-alloc",
   "esp-wifi/ble",
-  "hwrng",
   "ariel-os-random/csprng",
   "ariel-os-embassy-common/ble",
 ]
+ble-central = ["ble-esp"]
+ble-peripheral = ["ble-esp"]
 
 ## Enables Wi-Fi support.
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "esp-wifi/wifi", "wifi"]
+wifi-esp = ["_esp", "esp-wifi/wifi", "wifi"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.
@@ -141,3 +140,5 @@ wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "esp-wifi/wifi"
 executor-interrupt = ["embassy-executor/executor-interrupt"]
 ## Enables the single thread-mode executor.
 executor-single-thread = ["esp-hal-embassy/executors"]
+
+_esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi"]
