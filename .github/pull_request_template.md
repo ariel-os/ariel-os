@@ -29,4 +29,4 @@ but please make sure that:
 - [ ] I have cleaned up my commit history and squashed fixup commits.
 - [ ] I have followed the [Coding Conventions](https://ariel-os.github.io/ariel-os/dev/docs/book/coding-conventions.html).
 - [ ] I have performed a self-review of my own code.
-- [ ] I have made corresponding changes to the documentation.
+- [ ] I have made corresponding changes to the documentation *including the roadmap*.
