@@ -41,6 +41,20 @@ pub async fn init(
     let _ = STACKREF.init(Some(stackref).into());
 }
 
-pub async fn ble_stack() -> &'static trouble_host::Stack<'static, impl trouble_host::Controller> {
-    STACK.get().await
+/// Returns the system ble stack.
+///
+/// # Panics
+/// - panics if the stack was already taken
+/// - panics when not called from the main executor
+pub async fn ble_stack() -> &'static mut BleStack {
+    STACKREF
+        .get()
+        .await
+        .try_lock()
+        .expect("Two tasks racing for lock, one would fail the main-executor check")
+        .take()
+        .expect("Stack was already taken")
+        .get_mut_async()
+        .await
+        .expect("Stack needs to be taken from main executor")
 }
