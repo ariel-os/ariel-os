@@ -13,6 +13,10 @@ mod app_desc {
 
 pub mod gpio;
 
+#[cfg(feature = "ble-esp")]
+#[doc(hidden)]
+pub mod ble;
+
 #[cfg(feature = "hwrng")]
 #[doc(hidden)]
 pub mod hwrng {
