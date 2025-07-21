@@ -1195,6 +1195,10 @@ modules:
         FEATURES:
           - ariel-os/ble-central
 
+  - name: has_ble
+    selects:
+      - doc-only
+
   - name: usb
     selects:
       - hw/usb-device-port
@@ -1366,6 +1370,31 @@ modules:
 
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
+    selects:
+      - doc-only
+
+  - name: ble-esp
+    selects:
+      - alloc
+      - has_ble_esp
+      - hwrng
+      - riscv:
+          - wifi-esp-xor-threads
+    context:
+      - esp
+    provides:
+      - has_ble
+    env:
+      global:
+        # esp-wifi needs a lot of ISR stack.
+        isr_stacksize_required: "32768"
+        # esp-wifi needs 72KiB
+        heapsize_required:
+          - $(72*1024)
+        FEATURES:
+          - ariel-os/ble-esp
+
+  - name: has_ble_esp
     selects:
       - doc-only
 
@@ -1740,10 +1769,13 @@ builders:
 
   - name: espressif-esp32-c6-devkitc-1
     parent: esp32-c6-wroom-1
+    provides:
+      - has_ble
 
   - name: espressif-esp32-s3-devkitc-1
     parent: esp32-s3-wroom-1
     provides:
+      - has_ble
       - has_usb_device_port
 
   - name: nrf5340dk

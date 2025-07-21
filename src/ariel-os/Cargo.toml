@@ -149,6 +149,7 @@ ble = ["ariel-os-embassy/ble"]
 ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
 ble-central = ["ble", "ariel-os-embassy/ble-central"]
+ble-esp = ["ariel-os-embassy/ble-esp"]
 
 #! ## Development and debugging
 # Enables the debug console, required to use

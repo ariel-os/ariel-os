@@ -127,6 +127,7 @@ ble = [
 ]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
+ble-esp = ["ble", "ariel-os-hal/ble-esp"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]

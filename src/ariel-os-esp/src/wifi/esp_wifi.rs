@@ -2,14 +2,14 @@ use ariel_os_debug::log::{debug, info};
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
 use esp_wifi::{
-    EspWifiController,
-    config::PowerSaveMode,
+    //EspWifiController,
+    //config::PowerSaveMode,
     wifi::{
         ClientConfiguration, Configuration, WifiController, WifiDevice, WifiEvent, WifiStaDevice,
         WifiState,
     },
 };
-use once_cell::sync::OnceCell;
+//use once_cell::sync::OnceCell;
 
 pub type NetworkDevice = WifiDevice<'static, WifiStaDevice>;
 
@@ -18,15 +18,15 @@ pub type NetworkDevice = WifiDevice<'static, WifiStaDevice>;
 // `EspWifiInitialization` from `crate::init()`.
 // Using a `once_cell::OnceCell` here for critical-section support, just to be
 // sure.
-pub static WIFI_INIT: OnceCell<EspWifiController> = OnceCell::new();
+//pub static WIFI_INIT: OnceCell<EspWifiController> = OnceCell::new();
 
 pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {
     let wifi = peripherals.WIFI.take().unwrap();
-    let init = WIFI_INIT.get().unwrap();
+    let init = crate::WIFI_INIT.get().unwrap();
     let (device, mut controller) =
         esp_wifi::wifi::new_with_mode(init, wifi, WifiStaDevice).unwrap();
 
-    controller.set_power_saving(PowerSaveMode::None).unwrap();
+    //controller.set_power_saving(PowerSaveMode::None).unwrap();
 
     spawner.spawn(connection(controller)).ok();
 
