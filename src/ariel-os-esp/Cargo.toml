@@ -151,6 +151,8 @@ ble-esp = [
   "esp-radio/esp-alloc",
   "hwrng",
 ]
+ble-central = ["ble-esp"]
+ble-peripheral = ["ble-esp"]
 
 ## Enables Wi-Fi support.
 wifi = []
@@ -171,6 +173,8 @@ wifi-esp = [
 #! Exactly one of the features below must be enabled at once.
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
+
+_esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio"]
 
 [lints]
 workspace = true
