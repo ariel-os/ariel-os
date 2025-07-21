@@ -146,7 +146,7 @@ use once_cell::sync::OnceCell;
 
 #[cfg(any(feature = "wifi-esp", feature = "ble-esp"))]
 #[doc(hidden)]
-pub static WIFI_INIT: OnceCell<esp_wifi::EspWifiController> = OnceCell::new();
+pub static WIFI_INIT: OnceCell<esp_wifi::EspWifiController<'_>> = OnceCell::new();
 
 #[doc(hidden)]
 #[must_use]

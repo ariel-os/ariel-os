@@ -24,6 +24,7 @@ pub async fn init(
     let _ = STACK.init(stack);
 }
 
-pub async fn ble_stack() -> &'static trouble_host::Stack<'static, impl trouble_host::Controller> {
+pub async fn ble_stack()
+-> &'static trouble_host::Stack<'static, ExternalController<BleConnector<'static>, SLOTS>> {
     STACK.get().await
 }
