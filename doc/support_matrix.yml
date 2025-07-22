@@ -565,7 +565,10 @@ boards:
     support:
       user_usb: supported
       wifi: not_available
-      ethernet_over_usb: not_currently_supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/pull/1126"
 
   st-nucleo-wb55:
     name: ST NUCLEO-WB55RG
@@ -595,7 +598,7 @@ boards:
       ethernet_over_usb:
         status: not_currently_supported
         comments:
-          - does not enumerate
+          - "https://github.com/ariel-os/ariel-os/pull/1126"
 
   stm32u083c-dk:
     name: STM32U083C-DK
