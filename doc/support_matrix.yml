@@ -405,7 +405,10 @@ boards:
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
-      wifi: not_currently_supported
+      wifi:
+        status: not_currently_supported
+        comments:
+          - requires supporting the onboard nRF7002 chip
 
   nrf52dk:
     name: nRF52-DK
