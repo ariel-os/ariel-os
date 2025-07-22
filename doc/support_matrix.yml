@@ -214,6 +214,11 @@ chips:
       spi_main: needs_testing
       logging: supported
       storage: not_currently_supported
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
       wifi: supported
 
   stm32c031c6:
@@ -500,8 +505,6 @@ boards:
     chip: esp32s3
     tier: "1"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
 
   heltec-wifi-lora-32-v3:
     name: Heltec WiFi LoRa 32 V3
@@ -509,8 +512,6 @@ boards:
     chip: esp32s3
     tier: "3"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
 
   st-b-l475e-iot01a:
     name: ST B-L475E-IOT01A
