@@ -183,7 +183,10 @@ chips:
       i2c_controller: supported
       spi_main: supported
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
       wifi:
         status: supported_with_caveats
         comments:
@@ -198,7 +201,10 @@ chips:
       i2c_controller: supported
       spi_main: supported
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
       wifi:
         status: supported_with_caveats
         comments:
@@ -213,7 +219,10 @@ chips:
       i2c_controller: needs_testing
       spi_main: needs_testing
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
       user_usb:
         status: not_currently_supported
         comments:
