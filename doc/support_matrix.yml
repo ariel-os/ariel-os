@@ -494,7 +494,10 @@ boards:
     chip: esp32s3
     tier: "1"
     support:
-      user_usb: not_currently_supported
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/issues/903"
       ethernet_over_usb: not_currently_supported
 
   st-b-l475e-iot01a:
