@@ -141,7 +141,7 @@ impl nal::UnconnectedUdp for UnconnectedUdp<'_> {
         // information, so the underlying layers won't even have a *chance* to care if we don't
         // check here.
         debug_assert!(
-            local.port() == 0 || local.port() == self.socket.with(|s, _| s.endpoint().port),
+            local.port() == 0 || local.port() == self.socket.endpoint().port,
             "Port of local address, when given, must match bound port."
         );
 
@@ -171,7 +171,7 @@ impl nal::UnconnectedUdp for UnconnectedUdp<'_> {
                 addr: metadata
                     .local_address
                     .expect("Local address is always populated on receive"),
-                port: self.socket.with(|s, _| s.endpoint().port),
+                port: self.socket.endpoint().port,
             }),
             sockaddr_smol2nal(metadata.endpoint),
         ))
