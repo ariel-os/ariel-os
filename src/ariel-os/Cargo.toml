@@ -156,6 +156,9 @@ ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
 ble-central = ["ble", "ariel-os-embassy/ble-central"]
 
+# ## GNSS
+gnss = ["ariel-os-embassy/gnss"]
+
 #! ## Development and debugging
 # Enables the debug console, required to use
 # [`println!`](ariel_os_debug::println).

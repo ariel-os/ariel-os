@@ -13,6 +13,9 @@ use ariel_os_embassy_common::executor_thread;
 #[cfg(feature = "debug-uart")]
 pub mod debug_uart;
 
+#[cfg(feature = "gnss")]
+pub mod gnss;
+
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
@@ -58,6 +61,8 @@ pub mod api {
 
     #[cfg(feature = "ble")]
     pub use crate::ble;
+    #[cfg(feature = "gnss")]
+    pub use crate::gnss;
     #[cfg(feature = "i2c")]
     pub use crate::i2c;
     #[cfg(feature = "net")]
@@ -72,6 +77,8 @@ pub mod api {
 pub mod reexports {
     #[cfg(feature = "ble")]
     pub use ariel_os_embassy_common::ble;
+    #[cfg(feature = "gnss")]
+    pub use ariel_os_embassy_common::gnss;
     #[cfg(feature = "net")]
     pub use embassy_net;
     #[cfg(feature = "time")]
@@ -232,6 +239,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let ble_config = ble::config();
     #[cfg(all(feature = "ble", not(context = "rp")))]
     hal::ble::driver(ble_peripherals, spawner, ble_config);
+
+    #[cfg(feature = "gnss")]
+    {
+        gnss::init_gnss(spawner).await;
+    }
 
     #[cfg(feature = "usb")]
     let mut usb_builder = {

@@ -33,6 +33,8 @@ embassy-usb = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 embedded-storage-async = { workspace = true }
+embassy-sync = { workspace = true }
+embassy-time = { workspace = true }
 
 ariel-os-embassy-common = { workspace = true }
 
@@ -74,6 +76,8 @@ ble = ["dep:bt-hci", "dep:embedded-io", "dep:trouble-host", "ariel-os-nrf/ble"]
 ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
+
+gnss = []
 
 hwrng = [
   "ariel-os-esp/hwrng",

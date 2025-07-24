@@ -9,11 +9,12 @@
 ///
 /// - The name of the driver the constant provides configuration for.
 ///
-/// | Driver    | Expected type                      | Cargo feature to enable   |
-/// | --------- | ---------------------------------- | ------------------------- |
-// | `ble`     | `ariel_os::reexports::ble::Config` | `ble-config-override`     |
-/// | `network` | `embassy_net::Config`              | `network-config-override` |
-/// | `usb`     | `embassy_usb::Config`              | `override-usb-config`     |
+/// | Driver    | Expected type                       | Cargo feature to enable   |
+/// | --------- | ----------------------------------- | ------------------------- |
+// | `ble`     | `ariel_os::reexports::ble::Config`  | `ble-config-override`     |
+// | `gnss`    | `ariel_os::reexports::gnss::Config` | `gnss-config-override`    |
+/// | `network` | `embassy_net::Config`               | `network-config-override` |
+/// | `usb`     | `embassy_usb::Config`               | `override-usb-config`     |
 ///
 /// # Note
 ///
@@ -62,6 +63,10 @@ pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
         // Some(ConfigKind::Ble) => (
         //     format_ident!("__ariel_os_ble_config"),
         //     quote! {#ariel_os_crate::reexports::ble::Config},
+        // ),
+        // Some(ConfigKind::Gnss) => (
+        //     format_ident!("__ariel_os_gnss_config"),
+        //     quote! {#ariel_os_crate::reexports::gnss::Config},
         // ),
         Some(ConfigKind::Network) => (
             format_ident!("__ariel_os_network_config"),
@@ -140,6 +145,7 @@ mod config_macro {
     #[derive(Debug, enum_iterator::Sequence)]
     pub enum ConfigKind {
         // Ble,
+        // Gnss,
         Network,
         Usb,
     }
@@ -148,6 +154,7 @@ mod config_macro {
         pub fn as_name(&self) -> &'static str {
             match self {
                 // Self::Ble => "ble",
+                // Self::Gnss => "gnss",
                 Self::Network => "network",
                 Self::Usb => "usb",
             }

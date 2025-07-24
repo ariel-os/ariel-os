@@ -129,6 +129,8 @@ ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
+gnss = ["dep:embassy-time", "ariel-os-embassy-common/gnss", "ariel-os-hal/gnss"]
+
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-static = ["network-config-override"]
 network-config-override = []

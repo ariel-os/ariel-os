@@ -20,6 +20,7 @@ embedded-hal-async = { workspace = true }
 const-sha1 = { version = "0.3.0", default-features = false }
 trouble-host = { workspace = true, optional = true }
 static_cell = { workspace = true, optional = true }
+embassy-sync = { workspace = true, optional = true }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -38,3 +39,5 @@ executor-thread = []
 _test = ["i2c", "spi", "external-interrupts"]
 
 ble = ["dep:static_cell", "dep:trouble-host"]
+
+gnss = ["dep:embassy-sync"]
