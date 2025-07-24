@@ -307,6 +307,21 @@ chips:
           - removing items not supported
       wifi: not_available
 
+  stm32u073kc:
+    name: STM32U073KC
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+
   stm32u083mc:
     name: STM32U083MC
     support:
@@ -590,7 +605,4 @@ boards:
     support:
       user_usb: supported
       wifi: not_available
-      ethernet_over_usb:
-        status: not_currently_supported
-        comments:
-          - not enough RAM
+      ethernet_over_usb: supported
