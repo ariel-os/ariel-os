@@ -473,8 +473,11 @@ boards:
     chip: esp32c3
     tier: "1"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
@@ -482,8 +485,11 @@ boards:
     chip: esp32c6
     tier: "1"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   espressif-esp32-s3-devkitc-1:
     name: Espressif ESP32-S3-DevKitC-1
