@@ -8,7 +8,6 @@
 // and https://bthome.io/format/#sensor-data
 // and https://www.iana.org/assignments/senml/senml.xhtml
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum MeasurementUnit {
     /// [Acceleration *g*](https://en.wikipedia.org/wiki/G-force#Unit_and_measurement).
@@ -121,5 +120,12 @@ impl core::fmt::Display for MeasurementUnit {
             Self::Watt => write!(f, "W"),
             Self::Weber => write!(f, "Wb"),
         }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for MeasurementUnit {
+    fn format(&self, fmt: defmt::Formatter<'_>) {
+        defmt::write!(fmt, "{}", defmt::Display2Format(self));
     }
 }
