@@ -165,6 +165,7 @@ defmt = [
   "ariel-os-coap?/defmt",
   "ariel-os-debug/defmt",
   "ariel-os-embassy/defmt",
+  "ariel-os-sensors?/defmt",
   "ariel-os-threads?/defmt",
   "ariel-os-bench?/defmt",
 ]
