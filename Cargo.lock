@@ -206,6 +206,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-builtin-sensors"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-embassy",
+ "ariel-os-sensors",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "embedded-hal-async",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-coap"
 version = "0.2.0"
 dependencies = [
