@@ -33,7 +33,7 @@ impl Registry {
     }
 
     /// Returns an iterator over registered sensor driver instances.
-    pub fn sensors(&self) -> impl Iterator<Item = &'static dyn Sensor> {
+    pub fn sensors(&self) -> impl Iterator<Item = &'static dyn Sensor> + ExactSizeIterator {
         // Returning an iterator instead of the distributed slice directly would allow us to chain
         // another source of sensor driver instances in the future, if we decided to support
         // dynamically-allocated sensor driver instances.

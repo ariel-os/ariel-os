@@ -112,7 +112,7 @@ pub trait Reading: core::fmt::Debug {
     ///
     /// The default implementation must be overridden on types containing multiple
     /// [`Sample`]s.
-    fn samples(&self) -> impl ExactSizeIterator<Item = Sample> {
+    fn samples(&self) -> impl Iterator<Item = Sample> + ExactSizeIterator {
         [self.sample()].into_iter()
     }
 }

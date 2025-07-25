@@ -81,7 +81,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
                 }
             }
 
-            fn samples(&self) -> impl ExactSizeIterator<Item = Sample> {
+            fn samples(&self) -> impl Iterator<Item = Sample> + ExactSizeIterator {
                 match self {
                     #(#samples_iter),*
                 }
@@ -106,7 +106,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             /// [`Samples`].
             /// [`Iterator::zip()`] can be useful to zip the returned iterator with the one
             /// obtained with [`Reading::samples()`].
-            pub fn iter(&self) -> impl Iterator<Item = ReadingChannel> + '_ {
+            pub fn iter(&self) -> impl Iterator<Item = ReadingChannel> + ExactSizeIterator + '_ {
                 match self {
                     #(#samples_iter),*,
                 }
