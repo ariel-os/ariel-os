@@ -1,5 +1,5 @@
 use ariel_os_debug::log::debug;
-use ariel_os_embassy::{asynch::Spawner, i2c::controller::I2cDevice};
+use ariel_os_embassy::{api::time::Timer, asynch::Spawner, i2c::controller::I2cDevice};
 use ariel_os_sensors::{
     Category, Label, MeasurementUnit, Sensor,
     sensor::{
@@ -23,6 +23,7 @@ const WHO_AM_I_REG_ADDR: u8 = 0x01;
 const DEVICE_ID: u8 = 0xa0;
 
 const CTRL_REG_ADDR: u8 = 0x04;
+const STATUS_REG_ADDR: u8 = 0x05;
 const TEMP_L_OUT_REG_ADDR: u8 = 0x06;
 const TEMP_H_OUT_REG_ADDR: u8 = 0x07;
 
@@ -65,23 +66,12 @@ impl Stts22hI2c {
         &'static self,
         _spawner: Spawner,
         peripherals: Peripherals,
-        mut i2c_device: I2cDevice,
+        i2c_device: I2cDevice,
         config: Config,
     ) {
         if !self.i2c.is_set() {
             // FIXME
             // self.config = config;
-
-            // Sensor configuration
-            let mut ctrl = 0u8;
-            ctrl |= 1 << 2; // FREERUN // TODO: use ONE_SHOT instead
-            ctrl |= 1 << 3; // IF_ADD_INC
-            ctrl |= 1 << 4; // BDU
-
-            i2c_device
-                .write(TARGET_I2C_ADDR, &[CTRL_REG_ADDR, ctrl])
-                .await
-                .unwrap(); // FIXME
 
             let _ = self.i2c.init(Mutex::new(i2c_device));
 
@@ -94,16 +84,48 @@ impl Stts22hI2c {
         loop {
             self.signaling.wait_for_trigger().await;
 
+            // Sensor configuration
+            let mut ctrl = 0u8;
+            ctrl |= 1 << 0; // ONE_SHOT
+            ctrl |= 1 << 3; // IF_ADD_INC
+            ctrl |= 1 << 4; // BDU
+
+            let mut i2c = self.i2c.get().await.lock().await;
+
+            // Trigger one-shot measurement
+            let res = i2c.write(TARGET_I2C_ADDR, &[CTRL_REG_ADDR, ctrl]).await;
+
+            if let Err(_err) = res {
+                self.signaling
+                    .signal_reading_err(ReadingError::SensorAccess)
+                    .await;
+                continue;
+            }
+
+            // Wait for the measurement
+            loop {
+                let mut buf = [0u8];
+                let res = i2c
+                    .write_read(TARGET_I2C_ADDR, &[STATUS_REG_ADDR], &mut buf)
+                    .await;
+
+                // Not BUSY anymore
+                if buf[0] & 0x01 == 0x00 {
+                    break;
+                }
+
+                // TODO: configuration
+                Timer::after_millis(10).await;
+            }
+
             // Reads both temperature bytes thanks to IF_ADD_INC.
             let mut buf = [0u8; 2];
-            let res = self
-                .i2c
-                .get()
-                .await
-                .lock()
-                .await
+            let res = i2c
                 .write_read(TARGET_I2C_ADDR, &[TEMP_L_OUT_REG_ADDR], &mut buf)
                 .await;
+
+            // TODO: increases text size a bit; remove this?
+            drop(i2c);
 
             if let Err(_err) = res {
                 self.signaling
