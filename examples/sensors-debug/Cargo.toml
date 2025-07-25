@@ -7,7 +7,11 @@ edition.workspace = true
 workspace = true
 
 [dependencies]
-ariel-os = { path = "../../src/ariel-os", features = ["i2c", "sensors", "time"] }
+ariel-os = { path = "../../src/ariel-os", features = [
+  "i2c",
+  "sensors",
+  "time",
+] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-builtin-sensors = { path = "../../src/ariel-os-builtin-sensors" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
