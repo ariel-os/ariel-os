@@ -27,6 +27,12 @@ const STATUS_REG_ADDR: u8 = 0x05;
 const TEMP_L_OUT_REG_ADDR: u8 = 0x06;
 const TEMP_H_OUT_REG_ADDR: u8 = 0x07;
 
+const ONE_SHOT_BIT: usize = 0;
+const FREERUN_BIT: usize = 2;
+const IF_ADD_INC_BIT: usize = 3;
+const BDU_BIT: usize = 6;
+const BUSY_BIT: usize = 0;
+
 #[derive(Debug)]
 #[non_exhaustive]
 pub struct Config {
@@ -86,9 +92,9 @@ impl Stts22hI2c {
 
             // Sensor configuration
             let mut ctrl = 0u8;
-            ctrl |= 1 << 0; // ONE_SHOT
-            ctrl |= 1 << 3; // IF_ADD_INC
-            ctrl |= 1 << 4; // BDU
+            ctrl |= 1 << ONE_SHOT_BIT;
+            ctrl |= 1 << IF_ADD_INC_BIT;
+            ctrl |= 1 << BDU_BIT;
 
             let mut i2c = self.i2c.get().await.lock().await;
 
@@ -110,7 +116,7 @@ impl Stts22hI2c {
                     .await;
 
                 // Not BUSY anymore
-                if buf[0] & 0x01 == 0x00 {
+                if buf[0] & (1 << BUSY_BIT) == 0 {
                     break;
                 }
 
