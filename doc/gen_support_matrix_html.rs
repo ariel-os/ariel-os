@@ -223,33 +223,44 @@ fn main() -> miette::Result<()> {
 }
 
 fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
-    for (_, board_info) in &matrix.boards {
-        let invalid_functionality_name = board_info.support
+    let board_errors = matrix.boards.values().flat_map(|b| {
+        b.support
             .keys()
-            .find(|f| matrix.functionalities.iter().all(|functionality| functionality.name != **f));
+            .filter(|f| {
+                matrix
+                    .functionalities
+                    .iter()
+                    .all(|functionality| functionality.name != **f)
+            })
+            .map(|f| Error::InvalidFunctionalityNameBoard {
+                found: f.to_string(),
+                board: b.name.to_owned(),
+            })
+    });
 
-        if let Some(f) = invalid_functionality_name {
-            return Err(Error::InvalidFunctionalityNameBoard {
-                found: f.to_owned(),
-                board: board_info.name.to_owned(),
-            });
-        }
-    }
-
-    for (_, chip_info) in &matrix.chips {
-        let invalid_functionality_name = chip_info.support
+    let chip_errors = matrix.chips.values().flat_map(|c| {
+        c.support
             .keys()
-            .find(|f| matrix.functionalities.iter().all(|functionality| functionality.name != **f));
+            .filter(|f| {
+                matrix
+                    .functionalities
+                    .iter()
+                    .all(|functionality| functionality.name != **f)
+            })
+            .map(|f| Error::InvalidFunctionalityNameChip {
+                found: f.to_string(),
+                chip: c.name.to_owned(),
+            })
+    });
+    let mut errors = board_errors.chain(chip_errors).collect::<Vec<_>>();
 
-        if let Some(f) = invalid_functionality_name {
-            return Err(Error::InvalidFunctionalityNameChip {
-                found: f.to_owned(),
-                chip: chip_info.name.to_owned(),
-            });
-        }
+    if errors.is_empty() {
+        Ok(())
+    } else if errors.len() == 1 {
+        Err(errors.pop().unwrap())
+    } else {
+        Err(Error::MultipleIssues { others: errors })
     }
-
-    Ok(())
 }
 
 fn render_html(matrix: &schema::Matrix, board_support_tier: &SupportTier) -> Result<String, Error> {
@@ -377,6 +388,11 @@ enum Error {
         #[label = "Syntax error"]
         err_span: miette::SourceSpan,
         source: serde_yaml::Error,
+    },
+    #[error("Multiple validation issues")]
+    MultipleIssues {
+        #[related]
+        others: Vec<Error>,
     },
     #[error("invalid chip name `{found}` for board `{board}`")]
     InvalidChipName {
