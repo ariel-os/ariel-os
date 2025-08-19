@@ -1,5 +1,7 @@
 # This workflow is documented in the Developer Guide, in the book.
 
+# I AM A DEBUG LEFTOVER
+
 name: Build
 
 on:
@@ -176,7 +178,7 @@ jobs:
 
       - name: Run sccache-cache
         if: steps.should-skip.outputs.result != 'true'
-        uses: mozilla-actions/sccache-action@v0.0.8
+        uses: mozilla-actions/sccache-action@v0.0.9
 
       - id: get_toolchain
         if: steps.should-skip.outputs.result != 'true'
