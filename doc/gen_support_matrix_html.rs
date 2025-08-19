@@ -175,6 +175,25 @@ struct SubCommandCheck {
     output_file: PathBuf,
 }
 
+#[derive(Debug, Serialize)]
+struct BoardSupport {
+    chip: String,
+    chip_technical_name: String,
+    url: String,
+    technical_name: String,
+    name: String,
+    tier: String,
+    functionalities: Vec<FunctionalitySupport>,
+}
+
+#[derive(Debug, Serialize)]
+struct FunctionalitySupport {
+    icon: String,
+    description: String,
+    // TODO: add comments
+    // TODO: add the PR link
+}
+
 fn main() -> miette::Result<()> {
     let args: Args = argh::from_env();
 
@@ -195,7 +214,9 @@ fn main() -> miette::Result<()> {
 
     validate_input(&matrix)?;
 
-    let html = render_html(&matrix, args.tier())?;
+    let board_info = gen_functionalities(&matrix)?;
+
+    let html = render_html(&matrix, board_info, args.tier())?;
 
     match args.command {
         SubCommand::Generate(_) => {
@@ -263,39 +284,27 @@ fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
     }
 }
 
-fn render_html(matrix: &schema::Matrix, board_support_tier: &SupportTier) -> Result<String, Error> {
-    use minijinja::{Environment, context};
+fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Error> {
+    let boards = matrix
+        .boards
+        .iter()
+        .map(|(board_technical_name, board_info)| {
+            let board_name = &board_info.name;
+            let chip = &board_info.chip;
 
-    #[derive(Debug, Serialize)]
-    struct BoardSupport {
-        chip: String,
-        chip_technical_name: String,
-        url: String,
-        technical_name: String,
-        name: String,
-        tier: String,
-        functionalities: Vec<FunctionalitySupport>,
-    }
+            // Implement chip info inheritance
+            let chip_info = matrix.chips.get(chip).ok_or(vec![Error::InvalidChipName {
+                found: chip.to_owned(),
+                board: board_name.to_owned(),
+            }])?;
 
-    #[derive(Debug, Serialize)]
-    struct FunctionalitySupport {
-        icon: String,
-        description: String,
-        // TODO: add comments
-        // TODO: add the PR link
-    }
-
-    let mut boards = matrix.boards.iter().map(|(board_technical_name, board_info)| {
-        let board_name = &board_info.name;
-
-        let functionalities = matrix.functionalities
-            .iter()
-            .map(|functionality_info| {
+            let functionalities = matrix.functionalities.iter().map(|functionality_info| {
                 let name = &functionality_info.name;
 
                 let support_key = if let Some(support_info) = board_info.support.get(name) {
                     let status = support_info.status();
-                    matrix.support_keys
+                    matrix
+                        .support_keys
                         .iter()
                         .find(|s| s.name == status)
                         .ok_or(Error::InvalidSupportKeyNameBoard {
@@ -304,21 +313,18 @@ fn render_html(matrix: &schema::Matrix, board_support_tier: &SupportTier) -> Res
                             board: board_name.to_owned(),
                         })?
                 } else {
-                    let chip = &board_info.chip;
-                    // Implement chip info inheritance
-                    let chip_info = matrix.chips.get(chip).ok_or(Error::InvalidChipName {
-                        found: chip.to_owned(),
-                        board: board_name.to_owned(),
-                    })?;
-                    let support_info = chip_info.support
-                        .get(name)
-                        .ok_or(Error::MissingSupportInfo {
-                            board: board_name.to_owned(),
-                            chip: board_info.chip.to_owned(),
-                            functionality: functionality_info.title.to_owned(),
-                        })?;
+                    let support_info =
+                        chip_info
+                            .support
+                            .get(name)
+                            .ok_or(Error::MissingSupportInfo {
+                                board: board_name.to_owned(),
+                                chip: board_info.chip.to_owned(),
+                                functionality: functionality_info.title.to_owned(),
+                            })?;
                     let status = support_info.status();
-                    matrix.support_keys
+                    matrix
+                        .support_keys
                         .iter()
                         .find(|s| s.name == status)
                         .ok_or(Error::InvalidSupportKeyNameChip {
@@ -332,25 +338,47 @@ fn render_html(matrix: &schema::Matrix, board_support_tier: &SupportTier) -> Res
                     icon: support_key.icon.to_owned(),
                     description: support_key.description.to_owned(),
                 })
-            })
-            .collect::<Result<Vec<_>, Error>>()?;
+            });
+            let errors = functionalities
+                .clone()
+                .filter_map(|f| f.err())
+                .collect::<Vec<_>>();
+            if errors.is_empty() {
+                Ok(BoardSupport {
+                    chip: chip_info.name.to_owned(),
+                    chip_technical_name: board_info.chip.to_owned(),
+                    url: board_info.url.to_owned(),
+                    technical_name: board_technical_name.to_owned(),
+                    name: board_name.to_owned(),
+                    tier: board_info.tier.to_owned(),
+                    functionalities: functionalities.map(|f| f.unwrap()).collect(),
+                })
+            } else {
+                Err(errors)
+            }
+        });
 
+    let mut errors = boards
+        .clone()
+        .filter_map(|f| f.err())
+        .flatten()
+        .collect::<Vec<_>>();
+    if errors.is_empty() {
+        Ok(boards.map(|f| f.unwrap()).collect())
+    } else if errors.len() == 1 {
+        Err(errors.pop().unwrap())
+    } else {
+        Err(Error::MultipleIssues { others: errors })
+    }
+}
 
-        let chip = matrix.chips.get(&board_info.chip).ok_or(Error::InvalidChipName {
-            found: board_info.chip.to_owned(),
-            board: board_name.to_owned(),
-        })?;
+fn render_html(
+    matrix: &schema::Matrix,
+    mut boards: Vec<BoardSupport>,
+    board_support_tier: &SupportTier,
+) -> Result<String, Error> {
+    use minijinja::{Environment, context};
 
-        Ok(BoardSupport {
-            chip: chip.name.to_owned(),
-            chip_technical_name: board_info.chip.to_owned(),
-            url: board_info.url.to_owned(),
-            technical_name: board_technical_name.to_owned(),
-            name: board_name.to_owned(),
-            tier: board_info.tier.to_owned(),
-            functionalities,
-        })
-    }).collect::<Result<Vec<_>, Error>>()?;
     // TODO: read the order from the YAML file instead?
     boards.sort_unstable_by_key(|b| b.name.to_lowercase());
 
