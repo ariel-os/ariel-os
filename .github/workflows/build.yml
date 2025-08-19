@@ -83,9 +83,15 @@ jobs:
 
   build:
     needs: check-labels
-    runs-on: ubuntu-24.04
+    runs-on:
+      group: Ariel
+
+    # container:
+    #   image: docker.io/sautax/ariel-build-image:0.5
+
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
+
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,6 +103,7 @@ jobs:
       # newest standard library. It may also need to be aligned with the clang
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
+      CACHE_THING_LOCATION: /cache/cache-thing
 
     strategy:
       fail-fast: true
@@ -104,7 +111,18 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
+      # - name: check runner environment
+      #   id: check-runner
+      #   run: |
+      #     echo "name=${{ runner.name }}" >> $GITHUB_OUTPUT
+      #     if [[ "${{ contains( runner.name, 'arc-runners-inria' ) }}" ]]; then
+      #       echo "self-hosted=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "self-hosted=false" >> $GITHUB_OUTPUT
+      #     fi
+
       - name: Free up space
+        if: runner.environment != 'self-hosted'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -120,6 +138,9 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          # we need to access the Main branch for the cache
+          fetch-depth: 0
 
       - name: Get git tree hash
         id: get-tree-hash
@@ -139,6 +160,18 @@ jobs:
           result="result=${{ steps.result-cache.outputs.cache-hit == 'true' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
+
+      - name: "Download cache-thing"
+        if: steps.should-skip.outputs.result != 'true'
+        run: |
+          mkdir -p ~/.local/bin
+          curl -sSL https://github.com/nponsard/cache-thing/releases/download/0.2.1/cache-thing-0.2.1-x86_64-linux-musl -o ~/.local/bin/cache-thing
+          chmod +x ~/.local/bin/cache-thing
+
+      - name: "Restore cache"
+        if: steps.should-skip.outputs.result != 'true'
+        run: |
+          ~/.local/bin/cache-thing pull --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fallback-key nightly || true
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -178,7 +211,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -188,7 +221,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.85
         with:
@@ -198,7 +231,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3'))
+        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && runner.environment != 'self-hosted'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -208,19 +241,19 @@ jobs:
           export: false
 
       - name: rust cache
-        if: steps.should-skip.outputs.result != 'true'
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@e43a5023a747770bfcb71ae048541a681714b951 # v2
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
@@ -248,6 +281,13 @@ jobs:
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
 
+      # A cache is Between 6 and 10 GB per partition, It is preferable to keep only the nightly build cache.
+      - name: "Save nightly cache"
+        if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
+        run: |
+          ~/.local/bin/cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fixed-key nightly
+
+
       # cleanup previous build artifacts. do in background (no need to wait).
       - name: "cleanup stable build artifacts"
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -261,6 +301,9 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
+      - name: show sccache stats
+        if: runner.environment == 'self-hosted'
+        run: sccache --show-stats
   build-success:
     if: ${{ always() }}
     runs-on: ubuntu-latest
