@@ -105,6 +105,7 @@ jobs:
 
     steps:
       - name: Free up space
+        if: runner.name != 'arc-runner-set'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -117,17 +118,25 @@ jobs:
             /usr/share/dotnet \
             /usr/share/swift \
             &
+      - name: Set env for self-hosted runners
+        if: runner.name == 'arc-runner-set'
+        run: |
+          echo "SCCACHE_DIR=/mnt/sccache" >> $GITHUB_ENV
+          echo "SCCACHE_CACHE_SIZE=300G" >> $GITHUB_ENV
+          echo "SCCACHE_GHA_ENABLED=false" >> $GITHUB_ENV
 
       - name: Check out repository code
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Get git tree hash
+        if: runner.name != 'arc-runner-set'
         id: get-tree-hash
         run: |
             git rev-parse HEAD^{tree} > .tree-hash
             echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4
+        if: runner.name != 'arc-runner-set'
         id: result-cache
         with:
           path: .tree-hash
@@ -178,7 +187,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -188,7 +197,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.85
         with:
@@ -198,7 +207,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3'))
+        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && runner.name != 'arc-runner-set'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -208,19 +217,19 @@ jobs:
           export: false
 
       - name: rust cache
-        if: steps.should-skip.outputs.result != 'true'
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
+        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@bb5b6ec0fe226d4254f80ec39794c3a8c1b6525f # v2
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
@@ -261,6 +270,8 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
+      - name: show sccache stats
+        run: sccache --show-stats
   build-success:
     if: ${{ always() }}
     runs-on: ubuntu-latest
