@@ -48,7 +48,7 @@ jobs:
           script: |
             const commitId = "${{ steps.get-commit-id.outputs.commit_id }}";
             console.log(`Commit ID: ${commitId}`);
-            const { data: { items } } = await github.rest.search.issuesAndPullRequests({
+            const { data: { items } } = await github.rest.search.code({
               q: `${commitId} type:pr`,
             });
             console.log(`Number of PRs containing commit ${commitId}: ${items.length}`);
