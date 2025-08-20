@@ -315,6 +315,7 @@ jobs:
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
       - name: show sccache stats
+        if: runner.environment == 'self-hosted'
         run: sccache --show-stats
   build-success:
     if: ${{ always() }}
