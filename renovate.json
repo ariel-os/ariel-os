@@ -3,12 +3,12 @@
   "extends": [
     "config:best-practices"
   ],
-  "cargo":{
-    "commitMessageTopic": "Rust crate {{depName}}",
-    "managerFilePatterns": [
-      "/(^|/)Cargo\\.toml$/",
-      "ariel-os-cargo.toml"
-    ],
-    "versioning": "cargo"
-  }
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "embassy-embedded-hal"
+      ],
+      "sourceUrl": "https://github.com/ariel-os/embassy/tree/embassy-embedded-hal-v0.3.0%2Bariel-os"
+    }
+  ]
 }
