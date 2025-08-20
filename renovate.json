@@ -3,6 +3,9 @@
   "extends": [
     "config:best-practices"
   ],
+  "env": {
+    "RUSTC_BOOTSTRAP": "1"
+  },
   "packageRules": [
     {
       "matchPackageNames": [
