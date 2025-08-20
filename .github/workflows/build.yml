@@ -83,9 +83,11 @@ jobs:
 
   build:
     needs: check-labels
-    runs-on: ubuntu-24.04
+    runs-on:
+      group: Ariel
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
+
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -104,8 +106,19 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
+
+      - name: check runner environment
+        id: check-runner
+        run: |
+          echo "name=${{ runner.name }}" >> $GITHUB_OUTPUT
+          if [[ "${{ contains( runner.name, 'arc-runners-inria' ) }}" ]]; then
+            echo "self-hosted=true" >> $GITHUB_OUTPUT
+          else
+            echo "self-hosted=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Free up space
-        if: runner.name != 'arc-runner-set'
+        if: steps.check-runner.outputs.self-hosted == 'false'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -119,7 +132,7 @@ jobs:
             /usr/share/swift \
             &
       - name: Set env for self-hosted runners
-        if: runner.name == 'arc-runner-set'
+        if: steps.check-runner.outputs.self-hosted == 'true'
         run: |
           echo "SCCACHE_DIR=/mnt/sccache" >> $GITHUB_ENV
           echo "SCCACHE_CACHE_SIZE=300G" >> $GITHUB_ENV
@@ -129,14 +142,12 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Get git tree hash
-        if: runner.name != 'arc-runner-set'
         id: get-tree-hash
         run: |
             git rev-parse HEAD^{tree} > .tree-hash
             echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4
-        if: runner.name != 'arc-runner-set'
         id: result-cache
         with:
           path: .tree-hash
@@ -187,7 +198,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -197,7 +208,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.85
         with:
@@ -207,7 +218,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && steps.check-runner.outputs.self-hosted == 'false'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -218,18 +229,18 @@ jobs:
 
       - name: rust cache
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
-        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@bb5b6ec0fe226d4254f80ec39794c3a8c1b6525f # v2
-        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true' && runner.name != 'arc-runner-set'
+        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
