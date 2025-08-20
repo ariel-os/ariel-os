@@ -2,5 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices"
-  ]
+  ],
+  "cargo":{
+    "commitMessageTopic": "Rust crate {{depName}}",
+    "managerFilePatterns": [
+      "/(^|/)Cargo\\.toml$/",
+      "ariel-os-cargo.toml"
+    ],
+    "versioning": "cargo"
+  }
 }
