@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "embassy-embedded-hal",
+        "embassy-executor",
+        "embassy-executor-macros",
+        "embassy-hal-internal",
+        "embassy-nrf",
+        "embassy-net",
+        "embassy-rp",
+        "embassy-stm32",
+        "embassy-time",
+        "esp-alloc",
+        "esp-hal",
+        "esp-hal-embassy",
+        "esp-println",
+        "esp-wifi",
+        "xtensa-lx-rt",
+        "try-lock",
+        "embedded-test"
+      ],
+      "enabled": false
+    }
+  ]
+}
