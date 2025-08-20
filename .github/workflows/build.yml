@@ -90,6 +90,7 @@ jobs:
 
 
     env:
+      RUSTC_WRAPPER: "sccache"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # clang-sys and thus bindgen is sensitive to multiple installed versions
       # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
@@ -107,18 +108,18 @@ jobs:
 
     steps:
 
-      - name: check runner environment
-        id: check-runner
-        run: |
-          echo "name=${{ runner.name }}" >> $GITHUB_OUTPUT
-          if [[ "${{ contains( runner.name, 'arc-runners-inria' ) }}" ]]; then
-            echo "self-hosted=true" >> $GITHUB_OUTPUT
-          else
-            echo "self-hosted=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: check runner environment
+      #   id: check-runner
+      #   run: |
+      #     echo "name=${{ runner.name }}" >> $GITHUB_OUTPUT
+      #     if [[ "${{ contains( runner.name, 'arc-runners-inria' ) }}" ]]; then
+      #       echo "self-hosted=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "self-hosted=false" >> $GITHUB_OUTPUT
+      #     fi
 
       - name: Free up space
-        if: steps.check-runner.outputs.self-hosted == 'false'
+        if: runner.environment != 'self-hosted'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -131,13 +132,10 @@ jobs:
             /usr/share/dotnet \
             /usr/share/swift \
             &
-      - name: Set env for self-hosted runners
-        if: steps.check-runner.outputs.self-hosted == 'true'
+      - name: Github action sscache env
+        if: runner.environment != 'self-hosted'
         run: |
-          echo "SCCACHE_DIR=/mnt/sccache" >> $GITHUB_ENV
-          echo "SCCACHE_CACHE_SIZE=300G" >> $GITHUB_ENV
-          echo "SCCACHE_GHA_ENABLED=false" >> $GITHUB_ENV
-          echo "CARGO_HOME=/home/runner/.cargo" >> $GITHUB_ENV
+          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
 
       - name: Check out repository code
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
@@ -161,19 +159,10 @@ jobs:
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
 
-
       - name: Rust cache
-        uses: tespkg/actions-cache@v1
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'true'
+        uses: actions/cache@v4
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
         with:
-          endpoint: minio-sccache
-          port: 9000
-          insecure: true
-          bucket: sccache
-          use-fallback: false
-          accessKey: ""
-          secretKey: ""
-
           # actions/cache compatible properties: https://github.com/actions/cache
           key: ${{ matrix.partition }}-rust-build-${{ github.ref }}
           path: |
@@ -182,6 +171,27 @@ jobs:
             build/
           restore-keys: |
             ${{ matrix.partition }}-rust-build-
+
+      # - name: Rust cache
+      #   uses: tespkg/actions-cache@v1
+      #   if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+      #   with:
+      #     endpoint: minio-sccache
+      #     port: 9000
+      #     insecure: true
+      #     bucket: sccache
+      #     use-fallback: false
+      #     accessKey: ""
+      #     secretKey: ""
+
+      #     # actions/cache compatible properties: https://github.com/actions/cache
+      #     key: ${{ matrix.partition }}-rust-build-${{ github.ref }}
+      #     path: |
+      #       /home/runner/.cargo
+      #       target/
+      #       build/
+      #     restore-keys: |
+      #       ${{ matrix.partition }}-rust-build-
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -221,7 +231,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -231,7 +241,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.85
         with:
@@ -241,7 +251,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3')) && runner.environment != 'self-hosted'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -252,18 +262,18 @@ jobs:
 
       - name: rust cache
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@bb5b6ec0fe226d4254f80ec39794c3a8c1b6525f # v2
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true' && steps.check-runner.outputs.self-hosted == 'false'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
