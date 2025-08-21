@@ -25,6 +25,8 @@ impl Format for CurrentTime {
         defmt::write!(
             f,
             "Time {:04}-{:02}-{:02} {:02}:{:02}:{:02}+{}/256 at time zone {}",
+            // As soon as we move to a better CurrentTime type, this parsing should happen somewhere
+            // else.
             u16::from_le_bytes(self.current_time.as_chunks().0[0]),
             self.current_time[2],
             self.current_time[3],
@@ -38,7 +40,7 @@ impl Format for CurrentTime {
     }
 }
 
-#[derive(Debug, Format)]
+#[derive(Format)]
 enum BleGetTimeError<BleErr> {
     /// The service or any needed characteristic were not present.
     NotPresent,
@@ -85,10 +87,13 @@ async fn main() {
 
 // FIXME: The OS should run this, ideally as an own task (which only Ariel can do, as it can name
 // the type of the runner)
-async fn ble_task<C: Controller>(mut runner: Runner<'_, C>) -> ! {
+async fn ble_task<C: Controller>(mut runner: Runner<'_, C>) -> !
+where
+    C::Error: Format,
+{
     loop {
         if let Err(e) = runner.run().await {
-            panic!("[ble_task] error: {:?}", defmt::Debug2Format(&e));
+            panic!("[ble_task] error: {:?}", e);
         }
         debug!("[ble_task] Terminated successfully; restarting.");
     }
@@ -97,7 +102,10 @@ async fn ble_task<C: Controller>(mut runner: Runner<'_, C>) -> ! {
 async fn ble_loop<'c, C: Controller>(
     mut peripheral: Peripheral<'c, C>,
     stack: &'c Stack<'c, C>,
-) -> ! {
+) -> !
+where
+    C::Error: Format,
+{
     let server = Server::new_with_config(GapConfig::Peripheral(PeripheralConfig {
         name: "Ariel Clock",
         appearance: &appearance::CLOCK,
@@ -105,7 +113,6 @@ async fn ble_loop<'c, C: Controller>(
     .unwrap();
 
     loop {
-        info!("[adv] New round of advertising...");
         match advertise("Ariel Clock", &mut peripheral).await {
             Ok(conn) => {
                 let servconn = conn
@@ -119,8 +126,14 @@ async fn ble_loop<'c, C: Controller>(
                 // update anyway)
                 let closed = select3(servertask, client_task, async {
                     match look_for_time(&client).await {
-                        Ok(time) => info!("Got time: {:?}", time),
-                        Err(BleGetTimeError::NotPresent) => info!("Peer did not offer CTS"),
+                        Ok(time) => {
+                            println!("Got time: {:?}", time);
+                            println!(
+                                "For us, that was {:?}s uptime",
+                                ariel_os::time::Instant::now().as_secs()
+                            );
+                        }
+                        Err(BleGetTimeError::NotPresent) => debug!("Peer did not offer CTS"),
                         Err(BleGetTimeError::HighLevelError) => {
                             warn!("Peer implemented CTS erroneously")
                         }
@@ -134,12 +147,20 @@ async fn ble_loop<'c, C: Controller>(
                     Ok::<_, BleHostError<C::Error>>(())
                 })
                 .await;
-                warn!(
-                    "[adv] first to close was: {:?}",
-                    defmt::Debug2Format(&closed)
-                );
+                match closed {
+                    embassy_futures::select::Either3::First(Err(e)) => {
+                        warn!("[adv] Error from GATT server task: {:?}", e)
+                    }
+                    embassy_futures::select::Either3::Second(Err(e)) => {
+                        warn!("[adv] Error from GATT client task: {:?}", e)
+                    }
+                    embassy_futures::select::Either3::Third(Err(e)) => {
+                        warn!("[adv] Error from GATT client program: {:?}", e)
+                    }
+                    _ => (),
+                }
             }
-            Err(e) => panic!("[adv] error: {:?}", defmt::Debug2Format(&e)),
+            Err(e) => panic!("[adv] error: {:?}", e),
         }
     }
 }
@@ -170,9 +191,9 @@ async fn advertise<'a, 'b, C: Controller>(
             },
         )
         .await?;
-    info!("[adv] advertising");
+    debug!("[adv] advertising");
     let conn = advertiser.accept().await?;
-    info!("[adv] connection established");
+    debug!("[adv] connection established");
     Ok(conn)
 }
 
@@ -184,7 +205,7 @@ async fn gatt_events_task(conn: &GattConnection<'_, '_>) -> Result<(), Error> {
     loop {
         match conn.next().await {
             GattConnectionEvent::Disconnected { reason } => {
-                info!("[gatt] disconnected: {:?}", reason);
+                debug!("[gatt] disconnected: {:?}", reason);
                 break;
             }
             GattConnectionEvent::Gatt { event } => match event {
@@ -208,7 +229,7 @@ async fn gatt_events_task(conn: &GattConnection<'_, '_>) -> Result<(), Error> {
             _ => {}
         }
     }
-    info!("[gatt] task finished");
+    trace!("[gatt] task finished");
     Ok(())
 }
 
