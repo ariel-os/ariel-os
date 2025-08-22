@@ -72,7 +72,7 @@ jobs:
       - name: Check for missing `rust-version` keys in `ariel-os*` crates
         run: |
           find src -iwholename 'src/ariel-os*/Cargo.toml' -exec sh -c \
-            'grep -q --with-filename '^rust-version' "$0" || (echo "$0 is missing a rust-version key"; kill $PPID)' \{\} \;
+            'grep -q --with-filename 'rust-version' "$0" || (echo "$0 is missing a rust-version key"; kill $PPID)' \{\} \;
 
       - id: get_toolchain
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
