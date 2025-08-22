@@ -1,0 +1,40 @@
+description: test sbd file
+boards:
+  nrf52840dk:
+    soc: nrf52840
+    flags:
+      - has_usb_device_port
+    leds:
+      led0:
+        color: green
+        pin: P0_13
+        inverted: true
+      led1:
+        color: green
+        pin: P0_14
+        inverted: true
+      led2:
+        color: green
+        pin: P0_15
+        inverted: true
+      led3:
+        color: green
+        pin: P0_16
+
+    buttons:
+      button0:
+        color: green
+        pin: P0_11
+        inverted: true
+      button1:
+        color: green
+        pin: P0_12
+        inverted: true
+      button2:
+        color: green
+        pin: P0_24
+        inverted: true
+      button3:
+        color: green
+        pin: P0_25
+        inverted: true

@@ -1,0 +1,12 @@
+boards:
+  st-nucleo-f042k6:
+    soc: stm32f042k6
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PA5
+        # color: green
+        # active_low: false
+    # buttons:
+    # Note: the board only has one physical button which is hardwired to NRST
