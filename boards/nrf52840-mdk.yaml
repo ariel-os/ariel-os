@@ -1,0 +1,13 @@
+boards:
+  nrf52840-mdk:
+    soc: nrf52840
+    leds:
+      led0:
+        # note: this is the RGB LED red channel
+        color: red
+        pin: P0_23
+        # active_low: false
+    buttons:
+      button0:
+        pin: P1_00
+        # active_low: true

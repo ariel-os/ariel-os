@@ -1,0 +1,52 @@
+boards:
+  st-steval-mkboxpro:
+    soc: stm32u585ai
+    flags:
+      - has_usb_device_port
+    ariel:
+      flags:
+        - has_swi
+      global_env:
+        CARGO_ENV:
+          - CONFIG_VBUS_DETECTION=false
+          - CONFIG_SWI=USART2
+    leds:
+      led0:
+        pin: PF6
+        aliases:
+          - LED1
+          - D5
+        color: green
+        # active_low: false
+      led1:
+        pin: PH11
+        aliases:
+          - LED2
+          - D6
+        color: red
+        # active_low: false
+      led2:
+        pin: PH12
+        aliases:
+          - LED3
+          - D7
+        color: orange
+        # active_low: false
+      led3:
+        pin: PF9
+        aliases:
+          - USB_enum_LED
+          - D10
+        color: blue
+        # active_low: false
+    buttons:
+      button0:
+        pin: PC13
+        aliases:
+          - BT1
+        # active_low: false
+      button1:
+        pin: PE0
+        aliases:
+          - BT2
+        # active_low: false
