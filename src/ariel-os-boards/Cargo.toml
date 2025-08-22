@@ -1,0 +1,12 @@
+[package]
+name = "ariel-os-boards"
+edition = "2024"
+
+[dependencies.ariel-os-embassy-common]
+workspace = true
+
+[dependencies.ariel-os-hal]
+workspace = true
+
+[features]
+no-boards = []
