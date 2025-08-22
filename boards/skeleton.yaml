@@ -1,0 +1,12 @@
+boards:
+  board_name:
+    soc: soc_name
+    leds:
+      led0:
+        pin:
+        color:
+        active_low: false
+    buttons:
+      button0:
+        pin:
+        active_low: false
