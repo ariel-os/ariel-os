@@ -1,0 +1,19 @@
+boards:
+  bbc-microbit-v1:
+    soc: nrf51822-xxaa
+    quirks:
+      - type: set_pin
+        description: "Set the LED matrix column for led0 to low"
+        pin: P0_04
+        level: low
+
+    leds:
+      led0:
+        pin: P0_13
+        # color: green
+
+    buttons:
+      button0:
+        pin: P0_17
+      button1:
+        pin: P0_26

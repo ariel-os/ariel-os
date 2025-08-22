@@ -1,0 +1,12 @@
+boards:
+  nrf9160dk-nrf9160:
+    soc: nrf9160
+    leds:
+      led0:
+        pin: P0_02
+        # color: green
+        # active_low: false
+    buttons:
+      button0:
+        pin: P0_06
+        # active_low: false

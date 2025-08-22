@@ -1,0 +1,15 @@
+boards:
+  dfrobot-firebeetle2-esp32-c6:
+    soc: esp32c6
+    leds:
+      led0:
+        pin: GPIO15
+        # color: green
+        # active_low: false
+    buttons:
+      button0:
+        pin: GPIO9
+        aliases:
+          - D9
+          - BOOT
+        # active_low: false

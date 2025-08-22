@@ -1,0 +1,40 @@
+boards:
+  st-nucleo-wba55:
+    soc: stm32wba55cg
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PB4
+        aliases:
+          - LD1
+        color: blue
+        # active_low: false
+      led1:
+        pin: PA9
+        aliases:
+          - LD2
+        color: green
+        # active_low: false
+      led2:
+        pin: PB8
+        aliases:
+          - LD3
+        color: red
+        # active_low: false
+    buttons:
+      button0:
+        pin: PC13
+        aliases:
+          - B1
+        # active_low: false
+      button1:
+        pin: PB6
+        aliases:
+          - B2
+        # active_low: false
+      button2:
+        pin: PB7
+        aliases:
+          - B3
+        # active_low: false

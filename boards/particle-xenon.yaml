@@ -1,0 +1,19 @@
+description: test sbd file
+boards:
+  particle-xenon:
+    soc: nrf52840
+    flags:
+      - has_usb_device_port
+    leds:
+      led0:
+        color: blue
+        pin: P1_12
+        aliases:
+          - D7
+        inverted: true
+    buttons:
+      button0:
+        pin: P0_11
+        aliases:
+          - MODE
+        active_low: true
