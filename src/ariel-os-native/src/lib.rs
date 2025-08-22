@@ -6,6 +6,7 @@
 pub mod hwrng;
 
 pub mod identity;
+pub mod peripherals {}
 
 pub struct OptionalPeripherals {}
 
