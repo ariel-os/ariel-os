@@ -61,7 +61,7 @@ macro_rules! group_peripherals {
         $group:ident {
             $(
                 $(#[$inner:meta])*
-                $peripheral_name:ident : $peripherals:ident
+                $peripheral_name:ident : $peripherals:path
             ),*
             $(,)?
         }
