@@ -1,4 +1,8 @@
+# This file contains Ariel OS specific information needed by sbd-gen for
+# generating an Ariel OS BSP crate.
 ariel:
+  # This list contains all currently supported chips. The names must correspond
+  # to an Ariel OS laze context.
   chips:
     - esp-c3-01m
     - esp-wroom-32
