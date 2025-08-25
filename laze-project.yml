@@ -1214,6 +1214,27 @@ modules:
     selects:
       - doc-only
 
+  - name: gnss
+    selects:
+      - hw/gnss
+    env:
+      global:
+        FEATURES:
+          - ariel-os/gnss
+
+  - name: hw/gnss
+    help: provided if a device has a GNSS receiver
+    selects:
+      - has_gnss
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg capability=\"hw/gnss\"
+
+  - name: has_gnss
+    selects:
+      - doc-only
+
   - name: usb
     selects:
       - hw/usb-device-port

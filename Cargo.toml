@@ -154,6 +154,7 @@ static_cell = { version = "2.1.1", default-features = false }
 trouble-host = "0.1"
 bt-hci = { version = "0.2.0" }
 nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691ec6850b05a0382cef395846b67e02" }
+fixed = { version = "1.0" }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html

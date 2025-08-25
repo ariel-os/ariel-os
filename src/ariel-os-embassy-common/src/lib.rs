@@ -12,6 +12,9 @@ pub mod executor_swi;
 #[cfg(feature = "executor-thread")]
 pub mod executor_thread;
 
+#[cfg(feature = "gnss")]
+pub mod gnss;
+
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
