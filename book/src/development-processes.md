@@ -51,3 +51,30 @@ This workflow builds the documentation—currently the rustdoc docs and the book
 This comment contains links that allow accessing the deployed documentation.
 
 > When making a PR with changes that affect the documentation, the preview should be checked to make sure the docs are rendered as expected.
+
+## Release Checklist
+
+The following steps must be followed when preparing a new release of `ariel-os`:
+
+1. Check whether deprecated items should be removed, if any.
+1. Update the version numbers of the crates that need to be bumped.
+
+    <div class="warning">
+        <ul>
+            <li>The crates in <code>/src/lib/</code> are managed separately and their version numbers should <em>not</em> be bumped.</li>
+            <li>The <code>ariel-os-sensors</code> crate's version is decoupled from the rest of the OS, as every sensor driver relies on it, and bumping it may result in fragmenting the entire ecosystem of sensor drivers.</li>
+        </ul>
+    </div>
+
+1. Update the changelog manually, going through merge commits, especially focusing on PRs with the [`breaking`][issue-label-breaking] and [`changelog:highlight`][issue-label-changelog-highlight] labels, and skipping those with the [`changelog:skip`][issue-label-changelog-skip] label.
+   If PR descriptions contain the string `BREAKING CHANGE` (in line with the [Conventional Commits][conventional-commits-spec] specification), these may be highlighted in the changelog.
+
+   The title of the PR updating the changelog should start with `chore(release):` (so it could automatically be ignored by tools later).
+1. Create a git tag in the format `v{version}`.
+1. No `ariel-os*` crates are currently published on [crates.io][crates-io].
+
+[issue-label-breaking]: https://github.com/ariel-os/ariel-os/issues?q=state%3Aopen%20label%3Abreaking
+[issue-label-changelog-highlight]: https://github.com/ariel-os/ariel-os/issues?q=state%3Aopen%20label%3Achangelog%3Ahighlight
+[issue-label-changelog-skip]: https://github.com/ariel-os/ariel-os/issues?q=state%3Aopen%20label%3Achangelog%3Askip
+[crates-io]: https://crates.io
+[conventional-commits-spec]: https://www.conventionalcommits.org/en/v1.0.0/
