@@ -1,0 +1,18 @@
+[package]
+name = "ariel-os-builtin-sensors"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os-debug = { path = "../ariel-os-debug" }
+ariel-os-embassy = { path = "../ariel-os-embassy" }
+ariel-os-sensors = { path = "../ariel-os-sensors" }
+embassy-sync = { workspace = true }
+embassy-time = { workspace = true }
+embedded-hal-async = { workspace = true }
+portable-atomic = { workspace = true }
