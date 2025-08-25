@@ -30,6 +30,9 @@ pub mod identity {
 #[cfg(feature = "spi")]
 pub mod spi;
 
+#[cfg(feature = "uart")]
+pub mod uart;
+
 #[cfg(feature = "usb")]
 #[doc(hidden)]
 pub mod usb;

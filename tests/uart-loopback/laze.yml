@@ -1,0 +1,19 @@
+apps:
+  - name: uart-loopback
+    context:
+      - bbc-microbit-v2
+      - esp
+      - nrf52840
+      - nrf52832
+      - nrf5340
+      - nrf91
+      - rp2040
+      - rp235xa
+      - st-nucleo-c031c6
+      - st-nucleo-f042k6
+      - st-nucleo-f401re
+      - st-nucleo-h755zi-q
+      - st-b-l475e-iot01a
+      - st-nucleo-wb55
+      - st-nucleo-wba55
+      - st-steval-mkboxpro
