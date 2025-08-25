@@ -3,6 +3,6 @@ apps:
     env:
       global:
         executor_stacksize_required:
-          - "32768"
+          - "16384"
     selects:
       - network

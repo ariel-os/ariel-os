@@ -5,13 +5,21 @@ use ariel_os::{debug::log::*, net, reexports::embassy_net, time::Duration};
 use embassy_net::tcp::TcpSocket;
 use embedded_io_async::Write;
 
+// Setting this to a small value would make packet handling slow and choppy, but would not cause
+// packets to be dropped.
+const RX_BUFFER_SIZE: usize = 128;
+// There is a memory–performance trade-off with these, but small values seem to be working fine for
+// this example.
+const TX_BUFFER_SIZE: usize = 8;
+const RW_BUFFER_SIZE: usize = 8;
+
 #[ariel_os::task(autostart)]
 async fn tcp_echo() {
     let stack = net::network_stack().await.unwrap();
 
-    let mut rx_buffer = [0; 4096];
-    let mut tx_buffer = [0; 4096];
-    let mut buf = [0; 4096];
+    let mut rx_buffer = [0; RX_BUFFER_SIZE];
+    let mut tx_buffer = [0; TX_BUFFER_SIZE];
+    let mut buf = [0; RW_BUFFER_SIZE];
 
     loop {
         let mut socket = TcpSocket::new(stack, &mut rx_buffer, &mut tx_buffer);
