@@ -47,6 +47,12 @@ builders:
         - CONFIG_SWI=USART2
 ```
 
+> To build every example and test for a board the following command can be used (as this is only for compilation the credentials do not need to be valid):
+>
+> ```sh
+> CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --global -b <builder>
+> ```
+
 ## Adding Support for an MCU from a Supported MCU family
 
 - In `laze-project.yml`:
