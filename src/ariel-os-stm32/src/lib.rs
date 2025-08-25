@@ -76,6 +76,8 @@ pub fn init() -> OptionalPeripherals {
     #[cfg(capability = "hw/stm32-dual-core")]
     let peripherals = embassy_stm32::init_primary(config, &SHARED_DATA);
 
+    enable_flash_cache();
+
     OptionalPeripherals::from(peripherals)
 }
 
@@ -143,6 +145,27 @@ fn board_config(config: &mut Config) {
             divr: Some(PllRDiv::DIV2), // sysclk 80Mhz (32 / 2 * 10 / 2)
         });
         config.rcc.mux.clk48sel = mux::Clk48sel::HSI48;
+    }
+
+    #[cfg(context = "st-nucleo-f401re")]
+    {
+        use embassy_stm32::rcc::*;
+        config.rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(8000000),
+            mode: HseMode::Bypass,
+        });
+        config.rcc.pll_src = PllSource::HSE;
+        config.rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV4,
+            mul: PllMul::MUL84,
+            divp: Some(PllPDiv::DIV2),
+            divq: None,
+            divr: None,
+        });
+        config.rcc.ahb_pre = AHBPrescaler::DIV1;
+        config.rcc.apb1_pre = APBPrescaler::DIV4;
+        config.rcc.apb2_pre = APBPrescaler::DIV2;
+        config.rcc.sys = Sysclk::PLL1_P;
     }
 
     #[cfg(context = "st-nucleo-f767zi")]
@@ -272,4 +295,29 @@ fn board_config(config: &mut Config) {
 
     // mark used
     let _ = config;
+}
+
+fn enable_flash_cache() {
+    // F2 and F4 support these
+    #[cfg(any(context = "stm32f401re", context = "stm32f411re",))]
+    {
+        // reset the instruction cache
+        embassy_stm32::pac::FLASH
+            .acr()
+            .modify(|w| w.set_icrst(true));
+        // enable the instruction cache and prefetch
+        embassy_stm32::pac::FLASH.acr().modify(|w| w.set_icen(true));
+        embassy_stm32::pac::FLASH
+            .acr()
+            .modify(|w| w.set_prften(true));
+        // reset the data cache
+        embassy_stm32::pac::FLASH
+            .acr()
+            .modify(|w| w.set_dcrst(true));
+        embassy_stm32::pac::FLASH
+            .acr()
+            .modify(|w| w.set_dcrst(false));
+        // enable the data cache
+        embassy_stm32::pac::FLASH.acr().modify(|w| w.set_dcen(true));
+    }
 }
