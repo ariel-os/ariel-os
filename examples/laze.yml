@@ -13,6 +13,7 @@ subdirs:
   - coap-server
   - device-metadata
   - gpio
+  - gnss-position
   - hello-world
   - hello-world-threading
   - http-client
@@ -23,6 +24,7 @@ subdirs:
   - power
   - random
   - storage
+  - tcp-client
   - tcp-echo
   - testing
   - thread-async-interop
