@@ -349,7 +349,7 @@ contexts:
     tasks:
       debug-rs:
         cmd:
-          - probe-rs debug --chip ${PROBE_RS_CHIP} --exe ${out} $@
+          - probe-rs debug --chip ${PROBE_RS_CHIP} --exe ${out} --no-catch-reset $@
 
   - name: rp235xa
     parent: rp
@@ -1000,7 +1000,7 @@ modules:
 
     env:
       global:
-        CARGO_RUNNER: "'probe-rs run ${PROBE_RS_PROTOCOL} --chip ${PROBE_RS_CHIP} --preverify'"
+        CARGO_RUNNER: "'probe-rs run ${PROBE_RS_PROTOCOL} --chip ${PROBE_RS_CHIP} --preverify --no-catch-reset'"
 
     tasks:
       flash-erase-all:
