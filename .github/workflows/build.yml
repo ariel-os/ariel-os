@@ -85,14 +85,15 @@ jobs:
     needs: check-labels
     runs-on:
       group: Ariel
-    container:
-      image: docker.io/sautax/ariel-build-image:0.5
+
+    # container:
+    #   image: docker.io/sautax/ariel-build-image:0.5
+
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
 
 
     env:
-      RUSTC_WRAPPER: "sccache"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # clang-sys and thus bindgen is sensitive to multiple installed versions
       # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
@@ -109,7 +110,6 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
-
       # - name: check runner environment
       #   id: check-runner
       #   run: |
@@ -134,10 +134,6 @@ jobs:
             /usr/share/dotnet \
             /usr/share/swift \
             &
-      - name: Github action sscache env
-        if: runner.environment != 'self-hosted'
-        run: |
-          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
 
       - name: Check out repository code
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
@@ -162,21 +158,8 @@ jobs:
           echo "${result}" >> $GITHUB_OUTPUT
 
       - name: restore nightly build cache
-        uses: tespkg/actions-cache/restore@v1
-        with:
-          endpoint: minio-sccache
-          port: 9000
-          insecure: true
-          bucket: sccache
-          use-fallback: false
-          accessKey: ""
-          secretKey: ""
-
-          key: ${{ matrix.partition }}-nightly-build
-          path: |
-            ~/.cargo/
-            build/
-            target/
+        run: |
+          tar -xf /cache/raw/${{ matrix.partition }}-nightly.tar.zstd -C $PWD || true
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -301,22 +284,10 @@ jobs:
 
 
       - name: save nightly build cache
-        # if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
-        uses: tespkg/actions-cache/save@v1
-        with:
-          endpoint: minio-sccache
-          port: 9000
-          insecure: true
-          bucket: sccache
-          use-fallback: false
-          accessKey: ""
-          secretKey: ""
+        run: |
+          mkdir -p /cache/raw/${{ matrix.partition }}
+          tar --zstd -cf /cache/raw/${{ matrix.partition }}-nightly.tar.zstd build target ~/.cargo
 
-          key: ${{ matrix.partition }}-nightly-build
-          path: |
-            ~/.cargo/
-            build/
-            target/
       - name: show sccache stats
         if: runner.environment == 'self-hosted'
         run: sccache --show-stats
