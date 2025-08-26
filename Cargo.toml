@@ -43,7 +43,7 @@ members = [
 exclude = ["src/lib", "doc"]
 
 default-members = ["examples/hello-world"]
-resolver = "2"
+resolver = "3"
 
 [workspace.package]
 license = "MIT OR Apache-2.0"
