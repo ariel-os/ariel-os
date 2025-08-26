@@ -85,6 +85,8 @@ jobs:
     needs: check-labels
     runs-on:
       group: Ariel
+    container:
+      image: docker.io/sautax/ariel-build-image:0.5
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
 
