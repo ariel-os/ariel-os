@@ -159,38 +159,22 @@ jobs:
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
 
-      - name: Rust cache
-        uses: actions/cache@v4
-        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+      - name: restore nightly build cache
+        uses: tespkg/actions-cache/restore@v1
         with:
-          # actions/cache compatible properties: https://github.com/actions/cache
-          key: ${{ matrix.partition }}-rust-build-${{ github.ref }}
-          path: |
-            /home/runner/.cargo
-            target/
-            build/
-          restore-keys: |
-            ${{ matrix.partition }}-rust-build-
+          endpoint: minio-sccache
+          port: 9000
+          insecure: true
+          bucket: sccache
+          use-fallback: false
+          accessKey: ""
+          secretKey: ""
 
-      # - name: Rust cache
-      #   uses: tespkg/actions-cache@v1
-      #   if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
-      #   with:
-      #     endpoint: minio-sccache
-      #     port: 9000
-      #     insecure: true
-      #     bucket: sccache
-      #     use-fallback: false
-      #     accessKey: ""
-      #     secretKey: ""
-      #     # actions/cache compatible properties: https://github.com/actions/cache
-      #     key: ${{ matrix.partition }}-rust-build-${{ github.ref }}
-      #     path: |
-      #       /home/runner/.cargo
-      #       target/
-      #       build/
-      #     restore-keys: |
-      #       ${{ matrix.partition }}-rust-build-
+          key: ${{ matrix.partition }}-nightly-build
+          path: |
+            ~/.cargo/
+            build/
+            target/
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -313,6 +297,24 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
+
+      - name: save nightly build cache
+        # if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
+        uses: tespkg/actions-cache/save@v1
+        with:
+          endpoint: minio-sccache
+          port: 9000
+          insecure: true
+          bucket: sccache
+          use-fallback: false
+          accessKey: ""
+          secretKey: ""
+
+          key: ${{ matrix.partition }}-nightly-build
+          path: |
+            ~/.cargo/
+            build/
+            target/
       - name: show sccache stats
         if: runner.environment == 'self-hosted'
         run: sccache --show-stats
