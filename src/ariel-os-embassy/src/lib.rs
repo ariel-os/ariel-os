@@ -140,6 +140,13 @@ pub(crate) fn init() {
 
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
+        // nrf-sdc doesn't like when the SWI is priority 0.
+        #[cfg(all(context = "nrf", feature = "ble"))]
+        {
+            use crate::hal::interrupt::{InterruptExt, Priority};
+            hal::SWI.set_priority(Priority::P1);
+        }
+
         hal::EXECUTOR.start(hal::SWI);
         hal::EXECUTOR.spawner().must_spawn(init_task(p));
     }
