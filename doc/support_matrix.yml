@@ -366,6 +366,20 @@ chips:
       user_usb: not_available
       ethernet_over_usb: not_available
 
+  stm32wle5jc:
+    name: STM32WLE5JC
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      logging: supported
+      storage: supported
+      wifi: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
+
 # Encodes support status for each board.
 # Boards inherit support statuses of their chip, but can also override them.
 boards:
@@ -609,3 +623,13 @@ boards:
         status: not_currently_supported
         comments:
           - not enough RAM
+
+  lora-e5-mini:
+    name: LoRa-E5-Mini
+    url: https://web.archive.org/web/20250804165553/https://www.st.com/en/microcontrollers-microprocessors/stm32wle5jc.html
+    chip: stm32wle5jc
+    tier: "3"
+    support:
+      user_usb: not_available
+      wifi: not_available
+      ethernet_over_usb: not_available
