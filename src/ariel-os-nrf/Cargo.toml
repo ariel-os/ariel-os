@@ -31,7 +31,11 @@ ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true, features = ["memory-x"] }
 static_cell = { workspace = true }
 embassy-sync = { workspace = true }
+embassy-time = { workspace = true, optional = true }
 trouble-host = { workspace = true, optional = true }
+cortex-m = { workspace = true, optional = true }
+tinyrlibc = { workspace = true, optional = true }
+futures = { workspace = true, default-features = false, optional = true }
 
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
@@ -64,9 +68,17 @@ nrf-sdc = { workspace = true, features = ["nrf5340-net"], optional = true }
 
 [target.'cfg(context = "nrf9151")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9151-s"] }
+nrf-modem = { workspace = true, features = [
+  "nrf9151",
+  "modem-log",
+], optional = true }
 
 [target.'cfg(context = "nrf9160")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9160-s"] }
+nrf-modem = { workspace = true, features = [
+  "nrf9160",
+  "modem-log",
+], optional = true }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -101,10 +113,19 @@ ble = [
 ble-peripheral = ["ble", "nrf-sdc/peripheral"]
 ble-central = ["ble", "nrf-sdc/central"]
 
+## Enables GPS support.
+gnss = ["dep:embassy-time", "dep:futures", "nrf91-modem"]
+
+## Enables modem support.
+nrf91-modem = ["dep:cortex-m", "dep:nrf-modem", "dep:tinyrlibc"]
+
 ## Enables defmt support.
-defmt = ["dep:defmt", "embassy-nrf/defmt", "nrf-sdc?/defmt"]
+defmt = ["dep:defmt", "embassy-nrf/defmt", "nrf-sdc?/defmt", "nrf-modem?/defmt"]
 
 ## Enables the interrupt executor.
-executor-interrupt = ["embassy-executor/executor-interrupt"]
+executor-interrupt = [
+  "embassy-executor/executor-interrupt",
+  "nrf-modem?/os-irq",
+]
 
 _test = ["embassy-nrf/nrf52840", "external-interrupts", "i2c", "spi"]
