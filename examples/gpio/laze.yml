@@ -21,3 +21,4 @@ apps:
       - st-nucleo-wb55
       - st-steval-mkboxpro
       - stm32u083c-dk
+      - lora-e5-mini
