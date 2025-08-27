@@ -3,7 +3,6 @@ name = "ariel-os-sensors"
 version = "0.1.0"
 license.workspace = true
 edition.workspace = true
-rust-version = "1.85"
 repository.workspace = true
 
 [lints]
