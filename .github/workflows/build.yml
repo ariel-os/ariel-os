@@ -286,7 +286,7 @@ jobs:
       - name: save nightly build cache
         run: |
           mkdir -p /cache/raw/${{ matrix.partition }}
-          tar --zstd -cf /cache/raw/${{ matrix.partition }}-nightly.tar.zstd build target ~/.cargo
+          tar --zstd -cf /cache/raw/${{ matrix.partition }}-nightly.tar.zstd build ~/.cargo
 
       - name: show sccache stats
         if: runner.environment == 'self-hosted'
