@@ -9,7 +9,12 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+ariel-os-embassy-common = { workspace = true }
+
 cfg-if.workspace = true
+
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
 ariel-os-esp = { path = "../ariel-os-esp" }
@@ -31,8 +36,6 @@ ariel-os-stm32 = { workspace = true }
 embassy-executor = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-usb = { workspace = true }
-embedded-hal = { workspace = true }
-embedded-hal-async = { workspace = true }
 embedded-storage-async = { workspace = true }
 
 ariel-os-embassy-common = { workspace = true }
