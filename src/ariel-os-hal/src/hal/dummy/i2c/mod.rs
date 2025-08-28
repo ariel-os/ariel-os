@@ -1,6 +1,6 @@
 #[doc(alias = "master")]
 pub mod controller;
 
-pub fn init(_peripherals: &mut crate::OptionalPeripherals) {
+pub fn init(_peripherals: &mut crate::hal::OptionalPeripherals) {
     unimplemented!();
 }
