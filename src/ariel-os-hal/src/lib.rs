@@ -1,6 +1,9 @@
 #![no_std]
 pub mod gpio;
 
+#[cfg(feature = "i2c")]
+pub mod i2c;
+
 pub mod hal;
 
 // All items of this module are re-exported at the root of `ariel_os`.
