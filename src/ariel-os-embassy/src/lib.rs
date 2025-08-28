@@ -3,9 +3,7 @@
 #![no_std]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 
-pub mod gpio;
-
-pub use ariel_os_hal as hal;
+pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
 use ariel_os_embassy_common::executor_thread;
@@ -40,7 +38,7 @@ use linkme::distributed_slice;
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{EMBASSY_TASKS, asynch, delegate, gpio, hal};
+    pub use crate::{EMBASSY_TASKS, asynch, delegate};
 
     pub mod cell {
         //! Shareable containers.
