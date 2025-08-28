@@ -17,7 +17,7 @@ ariel-os-hal = { workspace = true, features = ["storage"] }
 arrayvec = { version = "0.7.4", default-features = false }
 embedded-storage-async = { workspace = true }
 postcard = { version = "1.0.8", features = ["postcard-derive"] }
-sequential-storage = { version = ">=4.0.1, <4.0.2", features = ["arrayvec"] }
+sequential-storage = { version = ">=4.0.1, <4.0.4", features = ["arrayvec"] }
 serde = { workspace = true, default-features = false }
 
 [target.'cfg(context = "rp")'.dependencies]
