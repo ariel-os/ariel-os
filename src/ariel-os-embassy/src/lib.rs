@@ -11,9 +11,6 @@ use ariel_os_embassy_common::executor_thread;
 #[cfg(feature = "debug-uart")]
 pub mod debug_uart;
 
-#[cfg(feature = "i2c")]
-pub mod i2c;
-
 #[cfg(feature = "spi")]
 pub mod spi;
 
@@ -74,8 +71,6 @@ pub mod api {
 
     #[cfg(feature = "ble")]
     pub use crate::ble;
-    #[cfg(feature = "i2c")]
-    pub use crate::i2c;
     #[cfg(feature = "net")]
     pub use crate::net;
     #[cfg(feature = "spi")]
