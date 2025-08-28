@@ -29,7 +29,7 @@ lakers-crypto-rustcrypto = "0.8.0"
 liboscore = { version = "0.2.4", default-features = false }
 
 minicbor = { version = "0.26.0", features = ["derive"] }
-minicbor-adapters = "0.0.4"
+minicbor-adapters = "0.0.6"
 heapless = "0.8.0"
 defmt-or-log = { version = "0.2.2", default-features = false }
 defmt = { workspace = true, optional = true }

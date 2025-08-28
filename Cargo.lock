@@ -3807,14 +3807,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "minicbor-adapters"
-version = "0.0.4"
+name = "minicbor"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "548808f4038a8f55c06ee593d5732b0132459e719a6bbffc0db9c93101c56e7a"
+checksum = "734daad4ff3b880f23dc2a675dd74553fa8e583367aa7523f96a16e96a516b62"
+
+[[package]]
+name = "minicbor-adapters"
+version = "0.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "90e01183800c5ba3b57496b7d914a65226eaa8cbd729eeeedeb280c2ec4252ca"
 dependencies = [
  "cboritem",
+ "embedded-io 0.6.1",
  "heapless 0.8.0",
- "minicbor 0.26.5",
+ "minicbor 1.1.0",
 ]
 
 [[package]]
