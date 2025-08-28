@@ -157,6 +157,7 @@ dependencies = [
  "ariel-os-coap",
  "ariel-os-debug",
  "ariel-os-embassy",
+ "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-macros",
  "ariel-os-power",
