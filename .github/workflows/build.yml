@@ -284,6 +284,7 @@ jobs:
 
 
       - name: save nightly build cache
+        if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
           mkdir -p /cache/raw/${{ matrix.partition }}
           tar --zstd -cf /cache/raw/${{ matrix.partition }}-nightly.tar.zstd build ~/.cargo
