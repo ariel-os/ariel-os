@@ -599,7 +599,7 @@ contexts:
   - name: stm32wle5jc
     parent: stm32
     selects:
-      - cortex-m4f
+      - cortex-m4
     provides:
       - has_hwrng
       - has_storage_support
