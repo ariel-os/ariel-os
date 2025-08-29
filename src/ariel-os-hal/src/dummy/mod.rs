@@ -45,6 +45,10 @@ pub mod spi;
 pub mod storage;
 
 #[doc(hidden)]
+#[cfg(feature = "uart")]
+pub mod uart;
+
+#[doc(hidden)]
 #[cfg(feature = "usb")]
 pub mod usb;
 
