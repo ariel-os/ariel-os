@@ -280,7 +280,7 @@ fn board_config(config: &mut Config) {
             prescaler: HsePrescaler::DIV1,
         });
         config.rcc.ls = LsConfig::default_lse();
-        config.rcc.msi = Some(MSIRange::RANGE8M); // Datasheets indicates the clock oscillates between 100kHz and 48 MHz
+        config.rcc.msi = None;
         config.rcc.pll = Some(Pll {
             source: PllSource::HSE,
             prediv: PllPreDiv::DIV2,
