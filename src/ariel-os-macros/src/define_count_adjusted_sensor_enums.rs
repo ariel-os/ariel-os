@@ -70,8 +70,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         /// This type is automatically generated, the number of variants is automatically adjusted.
         #[derive(Debug, Copy, Clone)]
         pub enum Samples {
-            #[doc(hidden)]
-            #(#samples_variants),*
+            #(
+                #[doc(hidden)]
+                #samples_variants
+            ),*
         }
 
         impl Reading for Samples {
@@ -95,8 +97,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         /// This type is automatically generated, the number of variants is automatically adjusted.
         #[derive(Debug, Copy, Clone)]
         pub enum ReadingChannels {
-            #[doc(hidden)]
-            #(#reading_channels_variants),*,
+            #(
+                #[doc(hidden)]
+                #reading_channels_variants
+            ),*,
         }
 
         impl ReadingChannels {
