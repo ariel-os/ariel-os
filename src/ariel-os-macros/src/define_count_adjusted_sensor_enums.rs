@@ -168,10 +168,26 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
         /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
         ///
-        /// # Note
+        /// # For implementors
         ///
-        /// This type is automatically generated, the number of [`ReadingChannel`]s that can be
-        /// stored is automatically adjusted.
+        /// This type is automatically generated and the number of [`ReadingChannel`]s it can
+        /// contain is automatically adjusted based on the set of `max-sample-min-count-*` Cargo
+        /// features enabled in the build.
+        /// When writing a sensor driver, its crate must enable the `max-sample-min-count-$s`
+        /// feature, where `$s` is the number of samples the sensor driver returns.
+        /// This makes sure this type can accommodate at least `$s` [`ReadingChannel`]s.
+        /// Additionally, `From` implementations are generated to instantiate this type from an
+        /// array of [`ReadingChannel`]s.
+        ///
+        /// ## Example
+        ///
+        /// ```
+        /// # use ariel_os_sensors::{Label, MeasurementUnit, sensor::{ReadingChannel, ReadingChannels}};
+        /// let reading_channel = ReadingChannel::new(Label::Temperature, -1, MeasurementUnit::Celsius);
+        /// # let _ =
+        /// ReadingChannels::from([reading_channel])
+        /// # ;
+        /// ```
         #[derive(Debug, Copy, Clone)]
         pub struct ReadingChannels {
             channels: InnerReadingChannels,
