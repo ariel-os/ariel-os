@@ -1,0 +1,8 @@
+apps:
+  - name: tcp-client
+    env:
+      global:
+        executor_stacksize_required:
+          - "32768"
+    selects:
+      - network
