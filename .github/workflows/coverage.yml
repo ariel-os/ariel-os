@@ -1,0 +1,56 @@
+name: Code Coverage Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}-main
+  cancel-in-progress: true
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - id: get_toolchain
+        run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
+
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+          components: llvm-tools-preview
+      - name: Install rustfilt
+        uses: taiki-e/install-action@v2
+        with:
+          tool: rustfilt@0.2.1
+
+      # - name: Install laze
+      #   uses: taiki-e/install-action@v2
+      #   with:
+      #     tool: laze@0.1
+      - name: Install laze
+        run: cargo install laze --git https://github.com/nponsard/laze --branch feat/absolute-root
+
+      - name: Install prerequisites
+        run: sudo apt-get install ninja-build gcc-arm-none-eabi
+
+      - name: rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run coverage
+        run: ./scripts/get-coverage.sh
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./build/profile/coverage.txt
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}

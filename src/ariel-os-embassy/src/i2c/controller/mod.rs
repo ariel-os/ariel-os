@@ -104,24 +104,24 @@ mod tests {
         use ariel_os_embassy_common::i2c::controller::Kilohertz;
         use hal::i2c::controller::Frequency;
 
-        const FREQ_0: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(150));
-        const FREQ_1: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(100));
-        const FREQ_2: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(100));
-        const FREQ_3: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(400));
-        const FREQ_4: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(400));
-        const FREQ_5: Frequency = highest_freq_in(Kilohertz::kHz(300)..=Kilohertz::kHz(400));
-        const FREQ_6: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(450));
-        const FREQ_7: Frequency = highest_freq_in(Kilohertz::kHz(300)..=Kilohertz::kHz(450));
+        let freq_0: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(150));
+        let freq_1: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(100));
+        let freq_2: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(100));
+        let freq_3: Frequency = highest_freq_in(Kilohertz::kHz(50)..=Kilohertz::kHz(400));
+        let freq_4: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(400));
+        let freq_5: Frequency = highest_freq_in(Kilohertz::kHz(300)..=Kilohertz::kHz(400));
+        let freq_6: Frequency = highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(450));
+        let freq_7: Frequency = highest_freq_in(Kilohertz::kHz(300)..=Kilohertz::kHz(450));
 
         // The only available values in the dummy HAL are 100k and 400k.
-        assert_eq!(FREQ_0, Frequency::_100k);
-        assert_eq!(FREQ_1, Frequency::_100k);
-        assert_eq!(FREQ_2, Frequency::_100k);
-        assert_eq!(FREQ_3, Frequency::_400k);
-        assert_eq!(FREQ_4, Frequency::_400k);
-        assert_eq!(FREQ_5, Frequency::_400k);
-        assert_eq!(FREQ_6, Frequency::_400k);
-        assert_eq!(FREQ_7, Frequency::_400k);
+        assert_eq!(freq_0, Frequency::_100k);
+        assert_eq!(freq_1, Frequency::_100k);
+        assert_eq!(freq_2, Frequency::_100k);
+        assert_eq!(freq_3, Frequency::_400k);
+        assert_eq!(freq_4, Frequency::_400k);
+        assert_eq!(freq_5, Frequency::_400k);
+        assert_eq!(freq_6, Frequency::_400k);
+        assert_eq!(freq_7, Frequency::_400k);
 
         // FIXME: add another test to check when max < min
         // and with
