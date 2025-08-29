@@ -605,7 +605,4 @@ boards:
     support:
       user_usb: supported
       wifi: not_available
-      ethernet_over_usb:
-        status: not_currently_supported
-        comments:
-          - not enough RAM
+      ethernet_over_usb: supported
