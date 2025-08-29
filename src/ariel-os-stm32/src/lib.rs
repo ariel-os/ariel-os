@@ -270,6 +270,30 @@ fn board_config(config: &mut Config) {
         });
     }
 
+    #[cfg(context = "stm32wle5jc")]
+    {
+        use embassy_stm32::rcc::*;
+
+        config.rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(32_000_000),
+            mode: HseMode::Bypass,
+            prescaler: HsePrescaler::DIV1,
+        });
+        config.rcc.ls = LsConfig::default_lse();
+        config.rcc.msi = Some(MSIRange::RANGE8M); // Datasheets indicates the clock oscillates between 100kHz and 48 MHz
+        config.rcc.pll = Some(Pll{
+            source: PllSource::HSE,
+            prediv: PllPreDiv::DIV2,
+            mul: PllMul::MUL6,
+            divp: None,
+            divq: Some(PllQDiv::DIV2), // PLL1_Q clock (32 / 2 * 6 / 2), used for RNG
+            divr: Some(PllRDiv::DIV2), // sysclk 48Mhz clock (32 / 2 * 6 / 2)
+        });
+
+        config.rcc.sys = Sysclk::PLL1_R;
+    }
+
+
     // mark used
     let _ = config;
 }
