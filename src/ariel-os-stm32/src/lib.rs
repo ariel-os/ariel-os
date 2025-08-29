@@ -281,7 +281,7 @@ fn board_config(config: &mut Config) {
         });
         config.rcc.ls = LsConfig::default_lse();
         config.rcc.msi = Some(MSIRange::RANGE8M); // Datasheets indicates the clock oscillates between 100kHz and 48 MHz
-        config.rcc.pll = Some(Pll{
+        config.rcc.pll = Some(Pll {
             source: PllSource::HSE,
             prediv: PllPreDiv::DIV2,
             mul: PllMul::MUL6,
@@ -292,7 +292,6 @@ fn board_config(config: &mut Config) {
 
         config.rcc.sys = Sysclk::PLL1_R;
     }
-
 
     // mark used
     let _ = config;

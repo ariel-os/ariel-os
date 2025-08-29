@@ -128,4 +128,3 @@ ariel_os::hal::define_peripherals!(Peripherals {
     led1: PB5,
     btn1: PB13
 });
-
