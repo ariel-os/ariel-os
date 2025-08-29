@@ -34,6 +34,8 @@ pub use ariel_os_coap as coap;
 #[doc(inline)]
 pub use ariel_os_debug as debug;
 #[doc(inline)]
+pub use ariel_os_hal::api::*;
+#[doc(inline)]
 pub use ariel_os_identity as identity;
 #[doc(inline)]
 pub use ariel_os_power as power;
