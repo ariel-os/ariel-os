@@ -12,7 +12,7 @@ impl Executor {
         Self {}
     }
 
-    pub fn start(&self, _: crate::SWI) {
+    pub fn start(&self, _: crate::hal::SWI) {
         unimplemented!();
     }
 

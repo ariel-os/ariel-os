@@ -157,6 +157,7 @@ dependencies = [
  "ariel-os-coap",
  "ariel-os-debug",
  "ariel-os-embassy",
+ "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-macros",
  "ariel-os-power",
@@ -196,7 +197,11 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-boards"
-version = "0.2.0"
+version = "0.0.0"
+dependencies = [
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+]
 
 [[package]]
 name = "ariel-os-buildinfo"
@@ -269,6 +274,7 @@ dependencies = [
 name = "ariel-os-embassy"
 version = "0.2.0"
 dependencies = [
+ "ariel-os-boards",
  "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy-common",
@@ -364,8 +370,11 @@ dependencies = [
  "ariel-os-stm32",
  "bt-hci",
  "cfg-if",
+ "const_panic",
+ "embassy-embedded-hal",
  "embassy-executor",
  "embassy-hal-internal",
+ "embassy-sync 0.6.2",
  "embassy-usb",
  "embedded-hal 1.0.0",
  "embedded-hal-async",

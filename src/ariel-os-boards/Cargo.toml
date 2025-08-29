@@ -1,14 +1,12 @@
 [package]
 name = "ariel-os-boards"
-version = "0.2.0"
-license.workspace = true
-edition.workspace = true
+edition = "2024"
 
-[lints]
+[dependencies.ariel-os-embassy-common]
 workspace = true
 
-[dependencies]
+[dependencies.ariel-os-hal]
+workspace = true
 
 [features]
-# Allows to have no boards selected, useful to run platform-independent tooling
 no-boards = []

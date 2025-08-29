@@ -3,18 +3,13 @@
 #![no_std]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
 
-pub mod gpio;
-
-pub use ariel_os_hal as hal;
+pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
 use ariel_os_embassy_common::executor_thread;
 
 #[cfg(feature = "debug-uart")]
 pub mod debug_uart;
-
-#[cfg(feature = "i2c")]
-pub mod i2c;
 
 #[cfg(feature = "spi")]
 pub mod spi;
@@ -40,7 +35,7 @@ use linkme::distributed_slice;
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{EMBASSY_TASKS, asynch, delegate, gpio, hal};
+    pub use crate::{EMBASSY_TASKS, asynch, delegate};
 
     pub mod cell {
         //! Shareable containers.
@@ -58,8 +53,6 @@ pub mod api {
 
     #[cfg(feature = "ble")]
     pub use crate::ble;
-    #[cfg(feature = "i2c")]
-    pub use crate::i2c;
     #[cfg(feature = "net")]
     pub use crate::net;
     #[cfg(feature = "spi")]
@@ -191,6 +184,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     debug_uart::init(&mut peripherals);
 
     debug!("ariel-os-embassy::init_task()");
+
+    #[cfg(board_init)]
+    ariel_os_boards::init(&mut peripherals);
 
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
