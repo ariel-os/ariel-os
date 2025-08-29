@@ -1904,7 +1904,7 @@ builders:
         # This ISR is unused on a naked board. Configured here for testing.
         - CONFIG_SWI=USART2_LPUART2
 
-  - name: lora-e5-mini
+  - name: seeedstudio-lora-e5-mini
     parent: stm32wle5jc
     selects: # Needed for -Zbuild-std
       - nightly

@@ -270,7 +270,7 @@ fn board_config(config: &mut Config) {
         });
     }
 
-    #[cfg(context = "stm32wle5jc")]
+    #[cfg(context = "seeedstudio-lora-e5-mini")]
     {
         use embassy_stm32::rcc::*;
 

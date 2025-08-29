@@ -628,7 +628,7 @@ boards:
     name: LoRa-E5-Mini
     url: https://web.archive.org/web/20250804165553/https://www.st.com/en/microcontrollers-microprocessors/stm32wle5jc.html
     chip: stm32wle5jc
-    tier: "3"
+    tier: "3" 
     support:
       user_usb: not_available
       wifi: not_available

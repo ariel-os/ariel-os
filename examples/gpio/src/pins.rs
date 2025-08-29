@@ -123,7 +123,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
     btn1: PC13
 });
 
-#[cfg(context = "lora-e5-mini")]
+#[cfg(context = "seeedstudio-lora-e5-mini")]
 ariel_os::hal::define_peripherals!(Peripherals {
     led1: PB5,
     btn1: PB13
