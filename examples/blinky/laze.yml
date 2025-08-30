@@ -13,6 +13,7 @@ apps:
       - nrf52dk
       - particle-xenon
       - rp
+      - seeedstudio-lora-e5-mini
       - st-b-l475e-iot01a
       - st-nucleo-c031c6
       - st-nucleo-f042k6

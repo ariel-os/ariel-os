@@ -164,7 +164,7 @@ jobs:
               echo "LAZE_BUILDERS=ai-c3,espressif-esp32-devkitc,espressif-esp32-c6-devkitc-1,espressif-esp32-s3-devkitc-1,bbc-microbit-v2,native,nrf52840dk,nrf5340dk,rpi-pico,rpi-pico-w,st-nucleo-c031c6,st-nucleo-h755zi-q,st-nucleo-wb55" >> "$GITHUB_ENV"
               ;;
             'ci-build:stm32')
-              echo "LAZE_BUILDERS=st-b-l475e-iot01a,st-steval-mkboxpro,st-nucleo-c031c6,st-nucleo-f042k6,st-nucleo-f401re,st-nucleo-f411re,st-nucleo-f767zi,st-nucleo-h755zi-q,st-nucleo-wb55,st-nucleo-wba55,stm32u083c-dk" >> "$GITHUB_ENV"
+              echo "LAZE_BUILDERS=seeedstudio-lora-e5-mini,st-b-l475e-iot01a,st-steval-mkboxpro,st-nucleo-c031c6,st-nucleo-f042k6,st-nucleo-f401re,st-nucleo-f411re,st-nucleo-f767zi,st-nucleo-h755zi-q,st-nucleo-wb55,st-nucleo-wba55,stm32u083c-dk" >> "$GITHUB_ENV"
               ;;
             *)
               # Can happen if `check-labels` finds no labels but still completes

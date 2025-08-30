@@ -8,7 +8,7 @@ fn main() {
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
     // could be pushed out of it by a large enough binary.
     let (storage_size_total, flash_page_size) =
-        if is_in_current_contexts(&["stm32u083mc", "stm32l475vg", "nrf5340-net"]) {
+        if is_in_current_contexts(&["stm32u083mc", "stm32l475vg", "nrf5340-net", "stm32wle5jc"]) {
             (4 * KIBIBYTES, 2 * KIBIBYTES)
         } else if is_in_current_contexts(&["nrf52", "nrf5340", "nrf91", "rp", "stm32wb55rg"]) {
             (8 * KIBIBYTES, 4 * KIBIBYTES)

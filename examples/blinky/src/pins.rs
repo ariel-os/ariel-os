@@ -80,3 +80,6 @@ ariel_os::hal::define_peripherals!(LedPeripherals { led: PF6 });
 
 #[cfg(context = "stm32u083c-dk")]
 ariel_os::hal::define_peripherals!(LedPeripherals { led: PA5 });
+
+#[cfg(context = "seeedstudio-lora-e5-mini")]
+ariel_os::hal::define_peripherals!(LedPeripherals { led: PB5 });
