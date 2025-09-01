@@ -44,7 +44,7 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3, SPI4, SPI5, SPI6);
         }else if #[cfg(context= "stm32l475vg")]{
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
-        } else if #[cfg(context = "stm32u083mc")] {
+        } else if #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
         } else if #[cfg(context = "stm32u585ai")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
