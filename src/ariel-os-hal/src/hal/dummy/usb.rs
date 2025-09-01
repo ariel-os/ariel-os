@@ -36,7 +36,7 @@ impl Driver<'_> for UsbDriver {
 pub struct Peripherals {}
 
 impl Peripherals {
-    pub fn new(_peripherals: &mut crate::OptionalPeripherals) -> Self {
+    pub fn new(_peripherals: &mut crate::hal::OptionalPeripherals) -> Self {
         unimplemented!();
     }
 }
