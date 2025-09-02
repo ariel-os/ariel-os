@@ -140,6 +140,7 @@ jobs:
             -p ariel-os
             -p ariel-os-alloc
             -p ariel-os-boards
+            -p ariel-os-builtin-sensors
             -p ariel-os-coap
             -p ariel-os-debug
             -p ariel-os-debug-log
