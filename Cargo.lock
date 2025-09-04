@@ -1156,9 +1156,9 @@ dependencies = [
 
 [[package]]
 name = "coap-handler-implementations"
-version = "0.5.3"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f1999f9d308e6d5d3bfa857e471cc58ecbbf7732f06b3b8acf25127142f73ea"
+checksum = "53e0f008d2fa87c1e20bb686e7d09c7567851dcfef0d323e94e92c685132f781"
 dependencies = [
  "ciborium-io",
  "coap-handler",
@@ -1171,6 +1171,7 @@ dependencies = [
  "minicbor 0.19.1",
  "minicbor 0.24.4",
  "minicbor 0.26.5",
+ "minicbor 1.1.0",
  "serde",
  "serde_cbor",
  "windowed-infinity",
@@ -1571,7 +1572,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 2.0.106",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -3792,6 +3793,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "minicbor"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "734daad4ff3b880f23dc2a675dd74553fa8e583367aa7523f96a16e96a516b62"
+
+[[package]]
 name = "minicbor-adapters"
 version = "0.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5894,9 +5901,9 @@ dependencies = [
 
 [[package]]
 name = "windowed-infinity"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b0ecf5dbfe6eecaae159df1cbf0945c9194c2b0512fbab6a3513c8257d7ccec"
+checksum = "9bdc544d26e98a685954dba0ba0c476e83b2ded8c46e99a8297adf67959a7395"
 dependencies = [
  "ciborium-io",
  "crc",
@@ -5905,6 +5912,7 @@ dependencies = [
  "minicbor 0.19.1",
  "minicbor 0.24.4",
  "minicbor 0.26.5",
+ "minicbor 1.1.0",
  "serde",
  "serde_cbor",
 ]
