@@ -83,11 +83,13 @@ jobs:
                   no-boards,
                   random,
                   ariel-os-coap/doc,
+                  sensors,
                   spi,
                   storage,
                   tcp,
                   threading,
                   udp,
+                  unstable,
                   usb,
                   usb-hid,
                   coapcore/_nightly_docs
