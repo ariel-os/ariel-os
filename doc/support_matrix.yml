@@ -110,7 +110,10 @@ chips:
     support:
       gpio: supported
       debug_output: supported
-      hwrng: not_currently_supported
+      hwrng:
+        status: not_currently_supported
+        comments:
+          - no standalone RNG in the application core, only in the CryptoCell which is not currently supported
       i2c_controller: supported
       spi_main: supported
       logging: supported
@@ -180,7 +183,10 @@ chips:
       i2c_controller: supported
       spi_main: supported
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
       wifi:
         status: supported_with_caveats
         comments:
@@ -195,7 +201,10 @@ chips:
       i2c_controller: supported
       spi_main: supported
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
       wifi:
         status: supported_with_caveats
         comments:
@@ -210,7 +219,15 @@ chips:
       i2c_controller: needs_testing
       spi_main: needs_testing
       logging: supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
       wifi: supported
 
   stm32c031c6:
@@ -407,7 +424,10 @@ boards:
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
-      wifi: not_currently_supported
+      wifi:
+        status: not_currently_supported
+        comments:
+          - requires supporting the onboard nRF7002 chip
 
   nrf52dk:
     name: nRF52-DK
@@ -511,8 +531,6 @@ boards:
     chip: esp32s3
     tier: "1"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
 
   heltec-wifi-lora-32-v3:
     name: Heltec WiFi LoRa 32 V3
@@ -520,8 +538,6 @@ boards:
     chip: esp32s3
     tier: "3"
     support:
-      user_usb: not_currently_supported
-      ethernet_over_usb: not_currently_supported
 
   seeedstudio-lora-e5-mini:
     name: Seeed Studio LoRa-E5 mini
@@ -586,7 +602,10 @@ boards:
     support:
       user_usb: supported
       wifi: not_available
-      ethernet_over_usb: not_currently_supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/pull/1126"
 
   st-nucleo-wb55:
     name: ST NUCLEO-WB55RG
@@ -616,7 +635,7 @@ boards:
       ethernet_over_usb:
         status: not_currently_supported
         comments:
-          - does not enumerate
+          - "https://github.com/ariel-os/ariel-os/pull/1126"
 
   stm32u083c-dk:
     name: STM32U083C-DK
