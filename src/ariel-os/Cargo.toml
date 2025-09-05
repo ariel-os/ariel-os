@@ -66,8 +66,7 @@ random = ["dep:ariel-os-random", "ariel-os-embassy/random"]
 csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 # Enables seeding the random number generator from hardware.
 hwrng = ["ariel-os-embassy/hwrng"]
-# Enables support for sensors.
-# *Currently experimental and undocumented.*
+## Enables unified support for sensors.
 sensors = ["dep:ariel-os-sensors"]
 
 #! ## Network protocols
