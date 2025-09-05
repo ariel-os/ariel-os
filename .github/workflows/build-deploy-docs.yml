@@ -88,6 +88,7 @@ jobs:
                   tcp,
                   threading,
                   udp,
+                  unstable,
                   usb,
                   usb-hid,
                   coapcore/_nightly_docs
