@@ -3,16 +3,6 @@
 version = 4
 
 [[package]]
-name = "Inflector"
-version = "0.11.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe438c63458706e03479442743baae6c88256498e6431708f6dfc520a26515d3"
-dependencies = [
- "lazy_static",
- "regex",
-]
-
-[[package]]
 name = "aead"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -362,7 +352,7 @@ dependencies = [
  "ariel-os-nrf",
  "ariel-os-rp",
  "ariel-os-stm32",
- "bt-hci",
+ "bt-hci 0.2.1",
  "cfg-if",
  "embassy-executor",
  "embassy-hal-internal",
@@ -465,7 +455,7 @@ dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-random",
  "ariel-os-utils",
- "bt-hci",
+ "bt-hci 0.2.1",
  "cfg-if",
  "cyw43",
  "cyw43-pio",
@@ -852,6 +842,19 @@ checksum = "f377753756ec12e76b52d2dd657437be0448cc9736402ffadd0b8b8b9602c8a1"
 dependencies = [
  "defmt 0.3.100",
  "embassy-sync 0.6.2",
+ "embedded-io 0.6.1",
+ "embedded-io-async",
+ "futures-intrusive",
+ "heapless 0.8.0",
+]
+
+[[package]]
+name = "bt-hci"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fa7f7c19df9648c1da4f5356c4256533e38bd65633b6a41654922475a1c6d777"
+dependencies = [
+ "embassy-sync 0.7.2",
  "embassy-time",
  "embedded-io 0.6.1",
  "embedded-io-async",
@@ -1352,6 +1355,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "convert_case"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baaaa0ecca5b51987b9423ccdc971514dd8b0bb7b4060b983d3664dad3f1f89f"
+dependencies = [
+ "unicode-segmentation",
+]
+
+[[package]]
 name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1487,7 +1499,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2c998ad980bbdc3947db4951bc763d14738ab873e20b5e2d87bb683011d7f9e8"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.2.1",
  "cortex-m",
  "cortex-m-rt",
  "defmt 0.3.100",
@@ -1990,6 +2002,20 @@ dependencies = [
  "embedded-io-async",
  "futures-sink",
  "futures-util",
+ "heapless 0.8.0",
+]
+
+[[package]]
+name = "embassy-sync"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73974a3edbd0bd286759b3d483540f0ebef705919a5f56f4fc7709066f71689b"
+dependencies = [
+ "cfg-if",
+ "critical-section",
+ "embedded-io-async",
+ "futures-core",
+ "futures-sink",
  "heapless 0.8.0",
 ]
 
@@ -2505,7 +2531,7 @@ name = "esp-wifi"
 version = "0.12.0"
 source = "git+https://github.com/ariel-os/esp-hal?rev=aa8d1995fc06eb5e6d04a2022ecf3679b4929e63#aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.2.1",
  "cfg-if",
  "critical-section",
  "defmt 0.3.100",
@@ -3596,12 +3622,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lazy_static"
-version = "1.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
-
-[[package]]
 name = "ld-memory"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3923,7 +3943,7 @@ name = "nrf-sdc"
 version = "0.1.0"
 source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.2.1",
  "critical-section",
  "defmt 0.3.100",
  "embassy-hal-internal",
@@ -5574,13 +5594,13 @@ checksum = "fcc842091f2def52017664b53082ecbbeb5c7731092bad69d2c63050401dfd64"
 
 [[package]]
 name = "trouble-host"
-version = "0.1.0"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b31abacc7bd8bc686160f6de3347a3b7669ae4a31e4eef9a306466e97d297cea"
+checksum = "c18ffc4e0c94e3b322116e6aaf8b6323fe3a42a9a9d1b6631606c16eb2885a2d"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.3.2",
  "embassy-futures",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embassy-time",
  "embedded-io 0.6.1",
  "futures",
@@ -5593,11 +5613,11 @@ dependencies = [
 
 [[package]]
 name = "trouble-host-macros"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2798a58a818bdf9d98f5283cc7ac647f11ecbd1e5ff4cdc45a2a13c31bf86fd"
+checksum = "ab5c25c521a9a0cad8c62b86bd3ca9abd6c94842ecf62b64fc56f0d91bb1a426"
 dependencies = [
- "Inflector",
+ "convert_case",
  "darling",
  "proc-macro2",
  "quote",
@@ -5659,6 +5679,12 @@ name = "unicode-ident"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512"
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 
 [[package]]
 name = "unicode-width"
