@@ -90,6 +90,7 @@ jobs:
                   threading,
                   uart,
                   udp,
+                  unstable,
                   usb,
                   usb-hid,
                   coapcore/_nightly_docs
