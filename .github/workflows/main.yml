@@ -134,6 +134,7 @@ jobs:
                 tcp,
                 uart,
                 udp,
+                unstable,
                 usb,
                 usb-ethernet,
                 "
