@@ -149,6 +149,7 @@ defmt = [
   "embassy-usb?/defmt",
   "ariel-os-hal/defmt",
   "ariel-os-embassy-common/defmt",
+  "trouble-host?/defmt",
   "usbd-hid?/defmt",
 ]
 log = ["ariel-os-hal/log"]

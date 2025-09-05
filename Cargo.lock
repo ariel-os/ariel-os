@@ -5579,6 +5579,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b31abacc7bd8bc686160f6de3347a3b7669ae4a31e4eef9a306466e97d297cea"
 dependencies = [
  "bt-hci",
+ "defmt 0.3.100",
  "embassy-futures",
  "embassy-sync 0.6.2",
  "embassy-time",
