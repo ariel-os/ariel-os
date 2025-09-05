@@ -132,6 +132,7 @@ jobs:
                 storage,
                 tcp,
                 udp,
+                unstable,
                 usb,
                 usb-ethernet,
                 "

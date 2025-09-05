@@ -155,6 +155,11 @@ ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 ble-central = ["ble", "ariel-os-embassy/ble-central"]
 
 #! ## Development and debugging
+## Enables unstable APIs: these are excluded from SemVer compatibility
+## guarantees and can change at any time.
+## Due to feature unification, this Cargo feature must never be enabled by a
+## library, only by applications.
+unstable = []
 # Enables the debug console, required to use
 # [`println!`](ariel_os_debug::println).
 debug-console = ["ariel-os-rt/debug-console"]
