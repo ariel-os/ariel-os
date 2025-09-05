@@ -133,6 +133,7 @@ jobs:
                 spi,
                 storage,
                 tcp,
+                uart,
                 udp,
                 usb,
                 usb-ethernet,
@@ -172,6 +173,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-esp
             --
@@ -191,6 +193,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-rp
             --
@@ -210,6 +213,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-nrf
             --target=thumbv7em-none-eabi
@@ -228,6 +232,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-stm32
             --
@@ -290,6 +295,7 @@ jobs:
                     storage,
                     tcp,
                     threading,
+                    uart,
                     udp,
                     usb,
                     usb-hid,
@@ -307,6 +313,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-esp
 
@@ -320,6 +327,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-rp
 
@@ -332,6 +340,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-nrf
 
@@ -344,6 +353,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-stm32
 
