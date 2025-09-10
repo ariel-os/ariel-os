@@ -11,7 +11,7 @@
 //!   demonstrates various features of Ariel OS.
 //! - 🧪 A set of [test cases](https://github.com/ariel-os/ariel-os/tree/main/tests)
 //!   further verifies the capabilities of Ariel OS.
-//! - 🚧 The [roadmap](https://github.com/ariel-os/ariel-os/issues/242)
+//! - 🚧 The [roadmap](https://github.com/ariel-os/ariel-os/blob/main/ROADMAP.md)
 //!   shows the planned features for Ariel OS.
 //!
 //! # Cargo features
