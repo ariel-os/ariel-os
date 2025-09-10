@@ -558,7 +558,10 @@ boards:
         status: not_currently_supported
         comments:
           - an external Wi-Fi module is present on the board
-      ethernet_over_usb: not_currently_supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - "https://github.com/ariel-os/ariel-os/pull/1034#issuecomment-2897190269"
 
   st-nucleo-c031c6:
     name: ST NUCLEO-C031C6
