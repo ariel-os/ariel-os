@@ -1,6 +1,8 @@
 # Raspberry Pi Pico W
 
-|||
+## Support Matrix
+
+|Feature|Support Status|
 |---|---|
 |Chip|RP 2040|
 |Ariel OS Name|rpi-pico-w|
@@ -14,3 +16,5 @@
 |Ethernet over USB|✅|
 |Hardware RNG|✅|
 |Storage|✅|
+
+{{#include ../support-matrix-legend.md}}
