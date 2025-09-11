@@ -30,7 +30,7 @@ macro_rules! define_peripherals {
         pub struct $peripherals {
             $(
                 $(#[$inner])*
-                pub $peripheral_name: peripherals::$peripheral_field
+                pub $peripheral_name: $crate::peripheral::Peri<'static, peripherals::$peripheral_field>
             ),*
         }
 
