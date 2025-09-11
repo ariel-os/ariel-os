@@ -13,8 +13,7 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
             let rng = embassy_nrf::rng::Rng::new(
                 peripherals
                     .RNG
-                    // We don't even have to take it out, just use it to seed the RNG
-                    .as_mut()
+                    .take()
                     .expect("RNG has not been previously used"),
                 Irqs,
             );

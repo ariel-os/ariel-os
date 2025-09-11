@@ -1,6 +1,6 @@
 use ariel_os_debug::log::debug;
 use embassy_nrf::{
-    pac, peripherals,
+    Peri, pac, peripherals,
     usb::{Driver, vbus_detect::HardwareVbusDetect},
 };
 
@@ -9,7 +9,7 @@ use crate::irqs::Irqs;
 pub type UsbDriver = Driver<'static, peripherals::USBD, HardwareVbusDetect>;
 
 pub struct Peripherals {
-    usbd: peripherals::USBD,
+    usbd: Peri<'static, peripherals::USBD>,
 }
 
 impl Peripherals {

@@ -231,7 +231,7 @@ dependencies = [
  "coapcore",
  "critical-section",
  "embassy-net",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-io-async",
  "embedded-nal-async",
  "embedded-nal-coap",
@@ -253,7 +253,7 @@ dependencies = [
  "ariel-os-utils",
  "const-str",
  "critical-section",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "esp-println",
  "featurecomb",
  "log",
@@ -295,7 +295,7 @@ dependencies = [
  "embassy-net",
  "embassy-nrf 0.7.0",
  "embassy-stm32",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embassy-time 0.5.0",
  "embassy-usb",
  "embedded-hal 1.0.0",
@@ -433,7 +433,7 @@ dependencies = [
  "embassy-embedded-hal 0.5.0",
  "embassy-executor 0.9.1",
  "embassy-nrf 0.7.0",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "nrf-sdc",
  "paste",
@@ -455,7 +455,7 @@ dependencies = [
 name = "ariel-os-random"
 version = "0.2.0"
 dependencies = [
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "rand_chacha",
  "rand_core 0.6.4",
  "rand_pcg",
@@ -478,7 +478,7 @@ dependencies = [
  "embassy-executor 0.9.1",
  "embassy-net-driver-channel",
  "embassy-rp",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "paste",
  "static_cell",
@@ -517,7 +517,7 @@ version = "0.1.0"
 dependencies = [
  "ariel-os-macros",
  "defmt 1.0.1",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "linkme",
  "pin-project",
 ]
@@ -557,7 +557,7 @@ dependencies = [
  "ariel-os-hal",
  "arrayvec",
  "cfg-if",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embassy-time 0.5.0",
  "embedded-storage-async",
  "once_cell",
@@ -2884,7 +2884,7 @@ dependencies = [
  "coap-handler-implementations",
  "coap-message",
  "coap-message-demos",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
 ]
 
 [[package]]
@@ -3476,7 +3476,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "picoserve",
  "serde",
 ]
@@ -3494,7 +3494,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "cfg-if",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "once_cell",
@@ -5408,7 +5408,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "once_cell",
  "static_cell",
@@ -5420,7 +5420,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "once_cell",
  "static_cell",
@@ -5679,7 +5679,7 @@ dependencies = [
  "coap-request-implementations",
  "coap-scroll-ring-server",
  "embassy-futures",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-nal-coap",
  "scroll-ring",
 ]
@@ -5719,7 +5719,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
 ]
 
 [[package]]
@@ -6041,7 +6041,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "static_cell",
 ]
 
