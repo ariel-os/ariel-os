@@ -10,7 +10,7 @@ mod irqs;
 
 #[doc(hidden)]
 pub mod peripheral {
-    pub use embassy_nrf::Peripheral;
+    pub use embassy_nrf::Peri;
 }
 
 #[cfg(feature = "ble")]

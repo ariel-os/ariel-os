@@ -17,7 +17,7 @@ use crate::hal::{
         input::{Input as HalInput, InputPin as HalInputPin},
         output::{Output as HalOutput, OutputPin as HalOutputPin},
     },
-    peripheral::Peripheral,
+    peripheral::Peri,
 };
 
 #[cfg(feature = "external-interrupts")]
@@ -65,12 +65,12 @@ pub struct Input {
 
 impl Input {
     /// Returns a configured [`Input`].
-    pub fn new(pin: impl Peripheral<P: HalInputPin> + 'static, pull: Pull) -> Self {
+    pub fn new(pin: Peri<'static, impl HalInputPin>, pull: Pull) -> Self {
         Self::builder(pin, pull).build()
     }
 
     /// Returns an [`InputBuilder`], allowing to configure the GPIO input further.
-    pub fn builder<P: Peripheral<P: HalInputPin>>(pin: P, pull: Pull) -> InputBuilder<P> {
+    pub fn builder<P: HalInputPin>(pin: Peri<'static, P>, pull: Pull) -> InputBuilder<P> {
         InputBuilder {
             pin,
             pull,
@@ -190,6 +190,7 @@ pub mod input {
     //! Input-specific types.
     use ariel_os_embassy_common::gpio::Pull;
 
+    use crate::hal::{self, gpio::input::InputPin as HalInputPin, peripheral::Peri};
     use crate::hal::{self, gpio::input::InputPin as HalInputPin, peripheral::Peripheral};
 
     use super::Input;
@@ -203,13 +204,13 @@ pub mod input {
     pub use ariel_os_embassy_common::gpio::input::InterruptError;
 
     /// Builder type for [`Input`], can be obtained with [`Input::builder()`].
-    pub struct InputBuilder<P: Peripheral<P: HalInputPin>> {
-        pub(crate) pin: P,
+    pub struct InputBuilder<P: HalInputPin> {
+        pub(crate) pin: Peri<'static, P>,
         pub(crate) pull: Pull,
         pub(crate) schmitt_trigger: bool,
     }
 
-    impl<P: Peripheral<P: HalInputPin> + 'static> InputBuilder<P> {
+    impl<P: HalInputPin> InputBuilder<P> {
         /// Configures the input's Schmitt trigger.
         ///
         /// # Note
@@ -257,7 +258,7 @@ pub mod input {
     }
 
     // Split the impl for consistency with outputs.
-    impl<P: Peripheral<P: HalInputPin> + 'static> InputBuilder<P> {
+    impl<P: HalInputPin> InputBuilder<P> {
         /// Returns an [`Input`] by finalizing the builder.
         pub fn build(self) -> Input {
             #[allow(irrefutable_let_patterns, reason = "conditional compilation")]
@@ -296,13 +297,13 @@ pub struct Output {
 
 impl Output {
     /// Returns a configured [`Output`].
-    pub fn new(pin: impl Peripheral<P: HalOutputPin> + 'static, initial_level: Level) -> Self {
+    pub fn new(pin: Peri<'static, impl HalOutputPin>, initial_level: Level) -> Self {
         Self::builder(pin, initial_level).build()
     }
 
     /// Returns an [`OutputBuilder`], allowing to configure the GPIO output further.
-    pub fn builder<P: Peripheral<P: HalOutputPin>>(
-        pin: P,
+    pub fn builder<P: HalOutputPin>(
+        pin: Peri<'static, P>,
         initial_level: Level,
     ) -> OutputBuilder<P> {
         OutputBuilder {
@@ -345,13 +346,13 @@ pub mod output {
         DriveStrength, FromDriveStrength, FromSpeed, Level, Speed,
     };
 
-    use crate::hal::{self, gpio::output::OutputPin as HalOutputPin, peripheral::Peripheral};
+    use crate::hal::{self, gpio::output::OutputPin as HalOutputPin, peripheral::Peri};
 
     use super::{HalDriveStrength, HalSpeed, Output};
 
     /// Builder type for [`Output`], can be obtained with [`Output::builder()`].
-    pub struct OutputBuilder<P: Peripheral<P: HalOutputPin>> {
-        pub(crate) pin: P,
+    pub struct OutputBuilder<P: HalOutputPin> {
+        pub(crate) pin: Peri<'static, P>,
         pub(crate) initial_level: Level,
         pub(crate) drive_strength: DriveStrength<HalDriveStrength>,
         pub(crate) speed: Speed<HalSpeed>,
@@ -360,7 +361,7 @@ pub mod output {
     // We define this in a macro because it will be useful for open-drain outputs.
     macro_rules! impl_output_builder {
         ($type:ident, $pin_trait:ident) => {
-            impl<P: Peripheral<P: $pin_trait> + 'static> $type<P> {
+            impl<P: $pin_trait> $type<P> {
                 /// Configures the output's drive strength.
                 ///
                 /// # Note
@@ -445,7 +446,7 @@ pub mod output {
 
     impl_output_builder!(OutputBuilder, HalOutputPin);
 
-    impl<P: Peripheral<P: HalOutputPin> + 'static> OutputBuilder<P> {
+    impl<P: HalOutputPin> OutputBuilder<P> {
         /// Returns an [`Output`] by finalizing the builder.
         pub fn build(self) -> Output {
             // TODO: should we move this into `output::new()`s?
