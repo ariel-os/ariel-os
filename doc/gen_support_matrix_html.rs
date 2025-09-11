@@ -12,13 +12,17 @@ serde_yaml = { version = "0.9.34" } # TODO: use a maintained crate instead
 thiserror = { version = "1.0.61" }
 ---
 
-use std::{fs, io, path::{Path, PathBuf}};
+mod schema;
 
-use serde::Serialize;
+use std::{
+    fs, io,
+    path::{Path, PathBuf},
+};
+
 use miette::Diagnostic;
+use serde::Serialize;
 
-const TABLE_TEMPLATE: &str =
-r##"<!-- This table is auto-generated. Do not edit manually. -->
+const TABLE_TEMPLATE: &str = r##"<!-- This table is auto-generated. Do not edit manually. -->
 <table class="support-matrix">
   <thead>
     <tr>
@@ -64,8 +68,7 @@ r##"<!-- This table is auto-generated. Do not edit manually. -->
 </style>
 "##;
 
-const KEY_TEMPLATE: &str =
-r##"<p>Key:</p>
+const KEY_TEMPLATE: &str = r##"<p>Key:</p>
 
 <dl>
   {%- for support_key in matrix.support_keys %}
@@ -98,8 +101,12 @@ impl Args {
 
     fn output_file(&self) -> &Path {
         match self.command {
-            SubCommand::Generate(SubCommandGenerate { ref output_file, .. }) => output_file,
-            SubCommand::Check(SubCommandCheck { ref output_file, .. }) => output_file,
+            SubCommand::Generate(SubCommandGenerate {
+                ref output_file, ..
+            }) => output_file,
+            SubCommand::Check(SubCommandCheck {
+                ref output_file, ..
+            }) => output_file,
         }
     }
 
@@ -227,9 +234,11 @@ fn main() -> miette::Result<()> {
             Ok(())
         }
         SubCommand::Check(_) => {
-            let existing_html = fs::read_to_string(args.output_file()).map_err(|source| Error::ReadingExistingFile {
-                path: args.output_file().into(),
-                source,
+            let existing_html = fs::read_to_string(args.output_file()).map_err(|source| {
+                Error::ReadingExistingFile {
+                    path: args.output_file().into(),
+                    source,
+                }
             })?;
 
             if existing_html == html {
@@ -332,9 +341,10 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
                         })?
                 };
 
-                Ok(FunctionalitySupport {
-                    icon: support_key.icon.to_owned(),
-                    description: support_key.description.to_owned(),
+                    Ok(FunctionalitySupport {
+                        icon: support_key.icon.to_owned(),
+                        description: support_key.description.to_owned(),
+                    })
                 })
             });
             let errors = functionalities
@@ -388,10 +398,14 @@ fn render_html(
     env.add_template("matrix_key", KEY_TEMPLATE).unwrap();
 
     let tmpl = env.get_template("matrix").unwrap();
-    let matrix_html = tmpl.render(context!(matrix => matrix, boards => boards)).unwrap();
+    let matrix_html = tmpl
+        .render(context!(matrix => matrix, boards => boards))
+        .unwrap();
 
     let tmpl = env.get_template("matrix_key").unwrap();
-    let key_html = tmpl.render(context!(matrix => matrix, boards => boards)).unwrap();
+    let key_html = tmpl
+        .render(context!(matrix => matrix, boards => boards))
+        .unwrap();
 
     // NOTE: We may want to return the table and its key separately later
     Ok(format!("{matrix_html}{key_html}\n"))
@@ -400,10 +414,7 @@ fn render_html(
 #[derive(Debug, thiserror::Error, Diagnostic)]
 enum Error {
     #[error("could not find file `{path}`")]
-    InputFile {
-        path: PathBuf,
-        source: io::Error,
-    },
+    InputFile { path: PathBuf, source: io::Error },
     #[error("could not parse YAML file `{path}`")]
     Parsing {
         path: PathBuf,
@@ -419,27 +430,20 @@ enum Error {
         errors: Vec<Error>,
     },
     #[error("invalid chip name `{found}` for board `{board}`")]
-    InvalidChipName {
-        found: String,
-        board: String,
-    },
+    InvalidChipName { found: String, board: String },
     #[error("invalid functionality name `{found}` for board `{board}`")]
-    InvalidFunctionalityNameBoard {
-        found: String,
-        board: String,
-    },
+    InvalidFunctionalityNameBoard { found: String, board: String },
     #[error("invalid functionality name `{found}` for chip `{chip}`")]
-    InvalidFunctionalityNameChip {
-        found: String,
-        chip: String,
-    },
+    InvalidFunctionalityNameChip { found: String, chip: String },
     #[error("invalid support key name `{found}` for functionality `{functionality}` for board `{board}`")]
     InvalidSupportKeyNameBoard {
         found: String,
         functionality: String,
         board: String,
     },
-    #[error("invalid support key name `{found}` for functionality `{functionality}` for chip `{chip}`")]
+    #[error(
+        "invalid support key name `{found}` for functionality `{functionality}` for chip `{chip}`"
+    )]
     InvalidSupportKeyNameChip {
         found: String,
         functionality: String,
@@ -452,88 +456,9 @@ enum Error {
         functionality: String,
     },
     #[error("could not write the output HTML file `{path}`")]
-    WritingOutputFile {
-        path: PathBuf,
-        source: io::Error,
-    },
+    WritingOutputFile { path: PathBuf, source: io::Error },
     #[error("could not read existing output HTML file `{path}`")]
-    ReadingExistingFile {
-        path: PathBuf,
-        source: io::Error,
-    },
+    ReadingExistingFile { path: PathBuf, source: io::Error },
     #[error("existing HTML file `{path}` is not up to date")]
-    ExistingHtmlNotUpToDate {
-        path: PathBuf,
-    },
-}
-
-mod schema {
-    use std::collections::HashMap;
-
-    use serde::{Deserialize, Serialize};
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    pub struct Matrix {
-        pub support_keys: Vec<SupportKeyInfo>,
-        pub functionalities: Vec<FunctionalityInfo>,
-        pub chips: HashMap<String, ChipInfo>,
-        pub boards: HashMap<String, BoardInfo>,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    pub struct SupportKeyInfo {
-        pub name: String,
-        pub icon: String,
-        pub description: String,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    pub struct FunctionalityInfo {
-        pub name: String,
-        pub title: String, // FIXME: rename this
-        pub description: String,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    pub struct ChipInfo {
-        pub name: String,
-        pub description: Option<String>,
-        pub support: HashMap<String, SupportInfo>,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    pub struct BoardInfo {
-        pub name: String,
-        pub description: Option<String>,
-        pub url: String,
-        pub chip: String,
-        pub tier: String,
-        pub support: HashMap<String, SupportInfo>,
-    }
-
-    #[derive(Debug, Serialize, Deserialize)]
-    #[serde(deny_unknown_fields)]
-    #[serde(untagged)]
-    pub enum SupportInfo {
-        StatusOnly(String),
-        Details {
-            status: String,
-            comments: Option<Vec<String>>,
-            link: Option<String>,
-        },
-    }
-
-    impl SupportInfo {
-        pub fn status(&self) -> &str {
-            match self {
-                SupportInfo::StatusOnly(status) => status,
-                SupportInfo::Details { status, .. } => status,
-            }
-        }
-    }
+    ExistingHtmlNotUpToDate { path: PathBuf },
 }
