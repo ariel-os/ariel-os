@@ -86,6 +86,22 @@ impl RngCore for FastRng {
     }
 }
 
+impl rand_core_06::RngCore for FastRng {
+    fn next_u32(&mut self) -> u32 {
+        self.inner.next_u32()
+    }
+    fn next_u64(&mut self) -> u64 {
+        self.inner.next_u64()
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.inner.fill_bytes(dest);
+    }
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+        // used rng is infallible, so we can just ignore the error
+        Ok(self.inner.fill_bytes(dest))
+    }
+}
+
 /// Same as [`FastRng`], but can be shared across threads and tasks.
 /// This is to differentiate from [`FastRng`] that could get optimized in a future version to use thread-local storage.
 /// Should be used only when sharing between threads is necessary (e.g. integrating with C code).
@@ -105,6 +121,22 @@ impl RngCore for FastRngSend {
     }
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         self.inner.fill_bytes(dest);
+    }
+}
+
+impl rand_core_06::RngCore for FastRngSend {
+    fn next_u32(&mut self) -> u32 {
+        self.inner.next_u32()
+    }
+    fn next_u64(&mut self) -> u64 {
+        self.inner.next_u64()
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.inner.fill_bytes(dest);
+    }
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+        // used rng is infallible, so we can just ignore the error
+        Ok(self.inner.fill_bytes(dest))
     }
 }
 
@@ -135,7 +167,23 @@ mod csprng {
         }
     }
 
+    impl rand_core_06::RngCore for CryptoRng {
+        fn next_u32(&mut self) -> u32 {
+            with_global(RngCore::next_u32)
+        }
+        fn next_u64(&mut self) -> u64 {
+            with_global(RngCore::next_u64)
+        }
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            with_global(|i| i.fill_bytes(dest));
+        }
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+            with_global(|i| Ok(i.fill_bytes(dest)))
+        }
+    }
+
     impl rand_core::CryptoRng for super::CryptoRng {}
+    impl rand_core_06::CryptoRng for super::CryptoRng {}
 
     /// Asserts that [`SelectedRng`] is [`CryptoRng`], justifying the implementation above.
     trait _AssertCryptoRng: rand_core::CryptoRng {}
@@ -170,7 +218,24 @@ mod csprng_send {
         }
     }
 
+    impl rand_core_06::RngCore for CryptoRngSend {
+        fn next_u32(&mut self) -> u32 {
+            self.inner.next_u32()
+        }
+        fn next_u64(&mut self) -> u64 {
+            self.inner.next_u64()
+        }
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            self.inner.fill_bytes(dest);
+        }
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+            // used rng is infallible, so we can just ignore the error
+            Ok(self.inner.fill_bytes(dest))
+        }
+    }
+
     impl rand_core::CryptoRng for super::CryptoRngSend {}
+    impl rand_core_06::CryptoRng for super::CryptoRngSend {}
 }
 
 /// Populates the global RNG from a seed value.

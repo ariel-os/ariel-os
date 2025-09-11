@@ -11,6 +11,7 @@ workspace = true
 
 [dependencies]
 rand_core = { workspace = true }
+rand-core-06 = { package = "rand_core", version = "0.6" }
 
 embassy-sync.workspace = true
 
