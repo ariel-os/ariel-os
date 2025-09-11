@@ -19,7 +19,7 @@
   - [Raspberry Pi Pico W](./boards/rpi-pico-w.md)
   - [nRF52-DK](./boards/nrf52dk.md)
   - [Nordic Thingy:91 X](./boards/nordic-thingy-91-x.md)
-  - [BBC micro:bit V!](./boards/bbc-microbit-v1.md)
+  - [BBC micro:bit V1](./boards/bbc-microbit-v1.md)
 - [Testing](./testing.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
