@@ -23,7 +23,7 @@ esp-hal = { workspace = true, default-features = false, features = [
   "optfield",
 ] }
 esp-hal-embassy = { workspace = true, default-features = false }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "wifi",
 ], optional = true }
@@ -49,7 +49,7 @@ esp-hal = { workspace = true, features = ["esp32"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
   "esp32",
 ] }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32"] }
@@ -59,7 +59,7 @@ esp-hal = { workspace = true, features = ["esp32c3"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
   "esp32c3",
 ] }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp32c3",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c3"] }
@@ -69,7 +69,7 @@ esp-hal = { workspace = true, features = ["esp32c6"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
   "esp32c6",
 ] }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp32c6",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c6"] }
@@ -79,7 +79,7 @@ esp-hal = { workspace = true, features = ["esp32s2"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
   "esp32s2",
 ] }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp32s2",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s2"] }
@@ -89,7 +89,7 @@ esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
   "esp32s3",
 ] }
-esp-wifi = { workspace = true, default-features = false, features = [
+esp-radio = { workspace = true, default-features = false, features = [
   "esp32s3",
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s3"] }
@@ -112,15 +112,20 @@ uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables threading support.
 threading = [
-  "esp-wifi?/preempt-extern",
   "dep:ariel-os-threads",
   "dep:esp-wifi-sys",
 ]
 
 ## Enables defmt support.
-defmt = ["dep:defmt", "esp-hal/defmt", "esp-wifi?/defmt", "fugit?/defmt"]
+defmt = [
+  "dep:defmt",
+  "esp-hal/defmt",
+  "esp-radio?/defmt",
+  "esp-radio-rtos-driver?/defmt",
+  "fugit?/defmt",
+]
 ## Enables log support.
-log = ["esp-hal/log", "esp-hal-embassy/log", "esp-wifi?/log"]
+log = ["esp-hal/log-04", "esp-hal-embassy/log-04", "esp-radio?/log-04"]
 
 # Enables USB support.
 usb = []
@@ -129,7 +134,7 @@ usb = []
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "wifi"]
+wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "wifi"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.

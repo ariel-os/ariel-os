@@ -1587,7 +1587,7 @@ modules:
       - network_device
     env:
       global:
-        # esp-wifi needs a lot of ISR stack.
+        # esp-radio needs a lot of ISR stack.
         isr_stacksize_required:
           - "32768"
         # heap size is configured by the device

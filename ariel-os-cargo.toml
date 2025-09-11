@@ -12,7 +12,7 @@ debug = true # Required for defmt
 lto = false
 opt-level = "s"
 
-[profile.release.package.esp-wifi]
+[profile.release.package.esp-radio]
 opt-level = 3
 
 [patch.crates-io]
@@ -29,13 +29,13 @@ embassy-rp = { git = "https://github.com/kaspar030/embassy", rev = "0314802282e1
 # branch = "embassy-stm32-v0.4.0+ariel-os"
 embassy-stm32 = { git = "https://github.com/kaspar030/embassy", rev = "1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c" }
 
-# ariel-os esp-hal fork, using branch = "v0.23.1+ariel-os-threads"
-esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
-esp-hal = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
-esp-hal-embassy = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
-esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
-esp-wifi = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
-xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
+# ariel-os esp-hal fork, using branch = "esp-hal-20250911+ariel-os"
+esp-alloc = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
+esp-hal = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
+esp-hal-embassy = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
+esp-println = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
+esp-radio = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
+xtensa-lx-rt = { git = "https://github.com/kaspar030/esp-hal", rev = "5ec9e2da3e013486432af1ac0062d9260b98a9ad" }
 
 # branch = "v0.6.2+ariel-os"
 embedded-test = { git = "https://github.com/ariel-os/embedded-test", rev = "20642538eb4e6fa44b5f37723b07946c74b5c757" }
