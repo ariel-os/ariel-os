@@ -84,9 +84,6 @@ impl RngCore for FastRng {
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         self.inner.fill_bytes(dest);
     }
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.inner.try_fill_bytes(dest)
-    }
 }
 
 /// Same as [`FastRng`], but can be shared across threads and tasks.
@@ -108,9 +105,6 @@ impl RngCore for FastRngSend {
     }
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         self.inner.fill_bytes(dest);
-    }
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.inner.try_fill_bytes(dest)
     }
 }
 
@@ -138,9 +132,6 @@ mod csprng {
         }
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             with_global(|i| i.fill_bytes(dest));
-        }
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-            with_global(|i| i.try_fill_bytes(dest))
         }
     }
 
@@ -177,9 +168,6 @@ mod csprng_send {
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             self.inner.fill_bytes(dest);
         }
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-            self.inner.try_fill_bytes(dest)
-        }
     }
 
     impl rand_core::CryptoRng for super::CryptoRngSend {}
@@ -192,11 +180,9 @@ mod csprng_send {
 /// - Panics if the underlying RNG returns an error.
 /// - Panics if this function is called multiple times.
 #[doc(hidden)]
-pub fn construct_rng(hwrng: impl RngCore) {
-    RNG.init(RefCell::new(
-        SelectedRng::from_rng(hwrng).expect("Hardware RNG failed to provide entropy"),
-    ))
-    .unwrap();
+pub fn construct_rng(hwrng: &mut impl RngCore) {
+    RNG.init(RefCell::new(SelectedRng::from_rng(hwrng)))
+        .unwrap();
 }
 
 /// Returns a suitably initialized fast random number generator.
@@ -205,7 +191,7 @@ pub fn construct_rng(hwrng: impl RngCore) {
 #[inline]
 pub fn fast_rng() -> FastRng {
     FastRng {
-        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i).expect("Global RNG is infallible")),
+        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i)),
         _private: PhantomData,
     }
 }
@@ -218,7 +204,7 @@ pub fn fast_rng() -> FastRng {
 #[inline]
 pub fn fast_rng_send() -> FastRngSend {
     FastRngSend {
-        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i).expect("Global RNG is infallible")),
+        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i)),
     }
 }
 
@@ -241,8 +227,6 @@ pub fn crypto_rng() -> CryptoRng {
 #[cfg(feature = "csprng")]
 pub fn crypto_rng_send() -> CryptoRngSend {
     CryptoRngSend {
-        inner: with_global(|i| {
-            rand_chacha::ChaCha20Rng::from_rng(i).expect("Global RNG is infallible")
-        }),
+        inner: with_global(|i| rand_chacha::ChaCha20Rng::from_rng(i)),
     }
 }

@@ -9,7 +9,7 @@ async fn main() {
     let mut rng = ariel_os::random::fast_rng();
 
     for _ in 0..10 {
-        let value = rng.gen_range(1..=6);
+        let value = rng.random_range(1..=6);
         info!("The random value of this round is {}.", value);
     }
 }
