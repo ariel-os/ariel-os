@@ -191,7 +191,6 @@ pub mod input {
     use ariel_os_embassy_common::gpio::Pull;
 
     use crate::hal::{self, gpio::input::InputPin as HalInputPin, peripheral::Peri};
-    use crate::hal::{self, gpio::input::InputPin as HalInputPin, peripheral::Peripheral};
 
     use super::Input;
 
