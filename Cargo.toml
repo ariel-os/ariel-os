@@ -147,15 +147,15 @@ once_cell = { version = "=1.19.0", default-features = false, features = [
 paste = { version = "1.0" }
 pin-project = "1.1.10"
 rand = { version = "0.8.5", default-features = false }
-rand_core = { version = "0.6.4", default-features = false }
+rand_core = { version = "0.9.3", default-features = false }
 rtt-target = { version = "0.6.0" }
 
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.1.1", default-features = false }
-trouble-host = "0.1"
-bt-hci = { version = "0.4.0" }
-nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691ec6850b05a0382cef395846b67e02" }
+trouble-host = { version = "0.4.0" }
+bt-hci = { version = "0.6.0" }
+nrf-sdc = { version = "0.3.0" }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html
