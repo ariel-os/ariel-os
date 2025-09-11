@@ -161,9 +161,12 @@ rtt-target = { version = "0.6.0" }
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.1.1", default-features = false }
-trouble-host = "0.1"
-bt-hci = { version = "0.4.0" }
-nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691ec6850b05a0382cef395846b67e02" }
+trouble-host = { version = "0.5.0" }
+bt-hci = { version = "0.6.0" }
+
+# nrf-sdc 0.4.0 has not been released, yet. need it for bt-hci 0.6 bump
+#nrf-sdc = { version = "0.4.0" }
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
 
 nrf-modem = { version = "0.7.3" }
 tinyrlibc = "0.5.0"
