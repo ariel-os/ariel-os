@@ -74,7 +74,8 @@ impl<T> Delegate<T> {
     ///
     /// This must only be called *once* per [`Delegate`] instance.
     pub async unsafe fn lend<'a, 'b: 'a>(&'a self, something: &'b mut T) {
-        let spawner = Spawner::for_current_executor().await;
+        // SAFETY: safe unless intentionally exploited.
+        let spawner = unsafe { Spawner::for_current_executor().await };
         self.send.signal(SameExecutorCell::new(
             core::ptr::from_mut::<T>(something),
             spawner,
@@ -95,7 +96,8 @@ impl<T> Delegate<T> {
         assert!(!self.was_exercised.swap(true, Ordering::AcqRel));
 
         let data = self.send.wait().await;
-        let spawner = Spawner::for_current_executor().await;
+        // SAFETY: safe unless intentionally exploited.
+        let spawner = unsafe { Spawner::for_current_executor().await };
         // SAFETY:
         // - SameExecutorCell guarantees that data `lend()`ed stays on the same executor,
         //   which is single-threaded

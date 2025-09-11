@@ -181,7 +181,8 @@ fn init() {
 
 #[embassy_executor::task]
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
-    let spawner = asynch::Spawner::for_current_executor().await;
+    // SAFETY: this is executed in a non-public task using only Embassy executors.
+    let spawner = unsafe { asynch::Spawner::for_current_executor().await };
     asynch::set_spawner(spawner.make_send());
 
     #[cfg(feature = "debug-uart")]
