@@ -14,6 +14,8 @@
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
 - [Persistent Storage](./storage.md)
+- [Boards](./boards/index.md)
+  - [Raspberry Pi Pico W](./boards/rpi-pico-w.md)
 - [Testing](./testing.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
