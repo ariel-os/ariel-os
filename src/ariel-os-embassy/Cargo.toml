@@ -106,6 +106,8 @@ udp = ["embassy-net?/udp"]
 dns = ["embassy-net?/dns"]
 ## Enables support for mDNS.
 mdns = ["embassy-net?/mdns"]
+## Enables support for multicast (for both IPv4 and/or IPv6 if enabled).
+multicast = ["embassy-net?/multicast"]
 
 ## Enable storage support [`ariel-os::storage`].
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]

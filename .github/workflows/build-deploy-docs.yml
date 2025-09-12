@@ -79,6 +79,7 @@ jobs:
                   hwrng,
                   i2c,
                   mdns,
+                  multicast,
                   net,
                   no-boards,
                   random,

@@ -77,6 +77,8 @@ udp = ["ariel-os-embassy/udp"]
 dns = ["ariel-os-embassy/dns"]
 ## Enables support for mDNS.
 mdns = ["ariel-os-embassy/mdns"]
+## Enables support for multicast (for both IPv4 and/or IPv6 if enabled).
+multicast = ["ariel-os-embassy/multicast"]
 ## Enables support for [CoAP](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html).
 coap = ["dep:ariel-os-coap", "random"]
 ## Enables applications to set up CoAP server handlers.
