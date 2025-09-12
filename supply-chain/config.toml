@@ -1,0 +1,1357 @@
+
+# cargo-vet config file
+
+[cargo-vet]
+version = "0.10"
+
+[imports.bytecode-alliance]
+url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/main/supply-chain/audits.toml"
+
+[imports.embark-studios]
+url = "https://raw.githubusercontent.com/EmbarkStudios/rust-ecosystem/main/audits.toml"
+
+[imports.google]
+url = "https://raw.githubusercontent.com/google/supply-chain/main/audits.toml"
+
+[imports.isrg]
+url = "https://raw.githubusercontent.com/divviup/libprio-rs/main/supply-chain/audits.toml"
+
+[imports.mozilla]
+url = "https://raw.githubusercontent.com/mozilla/supply-chain/main/audits.toml"
+
+[imports.zcash]
+url = "https://raw.githubusercontent.com/zcash/rust-ecosystem/main/supply-chain/audits.toml"
+
+[policy.coapcore]
+audit-as-crates-io = true
+
+[policy.embassy-embedded-hal]
+audit-as-crates-io = true
+
+[policy.embassy-executor]
+audit-as-crates-io = true
+
+[policy.embassy-executor-macros]
+audit-as-crates-io = true
+
+[policy.embassy-hal-internal]
+audit-as-crates-io = true
+
+[policy.embassy-net]
+audit-as-crates-io = true
+
+[policy.embassy-nrf]
+audit-as-crates-io = true
+
+[policy.embassy-rp]
+audit-as-crates-io = true
+
+[policy.embassy-stm32]
+audit-as-crates-io = true
+
+[policy.embassy-time]
+audit-as-crates-io = true
+
+[policy.embedded-test]
+audit-as-crates-io = true
+
+[policy.embedded-test-macros]
+audit-as-crates-io = true
+
+[policy.esp-alloc]
+audit-as-crates-io = true
+
+[policy.esp-build]
+audit-as-crates-io = true
+
+[policy.esp-config]
+audit-as-crates-io = true
+
+[policy.esp-hal]
+audit-as-crates-io = true
+
+[policy.esp-hal-embassy]
+audit-as-crates-io = true
+
+[policy.esp-hal-procmacros]
+audit-as-crates-io = true
+
+[policy.esp-metadata]
+audit-as-crates-io = true
+
+[policy.esp-println]
+audit-as-crates-io = true
+
+[policy.esp-riscv-rt]
+audit-as-crates-io = true
+
+[policy.esp-wifi]
+audit-as-crates-io = true
+
+[policy.hax-lib]
+audit-as-crates-io = true
+
+[policy.hax-lib-macros]
+audit-as-crates-io = true
+
+[policy.hax-lib-macros-types]
+audit-as-crates-io = true
+
+[policy.nrf-mpsl]
+audit-as-crates-io = true
+
+[policy.nrf-mpsl-sys]
+audit-as-crates-io = true
+
+[policy.nrf-sdc]
+audit-as-crates-io = true
+
+[policy.nrf-sdc-sys]
+audit-as-crates-io = true
+
+[policy.rbi]
+audit-as-crates-io = true
+
+[policy.try-lock]
+audit-as-crates-io = true
+
+[policy.xtensa-lx]
+audit-as-crates-io = true
+
+[policy.xtensa-lx-rt]
+audit-as-crates-io = true
+
+[policy.xtensa-lx-rt-proc-macros]
+audit-as-crates-io = true
+
+[[exemptions.Inflector]]
+version = "0.11.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.aead]]
+version = "0.5.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.aes]]
+version = "0.8.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.aes-gcm]]
+version = "0.10.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.ahash]]
+version = "0.8.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.aligned]]
+version = "0.4.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.as-slice]]
+version = "0.1.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.as-slice]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.ascii-canvas]]
+version = "4.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.atomic-polyfill]]
+version = "1.0.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.atomic-wait]]
+version = "1.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.az]]
+version = "1.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.bare-metal]]
+version = "0.2.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.base16ct]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.bindgen]]
+version = "0.70.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.bitfield]]
+version = "0.13.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.bitfield]]
+version = "0.14.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.bitfield]]
+version = "0.17.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.block-device-driver]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.bs58]]
+version = "0.5.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.bt-hci]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.buffered-io]]
+version = "0.5.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.build-rs]]
+version = "0.1.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.bytemuck]]
+version = "1.23.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.cbindgen]]
+version = "0.24.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.cbor-diag]]
+version = "0.1.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.cbor-edn]]
+version = "0.0.9"
+criteria = "safe-to-deploy"
+
+[[exemptions.cbor-macro]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.cboritem]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.ccm]]
+version = "0.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.chacha20]]
+version = "0.9.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.chacha20poly1305]]
+version = "0.10.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.chrono]]
+version = "0.4.41"
+criteria = "safe-to-deploy"
+
+[[exemptions.ciborium-io]]
+version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.clang-sys]]
+version = "1.8.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.clio]]
+version = "0.3.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-handler]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-handler-implementations]]
+version = "0.5.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-message]]
+version = "0.3.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-message-demos]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-message-implementations]]
+version = "0.1.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-message-utils]]
+version = "0.3.8"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-numbers]]
+version = "0.2.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-request]]
+version = "0.2.0-alpha.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-request-implementations]]
+version = "0.1.0-alpha.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.coap-scroll-ring-server]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.coapcore]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.cobs]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.const-default]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.const-oid]]
+version = "0.9.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.const-sha1]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.const-str]]
+version = "0.6.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.const_panic]]
+version = "0.2.14"
+criteria = "safe-to-deploy"
+
+[[exemptions.cortex-m]]
+version = "0.7.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.cortex-m-rt]]
+version = "0.7.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.cortex-m-rt-macros]]
+version = "0.7.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.cortex-m-semihosting]]
+version = "0.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.cpufeatures]]
+version = "0.2.17"
+criteria = "safe-to-deploy"
+
+[[exemptions.crc]]
+version = "3.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.crc-any]]
+version = "2.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.crc-catalog]]
+version = "2.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.critical-section]]
+version = "1.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.crossbeam-utils]]
+version = "0.8.21"
+criteria = "safe-to-deploy"
+
+[[exemptions.crypto-bigint]]
+version = "0.5.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.ctr]]
+version = "0.9.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.cyw43]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.cyw43-pio]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.darling]]
+version = "0.20.11"
+criteria = "safe-to-deploy"
+
+[[exemptions.darling_core]]
+version = "0.20.11"
+criteria = "safe-to-deploy"
+
+[[exemptions.darling_macro]]
+version = "0.20.11"
+criteria = "safe-to-deploy"
+
+[[exemptions.data-encoding]]
+version = "2.9.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.data-encoding-macro]]
+version = "0.1.18"
+criteria = "safe-to-deploy"
+
+[[exemptions.data-encoding-macro-internal]]
+version = "0.1.16"
+criteria = "safe-to-deploy"
+
+[[exemptions.debug-helper]]
+version = "0.3.13"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt]]
+version = "0.3.100"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt]]
+version = "1.0.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt-macros]]
+version = "1.0.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt-or-log]]
+version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt-or-log-macros]]
+version = "0.1.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.defmt-parser]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.delegate]]
+version = "0.13.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.der]]
+version = "0.7.10"
+criteria = "safe-to-deploy"
+
+[[exemptions.digest]]
+version = "0.10.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.doxygen-rs]]
+version = "0.4.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.ecdsa]]
+version = "0.16.9"
+criteria = "safe-to-deploy"
+
+[[exemptions.elliptic-curve]]
+version = "0.13.8"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-embedded-hal]]
+version = "0.3.0@git:21147bdceb85f55e375973f30e47c17036063689"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-executor]]
+version = "0.7.0@git:b552a87578479a92b3027bd208c712445499589c"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-executor-macros]]
+version = "0.6.2@git:1b08496e441cfd2b2e9660fe0cc589c3bc5f0824"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-futures]]
+version = "0.1.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-hal-internal]]
+version = "0.2.0@git:ed7d22c1881b64f9bdd2e69a5777b002279033a6"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-net]]
+version = "0.6.0@git:3d9f77ee05cdb18f1cd676233bcda9b6f7be3369"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-net-driver]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-net-driver-channel]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-nrf]]
+version = "0.3.1@git:1d258e63acc0a322ccea28786a4143115ba303b8"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-rp]]
+version = "0.4.0@git:1dd58227a73efa8da2aef96aaccf17b8749b9f7b"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-stm32]]
+version = "0.2.0@git:90c8da09646d5fd97b7d416720688dcd3da1ecfb"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-sync]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-sync]]
+version = "0.6.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-time]]
+version = "0.4.0@git:f9b4c8132b07ef696668005846ee2240a8f57573"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-time-driver]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-time-queue-utils]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-usb]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-usb-driver]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-usb-synopsys-otg]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-alloc]]
+version = "0.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-can]]
+version = "0.4.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-graphics]]
+version = "0.6.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-hal]]
+version = "0.2.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-hal]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-hal-async]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-hal-nb]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-io]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-io-async]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-nal]]
+version = "0.9.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-nal-async]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-nal-coap]]
+version = "0.1.0-alpha.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-storage]]
+version = "0.3.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-storage-async]]
+version = "0.4.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-test]]
+version = "0.6.2@git:20642538eb4e6fa44b5f37723b07946c74b5c757"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-test-macros]]
+version = "0.6.1@git:20642538eb4e6fa44b5f37723b07946c74b5c757"
+criteria = "safe-to-deploy"
+
+[[exemptions.embedded-tls]]
+version = "0.17.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.ena]]
+version = "0.14.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.encode_unicode]]
+version = "0.3.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.enum-as-inner]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.enumset]]
+version = "1.1.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.enumset_derive]]
+version = "0.11.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-alloc]]
+version = "0.6.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-build]]
+version = "0.2.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-config]]
+version = "0.3.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-hal]]
+version = "0.23.1@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-hal-embassy]]
+version = "0.6.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-hal-procmacros]]
+version = "0.16.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-metadata]]
+version = "0.5.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-println]]
+version = "0.13.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-riscv-rt]]
+version = "0.9.1@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-synopsys-usb-otg]]
+version = "0.4.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-wifi]]
+version = "0.12.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-wifi-sys]]
+version = "0.7.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32]]
+version = "0.35.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32c2]]
+version = "0.24.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32c3]]
+version = "0.27.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32c6]]
+version = "0.18.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32h2]]
+version = "0.14.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32s2]]
+version = "0.26.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32s3]]
+version = "0.30.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.eyre]]
+version = "0.6.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.featurecomb]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.featurecomb-schema]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.fixed]]
+version = "1.29.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.fixedbitset]]
+version = "0.5.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.fugit]]
+version = "0.3.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.futures-intrusive]]
+version = "0.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.futures-task]]
+version = "0.3.31"
+criteria = "safe-to-deploy"
+
+[[exemptions.futures-util]]
+version = "0.3.31"
+criteria = "safe-to-deploy"
+
+[[exemptions.gcd]]
+version = "2.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.generic-array]]
+version = "0.12.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.generic-array]]
+version = "0.13.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.generic-array]]
+version = "0.14.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.getrandom]]
+version = "0.2.16"
+criteria = "safe-to-deploy"
+
+[[exemptions.getrandom]]
+version = "0.3.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.ghash]]
+version = "0.5.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.half]]
+version = "2.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.hash32]]
+version = "0.1.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.hash32]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.hash32]]
+version = "0.3.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.hax-lib]]
+version = "0.1.0-pre.1@git:cc29a3f8c0eee80a1682be78cb3b0447a0257d5b"
+criteria = "safe-to-deploy"
+
+[[exemptions.hax-lib-macros]]
+version = "0.1.0-pre.1@git:cc29a3f8c0eee80a1682be78cb3b0447a0257d5b"
+criteria = "safe-to-deploy"
+
+[[exemptions.hax-lib-macros-types]]
+version = "0.1.0-pre.1@git:cc29a3f8c0eee80a1682be78cb3b0447a0257d5b"
+criteria = "safe-to-deploy"
+
+[[exemptions.heapless]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.heapless]]
+version = "0.7.17"
+criteria = "safe-to-deploy"
+
+[[exemptions.heapless]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.hermit-abi]]
+version = "0.5.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.hexfloat2]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.hexlit]]
+version = "0.5.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.hkdf]]
+version = "0.12.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.indenter]]
+version = "0.3.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.instability]]
+version = "0.3.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.itertools]]
+version = "0.13.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.itertools]]
+version = "0.14.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.keccak]]
+version = "0.1.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.lakers]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.lakers-crypto-rustcrypto]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.lakers-shared]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.lalrpop]]
+version = "0.22.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.lalrpop-util]]
+version = "0.22.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.ld-memory]]
+version = "0.2.9"
+criteria = "safe-to-deploy"
+
+[[exemptions.lhash]]
+version = "1.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.libloading]]
+version = "0.8.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.liboscore]]
+version = "0.2.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.liboscore-cryptobackend]]
+version = "0.2.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.liboscore-msgbackend]]
+version = "0.2.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.libyml]]
+version = "0.0.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.linked_list_allocator]]
+version = "0.10.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.managed]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor]]
+version = "0.19.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor]]
+version = "0.24.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor]]
+version = "0.26.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor-adapters]]
+version = "0.0.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor-derive]]
+version = "0.15.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.minicbor-derive]]
+version = "0.16.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.minijinja]]
+version = "2.10.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.minimal-lexical]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.nourl]]
+version = "0.1.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf-mpsl]]
+version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf-mpsl-sys]]
+version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf-pac]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf-sdc]]
+version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf-sdc-sys]]
+version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
+criteria = "safe-to-deploy"
+
+[[exemptions.num_enum]]
+version = "0.7.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.num_enum_derive]]
+version = "0.7.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.object]]
+version = "0.36.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.once_cell]]
+version = "1.19.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.optfield]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.p256]]
+version = "0.13.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.panic-semihosting]]
+version = "0.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.peg]]
+version = "0.8.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.peg-macros]]
+version = "0.8.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.peg-runtime]]
+version = "0.8.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.petgraph]]
+version = "0.7.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.pico-args]]
+version = "0.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.picoserve]]
+version = "0.14.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.picoserve_derive]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.pin-project]]
+version = "1.1.10"
+criteria = "safe-to-deploy"
+
+[[exemptions.pin-project-internal]]
+version = "1.1.10"
+criteria = "safe-to-deploy"
+
+[[exemptions.pio]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.pio-core]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.pio-parser]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.pio-proc]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.poly1305]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.polyval]]
+version = "0.6.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.portable-atomic]]
+version = "1.11.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.portable_atomic_enum]]
+version = "0.3.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.portable_atomic_enum_macros]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.postcard]]
+version = "1.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.postcard-derive]]
+version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.ppv-lite86]]
+version = "0.2.21"
+criteria = "safe-to-deploy"
+
+[[exemptions.pretty-hex]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.primeorder]]
+version = "0.13.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.proc-macro-crate]]
+version = "3.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.proc-macro-error]]
+version = "1.0.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.proc-macro-error-attr2]]
+version = "2.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.proc-macro-error2]]
+version = "2.0.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.r-efi]]
+version = "5.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.r0]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.ral-registers]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.rand_pcg]]
+version = "0.3.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.rbi]]
+version = "0.1.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.redox_syscall]]
+version = "0.5.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.reqwless]]
+version = "0.13.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.rfc6979]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.rgb]]
+version = "0.8.50"
+criteria = "safe-to-deploy"
+
+[[exemptions.ringbuf]]
+version = "0.3.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.riscv]]
+version = "0.12.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.riscv-macros]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.riscv-pac]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.riscv-rt-macros]]
+version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.rlsf]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.rp-binary-info]]
+version = "0.1.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.rp-pac]]
+version = "7.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.rp2040-boot2]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.rtt-target]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.rustc_version]]
+version = "0.2.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.scroll-ring]]
+version = "0.1.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.sdio-host]]
+version = "0.5.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.sec1]]
+version = "0.7.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.semihosting]]
+version = "0.1.20"
+criteria = "safe-to-deploy"
+
+[[exemptions.semver]]
+version = "0.9.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.semver-parser]]
+version = "0.7.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.separator]]
+version = "0.4.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.sequential-storage]]
+version = "4.0.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.serde-json-core]]
+version = "0.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.serde_yml]]
+version = "0.0.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.sha2-const-stable]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.siphasher]]
+version = "1.0.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.smart-leds]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.smart-leds-trait]]
+version = "0.3.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.smoltcp]]
+version = "0.12.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.spin]]
+version = "0.9.8"
+criteria = "safe-to-deploy"
+
+[[exemptions.ssmarshal]]
+version = "1.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.static_cell]]
+version = "2.1.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.stm32-fmc]]
+version = "0.3.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.stm32-metapac]]
+version = "16.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.string_cache]]
+version = "0.8.9"
+criteria = "safe-to-deploy"
+
+[[exemptions.svgbobdoc]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.switch-hal]]
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.tempfile]]
+version = "3.20.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.term]]
+version = "1.0.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.trouble-host]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.trouble-host-macros]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.try-lock]]
+version = "0.2.5@git:45c39685b56a4dba1b71bdbbbe5f731c3c77dc50"
+criteria = "safe-to-deploy"
+
+[[exemptions.typenum]]
+version = "1.18.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.typewit]]
+version = "1.11.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.ufmt-write]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.usb-device]]
+version = "0.3.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.usbd-hid]]
+version = "0.8.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.usbd-hid-descriptors]]
+version = "0.8.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.usbd-hid-macros]]
+version = "0.8.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.uuid]]
+version = "1.16.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.vcell]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.version_check]]
+version = "0.9.5"
+criteria = "safe-to-deploy"
+
+[[exemptions.volatile-register]]
+version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.windowed-infinity]]
+version = "0.1.8"
+criteria = "safe-to-deploy"
+
+[[exemptions.xtensa-lx]]
+version = "0.10.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.xtensa-lx-rt]]
+version = "0.18.0@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.xtensa-lx-rt-proc-macros]]
+version = "0.2.2@git:aa8d1995fc06eb5e6d04a2022ecf3679b4929e63"
+criteria = "safe-to-deploy"
+
+[[exemptions.zerocopy]]
+version = "0.8.25"
+criteria = "safe-to-deploy"
+
+[[exemptions.zerocopy-derive]]
+version = "0.8.25"
+criteria = "safe-to-deploy"

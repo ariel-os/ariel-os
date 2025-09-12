@@ -58,7 +58,7 @@ jobs:
       # a correct use for it (specifically referring to the GUI concept), it is
       # totally fine to remove this lint.
       - name: Check for occurrences of the word fold_er (without the underscore)
-        run: set +e; grep -ri "fold""er" --line-number --exclude-dir=.git; test $? -eq 1
+        run: set +e; grep -ri "fold""er" --line-number --exclude-dir=.git --exclude-dir=supply-chain; test $? -eq 1
 
       # This should be replaced with a Clippy lint when one exists.
       - name: Check for leftover occurrences of the `authors` key in manifests

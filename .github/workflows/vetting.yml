@@ -1,0 +1,29 @@
+name: Dependency Vetting
+on:
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+jobs:
+  cargo-vet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - id: get_toolchain
+        run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
+
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+
+      - name: Install cargo-vet
+        uses: taiki-e/install-action@c0dee14250395ae6b1754a99f67c1d693138b102 # v2
+        with:
+          tool: cargo-vet@0.10.0
+
+      - name: Invoke cargo-vet
+        run: cargo vet --locked
