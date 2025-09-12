@@ -45,32 +45,30 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         }
     });
 
-    let reading_channels_from_impls = (1..=count)
-        .map(|i| {
-            let variant = variant_name(i);
-            quote! {
-                impl From<[ReadingChannel; #i]> for ReadingChannels {
-                    fn from(value: [ReadingChannel; #i]) -> Self {
-                        Self { channels: InnerReadingChannels::#variant(value) }
-                    }
+    let reading_channels_from_impls = (1..=count).map(|i| {
+        let variant = variant_name(i);
+        quote! {
+            impl From<[ReadingChannel; #i]> for ReadingChannels {
+                fn from(value: [ReadingChannel; #i]) -> Self {
+                    Self { channels: InnerReadingChannels::#variant(value) }
                 }
             }
-        });
+        }
+    });
     let reading_channels_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! { #variant([ReadingChannel; #i]) }
     });
 
-    let samples_iter = (1..=count)
-        .map(|i| {
-            let variant = variant_name(i);
-            quote! { InnerSamples::#variant(ref samples) => samples.iter().copied() }
-        });
-    let reading_channels_iter = (1..=count)
-        .map(|i| {
-            let variant = variant_name(i);
-            quote! { InnerReadingChannels::#variant(ref channels) => channels.iter().copied() }
-        });
+    let samples_iter = (1..=count).map(|i| {
+        let variant = variant_name(i);
+        quote! { InnerSamples::#variant(ref samples) => samples.iter().copied() }
+    });
+
+    let reading_channels_iter = (1..=count).map(|i| {
+        let variant = variant_name(i);
+        quote! { InnerReadingChannels::#variant(ref channels) => channels.iter().copied() }
+    });
 
     let expanded = quote! {
         /// For driver implementors only, access to the sensor.
@@ -141,6 +139,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             fn sensor(&self) -> &'static dyn Sensor {
                 self.sensor
             }
+
         }
 
         impl UnfilteredSamples for Samples {

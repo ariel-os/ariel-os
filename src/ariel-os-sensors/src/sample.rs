@@ -4,6 +4,9 @@
 pub enum ValueError {
     /// The value is not available at the moment (i.e., part of the sensor is not ready yet).
     TemporarilyUnavailable,
+
+    /// The value is opaque, should be used with the relevant function.
+    Opaque,
 }
 
 #[expect(clippy::doc_markdown)]
@@ -56,6 +59,8 @@ impl Sample {
     ///
     /// An error is returned if this value is temporarily unavailable (this part of the sensor is not ready).
     pub fn value(&self) -> Result<i32, ValueError> {
+        // TODO: find a way to check if the value is opaque.
+
         match self.accuracy {
             Accuracy::ValueTemporarilyUnavailable => Err(ValueError::TemporarilyUnavailable),
             Accuracy::NoError
