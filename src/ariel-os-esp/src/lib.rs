@@ -7,6 +7,10 @@
 #[cfg(all(feature = "threading", feature = "wifi"))]
 mod preempt;
 
+#[cfg(feature = "ble-esp")]
+#[doc(hidden)]
+pub mod ble;
+
 pub mod gpio;
 
 #[cfg(feature = "hwrng")]
@@ -137,6 +141,13 @@ pub use esp_hal::peripherals::OptionalPeripherals;
 #[doc(hidden)]
 pub use esp_hal_embassy::Executor;
 
+#[cfg(any(feature = "wifi-esp", feature = "ble-esp"))]
+use once_cell::sync::OnceCell;
+
+#[cfg(any(feature = "wifi-esp", feature = "ble-esp"))]
+#[doc(hidden)]
+pub static WIFI_INIT: OnceCell<esp_wifi::EspWifiController<'_>> = OnceCell::new();
+
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
@@ -151,7 +162,7 @@ pub fn init() -> OptionalPeripherals {
     #[cfg(feature = "hwrng")]
     ariel_os_random::construct_rng(rng);
 
-    #[cfg(feature = "wifi-esp")]
+    #[cfg(any(feature = "wifi-esp", feature = "ble-esp"))]
     {
         use esp_hal::timer::timg::TimerGroup;
 
@@ -159,9 +170,11 @@ pub fn init() -> OptionalPeripherals {
 
         let timer = TimerGroup::new(peripherals.TIMG0.take().unwrap()).timer0;
 
+        ariel_os_debug::log::info!("before esp_wifi::init()");
         let init = esp_wifi::init(timer, rng, peripherals.RADIO_CLK.take().unwrap()).unwrap();
+        ariel_os_debug::log::info!("after esp_wifi::init()");
 
-        wifi::esp_wifi::WIFI_INIT.set(init).unwrap();
+        WIFI_INIT.set(init).unwrap();
     }
 
     let embassy_timer = {
