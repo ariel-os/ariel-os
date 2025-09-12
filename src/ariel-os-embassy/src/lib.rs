@@ -71,7 +71,9 @@ pub mod api {
 
         // NOTE: we may want to re-export more items in the future, but not re-export the whole
         // crate.
-        pub use embassy_time::{Delay, Duration, Instant, TICK_HZ, Timer};
+        pub use embassy_time::{
+            Delay, Duration, Instant, TICK_HZ, TimeoutError, Timer, with_timeout,
+        };
     }
 
     #[cfg(feature = "ble")]
