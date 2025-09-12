@@ -52,6 +52,20 @@ This comment contains links that allow accessing the deployed documentation.
 
 > When making a PR with changes that affect the documentation, the preview should be checked to make sure the docs are rendered as expected.
 
+## Dependency Vetting
+
+We are currently experimenting with the process of vetting our Rust dependencies through [`cargo-vet`][cargo-vet-repo], with the aim of defending against supply-chain attacks.
+Please see [`cargo-vet`'s book][cargo-vet-book] for what it can do and how it works.
+
+Our `cargo-vet` configuration [imports the audits][cargo-vet-importing-audits] of the main organizations that make their audits available (and are in the official `cargo-vet` registry) and trusts either well-known publishers or publishers that are trusted by these organizations.
+
+Only team members are allowed to vet dependencies, which is required when either adding new dependencies or updating existing ones.
+Currently, `cargo-vet` is run in CI for each PR; if this proves too time-consuming, we may later revisit this and only vet dependencies for releases.
+
+Vetting a dependency involves either [performing an audit][cargo-vet-performing-audits], [trusting (all of) its publishers][cargo-vet-trusting-publishers], or adding an exemption (in which case it is not actually “vetted”).
+As we are still figuring out our vetting workflow, we are currently fine with adding new exemptions for both new crates and dependency updates.
+We may also introduce a [custom criteria][cargo-vet-custom-criteria] to reflect the actual meaning of our auditing process.
+
 ## Release Checklist
 
 The following steps must be followed when preparing a new release of `ariel-os`:
@@ -78,3 +92,9 @@ The following steps must be followed when preparing a new release of `ariel-os`:
 [issue-label-changelog-skip]: https://github.com/ariel-os/ariel-os/issues?q=state%3Aopen%20label%3Achangelog%3Askip
 [crates-io]: https://crates.io
 [conventional-commits-spec]: https://www.conventionalcommits.org/en/v1.0.0/
+[cargo-vet-repo]: https://github.com/mozilla/cargo-vet
+[cargo-vet-book]: https://mozilla.github.io/cargo-vet/
+[cargo-vet-importing-audits]: https://mozilla.github.io/cargo-vet/importing-audits.html
+[cargo-vet-custom-criteria]: https://mozilla.github.io/cargo-vet/audit-criteria.html#custom-criteria
+[cargo-vet-trusting-publishers]: https://mozilla.github.io/cargo-vet/trusting-publishers.html
+[cargo-vet-performing-audits]: https://mozilla.github.io/cargo-vet/performing-audits.html
