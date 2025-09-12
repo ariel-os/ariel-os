@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensors
+    selects:
+      - host-test-only

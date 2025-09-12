@@ -32,3 +32,5 @@ max-sample-min-count-7 = ["ariel-os-macros/max-sample-min-count-7"]
 max-sample-min-count-8 = ["ariel-os-macros/max-sample-min-count-8"]
 max-sample-min-count-9 = ["ariel-os-macros/max-sample-min-count-9"]
 max-sample-min-count-12 = ["ariel-os-macros/max-sample-min-count-12"]
+
+_test = []
