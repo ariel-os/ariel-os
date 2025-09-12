@@ -16,12 +16,28 @@
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum Label {
+    /// Altitude
+    Altitude,
+    /// Ground Speed
+    GroundSpeed,
+    /// Latitude
+    Latitude,
+    /// Longitude
+    Longitude,
     /// Used for sensor drivers returning a single [`Sample`](crate::sensor::Sample).
     Main,
     /// Relative humidity.
     RelativeHumidity,
+    /// Heading
+    Heading,
     /// Temperature.
     Temperature,
+    /// Time elapsed since Ariel epoch (2024-01-01).
+    Time,
+    /// Time elapsed since last full second.
+    SecondFraction,
+    /// Vertical speed.
+    VerticalSpeed,
     /// X axis.
     X,
     /// Y axis.
@@ -33,9 +49,17 @@ pub enum Label {
 impl core::fmt::Display for Label {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
+            Self::Altitude => write!(f, "Altitude"),
+            Self::GroundSpeed => write!(f, "Ground speed"),
+            Self::Latitude => write!(f, "Latitude"),
+            Self::Longitude => write!(f, "Longitude"),
             Self::Main => write!(f, ""),
             Self::RelativeHumidity => write!(f, "Relative humidity"),
+            Self::Heading => write!(f, "Heading"),
             Self::Temperature => write!(f, "Temperature"),
+            Self::Time => write!(f, "Time"),
+            Self::SecondFraction => write!(f, "Second fraction"),
+            Self::VerticalSpeed => write!(f, "Vertical speed"),
             Self::X => write!(f, "X"),
             Self::Y => write!(f, "Y"),
             Self::Z => write!(f, "Z"),

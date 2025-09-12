@@ -76,6 +76,8 @@ pub mod api {
 
     #[cfg(feature = "ble")]
     pub use crate::ble;
+    #[cfg(feature = "gnss")]
+    pub use crate::gnss;
     #[cfg(feature = "i2c")]
     pub use crate::i2c;
     #[cfg(feature = "net")]
@@ -90,6 +92,8 @@ pub mod api {
 pub mod reexports {
     #[cfg(feature = "ble")]
     pub use ariel_os_embassy_common::ble;
+    #[cfg(feature = "gnss")]
+    pub use ariel_os_embassy_common::gnss;
     #[cfg(feature = "net")]
     pub use embassy_net;
     #[cfg(feature = "time")]
@@ -158,6 +162,11 @@ pub(crate) fn init() {
 
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
+        #[cfg(feature = "nrf91-modem")]
+        {
+            use crate::hal::interrupt::{InterruptExt, Priority};
+            hal::SWI.set_priority(Priority::P1);
+        }
         hal::EXECUTOR.start(hal::SWI);
         hal::EXECUTOR.spawner().must_spawn(init_task(p));
     }
@@ -250,6 +259,16 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let ble_config = ble::config();
     #[cfg(all(feature = "ble", not(context = "rp")))]
     hal::ble::driver(ble_peripherals, spawner, ble_config);
+
+    #[cfg(feature = "nrf91-modem")]
+    {
+        hal::modem::driver().await;
+    }
+
+    #[cfg(feature = "gnss")]
+    {
+        gnss::init_gnss(spawner).await;
+    }
 
     #[cfg(feature = "usb")]
     let mut usb_builder = {

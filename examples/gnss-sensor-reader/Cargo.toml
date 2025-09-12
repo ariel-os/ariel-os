@@ -1,0 +1,24 @@
+[package]
+name = "gnss-sensor-reader"
+license.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "i2c",
+  "sensors",
+  "time",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-nrf91-gnss = { path = "../../src/ariel-os-nrf91-gnss", features = [
+  "defmt",
+] }
+cfg-if = { workspace = true }
+embassy-sync = { workspace = true }
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+linkme = { workspace = true }
+once_cell = { workspace = true }

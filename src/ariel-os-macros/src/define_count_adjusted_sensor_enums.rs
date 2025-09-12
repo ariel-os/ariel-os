@@ -36,7 +36,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
     let samples_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
-        quote! { #variant([Sample; #i]) }
+        quote! {
+           /// #i samples.
+           #variant([Sample; #i])
+        }
     });
     let samples_first_sample = (1..=count).map(|i| {
         let variant = variant_name(i);
@@ -54,7 +57,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
     let reading_channels_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
-        quote! { #variant([ReadingChannel; #i]) }
+        quote! {
+           /// #i reading channels.
+           #variant([ReadingChannel; #i])
+        }
     });
 
     let samples_iter = (1..=count)
