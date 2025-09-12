@@ -38,6 +38,7 @@ members = [
   "tests/threading-lock",
   "tests/threading-mutex",
   "tests/threading-fpu",
+  "tests/uart-loopback",
 ]
 
 exclude = ["src/lib", "doc"]
