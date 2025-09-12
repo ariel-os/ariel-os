@@ -4,7 +4,7 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_nrf::{
-        Peripheral,
+        Peri,
         gpio::{Level, Pull},
     };
 
@@ -21,7 +21,7 @@ pub mod input {
 
     #[doc(hidden)]
     pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+        pin: Peri<'static, impl InputPin>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
     ) -> Result<Input<'static>, ariel_os_embassy_common::gpio::input::Error> {
@@ -32,12 +32,11 @@ pub mod input {
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
     pub fn new_int_enabled(
-        pin: impl Peripheral<P: InputPin> + 'static,
+        mut pin: Peri<'static, impl InputPin>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
     ) -> Result<IntEnabledInput<'static>, ariel_os_embassy_common::gpio::input::Error> {
         let pull = from_pull(pull);
-        let mut pin = pin.into_ref();
         crate::extint_registry::EXTINT_REGISTRY.use_interrupt_for_pin(&mut pin)?;
         Ok(Input::new(pin, pull))
     }
@@ -50,7 +49,7 @@ pub mod output {
     //! Output-specific types.
 
     use embassy_nrf::{
-        Peripheral,
+        Peri,
         gpio::{Level, OutputDrive},
     };
 
@@ -66,7 +65,7 @@ pub mod output {
 
     #[doc(hidden)]
     pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+        pin: Peri<'static, impl OutputPin>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: DriveStrength,
         _speed: super::Speed, // Not supported by hardware
