@@ -48,8 +48,6 @@
 //! Sensor drivers must implement the [`Sensor`] trait.
 //!
 #![no_std]
-// Required by linkme
-#![feature(used_with_arg)]
 #![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 
