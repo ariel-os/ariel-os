@@ -9,6 +9,7 @@ members = [
   "src/ariel-os-bench",
   "src/ariel-os-boards",
   "src/ariel-os-buildinfo",
+  "src/ariel-os-builtin-sensors",
   "src/ariel-os-coap",
   "src/ariel-os-debug",
   "src/ariel-os-debug-log",
