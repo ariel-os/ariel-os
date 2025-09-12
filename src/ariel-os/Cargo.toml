@@ -29,6 +29,7 @@ ariel-os-buildinfo = { workspace = true }
 ariel-os-coap = { path = "../ariel-os-coap", optional = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy = { path = "../ariel-os-embassy" }
+ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-power = { path = "../ariel-os-power" }
