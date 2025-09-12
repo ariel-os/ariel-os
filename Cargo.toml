@@ -18,6 +18,7 @@ members = [
   "src/ariel-os-identity",
   "src/ariel-os-macros",
   "src/ariel-os-nrf",
+  "src/ariel-os-nrf91-gnss",
   "src/ariel-os-power",
   "src/ariel-os-random",
   "src/ariel-os-rp",
@@ -160,6 +161,7 @@ nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691e
 nrf-modem = { version = "0.7.3" }
 tinyrlibc = "0.5.0"
 futures = { version = "0.3.31", default-features = false }
+time = { version = "0.3", default-features = false }
 
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html
