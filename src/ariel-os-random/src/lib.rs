@@ -24,6 +24,9 @@
 //! [`FastRng`] or [`CryptoRng`] is guaranteed.
 #![no_std]
 
+#[cfg(feature = "csprng")]
+mod getrandom;
+
 use core::{cell::RefCell, marker::PhantomData};
 
 use embassy_sync::once_lock::OnceLock;
