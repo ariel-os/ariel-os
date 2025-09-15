@@ -66,7 +66,24 @@ Currently, `cargo-vet` is run in CI for each PR; if this proves to block the PR 
 
 Vetting a dependency involves either [performing an audit][cargo-vet-performing-audits], [trusting (all of) its publishers][cargo-vet-trusting-publishers], or adding an exemption (in which case it is not actually “vetted”).
 As we are still figuring out our vetting workflow, we are currently fine with adding new exemptions for both new crates and dependency updates.
-We may also introduce a [custom criteria][cargo-vet-custom-criteria] to reflect the actual meaning of our auditing process.
+
+We have also introduce a [custom criterion][cargo-vet-custom-criteria] (and may define more) to express additional aspects of the auditing process:
+
+* `floss`:
+
+  > (TBD: Find a way to programmatically include the text from supplychain/audits.toml in here before we go on elaborating)
+
+  Reviewing for this can easily happen as part of the regular auditing process,
+  as any lack of source files becomes visible through the point in the code where the source-less data is included.
+  Common entry points for source-less data are
+  invocations of [`include_bytes!()`](https://doc.rust-lang.org/std/macro.include_bytes.html) / [`include_str!()`](https://doc.rust-lang.org/std/macro.include_str.html)
+  and linking to static libraries through [`build.rs`](https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-lib).
+
+  An example of non-FLOSS code are statically linked libraries:
+  Even if they are published under an OSI-approved license and contain debug symbols,
+  they can not be modified in the same way their author could.
+  Another example are minified JavaScript libraries;
+  for those, an actual source can often be found and annotated.
 
 ## Release Checklist
 
