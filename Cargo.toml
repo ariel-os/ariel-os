@@ -22,6 +22,7 @@ members = [
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
+  "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "tests/benchmarks/bench_sched_flags",
