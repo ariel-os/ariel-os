@@ -66,3 +66,30 @@ impl SupportInfo {
         }
     }
 }
+
+pub enum SupportTier {
+    Tier1,
+    Tier2,
+    Tier3,
+}
+
+impl argh::FromArgValue for SupportTier {
+    fn from_arg_value(value: &str) -> Result<Self, String> {
+        match value {
+            "tier-1" | "1" => Ok(Self::Tier1),
+            "tier-2" | "2" => Ok(Self::Tier2),
+            "tier-3" | "3" => Ok(Self::Tier3),
+            _ => Err("invalid board support tier".to_string()),
+        }
+    }
+}
+
+impl ToString for SupportTier {
+    fn to_string(&self) -> String {
+        match self {
+            SupportTier::Tier1 => "1".to_string(),
+            SupportTier::Tier2 => "2".to_string(),
+            SupportTier::Tier3 => "3".to_string(),
+        }
+    }
+}

@@ -110,7 +110,7 @@ impl Args {
         }
     }
 
-    fn tier(&self) -> &SupportTier {
+    fn tier(&self) -> &schema::SupportTier {
         match self.command {
             SubCommand::Generate(SubCommandGenerate { ref tier, .. }) => tier,
             SubCommand::Check(SubCommandCheck { ref tier, .. }) => tier,
@@ -125,40 +125,13 @@ enum SubCommand {
     Check(SubCommandCheck),
 }
 
-enum SupportTier {
-    Tier1,
-    Tier2,
-    Tier3,
-}
-
-impl argh::FromArgValue for SupportTier {
-    fn from_arg_value(value: &str) -> Result<Self, String> {
-        match value {
-            "tier-1" | "1" => Ok(Self::Tier1),
-            "tier-2" | "2" => Ok(Self::Tier2),
-            "tier-3" | "3" => Ok(Self::Tier3),
-            _ => Err("invalid board support tier".to_string()),
-        }
-    }
-}
-
-impl ToString for SupportTier {
-    fn to_string(&self) -> String {
-        match self {
-            SupportTier::Tier1 => "1".to_string(),
-            SupportTier::Tier2 => "2".to_string(),
-            SupportTier::Tier3 => "3".to_string(),
-        }
-    }
-}
-
 #[derive(argh::FromArgs)]
 #[argh(subcommand, name = "generate")]
 /// generate the HTML support matrix
 struct SubCommandGenerate {
     /// board support tier (1, 2, or 3)
     #[argh(option)]
-    tier: SupportTier,
+    tier: schema::SupportTier,
     #[argh(positional)]
     /// path of the input YAML file
     input_file: PathBuf,
@@ -173,7 +146,7 @@ struct SubCommandGenerate {
 struct SubCommandCheck {
     /// board support tier (1, 2 or 3)
     #[argh(option)]
-    tier: SupportTier,
+    tier: schema::SupportTier,
     #[argh(positional)]
     /// path of the input YAML file
     input_file: PathBuf,
@@ -341,10 +314,9 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
                         })?
                 };
 
-                    Ok(FunctionalitySupport {
-                        icon: support_key.icon.to_owned(),
-                        description: support_key.description.to_owned(),
-                    })
+                Ok(FunctionalitySupport {
+                    icon: support_key.icon.to_owned(),
+                    description: support_key.description.to_owned(),
                 })
             });
             let errors = functionalities
@@ -381,9 +353,9 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
 fn render_html(
     matrix: &schema::Matrix,
     mut boards: Vec<BoardSupport>,
-    board_support_tier: &SupportTier,
+    board_support_tier: &schema::SupportTier,
 ) -> Result<String, Error> {
-    use minijinja::{Environment, context};
+    use minijinja::{context, Environment};
 
     // TODO: read the order from the YAML file instead?
     boards.sort_unstable_by_key(|b| b.name.to_lowercase());
