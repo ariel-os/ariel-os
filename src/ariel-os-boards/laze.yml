@@ -99,6 +99,15 @@ builders:
   - has_ble_cyw43
   - has_usb_device_port
   - has_wifi_cyw43
+- name: seeedstudio-lora-e5-mini
+  parent: stm32wle5jc
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
 - name: st-b-l475e-iot01a
   parent: stm32l475vg
   provides:

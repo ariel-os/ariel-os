@@ -21,6 +21,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico-w\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico2\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-lora-e5-mini\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-b-l475e-iot01a\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-c031c6\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-f042k6\"))");
