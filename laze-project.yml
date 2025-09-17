@@ -1565,6 +1565,7 @@ modules:
         export:
           - RUSTFLAGS
           - RUSTDOCFLAGS
+          - LLVM_PROFILE_FILE # Needs https://github.com/kaspar030/laze/pull/751
         build: false
         workdir: ${appdir}
         cmd:
@@ -1650,6 +1651,32 @@ modules:
       global:
         CARGO_WRAPPER:
           - criticalup run
+  - name: coverage
+    env:
+      global:
+        RUSTDOCFLAGS:
+          - "-C instrument-coverage"
+          - "-Z unstable-options"
+          - "--persist-doctests target/debug/doctestbins"
+        RUSTFLAGS:
+          - "-C instrument-coverage"
+        # needs https://github.com/kaspar030/laze/pull/751
+        LLVM_PROFILE_FILE:
+          - "${absroot}/${build-dir}/profile/%p-%m.profraw"
+        PROFILE_DIR:
+          - "${absroot}/${build-dir}/profile"
+    tasks:
+      coverage:
+        help: collects coverage of host tests
+        export:
+          - RUSTFLAGS
+          - RUSTDOCFLAGS
+          - LLVM_PROFILE_FILE # Needs https://github.com/kaspar030/laze/pull/751
+        build: false
+        workdir: ${appdir}
+        cmd:
+          - :test
+          - ${CARGO} test --features _test --no-run --message-format=json $@ | jq -r "select(.profile.test == true) | .filenames[]" | grep -v dSYM - | awk '{print "-object " $0}' >> ${relroot}/${build-dir}/profile/objects
 
 builders:
   # host builder (for housekeeping tasks)
