@@ -13,10 +13,10 @@ workspace = true
 [dependencies.ariel-os-embassy-common]
 workspace = true
 
-[dependencies.cfg-if]
+[dependencies.ariel-os-hal]
 workspace = true
 
-[dependencies.ariel-os-hal]
+[dependencies.cfg-if]
 workspace = true
 
 [features]
