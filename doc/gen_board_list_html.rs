@@ -19,13 +19,11 @@ use std::{fs, io, path::PathBuf};
 use miette::Diagnostic;
 
 const LIST_TEMPLATE: &str = r#"
-<details open>
-  <ul>
-    {% for name, board in boards %}
-      <li><a href=./boards/{{ name }}.html>{{ board.name }}</a></li>
-    {% endfor %}
-  </ul>
-</details>
+<ul>
+{% for name, board in boards %}
+  <li><a href=./{{ name }}.html>{{ board.name }}</a></li>
+{% endfor %}
+</ul>
 "#;
 
 #[derive(argh::FromArgs)]
