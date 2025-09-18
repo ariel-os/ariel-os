@@ -16,6 +16,8 @@ edit-url-template = "https://github.com/ariel-os/ariel-os/edit/main/book/{path}"
 [output.html.fold]
 enable = true
 level = 0
+[output.html.print]
+enable = false # Links to internal pages in print.html are broken. This is fixed in 0.5.0, but mdbook-cmdrun needs to address the breaking changes
 
 [output.html.redirect]
 "/adding_board_support.html" = "adding-board-support.html"
