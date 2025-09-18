@@ -4,6 +4,7 @@
 /// One single type must be defined so that it can be used in the Future returned by sensor
 /// drivers, which must be the same for every sensor driver so it can be part of the `Sensor`
 /// trait.
+#[expect(clippy::too_many_lines)]
 #[proc_macro]
 pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     use quote::quote;
@@ -23,7 +24,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             quote! {
                 impl From<[Sample; #i]> for Samples {
                     fn from(value: [Sample; #i]) -> Self {
-                        Self::#variant(value)
+                        Self { samples: InnerSamples::#variant(value) }
                     }
                 }
             }
@@ -31,7 +32,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     let samples_first_sample = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! {
-            Self::#variant(samples) => {
+            InnerSamples::#variant(samples) => {
                 if let Some(sample) = samples.first() {
                     *sample
                 } else {
@@ -48,7 +49,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             quote! {
                 impl From<[ReadingChannel; #i]> for ReadingChannels {
                     fn from(value: [ReadingChannel; #i]) -> Self {
-                        Self::#variant(value)
+                        Self { channels: InnerReadingChannels::#variant(value) }
                     }
                 }
             }
@@ -61,9 +62,13 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     let samples_iter = (1..=count)
         .map(|i| {
             let variant = variant_name(i);
-            quote! { Self::#variant(samples) => samples.iter().copied() }
-        })
-        .collect::<Vec<_>>();
+            quote! { InnerSamples::#variant(samples) => samples.into_iter() }
+        });
+    let reading_channels_iter = (1..=count)
+        .map(|i| {
+            let variant = variant_name(i);
+            quote! { InnerReadingChannels::#variant(samples) => samples.into_iter() }
+        });
 
     let expanded = quote! {
         /// Samples returned by a sensor driver.
@@ -75,27 +80,29 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         /// This type is automatically generated, the number of [`Sample`]s that can be stored is
         /// automatically adjusted.
         #[derive(Debug, Copy, Clone)]
-        pub enum Samples {
-            #(
-                #[doc(hidden)]
-                #samples_variants
-            ),*
+        pub struct Samples {
+            samples: InnerSamples,
         }
 
         #(#samples_from_impls)*
 
         impl Reading for Samples {
             fn sample(&self) -> Sample {
-                match self {
+                match self.samples {
                     #(#samples_first_sample),*
                 }
             }
 
             fn samples(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator {
-                match self {
+                match self.samples {
                     #(#samples_iter),*
                 }
             }
+        }
+
+        #[derive(Debug, Copy, Clone)]
+        enum InnerSamples {
+            #(#samples_variants),*
         }
 
         /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
@@ -105,11 +112,8 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         /// This type is automatically generated, the number of [`ReadingChannel`]s that can be
         /// stored is automatically adjusted.
         #[derive(Debug, Copy, Clone)]
-        pub enum ReadingChannels {
-            #(
-                #[doc(hidden)]
-                #reading_channels_variants
-            ),*,
+        pub struct ReadingChannels {
+            channels: InnerReadingChannels,
         }
 
         #(#reading_channels_from_impls)*
@@ -122,8 +126,8 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             /// [`Iterator::zip()`] can be useful to zip the returned iterator with the one
             /// obtained with [`Reading::samples()`].
             pub fn iter(&self) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
-                match self {
-                    #(#samples_iter),*,
+                match self.channels {
+                    #(#reading_channels_iter),*
                 }
             }
 
@@ -136,6 +140,11 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
                     unreachable!();
                 }
             }
+        }
+
+        #[derive(Debug, Copy, Clone)]
+        enum InnerReadingChannels {
+            #(#reading_channels_variants),*
         }
     };
 
