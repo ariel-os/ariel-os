@@ -14,7 +14,10 @@ thiserror = { version = "1.0.61" }
 
 mod schema;
 
-use std::{fs, io, path::PathBuf};
+use std::{
+    fs, io,
+    path::{Path, PathBuf},
+};
 
 use miette::Diagnostic;
 use serde::Serialize;
@@ -46,8 +49,23 @@ Legend:
 "#;
 
 #[derive(argh::FromArgs)]
-/// generate a book page for each board we support
+/// Generate board pages, or the book summary with the list of supported boards.
 struct Args {
+    #[argh(subcommand)]
+    command: SubCommand,
+}
+
+#[derive(argh::FromArgs)]
+#[argh(subcommand)]
+enum SubCommand {
+    Summary(SubCommandSummary),
+    Pages(SubCommandPages),
+}
+
+#[derive(argh::FromArgs)]
+#[argh(subcommand, name = "pages")]
+/// Generate a book page for each board we support
+struct SubCommandPages {
     #[argh(positional)]
     /// path of the input YAML file
     input_file: PathBuf,
@@ -56,18 +74,42 @@ struct Args {
     output_dir: PathBuf,
 }
 
+#[derive(argh::FromArgs)]
+#[argh(subcommand, name = "summary")]
+/// Generate the book summary with the list of supported boards
+struct SubCommandSummary {
+    #[argh(option)]
+    /// path of the template summary
+    template: PathBuf,
+    #[argh(positional)]
+    /// path of the input YAML file
+    input_file: PathBuf,
+    #[argh(positional)]
+    /// path of the summary file to generate (should be named SUMMARY.md)
+    output_file: PathBuf,
+}
+
+impl Args {
+    fn input_file(&self) -> &Path {
+        match self.command {
+            SubCommand::Summary(SubCommandSummary { ref input_file, .. }) => input_file,
+            SubCommand::Pages(SubCommandPages { ref input_file, .. }) => input_file,
+        }
+    }
+}
+
 fn main() -> miette::Result<()> {
     let args: Args = argh::from_env();
 
-    let input_file = fs::read_to_string(&args.input_file).map_err(|source| Error::InputFile {
-        path: args.input_file.clone(),
+    let input_file = fs::read_to_string(args.input_file()).map_err(|source| Error::InputFile {
+        path: args.input_file().into(),
         source,
     })?;
 
     let matrix = serde_yaml::from_str(&input_file).map_err(|source| {
         let err_span = miette::SourceSpan::from(source.location().unwrap().index());
         Error::Parsing {
-            path: args.input_file,
+            path: args.input_file().into(),
             src: input_file,
             err_span,
             source,
@@ -78,15 +120,36 @@ fn main() -> miette::Result<()> {
 
     let board_info = gen_functionalities(&matrix)?;
 
-    for board in &board_info {
-        let board_page = render_board_page(board, &matrix.support_keys);
+    match args.command {
+        SubCommand::Summary(summary) => {
+            let summary_template = fs::read_to_string(&summary.template).map_err(|source| {
+                Error::SummaryTemplateFile {
+                    path: summary.template,
+                    source,
+                }
+            })?;
 
-        let mut output_path = args.output_dir.join(&board.technical_name);
-        output_path.set_extension("md");
-        fs::write(&output_path, board_page).map_err(|source| Error::WritingOutputFile {
-            path: output_path,
-            source,
-        })?;
+            let summary_md = render_summary(&board_info, &summary_template);
+
+            fs::write(&summary.output_file, summary_md).map_err(|source| {
+                Error::WritingOutputFile {
+                    path: summary.output_file,
+                    source,
+                }
+            })?;
+        }
+        SubCommand::Pages(pages) => {
+            for board in &board_info {
+                let board_page = render_board_page(board, &matrix.support_keys);
+
+                let mut output_path = pages.output_dir.join(&board.technical_name);
+                output_path.set_extension("md");
+                fs::write(&output_path, board_page).map_err(|source| Error::WritingOutputFile {
+                    path: output_path,
+                    source,
+                })?;
+            }
+        }
     }
 
     Ok(())
@@ -235,6 +298,18 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
     }
 }
 
+fn render_summary(board_info: &[BoardSupport], template: &str) -> String {
+    use minijinja::{context, Environment};
+
+    let mut env = Environment::new();
+    env.add_template("summary", template).unwrap();
+    let tmpl = env.get_template("summary").unwrap();
+    tmpl.render(context!(
+        boards => board_info,
+    ))
+    .unwrap()
+}
+
 fn render_board_page(board_info: &BoardSupport, support_keys: &[schema::SupportKeyInfo]) -> String {
     use minijinja::{context, Environment};
 
@@ -252,6 +327,8 @@ fn render_board_page(board_info: &BoardSupport, support_keys: &[schema::SupportK
 enum Error {
     #[error("could not find file `{path}`")]
     InputFile { path: PathBuf, source: io::Error },
+    #[error("could not find summary template file `{path}`")]
+    SummaryTemplateFile { path: PathBuf, source: io::Error },
     #[error("could not parse YAML file `{path}`")]
     Parsing {
         path: PathBuf,
