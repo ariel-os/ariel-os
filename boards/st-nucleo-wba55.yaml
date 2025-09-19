@@ -1,6 +1,6 @@
 boards:
   st-nucleo-wba55:
-    soc: stm32wba55cg
+    chip: stm32wba55cg
     ariel:
       swi: USART2
     leds:
@@ -9,32 +9,32 @@ boards:
         aliases:
           - LD1
         color: blue
-        # active_low: false
+        # active: high
       led1:
         pin: PA9
         aliases:
           - LD2
         color: green
-        # active_low: false
+        # active: high
       led2:
         pin: PB8
         aliases:
           - LD3
         color: red
-        # active_low: false
+        # active: high
     buttons:
       button0:
         pin: PC13
+        # active: high
         aliases:
           - B1
-        # active_low: false
       button1:
         pin: PB6
+        # active: high
         aliases:
           - B2
-        # active_low: false
       button2:
         pin: PB7
+        # active: high
         aliases:
           - B3
-        # active_low: false

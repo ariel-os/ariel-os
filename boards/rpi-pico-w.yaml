@@ -1,6 +1,6 @@
 boards:
   rpi-pico-w:
-    soc: rp2040
+    chip: rp2040
     flags:
       - has_ble_cyw43
       - has_wifi_cyw43

@@ -1,12 +1,12 @@
 boards:
   board_name:
-    soc: soc_name
+    chip: chip_name
     leds:
       led0:
         pin:
         color:
-        active_low: false
+        active: high
     buttons:
       button0:
         pin:
-        active_low: false
+        active: high

@@ -1,6 +1,6 @@
 boards:
   st-nucleo-wb55:
-    soc: stm32wb55rg
+    chip: stm32wb55rg
     flags:
       - has_usb_device_port
     ariel:
@@ -9,34 +9,34 @@ boards:
       led0:
         pin: PB5
         color: blue
+        # active: high
         aliases:
           - LED1
-        # active_low: false
       led1:
         pin: PB0
         color: green
+        # active: high
         aliases:
           - LED2
-        # active_low: false
       led2:
         pin: PB1
         color: red
+        # active: high
         aliases:
           - LED3
-        # active_low: false
     buttons:
       button0:
         pin: PC4
+        # active: high
         aliases:
           - SW1
-        # active_low: false
       button1:
         pin: PD0
+        # active: high
         aliases:
           - SW2
-        # active_low: false
       button2:
         pin: PD1
+        # active: high
         aliases:
           - SW3
-        # active_low: false

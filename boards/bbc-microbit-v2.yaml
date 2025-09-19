@@ -1,6 +1,6 @@
 boards:
   bbc-microbit-v2:
-    soc: nrf52833
+    chip: nrf52833
     ariel:
       global_env:
         RUSTFLAGS:

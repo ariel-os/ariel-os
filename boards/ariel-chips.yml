@@ -1,5 +1,5 @@
 ariel:
-  socs:
+  chips:
     - esp-c3-01m
     - esp-wroom-32
     - esp32-c3-mini-1

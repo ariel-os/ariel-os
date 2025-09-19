@@ -1,22 +1,22 @@
 description: test sbd file
 boards:
   nrf5340dk:
-    soc: nrf5340
+    chip: nrf5340
     flags:
       - has_usb_device_port
     leds:
       led0:
         color: green
         pin: P0_28
-        inverted: true
+        active: low
       led1:
         color: green
         pin: P0_29
-        inverted: true
+        active: low
       led2:
         color: green
         pin: P0_30
-        inverted: true
+        active: low
       led3:
         color: green
         pin: P0_31
@@ -25,16 +25,16 @@ boards:
       button0:
         color: green
         pin: P0_23
-        inverted: true
+        active: low
       button1:
         color: green
         pin: P0_24
-        inverted: true
+        active: low
       button2:
         color: green
         pin: P0_08
-        inverted: true
+        active: low
       button3:
         color: green
         pin: P0_09
-        inverted: true
+        active: low

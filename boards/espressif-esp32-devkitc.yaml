@@ -1,3 +1,3 @@
 boards:
   espressif-esp32-devkitc:
-    soc: esp-wroom-32
+    chip: esp-wroom-32
