@@ -1,1 +1,3 @@
 book/src/support_matrix.html linguist-generated=true
+book/src/boards/*.md linguist-generated=true
+book/src/boards/index.md linguist-generated=false

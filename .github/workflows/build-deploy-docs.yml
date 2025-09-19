@@ -146,6 +146,11 @@ jobs:
           cd book
           ./cmdrun-check.sh
 
+      - name: Generate summary and board pages
+        run: |
+          doc/gen_board_pages_md.rs pages doc/support_matrix.yml book/src/boards/
+          doc/gen_board_pages_md.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template book/src/SUMMARY.md.tmpl
+
       - name: Build the book
         run: |
           cd book
