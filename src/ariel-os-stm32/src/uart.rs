@@ -12,11 +12,11 @@ use embassy_stm32::{
 #[derive(Clone)]
 #[non_exhaustive]
 pub struct Config {
-    /// The baud rate at which the bus should operate.
+    /// The baud rate at which UART should operate.
     pub baudrate: Baud,
-    /// Number of data bits
+    /// Number of data bits.
     pub data_bits: DataBits,
-    /// Number of stop bits
+    /// Number of stop bits.
     pub stop_bits: StopBits,
     /// Parity mode used for the interface.
     pub parity: Parity,
@@ -65,11 +65,18 @@ macro_rules! define_uart_drivers {
                 uart: BufferedUart<'d>,
             }
 
+            // Make this struct a compile-time-enforced singleton: having multiple statics
+            // defined with the same name would result in a compile-time error.
+            paste::paste! {
+                #[allow(dead_code)]
+                static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
+            }
+
             impl<'d> $peripheral<'d> {
+                /// Returns a driver implementing embedded-io traits for this Uart
+                /// peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
-                /// Returns a driver implementing [`embedded-io`] for this Uart
-                /// peripheral.
                 pub fn new(
                     rx_pin: impl Peripheral<P: RxPin<peripherals::$peripheral>> + 'd,
                     tx_pin: impl Peripheral<P: TxPin<peripherals::$peripheral>> + 'd,
@@ -77,12 +84,6 @@ macro_rules! define_uart_drivers {
                     tx_buf: &'d mut [u8],
                     config: Config,
                 ) -> Uart<'d> {
-                    // Make this struct a compile-time-enforced singleton: having multiple statics
-                    // defined with the same name would result in a compile-time error.
-                    paste::paste! {
-                        #[allow(dead_code)]
-                        static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
-                    }
 
                     let mut uart_config = embassy_stm32::usart::Config::default();
                     uart_config.baudrate = config.baudrate.into();
@@ -203,7 +204,7 @@ define_uart_drivers!(
 
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
-    // Take all SPI peripherals and do nothing with them.
+    // Take all UART peripherals and do nothing with them.
     cfg_if::cfg_if! {
         if #[cfg(context = "stm32c031c6")] {
             let _ = peripherals.USART1.take().unwrap();
