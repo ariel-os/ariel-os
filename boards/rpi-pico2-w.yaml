@@ -1,16 +1,16 @@
 boards:
   rpi-pico2:
-    soc: rp235xa
+    chip: rp235xa
     flags:
       - has_ble_cyw43
       - has_usb_device_port
       - has_wifi_cyw43
-    # leds:
-    #   led0:
-    #     pin: PIN_25
-    #     color: green
-    #     #active_low: false
-    # buttons:
-    #   button0:
-    #     pin:
-    #     active_low: false
+#    leds:
+#      led0:
+#        pin: PIN_25
+#        color: green
+#        #active: high
+#    buttons:
+#      button0:
+#        pin:
+#        active: high

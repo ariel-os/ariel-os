@@ -1,14 +1,14 @@
 boards:
   st-nucleo-f401re:
-    soc: stm32f401re
+    chip: stm32f401re
     ariel:
       swi: USART2
     leds:
       led0:
         pin: PB5
         # color: green
-        # active_low: false
+        # active: high
     buttons:
       button0:
         pin: PC13
-        # active_low: false
+        # active: high

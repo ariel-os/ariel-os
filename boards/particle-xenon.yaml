@@ -1,7 +1,7 @@
 description: test sbd file
 boards:
   particle-xenon:
-    soc: nrf52840
+    chip: nrf52840
     flags:
       - has_usb_device_port
     leds:
@@ -10,10 +10,10 @@ boards:
         pin: P1_12
         aliases:
           - D7
-        inverted: true
+        active: low
     buttons:
       button0:
         pin: P0_11
         aliases:
           - MODE
-        active_low: true
+        active: low
