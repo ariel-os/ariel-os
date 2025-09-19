@@ -22,7 +22,6 @@ embassy-executor = { workspace = true }
 embassy-futures = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
-  "dhcpv4",
   "medium-ethernet",
 ] }
 embassy-sync = { workspace = true }
@@ -98,6 +97,12 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 ## Use a hardware RNG to seed into the ariel-os-random system-wide RNG
 hwrng = ["ariel-os-hal/hwrng"]
 
+## Enables support for IPv4.
+ipv4 = ["embassy-net/proto-ipv4"]
+## Enables support for IPv6.
+ipv6 = ["embassy-net/proto-ipv6"]
+## Enables support for DHCPv4.
+dhcpv4 = ["embassy-net/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["embassy-net?/tcp"]
 ## Enables support for UDP.
@@ -133,7 +138,8 @@ ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
-network-config-static = ["network-config-override"]
+network-config-static-ipv4 = ["network-config-override"]
+network-config-static-ipv6 = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
 ble-config-override = []
@@ -157,4 +163,4 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["executor-none", "i2c", "spi", "time", "external-interrupts"]
+_test = ["dhcpv4", "executor-none", "i2c", "spi", "time", "external-interrupts"]
