@@ -7,21 +7,26 @@ fn main() {
     // Important: only homogeneous flash organizations are currently supported.
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
     // could be pushed out of it by a large enough binary.
-    let (storage_size_total, flash_page_size) =
-        if is_in_current_contexts(&["stm32u083mc", "stm32l475vg", "nrf5340-net", "stm32wle5jc"]) {
-            (4 * KIBIBYTES, 2 * KIBIBYTES)
-        } else if is_in_current_contexts(&["nrf52", "nrf5340", "nrf91", "rp", "stm32wb55rg"]) {
-            (8 * KIBIBYTES, 4 * KIBIBYTES)
-        } else if is_in_current_contexts(&["stm32u585ai"]) {
-            (16 * KIBIBYTES, 8 * KIBIBYTES)
-        } else if is_in_current_contexts(&["stm32h755zi"]) {
-            (256 * KIBIBYTES, 128 * KIBIBYTES)
-        } else if !is_in_current_contexts(&["ariel-os"]) {
-            // Dummy value for platform-independent tooling.
-            (8 * KIBIBYTES, 4 * KIBIBYTES)
-        } else {
-            panic!("MCU not supported");
-        };
+    let (storage_size_total, flash_page_size) = if is_in_current_contexts(&[
+        "stm32u073kc",
+        "stm32u083mc",
+        "stm32l475vg",
+        "nrf5340-net",
+        "stm32wle5jc",
+    ]) {
+        (4 * KIBIBYTES, 2 * KIBIBYTES)
+    } else if is_in_current_contexts(&["nrf52", "nrf5340", "nrf91", "rp", "stm32wb55rg"]) {
+        (8 * KIBIBYTES, 4 * KIBIBYTES)
+    } else if is_in_current_contexts(&["stm32u585ai"]) {
+        (16 * KIBIBYTES, 8 * KIBIBYTES)
+    } else if is_in_current_contexts(&["stm32h755zi"]) {
+        (256 * KIBIBYTES, 128 * KIBIBYTES)
+    } else if !is_in_current_contexts(&["ariel-os"]) {
+        // Dummy value for platform-independent tooling.
+        (8 * KIBIBYTES, 4 * KIBIBYTES)
+    } else {
+        panic!("MCU not supported");
+    };
 
     // `sequential-storage` needs at least two flash pages.
     assert!(storage_size_total / flash_page_size >= 2);
