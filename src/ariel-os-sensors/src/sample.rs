@@ -96,6 +96,9 @@ pub enum Accuracy {
         /// [`bias`](Accuracy::SymmetricalError::bias).
         scaling: i8,
     },
+    /// Indicate that the value in this channel is temporarily unavailable and the value in the sample should be ignored.
+    /// Happens when parts of a sensor aren't ready yet, but data is already available for other channels.
+    TemporarilyUnavailable,
 }
 
 /// Implemented on [`Samples`](crate::sensor::Samples), returned by

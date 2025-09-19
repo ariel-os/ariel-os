@@ -26,6 +26,10 @@ pub enum MeasurementUnit {
     Coulomb,
     /// Decibel (dB).
     Decibel,
+    /// Decimal Degrees (°).
+    DecimalDegrees,
+    /// Degrees (°).
+    Degree,
     /// Farad (F).
     Farad,
     // FIXME: Kilogram as well?
@@ -49,6 +53,8 @@ pub enum MeasurementUnit {
     Lux,
     /// Meter (m)
     Meter,
+    /// Meters per second (m/s).
+    MetersPerSecond,
     /// Mole (mol).
     Mole,
     /// Newton (N).
@@ -93,6 +99,8 @@ macro_rules! provide_unit_fmt {
             Self::Celsius => write!($f, "°C"),
             Self::Coulomb => write!($f, "C"),
             Self::Decibel => write!($f, "dB"),
+            Self::DecimalDegrees => write!($f, "°"),
+            Self::Degree => write!($f, "°"),
             Self::Farad => write!($f, "F"),
             Self::Gram => write!($f, "g"),
             Self::Gray => write!($f, "Gy"),
@@ -104,6 +112,7 @@ macro_rules! provide_unit_fmt {
             Self::Lumen => write!($f, "lm"),
             Self::Lux => write!($f, "lx"),
             Self::Meter => write!($f, "m"),
+            Self::MetersPerSecond => write!($f, "m/s"),
             Self::Mole => write!($f, "mol"),
             Self::Newton => write!($f, "N"),
             Self::Ohm => write!($f, "Ω"),
