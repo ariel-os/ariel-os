@@ -11,6 +11,7 @@ Ariel OS is an operating system for secure, memory-safe, low-power Internet of T
 It is based on Rust from the ground up
 and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware-functionality-support.html)
 based on 32-bit microcontroller architectures (Cortex-M, RISC-V, and Xtensa).
+For a quick overview of our motivations and what we plan next, check our [roadmap](https://github.com/ariel-os/ariel-os/blob/main/ROADMAP.md).
 
 ## Goals and Design
 
