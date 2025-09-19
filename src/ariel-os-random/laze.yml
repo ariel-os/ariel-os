@@ -1,0 +1,6 @@
+apps:
+  - name: crates/ariel-os-random
+    env:
+      global:
+        RUSTFLAGS:
+          - '--cfg getrandom_backend="custom"'
