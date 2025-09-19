@@ -88,6 +88,7 @@ jobs:
                   storage,
                   tcp,
                   threading,
+                  uart,
                   udp,
                   usb,
                   usb-hid,
@@ -120,6 +121,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-nrf
           RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" --cfg nightly' cargo doc \
