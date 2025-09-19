@@ -1,3 +1,10 @@
+/// Errors returned when trying to interpret a sensor value.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum ValueError {
+    /// The value is not available at the moment (i.e., part of the sensor is not ready yet).
+    TemporarilyUnavailable,
+}
+
 #[expect(clippy::doc_markdown)]
 /// Represents a value obtained from a sensor device, along with its accuracy.
 ///
@@ -43,8 +50,20 @@ impl Sample {
     }
 
     /// Returns the sample value.
+    ///
+    /// # Errors
+    ///
+    /// An error is returned if this value is temporarily unavailable (this part of the sensor is not ready).
+    pub fn value(&self) -> Result<i32, ValueError> {
+        if self.accuracy == Accuracy::TemporarilyUnavailable {
+            return Err(ValueError::TemporarilyUnavailable);
+        }
+        Ok(self.value)
+    }
+
+    /// Returns the sample value without checking if it is valid.
     #[must_use]
-    pub fn value(&self) -> i32 {
+    pub fn value_unchecked(&self) -> i32 {
         self.value
     }
 
@@ -96,6 +115,9 @@ pub enum Accuracy {
         /// [`bias`](Accuracy::SymmetricalError::bias).
         scaling: i8,
     },
+    /// Indicates that the value from this channel is temporarily unavailable and that the [`Sample`]'s value is considered opaque and should be ignored.
+    /// Happens when parts of a sensor are not ready yet, but data is already available for other channels.
+    TemporarilyUnavailable,
 }
 
 /// Implemented on [`Samples`](crate::sensor::Samples), returned by
