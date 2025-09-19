@@ -1,0 +1,23 @@
+boards:
+  bbc-microbit-v2:
+    soc: nrf52833
+    ariel:
+      global_env:
+        RUSTFLAGS:
+          - --cfg=board_init
+    quirks:
+      - type: set_pin
+        description: "Set the LED matrix column for led0 to low"
+        pin: P0_28
+        level: low
+
+    leds:
+      led0:
+        pin: P0_21
+        color: green
+
+    buttons:
+      button0:
+        pin: P0_14
+      button1:
+        pin: P0_23

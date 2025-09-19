@@ -197,7 +197,12 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-boards"
-version = "0.2.0"
+version = "0.0.0"
+dependencies = [
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "cfg-if",
+]
 
 [[package]]
 name = "ariel-os-buildinfo"
@@ -269,6 +274,7 @@ dependencies = [
 name = "ariel-os-embassy"
 version = "0.2.0"
 dependencies = [
+ "ariel-os-boards",
  "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy-common",
