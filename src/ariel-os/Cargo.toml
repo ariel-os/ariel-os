@@ -105,6 +105,8 @@ network-config-static = ["ariel-os-embassy/network-config-static"]
 i2c = ["ariel-os-embassy/i2c"]
 ## Enables SPI support.
 spi = ["ariel-os-embassy/spi"]
+## Enables UART support.
+uart = ["ariel-os-embassy/uart"]
 ## Enables USB support.
 usb = ["ariel-os-embassy/usb"]
 ## Enables USB HID support.
@@ -203,4 +205,11 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts", "ariel-os-rt/_test"]
+_test = [
+  "i2c",
+  "no-boards",
+  "spi",
+  "external-interrupts",
+  "uart",
+  "ariel-os-rt/_test",
+]
