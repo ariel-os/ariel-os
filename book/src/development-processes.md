@@ -71,7 +71,7 @@ We have also introduce a [custom criterion][cargo-vet-custom-criteria] (and may 
 
 * `floss`:
 
-  > (TBD: Find a way to programmatically include the text from supplychain/audits.toml in here before we go on elaborating)
+  <!-- cmdrun tomlq -r .criteria.floss.description < ../../supply-chain/audits.toml | sed 's/^/  >/g' -->
 
   Reviewing for this can easily happen as part of the regular auditing process,
   as any lack of source files becomes visible through the point in the code where the source-less data is included.
