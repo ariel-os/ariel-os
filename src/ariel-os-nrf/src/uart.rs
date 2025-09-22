@@ -143,7 +143,6 @@ macro_rules! define_uart_drivers {
                         rx_buffer,
                         tx_buffer
                     );
-                    uart.set_baudrate(baudrate.into());
 
                     Uart::$peripheral(Self { uart })
                 }
