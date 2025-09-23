@@ -1,0 +1,4 @@
+apps:
+  - name: sensors-debug
+    context:
+      - stm32u083c-dk
