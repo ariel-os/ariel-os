@@ -16,6 +16,12 @@
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum Label {
+    /// Acceleration along the X axis.
+    AccelerationX,
+    /// Acceleration along the Y axis.
+    AccelerationY,
+    /// Acceleration along the Z axis.
+    AccelerationZ,
     /// Altitude.
     Altitude,
     /// Ground speed.
@@ -45,6 +51,9 @@ pub enum Label {
 impl core::fmt::Display for Label {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
+            Self::AccelerationX => write!(f, "Acceleration X"),
+            Self::AccelerationY => write!(f, "Acceleration Y"),
+            Self::AccelerationZ => write!(f, "Acceleration Z"),
             Self::Altitude => write!(f, "Altitude"),
             Self::GroundSpeed => write!(f, "Ground speed"),
             Self::Latitude => write!(f, "Latitude"),
