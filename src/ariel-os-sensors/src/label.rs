@@ -24,6 +24,12 @@ pub enum Label {
     AccelerationZ,
     /// Altitude.
     Altitude,
+    /// Angular velocity about the X axis.
+    AngularVelocityX,
+    /// Angular velocity about the Y axis.
+    AngularVelocityY,
+    /// Angular velocity about the Z axis.
+    AngularVelocityZ,
     /// Ground speed.
     GroundSpeed,
     /// Latitude.
@@ -55,6 +61,9 @@ impl core::fmt::Display for Label {
             Self::AccelerationY => write!(f, "Acceleration Y"),
             Self::AccelerationZ => write!(f, "Acceleration Z"),
             Self::Altitude => write!(f, "Altitude"),
+            Self::AngularVelocityX => write!(f, "Angular velocity X"),
+            Self::AngularVelocityY => write!(f, "Angular velocity Y"),
+            Self::AngularVelocityZ => write!(f, "Angular velocity Z"),
             Self::GroundSpeed => write!(f, "Ground speed"),
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
