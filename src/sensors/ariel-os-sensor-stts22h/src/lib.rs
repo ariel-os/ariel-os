@@ -88,7 +88,7 @@ impl Stts22hI2c {
         }
     }
 
-    pub async fn run(&self) -> ! {
+    pub async fn run(&'static self) -> ! {
         loop {
             self.signaling.wait_for_trigger().await;
 
@@ -148,7 +148,9 @@ impl Stts22hI2c {
             let accuracy = accuracy(temp);
             let sample = Sample::new(temp, accuracy);
 
-            self.signaling.signal_reading(Samples::from([sample])).await;
+            let mut samples = Samples::from([sample]);
+            samples.set_driver_ref(self);
+            self.signaling.signal_reading(samples).await;
         }
     }
 }
