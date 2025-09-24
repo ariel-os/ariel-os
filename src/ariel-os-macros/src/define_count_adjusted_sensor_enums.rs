@@ -24,7 +24,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             quote! {
                 impl From<[Sample; #i]> for Samples {
                     fn from(value: [Sample; #i]) -> Self {
-                        Self { samples: InnerSamples::#variant(value) }
+                        Self {
+                            samples: InnerSamples::#variant(value),
+                            driver: None,
+                        }
                     }
                 }
             }
@@ -79,9 +82,27 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         ///
         /// This type is automatically generated, the number of [`Sample`]s that can be stored is
         /// automatically adjusted.
-        #[derive(Debug, Copy, Clone)]
+        #[derive(Copy, Clone)]
         pub struct Samples {
             samples: InnerSamples,
+            driver: Option<&'static dyn Sensor>,
+        }
+
+        impl core::fmt::Debug for Samples {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                // FIXME
+                f.debug_struct("Samples")
+                 .field("samples", &self.samples)
+                 .finish()
+            }
+        }
+
+        // TODO: move this to a trait reserved for implementors
+        impl Samples {
+            /// FIXME
+            pub fn set_driver_ref(&mut self, driver_ref: &'static dyn Sensor) {
+                self.driver.replace(driver_ref);
+            }
         }
 
         #(#samples_from_impls)*
