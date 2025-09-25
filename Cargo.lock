@@ -333,10 +333,12 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-threads",
  "ariel-os-utils",
+ "bt-hci",
  "cfg-if",
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
+ "embassy-sync 0.6.2",
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -349,6 +351,7 @@ dependencies = [
  "once_cell",
  "paste",
  "static_cell",
+ "trouble-host",
 ]
 
 [[package]]
