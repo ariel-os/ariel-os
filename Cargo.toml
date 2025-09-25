@@ -146,7 +146,7 @@ once_cell = { version = "=1.19.0", default-features = false, features = [
 ] }
 paste = { version = "1.0" }
 pin-project = "1.1.10"
-rand = { version = "0.8.5", default-features = false }
+rand = { version = "0.9.0", default-features = false }
 rand_core = { version = "0.6.4", default-features = false }
 rtt-target = { version = "0.6.0" }
 
