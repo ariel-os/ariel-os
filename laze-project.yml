@@ -1418,6 +1418,15 @@ modules:
         FEATURES:
           - ariel-os/random
 
+  - name: random-crypto
+    help: A system-wide cryptographically secure RNG is available.
+    env:
+      global:
+        FEATURES:
+          - ariel-os/csprng
+        RUSTFLAGS:
+          - '--cfg getrandom_backend="custom"'
+
   - name: sw/benchmark
     help: provided if a target supports `benchmark()`
     selects:
