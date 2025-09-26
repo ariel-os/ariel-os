@@ -31,60 +31,6 @@ const LIST_TEMPLATE: &str = r#"
 </ul>
 "#;
 
-const BOARD_PAGE_TEMPLATE: &str = r#"# {{ board_info.name }}
-
-## Board Info
-
-- **Tier:** {{ board_info.tier }}
-- **Ariel OS Name:** `{{ board_info.technical_name }}`
-- **Chip:** {{ board_info.chip }}
-- **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
-
-### References
-
-- [Manufacturer link]({{ board_info.url }})
-
-## Support Matrix
-
-<table>
-  <thead>
-    <tr>
-      <th>Functionality</th>
-      <th>Support Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {%- for functionality in board_info.functionalities %}
-    <tr>
-      <td>{{ functionality.title }}</td>
-      <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
-    </tr>
-    {%- endfor %}
-  </tbody>
-</table>
-
-<style>
-.support-cell {
-  text-align: center;
-}
-</style>
-
-Legend:
-
-<dl>
-  {%- for support_key in support_keys %}
-  <div>
-    <dt>{{ support_key.icon }}</dt><dd>{{ support_key.description }}</dd>
-  </div>
-  {%- endfor %}
-</dl>
-<style>
-dt, dd {
-  display: inline;
-}
-</style>
-"#;
-
 const TABLE_TEMPLATE: &str = r##"<!-- This table is auto-generated. Do not edit manually. -->
 <table class="support-matrix">
   <thead>
@@ -360,6 +306,9 @@ struct SubCommandPages {
     /// just check if the board pages are up to date
     #[argh(switch)]
     check: bool,
+    #[argh(option)]
+    /// path of the template summary
+    template_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -370,11 +319,19 @@ struct SubCommandPages {
 
 impl SubCommandPages {
     fn run(self, matrix: &schema::Matrix) -> miette::Result<()> {
+        let board_page_template = fs::read_to_string(&self.template_path).map_err(|source| {
+            Error::SummaryTemplateFile {
+                path: self.template_path.clone(),
+                source,
+            }
+        })?;
+
         let board_info = gen_functionalities(&matrix)?;
 
         for board in &board_info {
             let mut env = Environment::new();
-            env.add_template("board_page", BOARD_PAGE_TEMPLATE).unwrap();
+            env.add_template("board_page", &board_page_template)
+                .unwrap();
             let tmpl = env.get_template("board_page").unwrap();
             let board_page = tmpl
                 .render(context!(

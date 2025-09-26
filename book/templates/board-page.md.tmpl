@@ -1,0 +1,52 @@
+# {{ board_info.name }}
+
+## Board Info
+
+- **Tier:** {{ board_info.tier }}
+- **Ariel OS Name:** `{{ board_info.technical_name }}`
+- **Chip:** {{ board_info.chip }}
+- **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
+
+### References
+
+- [Manufacturer link]({{ board_info.url }})
+
+## Support Matrix
+
+<table>
+  <thead>
+    <tr>
+      <th>Functionality</th>
+      <th>Support Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for functionality in board_info.functionalities %}
+    <tr>
+      <td>{{ functionality.title }}</td>
+      <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+
+<style>
+.support-cell {
+  text-align: center;
+}
+</style>
+
+Legend:
+
+<dl>
+  {%- for support_key in support_keys %}
+  <div>
+    <dt>{{ support_key.icon }}</dt><dd>{{ support_key.description }}</dd>
+  </div>
+  {%- endfor %}
+</dl>
+<style>
+dt, dd {
+  display: inline;
+}
+</style>

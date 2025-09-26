@@ -428,7 +428,7 @@ jobs:
         run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --check
 
       - name: Check that the board pages are all up-to-date
-        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check
+        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl
 
       - name: Check the support matrix generation exit code
         run: |
