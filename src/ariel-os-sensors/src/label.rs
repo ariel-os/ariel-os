@@ -26,12 +26,18 @@ pub enum Label {
     Longitude,
     /// Used for sensor drivers returning a single [`Sample`](crate::sensor::Sample).
     Main,
+    /// Opaque
+    Opaque,
     /// Relative humidity.
     RelativeHumidity,
     /// Heading.
     Heading,
     /// Temperature.
     Temperature,
+    /// Timestamp of GNSS fix in seconds. Using a custom epoch.
+    TimeOfFix,
+    /// Sub-second part of the GNSS fix timestamp.
+    TimeOfFixSubSecond,
     /// Vertical speed.
     VerticalSpeed,
     /// X axis.
@@ -50,9 +56,12 @@ impl core::fmt::Display for Label {
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
             Self::Main => write!(f, ""),
+            Self::Opaque => write!(f, "Opaque"),
             Self::RelativeHumidity => write!(f, "Relative humidity"),
             Self::Heading => write!(f, "Heading"),
             Self::Temperature => write!(f, "Temperature"),
+            Self::TimeOfFix => write!(f, "Time of GNSS fix"),
+            Self::TimeOfFixSubSecond => write!(f, "Sub-second part of time of GNSS fix"),
             Self::VerticalSpeed => write!(f, "Vertical speed"),
             Self::X => write!(f, "X"),
             Self::Y => write!(f, "Y"),
