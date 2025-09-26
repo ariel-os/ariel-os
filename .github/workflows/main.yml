@@ -436,21 +436,17 @@ jobs:
           ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 2
           ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 3
 
-      - name: Check the board list markdown generation exit code
+      - name: Check the board index page markdown generation exit code
         run: |
-          ./doc/gen_book.rs board-list doc/support_matrix.yml /dev/null --tier 1
-          ./doc/gen_book.rs board-list doc/support_matrix.yml /dev/null --tier 2
-          ./doc/gen_book.rs board-list doc/support_matrix.yml /dev/null --tier 3
+          ./doc/gen_book.rs board-index doc/support_matrix.yml /dev/null --template-path book/src/boards/index.md.tmpl
 
-      - name: Install mdbook and mdbook utils
+      - name: Check the board pages generation exit code
+        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml /tmp/
+
+      - name: Install mdbook
         uses: taiki-e/install-action@ea0eda622640ac23a17ba349cf09e2709d58f5e1 # v2
         with:
-          tool: mdbook, mdbook-cmdrun
-
-      - name: Check for unexpected cmdrun uses
-        run: |
-            cd book
-            ./cmdrun-check.sh
+          tool: mdbook
 
       - name: Build the book
         run: |

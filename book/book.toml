@@ -26,5 +26,3 @@ level = 0
 "/debug_console.html" = "debug-console.html"
 "/getting_started.html" = "getting-started.html"
 "/hardware_functionality_support.html" = "hardware-functionality-support.html"
-
-[preprocessor.cmdrun]

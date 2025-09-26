@@ -16,16 +16,16 @@ Tiers therefore are not related to the functionality coverage of each piece of h
 
 Tier 1 hardware gets regularly tested, either automatically or manually.
 
-<!-- cmdrun ../../doc/gen_book.rs matrix ../../doc/support_matrix.yml /dev/stdout --tier 1 -->
+{{#include support_matrix_tier1.html}}
 
 ## Tier 2
 
 Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have access to the hardware.
 
-<!-- cmdrun ../../doc/gen_book.rs matrix ../../doc/support_matrix.yml /dev/stdout --tier 2 -->
+{{#include support_matrix_tier2.html}}
 
 ## Tier 3
 
 Tier 3 hardware is build-tested only, as Ariel OS maintainers do not have access to the hardware.
 
-<!-- cmdrun ../../doc/gen_book.rs matrix ../../doc/support_matrix.yml /dev/stdout --tier 3 -->
+{{#include support_matrix_tier3.html}}
