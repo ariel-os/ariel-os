@@ -214,6 +214,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(feature = "spi")]
     hal::spi::init(&mut peripherals);
 
+    #[cfg(feature = "uart")]
+    hal::uart::init(&mut peripherals);
+
     #[cfg(feature = "hwrng")]
     hal::hwrng::construct_rng(&mut peripherals);
     // Clock startup and entropy collection may lend themselves to parallelization, provided that
