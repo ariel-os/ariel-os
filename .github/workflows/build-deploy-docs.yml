@@ -88,6 +88,7 @@ jobs:
                   storage,
                   tcp,
                   threading,
+                  uart,
                   udp,
                   usb,
                   usb-hid,
@@ -102,6 +103,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-esp
           RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" --cfg nightly' cargo doc \
