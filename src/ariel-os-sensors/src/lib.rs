@@ -52,6 +52,7 @@
 #![deny(missing_docs)]
 
 mod category;
+pub mod datetime;
 mod label;
 mod measurement_unit;
 pub mod registry;
