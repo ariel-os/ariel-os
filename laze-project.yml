@@ -546,6 +546,20 @@ contexts:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsis\" # Needs an external 32.768 kHz crystal to have a stable clock
 
+  - name: stm32u073kc
+    parent: stm32
+    selects:
+      - cortex-m0-plus
+      - ram-small
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32U073KC
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng-cryp\"
+        - --cfg capability=\"hw/stm32-usb-drd-fs\"
+
   - name: stm32u083mc
     parent: stm32
     selects:
