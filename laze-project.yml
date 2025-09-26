@@ -1097,6 +1097,10 @@ modules:
       - network-config-dhcp
     provides_unique:
       - network-config-ipv4
+    env:
+      global:
+        FEATURES:
+          - ariel-os/dhcpv4
 
   - name: network-config-static
     help: "deprecated: use `network-config-ipv4-static` instead"

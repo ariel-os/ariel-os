@@ -22,8 +22,8 @@ embassy-executor = { workspace = true }
 embassy-futures = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
-  "dhcpv4",
   "medium-ethernet",
+  "proto-ipv4",
 ] }
 embassy-sync = { workspace = true }
 embassy-time = { workspace = true, optional = true }
@@ -98,6 +98,8 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 ## Use a hardware RNG to seed into the ariel-os-random system-wide RNG
 hwrng = ["ariel-os-hal/hwrng"]
 
+## Enables support for DHCPv4.
+dhcpv4 = ["embassy-net?/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["embassy-net?/tcp"]
 ## Enables support for UDP.
@@ -157,4 +159,4 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["executor-none", "i2c", "spi", "time", "external-interrupts"]
+_test = ["dhcpv4", "executor-none", "i2c", "spi", "time", "external-interrupts"]
