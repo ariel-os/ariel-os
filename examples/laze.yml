@@ -22,6 +22,7 @@ subdirs:
   - minimal
   - power
   - random
+  - sensors-debug
   - storage
   - tcp-echo
   - testing
