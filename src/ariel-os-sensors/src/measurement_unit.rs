@@ -30,6 +30,8 @@ pub enum MeasurementUnit {
     DecimalDegree,
     /// Degrees (°).
     Degree,
+    /// Degrees per second (°/s).
+    DegreePerSecond,
     /// Farad (F).
     Farad,
     // FIXME: Kilogram as well?
@@ -101,6 +103,7 @@ macro_rules! provide_unit_fmt {
             Self::Decibel => write!($f, "dB"),
             Self::DecimalDegree => write!($f, "°"),
             Self::Degree => write!($f, "°"),
+            Self::DegreePerSecond => write!($f, "°/s"),
             Self::Farad => write!($f, "F"),
             Self::Gram => write!($f, "g"),
             Self::Gray => write!($f, "Gy"),
