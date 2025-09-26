@@ -44,7 +44,7 @@ ariel-os-random = { path = "../ariel-os-random", optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
 
-heapless = "0.8.0"
+heapless = "0.9.0"
 once_cell = { workspace = true }
 usbd-hid = { version = "0.8.2", optional = true }
 trouble-host = { workspace = true, optional = true }
