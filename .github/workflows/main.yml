@@ -132,6 +132,7 @@ jobs:
                 spi,
                 storage,
                 tcp,
+                uart,
                 udp,
                 usb,
                 usb-ethernet,
@@ -190,6 +191,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-rp
             --
@@ -290,6 +292,7 @@ jobs:
                     storage,
                     tcp,
                     threading,
+                    uart,
                     udp,
                     usb,
                     usb-hid,
@@ -320,6 +323,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-rp
 
