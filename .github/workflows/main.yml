@@ -425,16 +425,16 @@ jobs:
         uses: crate-ci/typos@0c17dabcee8b8f1957fa917d17393a23e02e1583 # v1.36.3
 
       - name: Check that the book summary has an up-to-date board list
-        run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/src/SUMMARY.md.tmpl --check
+        run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --check
 
       - name: Check that the board pages are all up-to-date
-        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check
+        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl
 
       - name: Check the support matrix generation exit code
         run: |
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 1
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 2
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 3
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 1 --template-path book/templates/support-matrix.html.tmpl
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 2 --template-path book/templates/support-matrix.html.tmpl
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 3 --template-path book/templates/support-matrix.html.tmpl
 
       - name: Check the board list markdown generation exit code
         run: |
