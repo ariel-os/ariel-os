@@ -432,9 +432,9 @@ jobs:
 
       - name: Check the support matrix generation exit code
         run: |
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 1
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 2
-          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 3
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 1 --template-path book/templates/support-matrix.html.tmpl
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 2 --template-path book/templates/support-matrix.html.tmpl
+          ./doc/gen_book.rs matrix doc/support_matrix.yml /dev/null --tier 3 --template-path book/templates/support-matrix.html.tmpl
 
       - name: Check the board list markdown generation exit code
         run: |
