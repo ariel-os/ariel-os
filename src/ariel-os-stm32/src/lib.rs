@@ -24,6 +24,9 @@ pub mod identity;
 #[cfg(feature = "spi")]
 pub mod spi;
 
+#[cfg(feature = "uart")]
+pub mod uart;
+
 #[cfg(feature = "storage")]
 #[doc(hidden)]
 pub mod storage;

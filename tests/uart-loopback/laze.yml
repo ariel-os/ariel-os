@@ -1,0 +1,12 @@
+apps:
+  - name: uart-loopback
+    context:
+      - seeedstudio-lora-e5-mini
+      - st-nucleo-c031c6
+      - st-nucleo-f042k6
+      - st-nucleo-f401re
+      - st-nucleo-h755zi-q
+      - st-b-l475e-iot01a
+      - st-nucleo-wb55
+      - st-nucleo-wba55
+      - st-steval-mkboxpro
