@@ -96,9 +96,8 @@ builders:
 - name: rpi-pico2
   parent: rp235xa
   provides:
-  - has_ble_cyw43
+  - has_leds
   - has_usb_device_port
-  - has_wifi_cyw43
 - name: seeedstudio-lora-e5-mini
   parent: stm32wle5jc
   provides:
