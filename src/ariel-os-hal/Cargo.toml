@@ -139,3 +139,5 @@ defmt = [
   "ariel-os-stm32/defmt",
 ]
 log = ["ariel-os-esp/log"]
+
+rcc-config-override = ["ariel-os-stm32/rcc-config-override"]
