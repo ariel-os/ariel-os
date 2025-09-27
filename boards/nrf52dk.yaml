@@ -2,8 +2,6 @@ description: test sbd file
 boards:
   nrf52dk:
     chip: nrf52832
-    flags:
-      - has_usb_device_port
     leds:
       led0:
         color: green
