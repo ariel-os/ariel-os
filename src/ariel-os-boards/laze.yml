@@ -62,7 +62,6 @@ builders:
   provides:
   - has_buttons
   - has_leds
-  - has_usb_device_port
 - name: nrf5340dk-net
   parent: nrf5340-net
 - name: nrf5340dk
