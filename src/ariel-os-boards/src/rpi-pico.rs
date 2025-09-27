@@ -3,7 +3,6 @@
 pub mod pins {
 use ariel_os_hal::hal::peripherals;
 
-#[cfg(context = "rpi-pico")]
 ariel_os_hal::define_peripherals!(LedPeripherals {
 led0: PIN_25,
 });

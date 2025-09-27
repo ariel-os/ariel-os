@@ -3,11 +3,9 @@
 pub mod pins {
 use ariel_os_hal::hal::peripherals;
 
-#[cfg(context = "bbc-microbit-v2")]
 ariel_os_hal::define_peripherals!(LedPeripherals {
 led0: P0_21,
 });
-#[cfg(context = "bbc-microbit-v2")]
 ariel_os_hal::define_peripherals!(ButtonPeripherals {
 button0: P0_14,
 button1: P0_23,

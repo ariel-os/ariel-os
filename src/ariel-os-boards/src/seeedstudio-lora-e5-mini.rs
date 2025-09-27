@@ -3,11 +3,9 @@
 pub mod pins {
 use ariel_os_hal::hal::peripherals;
 
-#[cfg(context = "seeedstudio-lora-e5-mini")]
 ariel_os_hal::define_peripherals!(LedPeripherals {
 led0: PB5,
 });
-#[cfg(context = "seeedstudio-lora-e5-mini")]
 ariel_os_hal::define_peripherals!(ButtonPeripherals {
 button0: PB13,
 });

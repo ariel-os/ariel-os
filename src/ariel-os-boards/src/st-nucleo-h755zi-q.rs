@@ -3,13 +3,11 @@
 pub mod pins {
 use ariel_os_hal::hal::peripherals;
 
-#[cfg(context = "st-nucleo-h755zi-q")]
 ariel_os_hal::define_peripherals!(LedPeripherals {
 led0: PB0,
 led1: PE1,
 led2: PE1,
 });
-#[cfg(context = "st-nucleo-h755zi-q")]
 ariel_os_hal::define_peripherals!(ButtonPeripherals {
 button0: PC13,
 });
