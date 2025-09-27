@@ -1,6 +1,7 @@
 subdirs:
   - ariel-os
   - ariel-os-alloc
+  - ariel-os-boards
   - ariel-os-debug-log
   - ariel-os-embassy
   - ariel-os-embassy-common
