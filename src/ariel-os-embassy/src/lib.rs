@@ -371,7 +371,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         spawner.spawn(net::net_task(runner)).unwrap();
 
         if crate::net::STACK
-            .init(SameExecutorCell::new(stack, spawner))
+            .init(embassy_sync::blocking_mutex::Mutex::new(
+                SameExecutorCell::new(stack, spawner),
+            ))
             .is_err()
         {
             unreachable!();
