@@ -8,7 +8,7 @@ pub mod gpio;
 
 #[doc(hidden)]
 pub mod peripheral {
-    pub use embassy_stm32::Peripheral;
+    pub use embassy_stm32::Peri;
 }
 
 #[cfg(feature = "external-interrupts")]
