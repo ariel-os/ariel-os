@@ -47,6 +47,7 @@ contexts:
           SCRIPTS=${SCRIPTS}
           CONFIG_BOARD=${builder}
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
+          CARGO_BUILD_BUILD_DIR=${relroot}/${build-dir}/bin/cargo
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
