@@ -152,6 +152,8 @@ wifi-cyw43 = ["ariel-os-embassy/wifi-cyw43"]
 wifi-esp = ["ariel-os-embassy/wifi-esp"]
 # Selects STM32 Ethernet
 eth-stm32 = ["ariel-os-embassy/eth-stm32"]
+# Selects LTE-M on nrf91xx SiP (nrf91-modem).
+ltem-nrf-modem = ["ariel-os-embassy/ltem-nrf-modem", "nrf91-modem"]
 
 # ## Bluetooth support
 ble = ["ariel-os-embassy/ble"]

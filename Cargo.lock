@@ -439,10 +439,13 @@ dependencies = [
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
+ "embassy-net",
+ "embassy-net-driver-channel",
  "embassy-nrf",
  "embassy-sync 0.6.2",
  "embedded-hal-async",
  "embedded-io-async",
+ "heapless 0.8.0",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -3922,8 +3925,7 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 [[package]]
 name = "nrf-modem"
 version = "0.7.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33f1a7a9bd2319d97302333fc41b70251321b15ea19fb0d0563f3033fdc3fde1"
+source = "git+https://github.com/diondokter/nrf-modem?rev=deec4cc8a207ee96b4fd06463f57437fafd51030#deec4cc8a207ee96b4fd06463f57437fafd51030"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -3931,10 +3933,14 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.0.1",
+ "embassy-futures",
+ "embassy-net-driver-channel",
  "embassy-sync 0.6.2",
+ "embassy-time",
  "embedded-io-async",
  "futures",
  "grounded",
+ "heapless 0.8.0",
  "linked_list_allocator",
  "nrf9120-pac",
  "nrf9160-pac",
