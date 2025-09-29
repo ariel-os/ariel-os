@@ -5427,6 +5427,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ac9aa371f599d22256307c24a9d748c041e548cbf599f35d890f9d365361790"
 
 [[package]]
+name = "tcp-client"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embedded-io-async",
+]
+
+[[package]]
 name = "tcp-echo"
 version = "0.0.0"
 dependencies = [
