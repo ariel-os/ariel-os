@@ -534,7 +534,7 @@ dependencies = [
  "paste",
  "portable-atomic",
  "static_cell",
- "stm32-metapac 16.0.0",
+ "stm32-metapac",
 ]
 
 [[package]]
@@ -2045,7 +2045,7 @@ dependencies = [
  "sdio-host",
  "static_assertions",
  "stm32-fmc",
- "stm32-metapac 18.0.0",
+ "stm32-metapac",
  "vcell",
  "volatile-register",
 ]
@@ -5362,15 +5362,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c7f0639399e2307c2446c54d91d4f1596343a1e1d5cab605b9cce11d0ab3858c"
 dependencies = [
  "embedded-hal 0.2.7",
-]
-
-[[package]]
-name = "stm32-metapac"
-version = "16.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc520f60f6653a32479a95b9180b33908f0cbbdf106609465ee7dea98f4f5b37"
-dependencies = [
- "cortex-m",
 ]
 
 [[package]]
