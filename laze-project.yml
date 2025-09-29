@@ -377,7 +377,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
-      - has_executor_single_thread_support
+      #- has_executor_single_thread_support
       - has_hwrng
     env:
       RUSTFLAGS:

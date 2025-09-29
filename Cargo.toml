@@ -103,7 +103,7 @@ esp-radio = { version = "0.15.0", default-features = false }
 esp-wifi-sys = { version = "0.7.1", default-features = false }
 
 esp-storage = { version = "0.7.0" }
-xtensa-lx-rt = { version = "0.18.0", default-features = false }
+xtensa-lx-rt = { version = "0.20.0", default-features = false }
 
 linkme = { version = "0.3.32" }
 

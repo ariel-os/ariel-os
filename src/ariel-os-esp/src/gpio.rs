@@ -3,10 +3,7 @@
 pub mod input {
     //! Input-specific types.
 
-    use esp_hal::{
-        gpio::{Level, Pull},
-        peripheral::Peripheral,
-    };
+    use esp_hal::gpio::{Level, Pull};
 
     #[doc(hidden)]
     pub use esp_hal::gpio::{Input, InputPin};
@@ -24,7 +21,7 @@ pub mod input {
 
     #[doc(hidden)]
     pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+        pin: impl InputPin + 'static,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
     ) -> Result<Input<'static>, core::convert::Infallible> {
@@ -36,7 +33,7 @@ pub mod input {
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
     pub fn new_int_enabled(
-        pin: impl Peripheral<P: InputPin> + 'static,
+        pin: impl InputPin + 'static,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
     ) -> Result<IntEnabledInput<'static>, InterruptError> {
@@ -56,7 +53,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use esp_hal::{gpio::Level, peripheral::Peripheral};
+    use esp_hal::gpio::Level;
 
     #[doc(hidden)]
     pub use esp_hal::gpio::{Output, OutputPin};
@@ -68,7 +65,7 @@ pub mod output {
 
     #[doc(hidden)]
     pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+        pin: impl OutputPin + 'static,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         _speed: super::Speed, // Not supported by hardware

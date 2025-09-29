@@ -338,9 +338,8 @@ dependencies = [
  "embedded-hal-async",
  "esp-alloc",
  "esp-hal",
- "esp-hal-embassy",
  "esp-radio",
- "esp-wifi-sys",
+ "esp-wifi-sys 0.7.1",
  "fugit",
  "once_cell",
  "paste",
@@ -583,7 +582,7 @@ dependencies = [
  "portable-atomic",
  "rp-pac",
  "static_cell",
- "xtensa-lx-rt 0.18.0",
+ "xtensa-lx-rt",
 ]
 
 [[package]]
@@ -2381,18 +2380,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "enum-as-inner"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a1e6a265c649f3f5979b601d26f1d05ada116434c87741c9493cb56218f76cbc"
-dependencies = [
- "heck 0.5.0",
- "proc-macro2",
- "quote",
- "syn 2.0.106",
-]
-
-[[package]]
 name = "enumset"
 version = "1.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2433,20 +2420,22 @@ dependencies = [
 [[package]]
 name = "esp-alloc"
 version = "0.8.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "allocator-api2",
  "cfg-if",
  "document-features",
  "enumset",
+ "esp-config",
  "esp-sync",
  "linked_list_allocator",
+ "rlsf",
 ]
 
 [[package]]
 name = "esp-config"
 version = "0.5.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "document-features",
  "esp-metadata-generated",
@@ -2458,7 +2447,7 @@ dependencies = [
 [[package]]
 name = "esp-hal"
 version = "1.0.0-rc.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "bitfield 0.19.2",
  "bitflags 2.9.1",
@@ -2507,39 +2496,16 @@ dependencies = [
  "serde",
  "sha1",
  "sha2",
- "strum 0.27.2",
+ "strum",
  "ufmt-write",
- "xtensa-lx 0.12.0",
- "xtensa-lx-rt 0.20.0",
-]
-
-[[package]]
-name = "esp-hal-embassy"
-version = "0.9.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
-dependencies = [
- "cfg-if",
- "document-features",
- "embassy-executor 0.9.1",
- "embassy-executor-timer-queue",
- "embassy-sync 0.7.2",
- "embassy-time-driver",
- "embassy-time-queue-utils",
- "esp-config",
- "esp-hal",
- "esp-hal-procmacros",
- "esp-metadata-generated",
- "esp-sync",
- "log",
- "portable-atomic",
- "riscv",
- "static_cell",
+ "xtensa-lx",
+ "xtensa-lx-rt",
 ]
 
 [[package]]
 name = "esp-hal-procmacros"
 version = "0.19.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "document-features",
  "litrs",
@@ -2554,7 +2520,7 @@ dependencies = [
 [[package]]
 name = "esp-metadata"
 version = "0.8.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "anyhow",
  "basic-toml",
@@ -2562,21 +2528,34 @@ dependencies = [
  "proc-macro2",
  "quote",
  "serde",
- "strum 0.27.2",
+ "strum",
 ]
 
 [[package]]
 name = "esp-metadata-generated"
 version = "0.1.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "esp-metadata",
 ]
 
 [[package]]
+name = "esp-phy"
+version = "0.0.1"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
+dependencies = [
+ "cfg-if",
+ "esp-config",
+ "esp-hal",
+ "esp-metadata-generated",
+ "esp-sync",
+ "esp-wifi-sys 0.8.1",
+]
+
+[[package]]
 name = "esp-println"
 version = "0.15.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "defmt 1.0.1",
  "document-features",
@@ -2589,10 +2568,10 @@ dependencies = [
 [[package]]
 name = "esp-radio"
 version = "0.15.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "allocator-api2",
- "bt-hci 0.4.0",
+ "bt-hci 0.6.0",
  "cfg-if",
  "defmt 1.0.1",
  "document-features",
@@ -2605,9 +2584,10 @@ dependencies = [
  "esp-hal",
  "esp-hal-procmacros",
  "esp-metadata-generated",
- "esp-radio-preempt-driver",
+ "esp-phy",
+ "esp-radio-rtos-driver",
  "esp-sync",
- "esp-wifi-sys",
+ "esp-wifi-sys 0.8.1",
  "heapless 0.9.1",
  "instability",
  "log",
@@ -2616,18 +2596,18 @@ dependencies = [
  "portable-atomic",
  "portable_atomic_enum",
  "smoltcp",
- "xtensa-lx-rt 0.20.0",
+ "xtensa-lx-rt",
 ]
 
 [[package]]
-name = "esp-radio-preempt-driver"
+name = "esp-radio-rtos-driver"
 version = "0.0.1"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 
 [[package]]
 name = "esp-riscv-rt"
 version = "0.12.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "defmt 1.0.1",
  "document-features",
@@ -2638,7 +2618,7 @@ dependencies = [
 [[package]]
 name = "esp-rom-sys"
 version = "0.1.1"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "cfg-if",
  "document-features",
@@ -2648,7 +2628,7 @@ dependencies = [
 [[package]]
 name = "esp-sync"
 version = "0.0.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "cfg-if",
  "defmt 1.0.1",
@@ -2657,7 +2637,7 @@ dependencies = [
  "embassy-sync 0.7.2",
  "esp-metadata-generated",
  "riscv",
- "xtensa-lx 0.12.0",
+ "xtensa-lx",
 ]
 
 [[package]]
@@ -2680,7 +2660,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6b5438361891c431970194a733415006fb3d00b6eb70b3dcb66fd58f04d9b39"
 dependencies = [
  "anyhow",
- "defmt 0.3.100",
+]
+
+[[package]]
+name = "esp-wifi-sys"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "89b6544f6f0cb86169d1f93ba2101a8d50358a040c5043676ed86b793e09b12c"
+dependencies = [
+ "anyhow",
+ "defmt 1.0.1",
  "log",
 ]
 
@@ -3934,15 +3923,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "minijinja"
-version = "2.10.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd72e8b4e42274540edabec853f607c015c73436159b06c39c7af85a20433155"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "minimal"
 version = "0.0.0"
 dependencies = [
@@ -4643,12 +4623,6 @@ name = "r-efi"
 version = "5.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5"
-
-[[package]]
-name = "r0"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd7a31eed1591dcbc95d92ad7161908e72f4677f8fabf2a32ca49b4237cbf211"
 
 [[package]]
 name = "ral-registers"
@@ -5395,33 +5369,11 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 
 [[package]]
 name = "strum"
-version = "0.26.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8fec0f0aef304996cf250b31b5a10dee7980c85da9d759361292b8bca5a18f06"
-dependencies = [
- "strum_macros 0.26.4",
-]
-
-[[package]]
-name = "strum"
 version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf"
 dependencies = [
- "strum_macros 0.27.2",
-]
-
-[[package]]
-name = "strum_macros"
-version = "0.26.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c6bee85a5a24955dc440386795aa378cd9cf82acd5f764469152d2270e581be"
-dependencies = [
- "heck 0.5.0",
- "proc-macro2",
- "quote",
- "rustversion",
- "syn 2.0.106",
+ "strum_macros",
 ]
 
 [[package]]
@@ -5751,7 +5703,6 @@ dependencies = [
  "serde",
  "serde_spanned 0.6.8",
  "toml_datetime 0.6.9",
- "toml_write",
  "winnow 0.7.10",
 ]
 
@@ -5763,12 +5714,6 @@ checksum = "b551886f449aa90d4fe2bdaa9f4a2577ad2dde302c61ecf262d80b116db95c10"
 dependencies = [
  "winnow 0.7.10",
 ]
-
-[[package]]
-name = "toml_write"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfb942dfe1d8e29a7ee7fcbde5bd2b9a25fb89aa70caea2eba3bee836ff41076"
 
 [[package]]
 name = "toml_writer"
@@ -6408,68 +6353,27 @@ checksum = "ea2f10b9bb0928dfb1b42b65e1f9e36f7f54dbdf08457afefb38afcdec4fa2bb"
 
 [[package]]
 name = "xtensa-lx"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51cbb46c78cfd284c9378070ab90bae9d14d38b3766cb853a97c0a137f736d5b"
-dependencies = [
- "critical-section",
- "document-features",
-]
-
-[[package]]
-name = "xtensa-lx"
 version = "0.12.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "critical-section",
-]
-
-[[package]]
-name = "xtensa-lx-rt"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "689c2ef159d9cd4fc9503603e9999968a84a30db9bde0f0f880d0cceea0190a9"
-dependencies = [
- "anyhow",
- "document-features",
- "enum-as-inner",
- "minijinja",
- "r0",
- "serde",
- "strum 0.26.3",
- "toml 0.8.22",
- "xtensa-lx 0.10.0",
- "xtensa-lx-rt-proc-macros 0.2.2",
 ]
 
 [[package]]
 name = "xtensa-lx-rt"
 version = "0.20.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "defmt 1.0.1",
  "document-features",
- "r0",
- "xtensa-lx 0.12.0",
- "xtensa-lx-rt-proc-macros 0.4.0",
-]
-
-[[package]]
-name = "xtensa-lx-rt-proc-macros"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11277b1e4cbb7ffe44678c668518b249c843c81df249b8f096701757bc50d7ee"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn 2.0.106",
+ "xtensa-lx",
+ "xtensa-lx-rt-proc-macros",
 ]
 
 [[package]]
 name = "xtensa-lx-rt-proc-macros"
 version = "0.4.0"
-source = "git+https://github.com/kaspar030/esp-hal?rev=5ec9e2da3e013486432af1ac0062d9260b98a9ad#5ec9e2da3e013486432af1ac0062d9260b98a9ad"
+source = "git+https://github.com/kaspar030/esp-hal?rev=087a3a05d00810ea5fa3c67348836e5a71a44424#087a3a05d00810ea5fa3c67348836e5a71a44424"
 dependencies = [
  "proc-macro2",
  "quote",
