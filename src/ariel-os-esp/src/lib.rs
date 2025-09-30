@@ -44,12 +44,13 @@ pub mod wifi;
 #[doc(hidden)]
 pub mod peripheral {}
 
+#[doc(hidden)]
 pub mod peripherals {
-    //! Types for the peripheral singletons.
-
-    #![expect(missing_docs)]
     pub use esp_hal::peripherals::*;
 }
+
+#[cfg(feature = "time")]
+mod time_driver;
 
 #[doc(hidden)]
 pub use esp_hal::peripherals::OptionalPeripherals;
@@ -57,8 +58,7 @@ pub use esp_hal::peripherals::OptionalPeripherals;
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    let mut config = esp_hal::Config::default();
-    config.cpu_clock = esp_hal::clock::CpuClock::max();
+    let config = esp_hal::Config::default().with_cpu_clock(esp_hal::clock::CpuClock::max());
 
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
 
@@ -94,7 +94,10 @@ pub fn init() -> OptionalPeripherals {
         }
     };
 
-    esp_hal_embassy::init(embassy_timer);
+    //esp_hal_embassy::init(embassy_timer);
 
     peripherals
 }
+
+#[cfg(feature = "time")]
+embassy_time_driver::time_driver_impl!(static TIMER_QUEUE: crate::time_driver::TimerQueue = crate::time_driver::TimerQueue::new());
