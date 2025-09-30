@@ -3532,8 +3532,7 @@ dependencies = [
 [[package]]
 name = "lakers"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4ab384cc0352dbba965a745dcec1b6d5a87afafe8196416348902137e1b9c50"
+source = "git+https://github.com/openwsn-berkeley/lakers/#d2a1fe5d24f36724b2e4d59bb83932f5f22f2a3f"
 dependencies = [
  "defmt 0.3.100",
  "defmt-or-log",
@@ -3543,8 +3542,7 @@ dependencies = [
 [[package]]
 name = "lakers-crypto-rustcrypto"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af6b95506c657fdc36492c90765fa32be80a9a2c102cbab7e2329d25e18d22f4"
+source = "git+https://github.com/openwsn-berkeley/lakers/#d2a1fe5d24f36724b2e4d59bb83932f5f22f2a3f"
 dependencies = [
  "aead",
  "aes",
@@ -3559,8 +3557,7 @@ dependencies = [
 [[package]]
 name = "lakers-shared"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01a83a6e5ecdcf9ae3acde69a34f4431ffc8e97068337db0340312849d021c34"
+source = "git+https://github.com/openwsn-berkeley/lakers/#d2a1fe5d24f36724b2e4d59bb83932f5f22f2a3f"
 dependencies = [
  "defmt-or-log",
 ]
