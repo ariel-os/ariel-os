@@ -1,0 +1,12 @@
+boards:
+  board_name:
+    chip: chip_name
+    leds:
+      led0:
+        pin:
+        color:
+        active: high
+    buttons:
+      button0:
+        pin:
+        active: high

@@ -34,6 +34,7 @@ embedded-hal-async = { workspace = true }
 
 ariel-os-buildinfo = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-boards = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }

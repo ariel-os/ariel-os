@@ -205,6 +205,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     debug!("ariel-os-embassy::init_task()");
 
+    #[cfg(board_init)]
+    ariel_os_boards::init(&mut peripherals);
+
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
 

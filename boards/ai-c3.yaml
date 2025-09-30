@@ -1,0 +1,3 @@
+boards:
+  ai-c3:
+    chip: esp-c3-01m
