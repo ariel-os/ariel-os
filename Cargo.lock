@@ -334,6 +334,8 @@ dependencies = [
  "embassy-embedded-hal",
  "embassy-executor 0.9.1",
  "embassy-time",
+ "embassy-time-driver",
+ "embassy-time-queue-utils",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "esp-alloc",

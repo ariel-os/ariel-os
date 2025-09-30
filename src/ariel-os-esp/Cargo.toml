@@ -15,6 +15,8 @@ defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false }
 embassy-time = { workspace = true, optional = true }
+embassy-time-driver = { workspace = true, features = [ "tick-hz-1_000_000" ], optional = true }
+embassy-time-queue-utils = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 esp-alloc = { workspace = true, default-features = false, optional = true }
@@ -22,7 +24,7 @@ esp-hal = { workspace = true, default-features = false, features = [
   "optfield",
   "rt",
 ] }
-#esp-preempt = { workspace = true, default-features = false, optional = true }
+
 esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "wifi",
@@ -101,6 +103,13 @@ spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
 threading = [
   "dep:ariel-os-threads",
   "dep:esp-wifi-sys",
+]
+
+## Enables timers
+time = [
+  "dep:embassy-time",
+  "dep:embassy-time-driver",
+  "dep:embassy-time-queue-utils",
 ]
 
 ## Enables defmt support.
