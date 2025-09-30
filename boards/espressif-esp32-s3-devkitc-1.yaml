@@ -1,0 +1,5 @@
+boards:
+  espressif-esp32-s3-devkitc-1:
+    chip: esp32-s3-wroom-1
+    flags:
+      - has_usb_device_port
