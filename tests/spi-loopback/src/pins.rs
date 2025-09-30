@@ -1,7 +1,7 @@
 use ariel_os::hal::{peripherals, spi};
 
 #[cfg(context = "esp")]
-pub type SensorSpi = spi::main::SPI2;
+pub type SensorSpi<'a> = spi::main::SPI2<'a>;
 #[cfg(context = "esp")]
 ariel_os::hal::define_peripherals!(Peripherals {
     spi_sck: GPIO0,
@@ -116,7 +116,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 // Side SPI of Arduino v3 connector
 #[cfg(context = "stm32wb55rg")]
-pub type SensorSpi = spi::main::SPI1;
+pub type SensorSpi<'a> = spi::main::SPI1<'a>;
 #[cfg(context = "stm32wb55rg")]
 ariel_os::hal::define_peripherals!(Peripherals {
     spi_sck: PA5,

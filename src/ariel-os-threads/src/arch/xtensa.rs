@@ -96,10 +96,10 @@ extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR1(trap_frame: &mut TrapFrame) {
     unsafe {
-        // clear FROM_CPU_INTR0
-        (&*SYSTEM::PTR)
-            .cpu_intr_from_cpu_1()
-            .modify(|_, w| w.cpu_intr_from_cpu_1().clear_bit());
+        // clear FROM_CPU_INTR1
+        esp_hal::peripherals::SYSTEM::regs()
+            .cpu_intr_from_cpu(1)
+            .modify(|_, w| w.cpu_intr().clear_bit());
 
         sched(trap_frame)
     }

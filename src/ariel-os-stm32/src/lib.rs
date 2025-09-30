@@ -42,7 +42,7 @@ pub mod eth;
 use embassy_stm32::Config;
 
 #[doc(hidden)]
-pub use embassy_stm32::{OptionalPeripherals, Peripherals, interrupt};
+pub use embassy_stm32::{OptionalPeripherals, Peri, PeripheralType, Peripherals, interrupt};
 
 pub use embassy_stm32::peripherals;
 
@@ -66,6 +66,21 @@ static SHARED_DATA: MaybeUninit<SharedData> = MaybeUninit::uninit();
 #[cfg(feature = "executor-interrupt")]
 #[doc(hidden)]
 pub static EXECUTOR: Executor = Executor::new();
+
+// TODO(bump):
+// - use this where needed
+// - replicate for rp, nrf
+#[doc(hidden)]
+pub trait IntoPeripheral<'a, T: PeripheralType> {
+    fn into_hal_peripheral(self) -> Peri<'a, T>;
+}
+
+#[doc(hidden)]
+impl<'a, T: PeripheralType> IntoPeripheral<'a, T> for Peri<'a, T> {
+    fn into_hal_peripheral(self) -> Peri<'a, T> {
+        self
+    }
+}
 
 #[doc(hidden)]
 #[must_use]

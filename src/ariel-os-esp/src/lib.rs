@@ -57,6 +57,20 @@ mod time_driver;
 #[doc(hidden)]
 pub use esp_hal::peripherals::OptionalPeripherals;
 
+// TODO(bump):
+// - use this for all peripheral types (spi/i2c/uart) if needed
+#[doc(hidden)]
+pub trait IntoPeripheral<'a, T: 'a> {
+    fn into_hal_peripheral(self) -> T;
+}
+
+#[doc(hidden)]
+impl<'a, T: 'a> IntoPeripheral<'a, T> for T {
+    fn into_hal_peripheral(self) -> T {
+        self
+    }
+}
+
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
@@ -96,7 +110,7 @@ pub fn init() -> OptionalPeripherals {
         }
     };
 
-    //esp_hal_embassy::init(embassy_timer);
+    crate::time_driver::init(embassy_timer);
 
     peripherals
 }

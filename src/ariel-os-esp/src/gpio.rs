@@ -20,11 +20,11 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl InputPin + 'static,
+    pub fn new<'a>(
+        pin: impl InputPin + 'a,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<Input<'static>, core::convert::Infallible> {
+    ) -> Result<Input<'a>, core::convert::Infallible> {
         let pull = from_pull(pull);
         let config = InputConfig::default().with_pull(pull);
 
@@ -33,11 +33,11 @@ pub mod input {
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled(
-        pin: impl InputPin + 'static,
+    pub fn new_int_enabled<'a>(
+        pin: impl InputPin + 'a,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<IntEnabledInput<'static>, InterruptError> {
+    ) -> Result<IntEnabledInput<'a>, InterruptError> {
         #[expect(clippy::used_underscore_binding, reason = "just propagating")]
         match new(pin, pull, _schmitt_trigger) {
             Ok(input) => Ok(input),
@@ -65,12 +65,12 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl OutputPin + 'static,
+    pub fn new<'a>(
+        pin: impl OutputPin + 'a,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         _speed: super::Speed, // Not supported by hardware
-    ) -> Output<'static> {
+    ) -> Output<'a> {
         let initial_level = match initial_level {
             ariel_os_embassy_common::gpio::Level::Low => Level::Low,
             ariel_os_embassy_common::gpio::Level::High => Level::High,
