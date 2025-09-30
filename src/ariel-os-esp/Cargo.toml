@@ -21,6 +21,7 @@ embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true, optional = true }
 esp-alloc = { workspace = true, default-features = false, optional = true }
+esp-bootloader-esp-idf = { workspace = true }
 esp-hal = { workspace = true, default-features = false, features = [
   "optfield",
   "rt",
@@ -30,6 +31,8 @@ esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "wifi",
 ], optional = true }
+esp-rom-sys = { workspace = true }
+esp-sync = { workspace = true, optional = true }
 esp-wifi-sys = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
 once_cell = { workspace = true }
@@ -55,6 +58,8 @@ esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
+esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
@@ -65,6 +70,8 @@ esp-hal = { workspace = true, features = ["esp32c3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c3",
 ], optional = true }
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32c3"] }
+esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
@@ -75,6 +82,8 @@ esp-hal = { workspace = true, features = ["esp32c6"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c6",
 ], optional = true }
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32c6"] }
+esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
@@ -95,6 +104,8 @@ esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s3",
 ], optional = true }
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32s3"] }
+esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
@@ -121,6 +132,7 @@ time = [
   "dep:embassy-time",
   "dep:embassy-time-driver",
   "dep:embassy-time-queue-utils",
+  "dep:esp-sync",
 ]
 
 ## Enables defmt support.

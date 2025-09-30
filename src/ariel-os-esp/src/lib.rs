@@ -4,6 +4,8 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
+esp_bootloader_esp_idf::esp_app_desc!();
+
 #[cfg(all(feature = "threading", feature = "wifi"))]
 mod preempt;
 
