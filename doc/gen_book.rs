@@ -382,7 +382,7 @@ struct FunctionalitySupport {
     title: String,
     icon: String,
     description: String,
-    // TODO: add comments
+    comments: Option<Vec<String>>,
     // TODO: add the PR link
 }
 
@@ -502,6 +502,7 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
                     title: functionality_info.title.to_owned(),
                     icon: support_key.icon.to_owned(),
                     description: support_key.description.to_owned(),
+                    comments: todo!(),
                 })
             });
             let errors = functionalities
