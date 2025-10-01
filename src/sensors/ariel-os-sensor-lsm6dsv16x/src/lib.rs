@@ -146,15 +146,10 @@ impl Lsm6dsv16xI2c {
                 continue;
             }
 
-            // FIXME: why is this 16 and not 2?
-            let accel_scale = 16;
-            // Smaller text size than using `i16::from_be_bytes()`
-            let accel_x =
-                i32::from(i16::from(buf[7]) << u8::BITS | i16::from(buf[6])) / accel_scale;
-            let accel_y =
-                i32::from(i16::from(buf[9]) << u8::BITS | i16::from(buf[8])) / accel_scale;
-            let accel_z =
-                i32::from(i16::from(buf[11]) << u8::BITS | i16::from(buf[10])) / accel_scale;
+            let accel_scale = 16; // FIXME: why is this 16 and not 2?
+            let accel_x = i32::from(i16::from_be_bytes([buf[7], buf[6]])) / accel_scale;
+            let accel_y = i32::from(i16::from_be_bytes([buf[9], buf[8]])) / accel_scale;
+            let accel_z = i32::from(i16::from_be_bytes([buf[11], buf[10]])) / accel_scale;
 
             // `LA_TyOff` from Table 3 of the datasheet.
             let accel_accuracy = Accuracy::SymmetricalError {
@@ -164,9 +159,10 @@ impl Lsm6dsv16xI2c {
             };
 
             let gyro_scale = 125; // FIXME: check that this is correct
-            let gyro_x = i32::from(i16::from(buf[1]) << u8::BITS | i16::from(buf[0])) / gyro_scale;
-            let gyro_y = i32::from(i16::from(buf[3]) << u8::BITS | i16::from(buf[2])) / gyro_scale;
-            let gyro_z = i32::from(i16::from(buf[5]) << u8::BITS | i16::from(buf[4])) / gyro_scale;
+            let gyro_x = i32::from(i16::from_be_bytes([buf[1], buf[0]])) / gyro_scale;
+            let gyro_y = i32::from(i16::from_be_bytes([buf[3], buf[2]])) / gyro_scale;
+            let gyro_z = i32::from(i16::from_be_bytes([buf[5], buf[4]])) / gyro_scale;
+
             // `G_TyOff` from Table 3 of the datasheet.
             let gyro_accuracy = Accuracy::SymmetricalError {
                 deviation: 1, // TODO: this could possibly be refined by taking into account `Rn` as well.
