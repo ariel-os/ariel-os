@@ -32,6 +32,17 @@ async fn main(peripherals: pins::Peripherals) {
 
     let spawner = Spawner::for_current_executor().await;
 
+    sensors::LSM6DSV16X_I2C
+        .init(
+            spawner,
+            ariel_os_sensor_lsm6dsv16x::Peripherals {},
+            i2c_device,
+            ariel_os_sensor_lsm6dsv16x::Config::default(),
+        )
+        .await;
+
+    spawner.spawn(sensors::lsm6dsv16x_i2c_runner()).unwrap();
+
     loop {
         // Trigger measurements of each sensor
         for sensor in REGISTRY.sensors() {
