@@ -12,3 +12,4 @@ subdirs:
   - threading-fpu
   - threading-lock
   - threading-mutex
+  - uart-loopback
