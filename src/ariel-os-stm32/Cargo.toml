@@ -25,6 +25,7 @@ embassy-stm32 = { workspace = true, default-features = false, features = [
   "unstable-pac",
 ] }
 embedded-hal-async = { workspace = true }
+embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
 portable-atomic = { workspace = true }
 ariel-os-utils = { workspace = true }
@@ -57,6 +58,9 @@ i2c = [
 
 ## Enables SPI support.
 spi = ["dep:embassy-embedded-hal", "ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables storage support.
 storage = ["dep:embassy-embedded-hal"]
