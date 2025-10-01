@@ -4934,6 +4934,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-sensor-lsm6dsv16x",
  "ariel-os-sensors",
  "cfg-if",
  "embassy-sync 0.6.2",
