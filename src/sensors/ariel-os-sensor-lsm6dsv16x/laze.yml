@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-lsm6dsv16x
+    selects:
+      - host-test-only

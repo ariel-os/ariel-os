@@ -1,0 +1,24 @@
+[package]
+name = "ariel-os-sensor-lsm6dsv16x"
+# This crate is versioned separately from Ariel OS.
+version = "0.1.0"
+edition.workspace = true
+# This crate's MSRV is decoupled from Ariel OS's.
+rust-version = "1.90"
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-hal = { workspace = true, features = ["i2c"] }
+ariel-os-sensors = { workspace = true, features = ["max-sample-min-count-6"] }
+ariel-os-sensors-utils = { workspace = true }
+embassy-sync = { workspace = true }
+embassy-time = { workspace = true }
+embedded-hal-async = { workspace = true }
+portable-atomic = { workspace = true }
+
+[features]
+_test = []
+
+[lints]
+workspace = true
