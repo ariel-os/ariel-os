@@ -1231,17 +1231,16 @@ modules:
     selects:
       - doc_only
 
-  - name: has_nrf_ble
-    help: Marks an incompatibility of nrf devices with the interrupt executor (MPSL crashing)
-    context:
-      - nrf52
-      - nrf53
+  - name: nrf-ble
     selects:
       - hwrng
+      - has_nrf_ble
     provides:
       - has_ble
-    conflicts:
-      - executor-interrupt
+
+  - name: has_nrf_ble
+    selects:
+      - doc-only
 
   - name: ble-peripheral
     help: Enables BLE peripheral functionality
