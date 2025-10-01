@@ -32,6 +32,16 @@ async fn main(peripherals: pins::Peripherals) {
 
     info!("Will print the readings of registered sensor drivers…");
 
+    let mut config = ariel_os_sensor_lsm6dsv16x::i2c::Config::default();
+    config.address = ariel_os_sensor_lsm6dsv16x::i2c::I2cAddress::Sa0Vdd;
+    sensors::LSM6DSV16X_I2C
+        .init(
+            ariel_os_sensor_lsm6dsv16x::i2c::Peripherals {},
+            i2c_device,
+            config,
+        )
+        .await;
+
     loop {
         // Trigger measurements for each sensor driver in parallel.
         for sensor in REGISTRY.sensors() {
