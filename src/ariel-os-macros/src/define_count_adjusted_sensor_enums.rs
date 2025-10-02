@@ -4,6 +4,7 @@
 /// One single type must be defined so that it can be used in the Future returned by sensor
 /// drivers, which must be the same for every sensor driver so it can be part of the `Sensor`
 /// trait.
+#[allow(clippy::too_many_lines)]
 #[proc_macro]
 pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     use quote::quote;
@@ -17,12 +18,15 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         let variant = variant_name(i);
         quote! { #variant([Sample; #i]) }
     });
-    let samples_from_impls = (1..=count).map(|i| {
+    let samples_new_funcs = (1..=count).map(|i| {
         let variant = variant_name(i);
+        let func_name = new_variant_func_name(i);
         quote! {
-            impl From<[Sample; #i]> for Samples {
-                fn from(value: [Sample; #i]) -> Self {
-                    Self { samples: InnerSamples::#variant(value) }
+            #[doc = concat!("Creates a new [`Samples`] containing ", #i, " sample(s).")]
+            pub fn #func_name(sensor: &'static dyn Sensor, value: [Sample; #i]) -> Self {
+                    Self {
+                    samples: InnerSamples::#variant(value),
+                    sensor,
                 }
             }
         }
@@ -66,6 +70,54 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     });
 
     let expanded = quote! {
+        /// Provides access to the sensor driver instance.
+        /// For driver implementors only.
+        pub trait SensorAccess: private::Sealed {
+            /// Returns the sensor driver instance that produced these samples.
+            /// For driver implementors only.
+            fn sensor(&self) -> &'static dyn Sensor;
+        }
+
+        /// Avoid external implementations of [`SensorAccess`].
+        mod private {
+            use super::Samples;
+            pub trait Sealed {}
+
+            impl Sealed for Samples {}
+        }
+
+        #[derive(Copy, Clone, Debug)]
+        struct SizedIterator<I: Iterator> {
+            iter: I,
+            size: usize,
+        }
+
+        impl<I: Iterator> SizedIterator<I> {
+            fn new(iter: I, size: usize) -> Self {
+                Self { iter, size }
+            }
+        }
+
+        impl<I: Iterator> Iterator for SizedIterator<I> {
+            type Item = I::Item;
+
+            fn next(&mut self) -> Option<Self::Item> {
+                self.iter.next()
+            }
+            fn size_hint(&self) -> (usize, Option<usize>) {
+                (self.size, Some(self.size))
+            }
+        }
+
+        impl<I: Iterator> ExactSizeIterator for SizedIterator<I> {}
+        impl<I: Iterator + core::iter::FusedIterator> core::iter::FusedIterator for SizedIterator<I> {}
+
+        /// Return all samples of a sensor, without filtering out opaque channels. For driver implementors only.
+        pub trait UnfilteredSamples {
+            /// Return all samples of a sensor, without filtering out opaque channels. For driver implementors only.
+            fn unfiltered_samples(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator;
+        }
+
         /// Samples returned by a sensor driver.
         ///
         /// This type implements [`Reading`] to iterate over the samples.
@@ -74,12 +126,38 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         ///
         /// This type is automatically generated, the number of [`Sample`]s that can be stored is
         /// automatically adjusted.
-        #[derive(Debug, Copy, Clone)]
+        #[derive(Copy, Clone)]
         pub struct Samples {
             samples: InnerSamples,
+            sensor: &'static dyn Sensor,
         }
 
-        #(#samples_from_impls)*
+        impl core::fmt::Debug for Samples {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                f.debug_struct("Samples")
+                 .field("samples", &self.samples)
+                 .field("sensor", &"&dyn Sensor")
+                 .finish()
+            }
+        }
+
+        impl Samples {
+            #(#samples_new_funcs)*
+        }
+
+        impl SensorAccess for Samples {
+            fn sensor(&self) -> &'static dyn Sensor {
+                self.sensor
+            }
+        }
+
+        impl UnfilteredSamples for Samples {
+            fn unfiltered_samples(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator {
+                match self.samples {
+                    #(#samples_iter),*
+                }
+            }
+        }
 
         impl Reading for Samples {
             fn sample(&self) -> Sample {
@@ -89,9 +167,18 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             }
 
             fn samples(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator {
-                match self.samples {
-                    #(#samples_iter),*
-                }
+                let size = self.sensor().reading_channels().iter().len();
+                let iter = self.unfiltered_samples()
+                    .enumerate()
+                    .filter(move |(i,_sample)| {
+                        if let Some(channel) = self.sensor().reading_channels().iter_raw().nth(*i){
+                            channel.label() != Label::Opaque
+                        } else {
+                            false
+                        }
+                    })
+                    .map(|(_,sample)| sample);
+                SizedIterator::new(iter, size)
             }
         }
 
@@ -121,6 +208,18 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
             /// [`Iterator::zip()`] can be useful to zip the returned iterator with the one
             /// obtained with [`Reading::samples()`].
             pub fn iter(&self) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
+                let iter = self.iter_raw()
+                    .filter(|channel| channel.label() != Label::Opaque);
+
+                let cloned = self.iter_raw()
+                    .filter(|channel| channel.label() != Label::Opaque);
+
+                let size = cloned.count();
+
+                SizedIterator::new(iter, size)
+            }
+
+            pub(crate) fn iter_raw(&self) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
                 match self.channels {
                     #(#reading_channels_iter),*
                 }
@@ -149,6 +248,10 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 mod define_count_adjusted_enum {
     pub fn variant_name(index: usize) -> syn::Ident {
         quote::format_ident!("V{index}")
+    }
+
+    pub fn new_variant_func_name(index: usize) -> syn::Ident {
+        quote::format_ident!("new_{index}")
     }
 
     pub fn get_allocation_size() -> usize {
