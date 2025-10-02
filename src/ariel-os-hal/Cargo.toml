@@ -95,6 +95,8 @@ ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
 
+nrf91-modem = ["ariel-os-nrf/nrf91-modem"]
+
 hwrng = [
   "ariel-os-esp/hwrng",
   "ariel-os-native/hwrng",
@@ -121,6 +123,8 @@ wifi-cyw43 = ["ariel-os-rp/wifi-cyw43"]
 wifi-esp = ["ariel-os-esp/wifi-esp"]
 
 eth-stm32 = ["ariel-os-stm32/eth-stm32"]
+
+ltem-nrf-modem = ["ariel-os-nrf/ltem-nrf-modem"]
 
 executor-single-thread = ["ariel-os-esp/executor-single-thread"]
 
