@@ -400,7 +400,7 @@ jobs:
 
       # For now, only run cargo-manifest-check on ariel-os-identity.
       - name: cargo-manifest-check
-        run: cargo manifest-check src/ariel-os-identity
+        run: cargo manifest-check src/ariel-os-identity src/ariel-os-sensors-utils
 
   lint-ruff:
     runs-on: ubuntu-latest
