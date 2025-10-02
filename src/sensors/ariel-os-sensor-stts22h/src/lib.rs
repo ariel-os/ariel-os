@@ -142,8 +142,7 @@ impl Stts22hI2c {
                 continue;
             }
 
-            // Smaller text size than using `i32::from_be_bytes()`
-            let temp = i32::from(i16::from(buf[1]) << 8 | i16::from(buf[0]));
+            let temp = i32::from(i16::from_be_bytes([buf[1], buf[0]]));
 
             let accuracy = accuracy(temp);
             let sample = Sample::new(temp, accuracy);
