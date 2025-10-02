@@ -22,7 +22,7 @@ embassy-net = { workspace = true, features = [
   "proto-ipv6",
 ] }
 embassy-sync.workspace = true
-embedded-nal-async = "0.8"
+embedded-nal-async = "0.9"
 embedded-nal-coap = { workspace = true }
 lakers-crypto-rustcrypto = "0.8.0"
 lakers = { version = "0.8.0", default-features = false }
