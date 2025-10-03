@@ -5,6 +5,9 @@ pub async fn init() {
     #[cfg(any(context = "st-steval-mkboxpro"))]
     lis2du12::init().await;
 
+    #[cfg(any(context = "st-steval-mkboxpro"))]
+    lis2mdl::init().await;
+
     #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
     stts22h::init().await;
 }
