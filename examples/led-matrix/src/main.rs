@@ -66,27 +66,27 @@ async fn led_matrix(peripherals: pins::LedPeripherals) {
             let now = Instant::now();
 
             loop {
-                for (y, row) in pattern.iter().enumerate() {
+                for (row, led_row) in pattern.iter().zip(led_rows.iter_mut()) {
                     if row.contains(&1) {
                         // Source current.
-                        led_rows[y].set_high();
+                        led_row.set_high();
                     } else {
-                        led_rows[y].set_low();
+                        led_row.set_low();
                     }
 
-                    for (x, col) in row.iter().enumerate() {
+                    for (col, led_col) in row.iter().zip(led_cols.iter_mut()) {
                         if *col == 1 {
                             // Sink current.
-                            led_cols[x].set_low();
+                            led_col.set_low();
                         } else {
-                            led_cols[x].set_high();
+                            led_col.set_high();
                         }
                     }
 
                     Timer::after_millis(1).await;
 
                     // Stop sourcing current.
-                    led_rows[y].set_low();
+                    led_row.set_low();
                 }
 
                 if now.elapsed() > INTER_PATTERN_PAUSE {
