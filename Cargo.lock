@@ -3610,6 +3610,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "16187c4751af0c33941a689f3e922132b165729cfaa73f592fe5cce7393e9f0c"
 
 [[package]]
+name = "led-matrix"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "lhash"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
