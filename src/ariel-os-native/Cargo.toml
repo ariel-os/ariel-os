@@ -23,7 +23,7 @@ ariel-os-debug = { workspace = true, features = ["std"] }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 rand = { workspace = true, default-features = false, optional = true, features = [
-  "getrandom",
+  "os_rng",
 ] }
 sha2 = { version = "0.10.8", default-features = false }
 

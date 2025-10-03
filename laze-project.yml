@@ -47,6 +47,7 @@ contexts:
           SCRIPTS=${SCRIPTS}
           CONFIG_BOARD=${builder}
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
+          CARGO_BUILD_BUILD_DIR=${relroot}/${build-dir}/bin/cargo
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
@@ -376,7 +377,7 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
-      - has_executor_single_thread_support
+      #- has_executor_single_thread_support
       - has_hwrng
     env:
       RUSTFLAGS:
@@ -1452,17 +1453,17 @@ modules:
       - network_device
     env:
       global:
-        # esp-wifi needs a lot of ISR stack.
+        # esp-radio needs a lot of ISR stack.
         isr_stacksize_required:
           - "32768"
-        # esp-wifi needs 72KiB
+        # esp-radio needs 72KiB
         heapsize_required:
           - $(72*1024)
         FEATURES:
           - ariel-os/wifi-esp
 
   - name: wifi-esp-xor-threads
-    help: Helper module to conditionally make esp-wifi conflict with threads on esp32 riscv
+    help: Helper module to conditionally make esp-radio conflict with threads on esp32 riscv
     selects:
       - sw/threading:
           - wifi-with-threads-currently-broken-on-esp-riscv
