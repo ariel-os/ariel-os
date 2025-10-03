@@ -510,6 +510,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensor-lis2mdl"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-embassy",
+ "ariel-os-hal",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "embedded-hal-async",
+]
+
+[[package]]
 name = "ariel-os-sensor-lsm6dsv16x"
 version = "0.1.0"
 dependencies = [
