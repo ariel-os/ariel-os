@@ -49,8 +49,12 @@ async fn main(peripherals: pins::Peripherals) {
                     for (sample, reading_channel) in
                         samples.samples().zip(sensor.reading_channels().iter())
                     {
-                        let value = sample.value() as f32
-                            / 10i32.pow((-reading_channel.scaling()) as u32) as f32;
+                        let channel_scaling = reading_channel.scaling();
+                        let value = if channel_scaling < 0 {
+                            sample.value() as f32 / 10i32.pow(-channel_scaling as u32) as f32
+                        } else {
+                            sample.value() as f32 * 10i32.pow(channel_scaling as u32) as f32
+                        };
 
                         match sample.accuracy() {
                             Accuracy::SymmetricalError {
@@ -58,10 +62,14 @@ async fn main(peripherals: pins::Peripherals) {
                                 bias,
                                 scaling,
                             } => {
-                                let accuracy = (i16::from(bias) + i16::from(deviation))
+                                let raw_accuracy = (i16::from(bias) + i16::from(deviation))
                                     .max((i16::from(bias) - i16::from(deviation)).abs())
-                                    as f32
-                                    / 10i32.pow((-scaling) as u32) as f32;
+                                    as f32;
+                                let accuracy = if scaling < 0 {
+                                    raw_accuracy / 10i32.pow(-scaling as u32) as f32
+                                } else {
+                                    raw_accuracy * 10i32.pow(scaling as u32) as f32
+                                };
 
                                 info!(
                                     "{} ({}): {} {} ± {} {} ({})",
