@@ -539,7 +539,7 @@ dependencies = [
  "portable-atomic",
 ]
 
-[[package]]
+ [[package]]
 name = "ariel-os-sensor-stts22h"
 version = "0.1.0"
 dependencies = [

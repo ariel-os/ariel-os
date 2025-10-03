@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-lps22df
+    selects:
+      - host-test-only
