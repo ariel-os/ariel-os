@@ -545,6 +545,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensor-lis2mdl"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-hal",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embedded-hal-async",
+]
+
+[[package]]
 name = "ariel-os-sensor-lps22df"
 version = "0.1.0"
 dependencies = [
