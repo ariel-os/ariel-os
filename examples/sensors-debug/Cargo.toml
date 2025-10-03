@@ -12,6 +12,7 @@ ariel-os = { path = "../../src/ariel-os", features = [
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensor-lis2du12 = { path = "../../src/sensors/ariel-os-sensor-lis2du12" }
+ariel-os-sensor-lis2mdl = { path = "../../src/sensors/ariel-os-sensor-lis2mdl" }
 ariel-os-sensor-lps22df = { path = "../../src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-stts22h = { path = "../../src/sensors/ariel-os-sensor-stts22h" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
