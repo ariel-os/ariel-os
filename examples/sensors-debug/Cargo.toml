@@ -15,6 +15,7 @@ ariel-os = { path = "../../src/ariel-os", features = [
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
 ariel-os-sensor-lsm6dsv16x = { path = "../../src/sensors/ariel-os-sensor-lsm6dsv16x" }
+ariel-os-sensor-lis2mdl = { path = "../../src/sensors/ariel-os-sensor-lis2mdl" }
 cfg-if = { workspace = true }
 embassy-sync = { workspace = true }
 embedded-hal = { workspace = true }
