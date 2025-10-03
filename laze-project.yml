@@ -1132,7 +1132,7 @@ modules:
     env:
       global:
         FEATURES:
-          - ariel-os/network-config-static
+          - ariel-os/network-config-ipv4-static
 
   - name: sw/storage
     selects:
