@@ -26,6 +26,7 @@ members = [
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "src/sensors/ariel-os-sensor-lsm6dsv16x",
+  "src/sensors/ariel-os-sensor-lps22df",
   "tests/benchmarks/bench_sched_flags",
   "tests/benchmarks/bench_sched_yield",
   "tests/coap",
