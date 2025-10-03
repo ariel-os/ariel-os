@@ -21,6 +21,10 @@ pub enum Category {
     Accelerometer,
     /// Accelerometer & temperature sensor.
     AccelerometerTemperature,
+    /// Accelerometer & gyroscope, also known as inertial measurement unit (IMU).
+    AccelerometerGyroscope,
+    /// Accelerometer & gyroscope & temperature sensor, also known as inertial measurement unit (IMU).
+    AccelerometerGyroscopeTemperature,
     /// Accelerometer & magnetometer & temperature sensor.
     AccelerometerMagnetometerTemperature,
     /// Ammeter (ampere meter).
