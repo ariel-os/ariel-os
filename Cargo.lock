@@ -539,7 +539,20 @@ dependencies = [
  "portable-atomic",
 ]
 
- [[package]]
+[[package]]
+name = "ariel-os-sensor-lps22df"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-hal",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "embedded-hal-async",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-sensor-stts22h"
 version = "0.1.0"
 dependencies = [
@@ -5099,6 +5112,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "ariel-os-sensor-lis2du12",
+ "ariel-os-sensor-lps22df",
  "ariel-os-sensor-stts22h",
  "ariel-os-sensors",
  "embassy-sync 0.6.2",
