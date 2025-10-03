@@ -521,6 +521,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensors-utils"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-sensors",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-stm32"
 version = "0.2.0"
 dependencies = [
@@ -4902,6 +4912,21 @@ name = "semver-parser"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
+
+[[package]]
+name = "sensors-debug"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-sensors",
+ "cfg-if",
+ "embassy-sync 0.6.2",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "linkme",
+ "once_cell",
+]
 
 [[package]]
 name = "separator"
