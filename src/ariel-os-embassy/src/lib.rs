@@ -136,15 +136,9 @@ pub static EMBASSY_TASKS: [Task] = [..];
 #[cfg(not(any(
     feature = "executor-interrupt",
     feature = "executor-none",
-    feature = "executor-single-thread",
     feature = "executor-thread"
 )))]
-compile_error!(
-    r#"must select one of "executor-interrupt", "executor-single-thread", "executor-thread", "executor-none"!"#
-);
-
-#[cfg(all(feature = "threading", feature = "executor-single-thread"))]
-compile_error!(r#""executor-single-thread" and "threading" are mutually exclusive!"#);
+compile_error!(r#"must select one of "executor-interrupt", "executor-thread", "executor-none"!"#);
 
 #[cfg(feature = "executor-interrupt")]
 #[distributed_slice(ariel_os_rt::INIT_FUNCS)]
@@ -166,22 +160,6 @@ pub(crate) fn init() {
 
     #[cfg(context = "esp")]
     EXECUTOR.run(|spawner| spawner.must_spawn(init_task(p)));
-}
-
-// SAFETY: the symbol name is unique enough to avoid accidental collisions and the function
-// signature matches the one expected in `ariel-os-rt`.
-#[cfg(feature = "executor-single-thread")]
-#[unsafe(export_name = "__ariel_os_embassy_init")]
-fn init() -> ! {
-    use static_cell::StaticCell;
-
-    debug!("ariel-os-embassy::init(): using single thread executor");
-    let p = hal::init();
-
-    static EXECUTOR: StaticCell<hal::Executor> = StaticCell::new();
-    EXECUTOR
-        .init_with(|| hal::Executor::new())
-        .run(|spawner| spawner.must_spawn(init_task(p)))
 }
 
 #[cfg(feature = "executor-thread")]

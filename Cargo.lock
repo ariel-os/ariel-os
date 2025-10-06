@@ -2438,7 +2438,6 @@ source = "git+https://github.com/ariel-os/esp-hal?rev=aa8d1995fc06eb5e6d04a2022e
 dependencies = [
  "critical-section",
  "document-features",
- "embassy-executor",
  "embassy-sync 0.6.2",
  "embassy-time",
  "embassy-time-driver",

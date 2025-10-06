@@ -376,7 +376,6 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
-      - has_executor_single_thread_support
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
@@ -1541,23 +1540,6 @@ modules:
         FEATURES:
           - ariel-os/executor-thread
 
-  - name: executor-single-thread
-    help: use Embassy executor within single "thread mode" thread
-    selects:
-      - has_executor_single_thread_support
-    provides_unique:
-      - executor
-    conflicts:
-      - sw/threading
-    env:
-      global:
-        FEATURES:
-          - ariel-os/executor-single-thread
-
-  - name: has_executor_single_thread_support
-    selects:
-      - doc-only
-
   # Enabled for MCU families that provide a dedicated software interrupt (SWI),
   # and thus do not require to sacrifice another, arbitrarily-chosen peripheral
   # interrupt.
@@ -1579,7 +1561,6 @@ modules:
       # Unless otherwise selected (by application, context, on cli, or by other
       # dependencies), the interrupt executor is preferred.
       - ?executor-interrupt
-      - ?executor-single-thread
       - ?executor-thread
 
   - name: single-core

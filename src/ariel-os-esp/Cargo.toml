@@ -135,5 +135,3 @@ wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-wifi", "wifi"]
 #! Exactly one of the features below must be enabled at once.
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
-## Enables the single thread-mode executor.
-executor-single-thread = ["esp-hal-embassy/executors"]
