@@ -149,10 +149,6 @@ network-config-ipv4-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
 
-executor-single-thread = [
-  "ariel-os-hal/executor-single-thread",
-  "ariel-os-rt/executor-single-thread",
-]
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
 executor-thread = ["threading", "ariel-os-embassy-common/executor-thread"]
 executor-none = []
