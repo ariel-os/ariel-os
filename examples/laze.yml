@@ -23,6 +23,7 @@ subdirs:
   - power
   - random
   - storage
+  - tcp-client
   - tcp-echo
   - testing
   - thread-async-interop
