@@ -271,6 +271,8 @@ pub fn crypto_rng_send() -> CryptoRngSend {
 #[cfg(feature = "csprng")]
 #[unsafe(no_mangle)]
 unsafe extern "Rust" fn __getrandom_v03_custom(dest: *mut u8, len: usize) -> Result<(), Error> {
+    // SAFETY: Pointer validity and mutability is provided by the getrandom custom backend
+    // conventions.
     let buf = unsafe {
         core::ptr::write_bytes(dest, 0, len);
         core::slice::from_raw_parts_mut(dest, len)

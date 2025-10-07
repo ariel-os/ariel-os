@@ -1,5 +1,6 @@
 #![deny(missing_docs)]
 #![expect(unsafe_code)]
+#![expect(clippy::undocumented_unsafe_blocks)]
 
 use core::{
     cell::UnsafeCell,

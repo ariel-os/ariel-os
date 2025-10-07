@@ -7,6 +7,7 @@
 
 #![deny(missing_docs)]
 #![allow(unsafe_code)]
+#![allow(clippy::undocumented_unsafe_blocks)]
 
 pub use crate::hal::usb::UsbDriver;
 

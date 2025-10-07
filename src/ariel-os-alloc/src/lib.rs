@@ -26,6 +26,7 @@ mod alloc {
     ///
     /// Call only once!
     pub unsafe fn init() {
+        // SAFETY: Propagates the call-only-once requirement.
         unsafe {
             #[cfg(context = "cortex-m")]
             init_embedded_alloc();
