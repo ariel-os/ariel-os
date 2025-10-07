@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::gpio::input::InterruptError;
 use embassy_stm32::{
     OptionalPeripherals, Peripheral,

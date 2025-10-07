@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::{Arch as _, Cpu, RunqueueId, ThreadData, ThreadId, thread_flags::ThreadFlags};
 
 /// Main struct for holding thread data.

@@ -1,4 +1,5 @@
 #![deny(missing_docs)]
+#![expect(unsafe_code)]
 
 use core::{
     cell::UnsafeCell,

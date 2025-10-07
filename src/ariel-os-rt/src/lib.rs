@@ -2,6 +2,7 @@
 #![cfg_attr(test, no_main)]
 //
 #![allow(incomplete_features)]
+#![allow(unsafe_code)]
 #![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
 pub mod stack;

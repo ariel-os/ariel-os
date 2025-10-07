@@ -28,6 +28,7 @@
 // invariants
 #![allow(clippy::indexing_slicing)]
 #![expect(clippy::cast_possible_truncation)]
+#![expect(unsafe_code)]
 
 mod arch;
 mod autostart_thread;

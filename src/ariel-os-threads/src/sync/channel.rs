@@ -1,5 +1,7 @@
 //! Synchronous channel implementation for sending data between threads.
 
+#![expect(unsafe_code)]
+
 use core::cell::UnsafeCell;
 use core::marker::PhantomData;
 use core::mem::MaybeUninit;

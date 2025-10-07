@@ -1,5 +1,8 @@
-/// This module provides the hooks for `esp-wifi` to schedule its threads
-/// with the Ariel OS scheduler.
+//! This module provides the hooks for `esp-wifi` to schedule its threads
+//! with the Ariel OS scheduler.
+
+#![expect(unsafe_code)]
+
 use core::ffi::c_void;
 
 use ariel_os_debug::log::{debug, trace};

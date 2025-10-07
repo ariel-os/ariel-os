@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::stack::Stack;
 
 #[esp_hal::main]

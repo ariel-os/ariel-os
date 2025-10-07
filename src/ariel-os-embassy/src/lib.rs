@@ -2,6 +2,7 @@
 
 #![no_std]
 #![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![allow(unsafe_code)]
 
 pub use ariel_os_hal::hal;
 

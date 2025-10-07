@@ -23,6 +23,10 @@
 //! [`rand_pcg::Pcg32`] is decided yet for the fast one. Neither the algorithm nor the size of
 //! [`FastRng`] or [`CryptoRng`] is guaranteed.
 #![no_std]
+#![allow(
+    unsafe_code,
+    reason = "providing the getrandom() custom implementation needs unsafe operations"
+)]
 
 use core::{cell::RefCell, marker::PhantomData};
 

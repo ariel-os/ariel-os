@@ -2,6 +2,7 @@
 
 #![no_std]
 #![deny(missing_docs)]
+#![expect(unsafe_code)]
 // required for tests:
 #![cfg_attr(test, no_main)]
 

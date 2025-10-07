@@ -1,5 +1,7 @@
 //! Delegate or lend an object to another task.
 
+#![expect(unsafe_code)]
+
 use core::marker::PhantomData;
 
 use embassy_executor::Spawner;

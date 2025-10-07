@@ -1,4 +1,7 @@
 //! Stack usage helpers.
+
+#![expect(unsafe_code)]
+
 use core::{marker::PhantomData, ptr::write_volatile};
 
 use crate::arch::sp;

@@ -25,6 +25,8 @@
 //! 4. In the wrapped critical section, on `release()`, after the wrapped critical section ends, we
 //!    block the thread on its `AtomicLock`.
 
+#![expect(unsafe_code)]
+
 mod upstream;
 use upstream::StdCriticalSection;
 

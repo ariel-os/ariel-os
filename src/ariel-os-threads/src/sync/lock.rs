@@ -1,4 +1,7 @@
 //! This module provides a Lock implementation.
+
+#![expect(unsafe_code)]
+
 use core::cell::UnsafeCell;
 
 use crate::{ThreadState, threadlist::ThreadList};

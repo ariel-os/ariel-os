@@ -1,5 +1,6 @@
 //! This module provides an event that can be waited for.
 
+#![expect(unsafe_code)]
 #![deny(missing_docs)]
 
 use core::cell::UnsafeCell;

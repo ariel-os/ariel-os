@@ -6,6 +6,7 @@
 //! attribute macro.
 
 #![deny(missing_docs)]
+#![allow(unsafe_code)]
 
 pub use crate::hal::usb::UsbDriver;
 

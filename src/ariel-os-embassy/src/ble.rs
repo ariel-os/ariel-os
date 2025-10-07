@@ -1,3 +1,5 @@
+#![allow(unsafe_code)]
+
 use ariel_os_embassy_common::ble::Config;
 
 // Must be async and return &trouble_host::Stack<'static, impl Controller>
