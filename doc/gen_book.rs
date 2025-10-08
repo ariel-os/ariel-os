@@ -229,7 +229,7 @@ impl SubCommandList {
 
 #[derive(argh::FromArgs)]
 #[argh(subcommand, name = "summary")]
-/// generate the book summary with the list of supported boards
+/// generate the book summary with the list of supported boards and chips
 struct SubCommandSummary {
     /// just check if the summary is up to date
     #[argh(switch)]
@@ -255,8 +255,6 @@ impl SubCommandSummary {
         })?;
 
         let mut board_info = gen_functionalities(&matrix)?;
-
-        // TODO: read the order from the YAML file instead?
         board_info.sort_unstable_by_key(|b| b.name.to_lowercase());
 
         let mut env = Environment::new();
@@ -265,6 +263,7 @@ impl SubCommandSummary {
         let summary_md = tmpl
             .render(context!(
                 boards => board_info,
+                chips => matrix.chips,
             ))
             .unwrap();
 
