@@ -10,6 +10,7 @@ ariel:
     - esp32-c6-wroom-1
     - esp32-s3-wroom-1
     - esp32c6
+    - esp32c6fx4
     - esp32s3
     - esp32s3fx8
     - native-chip
