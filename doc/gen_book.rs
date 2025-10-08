@@ -16,6 +16,7 @@ thiserror = { version = "1.0.61" }
 mod schema;
 
 use std::{
+    collections::HashMap,
     fs, io,
     path::{Path, PathBuf},
 };
@@ -37,8 +38,10 @@ impl Args {
         match self.command {
             SubCommand::Matrix(SubCommandMatrix { ref input_path, .. }) => input_path,
             SubCommand::List(SubCommandList { ref input_path, .. }) => input_path,
+            SubCommand::ChipIndex(SubCommandChipIndex { ref input_path, .. }) => input_path,
             SubCommand::Summary(SubCommandSummary { ref input_path, .. }) => input_path,
-            SubCommand::Pages(SubCommandPages { ref input_path, .. }) => input_path,
+            SubCommand::BoardPages(SubCommandBoardPages { ref input_path, .. }) => input_path,
+            SubCommand::ChipPages(SubCommandChipPages { ref input_path, .. }) => input_path,
         }
     }
 }
@@ -48,8 +51,10 @@ impl Args {
 enum SubCommand {
     Matrix(SubCommandMatrix),
     List(SubCommandList),
+    ChipIndex(SubCommandChipIndex),
     Summary(SubCommandSummary),
-    Pages(SubCommandPages),
+    BoardPages(SubCommandBoardPages),
+    ChipPages(SubCommandChipPages),
 }
 
 impl SubCommand {
@@ -57,8 +62,10 @@ impl SubCommand {
         match self {
             Self::Matrix(subcmd_matrix) => subcmd_matrix.run(matrix)?,
             Self::List(subcmd_list) => subcmd_list.run(matrix)?,
+            Self::ChipIndex(subcmd_chip_index) => subcmd_chip_index.run(matrix)?,
             Self::Summary(subcmd_summary) => subcmd_summary.run(matrix)?,
-            Self::Pages(subcmd_pages) => subcmd_pages.run(matrix)?,
+            Self::BoardPages(subcmd_board_pages) => subcmd_board_pages.run(matrix)?,
+            Self::ChipPages(subcmd_chip_pages) => subcmd_chip_pages.run(matrix)?,
         }
 
         Ok(())
@@ -95,7 +102,7 @@ impl SubCommandMatrix {
             }
         })?;
 
-        let mut board_info = gen_functionalities(&matrix)?;
+        let mut board_info = gen_board_functionalities(&matrix)?;
 
         // TODO: read the order from the YAML file instead?
         board_info.sort_unstable_by_key(|b| b.name.to_lowercase());
@@ -228,6 +235,70 @@ impl SubCommandList {
 }
 
 #[derive(argh::FromArgs)]
+#[argh(subcommand, name = "chip-index")]
+/// generate the chip index page, featuring a list of supported chips
+struct SubCommandChipIndex {
+    /// just check if the chip index page is up to date
+    #[argh(switch)]
+    check: bool,
+    #[argh(option)]
+    /// path of the chip index template
+    template_path: PathBuf,
+    #[argh(positional)]
+    /// path of the input YAML file
+    input_path: PathBuf,
+    #[argh(positional)]
+    /// path of the Markdown file to generate (should be in book/src/chips/index.md)
+    output_path: PathBuf,
+}
+
+impl SubCommandChipIndex {
+    fn run(self, matrix: &schema::Matrix) -> miette::Result<()> {
+        let chip_index_template = fs::read_to_string(&self.template_path).map_err(|source| {
+            Error::SummaryTemplateFile {
+                path: self.template_path.clone(),
+                source,
+            }
+        })?;
+
+        let mut env = Environment::new();
+        env.add_template("chip_list", &chip_index_template).unwrap();
+        let tmpl = env.get_template("chip_list").unwrap();
+        let chip_index_md = tmpl
+            .render(context!(
+                chips => matrix.chips,
+            ))
+            .unwrap();
+
+        if self.check {
+            let existing_chip_index_md =
+                fs::read_to_string(&self.output_path).map_err(|source| {
+                    Error::ReadingExistingFile {
+                        path: self.output_path.clone(),
+                        source,
+                    }
+                })?;
+
+            if existing_chip_index_md != chip_index_md {
+                return Err(Error::ExistingMarkdownNotUpToDate {
+                    path: self.output_path.clone(),
+                }
+                .into());
+            }
+        } else {
+            fs::write(&self.output_path, chip_index_md).map_err(|source| {
+                Error::WritingOutputFile {
+                    path: self.output_path.clone(),
+                    source,
+                }
+            })?;
+        }
+
+        Ok(())
+    }
+}
+
+#[derive(argh::FromArgs)]
 #[argh(subcommand, name = "summary")]
 /// generate the book summary with the list of supported boards and chips
 struct SubCommandSummary {
@@ -254,7 +325,7 @@ impl SubCommandSummary {
             }
         })?;
 
-        let mut board_info = gen_functionalities(&matrix)?;
+        let mut board_info = gen_board_functionalities(&matrix)?;
         board_info.sort_unstable_by_key(|b| b.name.to_lowercase());
 
         let mut env = Environment::new();
@@ -297,7 +368,7 @@ impl SubCommandSummary {
 #[derive(argh::FromArgs)]
 #[argh(subcommand, name = "board-pages")]
 /// generate a book page for each supported board
-struct SubCommandPages {
+struct SubCommandBoardPages {
     /// just check if the board pages are up to date
     #[argh(switch)]
     check: bool,
@@ -312,7 +383,7 @@ struct SubCommandPages {
     output_path: PathBuf,
 }
 
-impl SubCommandPages {
+impl SubCommandBoardPages {
     fn run(self, matrix: &schema::Matrix) -> miette::Result<()> {
         let board_page_template = fs::read_to_string(&self.template_path).map_err(|source| {
             Error::SummaryTemplateFile {
@@ -321,7 +392,7 @@ impl SubCommandPages {
             }
         })?;
 
-        let board_info = gen_functionalities(&matrix)?;
+        let board_info = gen_board_functionalities(&matrix)?;
 
         for board in &board_info {
             let mut env = Environment::new();
@@ -369,6 +440,79 @@ impl SubCommandPages {
     }
 }
 
+#[derive(argh::FromArgs)]
+#[argh(subcommand, name = "chip-pages")]
+/// generate a book page for each supported chip
+struct SubCommandChipPages {
+    /// just check if the chip pages are up to date
+    #[argh(switch)]
+    check: bool,
+    #[argh(option)]
+    /// path of the template summary
+    template_path: PathBuf,
+    #[argh(positional)]
+    /// path of the input YAML file
+    input_path: PathBuf,
+    #[argh(positional)]
+    /// path to the directory to write the generated chip pages
+    output_path: PathBuf,
+}
+
+impl SubCommandChipPages {
+    fn run(self, matrix: &schema::Matrix) -> miette::Result<()> {
+        let chip_page_template = fs::read_to_string(&self.template_path).map_err(|source| {
+            Error::SummaryTemplateFile {
+                path: self.template_path.clone(),
+                source,
+            }
+        })?;
+
+        let chip_info = gen_chip_functionalities(&matrix)?;
+
+        for chip in &chip_info {
+            let mut env = Environment::new();
+            env.add_filter("slugify", slugify::<String>);
+            env.add_filter("capitalize_first", capitalize_first);
+            env.add_template("chip_page", &chip_page_template).unwrap();
+            let tmpl = env.get_template("chip_page").unwrap();
+            let chip_page = tmpl
+                .render(context!(
+                    chip_info => chip_info,
+                    support_keys => matrix.support_keys,
+                ))
+                .unwrap();
+
+            let mut chip_page_path = self.output_path.join(&chip.technical_name);
+            chip_page_path.set_extension("md");
+
+            if self.check {
+                let existing_chip_page = fs::read_to_string(&chip_page_path).map_err(|source| {
+                    Error::ReadingExistingFile {
+                        path: chip_page_path.clone(),
+                        source,
+                    }
+                })?;
+
+                if existing_chip_page != chip_page {
+                    return Err(Error::ExistingMarkdownNotUpToDate {
+                        path: chip_page_path.clone(),
+                    }
+                    .into());
+                }
+            } else {
+                fs::write(&chip_page_path, chip_page).map_err(|source| {
+                    Error::WritingOutputFile {
+                        path: chip_page_path.clone(),
+                        source,
+                    }
+                })?;
+            }
+        }
+
+        Ok(())
+    }
+}
+
 #[derive(Debug, Serialize)]
 struct BoardSupport {
     chip: String,
@@ -377,6 +521,13 @@ struct BoardSupport {
     technical_name: String,
     name: String,
     tier: String,
+    functionalities: Vec<FunctionalitySupport>,
+}
+
+#[derive(Debug, Serialize)]
+struct ChipSupport {
+    technical_name: String,
+    name: String,
     functionalities: Vec<FunctionalitySupport>,
 }
 
@@ -451,7 +602,7 @@ fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
     }
 }
 
-fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Error> {
+fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Error> {
     let boards = matrix
         .boards
         .iter()
@@ -548,6 +699,98 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
         Ok(boards.map(|f| f.unwrap()).collect())
     } else {
         Err(Error::ValidationIssues { errors })
+    }
+}
+
+fn gen_chip_functionalities(matrix: &schema::Matrix) -> Result<Vec<ChipSupport>, Error> {
+    let chips = matrix.chips.iter().map(|(chip_technical_name, chip_info)| {
+        let functionalities = matrix.functionalities.iter().map(|functionality_info| {
+            let support_info = chip_info
+                .support
+                .get(&functionality_info.name)
+                .cloned()
+                .or_else(|| {
+                    get_chip_functionality_support(
+                        &chip_technical_name,
+                        &functionality_info.name,
+                        &matrix.boards,
+                    )
+                })
+                .ok_or_else(|| Error::MissingSupportInfo {
+                    functionality: functionality_info.name.to_owned(),
+                    chip: chip_info.name.to_owned(),
+                    board: String::new(),
+                })?;
+
+            let support_key = matrix
+                .support_keys
+                .iter()
+                .find(|s| s.name == support_info.status())
+                .ok_or_else(|| Error::InvalidSupportKeyNameChip {
+                    functionality: functionality_info.name.to_owned(),
+                    chip: chip_info.name.to_owned(),
+                    found: support_info.status().to_owned(),
+                })?;
+
+            let comments = match support_info {
+                schema::SupportInfo::StatusOnly(_) => None,
+                schema::SupportInfo::Details { comments, .. } => comments,
+            };
+
+            Ok(FunctionalitySupport {
+                title: functionality_info.title.to_owned(),
+                icon: support_key.icon.to_owned(),
+                description: support_key.description.to_owned(),
+                comments,
+            })
+        });
+
+        let errors = functionalities
+            .clone()
+            .filter_map(|f| f.err())
+            .collect::<Vec<_>>();
+
+        if errors.is_empty() {
+            Ok(ChipSupport {
+                technical_name: chip_technical_name.to_owned(),
+                name: chip_info.name.to_owned(),
+                functionalities: functionalities.map(|f| f.unwrap()).collect(),
+            })
+        } else {
+            Err(errors)
+        }
+    });
+
+    let errors = chips
+        .clone()
+        .filter_map(|f| f.err())
+        .flatten()
+        .collect::<Vec<_>>();
+    if errors.is_empty() {
+        Ok(chips.map(|f| f.unwrap()).collect())
+    } else {
+        Err(Error::ValidationIssues { errors })
+    }
+}
+
+fn get_chip_functionality_support(
+    chip: &str,
+    functionality: &str,
+    boards: &HashMap<String, schema::BoardInfo>,
+) -> Option<schema::SupportInfo> {
+    if boards
+        .iter()
+        .filter(|(_, info)| info.chip == chip)
+        .any(|(_, info)| {
+            info.support
+                .get(functionality)
+                .map(|s| s.status() == "supported" || s.status() == "supported_with_caveats")
+                .unwrap_or(false)
+        })
+    {
+        Some(schema::SupportInfo::StatusOnly("supported".to_owned()))
+    } else {
+        None
     }
 }
 

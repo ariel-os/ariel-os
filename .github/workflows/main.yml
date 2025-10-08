@@ -442,6 +442,9 @@ jobs:
       - name: Check that the board pages are all up-to-date
         run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl
 
+      - name: Check that the chip pages are all up-to-date
+        run: ./doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --check --template-path book/templates/chip-page.md.tmpl
+
       - name: Check that the support matrices are up-to-date
         run: |
           ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier1.html --tier 1 --template-path book/templates/support-matrix.html.tmpl --check
@@ -451,6 +454,10 @@ jobs:
       - name: Check that the board index page is up-to-date
         run: |
           ./doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl --check
+
+      - name: Check that the chip index page is up-to-date
+        run: |
+          ./doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl --check
 
       - name: Install mdbook
         uses: taiki-e/install-action@e43a5023a747770bfcb71ae048541a681714b951 # v2
