@@ -29,6 +29,8 @@ pub enum Category {
     Co2Gas,
     /// Color sensor.
     Color,
+    /// GNSS (Global Navigation Satellite System) receiver.
+    Gnss,
     /// Gyroscope.
     Gyroscope,
     /// Relative humidity sensor.

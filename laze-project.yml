@@ -546,6 +546,20 @@ contexts:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsis\" # Needs an external 32.768 kHz crystal to have a stable clock
 
+  - name: stm32u073kc
+    parent: stm32
+    selects:
+      - cortex-m0-plus
+      - ram-small
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32U073KC
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng-cryp\"
+        - --cfg capability=\"hw/stm32-usb-drd-fs\"
+
   - name: stm32u083mc
     parent: stm32
     selects:
@@ -1075,32 +1089,50 @@ modules:
   - name: network
     selects:
       - network_device
-      - network-config-default
+      - network-config-ipv4-default
 
-  - name: network-config-default
+  - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
-      - ?network-config-dhcp
-      - ?network-config-static
-      - network-config
+      - ?network-config-ipv4-dhcp
+      - ?network-config-ipv4-static
+      - network-config-ipv4
 
   - name: network-config-dhcp
+    help: "deprecated: use `network-config-ipv4-dhcp` instead"
+    selects:
+      - network-config-ipv4-dhcp
+
+  - name: network-config-ipv4-dhcp
     help: use DHCPv4 for network configuration
     selects:
       - network
+      # Needed for aliasing.
+      - network-config-dhcp
     provides_unique:
-      - network-config
-
-  - name: network-config-static
-    help: use static IP network configuration
-    selects:
-      - network
-    provides_unique:
-      - network-config
+      - network-config-ipv4
     env:
       global:
         FEATURES:
-          - ariel-os/network-config-static
+          - ariel-os/dhcpv4
+
+  - name: network-config-static
+    help: "deprecated: use `network-config-ipv4-static` instead"
+    selects:
+      - network-config-ipv4-static
+
+  - name: network-config-ipv4-static
+    help: use static IPv4 network configuration
+    selects:
+      - network
+      # Needed for aliasing.
+      - network-config-static
+    provides_unique:
+      - network-config-ipv4
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-ipv4-static
 
   - name: sw/storage
     selects:
@@ -1275,6 +1307,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/hwrng
+        RUSTFLAGS:
+          - --cfg getrandom_backend=\"custom\"
 
   - name: has_hwrng
     selects:

@@ -127,7 +127,7 @@ jobs:
             git rev-parse HEAD^{tree} > .tree-hash
             echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         id: result-cache
         with:
           path: .tree-hash
@@ -214,7 +214,7 @@ jobs:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+        uses: taiki-e/install-action@eba4035583f0f9b001a27be2cce0a136d05d05e3 # v2
         if: steps.should-skip.outputs.result != 'true'
         with:
           tool: laze@0.1

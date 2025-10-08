@@ -1,0 +1,59 @@
+<!-- This table is auto-generated. Do not edit manually. -->
+<table class="support-matrix">
+  <thead>
+    <tr>
+      <th colspan="2">Chip</th>
+      <th colspan="2">Testing Board</th>
+      <th colspan="{{ matrix.functionalities|length }}">Functionality</th>
+    </tr>
+    <tr>
+      <th>Manufacturer Name</th>
+      <th>Ariel OS Name</th>
+      <th>Manufacturer Name</th>
+      <th>Ariel OS Name</th>
+      {%- for functionality in matrix.functionalities %}
+      <th>{{ functionality.title }}</th>
+      {%- endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {%- for board in boards %}
+    <tr>
+      <td>{{ board.chip }}</td>
+      <td><code>{{ board.chip_technical_name }}</code></td>
+      <td><a href="{{ board.url }}">{{ board.name }}</a></td>
+      <td><code>{{ board.technical_name }}</code></td>
+      {%- for functionality in board.functionalities %}
+      <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
+      {%- endfor %}
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+<style>
+@media (min-width: 1920px) {
+  .support-matrix {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}
+.support-cell {
+  text-align: center;
+}
+</style>
+
+<p>Key:</p>
+
+<dl>
+  {%- for support_key in matrix.support_keys %}
+  <div>
+    <dt>{{ support_key.icon }}</dt><dd>{{ support_key.description }}</dd>
+  </div>
+  {%- endfor %}
+</dl>
+<style>
+dt, dd {
+  display: inline;
+}
+</style>

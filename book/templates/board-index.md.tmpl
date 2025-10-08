@@ -1,0 +1,22 @@
+# Board Pages
+
+## Tier 1
+
+Tier 1 hardware gets regularly tested, either automatically or manually.
+{% for board_technical_name, board in tier1_boards %}
+- [{{ board.name }}](./{{ board_technical_name }}.md)
+{%- endfor %}
+
+## Tier 2
+
+Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have access to the hardware.
+{% for board_technical_name, board in tier2_boards %}
+- [{{ board.name }}](./{{ board_technical_name }}.md)
+{%- endfor %}
+
+## Tier 3
+
+Tier 3 hardware is build-tested only, as Ariel OS maintainers do not have access to the hardware.
+{% for board_technical_name, board in tier3_boards %}
+- [{{ board.name }}](./{{ board_technical_name }}.md)
+{%- endfor %}

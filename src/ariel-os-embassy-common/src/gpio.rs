@@ -86,7 +86,7 @@ macro_rules! define_from_pull {
 /// This enum allows to either use high-level, portable values, roughly normalized across
 /// HALs, or to use HAL-specific values if needed.
 // TODO: should this be marked non_exhaustive?
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DriveStrength<A> {
     /// HAL-specific drive strength setting.
@@ -94,6 +94,7 @@ pub enum DriveStrength<A> {
     /// Lowest drive strength available on this HAL.
     Lowest,
     /// Most common reset value of drive strength on this HAL.
+    #[default]
     Standard,
     /// Medium drive strength.
     Medium,
@@ -101,12 +102,6 @@ pub enum DriveStrength<A> {
     High,
     /// Highest drive strength available on this HAL.
     Highest,
-}
-
-impl<A> Default for DriveStrength<A> {
-    fn default() -> Self {
-        Self::Standard
-    }
 }
 
 // We introduce our own trait instead of using `From` because this conversion is not
@@ -126,13 +121,14 @@ pub trait FromDriveStrength {
 /// This enum allows to either use high-level, portable values, roughly normalized across
 /// HALs, or to use HAL-specific values if needed.
 #[doc(alias = "SlewRate")]
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 // FIXME: should we call this slew rate instead?
 pub enum Speed<A> {
     /// HAL-specific speed setting.
     Hal(A),
     /// Low speed.
+    #[default]
     Low,
     /// Medium speed.
     Medium,
@@ -140,12 +136,6 @@ pub enum Speed<A> {
     High,
     /// Very high speed.
     VeryHigh,
-}
-
-impl<A> Default for Speed<A> {
-    fn default() -> Self {
-        Self::Low
-    }
 }
 
 // We introduce our own trait instead of using `From` because this conversion is not
@@ -213,17 +203,12 @@ impl FromSpeed for UnsupportedSpeed {
 /// Available drive strength settings.
 ///
 /// *Note: configuring the drive strength of outputs is not supported on this MCU family.*
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum UnsupportedDriveStrength {
     #[doc(hidden)]
+    #[default]
     UnsupportedByHardware,
-}
-
-impl Default for UnsupportedDriveStrength {
-    fn default() -> Self {
-        Self::UnsupportedByHardware
-    }
 }
 
 impl FromDriveStrength for UnsupportedDriveStrength {

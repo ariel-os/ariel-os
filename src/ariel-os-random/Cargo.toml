@@ -17,7 +17,9 @@ embassy-sync.workspace = true
 rand_pcg = "0.3.1"
 rand_chacha = { version = "0.3.1", default-features = false, optional = true }
 
+getrandom = { version = "0.3.3", optional = true }
+
 [features]
 ## If set, the one global RNG is also a cryptographically secure pseudo
 ## random number generator (CSPRNG), and thus, a `CryptoRng` can be produced.
-csprng = ["dep:rand_chacha"]
+csprng = ["dep:rand_chacha", "dep:getrandom"]

@@ -2,6 +2,7 @@
 name = "spi-loopback"
 license.workspace = true
 edition.workspace = true
+publish = false
 
 [lints]
 workspace = true

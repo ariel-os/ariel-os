@@ -62,6 +62,7 @@ i2c = [
   "dep:embassy-embedded-hal",
   "dep:embassy-sync",
 
+  "ariel-os-embassy-common/i2c",
   "ariel-os-esp/i2c",
   "ariel-os-nrf/i2c",
   "ariel-os-rp/i2c",
@@ -69,6 +70,7 @@ i2c = [
 ]
 
 spi = [
+  "ariel-os-embassy-common/spi",
   "ariel-os-esp/spi",
   "ariel-os-nrf/spi",
   "ariel-os-rp/spi",
@@ -82,7 +84,13 @@ usb = [
   "ariel-os-stm32/usb",
 ]
 
-ble = ["dep:bt-hci", "dep:embedded-io", "dep:trouble-host", "ariel-os-nrf/ble"]
+ble = [
+  "dep:bt-hci",
+  "dep:embedded-io",
+  "dep:trouble-host",
+  "ariel-os-embassy-common/ble",
+  "ariel-os-nrf/ble",
+]
 ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
