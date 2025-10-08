@@ -198,6 +198,25 @@ chips:
         comments:
           - not currently compatible with threading
 
+  # Currently identical to esp32c3.
+  esp32c3fx4:
+    name: ESP32-C3Fx4
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported_with_caveats
+        comments:
+          - not currently compatible with threading
+
   esp32c6:
     name: ESP32-C6
     support:
