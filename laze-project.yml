@@ -1089,6 +1089,7 @@ modules:
   - name: network
     selects:
       - ?ipv4
+      - ip
       - network_device
 
   - name: network-config-ipv4-default
@@ -1137,6 +1138,8 @@ modules:
   - name: ipv4
     selects:
       - network-config-ipv4-default
+    provides:
+      - ip
     env:
       global:
         FEATURES:
@@ -1162,6 +1165,8 @@ modules:
   - name: ipv6
     selects:
       - network-config-ipv6-default
+    provides:
+      - ip
     env:
       global:
         FEATURES:
