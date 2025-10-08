@@ -256,6 +256,28 @@ chips:
       ethernet_over_usb: not_currently_supported
       wifi: supported
 
+  # Currently identical to esp32s3.
+  esp32s3fx8:
+    name: ESP32-S3Fx8
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
   stm32c031c6:
     name: STM32C031C6
     support:
