@@ -432,6 +432,9 @@ contexts:
       PROBE_RS_PROTOCOL: jtag
       CARGO_TARGET_PREFIX: CARGO_TARGET_RISCV32IMAC_UNKNOWN_NONE_ELF
 
+  - name: esp32c6fx4
+    parent: esp32c6
+
   - name: esp32-c6-wroom-1
     parent: esp32c6
 
@@ -1781,7 +1784,7 @@ builders:
     parent: nrf52833
 
   - name: dfrobot-firebeetle2-esp32-c6
-    parent: esp32c6
+    parent: esp32c6fx4
 
   - name: particle-xenon
     parent: nrf52840
