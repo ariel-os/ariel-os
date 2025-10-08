@@ -32,7 +32,7 @@ builders:
   provides:
   - has_usb_device_port
 - name: heltec-wifi-lora-32-v3
-  parent: esp32s3
+  parent: esp32s3fx8
   provides:
   - has_buttons
   - has_leds

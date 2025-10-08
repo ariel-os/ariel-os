@@ -450,6 +450,9 @@ contexts:
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32S3_NONE_ELF
       CC: xtensa-esp32s3-elf-gcc
 
+  - name: esp32s3fx8
+    parent: esp32s3
+
   - name: esp32-s3-wroom-1
     parent: esp32s3
 
