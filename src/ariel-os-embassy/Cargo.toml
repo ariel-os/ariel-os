@@ -135,7 +135,7 @@ ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
-network-config-static = ["network-config-override"]
+network-config-ipv4-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
 ble-config-override = []

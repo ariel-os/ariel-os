@@ -9,6 +9,8 @@ Two different RNG interfaces are provided, which both implement `rand_core` trai
 
 - A fast RNG interface, not suitable for cryptography use, which can be obtained with [`random::fast_rng()`][fast-rng-fn-rustdoc].
 - A cryptographically secure pseudo-RNG (CSPRNG) interface, which can be obtained with [`random::crypto_rng()`][crypto-rng-fn-rustdoc] when the `csprng` Cargo feature is enabled.
+  In addition, the `csprng` Cargo feature also enables support for the [`getrandom` crate][getrandom-cratesio], even when it is present as a transitive dependency only.
+
 
 > To ensure fast operation of the fast RNG, the obtained RNG must be reused between invocations, instead of obtaining new ones through [`random::fast_rng()`][fast-rng-fn-rustdoc].
 
@@ -21,3 +23,4 @@ When the `random` module is selected, the `hwrng` [laze module][laze-modules-boo
 [fast-rng-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/random/fn.fast_rng.html
 [crypto-rng-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/random/fn.crypto_rng.html
 [laze-modules-book]: ./build-system.md#laze-modules
+[getrandom-cratesio]: https://crates.io/crates/getrandom

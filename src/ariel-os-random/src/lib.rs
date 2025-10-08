@@ -27,6 +27,8 @@
 use core::{cell::RefCell, marker::PhantomData};
 
 use embassy_sync::once_lock::OnceLock;
+#[cfg(feature = "csprng")]
+use getrandom::Error;
 use rand_core::{RngCore, SeedableRng as _};
 
 /// A global RNG.
@@ -245,4 +247,32 @@ pub fn crypto_rng_send() -> CryptoRngSend {
             rand_chacha::ChaCha20Rng::from_rng(i).expect("Global RNG is infallible")
         }),
     }
+}
+
+/// Implements RNG access for the `getrandom` crate
+///
+/// # Safety
+///
+/// See the `getrandom` documentation on custom backends.
+///
+/// # Errors
+///
+/// See the `getrandom` documentation on custom backends.
+///
+/// At the time of writing, all Ariel OS RNGs are infallible.
+///
+/// # Panics
+///
+/// The function panics if error conversion fails.
+#[cfg(feature = "csprng")]
+#[unsafe(no_mangle)]
+unsafe extern "Rust" fn __getrandom_v03_custom(dest: *mut u8, len: usize) -> Result<(), Error> {
+    let buf = unsafe {
+        core::ptr::write_bytes(dest, 0, len);
+        core::slice::from_raw_parts_mut(dest, len)
+    };
+    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    crypto_rng()
+        .try_fill_bytes(buf)
+        .map_err(|e| Error::new_custom(e.raw_os_error().unwrap() as u16))
 }

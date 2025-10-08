@@ -9,6 +9,7 @@ miette = { version = "7.2.0", features = ["fancy"] }
 minijinja = { version = "2.0.3" }
 serde = { version = "1.0.0", features = ["derive"] }
 serde_yaml = { version = "0.9.34" } # TODO: use a maintained crate instead
+slug = { version = "0.1" }
 thiserror = { version = "1.0.61" }
 ---
 
@@ -22,6 +23,7 @@ use std::{
 use miette::Diagnostic;
 use minijinja::{context, Environment};
 use serde::Serialize;
+use slug::slugify;
 
 #[derive(argh::FromArgs)]
 /// utility commands to generate parts of the Ariel OS book
@@ -324,6 +326,8 @@ impl SubCommandPages {
 
         for board in &board_info {
             let mut env = Environment::new();
+            env.add_filter("slugify", slugify::<String>);
+            env.add_filter("capitalize_first", capitalize_first);
             env.add_template("board_page", &board_page_template)
                 .unwrap();
             let tmpl = env.get_template("board_page").unwrap();
@@ -382,7 +386,7 @@ struct FunctionalitySupport {
     title: String,
     icon: String,
     description: String,
-    // TODO: add comments
+    comments: Option<Vec<String>>,
     // TODO: add the PR link
 }
 
@@ -465,43 +469,56 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
             let functionalities = matrix.functionalities.iter().map(|functionality_info| {
                 let name = &functionality_info.name;
 
-                let support_key = if let Some(support_info) = board_info.support.get(name) {
-                    let status = support_info.status();
-                    matrix
-                        .support_keys
-                        .iter()
-                        .find(|s| s.name == status)
-                        .ok_or(Error::InvalidSupportKeyNameBoard {
-                            found: status.to_owned(),
-                            functionality: name.to_owned(),
-                            board: board_name.to_owned(),
-                        })?
-                } else {
-                    let support_info =
-                        chip_info
-                            .support
-                            .get(name)
-                            .ok_or(Error::MissingSupportInfo {
-                                board: board_name.to_owned(),
-                                chip: board_info.chip.to_owned(),
-                                functionality: functionality_info.title.to_owned(),
-                            })?;
-                    let status = support_info.status();
-                    matrix
-                        .support_keys
-                        .iter()
-                        .find(|s| s.name == status)
-                        .ok_or(Error::InvalidSupportKeyNameChip {
-                            found: status.to_owned(),
-                            functionality: name.to_owned(),
-                            chip: chip_info.name.to_owned(),
-                        })?
+                let (support_info, support_key) =
+                    if let Some(support_info) = board_info.support.get(name) {
+                        let status = support_info.status();
+                        (
+                            support_info,
+                            matrix
+                                .support_keys
+                                .iter()
+                                .find(|s| s.name == status)
+                                .ok_or(Error::InvalidSupportKeyNameBoard {
+                                    found: status.to_owned(),
+                                    functionality: name.to_owned(),
+                                    board: board_name.to_owned(),
+                                })?,
+                        )
+                    } else {
+                        let support_info =
+                            chip_info
+                                .support
+                                .get(name)
+                                .ok_or(Error::MissingSupportInfo {
+                                    board: board_name.to_owned(),
+                                    chip: board_info.chip.to_owned(),
+                                    functionality: functionality_info.title.to_owned(),
+                                })?;
+                        let status = support_info.status();
+                        (
+                            support_info,
+                            matrix
+                                .support_keys
+                                .iter()
+                                .find(|s| s.name == status)
+                                .ok_or(Error::InvalidSupportKeyNameChip {
+                                    found: status.to_owned(),
+                                    functionality: name.to_owned(),
+                                    chip: chip_info.name.to_owned(),
+                                })?,
+                        )
+                    };
+
+                let comments = match support_info {
+                    schema::SupportInfo::StatusOnly(_) => None,
+                    schema::SupportInfo::Details { comments, .. } => comments.clone(),
                 };
 
                 Ok(FunctionalitySupport {
                     title: functionality_info.title.to_owned(),
                     icon: support_key.icon.to_owned(),
                     description: support_key.description.to_owned(),
+                    comments,
                 })
             });
             let errors = functionalities
@@ -532,6 +549,14 @@ fn gen_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Err
         Ok(boards.map(|f| f.unwrap()).collect())
     } else {
         Err(Error::ValidationIssues { errors })
+    }
+}
+
+fn capitalize_first(value: String) -> String {
+    let mut chars = value.chars();
+    match chars.next() {
+        None => String::new(),
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
     }
 }
 
