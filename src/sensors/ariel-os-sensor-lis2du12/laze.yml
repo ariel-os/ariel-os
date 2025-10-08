@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-lis2du12
+    selects:
+      - host-test-only
