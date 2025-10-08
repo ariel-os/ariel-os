@@ -398,7 +398,7 @@ contexts:
     parent: esp32
 
   - name: esp32-c3-mini-1
-    parent: esp32c3
+    parent: esp32c3fx4
 
   - name: esp32c3
     parent: esp
@@ -413,8 +413,11 @@ contexts:
       PROBE_RS_PROTOCOL: jtag
       CARGO_TARGET_PREFIX: CARGO_TARGET_RISCV32IMC_UNKNOWN_NONE_ELF
 
-  - name: esp-c3-01m
+  - name: esp32c3fx4
     parent: esp32c3
+
+  - name: esp-c3-01m
+    parent: esp32c3fx4
 
   - name: esp32c6
     parent: esp
