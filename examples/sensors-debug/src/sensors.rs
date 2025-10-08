@@ -9,3 +9,13 @@ static LSM6DSV16X_I2C_REF: &'static dyn ariel_os::sensors::Sensor = &LSM6DSV16X_
 pub async fn lsm6dsv16x_i2c_runner() {
     LSM6DSV16X_I2C.run().await
 }
+
+pub static LIS2DU12_I2C: ariel_os_sensor_lis2du12::Lis2du12I2c =
+    const { ariel_os_sensor_lis2du12::Lis2du12I2c::new(Some("onboard")) };
+#[ariel_os::reexports::linkme::distributed_slice(ariel_os::sensors::SENSOR_REFS)]
+static LIS2DU12_I2C_REF: &'static dyn ariel_os::sensors::Sensor = &LIS2DU12_I2C;
+
+#[ariel_os::task]
+pub async fn lis2du12_i2c_runner() {
+    LIS2DU12_I2C.run().await
+}
