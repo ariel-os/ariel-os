@@ -1,0 +1,4 @@
+apps:
+  - name: uart-loopback
+    context:
+      - esp

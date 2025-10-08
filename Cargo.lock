@@ -340,6 +340,7 @@ dependencies = [
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
+ "embedded-io-async",
  "esp-alloc",
  "esp-hal",
  "esp-hal-embassy",
@@ -5631,6 +5632,15 @@ name = "typewit"
 version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cb77c29baba9e4d3a6182d51fa75e3215c7fd1dab8f4ea9d107c716878e55fc0"
+
+[[package]]
+name = "uart-loopback"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embedded-io-async",
+]
 
 [[package]]
 name = "udp-echo"
