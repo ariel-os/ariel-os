@@ -1,5 +1,7 @@
 //! Provides support for the I2C communication bus in controller mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 use esp_hal::{
     Async,

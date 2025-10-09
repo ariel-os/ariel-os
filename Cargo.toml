@@ -167,6 +167,8 @@ unused_must_use = "deny"
 # ... until we figure out a way to generate a list of all used cfg variables
 # across build configurations ...
 unexpected_cfgs = "allow"
+# When writing code, explicitly opt-out per module by adding `#[expect(unsafe_code)]`
+unsafe_code = "warn"
 
 [workspace.lints.clippy]
 # Clippy lints are documented here: https://rust-lang.github.io/rust-clippy/master/index.html
@@ -177,6 +179,7 @@ pedantic = { level = "warn", priority = -1 }
 too_long_first_doc_paragraph = "warn"
 unused_result_ok = "deny"
 unused_trait_names = "warn"
+undocumented_unsafe_blocks = "warn"
 
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"

@@ -1,3 +1,6 @@
+#![expect(unsafe_code)]
+#![expect(clippy::undocumented_unsafe_blocks)]
+
 use ariel_os_embassy_common::gpio::input::InterruptError;
 use embassy_stm32::{
     OptionalPeripherals, Peripheral,

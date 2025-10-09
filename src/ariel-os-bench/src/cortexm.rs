@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use cortex_m::{
     Peripherals,
     peripheral::{SYST, syst::SystClkSource},

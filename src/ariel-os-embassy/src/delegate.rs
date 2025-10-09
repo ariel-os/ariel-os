@@ -1,5 +1,8 @@
 //! Delegate or lend an object to another task.
 
+#![expect(unsafe_code)]
+#![expect(clippy::undocumented_unsafe_blocks)]
+
 use core::marker::PhantomData;
 
 use embassy_executor::Spawner;
