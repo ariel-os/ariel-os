@@ -191,6 +191,11 @@ chips:
         status: supported_with_caveats
         comments:
           - not currently compatible with threading
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   # Currently identical to esp32c3.
   esp32c3fx4:
@@ -210,6 +215,11 @@ chips:
         status: supported_with_caveats
         comments:
           - not currently compatible with threading
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   esp32c6:
     name: ESP32-C6
@@ -228,6 +238,11 @@ chips:
         status: supported_with_caveats
         comments:
           - not currently compatible with threading
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   esp32s3:
     name: ESP32-S3
@@ -564,11 +579,6 @@ boards:
     chip: esp32c3
     tier: "1"
     support:
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
-      ethernet_over_usb: not_available
 
   espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
@@ -576,11 +586,6 @@ boards:
     chip: esp32c6
     tier: "1"
     support:
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
-      ethernet_over_usb: not_available
 
   espressif-esp32-s3-devkitc-1:
     name: Espressif ESP32-S3-DevKitC-1
