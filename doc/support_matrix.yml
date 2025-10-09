@@ -541,6 +541,13 @@ boards:
       wifi: supported
       ethernet_over_usb: supported
 
+  dfrobot-firebeetle2-esp32-c6:
+    name: DFRobot FireBeetle 2 ESP32-C6
+    url: https://web.archive.org/web/20250710082029/https://wiki.dfrobot.com/SKU_DFR1075_FireBeetle_2_Board_ESP32_C6
+    chip: esp32c6fx4
+    tier: "2"
+    support:
+
   espressif-esp32-c3-lcdkit:
     name: Espressif ESP32-C3-LCDkit
     url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en
