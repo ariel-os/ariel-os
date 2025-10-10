@@ -477,7 +477,7 @@ impl SubCommandChipPages {
             let tmpl = env.get_template("chip_page").unwrap();
             let chip_page = tmpl
                 .render(context!(
-                    chip_info => chip_info,
+                    chip_info => chip,
                     support_keys => matrix.support_keys,
                 ))
                 .unwrap();
