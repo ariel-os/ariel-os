@@ -92,8 +92,9 @@ ble = [
   "ariel-os-nrf/ble",
 ]
 ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
-ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
-ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
+ble-esp = ["ble", "ariel-os-esp/ble-esp"]
+ble-peripheral = ["ariel-os-esp/ble-peripheral", "ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
+ble-central = ["ariel-os-esp/ble-central", "ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
 
 hwrng = [
   "ariel-os-esp/hwrng",

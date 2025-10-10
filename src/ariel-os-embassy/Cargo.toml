@@ -133,6 +133,7 @@ ble = [
 ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
+ble-esp = ["ble", "ariel-os-hal/ble-esp"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-ipv4-static = ["network-config-override"]
