@@ -1,0 +1,3 @@
+apps:
+  - name: uart-loopback
+    context: []
