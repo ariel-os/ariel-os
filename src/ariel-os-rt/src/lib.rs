@@ -58,7 +58,7 @@ mod isr_stack {
             "ISR stack size (in bytes)"
         );
 
-        #[cfg(feature = "executor-interrupt")]
+        #[cfg(any(feature = "executor-interrupt", feature = "executor-single-thread"))]
         {
             const CONFIG_EXECUTOR_STACKSIZE: usize = ariel_os_utils::usize_from_env_or!(
                 "CONFIG_EXECUTOR_STACKSIZE",
@@ -69,7 +69,7 @@ mod isr_stack {
             CONFIG_ISR_STACKSIZE + CONFIG_EXECUTOR_STACKSIZE
         }
 
-        #[cfg(not(feature = "executor-interrupt"))]
+        #[cfg(not(any(feature = "executor-interrupt", feature = "executor-single-thread")))]
         CONFIG_ISR_STACKSIZE
     };
 

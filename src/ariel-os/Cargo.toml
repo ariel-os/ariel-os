@@ -198,7 +198,7 @@ executor-interrupt = [
   "ariel-os-rt/executor-interrupt",
 ]
 # Enables the single thread-mode executor.
-executor-single-thread = ["ariel-os-embassy/executor-single-thread"]
+executor-single-thread = ["ariel-os-rt/executor-single-thread", "ariel-os-embassy/executor-single-thread"]
 # Enables the ariel-os-threading thread executor.
 executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 # Don't start any executor automatically.
