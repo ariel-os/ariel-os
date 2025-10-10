@@ -3,8 +3,10 @@
 Here's the list of supported chips in ArielOS.
 
 - [ESP32-C3](./esp32c3.md)
+- [ESP32-C3Fx4](./esp32c3fx4.md)
 - [ESP32-C6](./esp32c6.md)
 - [ESP32-S3](./esp32s3.md)
+- [ESP32-S3Fx8](./esp32s3fx8.md)
 - [nRF51822-xxAA](./nrf51822-xxaa.md)
 - [nRF52832](./nrf52832.md)
 - [nRF52833](./nrf52833.md)
