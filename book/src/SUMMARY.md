@@ -8,6 +8,7 @@
 - [Boards](./boards/index.md)
   - [BBC micro:bit V1](./boards/bbc-microbit-v1.md)
   - [BBC micro:bit V2](./boards/bbc-microbit-v2.md)
+  - [DFRobot FireBeetle 2 ESP32-C6](./boards/dfrobot-firebeetle2-esp32-c6.md)
   - [Espressif ESP32-C3-LCDkit](./boards/espressif-esp32-c3-lcdkit.md)
   - [Espressif ESP32-C6-DevKitC-1](./boards/espressif-esp32-c6-devkitc-1.md)
   - [Espressif ESP32-S3-DevKitC-1](./boards/espressif-esp32-s3-devkitc-1.md)
