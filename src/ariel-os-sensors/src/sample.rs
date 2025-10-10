@@ -112,9 +112,23 @@ pub trait Reading: core::fmt::Debug {
     ///
     /// The default implementation must be overridden on types containing multiple
     /// [`Sample`]s.
+    /// Samples of opaque channels should be filtered out.
     fn samples(&self) -> impl ExactSizeIterator<Item = Sample> {
         [self.sample()].into_iter()
     }
+}
+
+/// This trait is meant to be implemented and used only by sensor drivers implementors.
+///
+/// Meant to be implemented on [`Samples`](crate::sensor::Samples), returned by
+/// [`Sensor::wait_for_reading()`](crate::Sensor::wait_for_reading).
+pub trait PrivateReading {
+    /// Returns an iterator over [`Sample`]s of a sensor reading, including samples of opaque channels that are normally hidden.
+    ///
+    /// The order of [`Sample`]s is not significant, but is fixed.
+    fn unfiltered_samples(
+        &self,
+    ) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator;
 }
 
 #[cfg(test)]
