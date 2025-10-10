@@ -310,6 +310,7 @@ contexts:
     parent: nrf91
     provides:
       - has_storage_support
+      - has_nrf_modem
     env:
       PROBE_RS_CHIP: nRF9160_xxAA
 
@@ -317,6 +318,7 @@ contexts:
     parent: nrf91
     provides:
       - has_storage_support
+      - has_nrf_modem
     env:
       # FIXME: probe-rs does not support the nRF9151_xxAA yet, because there is
       # no CMSIS-Pack available
@@ -349,7 +351,7 @@ contexts:
     tasks:
       debug-rs:
         cmd:
-          - probe-rs debug --chip ${PROBE_RS_CHIP} --exe ${out} $@
+          - probe-rs debug --chip ${PROBE_RS_CHIP} --exe ${out} --no-catch-reset $@
 
   - name: rp235xa
     parent: rp
@@ -1027,7 +1029,7 @@ modules:
 
     env:
       global:
-        CARGO_RUNNER: "'probe-rs run ${PROBE_RS_PROTOCOL} --chip ${PROBE_RS_CHIP} --preverify'"
+        CARGO_RUNNER: "'probe-rs run ${PROBE_RS_PROTOCOL} --chip ${PROBE_RS_CHIP} --preverify --no-catch-reset'"
 
     tasks:
       flash-erase-all:
@@ -1264,6 +1266,26 @@ modules:
   - name: has_ble
     selects:
       - doc-only
+
+  - name: gnss
+    selects:
+      - hw/gnss
+    env:
+      global:
+        FEATURES:
+          - ariel-os/gnss
+
+  - name: has_nrf_modem
+    selects:
+      - doc-only
+
+  - name: nrf91-modem
+    selects:
+      - has_nrf_modem
+    env:
+      global:
+        FEATURES:
+          - ariel-os/nrf91-modem
 
   - name: usb
     selects:

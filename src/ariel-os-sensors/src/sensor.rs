@@ -11,7 +11,7 @@ use crate::{Category, Label, MeasurementUnit};
 
 pub use crate::{
     Reading,
-    sample::{Accuracy, Sample},
+    sample::{Accuracy, Sample, ValueError},
 };
 
 ariel_os_macros::define_count_adjusted_sensor_enums!();
