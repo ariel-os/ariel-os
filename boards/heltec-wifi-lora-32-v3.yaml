@@ -1,6 +1,6 @@
 boards:
   heltec-wifi-lora-32-v3:
-    chip: esp32s3
+    chip: esp32s3fx8
     leds:
       led0:
         pin: GPIO35
