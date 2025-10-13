@@ -15,6 +15,7 @@ cfg_if::cfg_if! {
     include!("espressif-esp32-s3-devkitc-1.rs"); } else if #[cfg(context =
     "heltec-wifi-lora-32-v3")] { include!("heltec-wifi-lora-32-v3.rs"); } else if
     #[cfg(context = "native")] { include!("native.rs"); } else if #[cfg(context =
+    "nordic-thingy-52")] { include!("nordic-thingy-52.rs"); } else if #[cfg(context =
     "nordic-thingy-91-x-nrf9151")] { include!("nordic-thingy-91-x-nrf9151.rs"); } else if
     #[cfg(context = "nrf52840-mdk")] { include!("nrf52840-mdk.rs"); } else if
     #[cfg(context = "nrf52840dk")] { include!("nrf52840dk.rs"); } else if #[cfg(context =
