@@ -1,7 +1,7 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
     impl_async_uart_for_driver_enum, impl_defmt_display_for_config,
-    uart::{Baud, DataBits, Parity, StopBits},
+    uart::{HalBaudRate, HalDataBits, HalParity, HalStopBits},
 };
 use embassy_stm32::{
     Peripheral, bind_interrupts, peripherals,
@@ -13,45 +13,235 @@ use embassy_stm32::{
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which UART should operate.
-    pub baudrate: Baud,
+    pub baudrate: ariel_os_embassy_common::uart::Baud<Baud>,
     /// Number of data bits.
-    pub data_bits: DataBits,
+    pub data_bits: ariel_os_embassy_common::uart::DataBits<DataBits>,
     /// Number of stop bits.
-    pub stop_bits: StopBits,
+    pub stop_bits: ariel_os_embassy_common::uart::StopBits<StopBits>,
     /// Parity mode used for the interface.
-    pub parity: Parity,
+    pub parity: ariel_os_embassy_common::uart::Parity<Parity>,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: Baud::_9600,
-            data_bits: DataBits::Data8,
-            stop_bits: StopBits::Stop1,
-            parity: Parity::None,
+            baudrate: ariel_os_embassy_common::uart::Baud::_9600,
+            data_bits: ariel_os_embassy_common::uart::DataBits::Data8,
+            stop_bits: ariel_os_embassy_common::uart::StopBits::Stop1,
+            parity: ariel_os_embassy_common::uart::Parity::None,
         }
     }
 }
 
-fn from_parity(parity: Parity) -> embassy_stm32::usart::Parity {
-    match parity {
-        Parity::None => embassy_stm32::usart::Parity::ParityNone,
-        Parity::Even => embassy_stm32::usart::Parity::ParityEven,
-        Parity::Odd => embassy_stm32::usart::Parity::ParityOdd,
+/// UART baud rate.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct Baud {
+    /// The baud rate at which UART should operate.
+    baud: u32,
+}
+
+impl HalBaudRate for Baud {}
+
+impl core::fmt::Display for Baud {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}", self.baud)
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for Baud {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        write!(f, "{}", self.baud)
     }
 }
 
-fn from_stop_bits(stop_bits: StopBits) -> embassy_stm32::usart::StopBits {
-    match stop_bits {
-        StopBits::Stop1 => embassy_stm32::usart::StopBits::STOP1,
-        StopBits::Stop2 => embassy_stm32::usart::StopBits::STOP2,
+impl From<Baud> for u32 {
+    fn from(baud: Baud) -> u32 {
+        baud.baud
     }
 }
 
-fn from_data_bits(data_bits: DataBits) -> embassy_stm32::usart::DataBits {
-    match data_bits {
-        DataBits::Data7 => embassy_stm32::usart::DataBits::DataBits7,
-        DataBits::Data8 => embassy_stm32::usart::DataBits::DataBits8,
+impl From<ariel_os_embassy_common::uart::Baud<Self>> for Baud {
+    fn from(baud: ariel_os_embassy_common::uart::Baud<Self>) -> Baud {
+        match baud {
+            ariel_os_embassy_common::uart::Baud::Hal(baud) => baud,
+            ariel_os_embassy_common::uart::Baud::_2400 => Baud { baud: 2400 },
+            ariel_os_embassy_common::uart::Baud::_4800 => Baud { baud: 4800 },
+            ariel_os_embassy_common::uart::Baud::_9600 => Baud { baud: 9600 },
+            ariel_os_embassy_common::uart::Baud::_19200 => Baud { baud: 19200 },
+            ariel_os_embassy_common::uart::Baud::_38400 => Baud { baud: 38400 },
+            ariel_os_embassy_common::uart::Baud::_57600 => Baud { baud: 57600 },
+            ariel_os_embassy_common::uart::Baud::_115200 => Baud { baud: 115200 },
+        }
+    }
+}
+
+/// UART number of data bits.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum DataBits {
+    /// 7 bits per character.
+    Data7,
+    /// 8 bits per character.
+    Data8,
+    /// 9 bits per character.
+    Data9,
+}
+
+impl HalDataBits for DataBits {}
+
+impl From<DataBits> for embassy_stm32::usart::DataBits {
+    fn from(databits: DataBits) -> embassy_stm32::usart::DataBits {
+        match databits {
+            DataBits::Data7 => embassy_stm32::usart::DataBits::DataBits7,
+            DataBits::Data8 => embassy_stm32::usart::DataBits::DataBits8,
+            DataBits::Data9 => embassy_stm32::usart::DataBits::DataBits9,
+        }
+    }
+}
+
+impl From<ariel_os_embassy_common::uart::DataBits<Self>> for DataBits {
+    fn from(databits: ariel_os_embassy_common::uart::DataBits<Self>) -> DataBits {
+        match databits {
+            ariel_os_embassy_common::uart::DataBits::Hal(bits) => bits,
+            ariel_os_embassy_common::uart::DataBits::Data7 => DataBits::Data7,
+            ariel_os_embassy_common::uart::DataBits::Data8 => DataBits::Data8,
+        }
+    }
+}
+
+impl core::fmt::Display for DataBits {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Data7 => write!(f, "7"),
+            Self::Data8 => write!(f, "8"),
+            Self::Data9 => write!(f, "9"),
+        }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for DataBits {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            Self::Data7 => write!(f, "7"),
+            Self::Data8 => write!(f, "8"),
+            Self::Data9 => write!(f, "9"),
+        }
+    }
+}
+
+/// Parity bit.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum Parity {
+    /// No parity bit.
+    None,
+    /// Even parity bit.
+    Even,
+    /// Odd parity bit.
+    Odd,
+}
+
+impl HalParity for Parity {}
+
+impl From<Parity> for embassy_stm32::usart::Parity {
+    fn from(parity: Parity) -> embassy_stm32::usart::Parity {
+        match parity {
+            Parity::None => embassy_stm32::usart::Parity::ParityNone,
+            Parity::Even => embassy_stm32::usart::Parity::ParityEven,
+            Parity::Odd => embassy_stm32::usart::Parity::ParityOdd,
+        }
+    }
+}
+
+impl From<ariel_os_embassy_common::uart::Parity<Self>> for Parity {
+    fn from(parity: ariel_os_embassy_common::uart::Parity<Self>) -> Self {
+        match parity {
+            ariel_os_embassy_common::uart::Parity::Hal(parity) => parity,
+            ariel_os_embassy_common::uart::Parity::None => Self::None,
+            ariel_os_embassy_common::uart::Parity::Even => Self::Even,
+        }
+    }
+}
+
+impl core::fmt::Display for Parity {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::None => write!(f, "N"),
+            Self::Even => write!(f, "E"),
+            Self::Odd => write!(f, "O"),
+        }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Parity {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            Self::None => write!(f, "N"),
+            Self::Even => write!(f, "E"),
+            Self::Odd => write!(f, "O"),
+        }
+    }
+}
+
+/// UART number of stop bits.
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum StopBits {
+    /// One stop bit.
+    Stop1,
+    /// 0.5 stop bits.
+    Stop0P5,
+    /// Two stop bit.
+    Stop2,
+    /// 1.5 stop bit.
+    Stop1P5,
+}
+
+impl HalStopBits for StopBits {}
+
+impl core::fmt::Display for StopBits {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            StopBits::Stop1 => write!(f, "1"),
+            StopBits::Stop0P5 => write!(f, "0.5"),
+            StopBits::Stop2 => write!(f, "2"),
+            StopBits::Stop1P5 => write!(f, "1.5"),
+        }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for StopBits {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        use defmt::write;
+        match self {
+            StopBits::Stop1 => write!(f, "1"),
+            StopBits::Stop0P5 => write!(f, "0.5"),
+            StopBits::Stop2 => write!(f, "2"),
+            StopBits::Stop1P5 => write!(f, "1.5"),
+        }
+    }
+}
+
+impl From<StopBits> for embassy_stm32::usart::StopBits {
+    fn from(stop_bits: StopBits) -> embassy_stm32::usart::StopBits {
+        match stop_bits {
+            StopBits::Stop1 => embassy_stm32::usart::StopBits::STOP1,
+            StopBits::Stop0P5 => embassy_stm32::usart::StopBits::STOP0P5,
+            StopBits::Stop2 => embassy_stm32::usart::StopBits::STOP2,
+            StopBits::Stop1P5 => embassy_stm32::usart::StopBits::STOP1P5,
+        }
+    }
+}
+
+impl From<ariel_os_embassy_common::uart::StopBits<Self>> for StopBits {
+    fn from(stopbits: ariel_os_embassy_common::uart::StopBits<Self>) -> Self {
+        match stopbits {
+            ariel_os_embassy_common::uart::StopBits::Hal(stopbits) => stopbits,
+            ariel_os_embassy_common::uart::StopBits::Stop1 => StopBits::Stop1,
+        }
     }
 }
 
@@ -86,10 +276,10 @@ macro_rules! define_uart_drivers {
                 ) -> Uart<'d> {
 
                     let mut uart_config = embassy_stm32::usart::Config::default();
-                    uart_config.baudrate = config.baudrate.into();
-                    uart_config.data_bits = from_data_bits(config.data_bits);
-                    uart_config.stop_bits = from_stop_bits(config.stop_bits);
-                    uart_config.parity = from_parity(config.parity);
+                    uart_config.baudrate = Baud::from(config.baudrate).into();
+                    uart_config.data_bits = DataBits::from(config.data_bits).into();
+                    uart_config.stop_bits = StopBits::from(config.stop_bits).into();
+                    uart_config.parity = Parity::from(config.parity).into();
                     bind_interrupts!(struct Irqs {
                         $interrupt => BufferedInterruptHandler<peripherals::$peripheral>;
                     });
