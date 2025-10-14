@@ -124,6 +124,8 @@ wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
+ltem-nrf-modem = ["ariel-os-hal/ltem-nrf-modem","embassy-net/medium-ip", "net", "nrf91-modem"]
+
 ble = [
   "dep:trouble-host",
   "ariel-os-embassy-common/ble",
@@ -134,6 +136,8 @@ ble = [
 ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
+
+nrf91-modem = ["ariel-os-hal/nrf91-modem"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-ipv4-static = ["network-config-override"]
