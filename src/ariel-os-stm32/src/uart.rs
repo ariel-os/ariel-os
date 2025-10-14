@@ -247,6 +247,19 @@ impl From<ariel_os_embassy_common::uart::StopBits<Self>> for StopBits {
 
 impl_defmt_display_for_config!();
 
+fn convert_error(
+    err: embassy_stm32::usart::ConfigError,
+) -> ariel_os_embassy_common::uart::ConfigError {
+    match err {
+        embassy_stm32::usart::ConfigError::BaudrateTooLow => ConfigError::BaudrateNotSupported,
+        embassy_stm32::usart::ConfigError::BaudrateTooHigh => ConfigError::BaudrateNotSupported,
+        embassy_stm32::usart::ConfigError::DataParityNotSupported => {
+            ConfigError::DataParityNotSupported
+        }
+        _ => ConfigError::ConfigurationNotSupported,
+    }
+}
+
 macro_rules! define_uart_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
         $(
@@ -273,7 +286,7 @@ macro_rules! define_uart_drivers {
                     rx_buf: &'d mut [u8],
                     tx_buf: &'d mut [u8],
                     config: Config,
-                ) -> Uart<'d> {
+                ) -> Result<Uart<'d>, ConfigError> {
 
                     let mut uart_config = embassy_stm32::usart::Config::default();
                     uart_config.baudrate = Baud::from(config.baudrate).into();
@@ -297,9 +310,9 @@ macro_rules! define_uart_drivers {
                         tx_buf,
                         rx_buf,
                         uart_config,
-                    ).expect("Invalid config for UART");
+                    ).map_err(convert_error)?;
 
-                    Uart::$peripheral(Self { uart })
+                    Ok(Uart::$peripheral(Self { uart }))
                 }
             }
         )*
