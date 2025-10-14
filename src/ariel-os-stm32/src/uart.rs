@@ -1,7 +1,6 @@
 //! UART bus configuration.
 use ariel_os_embassy_common::{
-    impl_async_uart_for_driver_enum, impl_defmt_display_for_config,
-    uart::{HalBaudRate, HalDataBits, HalParity, HalStopBits},
+    impl_async_uart_for_driver_enum, uart::ConfigError,
 };
 use embassy_stm32::{
     Peripheral, bind_interrupts, peripherals,
@@ -9,7 +8,8 @@ use embassy_stm32::{
 };
 
 /// UART interface configuration.
-#[derive(Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which UART should operate.
@@ -25,7 +25,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: ariel_os_embassy_common::uart::Baud::_9600,
+            baudrate: ariel_os_embassy_common::uart::Baud::_115200,
             data_bits: ariel_os_embassy_common::uart::DataBits::Data8,
             stop_bits: ariel_os_embassy_common::uart::StopBits::Stop1,
             parity: ariel_os_embassy_common::uart::Parity::None,
@@ -35,24 +35,10 @@ impl Default for Config {
 
 /// UART baud rate.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Baud {
     /// The baud rate at which UART should operate.
     baud: u32,
-}
-
-impl HalBaudRate for Baud {}
-
-impl core::fmt::Display for Baud {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{}", self.baud)
-    }
-}
-#[cfg(feature = "defmt")]
-impl defmt::Format for Baud {
-    fn format(&self, f: defmt::Formatter<'_>) {
-        use defmt::write;
-        write!(f, "{}", self.baud)
-    }
 }
 
 impl From<Baud> for u32 {
@@ -78,6 +64,7 @@ impl From<ariel_os_embassy_common::uart::Baud<Self>> for Baud {
 
 /// UART number of data bits.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DataBits {
     /// 7 bits per character.
     Data7,
@@ -86,8 +73,6 @@ pub enum DataBits {
     /// 9 bits per character.
     Data9,
 }
-
-impl HalDataBits for DataBits {}
 
 impl From<DataBits> for embassy_stm32::usart::DataBits {
     fn from(databits: DataBits) -> embassy_stm32::usart::DataBits {
@@ -109,30 +94,9 @@ impl From<ariel_os_embassy_common::uart::DataBits<Self>> for DataBits {
     }
 }
 
-impl core::fmt::Display for DataBits {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::Data7 => write!(f, "7"),
-            Self::Data8 => write!(f, "8"),
-            Self::Data9 => write!(f, "9"),
-        }
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for DataBits {
-    fn format(&self, f: defmt::Formatter<'_>) {
-        use defmt::write;
-        match self {
-            Self::Data7 => write!(f, "7"),
-            Self::Data8 => write!(f, "8"),
-            Self::Data9 => write!(f, "9"),
-        }
-    }
-}
-
 /// Parity bit.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Parity {
     /// No parity bit.
     None,
@@ -142,7 +106,6 @@ pub enum Parity {
     Odd,
 }
 
-impl HalParity for Parity {}
 
 impl From<Parity> for embassy_stm32::usart::Parity {
     fn from(parity: Parity) -> embassy_stm32::usart::Parity {
@@ -164,30 +127,9 @@ impl From<ariel_os_embassy_common::uart::Parity<Self>> for Parity {
     }
 }
 
-impl core::fmt::Display for Parity {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::None => write!(f, "N"),
-            Self::Even => write!(f, "E"),
-            Self::Odd => write!(f, "O"),
-        }
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for Parity {
-    fn format(&self, f: defmt::Formatter<'_>) {
-        use defmt::write;
-        match self {
-            Self::None => write!(f, "N"),
-            Self::Even => write!(f, "E"),
-            Self::Odd => write!(f, "O"),
-        }
-    }
-}
-
 /// UART number of stop bits.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum StopBits {
     /// One stop bit.
     Stop1,
@@ -197,32 +139,6 @@ pub enum StopBits {
     Stop2,
     /// 1.5 stop bit.
     Stop1P5,
-}
-
-impl HalStopBits for StopBits {}
-
-impl core::fmt::Display for StopBits {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            StopBits::Stop1 => write!(f, "1"),
-            StopBits::Stop0P5 => write!(f, "0.5"),
-            StopBits::Stop2 => write!(f, "2"),
-            StopBits::Stop1P5 => write!(f, "1.5"),
-        }
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for StopBits {
-    fn format(&self, f: defmt::Formatter<'_>) {
-        use defmt::write;
-        match self {
-            StopBits::Stop1 => write!(f, "1"),
-            StopBits::Stop0P5 => write!(f, "0.5"),
-            StopBits::Stop2 => write!(f, "2"),
-            StopBits::Stop1P5 => write!(f, "1.5"),
-        }
-    }
 }
 
 impl From<StopBits> for embassy_stm32::usart::StopBits {
@@ -245,11 +161,9 @@ impl From<ariel_os_embassy_common::uart::StopBits<Self>> for StopBits {
     }
 }
 
-impl_defmt_display_for_config!();
-
 fn convert_error(
     err: embassy_stm32::usart::ConfigError,
-) -> ariel_os_embassy_common::uart::ConfigError {
+) -> ConfigError {
     match err {
         embassy_stm32::usart::ConfigError::BaudrateTooLow => ConfigError::BaudrateNotSupported,
         embassy_stm32::usart::ConfigError::BaudrateTooHigh => ConfigError::BaudrateNotSupported,
