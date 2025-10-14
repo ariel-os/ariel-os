@@ -13,7 +13,7 @@ use embassy_stm32::{
 #[non_exhaustive]
 pub struct Config {
     /// The baud rate at which UART should operate.
-    pub baudrate: ariel_os_embassy_common::uart::Baud<Baud>,
+    pub baudrate: ariel_os_embassy_common::uart::Baudrate<Baudrate>,
     /// Number of data bits.
     pub data_bits: ariel_os_embassy_common::uart::DataBits<DataBits>,
     /// Number of stop bits.
@@ -25,7 +25,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            baudrate: ariel_os_embassy_common::uart::Baud::_115200,
+            baudrate: ariel_os_embassy_common::uart::Baudrate::_115200,
             data_bits: ariel_os_embassy_common::uart::DataBits::Data8,
             stop_bits: ariel_os_embassy_common::uart::StopBits::Stop1,
             parity: ariel_os_embassy_common::uart::Parity::None,
@@ -36,28 +36,28 @@ impl Default for Config {
 /// UART baud rate.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct Baud {
+pub struct Baudrate {
     /// The baud rate at which UART should operate.
     baud: u32,
 }
 
-impl From<Baud> for u32 {
-    fn from(baud: Baud) -> u32 {
+impl From<Baudrate> for u32 {
+    fn from(baud: Baudrate) -> u32 {
         baud.baud
     }
 }
 
-impl From<ariel_os_embassy_common::uart::Baud<Self>> for Baud {
-    fn from(baud: ariel_os_embassy_common::uart::Baud<Self>) -> Baud {
+impl From<ariel_os_embassy_common::uart::Baudrate<Self>> for Baudrate {
+    fn from(baud: ariel_os_embassy_common::uart::Baudrate<Self>) -> Baudrate {
         match baud {
-            ariel_os_embassy_common::uart::Baud::Hal(baud) => baud,
-            ariel_os_embassy_common::uart::Baud::_2400 => Baud { baud: 2400 },
-            ariel_os_embassy_common::uart::Baud::_4800 => Baud { baud: 4800 },
-            ariel_os_embassy_common::uart::Baud::_9600 => Baud { baud: 9600 },
-            ariel_os_embassy_common::uart::Baud::_19200 => Baud { baud: 19200 },
-            ariel_os_embassy_common::uart::Baud::_38400 => Baud { baud: 38400 },
-            ariel_os_embassy_common::uart::Baud::_57600 => Baud { baud: 57600 },
-            ariel_os_embassy_common::uart::Baud::_115200 => Baud { baud: 115200 },
+            ariel_os_embassy_common::uart::Baudrate::Hal(baud) => baud,
+            ariel_os_embassy_common::uart::Baudrate::_2400 => Baudrate { baud: 2400 },
+            ariel_os_embassy_common::uart::Baudrate::_4800 => Baudrate { baud: 4800 },
+            ariel_os_embassy_common::uart::Baudrate::_9600 => Baudrate { baud: 9600 },
+            ariel_os_embassy_common::uart::Baudrate::_19200 => Baudrate { baud: 19200 },
+            ariel_os_embassy_common::uart::Baudrate::_38400 => Baudrate { baud: 38400 },
+            ariel_os_embassy_common::uart::Baudrate::_57600 => Baudrate { baud: 57600 },
+            ariel_os_embassy_common::uart::Baudrate::_115200 => Baudrate { baud: 115200 },
         }
     }
 }
@@ -88,7 +88,6 @@ impl From<ariel_os_embassy_common::uart::DataBits<Self>> for DataBits {
     fn from(databits: ariel_os_embassy_common::uart::DataBits<Self>) -> DataBits {
         match databits {
             ariel_os_embassy_common::uart::DataBits::Hal(bits) => bits,
-            ariel_os_embassy_common::uart::DataBits::Data7 => DataBits::Data7,
             ariel_os_embassy_common::uart::DataBits::Data8 => DataBits::Data8,
         }
     }
@@ -203,7 +202,7 @@ macro_rules! define_uart_drivers {
                 ) -> Result<Uart<'d>, ConfigError> {
 
                     let mut uart_config = embassy_stm32::usart::Config::default();
-                    uart_config.baudrate = Baud::from(config.baudrate).into();
+                    uart_config.baudrate = Baudrate::from(config.baudrate).into();
                     uart_config.data_bits = DataBits::from(config.data_bits).into();
                     uart_config.stop_bits = StopBits::from(config.stop_bits).into();
                     uart_config.parity = Parity::from(config.parity).into();
