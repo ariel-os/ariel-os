@@ -1,6 +1,29 @@
 
 # cargo-vet audits file
 
+[criteria.floss]
+description = """
+The crate contains Free Software as described by any of the Debians DFSG[1],
+the FSFE[2] or the OSI[3]. Note that checking for the license is *not* a
+sufficient criterion: The definitions also require the presence of source code
+that can actually be modified.
+
+If there are build artifacts contained in the crate that have no source in the
+crate itself, but are available as Free Software somewhere on the Web, the
+crate is eligible to be marked as FLOSS. In that case, the review needs to
+be annotated with references to the original source and any reproduction
+instructions in a note.
+
+[1]: https://www.debian.org/social_contract#guidelines
+[2]: https://fsfe.org/freesoftware/
+[3]: https://opensource.org/osd
+"""
+
+[[audits.log]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "floss"
+version = "0.4.28"
+
 [[audits.log]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
