@@ -544,6 +544,7 @@ dependencies = [
  "embassy-executor",
  "embassy-stm32",
  "embedded-hal-async",
+ "embedded-io-async",
  "paste",
  "portable-atomic",
  "static_cell",

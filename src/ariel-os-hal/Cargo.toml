@@ -79,9 +79,10 @@ spi = [
 
 uart = [
   "ariel-os-embassy-common/uart",
-  "ariel-os-rp/uart",
-  "ariel-os-nrf/uart",
   "ariel-os-esp/uart",
+  "ariel-os-nrf/uart",
+  "ariel-os-rp/uart",
+  "ariel-os-stm32/uart",
 ]
 
 usb = [

@@ -133,6 +133,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-stm32
           echo "<meta http-equiv=\"refresh\" content=\"0; url=ariel_os\">" > target/doc/index.html

@@ -1,15 +1,4 @@
-# ST NUCLEO-WB55RG
-
-## Board Info
-
-- **Tier:** 1
-- **Ariel OS Name:** `st-nucleo-wb55`
-- **Chip:** STM32WB55RG
-- **Chip Ariel OS Name:** `stm32wb55rg`
-
-### References
-
-- [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html)
+# STM32H755ZI
 
 ## Support Matrix
 
@@ -23,7 +12,7 @@
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
-|Ethernet over USB|<span title="supported">✅</span>|
+|Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^usb-does-not-enumerate][^see-also-https-github-com-embassy-rs-embassy-issues-2376][^workaround-in-https-github-com-ariel-os-ariel-os-pull-1126]|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
 
@@ -52,4 +41,7 @@ dt, dd {
 }
 </style>
 
+[^usb-does-not-enumerate]: USB does not enumerate.
+[^see-also-https-github-com-embassy-rs-embassy-issues-2376]: See also: https://github.com/embassy-rs/embassy/issues/2376.
+[^workaround-in-https-github-com-ariel-os-ariel-os-pull-1126]: Workaround in: https://github.com/ariel-os/ariel-os/pull/1126.
 [^removing-items-not-supported]: Removing items not supported.

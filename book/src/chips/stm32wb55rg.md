@@ -1,15 +1,4 @@
-# ST NUCLEO-WB55RG
-
-## Board Info
-
-- **Tier:** 1
-- **Ariel OS Name:** `st-nucleo-wb55`
-- **Chip:** STM32WB55RG
-- **Chip Ariel OS Name:** `stm32wb55rg`
-
-### References
-
-- [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html)
+# STM32WB55RG
 
 ## Support Matrix
 

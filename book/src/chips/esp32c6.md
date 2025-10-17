@@ -1,15 +1,4 @@
-# ST NUCLEO-WB55RG
-
-## Board Info
-
-- **Tier:** 1
-- **Ariel OS Name:** `st-nucleo-wb55`
-- **Chip:** STM32WB55RG
-- **Chip Ariel OS Name:** `stm32wb55rg`
-
-### References
-
-- [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html)
+# ESP32-C6
 
 ## Support Matrix
 
@@ -21,11 +10,11 @@
 |SPI Main Mode|<span title="supported">✅</span>|
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="supported">✅</span>|
-|Wi-Fi|<span title="not available on this piece of hardware">–</span>|
-|Ethernet over USB|<span title="supported">✅</span>|
+|User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
+|Wi-Fi|<span title="supported with some caveats">☑️</span>[^not-currently-compatible-with-threading]|
+|Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
-|Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
 <p>Legend:</p>
 
@@ -52,4 +41,6 @@ dt, dd {
 }
 </style>
 
-[^removing-items-not-supported]: Removing items not supported.
+[^no-generic-usb-peripheral]: No generic USB peripheral.
+[^not-currently-compatible-with-threading]: Not currently compatible with threading.
+[^requires-partitioning-support]: Requires partitioning support.
