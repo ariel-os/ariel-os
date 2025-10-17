@@ -1118,8 +1118,8 @@ modules:
 
   - name: network
     selects:
+      - ?ipv4
       - network_device
-      - network-config-ipv4-default
 
   - name: network-config-ipv4-default
     help: use default network configuration method
@@ -1163,6 +1163,39 @@ modules:
       global:
         FEATURES:
           - ariel-os/network-config-ipv4-static
+
+  - name: ipv4
+    selects:
+      - network-config-ipv4-default
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv4
+
+  - name: network-config-ipv6-default
+    help: use default network configuration method
+    selects:
+      - ?network-config-ipv6-static
+      - network-config-ipv6
+
+  - name: network-config-ipv6-static
+    help: use static IPv6 network configuration
+    selects:
+      - network
+    provides_unique:
+      - network-config-ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-ipv6-static
+
+  - name: ipv6
+    selects:
+      - network-config-ipv6-default
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ipv6
 
   - name: sw/storage
     selects:
