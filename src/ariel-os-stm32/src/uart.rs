@@ -274,8 +274,20 @@ define_uart_drivers!(
    // USART2 => USART2, // Often used as SWI
    USART6 => USART6,
 );
+#[cfg(context = "stm32f767zi")]
+define_uart_drivers!(
+   USART1 => USART1,
+   USART2 => USART2,
+   USART3 => USART3,
+   UART4 => UART4,
+   // UART5 => UART5, // Often used as SWI
+   USART6 => USART6,
+   UART7 => UART7,
+   UART8 => UART8,
+);
 #[cfg(context = "stm32h755zi")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
    USART1 => USART1,
    USART2 => USART2,
    USART3 => USART3,
@@ -287,6 +299,7 @@ define_uart_drivers!(
 );
 #[cfg(context = "stm32l475vg")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
    USART1 => USART1,
    USART2 => USART2,
    USART3 => USART3,
@@ -295,6 +308,9 @@ define_uart_drivers!(
 );
 #[cfg(context = "stm32u083mc")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
+   // LPUART2 => LPUART2, // Often used as SWI
+   LPUART3 => LPUART3,
    USART1 => USART1,
    USART2 => USART2,
    USART3 => USART3,
@@ -302,6 +318,7 @@ define_uart_drivers!(
 );
 #[cfg(context = "stm32u585ai")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
    USART1 => USART1,
    // USART2 => USART2, // Often used as SWI
    USART3 => USART3,
@@ -310,16 +327,18 @@ define_uart_drivers!(
 );
 #[cfg(context = "stm32wb55rg")]
 define_uart_drivers!(
+   // LPUART1 => LPUART1, // Often used as SWI
    USART1 => USART1,
 );
 #[cfg(context = "stm32wba55cg")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
    USART1 => USART1,
    // USART2 => USART2, // Often used as SWI
-   LPUART1 => LPUART1,
 );
 #[cfg(context = "stm32wle5jc")]
 define_uart_drivers!(
+   LPUART1 => LPUART1,
    USART1 => USART1,
    // USART2 => USART2, // Often used as SWI
 );
@@ -341,7 +360,17 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART6.take().unwrap();
+        } else if #[cfg(context = "stm32f767zi")] {
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART3.take().unwrap();
+            let _ = peripherals.UART4.take().unwrap();
+            let _ = peripherals.UART5.take().unwrap();
+            let _ = peripherals.USART6.take().unwrap();
+            let _ = peripherals.UART7.take().unwrap();
+            let _ = peripherals.UART8.take().unwrap();
         } else if #[cfg(context = "stm32h755zi")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
@@ -351,27 +380,36 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.UART7.take().unwrap();
             let _ = peripherals.UART8.take().unwrap();
         } else if #[cfg(context = "stm32l475vg")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
             let _ = peripherals.UART5.take().unwrap();
         } else if #[cfg(context = "stm32u083mc")] {
+            let _ = peripherals.LPUART1.take().unwrap();
+            let _ = peripherals.LPUART2.take().unwrap();
+            let _ = peripherals.LPUART3.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.USART4.take().unwrap();
         } else if #[cfg(context = "stm32u585ai")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
+            let _ = peripherals.UART4.take().unwrap();
+            let _ = peripherals.UART5.take().unwrap();
         } else if #[cfg(context = "stm32wb55rg")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
         } else if #[cfg(context = "stm32wba55cg")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
-            let _ = peripherals.LPUART1.take().unwrap();
         } else if #[cfg(context = "stm32wle5jc")] {
+            let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
         } else {
