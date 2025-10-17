@@ -142,7 +142,7 @@ contexts:
         build: false
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} clippy ${FEATURES} $@
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} clippy ${CARGO_ARGS} ${FEATURES} $@
 
       expand:
         build: false
