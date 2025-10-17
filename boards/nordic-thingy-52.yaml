@@ -1,0 +1,10 @@
+boards:
+  nordic-thingy-52:
+    chip: nrf52832
+    # While there are two sets of RGB LEDs (the highly visible "well" LED and
+    # the "sense" LEDs on the backside close to the color sensor), those are
+    # connected through the currently unsupported IO expander.
+    buttons:
+      button0:
+        pin: P0_11
+        active: low
