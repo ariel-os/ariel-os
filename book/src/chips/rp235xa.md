@@ -8,6 +8,7 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="supported">✅</span>|
+|UART|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^uart-loopback-test-only-works-once-after-a-power-cycle][^see-also-https-github-com-ariel-os-ariel-os-pull-1368-issuecomment-3406073140]|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
@@ -39,3 +40,6 @@ dt, dd {
   display: inline;
 }
 </style>
+
+[^uart-loopback-test-only-works-once-after-a-power-cycle]: Uart-loopback test only works once after a power cycle.
+[^see-also-https-github-com-ariel-os-ariel-os-pull-1368-issuecomment-3406073140]: See also: https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140.
