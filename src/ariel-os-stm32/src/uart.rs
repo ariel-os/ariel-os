@@ -308,13 +308,10 @@ define_uart_drivers!(
 );
 #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 define_uart_drivers!(
-   LPUART1 => LPUART1,
-   // LPUART2 => LPUART2, // Often used as SWI
-   LPUART3 => LPUART3,
    USART1 => USART1,
-   USART2 => USART2,
-   USART3 => USART3,
-   USART4 => USART4,
+   //USART2_LPUART2 => USART2, // Often used as SWI
+   USART3_LPUART1 => USART3,
+   USART4_LPUART3 => USART4,
 );
 #[cfg(context = "stm32u585ai")]
 define_uart_drivers!(
