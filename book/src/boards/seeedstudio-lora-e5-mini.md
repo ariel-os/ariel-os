@@ -19,7 +19,7 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
-|UART|<span title="supported">✅</span>[^usart2-is-used-for-swi-on-this-board-and-cannot-be-used-as-uart-peripheral]|
+|UART|<span title="needs testing">🚦</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
@@ -51,5 +51,3 @@ dt, dd {
   display: inline;
 }
 </style>
-
-[^usart2-is-used-for-swi-on-this-board-and-cannot-be-used-as-uart-peripheral]: USART2 is used for SWI on this board and cannot be used as UART peripheral.
