@@ -19,7 +19,7 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="needs testing">🚦</span>|
 |SPI Main Mode|<span title="needs testing">🚦</span>|
-|UART|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
 |Wi-Fi|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^an-external-wi-fi-module-is-present-on-the-board]|
