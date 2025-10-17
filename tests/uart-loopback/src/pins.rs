@@ -119,6 +119,15 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // Side UART of Arduino v3 connector
+#[cfg(context = "stm32u083c-dk")]
+pub type TestUart<'a> = uart::USART2<'a>;
+#[cfg(context = "stm32u083c-dk")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PA3,
+    uart_tx: PA2,
+});
+
+// Side UART of Arduino v3 connector
 #[cfg(context = "st-nucleo-wb55")]
 pub type TestUart<'a> = uart::USART1<'a>;
 #[cfg(context = "st-nucleo-wb55")]
