@@ -1,7 +1,8 @@
-//! UART bus configuration.
-use ariel_os_embassy_common::{
-    impl_async_uart_for_driver_enum, uart::ConfigError,
-};
+//! UART configuration.
+
+#![expect(unsafe_code)]
+
+use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError};
 use embassy_stm32::{
     Peripheral, bind_interrupts, peripherals,
     usart::{BufferedInterruptHandler, BufferedUart, RxPin, TxPin},
@@ -15,20 +16,20 @@ pub struct Config {
     /// The baud rate at which UART should operate.
     pub baudrate: ariel_os_embassy_common::uart::Baudrate<Baudrate>,
     /// Number of data bits.
-    pub data_bits: ariel_os_embassy_common::uart::DataBits<DataBits>,
+    pub data_bits: DataBits,
     /// Number of stop bits.
-    pub stop_bits: ariel_os_embassy_common::uart::StopBits<StopBits>,
+    pub stop_bits: StopBits,
     /// Parity mode used for the interface.
-    pub parity: ariel_os_embassy_common::uart::Parity<Parity>,
+    pub parity: Parity,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Self {
             baudrate: ariel_os_embassy_common::uart::Baudrate::_115200,
-            data_bits: ariel_os_embassy_common::uart::DataBits::Data8,
-            stop_bits: ariel_os_embassy_common::uart::StopBits::Stop1,
-            parity: ariel_os_embassy_common::uart::Parity::None,
+            data_bits: DataBits::Data8,
+            stop_bits: StopBits::Stop1,
+            parity: Parity::None,
         }
     }
 }
@@ -38,26 +39,32 @@ impl Default for Config {
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Baudrate {
     /// The baud rate at which UART should operate.
-    baud: u32,
+    baudrate: u32,
 }
 
 impl From<Baudrate> for u32 {
-    fn from(baud: Baudrate) -> u32 {
-        baud.baud
+    fn from(baudrate: Baudrate) -> u32 {
+        baudrate.baudrate
+    }
+}
+
+impl From<u32> for Baudrate {
+    fn from(baudrate: u32) -> Baudrate {
+        Baudrate { baudrate }
     }
 }
 
 impl From<ariel_os_embassy_common::uart::Baudrate<Self>> for Baudrate {
     fn from(baud: ariel_os_embassy_common::uart::Baudrate<Self>) -> Baudrate {
         match baud {
-            ariel_os_embassy_common::uart::Baudrate::Hal(baud) => baud,
-            ariel_os_embassy_common::uart::Baudrate::_2400 => Baudrate { baud: 2400 },
-            ariel_os_embassy_common::uart::Baudrate::_4800 => Baudrate { baud: 4800 },
-            ariel_os_embassy_common::uart::Baudrate::_9600 => Baudrate { baud: 9600 },
-            ariel_os_embassy_common::uart::Baudrate::_19200 => Baudrate { baud: 19200 },
-            ariel_os_embassy_common::uart::Baudrate::_38400 => Baudrate { baud: 38400 },
-            ariel_os_embassy_common::uart::Baudrate::_57600 => Baudrate { baud: 57600 },
-            ariel_os_embassy_common::uart::Baudrate::_115200 => Baudrate { baud: 115200 },
+            ariel_os_embassy_common::uart::Baudrate::Hal(baudrate) => baudrate,
+            ariel_os_embassy_common::uart::Baudrate::_2400 => Baudrate { baudrate: 2400 },
+            ariel_os_embassy_common::uart::Baudrate::_4800 => Baudrate { baudrate: 4800 },
+            ariel_os_embassy_common::uart::Baudrate::_9600 => Baudrate { baudrate: 9600 },
+            ariel_os_embassy_common::uart::Baudrate::_19200 => Baudrate { baudrate: 19_200 },
+            ariel_os_embassy_common::uart::Baudrate::_38400 => Baudrate { baudrate: 38_400 },
+            ariel_os_embassy_common::uart::Baudrate::_57600 => Baudrate { baudrate: 57_600 },
+            ariel_os_embassy_common::uart::Baudrate::_115200 => Baudrate { baudrate: 115_200 },
         }
     }
 }
@@ -74,13 +81,11 @@ pub enum DataBits {
     Data9,
 }
 
-impl From<DataBits> for embassy_stm32::usart::DataBits {
-    fn from(databits: DataBits) -> embassy_stm32::usart::DataBits {
-        match databits {
-            DataBits::Data7 => embassy_stm32::usart::DataBits::DataBits7,
-            DataBits::Data8 => embassy_stm32::usart::DataBits::DataBits8,
-            DataBits::Data9 => embassy_stm32::usart::DataBits::DataBits9,
-        }
+fn from_databits(databits: DataBits) -> embassy_stm32::usart::DataBits {
+    match databits {
+        DataBits::Data7 => embassy_stm32::usart::DataBits::DataBits7,
+        DataBits::Data8 => embassy_stm32::usart::DataBits::DataBits8,
+        DataBits::Data9 => embassy_stm32::usart::DataBits::DataBits9,
     }
 }
 
@@ -105,14 +110,11 @@ pub enum Parity {
     Odd,
 }
 
-
-impl From<Parity> for embassy_stm32::usart::Parity {
-    fn from(parity: Parity) -> embassy_stm32::usart::Parity {
-        match parity {
-            Parity::None => embassy_stm32::usart::Parity::ParityNone,
-            Parity::Even => embassy_stm32::usart::Parity::ParityEven,
-            Parity::Odd => embassy_stm32::usart::Parity::ParityOdd,
-        }
+fn from_parity(parity: Parity) -> embassy_stm32::usart::Parity {
+    match parity {
+        Parity::None => embassy_stm32::usart::Parity::ParityNone,
+        Parity::Even => embassy_stm32::usart::Parity::ParityEven,
+        Parity::Odd => embassy_stm32::usart::Parity::ParityOdd,
     }
 }
 
@@ -134,20 +136,18 @@ pub enum StopBits {
     Stop1,
     /// 0.5 stop bits.
     Stop0P5,
-    /// Two stop bit.
+    /// Two stop bits.
     Stop2,
-    /// 1.5 stop bit.
+    /// 1.5 stop bits.
     Stop1P5,
 }
 
-impl From<StopBits> for embassy_stm32::usart::StopBits {
-    fn from(stop_bits: StopBits) -> embassy_stm32::usart::StopBits {
-        match stop_bits {
-            StopBits::Stop1 => embassy_stm32::usart::StopBits::STOP1,
-            StopBits::Stop0P5 => embassy_stm32::usart::StopBits::STOP0P5,
-            StopBits::Stop2 => embassy_stm32::usart::StopBits::STOP2,
-            StopBits::Stop1P5 => embassy_stm32::usart::StopBits::STOP1P5,
-        }
+fn from_stopbits(stop_bits: StopBits) -> embassy_stm32::usart::StopBits {
+    match stop_bits {
+        StopBits::Stop1 => embassy_stm32::usart::StopBits::STOP1,
+        StopBits::Stop0P5 => embassy_stm32::usart::StopBits::STOP0P5,
+        StopBits::Stop2 => embassy_stm32::usart::StopBits::STOP2,
+        StopBits::Stop1P5 => embassy_stm32::usart::StopBits::STOP1P5,
     }
 }
 
@@ -160,11 +160,9 @@ impl From<ariel_os_embassy_common::uart::StopBits<Self>> for StopBits {
     }
 }
 
-fn convert_error(
-    err: embassy_stm32::usart::ConfigError,
-) -> ConfigError {
+fn convert_error(err: embassy_stm32::usart::ConfigError) -> ConfigError {
     match err {
-        embassy_stm32::usart::ConfigError::BaudrateTooLow => ConfigError::BaudrateNotSupported,
+        embassy_stm32::usart::ConfigError::BaudrateTooLow |
         embassy_stm32::usart::ConfigError::BaudrateTooHigh => ConfigError::BaudrateNotSupported,
         embassy_stm32::usart::ConfigError::DataParityNotSupported => {
             ConfigError::DataParityNotSupported
@@ -191,8 +189,16 @@ macro_rules! define_uart_drivers {
             impl<'d> $peripheral<'d> {
                 /// Returns a driver implementing embedded-io traits for this Uart
                 /// peripheral.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`ConfigError::BaudrateNotSupported`] when the baud rate cannot be
+                /// applied to the peripheral.
+                /// Returns [`ConfigError::DataParityNotSupported`] when the combination of data
+                /// bits and parity cannot be applied to the peripheral.
+                /// Returns [`ConfigError::ConfigurationNotSupported`] when the requested configuration
+                /// cannot be applied to the peripheral.
                 #[expect(clippy::new_ret_no_self)]
-                #[must_use]
                 pub fn new(
                     rx_pin: impl Peripheral<P: RxPin<peripherals::$peripheral>> + 'd,
                     tx_pin: impl Peripheral<P: TxPin<peripherals::$peripheral>> + 'd,
@@ -203,9 +209,9 @@ macro_rules! define_uart_drivers {
 
                     let mut uart_config = embassy_stm32::usart::Config::default();
                     uart_config.baudrate = Baudrate::from(config.baudrate).into();
-                    uart_config.data_bits = DataBits::from(config.data_bits).into();
-                    uart_config.stop_bits = StopBits::from(config.stop_bits).into();
-                    uart_config.parity = Parity::from(config.parity).into();
+                    uart_config.data_bits = from_databits(config.data_bits).into();
+                    uart_config.stop_bits = from_stopbits(config.stop_bits).into();
+                    uart_config.parity = from_parity(config.parity).into();
                     bind_interrupts!(struct Irqs {
                         $interrupt => BufferedInterruptHandler<peripherals::$peripheral>;
                     });
