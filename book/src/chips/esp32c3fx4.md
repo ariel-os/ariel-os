@@ -8,6 +8,7 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="supported">✅</span>|
+|UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
 |Wi-Fi|<span title="supported with some caveats">☑️</span>[^not-currently-compatible-with-threading]|
