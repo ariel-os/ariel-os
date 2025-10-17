@@ -162,8 +162,8 @@ impl From<ariel_os_embassy_common::uart::StopBits<Self>> for StopBits {
 
 fn convert_error(err: embassy_stm32::usart::ConfigError) -> ConfigError {
     match err {
-        embassy_stm32::usart::ConfigError::BaudrateTooLow |
-        embassy_stm32::usart::ConfigError::BaudrateTooHigh => ConfigError::BaudrateNotSupported,
+        embassy_stm32::usart::ConfigError::BaudrateTooLow
+        | embassy_stm32::usart::ConfigError::BaudrateTooHigh => ConfigError::BaudrateNotSupported,
         embassy_stm32::usart::ConfigError::DataParityNotSupported => {
             ConfigError::DataParityNotSupported
         }
