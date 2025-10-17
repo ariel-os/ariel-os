@@ -1,4 +1,4 @@
-use picoserve::{response::File, routing::get_service};
+use picoserve::{AppBuilder, response::File, routing::get_service};
 
 #[cfg(feature = "button-reading")]
 use picoserve::{
@@ -6,21 +6,27 @@ use picoserve::{
     routing::get,
 };
 
-pub type AppRouter = impl picoserve::routing::PathRouter;
+pub struct AppB;
 
-pub fn make_app() -> picoserve::Router<AppRouter> {
-    let router = picoserve::Router::new().route(
-        "/",
-        get_service(File::html(include_str!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/static/index.html",
-        )))),
-    );
+pub type AppRouter = <AppB as AppBuilder>::PathRouter;
 
-    #[cfg(feature = "button-reading")]
-    let router = router.route("/button", get(button));
+impl AppBuilder for AppB {
+    type PathRouter = impl picoserve::routing::PathRouter;
 
-    router
+    fn build_app(self) -> picoserve::Router<Self::PathRouter> {
+        let router = picoserve::Router::new().route(
+            "/",
+            get_service(File::html(include_str!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/static/index.html",
+            )))),
+        );
+
+        #[cfg(feature = "button-reading")]
+        let router = router.route("/button", get(button));
+
+        router
+    }
 }
 
 #[cfg(feature = "button-reading")]

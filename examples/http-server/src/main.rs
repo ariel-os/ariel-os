@@ -1,6 +1,6 @@
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
+#![feature(impl_trait_in_assoc_type)]
 
 mod pins;
 mod routes;
@@ -9,6 +9,7 @@ use ariel_os::{asynch::Spawner, cell::StaticCell, net, time::Duration};
 
 #[cfg(feature = "button-reading")]
 use embassy_sync::once_lock::OnceLock;
+use picoserve::AppBuilder;
 
 const HTTP_PORT: u16 = 80;
 const WEB_TASK_POOL_SIZE: usize = 2;
@@ -57,7 +58,7 @@ fn main(spawner: Spawner, peripherals: pins::Peripherals) {
     // Mark it used even when not.
     let _ = peripherals;
 
-    let app = APP.init_with(routes::make_app);
+    let app = APP.init_with(|| routes::AppB.build_app());
 
     for task_id in 0..WEB_TASK_POOL_SIZE {
         spawner.spawn(web_task(task_id, app)).unwrap();
