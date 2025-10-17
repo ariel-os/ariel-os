@@ -306,7 +306,7 @@ define_uart_drivers!(
    UART4 => UART4,
    // UART5 => UART5, // Often used as SWI
 );
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 define_uart_drivers!(
    LPUART1 => LPUART1,
    // LPUART2 => LPUART2, // Often used as SWI
@@ -386,7 +386,7 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
             let _ = peripherals.UART5.take().unwrap();
-        } else if #[cfg(context = "stm32u083mc")] {
+        } else if #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))] {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.LPUART2.take().unwrap();
             let _ = peripherals.LPUART3.take().unwrap();
