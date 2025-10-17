@@ -1,0 +1,24 @@
+[package]
+name = "ariel-os-sensors-utils"
+# This crate is versioned separately from both `ariel-os` and
+# `ariel-os-sensors`.
+version = "0.1.0"
+edition.workspace = true
+# This crate's MSRV is decoupled from both `ariel-os`'s and `ariel-os-sensors`,
+# even though there is no need for it to be lower than `ariel-os-sensors`'s.
+rust-version = "1.85"
+description = "Provides utils useful for sensor drivers"
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-sensors = { workspace = true }
+embassy-sync = { workspace = true }
+embassy-time = { workspace = true }
+portable-atomic = { workspace = true }
+
+[features]
+_test = []
+
+[lints]
+workspace = true
