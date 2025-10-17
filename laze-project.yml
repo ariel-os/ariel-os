@@ -177,7 +177,7 @@ contexts:
 
       size:
         cmd:
-          - llvm-size ${out} $@
+          - llvm-size-19 ${out} $@
 
       objdump:
         cmd:
