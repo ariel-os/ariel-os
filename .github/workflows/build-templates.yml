@@ -52,10 +52,9 @@ jobs:
       - name: git clone ariel-os-hello repository
         run: |
           git clone https://github.com/ariel-os/ariel-os-hello
-          cd ariel-os-hello
 
       - name: use laze to install toolchains
-        run: laze build install-toolchain
+        run: cd ariel-os-hello && laze build install-toolchain
 
       - name: "Show installed versions"
         run: |
@@ -79,7 +78,7 @@ jobs:
           echo "LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,espressif-esp32-s3-wroom-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55" >> "$GITHUB_ENV"
 
       - name: "ariel-os compilation test"
-        run: CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --partition hash:${{ matrix.partition }}
+        run: cd ariel-os-hello && CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --partition hash:${{ matrix.partition }}
 
   build-success:
     if: ${{ always() }}
