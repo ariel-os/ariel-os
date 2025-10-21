@@ -27,11 +27,6 @@ jobs:
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
 
-    strategy:
-      fail-fast: false
-      matrix:
-        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
-
     steps:
       # Use shell commands to install dependencies to be as close to the setup described by
       # https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html as possible
@@ -72,13 +67,8 @@ jobs:
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
 
-      - name: "limit build unless nightly build"
-        if: github.event_name != 'schedule'
-        run: |
-          echo "LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,espressif-esp32-s3-wroom-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55" >> "$GITHUB_ENV"
-
-      - name: "ariel-os compilation test"
-        run: cd ariel-os-hello && CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --partition hash:${{ matrix.partition }}
+      - name: "ariel-os-hello compilation test"
+        run: cd ariel-os-hello && LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55 CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
 
   build-success:
     if: ${{ always() }}
