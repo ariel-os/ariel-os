@@ -36,7 +36,7 @@ jobs:
       # Use shell commands to install dependencies to be as close to the setup described by
       # https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html as possible
       - name: install build dependencies
-        run: sudo apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
+        run: sudo apt update && sudo apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
 
       - name: install Rust toolchain via rustup
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly --profile minimal --component rust-std,rustfmt
