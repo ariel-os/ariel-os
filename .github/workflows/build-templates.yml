@@ -1,0 +1,102 @@
+name: Build templates
+
+on:
+  schedule:
+    # run every morning at 3:17am
+    - cron: '17 3 * * *'
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}-build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # clang-sys and thus bindgen is sensitive to multiple installed versions
+      # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
+      #
+      # CLANG_PATH should be set to the most recent clang installed, no matter
+      # what /usr/bin/clang is, for some parts of the code will go for the
+      # newest standard library. It may also need to be aligned with the clang
+      # version which Xtensa provides.
+      CLANG_PATH: /usr/bin/clang-18
+
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
+
+    steps:
+      # Use shell commands to install dependencies to be as close to the setup described by
+      # https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html as possible
+      - name: install build dependencies
+        run: sudo apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
+
+      - name: install Rust toolchain via rustup
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly --profile minimal --component rust-std,rustfmt
+
+      - name: install Rust toolchain for ESP devices
+        run: |
+          cargo install espup --locked
+          espup install
+
+      - name: install laze
+        run: cargo install laze
+
+      - name: git clone ariel-os-hello repository
+        run: |
+          git clone https://github.com/ariel-os/ariel-os-hello
+          cd ariel-os-hello
+
+      - name: use laze to install toolchains
+        run: laze build install-toolchain
+
+      - name: "Show installed versions"
+        run: |
+          set -x
+          set +e
+          env
+          llvm-config --libs
+          cargo version
+          laze --version
+          arm-none-eabi-gcc --version
+          clang --version
+          set +x
+          # Check which alternative versions are installed
+          IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
+          sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
+          true
+
+      - name: "limit build unless nightly build"
+        if: github.event_name != 'schedule'
+        run: |
+          echo "LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,espressif-esp32-s3-wroom-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55" >> "$GITHUB_ENV"
+
+      - name: "ariel-os compilation test"
+        run: CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --partition hash:${{ matrix.partition }}
+
+  build-success:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: Final Results
+    needs: [build]
+    steps:
+      - run: |
+          result="${{ needs.build.result }}"
+          if [[ $result == "success" || $result == "skipped" ]]; then
+            exit 0
+          else
+            exit 1
+          fi
+
+      - name: Report nightly failure
+        if: failure() && github.event_name == 'schedule' && github.repository == 'ariel-os/ariel-os-hello'
+        uses: s3krit/matrix-message-action@v0.0.3
+        with:
+          room_id: ${{ secrets.MATRIX_ROOM_ID }}
+          access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          message: "The nightly build in ${{ github.repository }} [failed](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+          server: "matrix.org"
