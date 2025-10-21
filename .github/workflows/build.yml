@@ -160,18 +160,10 @@ jobs:
           result="result=${{ steps.result-cache.outputs.cache-hit == 'true' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
-
-      - name: "Download cache-thing"
-        if: steps.should-skip.outputs.result != 'true'
-        run: |
-          mkdir -p ~/.local/bin
-          curl -sSL https://github.com/nponsard/cache-thing/releases/download/0.2.1/cache-thing-0.2.1-x86_64-linux-musl -o ~/.local/bin/cache-thing
-          chmod +x ~/.local/bin/cache-thing
-
       - name: "Restore cache"
         if: steps.should-skip.outputs.result != 'true'
         run: |
-          ~/.local/bin/cache-thing pull --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fallback-key nightly || true
+          cache-thing pull --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fallback-key nightly || true
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -281,11 +273,14 @@ jobs:
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
 
-      # A cache is Between 6 and 10 GB per partition, It is preferable to keep only the nightly build cache.
-      - name: "Save nightly cache"
+      - name: "Save cache of nightly run"
         if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
         run: |
-          ~/.local/bin/cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fixed-key nightly
+          cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fixed-key nightly || true
+      - name: "Save cache"
+        if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule'
+        run: |
+          cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo || true
 
 
       # cleanup previous build artifacts. do in background (no need to wait).
@@ -293,6 +288,9 @@ jobs:
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
           mv build build.tmp && rm -rf build.tmp &
+
+
+      # TODO: restore nightly cache (different prefix)
 
       # nightly build, nightly toolchain
       # (disabling xtensa here as it gets built by the default toolchain build above)
