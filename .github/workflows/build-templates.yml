@@ -41,12 +41,20 @@ jobs:
           cargo install espup --locked
           espup install
 
+      - name: install cargo-generate
+        run: cargo install cargo-generate
+
       - name: install laze
         run: cargo install laze
 
       - name: git clone ariel-os-hello repository
-        run: |
-          git clone https://github.com/ariel-os/ariel-os-hello
+        run: git clone https://github.com/ariel-os/ariel-os-hello
+
+      - name: use cargo generate to ariel-os-template
+        run: cargo generate --git https://github.com/ariel-os/ariel-os-template --name ariel-os-hello --destination /tmp
+
+      - name: verify that the file tree is identical between ariel-os-hello and the generated ariel-os-template
+        run: diff -r -x .git -x Cargo.lock ./ariel-os-hello /tmp/ariel-os-hello
 
       - name: use laze to install toolchains
         run: cd ariel-os-hello && laze build install-toolchain
@@ -67,6 +75,8 @@ jobs:
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
 
+      # we verified previously that ariel-os-hello and the generated
+      # ariel-os-template have the same file tree, so we only build ariel-os-hello
       - name: "ariel-os-hello compilation test"
         run: cd ariel-os-hello && LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55 CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
 
