@@ -1,6 +1,9 @@
 name: Build templates
 
 on:
+  push:
+    branches:
+      - ci/scheduled-checks
   schedule:
     # run every morning at 3:17am
     - cron: '17 3 * * *'
