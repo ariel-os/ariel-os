@@ -104,8 +104,10 @@ jobs:
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
       CACHE_THING_LOCATION: /cache/cache-thing
-      # RUSTC_WRAPPER: sccache
+      RUSTC_WRAPPER: sccache
       # CARGO_NET_GIT_FETCH_WITH_CLI: true
+      SCCACHE_DIR: /cache/sccache
+      SCCACHE_CACHE_SIZE: 128G
 
     strategy:
       fail-fast: true
@@ -290,6 +292,11 @@ jobs:
           IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
+
+      - name: "start sccache daemon"
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        # work around https://github.com/ninja-build/ninja/issues/2052
+        run: sccache --start-server || true
 
       - name: "ariel-os compilation test (default toolchain)"
         if: steps.should-skip.outputs.result != 'true'
