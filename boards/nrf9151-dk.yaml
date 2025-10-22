@@ -2,28 +2,44 @@ boards:
   nrf9151-dk:
     chip: nrf9151
     leds:
-      led1:
+      led0:
         pin: P0_00
         active: low
         color: green
-      led2:
+        aliases:
+        - LED1
+      led1:
         pin: P0_01
         active: low
         color: green
-      led3:
+        aliases:
+        - LED2
+      led2:
         pin: P0_04
         active: low
         color: green
-      led4:
+        aliases:
+        - LED3
+      led3:
         pin: P0_05
         active: low
         color: green
+        aliases:
+        - LED4
     buttons:
-      button1:
+      button0:
         pin: P0_08
-      button2:
+        aliases:
+        - Button 1
+      button1:
         pin: P0_09
-      button3:
+        aliases:
+        - Button 2
+      button2:
         pin: P0_18
-      button4:
+        aliases:
+        - Button 3
+      button3:
         pin: P0_19
+        aliases:
+        - Button 4
