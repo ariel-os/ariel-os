@@ -9,7 +9,7 @@ on:
   merge_group:
   schedule:
     # run every morning at 3:17am
-    - cron: '17 3 * * *'
+    - cron: "17 3 * * *"
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-build
@@ -85,13 +85,13 @@ jobs:
     needs: check-labels
     runs-on:
       group: Ariel
+      labels: ["runner-pool-id:d621f0f7-10c5-4424-89b6-e7f8ac8f74d7"]
 
     # container:
     #   image: docker.io/sautax/ariel-build-image:0.5
 
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
-
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -108,7 +108,29 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
+        partition:
+          [
+            "1/20",
+            "2/20",
+            "3/20",
+            "4/20",
+            "5/20",
+            "6/20",
+            "7/20",
+            "8/20",
+            "9/20",
+            "10/20",
+            "11/20",
+            "12/20",
+            "13/20",
+            "14/20",
+            "15/20",
+            "16/20",
+            "17/20",
+            "18/20",
+            "19/20",
+            "20/20",
+          ]
 
     steps:
       # - name: check runner environment
@@ -145,8 +167,8 @@ jobs:
       - name: Get git tree hash
         id: get-tree-hash
         run: |
-            git rev-parse HEAD^{tree} > .tree-hash
-            echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
+          git rev-parse HEAD^{tree} > .tree-hash
+          echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         id: result-cache
@@ -282,13 +304,11 @@ jobs:
         run: |
           cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo || true
 
-
       # cleanup previous build artifacts. do in background (no need to wait).
       - name: "cleanup stable build artifacts"
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
           mv build build.tmp && rm -rf build.tmp &
-
 
       # TODO: restore nightly cache (different prefix)
 
