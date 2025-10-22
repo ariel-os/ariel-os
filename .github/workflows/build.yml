@@ -293,7 +293,7 @@ jobs:
         if: steps.should-skip.outputs.result != 'true'
         run: |
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
-          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_TOOLCHAIN=+1.85.1 -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
 
       - name: "Save cache of nightly run"
         if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
