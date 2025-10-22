@@ -20,6 +20,7 @@ pub fn main() {
     );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"heltec-wifi-lora-32-v3\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"native\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"nordic-thingy-52\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"nordic-thingy-91-x-nrf9151\"))"
     );
