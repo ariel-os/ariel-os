@@ -104,8 +104,8 @@ jobs:
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
       CACHE_THING_LOCATION: /cache/cache-thing
-      RUSTC_WRAPPER: sccache
-      CARGO_NET_GIT_FETCH_WITH_CLI: true
+      # RUSTC_WRAPPER: sccache
+      # CARGO_NET_GIT_FETCH_WITH_CLI: true
 
     strategy:
       fail-fast: true
