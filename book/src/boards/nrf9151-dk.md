@@ -1,4 +1,4 @@
-# nRF9151 DK
+# nRF9151-DK
 
 ## Board Info
 

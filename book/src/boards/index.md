@@ -26,7 +26,7 @@ Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have 
 - [DFRobot FireBeetle 2 ESP32-C6](./dfrobot-firebeetle2-esp32-c6.md)
 - [Nordic Thingy:91 X](./nordic-thingy-91-x-nrf9151.md)
 - [nRF52-DK](./nrf52dk.md)
-- [nRF9151 DK](./nrf9151-dk.md)
+- [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160dk-nrf9160.md)
 - [ST B-L475E-IOT01A](./st-b-l475e-iot01a.md)
 - [ST NUCLEO-F401RE](./st-nucleo-f401re.md)
