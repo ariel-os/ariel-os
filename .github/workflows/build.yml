@@ -326,7 +326,7 @@ jobs:
         run: |
           mv build build.tmp && rm -rf build.tmp &
 
-      # TODO: restore nightly cache (different prefix)
+      # TODO: restore nightly toolchain cache (different prefix)
 
       # nightly build, nightly toolchain
       # (disabling xtensa here as it gets built by the default toolchain build above)
