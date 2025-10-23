@@ -187,7 +187,7 @@ jobs:
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
       - name: "Restore cache"
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
         env:
           RUST_LOG: trace
         run: |
