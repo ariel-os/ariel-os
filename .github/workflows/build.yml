@@ -312,6 +312,7 @@ jobs:
           RUST_LOG: trace
         run: |
           cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fixed-key nightly || true
+
       - name: "Save cache"
         if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule'
         env:
