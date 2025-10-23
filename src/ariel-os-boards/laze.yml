@@ -21,6 +21,11 @@ builders:
   provides:
   - has_buttons
   - has_leds
+- name: espressif-esp32-c3-devkit-rust-1
+  parent: esp32-c3-mini-1
+  provides:
+  - has_buttons
+  - has_leds
 - name: espressif-esp32-c3-lcdkit
   parent: esp32-c3-mini-1
 - name: espressif-esp32-c6-devkitc-1

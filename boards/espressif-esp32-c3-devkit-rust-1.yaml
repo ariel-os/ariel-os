@@ -1,0 +1,10 @@
+boards:
+  espressif-esp32-c3-devkit-rust-1:
+    chip: esp32-c3-mini-1
+    buttons:
+      button0:
+        pin: GPIO9
+        active: low
+    leds:
+      led0:
+        pin: GPIO7
