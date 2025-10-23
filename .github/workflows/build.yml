@@ -188,6 +188,8 @@ jobs:
           echo "${result}" >> $GITHUB_OUTPUT
       - name: "Restore cache"
         if: steps.should-skip.outputs.result != 'true'
+        env:
+          RUST_LOG: trace
         run: |
           cache-thing pull --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fallback-key nightly || true
 
