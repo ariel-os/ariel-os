@@ -7,7 +7,9 @@ cfg_if::cfg_if! {
     "bbc-microbit-v2")] { include!("bbc-microbit-v2.rs"); } else if #[cfg(context =
     "dfrobot-firebeetle2-esp32-c6")] { include!("dfrobot-firebeetle2-esp32-c6.rs"); }
     else if #[cfg(context = "dwm1001")] { include!("dwm1001.rs"); } else if #[cfg(context
-    = "espressif-esp32-c3-lcdkit")] { include!("espressif-esp32-c3-lcdkit.rs"); } else if
+    = "espressif-esp32-c3-devkit-rust-1")] {
+    include!("espressif-esp32-c3-devkit-rust-1.rs"); } else if #[cfg(context =
+    "espressif-esp32-c3-lcdkit")] { include!("espressif-esp32-c3-lcdkit.rs"); } else if
     #[cfg(context = "espressif-esp32-c6-devkitc-1")] {
     include!("espressif-esp32-c6-devkitc-1.rs"); } else if #[cfg(context =
     "espressif-esp32-devkitc")] { include!("espressif-esp32-devkitc.rs"); } else if
