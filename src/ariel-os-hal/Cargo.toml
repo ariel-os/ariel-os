@@ -130,8 +130,6 @@ wifi-esp = ["ariel-os-esp/wifi-esp"]
 
 eth-stm32 = ["ariel-os-stm32/eth-stm32"]
 
-executor-single-thread = ["ariel-os-esp/executor-single-thread"]
-
 executor-interrupt = [
   #"ariel-os-esp/executor-interrupt",
   "ariel-os-nrf/executor-interrupt",
