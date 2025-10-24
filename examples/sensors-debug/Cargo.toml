@@ -1,0 +1,24 @@
+[package]
+name = "sensors-debug"
+license.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "i2c",
+  "sensors",
+  "time",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
+ariel-os-sensor-lsm6dsv16x = { path = "../../src/sensors/ariel-os-sensor-lsm6dsv16x" }
+ariel-os-sensor-lis2du12 = { path = "../../src/sensors/ariel-os-sensor-lis2du12" }
+cfg-if = { workspace = true }
+embassy-sync = { workspace = true }
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+linkme = { workspace = true }
+once_cell = { workspace = true }
