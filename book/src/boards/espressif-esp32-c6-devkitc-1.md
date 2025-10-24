@@ -22,7 +22,7 @@
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
-|Wi-Fi|<span title="supported with some caveats">☑️</span>[^not-currently-compatible-with-threading]|
+|Wi-Fi|<span title="supported">✅</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
@@ -53,5 +53,4 @@ dt, dd {
 </style>
 
 [^no-generic-usb-peripheral]: No generic USB peripheral.
-[^not-currently-compatible-with-threading]: Not currently compatible with threading.
 [^requires-partitioning-support]: Requires partitioning support.

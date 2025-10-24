@@ -1502,8 +1502,6 @@ modules:
   - name: wifi-esp
     selects:
       - alloc
-      - riscv:
-          - wifi-esp-xor-threads
     context:
       - esp
     provides_unique:
@@ -1518,12 +1516,6 @@ modules:
           - ${esp_wifi_heapsize_required}
         FEATURES:
           - ariel-os/wifi-esp
-
-  - name: wifi-esp-xor-threads
-    help: Helper module to conditionally make esp-wifi conflict with threads on esp32 riscv
-    selects:
-      - sw/threading:
-          - wifi-with-threads-currently-broken-on-esp-riscv
 
   - name: executor-thread
     help: use embassy executor within ariel-os-threads thread
