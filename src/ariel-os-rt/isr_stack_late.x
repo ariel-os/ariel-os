@@ -1,16 +1,3 @@
-SECTIONS
-{
-    .isr_stack (NOLOAD) : ALIGN(8)
-    {
-        _stack_lowest_tmp = .;
-        KEEP (*(.isr_stack))
-        . = ALIGN(8);
-        _stack_highest_tmp = .;
-    } > ${STACK_REGION}
-}
-
-${INSERT_SOMEWHERE}
-
 /* using `_tmp` helpers so this overrides other linker script variables */
 _stack_lowest = _stack_lowest_tmp;
 _stack_highest = _stack_highest_tmp;

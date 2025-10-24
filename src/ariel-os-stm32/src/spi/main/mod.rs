@@ -8,7 +8,7 @@ use ariel_os_embassy_common::{
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    Peripheral, gpio,
+    Peri, gpio,
     mode::Blocking,
     peripherals,
     spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi},
@@ -83,21 +83,21 @@ macro_rules! define_spi_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
         $(
             /// Peripheral-specific SPI driver.
-            pub struct $peripheral {
-                spim: YieldingAsync<BlockingAsync<InnerSpi<'static, Blocking>>>,
+            pub struct $peripheral<'a> {
+                spim: YieldingAsync<BlockingAsync<InnerSpi<'a, Blocking>>>,
             }
 
-            impl $peripheral {
+            impl<'a> $peripheral<'a> {
                 /// Returns a driver implementing [`embedded_hal_async::spi::SpiBus`] for this SPI
                 /// peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sck_pin: impl Peripheral<P: SckPin<peripherals::$peripheral>> + 'static,
-                    miso_pin: impl Peripheral<P: MisoPin<peripherals::$peripheral>> + 'static,
-                    mosi_pin: impl Peripheral<P: MosiPin<peripherals::$peripheral>> + 'static,
+                    sck_pin: Peri<'a, impl SckPin<peripherals::$peripheral>>,
+                    miso_pin: Peri<'a, impl MisoPin<peripherals::$peripheral>>,
+                    mosi_pin: Peri<'a, impl MosiPin<peripherals::$peripheral>>,
                     config: Config,
-                ) -> Spi {
+                ) -> Spi<'a> {
                     // Make this struct a compile-time-enforced singleton: having multiple statics
                     // defined with the same name would result in a compile-time error.
                     paste::paste! {
@@ -131,14 +131,14 @@ macro_rules! define_spi_drivers {
         )*
 
         /// Peripheral-agnostic driver.
-        pub enum Spi {
+        pub enum Spi<'a> {
             $(
                 #[doc = concat!(stringify!($peripheral), " peripheral.")]
-                $peripheral($peripheral)
+                $peripheral($peripheral<'a>)
             ),*
         }
 
-        impl embedded_hal_async::spi::ErrorType for Spi {
+        impl embedded_hal_async::spi::ErrorType for Spi<'_> {
             type Error = embassy_stm32::spi::Error;
         }
 

@@ -22,7 +22,7 @@ use embassy_sync::mutex::Mutex;
 use embedded_hal_async::spi::SpiDevice as _;
 
 pub static SPI_BUS: once_cell::sync::OnceCell<
-    Mutex<embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex, hal::spi::main::Spi>,
+    Mutex<embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex, hal::spi::main::Spi<'_>>,
 > = once_cell::sync::OnceCell::new();
 
 #[ariel_os::task(autostart, peripherals)]
