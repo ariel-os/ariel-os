@@ -30,15 +30,18 @@ pub fn get_ble_host_resources() -> &'static mut BleHostResources {
 ///
 /// You can customize it using the `ble-config-override` feature.
 pub struct Config {
-    /// The address of the BLE device.
-    pub address: trouble_host::Address,
+    /// The address of the BLE device. If `None`, use the devices' public address when available, use the fallback address otherwise.
+    pub address: Option<trouble_host::Address>,
+    /// The address to fallback to if the device doesn't have a public address
+    pub fallback_address: trouble_host::Address,
 }
 
 /// Default address, this one is used in the trouBLE examples, needs to be changed/randomized in production.
 impl Default for Config {
     fn default() -> Self {
         Self {
-            address: trouble_host::Address::random([0xff, 0x8f, 0x1a, 0x05, 0xe4, 0xff]),
+            address: None,
+            fallback_address: trouble_host::Address::random([0x00, 0x00, 0x00, 0x00, 0x00, 0x02]),
         }
     }
 }
