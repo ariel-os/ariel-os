@@ -18,6 +18,7 @@
   - [nRF52-DK](./boards/nrf52dk.md)
   - [nRF52840-DK](./boards/nrf52840dk.md)
   - [nRF5340-DK](./boards/nrf5340dk.md)
+  - [nRF9151-DK](./boards/nrf9151-dk.md)
   - [nRF9160-DK](./boards/nrf9160dk-nrf9160.md)
   - [Raspberry Pi Pico](./boards/rpi-pico.md)
   - [Raspberry Pi Pico 2](./boards/rpi-pico2.md)

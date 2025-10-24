@@ -77,6 +77,11 @@ builders:
   - has_buttons
   - has_leds
   - has_usb_device_port
+- name: nrf9151-dk
+  parent: nrf9151
+  provides:
+  - has_buttons
+  - has_leds
 - name: nrf9160dk-nrf9160
   parent: nrf9160
   provides:

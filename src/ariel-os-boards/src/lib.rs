@@ -22,7 +22,8 @@ cfg_if::cfg_if! {
     include!("nrf52840dk.rs"); } else if #[cfg(context = "nrf52dk")] {
     include!("nrf52dk.rs"); } else if #[cfg(context = "nrf5340dk-net")] {
     include!("nrf5340dk-net.rs"); } else if #[cfg(context = "nrf5340dk")] {
-    include!("nrf5340dk.rs"); } else if #[cfg(context = "nrf9160dk-nrf9160")] {
+    include!("nrf5340dk.rs"); } else if #[cfg(context = "nrf9151-dk")] {
+    include!("nrf9151-dk.rs"); } else if #[cfg(context = "nrf9160dk-nrf9160")] {
     include!("nrf9160dk-nrf9160.rs"); } else if #[cfg(context = "particle-xenon")] {
     include!("particle-xenon.rs"); } else if #[cfg(context = "rpi-pico-w")] {
     include!("rpi-pico-w.rs"); } else if #[cfg(context = "rpi-pico")] {

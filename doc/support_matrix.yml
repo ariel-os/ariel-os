@@ -701,6 +701,13 @@ boards:
       user_usb: supported
       ethernet_over_usb: supported
 
+  nrf9151-dk:
+    name: nRF9151-DK
+    url: https://web.archive.org/web/20250622211955/https://www.nordicsemi.com/Products/Development-hardware/nRF9151-DK
+    chip: nrf9151
+    tier: "2"
+    support:
+
   nrf9160dk-nrf9160:
     name: nRF9160-DK
     url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk

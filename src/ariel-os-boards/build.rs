@@ -31,6 +31,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"nrf52dk\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"nrf5340dk-net\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"nrf5340dk\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"nrf9151-dk\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"nrf9160dk-nrf9160\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"particle-xenon\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico-w\"))");
