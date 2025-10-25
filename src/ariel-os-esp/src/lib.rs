@@ -149,10 +149,11 @@ pub fn init() -> OptionalPeripherals {
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
 
     #[cfg(any(feature = "hwrng", feature = "wifi-esp"))]
-    let rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
+    #[allow(unused_mut)]
+    let mut rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
 
     #[cfg(feature = "hwrng")]
-    ariel_os_random::construct_rng(rng);
+    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
 
     #[cfg(feature = "wifi-esp")]
     {

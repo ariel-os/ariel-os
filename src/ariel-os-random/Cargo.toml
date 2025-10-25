@@ -11,11 +11,12 @@ workspace = true
 
 [dependencies]
 rand_core = { workspace = true }
+rand-core-06 = { package = "rand_core", version = "0.6" }
 
 embassy-sync.workspace = true
 
-rand_pcg = "0.3.1"
-rand_chacha = { version = "0.3.1", default-features = false, optional = true }
+rand_pcg = "0.9.0"
+rand_chacha = { version = "0.9.0", default-features = false, optional = true }
 
 getrandom = { version = "0.3.3", optional = true }
 

@@ -24,6 +24,7 @@ use getrandom::Error;
 ///
 /// The function panics if error conversion fails.
 #[unsafe(no_mangle)]
+#[allow(clippy::unnecessary_wraps)]
 unsafe extern "Rust" fn __getrandom_v03_custom(dest: *mut u8, len: usize) -> Result<(), Error> {
     // SAFETY: Pointer validity and mutability is provided by the getrandom custom backend
     // conventions.
@@ -31,8 +32,6 @@ unsafe extern "Rust" fn __getrandom_v03_custom(dest: *mut u8, len: usize) -> Res
         core::ptr::write_bytes(dest, 0, len);
         core::slice::from_raw_parts_mut(dest, len)
     };
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    super::crypto_rng()
-        .try_fill_bytes(buf)
-        .map_err(|e| Error::new_custom(e.raw_os_error().unwrap() as u16))
+    super::crypto_rng().fill_bytes(buf);
+    Ok(())
 }
