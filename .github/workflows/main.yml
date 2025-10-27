@@ -410,9 +410,8 @@ jobs:
         with:
           tool: cargo-manifest-check@0.2
 
-      # For now, only run cargo-manifest-check on ariel-os-identity.
       - name: cargo-manifest-check
-        run: cargo manifest-check src/ariel-os-identity
+        run: cargo manifest-check src/ariel-os-identity src/ariel-os-buildinfo src/ariel-os-debug-log src/ariel-os-coap src/ariel-os-macros src/ariel-os-power src/ariel-os-runqueue src/ariel-os-stm32-mapping src/ariel-os-utils
 
   lint-ruff:
     runs-on: ubuntu-latest
