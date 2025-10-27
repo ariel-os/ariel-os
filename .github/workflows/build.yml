@@ -363,8 +363,8 @@ jobs:
     # container:
     #   image: docker.io/sautax/ariel-build-image:0.5
 
-    # only run for nightly builds
-    if: ${{ github.event_name == 'schedule' }}
+    # Only run for nightly builds
+    # if: ${{ github.event_name == 'schedule' }}
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -454,7 +454,7 @@ jobs:
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global
 
       - name: "Save cache of nightly run"
-        if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
+        if: steps.should-skip.outputs.result != 'true'
         env:
           RUST_LOG: trace
         run: |
