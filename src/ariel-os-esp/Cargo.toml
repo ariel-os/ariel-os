@@ -88,12 +88,11 @@ esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s2"] }
-esp-hal-embassy = { workspace = true, default-features = false, features = [
-  "esp32s2",
-] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s2",
 ], optional = true }
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32s2"] }
+esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
