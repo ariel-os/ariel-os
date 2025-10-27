@@ -105,7 +105,7 @@ jobs:
       CLANG_PATH: /usr/bin/clang-18
       CACHE_THING_LOCATION: /cache/cache-thing
       RUSTC_WRAPPER: sccache
-      # CARGO_NET_GIT_FETCH_WITH_CLI: true
+      CARGO_NET_GIT_FETCH_WITH_CLI: true
       SCCACHE_DIR: /cache/sccache
       SCCACHE_CACHE_SIZE: 128G
 
