@@ -167,7 +167,8 @@ jobs:
         with:
           # we need to access the Main branch for the cache
           fetch-depth: 0
-
+      - name: reset git-cache update barrier
+        run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
       - name: Get git tree hash
         id: get-tree-hash
         run: |
