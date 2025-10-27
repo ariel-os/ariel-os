@@ -1,11 +1,8 @@
 [package]
 name = "coap-blinky"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
@@ -15,3 +12,6 @@ coap-handler-implementations = "0.5.0"
 riot-coap-handler-demos = { git = "https://gitlab.com/etonomy/riot-module-examples", rev = "9fd24a2608ad5dbaec33fc0c2aec8c5b3539dd0d", default-features = false, features = [
   "gpio",
 ] }
+
+[lints]
+workspace = true
