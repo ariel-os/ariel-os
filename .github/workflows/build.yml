@@ -167,8 +167,8 @@ jobs:
         with:
           # we need to access the Main branch for the cache
           fetch-depth: 0
-      - name: reset git-cache update barrier
-        run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
+      # - name: reset git-cache update barrier
+      #   run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
       - name: Get git tree hash
         id: get-tree-hash
         run: |
@@ -187,12 +187,12 @@ jobs:
           result="result=${{ steps.result-cache.outputs.cache-hit == 'true' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
-      - name: "Restore cache"
-        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
-        env:
-          RUST_LOG: trace
-        run: |
-          cache-thing pull --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fallback-key nightly || true
+      # - name: "Restore cache"
+      #   if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+      #   env:
+      #     RUST_LOG: trace
+      #   run: |
+      #     cache-thing pull --prefix global -f build -f /home/runner/.cargo --fallback-key nightly || true
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -307,20 +307,6 @@ jobs:
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
 
-      - name: "Save cache of nightly run"
-        if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
-        env:
-          RUST_LOG: trace
-        run: |
-          cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo --fixed-key nightly || true
-
-      - name: "Save cache"
-        if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule'
-        env:
-          RUST_LOG: trace
-        run: |
-          cache-thing push --prefix ${{ matrix.partition }} -f build -f /home/runner/.cargo || true
-
       # cleanup previous build artifacts. do in background (no need to wait).
       - name: "cleanup stable build artifacts"
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -362,3 +348,112 @@ jobs:
           access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
           message: "The nightly build [failed](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})."
           server: "matrix.org"
+  build-cache:
+    # needs: check-labels
+    runs-on:
+      group: Ariel
+      labels: ["runner-pool-id:d621f0f7-10c5-4424-89b6-e7f8ac8f74d7"]
+
+    # container:
+    #   image: docker.io/sautax/ariel-build-image:0.5
+
+    # Ignore the PR labels in nightly builds.
+    # if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # clang-sys and thus bindgen is sensitive to multiple installed versions
+      # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
+      #
+      # CLANG_PATH should be set to the most recent clang installed, no matter
+      # what /usr/bin/clang is, for some parts of the code will go for the
+      # newest standard library. It may also need to be aligned with the clang
+      # version which Xtensa provides.
+      CLANG_PATH: /usr/bin/clang-18
+      CACHE_THING_LOCATION: /cache/cache-thing
+      RUSTC_WRAPPER: sccache
+      # CARGO_NET_GIT_FETCH_WITH_CLI: true
+      SCCACHE_DIR: /cache/sccache
+      SCCACHE_CACHE_SIZE: 128G
+
+
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          # we need to access the Main branch for the cache
+          fetch-depth: 0
+      # - name: reset git-cache update barrier
+      #   run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
+      - name: Get git tree hash
+        id: get-tree-hash
+        run: |
+          git rev-parse HEAD^{tree} > .tree-hash
+          echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        id: result-cache
+        with:
+          path: .tree-hash
+          key: success-${{ steps.get-tree-hash.outputs.hash }}-${{ matrix.partition }}-${{ github.event_name == 'schedule' && 'full' || needs.check-labels.outputs.label }}
+
+      - name: Whether to skip next steps
+        id: should-skip
+        run: |
+          result="result=${{ steps.result-cache.outputs.cache-hit == 'true' }}"
+          echo "${result}"
+          echo "${result}" >> $GITHUB_OUTPUT
+      - name: "Restore cache"
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        env:
+          RUST_LOG: trace
+        run: |
+          cache-thing pull --prefix global -f build -f /home/runner/.cargo --fallback-key nightly || true
+
+
+      - id: get_toolchain
+        if: steps.should-skip.outputs.result != 'true'
+        run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
+
+
+
+      - name: "Show installed versions"
+        run: |
+          set -x
+          set +e
+          env
+          llvm-config --libs
+          cargo version
+          laze --version
+          arm-none-eabi-gcc --version
+          clang --version
+          rustup show
+          cat ${ESPUP_EXPORT_FILE:-~/export-esp.sh}
+          (. ${ESPUP_EXPORT_FILE:-~/export-esp.sh}; xtensa-esp32s3-elf-gcc --version)
+          set +x
+          # Check which alternative versions are installed
+          IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
+          sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
+          true
+
+      - name: "start sccache daemon"
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        # work around https://github.com/ninja-build/ninja/issues/2052
+        run: sccache --start-server || true
+
+      - name: "ariel-os compilation test (default toolchain)"
+        if: steps.should-skip.outputs.result != 'true'
+        run: |
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global
+
+      - name: "Save cache of nightly run"
+        if: steps.should-skip.outputs.result != 'true' && github.event_name == 'schedule'
+        env:
+          RUST_LOG: trace
+        run: |
+          cache-thing push --prefix global -f build -f /home/runner/.cargo --fixed-key nightly || true
+
+      - name: show sccache stats
+        if: runner.environment == 'self-hosted'
+        run: sccache --show-stats
