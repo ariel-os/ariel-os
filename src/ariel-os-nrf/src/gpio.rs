@@ -20,22 +20,22 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: Peri<'static, impl InputPin>,
+    pub fn new<P: InputPin>(
+        pin: Peri<'_, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<Input<'static>, ariel_os_embassy_common::gpio::input::Error> {
+    ) -> Result<Input<'_>, ariel_os_embassy_common::gpio::input::Error> {
         let pull = from_pull(pull);
         Ok(Input::new(pin, pull))
     }
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled(
-        mut pin: Peri<'static, impl InputPin>,
+    pub fn new_int_enabled<P: InputPin>(
+        mut pin: Peri<'_, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<IntEnabledInput<'static>, ariel_os_embassy_common::gpio::input::Error> {
+    ) -> Result<IntEnabledInput<'_>, ariel_os_embassy_common::gpio::input::Error> {
         let pull = from_pull(pull);
         crate::extint_registry::EXTINT_REGISTRY.use_interrupt_for_pin(&mut pin)?;
         Ok(Input::new(pin, pull))
@@ -64,12 +64,12 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: Peri<'static, impl OutputPin>,
+    pub fn new<P: OutputPin>(
+        pin: Peri<'_, P>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: DriveStrength,
         _speed: super::Speed, // Not supported by hardware
-    ) -> Output<'static> {
+    ) -> Output<'_> {
         let output_drive = match drive_strength {
             DriveStrength::Standard => OutputDrive::Standard,
             DriveStrength::High => OutputDrive::HighDrive,
