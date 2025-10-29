@@ -124,6 +124,11 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART2
+- name: seeedstudio-xiao-esp32c6
+  parent: esp32-c6-wroom-1
+  provides:
+  - has_buttons
+  - has_leds
 - name: st-b-l475e-iot01a
   parent: stm32l475vg
   provides:
