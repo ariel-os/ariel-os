@@ -81,6 +81,16 @@ Names SHOULD adhere to the [official API guidelines](https://rust-lang.github.io
 
 TODO: how to name error types/error enum variants (`CannotDoSth` vs `DoingSth`)?
 
+### Code formatting
+
+The code is expected to be formatted following the [Rust Style Guide](https://doc.rust-lang.org/style-guide/index.html).
+
+You can quickly format the code in the ariel-os repository using this command:
+
+```sh
+laze build fmt
+```
+
 ## Dependencies
 
 If the same dependency is used in multiples crates within the workspace, that dependency SHOULD be specified in the *workspace*'s `Cargo.toml` file and workspace crates should import them from there.

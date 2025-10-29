@@ -1778,7 +1778,10 @@ builders:
           - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier1.html --template-path book/templates/support-matrix.html.tmpl --tier 1
           - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier2.html --template-path book/templates/support-matrix.html.tmpl --tier 2
           - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier3.html --template-path book/templates/support-matrix.html.tmpl --tier 3
-
+      fmt:
+        build: false
+        cmd:
+          - cargo fmt --all -- --config format_generated_files=false
 
   - name: bbc-microbit
     parent: bbc-microbit-base
