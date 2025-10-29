@@ -354,7 +354,7 @@ jobs:
     #   image: docker.io/sautax/ariel-build-image:0.5
 
     # Only run for nightly builds
-    # if: ${{ github.event_name == 'schedule' }}
+    if: ${{ github.event_name == 'schedule' }}
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
