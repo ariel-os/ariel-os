@@ -407,7 +407,6 @@ jobs:
         run: |
           cache-thing pull --prefix global -f build -f /home/runner/.cargo --fallback-key nightly || true
 
-
       - id: get_toolchain
         if: steps.should-skip.outputs.result != 'true'
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
