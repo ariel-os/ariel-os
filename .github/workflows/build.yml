@@ -412,8 +412,6 @@ jobs:
         if: steps.should-skip.outputs.result != 'true'
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
-
-
       - name: "Show installed versions"
         run: |
           set -x
