@@ -107,7 +107,7 @@ jobs:
       RUSTC_WRAPPER: sccache
       # CARGO_NET_GIT_FETCH_WITH_CLI: true
       SCCACHE_DIR: /cache/sccache
-      SCCACHE_CACHE_SIZE: 128G
+      SCCACHE_CACHE_SIZE: 200G
 
     strategy:
       fail-fast: true
@@ -370,7 +370,7 @@ jobs:
       RUSTC_WRAPPER: sccache
       # CARGO_NET_GIT_FETCH_WITH_CLI: true
       SCCACHE_DIR: /cache/sccache
-      SCCACHE_CACHE_SIZE: 128G
+      SCCACHE_CACHE_SIZE: 200G
 
 
     steps:
