@@ -136,10 +136,6 @@ pub mod peripherals {
 #[doc(hidden)]
 pub use esp_hal::peripherals::OptionalPeripherals;
 
-#[cfg(feature = "executor-single-thread")]
-#[doc(hidden)]
-pub use esp_hal_embassy::Executor;
-
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
