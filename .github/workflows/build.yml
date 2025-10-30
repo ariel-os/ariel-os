@@ -446,7 +446,7 @@ jobs:
         env:
           RUST_LOG: trace
         run: |
-          cache-thing push --prefix global -f build -f /home/runner/.cargo --fixed-key nightly || true
+          cache-thing push --prefix global -f build -f /home/runner/.cargo --fixed-key nightly --only-fixed-key || true
 
       - name: show sccache stats
         if: runner.environment == 'self-hosted'
