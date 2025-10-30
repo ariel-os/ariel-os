@@ -26,6 +26,8 @@ pub enum Label {
     Longitude,
     /// Used for sensor drivers returning a single [`Sample`](crate::sensor::Sample).
     Main,
+    /// Opaque
+    Opaque,
     /// Relative humidity.
     RelativeHumidity,
     /// Heading.
@@ -50,6 +52,7 @@ impl core::fmt::Display for Label {
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
             Self::Main => write!(f, ""),
+            Self::Opaque => write!(f, "Opaque"),
             Self::RelativeHumidity => write!(f, "Relative humidity"),
             Self::Heading => write!(f, "Heading"),
             Self::Temperature => write!(f, "Temperature"),
