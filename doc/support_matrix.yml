@@ -754,6 +754,13 @@ boards:
     tier: "2"
     support:
 
+  espressif-esp32-c3-devkit-rust-1:
+    name: Espressif ESP32-C3-DevKit-RUST-1
+    url: http://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2
+    chip: esp32c3
+    tier: "3"
+    support:
+
   espressif-esp32-c3-lcdkit:
     name: Espressif ESP32-C3-LCDkit
     url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en

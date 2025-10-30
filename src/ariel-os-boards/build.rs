@@ -9,6 +9,9 @@ pub fn main() {
     );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"dwm1001\"))");
     println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c3-devkit-rust-1\"))"
+    );
+    println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c3-lcdkit\"))"
     );
     println!(
