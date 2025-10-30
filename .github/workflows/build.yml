@@ -443,6 +443,7 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global
 
+      # TODO: propagate cache to other nodes
       - name: "Save cache of nightly run"
         if: steps.should-skip.outputs.result != 'true'
         env:
