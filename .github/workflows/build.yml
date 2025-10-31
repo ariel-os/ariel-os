@@ -354,7 +354,7 @@ jobs:
     #   image: docker.io/sautax/ariel-build-image:0.5
 
     # Only run for nightly builds
-    if: ${{ github.event_name == 'schedule' }}
+    # if: ${{ github.event_name == 'schedule' }}
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -372,9 +372,14 @@ jobs:
       SCCACHE_DIR: /cache/sccache
       SCCACHE_CACHE_SIZE: 200G
 
+      # local bucket, but we should put that as a GH secret anyway
+      S3_KEY_ID: GK8eac3f2e561d911c3653f0d4
+      S3_SECRET_KEY: 8b16840d766a023d60ce6e0c1d248795043a4b578bd1edc1e3f6c04ca88c3327
+      S3_BUCKET: cache-thing
+      S3_ENDPOINT: http://10.0.0.1:3900
+      S3_REGION: garage
 
     steps:
-
       - name: Check out repository code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
@@ -440,13 +445,12 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global
 
-      # TODO: propagate cache to other nodes
       - name: "Save cache of nightly run"
         if: steps.should-skip.outputs.result != 'true'
         env:
           RUST_LOG: trace
         run: |
-          cache-thing push --prefix global -f build -f /home/runner/.cargo --fixed-key nightly --only-fixed-key || true
+          cache-thing push --prefix global -f build -f /home/runner/.cargo --fixed-key nightly --only-fixed-key --also-to-s3-fixed-key || true
 
       - name: show sccache stats
         if: runner.environment == 'self-hosted'
