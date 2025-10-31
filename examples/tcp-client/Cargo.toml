@@ -1,0 +1,13 @@
+[package]
+name = "tcp-client"
+license.workspace = true
+edition.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+embedded-io-async = "0.6.1"
+ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
