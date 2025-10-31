@@ -217,7 +217,15 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
 
     let resources = ariel_os_embassy_common::ble::get_ble_host_resources();
 
-    let stack = trouble_host::new(sdc, resources).set_random_address(config.address);
+    let stack = trouble_host::new(sdc, resources);
+    let stack = if let Some(address) = config.address {
+        // Set the requested static random address
+        stack.set_random_address(address)
+    } else {
+        // Otherwise we use a generated address, the nRF MCUs don't have a public address.
+        stack.set_random_address(config.fallback_address)
+    };
+
     let _ = STACK.init(stack);
 
     debug!("nRF BLE driver initialized");
