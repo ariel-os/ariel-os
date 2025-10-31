@@ -46,7 +46,7 @@ pub struct BoardInfo {
     pub support: HashMap<String, SupportInfo>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 #[serde(untagged)]
 pub enum SupportInfo {
