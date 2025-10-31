@@ -350,9 +350,6 @@ jobs:
       group: Ariel
       labels: ["runner-pool-id:d621f0f7-10c5-4424-89b6-e7f8ac8f74d7"]
 
-    # container:
-    #   image: docker.io/sautax/ariel-build-image:0.5
-
     # Only run for nightly builds
     # if: ${{ github.event_name == 'schedule' }}
 
