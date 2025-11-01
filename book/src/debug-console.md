@@ -46,6 +46,17 @@ if none of them are enabled, logging statements become no-operations.
 Enabling either the `defmt` or `log` [laze modules][laze-modules-book] allows selecting which logging facade and logger is used.
 defmt should be preferred when possible as it results in smaller binaries.
 
+The precise set of formatting operations and traits required on formatted data
+depends on the selected backend.
+There are some wrapper structs available in the [`ariel_os::debug::log`] module
+that help represent some types in a portable way;
+in particular, this includes [`Debug2Format`] and [`Display2Format`],
+which (while defeating some of `defmt`'s optimizations) come in handy when debugging third party types.
+
+[`ariel_os::debug::log`]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/log/
+[`Debug2Format`]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/log/struct.Debug2Format.html
+[`Display2Format`]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/log/struct.Display2Format.html
+
 #### [defmt]
 
 See the [defmt documentation] for general info on the defmt's facade and logger.
