@@ -73,7 +73,7 @@ liboscore-provide-assert = ["liboscore/provide-assert"]
 
 default = ["liboscore-defaults"]
 
-# Private feature that enables doc_auto_cfg
+# Private feature that enables doc_cfg
 _nightly_docs = []
 
 # Private feature used for `cargo test`

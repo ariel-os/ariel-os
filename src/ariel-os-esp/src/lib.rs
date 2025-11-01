@@ -1,7 +1,7 @@
 //! Items specific to the Espressif ESP MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 #[cfg(all(feature = "threading", feature = "wifi"))]

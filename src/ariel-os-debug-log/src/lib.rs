@@ -11,7 +11,7 @@
 //! feature; please refer to the documentation of those crates for details on the supported syntax.
 
 #![cfg_attr(not(test), no_std)]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 #[featurecomb::comb]
@@ -44,7 +44,7 @@ pub mod log {
     pub use log::{debug, error, info, trace, warn};
 }
 
-// NOTE: log macros are defined within private modules so that `doc_auto_cfg` does not produce
+// NOTE: log macros are defined within private modules so that `doc_cfg` does not produce
 // "feature flairs" on them.
 // The macros are still exported even though they are defined "within" private modules.
 //

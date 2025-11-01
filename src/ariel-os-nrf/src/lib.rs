@@ -1,7 +1,7 @@
 //! Items specific to the Nordic Semiconductor nRF MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;

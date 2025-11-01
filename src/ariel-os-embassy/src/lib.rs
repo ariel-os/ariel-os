@@ -1,7 +1,7 @@
 //! This module provides an opinionated integration of `embassy`.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![allow(unsafe_code)]
 
 pub use ariel_os_hal::hal;
