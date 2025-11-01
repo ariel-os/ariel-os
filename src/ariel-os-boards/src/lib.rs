@@ -3,8 +3,9 @@
 #![no_std]
 cfg_if::cfg_if! {
     if #[cfg(context = "ai-c3")] { include!("ai-c3.rs"); } else if #[cfg(context =
-    "bbc-microbit-v1")] { include!("bbc-microbit-v1.rs"); } else if #[cfg(context =
-    "bbc-microbit-v2")] { include!("bbc-microbit-v2.rs"); } else if #[cfg(context =
+    "apple-m")] { include!("apple-m.rs"); } else if #[cfg(context = "bbc-microbit-v1")] {
+    include!("bbc-microbit-v1.rs"); } else if #[cfg(context = "bbc-microbit-v2")] {
+    include!("bbc-microbit-v2.rs"); } else if #[cfg(context =
     "dfrobot-firebeetle2-esp32-c6")] { include!("dfrobot-firebeetle2-esp32-c6.rs"); }
     else if #[cfg(context = "dwm1001")] { include!("dwm1001.rs"); } else if #[cfg(context
     = "espressif-esp32-c3-lcdkit")] { include!("espressif-esp32-c3-lcdkit.rs"); } else if

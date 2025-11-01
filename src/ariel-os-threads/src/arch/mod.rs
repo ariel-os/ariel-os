@@ -46,7 +46,7 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "xtensa")] {
         mod xtensa;
         pub use xtensa::Cpu;
-    } else if #[cfg(context = "native")] {
+    } else if #[cfg(any(context = "native", context = "m-chip"))] {
         mod native;
         pub use native::Cpu;
     } else {

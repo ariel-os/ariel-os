@@ -26,6 +26,9 @@ ariel-os-esp = { path = "../ariel-os-esp" }
 [target.'cfg(context = "native")'.dependencies]
 ariel-os-native = { path = "../ariel-os-native" }
 
+[target.'cfg(context = "m-chip")'.dependencies]
+ariel-os-native = { path = "../ariel-os-native" }
+
 [target.'cfg(context = "nrf")'.dependencies]
 ariel-os-nrf = { path = "../ariel-os-nrf" }
 
