@@ -4,6 +4,7 @@
 /// One single type must be defined so that it can be used in the Future returned by sensor
 /// drivers, which must be the same for every sensor driver so it can be part of the `Sensor`
 /// trait.
+#[expect(clippy::too_many_lines)]
 #[proc_macro]
 pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     use quote::quote;
@@ -74,9 +75,27 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         ///
         /// This type is automatically generated, the number of [`Sample`]s that can be stored is
         /// automatically adjusted.
-        #[derive(Debug, Copy, Clone)]
+        #[derive(Copy, Clone)]
         pub struct Samples {
             samples: InnerSamples,
+            driver: Option<&'static dyn Sensor>,
+        }
+
+        impl core::fmt::Debug for Samples {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                // FIXME
+                f.debug_struct("Samples")
+                 .field("samples", &self.samples)
+                 .finish()
+            }
+        }
+
+        // TODO: move this to a trait reserved for implementors
+        impl Samples {
+            /// FIXME
+            pub fn set_driver_ref(&mut self, driver_ref: &'static dyn Sensor) {
+                self.driver.replace(driver_ref);
+            }
         }
 
         #(#samples_from_impls)*
