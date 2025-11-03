@@ -22,8 +22,11 @@ members = [
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
+  "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
+  "src/sensors/ariel-os-sensor-lsm6dsv16x",
+  "src/sensors/ariel-os-sensor-lps22df",
   "tests/benchmarks/bench_sched_flags",
   "tests/benchmarks/bench_sched_yield",
   "tests/coap",
@@ -130,6 +133,7 @@ ariel-os-rp = { path = "src/ariel-os-rp" }
 ariel-os-rt = { path = "src/ariel-os-rt" }
 ariel-os-runqueue = { path = "src/ariel-os-runqueue" }
 ariel-os-sensors = { path = "src/ariel-os-sensors" }
+ariel-os-sensors-utils = { path = "src/ariel-os-sensors-utils" }
 ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
