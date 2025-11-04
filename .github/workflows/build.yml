@@ -83,7 +83,9 @@ jobs:
 
   build:
     needs: check-labels
-    runs-on: ubuntu-24.04
+    runs-on:
+      - ubuntu
+      - runner-pool-id:9721cd51-ff12-439c-841d-d04a6036fb8d
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
 
@@ -97,6 +99,9 @@ jobs:
       # newest standard library. It may also need to be aligned with the clang
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
+      RUSTC_WRAPPER: sccache
+      # workaround cargo / git-cache-daemon protocol negotiation issue
+      #CARGO_NET_GIT_FETCH_WITH_CLI: true
 
     strategy:
       fail-fast: true
@@ -104,7 +109,11 @@ jobs:
         partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
 
     steps:
+      - name: reset git-cache update barrier
+        run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
+
       - name: Free up space
+        if: runner.environment != 'self-hosted'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -120,6 +129,8 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Get git tree hash
         id: get-tree-hash
@@ -178,7 +189,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -188,7 +199,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.85
         with:
@@ -198,7 +209,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3'))
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3'))
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -208,20 +219,25 @@ jobs:
           export: false
 
       - name: rust cache
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@e43a5023a747770bfcb71ae048541a681714b951 # v2
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
+
+      - name: TEST configure recent toolchain
+        run: |
+          rustup default stable
+          rustup override set nightly
 
       - name: "Show installed versions"
         run: |
@@ -233,6 +249,7 @@ jobs:
           laze --version
           arm-none-eabi-gcc --version
           clang --version
+          rustc --version
           rustup show
           cat ${ESPUP_EXPORT_FILE:-~/export-esp.sh}
           (. ${ESPUP_EXPORT_FILE:-~/export-esp.sh}; xtensa-esp32s3-elf-gcc --version)
@@ -241,6 +258,11 @@ jobs:
           IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
+
+      - name: "start sccache daemon"
+        if: steps.should-skip.outputs.result != 'true'
+        # work around https://github.com/ninja-build/ninja/issues/2052
+        run: sccache --start-server || true
 
       - name: "ariel-os compilation test (default toolchain)"
         if: steps.should-skip.outputs.result != 'true'
@@ -260,6 +282,11 @@ jobs:
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
+
+      # always print sccache stats
+      - name: "sccache stats"
+        if: always()
+        run: sccache -s
 
   build-success:
     if: ${{ always() }}
