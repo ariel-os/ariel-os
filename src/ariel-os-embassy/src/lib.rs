@@ -4,6 +4,7 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![allow(unsafe_code)]
 
+pub use ariel_os_embassy_common::cell;
 pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
@@ -121,7 +122,6 @@ cfg_if::cfg_if! {
 pub use net::NetworkStack;
 
 pub mod asynch;
-pub mod cell;
 pub mod delegate;
 
 #[cfg(feature = "executor-thread")]
