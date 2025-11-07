@@ -18,6 +18,9 @@ opt-level = 3
 [patch.crates-io]
 # ariel-os embassy forks
 
+# includes bt-hci 0.6.0 update
+cyw43 = { git = "https://github.com/ariel-os/embassy", rev = "603583d9" }
+
 # branch = "embassy-hal-internal-v0.3.0+ariel-os"
 embassy-hal-internal = { git = "https://github.com/kaspar030/embassy", rev = "0feffeb3c90748112a64c6570a39e1251311accb" }
 # branch = "embassy-nrf-v0.7.0+ariel-os"
