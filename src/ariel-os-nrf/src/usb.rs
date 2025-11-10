@@ -6,7 +6,8 @@ use embassy_nrf::{
 
 use crate::irqs::Irqs;
 
-pub type UsbDriver = Driver<'static, peripherals::USBD, HardwareVbusDetect>;
+// TODO: as per docs, this does not work in combination with the softdevice
+pub type UsbDriver = Driver<'static, HardwareVbusDetect>;
 
 pub struct Peripherals {
     usbd: Peri<'static, peripherals::USBD>,
@@ -28,5 +29,5 @@ pub fn init() {
 }
 
 pub fn driver(peripherals: Peripherals) -> UsbDriver {
-    Driver::new(peripherals.usbd, Irqs, HardwareVbusDetect::new(Irqs))
+    UsbDriver::new(peripherals.usbd, Irqs, HardwareVbusDetect::new(Irqs))
 }
