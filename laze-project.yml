@@ -1194,6 +1194,17 @@ modules:
         FEATURES:
           - ariel-os/network-config-ipv4-static
 
+  - name: wifi
+    help: marker for support status tracking in book
+    selects:
+      - has_wifi
+    provides_unique:
+      - network_device
+
+  - name: has_wifi
+    selects:
+      - doc_only
+
   - name: sw/storage
     selects:
       - has_storage_support
@@ -1219,8 +1230,8 @@ modules:
   - name: wifi-cyw43
     selects:
       - has_wifi_cyw43
-    provides_unique:
-      - network_device
+    provides:
+      - has_wifi
     env:
       global:
         FEATURES:
@@ -1505,8 +1516,8 @@ modules:
       - alloc
     context:
       - esp
-    provides_unique:
-      - network_device
+    provides:
+      - has_wifi
     env:
       global:
         # esp-wifi needs a lot of ISR stack.
