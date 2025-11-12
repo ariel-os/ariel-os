@@ -1784,14 +1784,16 @@ builders:
       update-book:
         build: false
         cmd:
-          - doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl
-          - doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --template-path book/templates/board-page.md.tmpl
+          - laze build -g -G -i /tmp/laze-info.json
+          - doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --laze-info-path /tmp/laze-info.json
+          - doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --template-path book/templates/board-page.md.tmpl --laze-info-path /tmp/laze-info.json
           - doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl
-          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier1.html --template-path book/templates/support-matrix.html.tmpl --tier 1
-          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier2.html --template-path book/templates/support-matrix.html.tmpl --tier 2
-          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier3.html --template-path book/templates/support-matrix.html.tmpl --tier 3
-          - doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --template-path book/templates/chip-page.md.tmpl
+          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier1.html --template-path book/templates/support-matrix.html.tmpl --tier 1 --laze-info-path /tmp/laze-info.json
+          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier2.html --template-path book/templates/support-matrix.html.tmpl --tier 2 --laze-info-path /tmp/laze-info.json
+          - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier3.html --template-path book/templates/support-matrix.html.tmpl --tier 3 --laze-info-path /tmp/laze-info.json
+          - doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --template-path book/templates/chip-page.md.tmpl --laze-info-path /tmp/laze-info.json
           - doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl
+          - rm /tmp/laze-info.json
 
       fmt:
         build: false
