@@ -5,7 +5,7 @@
 use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError};
 
 use embassy_rp::{
-    Peripheral, bind_interrupts, peripherals,
+    Peri, bind_interrupts, peripherals,
     uart::{BufferedInterruptHandler, BufferedUart, RxPin, TxPin},
 };
 
@@ -163,7 +163,11 @@ macro_rules! define_uart_drivers {
         $(
             /// Peripheral-specific UART driver.
             pub struct $peripheral<'d> {
-                uart: BufferedUart<'d, peripherals::$peripheral>,
+                uart: BufferedUart,
+                // This field is necessary as embassy_rp's `BufferedUart` does not
+                // actually have a lifetime, but `impl_async_uart_for_driver_enum!()`
+                // expects one on the `Uart` enum.
+                _phantom: core::marker::PhantomData<&'d ()>
             }
 
             // Make this struct a compile-time-enforced singleton: having multiple statics
@@ -182,10 +186,10 @@ macro_rules! define_uart_drivers {
                 /// This never returns an error.
                 #[expect(clippy::new_ret_no_self)]
                 pub fn new(
-                    rx_pin: impl Peripheral<P: RxPin<peripherals::$peripheral>> + 'd,
-                    tx_pin: impl Peripheral<P: TxPin<peripherals::$peripheral>> + 'd,
-                    rx_buf: &'d mut [u8],
-                    tx_buf: &'d mut [u8],
+                    rx_pin: Peri<'static, impl RxPin<peripherals::$peripheral>>,
+                    tx_pin: Peri<'static, impl TxPin<peripherals::$peripheral>>,
+                    rx_buf: &mut [u8],
+                    tx_buf: &mut [u8],
                     config: Config,
                 ) -> Result<Uart<'d>, ConfigError> {
                     let mut uart_config = embassy_rp::uart::Config::default();
@@ -204,16 +208,16 @@ macro_rules! define_uart_drivers {
 
                     let uart = BufferedUart::new(
                         uart_peripheral,
-                        Irqs,
                         // Order of TX / RX is swapped compared to other platforms
                         tx_pin,
                         rx_pin,
+                        Irqs,
                         tx_buf,
                         rx_buf,
                         uart_config,
                     );
 
-                    Ok(Uart::$peripheral(Self { uart }))
+                    Ok(Uart::$peripheral(Self { uart, _phantom: core::marker::PhantomData }))
                 }
             }
         )*

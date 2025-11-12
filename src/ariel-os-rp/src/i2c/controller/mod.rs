@@ -4,7 +4,7 @@
 
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_rp::{
-    Peripheral, bind_interrupts,
+    Peri, bind_interrupts,
     i2c::{InterruptHandler, SclPin, SdaPin},
     peripherals,
 };
@@ -122,8 +122,8 @@ macro_rules! define_i2c_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sda_pin: impl Peripheral<P: SdaPin<peripherals::$peripheral>> + 'static,
-                    scl_pin: impl Peripheral<P: SclPin<peripherals::$peripheral>> + 'static,
+                    sda_pin: Peri<'static, impl SdaPin<peripherals::$peripheral>>,
+                    scl_pin: Peri<'static, impl SclPin<peripherals::$peripheral>>,
                     config: Config,
                 ) -> I2c {
                     // Make this struct a compile-time-enforced singleton: having multiple statics
