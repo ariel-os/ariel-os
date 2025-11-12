@@ -134,7 +134,7 @@ macro_rules! define_i2c_drivers {
         $(
             /// Peripheral-specific I2C driver.
             pub struct $peripheral {
-                twim: Twim<'static, peripherals::$peripheral>,
+                twim: Twim<'static>,
             }
 
             impl $peripheral {

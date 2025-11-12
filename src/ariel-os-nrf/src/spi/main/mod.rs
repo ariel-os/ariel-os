@@ -149,7 +149,7 @@ macro_rules! define_spi_drivers {
         $(
             /// Peripheral-specific SPI driver.
             pub struct $peripheral {
-                spim: Spim<'static, peripherals::$peripheral>,
+                spim: Spim<'static>,
             }
 
             impl $peripheral {
