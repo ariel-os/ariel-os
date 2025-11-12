@@ -23,7 +23,7 @@
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
 |Wi-Fi|<span title="supported">✅</span>|
-|Ethernet over USB|<span title="supported">✅</span>|
+|Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
 
