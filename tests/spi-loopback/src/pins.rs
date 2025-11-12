@@ -116,7 +116,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 // Side SPI of Arduino v3 connector
 #[cfg(context = "stm32wb55rg")]
-pub type SensorSpi<'a> = spi::main::SPI1<'a>;
+pub type SensorSpi = spi::main::SPI1;
 #[cfg(context = "stm32wb55rg")]
 ariel_os::hal::define_peripherals!(Peripherals {
     spi_sck: PA5,
