@@ -6,18 +6,19 @@
 //! alternatively.
 //! If you have a use case for this, especially if this is not regarding bit-banging, please open
 //! an issue on our repository.
-#![deny(missing_docs)]
+#![allow(missing_docs)]
+
+use core::marker::PhantomData;
 
 use embedded_hal::digital::StatefulOutputPin;
 
 use crate::hal::{
-    self,
+    self, IntoPeripheral,
     gpio::{
         DriveStrength as HalDriveStrength, Speed as HalSpeed,
         input::{Input as HalInput, InputPin as HalInputPin},
         output::{Output as HalOutput, OutputPin as HalOutputPin},
     },
-    peripheral::Peripheral,
 };
 
 #[cfg(feature = "external-interrupts")]
@@ -59,22 +60,26 @@ macro_rules! inner_impl_input_methods {
 ///
 /// If support for external interrupts is needed, use [`InputBuilder::build_with_interrupt()`] to
 /// obtain an [`IntEnabledInput`].
-pub struct Input {
-    input: HalInput<'static>, // FIXME: is this ok to require a 'static pin?
+pub struct Input<'a> {
+    input: HalInput<'a>,
 }
 
-impl Input {
+impl<'a> Input<'a> {
     /// Returns a configured [`Input`].
-    pub fn new(pin: impl Peripheral<P: HalInputPin> + 'static, pull: Pull) -> Self {
+    pub fn new<T: IntoPeripheral<'a, P>, P: HalInputPin + 'a>(pin: T, pull: Pull) -> Self {
         Self::builder(pin, pull).build()
     }
 
     /// Returns an [`InputBuilder`], allowing to configure the GPIO input further.
-    pub fn builder<P: Peripheral<P: HalInputPin>>(pin: P, pull: Pull) -> InputBuilder<P> {
+    pub fn builder<T: IntoPeripheral<'a, P>, P: HalInputPin + 'a>(
+        pin: T,
+        pull: Pull,
+    ) -> InputBuilder<'a, T, P> {
         InputBuilder {
             pin,
             pull,
             schmitt_trigger: false,
+            _phantom: PhantomData,
         }
     }
 
@@ -82,20 +87,20 @@ impl Input {
 }
 
 #[doc(hidden)]
-impl embedded_hal::digital::ErrorType for Input {
-    type Error = <HalInput<'static> as embedded_hal::digital::ErrorType>::Error;
+impl<'a> embedded_hal::digital::ErrorType for Input<'a> {
+    type Error = <HalInput<'a> as embedded_hal::digital::ErrorType>::Error;
 }
 
 /// A GPIO input that supports external interrupts.
 ///
 /// Can be obtained with [`InputBuilder::build_with_interrupt()`].
 #[cfg(feature = "external-interrupts")]
-pub struct IntEnabledInput {
-    input: HalIntEnabledInput<'static>, // FIXME: is this ok to require a 'static pin?
+pub struct IntEnabledInput<'a> {
+    input: HalIntEnabledInput<'a>,
 }
 
 #[cfg(feature = "external-interrupts")]
-impl IntEnabledInput {
+impl IntEnabledInput<'_> {
     inner_impl_input_methods!(input);
 
     /// Asynchronously waits until the input level is high.
@@ -128,12 +133,12 @@ impl IntEnabledInput {
 
 #[cfg(feature = "external-interrupts")]
 #[doc(hidden)]
-impl embedded_hal::digital::ErrorType for IntEnabledInput {
+impl embedded_hal::digital::ErrorType for IntEnabledInput<'_> {
     type Error = <HalIntEnabledInput<'static> as embedded_hal::digital::ErrorType>::Error;
 }
 
 #[cfg(feature = "external-interrupts")]
-impl embedded_hal_async::digital::Wait for IntEnabledInput {
+impl embedded_hal_async::digital::Wait for IntEnabledInput<'_> {
     async fn wait_for_high(&mut self) -> Result<(), Self::Error> {
         <HalIntEnabledInput<'_> as embedded_hal_async::digital::Wait>::wait_for_high(
             &mut self.input,
@@ -169,28 +174,41 @@ impl embedded_hal_async::digital::Wait for IntEnabledInput {
 }
 
 macro_rules! impl_embedded_hal_input_trait {
-    ($type:ident, $hal_type:ident) => {
+    ($type:ty, $hal_type:ty) => {
         impl embedded_hal::digital::InputPin for $type {
             fn is_high(&mut self) -> Result<bool, Self::Error> {
-                <$hal_type<'_> as embedded_hal::digital::InputPin>::is_high(&mut self.input)
+                <$hal_type as embedded_hal::digital::InputPin>::is_high(&mut self.input)
             }
 
             fn is_low(&mut self) -> Result<bool, Self::Error> {
-                <$hal_type<'_> as embedded_hal::digital::InputPin>::is_low(&mut self.input)
+                <$hal_type as embedded_hal::digital::InputPin>::is_low(&mut self.input)
+            }
+        }
+    };
+    ($type:ty, $hal_type:ty, $lt:lifetime) => {
+        impl<$lt> embedded_hal::digital::InputPin for $type {
+            fn is_high(&mut self) -> Result<bool, Self::Error> {
+                <$hal_type<$lt> as embedded_hal::digital::InputPin>::is_high(&mut self.input)
+            }
+
+            fn is_low(&mut self) -> Result<bool, Self::Error> {
+                <$hal_type<$lt> as embedded_hal::digital::InputPin>::is_low(&mut self.input)
             }
         }
     };
 }
 
-impl_embedded_hal_input_trait!(Input, HalInput);
+impl_embedded_hal_input_trait!(Input<'_>, HalInput<'_>);
 #[cfg(feature = "external-interrupts")]
-impl_embedded_hal_input_trait!(IntEnabledInput, HalIntEnabledInput);
+impl_embedded_hal_input_trait!(IntEnabledInput<'_>, HalIntEnabledInput<'_>);
 
 pub mod input {
     //! Input-specific types.
+    use core::marker::PhantomData;
+
     use ariel_os_embassy_common::gpio::Pull;
 
-    use crate::hal::{self, gpio::input::InputPin as HalInputPin, peripheral::Peripheral};
+    use crate::hal::{self, IntoPeripheral, gpio::input::InputPin as HalInputPin};
 
     use super::Input;
 
@@ -203,13 +221,14 @@ pub mod input {
     pub use ariel_os_embassy_common::gpio::input::InterruptError;
 
     /// Builder type for [`Input`], can be obtained with [`Input::builder()`].
-    pub struct InputBuilder<P: Peripheral<P: HalInputPin>> {
-        pub(crate) pin: P,
+    pub struct InputBuilder<'a, T: IntoPeripheral<'a, P>, P: HalInputPin> {
+        pub(crate) pin: T,
         pub(crate) pull: Pull,
         pub(crate) schmitt_trigger: bool,
+        pub(crate) _phantom: PhantomData<&'a P>,
     }
 
-    impl<P: Peripheral<P: HalInputPin> + 'static> InputBuilder<P> {
+    impl<'a, T: IntoPeripheral<'a, P>, P: HalInputPin + 'a> InputBuilder<'a, T, P> {
         /// Configures the input's Schmitt trigger.
         ///
         /// # Note
@@ -257,11 +276,12 @@ pub mod input {
     }
 
     // Split the impl for consistency with outputs.
-    impl<P: Peripheral<P: HalInputPin> + 'static> InputBuilder<P> {
+    impl<'a, T: IntoPeripheral<'a, P>, P: HalInputPin> InputBuilder<'a, T, P> {
         /// Returns an [`Input`] by finalizing the builder.
-        pub fn build(self) -> Input {
+        pub fn build(self) -> Input<'a> {
+            let pin = self.pin.into_hal_peripheral();
             #[allow(irrefutable_let_patterns, reason = "conditional compilation")]
-            let Ok(input) = hal::gpio::input::new(self.pin, self.pull, self.schmitt_trigger) else {
+            let Ok(input) = hal::gpio::input::new(pin, self.pull, self.schmitt_trigger) else {
                 unreachable!()
             };
 
@@ -280,9 +300,9 @@ pub mod input {
         /// In these cases, this returns an [`Error::InterruptChannel`], with a HAL-specific error.
         // FIXME: rename this
         #[cfg(feature = "external-interrupts")]
-        pub fn build_with_interrupt(self) -> Result<IntEnabledInput, Error> {
-            let input =
-                hal::gpio::input::new_int_enabled(self.pin, self.pull, self.schmitt_trigger)?;
+        pub fn build_with_interrupt(self) -> Result<IntEnabledInput<'a>, Error> {
+            let pin = self.pin.into_hal_peripheral();
+            let input = hal::gpio::input::new_int_enabled(pin, self.pull, self.schmitt_trigger)?;
 
             Ok(IntEnabledInput { input })
         }
@@ -290,26 +310,30 @@ pub mod input {
 }
 
 /// A GPIO output.
-pub struct Output {
-    output: HalOutput<'static>, // FIXME: is this ok to require a 'static pin?
+pub struct Output<'a> {
+    output: HalOutput<'a>,
 }
 
-impl Output {
+impl<'a> Output<'a> {
     /// Returns a configured [`Output`].
-    pub fn new(pin: impl Peripheral<P: HalOutputPin> + 'static, initial_level: Level) -> Self {
+    pub fn new<T: IntoPeripheral<'a, P>, P: HalOutputPin + 'a>(
+        pin: T,
+        initial_level: Level,
+    ) -> Self {
         Self::builder(pin, initial_level).build()
     }
 
     /// Returns an [`OutputBuilder`], allowing to configure the GPIO output further.
-    pub fn builder<P: Peripheral<P: HalOutputPin>>(
-        pin: P,
+    pub fn builder<T: IntoPeripheral<'a, P>, P: HalOutputPin + 'a>(
+        pin: T,
         initial_level: Level,
-    ) -> OutputBuilder<P> {
+    ) -> OutputBuilder<'a, T, P> {
         OutputBuilder {
             pin,
             initial_level,
             drive_strength: DriveStrength::default(),
             speed: Speed::default(),
+            _phantom: PhantomData,
         }
     }
 
@@ -341,26 +365,29 @@ impl Output {
 
 pub mod output {
     //! Output-specific types.
+    use core::marker::PhantomData;
+
     use ariel_os_embassy_common::gpio::{
         DriveStrength, FromDriveStrength, FromSpeed, Level, Speed,
     };
 
-    use crate::hal::{self, gpio::output::OutputPin as HalOutputPin, peripheral::Peripheral};
+    use crate::hal::{self, IntoPeripheral, gpio::output::OutputPin as HalOutputPin};
 
     use super::{HalDriveStrength, HalSpeed, Output};
 
     /// Builder type for [`Output`], can be obtained with [`Output::builder()`].
-    pub struct OutputBuilder<P: Peripheral<P: HalOutputPin>> {
-        pub(crate) pin: P,
+    pub struct OutputBuilder<'a, T: IntoPeripheral<'a, P>, P: HalOutputPin> {
+        pub(crate) pin: T,
         pub(crate) initial_level: Level,
         pub(crate) drive_strength: DriveStrength<HalDriveStrength>,
         pub(crate) speed: Speed<HalSpeed>,
+        pub(crate) _phantom: PhantomData<&'a P>,
     }
 
     // We define this in a macro because it will be useful for open-drain outputs.
     macro_rules! impl_output_builder {
         ($type:ident, $pin_trait:ident) => {
-            impl<P: Peripheral<P: $pin_trait> + 'static> $type<P> {
+            impl<'a, T: IntoPeripheral<'a, P>, P: $pin_trait> $type<'a, T, P> {
                 /// Configures the output's drive strength.
                 ///
                 /// # Note
@@ -445,16 +472,17 @@ pub mod output {
 
     impl_output_builder!(OutputBuilder, HalOutputPin);
 
-    impl<P: Peripheral<P: HalOutputPin> + 'static> OutputBuilder<P> {
+    impl<'a, T: IntoPeripheral<'a, P>, P: HalOutputPin> OutputBuilder<'a, T, P> {
         /// Returns an [`Output`] by finalizing the builder.
-        pub fn build(self) -> Output {
+        pub fn build(self) -> Output<'a> {
             // TODO: should we move this into `output::new()`s?
             let drive_strength = <HalDriveStrength as FromDriveStrength>::from(self.drive_strength);
             // TODO: should we move this into `output::new()`s?
             let speed = <HalSpeed as FromSpeed>::from(self.speed);
 
-            let output =
-                hal::gpio::output::new(self.pin, self.initial_level, drive_strength, speed);
+            let pin = self.pin.into_hal_peripheral();
+
+            let output = hal::gpio::output::new(pin, self.initial_level, drive_strength, speed);
 
             Output { output }
         }
@@ -465,11 +493,11 @@ pub mod output {
 macro_rules! impl_embedded_hal_output_traits {
     ($type:ident, $hal_type:ident) => {
         #[doc(hidden)]
-        impl embedded_hal::digital::ErrorType for $type {
+        impl embedded_hal::digital::ErrorType for $type<'_> {
             type Error = <$hal_type<'static> as embedded_hal::digital::ErrorType>::Error;
         }
 
-        impl embedded_hal::digital::OutputPin for $type {
+        impl embedded_hal::digital::OutputPin for $type<'_> {
             fn set_high(&mut self) -> Result<(), Self::Error> {
                 <$hal_type<'_> as embedded_hal::digital::OutputPin>::set_high(&mut self.output)
             }
@@ -484,7 +512,7 @@ macro_rules! impl_embedded_hal_output_traits {
         // - embassy-rp
         // - esp-hal
         // - embassy-stm32
-        impl StatefulOutputPin for $type {
+        impl StatefulOutputPin for $type<'_> {
             fn is_set_high(&mut self) -> Result<bool, Self::Error> {
                 <$hal_type<'_> as StatefulOutputPin>::is_set_high(&mut self.output)
             }

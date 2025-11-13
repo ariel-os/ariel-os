@@ -23,8 +23,8 @@ pub use ariel_os_embassy_common::spi::main::*;
 /// However, it cannot block indefinitely as a timeout is implemented, either by leveraging
 /// SPI-specific hardware capabilities or through a generic software timeout.
 // TODO: do we actually need a CriticalSectionRawMutex here?
-pub type SpiDevice =
-    InnerSpiDevice<'static, CriticalSectionRawMutex, hal::spi::main::Spi, gpio::Output>;
+pub type SpiDevice<'a> =
+    InnerSpiDevice<'a, CriticalSectionRawMutex, hal::spi::main::Spi, gpio::Output<'a>>;
 
 /// Returns the highest SPI frequency available on the MCU that fits into the requested
 /// range.

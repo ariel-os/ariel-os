@@ -74,6 +74,7 @@ mod isr_stack {
         CONFIG_ISR_STACKSIZE
     };
 
+    #[cfg(not(context = "xtensa"))]
     core::arch::global_asm!(
         r#"
         .section .isr_stack, "wa"
@@ -81,6 +82,11 @@ mod isr_stack {
         "#,
         size = const ISR_STACKSIZE
     );
+
+    #[cfg(context = "xtensa")]
+    #[used]
+    #[unsafe(link_section = ".isr_stack")]
+    static ISR_STACK: [u8; ISR_STACKSIZE] = [0; ISR_STACKSIZE];
 
     pub fn limits() -> (usize, usize) {
         #[cfg(not(feature = "multi-core"))]

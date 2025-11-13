@@ -8,9 +8,8 @@ pub mod gpio;
 
 #[doc(hidden)]
 pub mod peripheral {
-    pub use embassy_rp::Peripheral;
+    pub use embassy_rp::Peri;
 }
-
 #[cfg(context = "rp235xa")]
 mod picotool;
 
@@ -65,12 +64,28 @@ pub use embassy_executor::InterruptExecutor as Executor;
 #[doc(hidden)]
 pub use embassy_rp::interrupt;
 
+use embassy_rp::{Peri, PeripheralType};
+
 #[cfg(feature = "executor-interrupt")]
 ariel_os_embassy_common::executor_swi!(SWI_IRQ_1);
 
 #[cfg(feature = "executor-interrupt")]
 #[doc(hidden)]
 pub static EXECUTOR: Executor = Executor::new();
+
+// TODO(bump):
+// - use this where needed
+#[doc(hidden)]
+pub trait IntoPeripheral<'a, T: PeripheralType> {
+    fn into_hal_peripheral(self) -> Peri<'a, T>;
+}
+
+#[doc(hidden)]
+impl<'a, T: PeripheralType> IntoPeripheral<'a, T> for Peri<'a, T> {
+    fn into_hal_peripheral(self) -> Peri<'a, T> {
+        self
+    }
+}
 
 #[doc(hidden)]
 #[must_use]

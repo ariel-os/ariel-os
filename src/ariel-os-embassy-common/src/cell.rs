@@ -54,7 +54,8 @@ impl<T> SameExecutorCell<T> {
     ///
     /// Despite being async, this function never blocks/yields, it returns instantly.
     pub async fn new_async(inner: T) -> Self {
-        let spawner = Spawner::for_current_executor().await;
+        // SAFETY: safe unless intentionally exploited.
+        let spawner = unsafe { Spawner::for_current_executor().await };
         SameExecutorCell::new(inner, spawner)
     }
 
@@ -62,7 +63,8 @@ impl<T> SameExecutorCell<T> {
     ///
     /// Despite being async, this function never blocks/yields, it returns instantly.
     pub async fn get_async(&self) -> Option<&T> {
-        let spawner = Spawner::for_current_executor().await;
+        // SAFETY: safe unless intentionally exploited.
+        let spawner = unsafe { Spawner::for_current_executor().await };
         self.get(spawner)
     }
 }
