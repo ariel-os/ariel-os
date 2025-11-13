@@ -1,0 +1,3 @@
+boards:
+  apple-m:
+    chip: m-chip
