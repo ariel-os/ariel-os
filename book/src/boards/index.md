@@ -28,6 +28,7 @@ Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have 
 - [nRF52-DK](./nrf52dk.md)
 - [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160dk-nrf9160.md)
+- [Seeed Studio XIAO ESP32C6](./seeedstudio-xiao-esp32c6.md)
 - [ST B-L475E-IOT01A](./st-b-l475e-iot01a.md)
 - [ST NUCLEO-F401RE](./st-nucleo-f401re.md)
 - [STEVAL-MKBOXPRO](./st-steval-mkboxpro.md)

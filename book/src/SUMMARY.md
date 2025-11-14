@@ -26,6 +26,7 @@
   - [Raspberry Pi Pico 2 W](./boards/rpi-pico2-w.md)
   - [Raspberry Pi Pico W](./boards/rpi-pico-w.md)
   - [Seeed Studio LoRa-E5 mini](./boards/seeedstudio-lora-e5-mini.md)
+  - [Seeed Studio XIAO ESP32C6](./boards/seeedstudio-xiao-esp32c6.md)
   - [ST B-L475E-IOT01A](./boards/st-b-l475e-iot01a.md)
   - [ST NUCLEO-C031C6](./boards/st-nucleo-c031c6.md)
   - [ST NUCLEO-F042K6](./boards/st-nucleo-f042k6.md)

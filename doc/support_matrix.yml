@@ -856,6 +856,13 @@ boards:
     tier: "3"
     support:
 
+  seeedstudio-xiao-esp32c6:
+    name: Seeed Studio XIAO ESP32C6
+    url: https://web.archive.org/web/20250827114042/https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
+    chip: esp32c6fx4
+    tier: "2"
+    support:
+
   seeedstudio-lora-e5-mini:
     name: Seeed Studio LoRa-E5 mini
     url: https://web.archive.org/web/20250802201959/https://wiki.seeedstudio.com/LoRa_E5_mini/
