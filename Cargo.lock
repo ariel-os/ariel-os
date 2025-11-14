@@ -4949,8 +4949,6 @@ dependencies = [
  "ariel-os-boards",
  "ariel-os-sensors",
  "embassy-sync 0.6.2",
- "embedded-hal 1.0.0",
- "embedded-hal-async",
  "once_cell",
 ]
 
