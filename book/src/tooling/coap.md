@@ -279,11 +279,12 @@ to accept requests from newly created Ariel OS based CoAP clients
 without the need for the CoAP client to create a network connection to the host.
 (Instead, the host needs to find the Resource Server over the network).
 
-> Note: Some more exploration of this workflow will be necessary
-  as to how the client can trigger the AS to re-install (or renew) its token
-  in case the Resource Server retired the token before its expiration.
-  For Ariel OS internal use,
-  AS-provisioned tokens might just be retained longer.
+> [!NOTE]
+> Some more exploration of this workflow will be necessary
+> as to how the client can trigger the AS to re-install (or renew) its token
+> in case the Resource Server retired the token before its expiration.
+> For Ariel OS internal use,
+> AS-provisioned tokens might just be retained longer.
 
 [New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
 

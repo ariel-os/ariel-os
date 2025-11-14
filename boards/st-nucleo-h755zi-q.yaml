@@ -1,0 +1,30 @@
+boards:
+  st-nucleo-h755zi-q:
+    chip: stm32h755zi
+    flags:
+      - has_eth_stm32
+      - has_usb_device_port
+    ariel:
+      swi: UART5
+    leds:
+      led0:
+        pin: PB0
+        aliases:
+          - LD1
+        color: green
+        active: high
+      led1:
+        pin: PE1
+        aliases:
+          - LD2
+        color: yellow
+        active: high
+      led2:
+        pin: PE1
+        aliases:
+          - LD3
+        color: red
+        active: high
+    buttons:
+      button0:
+        pin: PC13

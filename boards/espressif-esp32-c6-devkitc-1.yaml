@@ -1,0 +1,7 @@
+boards:
+  espressif-esp32-c6-devkitc-1:
+    chip: esp32-c6-wroom-1
+    buttons:
+      button0:
+        pin: GPIO9
+        active: low

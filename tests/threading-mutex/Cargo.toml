@@ -1,14 +1,14 @@
 [package]
 name = "threading-mutex"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os" }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embassy-executor = { workspace = true }
+portable-atomic = "1.6.0"
 
 [lints]
 workspace = true
-
-[dependencies]
-embassy-executor = { workspace = true }
-ariel-os = { path = "../../src/ariel-os" }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
-portable-atomic = "1.6.0"

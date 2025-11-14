@@ -1,0 +1,21 @@
+boards:
+  st-b-l475e-iot01a:
+    chip: stm32l475vg
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: UART5
+    leds:
+      led0:
+        pin: PA5
+        aliases:
+          - LD1
+        color: green
+      led1:
+        pin: PB14
+        aliases:
+          - LD2
+        color: green
+    buttons:
+      button0:
+        pin: PC13

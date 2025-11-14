@@ -1,0 +1,37 @@
+boards:
+  nrf52dk:
+    chip: nrf52832
+    leds:
+      led0:
+        color: green
+        pin: P0_17
+        active: low
+      led1:
+        color: green
+        pin: P0_18
+        active: low
+      led2:
+        color: green
+        pin: P0_19
+        active: low
+      led3:
+        color: green
+        pin: P0_20
+
+    buttons:
+      button0:
+        color: green
+        pin: P0_13
+        active: low
+      button1:
+        color: green
+        pin: P0_14
+        active: low
+      button2:
+        color: green
+        pin: P0_15
+        active: low
+      button3:
+        color: green
+        pin: P0_16
+        active: low

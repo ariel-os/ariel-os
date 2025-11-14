@@ -31,6 +31,7 @@ pub struct FunctionalityInfo {
 #[serde(deny_unknown_fields)]
 pub struct ChipInfo {
     pub name: String,
+    pub manufacturer: String,
     pub description: Option<String>,
     pub support: HashMap<String, SupportInfo>,
 }
@@ -46,7 +47,7 @@ pub struct BoardInfo {
     pub support: HashMap<String, SupportInfo>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 #[serde(untagged)]
 pub enum SupportInfo {

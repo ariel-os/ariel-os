@@ -1,11 +1,8 @@
 [package]
 name = "http-client"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = [
@@ -20,3 +17,6 @@ rand_core = { workspace = true }
 reqwless = { version = "0.13.0", default-features = true, features = [
   "embedded-tls",
 ] }
+
+[lints]
+workspace = true

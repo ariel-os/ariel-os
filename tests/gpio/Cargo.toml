@@ -1,11 +1,8 @@
 [package]
 name = "tests_gpio"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [[test]]
 name = "test"
@@ -16,3 +13,6 @@ harness = false
 ariel-os = { path = "../../src/ariel-os", features = ["external-interrupts"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embedded-test = { workspace = true }
+
+[lints]
+workspace = true

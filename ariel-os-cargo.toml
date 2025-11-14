@@ -45,8 +45,5 @@ esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06
 esp-wifi = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
 xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "aa8d1995fc06eb5e6d04a2022ecf3679b4929e63" }
 
-# patched to use portable-atomics <https://github.com/seanmonstar/try-lock/pull/11>
-try-lock = { git = "https://github.com/seanmonstar/try-lock", rev = "45c39685b56a4dba1b71bdbbbe5f731c3c77dc50" }
-
 # branch = "v0.6.2+ariel-os"
 embedded-test = { git = "https://github.com/ariel-os/embedded-test", rev = "20642538eb4e6fa44b5f37723b07946c74b5c757" }

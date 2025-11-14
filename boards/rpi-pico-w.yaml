@@ -1,0 +1,7 @@
+boards:
+  rpi-pico-w:
+    chip: rp2040
+    flags:
+      - has_ble_cyw43
+      - has_wifi_cyw43
+      - has_usb_device_port

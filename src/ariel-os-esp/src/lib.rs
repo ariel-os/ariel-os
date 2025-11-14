@@ -1,7 +1,7 @@
 //! Items specific to the Espressif ESP MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 #[cfg(all(feature = "threading", feature = "wifi"))]
@@ -29,6 +29,9 @@ pub mod identity {
 
 #[cfg(feature = "spi")]
 pub mod spi;
+
+#[cfg(feature = "uart")]
+pub mod uart;
 
 #[cfg(feature = "usb")]
 #[doc(hidden)]
@@ -146,10 +149,11 @@ pub fn init() -> OptionalPeripherals {
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
 
     #[cfg(any(feature = "hwrng", feature = "wifi-esp"))]
-    let rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
+    #[cfg_attr(feature = "wifi-esp", expect(unused_mut))]
+    let mut rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
 
     #[cfg(feature = "hwrng")]
-    ariel_os_random::construct_rng(rng);
+    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
 
     #[cfg(feature = "wifi-esp")]
     {

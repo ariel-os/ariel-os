@@ -20,9 +20,9 @@
     {%- for board in boards %}
     <tr>
       <td>{{ board.chip }}</td>
-      <td><code>{{ board.chip_technical_name }}</code></td>
+      <td><a href="{{ board.chip_doc }}"><code>{{ board.chip_technical_name }}</code></a></td>
       <td><a href="{{ board.url }}">{{ board.name }}</a></td>
-      <td><code>{{ board.technical_name }}</code></td>
+      <td><a href="{{ board.board_doc }}"><code>{{ board.technical_name }}</code></a></td>
       {%- for functionality in board.functionalities %}
       <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
       {%- endfor %}

@@ -4,7 +4,7 @@
 
 - **Tier:** {{ board_info.tier }}
 - **Ariel OS Name:** `{{ board_info.technical_name }}`
-- **Chip:** {{ board_info.chip }}
+- **Chip:** [{{ board_info.chip }}](../chips/{{ board_info.chip_technical_name }}.md)
 - **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
 
 ### References
@@ -13,30 +13,13 @@
 
 ## Support Matrix
 
-<table>
-  <thead>
-    <tr>
-      <th>Functionality</th>
-      <th>Support Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {%- for functionality in board_info.functionalities %}
-    <tr>
-      <td>{{ functionality.title }}</td>
-      <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
-    </tr>
-    {%- endfor %}
-  </tbody>
-</table>
+|Functionality|Support Status|
+|---|:---:|
+{%- for functionality in board_info.functionalities %}
+|{{ functionality.title }}|<span title="{{ functionality.description }}">{{ functionality.icon }}</span>{%- if functionality.comments %}{%- for comment in functionality.comments %}[^{{ comment|slugify }}]{%- endfor %}{%- endif %}|
+{%- endfor %}
 
-<style>
-.support-cell {
-  text-align: center;
-}
-</style>
-
-Legend:
+<p>Legend:</p>
 
 <dl>
   {%- for support_key in support_keys %}
@@ -50,3 +33,8 @@ dt, dd {
   display: inline;
 }
 </style>
+{% for functionality in board_info.functionalities %}
+  {%- for comment in functionality.comments %}
+[^{{ comment|slugify }}]: {{ comment|capitalize_first }}.
+  {%- endfor %}
+{%- endfor %}

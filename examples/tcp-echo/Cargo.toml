@@ -1,13 +1,13 @@
 [package]
 name = "tcp-echo"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embedded-io-async = "0.6.1"
 
 [lints]
 workspace = true
-
-[dependencies]
-embedded-io-async = "0.6.1"
-ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }

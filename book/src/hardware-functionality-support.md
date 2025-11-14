@@ -2,6 +2,7 @@
 
 # Hardware & Functionality Support
 
+> [!NOTE]
 > The tables below indicate whether we support using the piece of functionality in a portable manner, through an abstraction layer and platform-aware configuration.
 
 Hardware support is organized into tiers, each with their own testing policy:

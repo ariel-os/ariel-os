@@ -1,7 +1,7 @@
 //! Items specific to the STMicroelectronics STM32 MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -23,6 +23,9 @@ pub mod identity;
 
 #[cfg(feature = "spi")]
 pub mod spi;
+
+#[cfg(feature = "uart")]
+pub mod uart;
 
 #[cfg(feature = "storage")]
 #[doc(hidden)]
@@ -164,9 +167,9 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.pll_src = PllSource::HSE;
         rcc.pll = Some(Pll {
             prediv: PllPreDiv::DIV4,
-            mul: PllMul::MUL84,
-            divp: Some(PllPDiv::DIV2),
-            divq: None,
+            mul: PllMul::MUL168,
+            divp: Some(PllPDiv::DIV4),
+            divq: Some(PllQDiv::DIV7),
             divr: None,
         });
         rcc.ahb_pre = AHBPrescaler::DIV1;
@@ -223,6 +226,36 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.voltage_scale = VoltageScale::Scale1;
         // Set SMPS power config otherwise MCU will not powered after next power-off
         rcc.supply_config = SupplyConfig::DirectSMPS;
+        rcc.mux.usbsel = mux::Usbsel::HSI48;
+        // Select the clock signal used for SPI1, SPI2, and SPI3.
+        // FIXME: what to do about SPI4, SPI5, and SPI6?
+        rcc.mux.spi123sel = mux::Saisel::PLL1_Q; // Reset value
+    }
+
+    #[cfg(context = "stm32h753zi")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hsi = Some(HSIPrescaler::DIV1);
+        rcc.csi = true;
+        rcc.hsi48 = Some(Hsi48Config {
+            sync_from_usb: true,
+        }); // needed for USB
+        rcc.pll1 = Some(Pll {
+            source: PllSource::HSI,
+            prediv: PllPreDiv::DIV4,
+            mul: PllMul::MUL50,
+            divp: Some(PllDiv::DIV2),
+            divq: Some(PllDiv::DIV16), // 50 MHz
+            divr: None,
+        });
+        rcc.sys = Sysclk::PLL1_P; // 400 Mhz
+        rcc.ahb_pre = AHBPrescaler::DIV2; // 200 Mhz
+        rcc.apb1_pre = APBPrescaler::DIV2; // 100 Mhz
+        rcc.apb2_pre = APBPrescaler::DIV2; // 100 Mhz
+        rcc.apb3_pre = APBPrescaler::DIV2; // 100 Mhz
+        rcc.apb4_pre = APBPrescaler::DIV2; // 100 Mhz
+        rcc.voltage_scale = VoltageScale::Scale1;
         rcc.mux.usbsel = mux::Usbsel::HSI48;
         // Select the clock signal used for SPI1, SPI2, and SPI3.
         // FIXME: what to do about SPI4, SPI5, and SPI6?

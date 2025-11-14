@@ -22,6 +22,7 @@ members = [
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
+  "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "tests/benchmarks/bench_sched_flags",
@@ -32,12 +33,14 @@ members = [
   "tests/gpio-interrupt-nrf",
   "tests/gpio-interrupt-stm32",
   "tests/i2c-controller",
+  "tests/random-getrandom",
   "tests/spi-loopback",
   "tests/spi-main",
   "tests/threading-dynamic-prios",
   "tests/threading-lock",
   "tests/threading-mutex",
   "tests/threading-fpu",
+  "tests/uart-loopback",
 ]
 
 exclude = ["src/lib", "doc"]
@@ -128,6 +131,7 @@ ariel-os-rp = { path = "src/ariel-os-rp" }
 ariel-os-rt = { path = "src/ariel-os-rt" }
 ariel-os-runqueue = { path = "src/ariel-os-runqueue" }
 ariel-os-sensors = { path = "src/ariel-os-sensors" }
+ariel-os-sensors-utils = { path = "src/ariel-os-sensors-utils" }
 ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
@@ -146,8 +150,8 @@ once_cell = { version = "=1.19.0", default-features = false, features = [
 ] }
 paste = { version = "1.0" }
 pin-project = "1.1.10"
-rand = { version = "0.8.5", default-features = false }
-rand_core = { version = "0.6.4", default-features = false }
+rand = { version = "0.9.2", default-features = false }
+rand_core = { version = "0.9.3", default-features = false }
 rtt-target = { version = "0.6.0" }
 
 rp-pac = { version = "7.0", default-features = false }
@@ -167,6 +171,8 @@ unused_must_use = "deny"
 # ... until we figure out a way to generate a list of all used cfg variables
 # across build configurations ...
 unexpected_cfgs = "allow"
+# When writing code, explicitly opt-out per module by adding `#[expect(unsafe_code)]`
+unsafe_code = "warn"
 
 [workspace.lints.clippy]
 # Clippy lints are documented here: https://rust-lang.github.io/rust-clippy/master/index.html
@@ -177,6 +183,7 @@ pedantic = { level = "warn", priority = -1 }
 too_long_first_doc_paragraph = "warn"
 unused_result_ok = "deny"
 unused_trait_names = "warn"
+undocumented_unsafe_blocks = "warn"
 
 [workspace.lints.rustdoc]
 broken_intra_doc_links = "deny"

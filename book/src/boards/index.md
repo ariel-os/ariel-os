@@ -23,8 +23,10 @@ Tier 1 hardware gets regularly tested, either automatically or manually.
 
 Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have access to the hardware.
 
+- [DFRobot FireBeetle 2 ESP32-C6](./dfrobot-firebeetle2-esp32-c6.md)
 - [Nordic Thingy:91 X](./nordic-thingy-91-x-nrf9151.md)
 - [nRF52-DK](./nrf52dk.md)
+- [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160dk-nrf9160.md)
 - [ST B-L475E-IOT01A](./st-b-l475e-iot01a.md)
 - [ST NUCLEO-F401RE](./st-nucleo-f401re.md)
@@ -35,8 +37,11 @@ Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have 
 Tier 3 hardware is build-tested only, as Ariel OS maintainers do not have access to the hardware.
 
 - [BBC micro:bit V1](./bbc-microbit-v1.md)
+- [Espressif ESP32-C3-DevKit-RUST-1](./espressif-esp32-c3-devkit-rust-1.md)
+- [Espressif ESP32-S2-DevKitC-1](./espressif-esp32-s2-devkitc-1.md)
 - [Heltec WiFi LoRa 32 V3](./heltec-wifi-lora-32-v3.md)
 - [Seeed Studio LoRa-E5 mini](./seeedstudio-lora-e5-mini.md)
 - [ST NUCLEO-F042K6](./st-nucleo-f042k6.md)
 - [ST NUCLEO-F411RE](./st-nucleo-f411re.md)
+- [ST NUCLEO-H753ZI](./st-nucleo-h753zi.md)
 - [ST NUCLEO-WBA55CG](./st-nucleo-wba55.md)

@@ -1,0 +1,9 @@
+boards:
+  espressif-esp32-s3-devkitc-1:
+    chip: esp32-s3-wroom-1
+    flags:
+      - has_usb_device_port
+    buttons:
+      button0:
+        pin: GPIO0
+        active: low

@@ -19,7 +19,7 @@ fn main() {
         (8 * KIBIBYTES, 4 * KIBIBYTES)
     } else if is_in_current_contexts(&["stm32u585ai"]) {
         (16 * KIBIBYTES, 8 * KIBIBYTES)
-    } else if is_in_current_contexts(&["stm32h755zi"]) {
+    } else if is_in_current_contexts(&["stm32h755zi", "stm32h753zi"]) {
         (256 * KIBIBYTES, 128 * KIBIBYTES)
     } else if !is_in_current_contexts(&["ariel-os"]) {
         // Dummy value for platform-independent tooling.
