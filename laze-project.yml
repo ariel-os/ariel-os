@@ -1272,6 +1272,23 @@ modules:
         FEATURES:
           - ariel-os/usb-ethernet
 
+  - name: ble-config-static-mac
+    help: Use a static MAC address for BLE, for debugging/testing only
+    selects:
+      - ble
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ble-config-static-mac
+
+  - name: ble-config-public-mac
+    help: Use a public MAC address for BLE, fallback to a static random address otherwise
+    selects:
+      - ble
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ble-config-public-mac
   - name: ble
     selects:
       - hw/ble
@@ -1725,7 +1742,7 @@ modules:
     env:
       global:
         # `cargo install embedded-test-std-runner`
-        CARGO_RUNNER: 'embedded-test-std-runner'
+        CARGO_RUNNER: "embedded-test-std-runner"
 
   # This helper module works around laze not supporting sth like "if context == foo then depend on bar".
   - name: esp-single-core

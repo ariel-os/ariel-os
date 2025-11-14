@@ -133,6 +133,7 @@ ble = [
   # Some HALs need hwrng to initialize the BLE stack.
   "hwrng",
   "ariel-os-hal/ble",
+  "random",
 ]
 ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
@@ -142,7 +143,8 @@ threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-ipv4-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
-ble-config-override = []
+ble-config-static-mac = []
+ble-config-public-mac = []
 
 executor-single-thread = [
   "ariel-os-hal/executor-single-thread",

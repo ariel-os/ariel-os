@@ -102,6 +102,9 @@ liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
 liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
 # Selects static IPv4 configuration.
 network-config-ipv4-static = ["ariel-os-embassy/network-config-ipv4-static"]
+# Selects static BLE address configuration. For debugging/testing only.
+ble-config-static-mac = ["ariel-os-embassy/ble-config-static-mac"]
+ble-config-public-mac = ["ariel-os-embassy/ble-config-public-mac"]
 
 #! ## Serial communication
 ## Enables I2C support.
@@ -120,8 +123,6 @@ usb-hid = ["ariel-os-embassy/usb-hid"]
 #! specific system functionality.
 #! The features below need to be enabled so that the provided custom
 #! configuration is taken into account.
-# Enables custom BLE configuration.
-ble-config-override = ["ariel-os-embassy/ble-config-override"]
 ## Enables custom network configuration.
 network-config-override = ["ariel-os-embassy/network-config-override"]
 ## Enables custom USB configuration.

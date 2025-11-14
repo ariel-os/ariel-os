@@ -255,7 +255,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     }
 
     #[cfg(feature = "ble")]
-    let ble_config = ble::config();
+    let ble_config = ble::config().await;
     #[cfg(all(feature = "ble", not(context = "rp")))]
     hal::ble::driver(ble_peripherals, spawner, ble_config);
 
