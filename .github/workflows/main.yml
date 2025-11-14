@@ -82,8 +82,8 @@ jobs:
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
           # Required for checking ariel-os-esp and ariel-os-nrf
-          targets: riscv32imac-unknown-none-elf, thumbv7em-none-eabi
-          components: clippy, rustfmt
+          targets: riscv32imac-unknown-none-elf, thumbv7em-none-eabi, thumbv8m.main-none-eabihf
+          components: clippy, rustfmt, llvm-tools
 
       - name: rust cache
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
@@ -198,7 +198,7 @@ jobs:
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="nrf9151" --cfg context="nrf91" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -208,14 +208,16 @@ jobs:
             --features "
                 ble-central,
                 ble-peripheral,
-                embassy-nrf/nrf52840,
+                embassy-nrf/nrf9151-s,
                 external-interrupts,
                 i2c,
+                nrf91-modem,
+                nrf-modem/nrf9151,
                 spi,
                 uart,
                 "
             -p ariel-os-nrf
-            --target=thumbv7em-none-eabi
+            --target=thumbv8m.main-none-eabihf
             --
             --deny warnings
 
