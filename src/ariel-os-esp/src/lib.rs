@@ -78,24 +78,10 @@ pub fn init() -> OptionalPeripherals {
 
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
 
-    #[cfg(any(feature = "hwrng", feature = "wifi-esp"))]
-    #[cfg_attr(feature = "wifi-esp", expect(unused_mut))]
-    let mut rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
-
     #[cfg(feature = "hwrng")]
-    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
-
-    #[cfg(feature = "wifi-esp")]
     {
-        use esp_hal::timer::timg::TimerGroup;
-
-        ariel_os_debug::log::debug!("ariel-os-embassy::hal::esp::init(): wifi");
-
-        let timer = TimerGroup::new(peripherals.TIMG0.take().unwrap()).timer0;
-
-        let init = esp_wifi::init(timer, rng, peripherals.RADIO_CLK.take().unwrap()).unwrap();
-
-        wifi::esp_wifi::WIFI_INIT.set(init).unwrap();
+        let mut rng = esp_hal::rng::Rng::new();
+        ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
     }
 
     let embassy_timer = {

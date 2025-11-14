@@ -178,7 +178,7 @@ dependencies = [
  "ariel-os-utils",
  "embedded-alloc",
  "embedded-test",
- "esp-alloc 0.8.0",
+ "esp-alloc",
 ]
 
 [[package]]
@@ -346,10 +346,11 @@ dependencies = [
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
- "esp-alloc 0.8.0",
+ "esp-alloc",
  "esp-bootloader-esp-idf",
  "esp-hal",
  "esp-radio",
+ "esp-radio-rtos-driver",
  "esp-rom-sys",
  "esp-sync",
  "esp-wifi-sys",
@@ -2448,20 +2449,6 @@ dependencies = [
 
 [[package]]
 name = "esp-alloc"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e95f1de57ce5a6600368f3d3c931b0dfe00501661e96f5ab83bc5cdee031784"
-dependencies = [
- "allocator-api2",
- "cfg-if",
- "critical-section",
- "document-features",
- "enumset",
- "linked_list_allocator",
-]
-
-[[package]]
-name = "esp-alloc"
 version = "0.9.0"
 source = "git+https://github.com/ariel-os/esp-hal?rev=643ac64a2edec6337b2b1ea00f7002726fa3f9c7#643ac64a2edec6337b2b1ea00f7002726fa3f9c7"
 dependencies = [
@@ -2622,7 +2609,7 @@ dependencies = [
  "document-features",
  "embassy-net-driver",
  "enumset",
- "esp-alloc 0.9.0",
+ "esp-alloc",
  "esp-config",
  "esp-hal",
  "esp-hal-procmacros",

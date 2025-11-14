@@ -31,6 +31,7 @@ esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "wifi",
 ], optional = true }
+esp-radio-rtos-driver = { workspace = true, default-features = false, optional = true }
 esp-rom-sys = { workspace = true }
 esp-sync = { workspace = true, optional = true }
 esp-wifi-sys = { workspace = true, optional = true }
@@ -149,7 +150,7 @@ usb = []
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "wifi"]
+wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "dep:esp-radio-rtos-driver", "wifi"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.
