@@ -309,6 +309,7 @@ contexts:
   - name: nrf9160
     parent: nrf91
     provides:
+      - has_nrf91_modem
       - has_storage_support
     env:
       PROBE_RS_CHIP: nRF9160_xxAA
@@ -316,6 +317,7 @@ contexts:
   - name: nrf9151
     parent: nrf91
     provides:
+      - has_nrf91_modem
       - has_storage_support
     env:
       # FIXME: probe-rs does not support the nRF9151_xxAA yet, because there is
@@ -1334,6 +1336,18 @@ modules:
   - name: has_ble
     selects:
       - doc-only
+
+  - name: has_nrf91_modem
+    selects:
+      - doc-only
+
+  - name: nrf91-modem
+    selects:
+      - has_nrf91_modem
+    env:
+      global:
+        FEATURES:
+          - ariel-os/nrf91-modem
 
   - name: usb
     selects:
