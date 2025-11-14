@@ -32,16 +32,16 @@ embassy-rp = { git = "https://github.com/kaspar030/embassy", rev = "0314802282e1
 # branch = "embassy-stm32-v0.4.0+ariel-os"
 embassy-stm32 = { git = "https://github.com/kaspar030/embassy", rev = "1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c" }
 
-# ariel-os esp-hal fork, using branch = "esp-hal-v1.0.0+ariel-os"
-esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-bootloader-esp-idf = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-hal = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-radio = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-radio-rtos-driver = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-rom-sys = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-esp-sync = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
-xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2edec6337b2b1ea00f7002726fa3f9c7" }
+# ariel-os esp-hal fork, using branch = "esp-hal-v1.0.0+20251203+ariel-os"
+esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-bootloader-esp-idf = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-hal = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-radio = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-radio-rtos-driver = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-rom-sys = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-sync = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 
 # branch = "v0.6.2+ariel-os"
 embedded-test = { git = "https://github.com/ariel-os/embedded-test", rev = "20642538eb4e6fa44b5f37723b07946c74b5c757" }

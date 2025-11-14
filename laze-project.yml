@@ -1581,6 +1581,8 @@ modules:
   - name: wifi-esp
     selects:
       - alloc
+      - multi-core:
+          - core-affinity
     context:
       - esp
     provides_unique:
@@ -1647,6 +1649,15 @@ modules:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: core-affinity
+    help: allow threads to be bound to a specific core
+    selects:
+      - multi-core
+    env:
+      global:
+        FEATURES:
+          - ariel-os/core-affinity
 
   - name: has_multi_core_support
     selects:
