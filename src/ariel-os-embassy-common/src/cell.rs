@@ -50,6 +50,15 @@ impl<T> SameExecutorCell<T> {
         }
     }
 
+    /// Gets the contents of this [`SameExecutorCell`] exclusively from an exclusive reference.
+    pub fn get_mut(&mut self, spawner: Spawner) -> Option<&mut T> {
+        if spawner.executor_id() == self.executor_id {
+            Some(&mut self.inner)
+        } else {
+            None
+        }
+    }
+
     /// Creates a new [`SameExecutorCell`] (async version).
     ///
     /// Despite being async, this function never blocks/yields, it returns instantly.
@@ -66,5 +75,14 @@ impl<T> SameExecutorCell<T> {
         // SAFETY: safe unless intentionally exploited.
         let spawner = unsafe { Spawner::for_current_executor().await };
         self.get(spawner)
+    }
+
+    /// Gets the contents of this [`SameExecutorCell`] exclusively from an exclusive reference.
+    ///
+    /// Despite being async, this function never blocks/yields, it returns instantly.
+    pub async fn get_mut_async(&mut self) -> Option<&mut T> {
+        // SAFETY: safe unless intentionally exploited.
+        let spawner = unsafe { Spawner::for_current_executor().await };
+        self.get_mut(spawner)
     }
 }
