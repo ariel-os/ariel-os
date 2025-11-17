@@ -1,0 +1,21 @@
+[package]
+name = "thermometer"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["time", "i2c", "sensors"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+stm32-lcd-driver = { git = "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git" }
+
+ariel-os-sensor-stts22h = { path = "../../src/sensors/ariel-os-sensor-stts22h" }
+ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
+
+
+cfg-if = { workspace = true }
+embassy-sync = { workspace = true }
+once_cell = { workspace = true }
+
+[lints]
+workspace = true
