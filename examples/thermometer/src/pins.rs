@@ -38,7 +38,6 @@ ariel_os::hal::define_peripherals!(Pins {
     pd5: PD5,
     pd6: PD6,
     pc11: PC11,
-
 });
 
 ariel_os::hal::define_peripherals!(I2CPins {

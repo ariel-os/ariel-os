@@ -5,7 +5,11 @@ license.workspace = true
 publish = false
 
 [dependencies]
-ariel-os = { path = "../../src/ariel-os", features = ["time", "i2c", "sensors"] }
+ariel-os = { path = "../../src/ariel-os", features = [
+  "i2c",
+  "sensors",
+  "time",
+] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 stm32-lcd-driver = { git = "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git" }
 
