@@ -9,7 +9,7 @@ use ariel_os::{
     debug::log::{error, info},
     sensors::{
         REGISTRY, Reading as _,
-        sensor::{ReadingChannel, Sample, SampleMetadata},
+        sensor::{ReadingChannel, Sample},
     },
     time::Timer,
 };
@@ -73,74 +73,66 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     };
 
     let channel_scaling = reading_channel.scaling();
-    let value = if channel_scaling < 0 {
-        value as f32 / 10i32.pow(-channel_scaling as u32) as f32
+    let (integer_part, decimal_part) =  if channel_scaling < 0 {
+        let int_part = value as i32 / 10_i32.pow(channel_scaling.abs() as u32);
+        (int_part, value.abs() - int_part.abs() * 10_i32.pow(channel_scaling.abs() as u32))
     } else {
-        value as f32 * 10i32.pow(channel_scaling as u32) as f32
+        let int_part = value as i32 / 10_i32.pow(channel_scaling as u32);
+        (int_part, value.abs() - int_part.abs() * 10_i32.pow(channel_scaling as u32))
     };
 
-    match sample.metadata() {
-        SampleMetadata::SymmetricalError {
-            deviation: _,
-            bias: _,
-            scaling: _,
-        }
-        | SampleMetadata::UnknownAccuracy
-        | SampleMetadata::NoMeasurementError => {
-            // 6 "Digits" available on the LCD display but
-            // - '.' takes no space on the LCD display
-            // - '°' takes up 2 bytes
-            // so the buffer has to hold 8 bytes;
-            let mut lcd_bytes = [0_u8; 8];
 
-            lcd_bytes[5..8].copy_from_slice("°C".as_bytes());
 
-            let start = if value >= 1000_f32 {
-                unreachable!("No way that this sensor survives 1000 °C");
-            } else if value >= 100_f32 {
-                // Unlikely but possible
-                let h = digit((value / 100_f32) as u32 - (value / 1000_f32) as u32 * 10);
-                let d = digit((value / 10_f32) as u32 - (value / 100_f32) as u32 * 10);
-                let u = digit((value / 1_f32) as u32 - (value / 10_f32) as u32 * 10);
-                lcd_bytes[0..2].copy_from_slice("  ".as_bytes());
-                lcd_bytes[2..3].copy_from_slice(h.as_bytes());
-                lcd_bytes[3..4].copy_from_slice(d.as_bytes());
-                lcd_bytes[4..5].copy_from_slice(u.as_bytes());
-                2
-            } else if value >= 0_f32 {
-                let d = digit((value / 10_f32) as u32 - (value / 100_f32) as u32 * 10);
-                let u = digit(value as u32 - ((value / 10_f32) as u32 * 10));
-                let dec = digit((value * 10_f32) as u32 - value as u32 * 10);
-                let cent = digit((value * 100_f32) as u32 - (value * 10_f32) as u32 * 10);
-                lcd_bytes[0..1].copy_from_slice(d.as_bytes());
-                lcd_bytes[1..2].copy_from_slice(u.as_bytes());
-                lcd_bytes[2..3].copy_from_slice(".".as_bytes());
-                lcd_bytes[3..4].copy_from_slice(dec.as_bytes());
-                lcd_bytes[4..5].copy_from_slice(cent.as_bytes());
-                0
-            } else if value >= -100_f32 {
-                let value = value.abs();
-                let d = digit((value / 10_f32) as u32 - ((value / 100_f32) as u32 * 10));
-                let u = digit(value as u32 - ((value / 10_f32) as u32 * 10));
-                let dec = digit((value * 10_f32) as u32 - value as u32 * 10);
-
-                lcd_bytes[0..1].copy_from_slice("-".as_bytes());
-                lcd_bytes[1..2].copy_from_slice(d.as_bytes());
-                lcd_bytes[2..3].copy_from_slice(u.as_bytes());
-                lcd_bytes[3..4].copy_from_slice(".".as_bytes());
-                lcd_bytes[4..5].copy_from_slice(dec.as_bytes());
-                0
-            } else {
-                unreachable!("No way that this sensor survives -100°C");
-            };
-
-            lcd.clear();
-            lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start)
-                .unwrap();
-            lcd.display();
-        }
-        _ => unimplemented!(),
+    if integer_part >= 125 {
+        unreachable!("125 °C is the upper bound on operating temperature");
+    } else if integer_part <= -40 {
+        unreachable!("-40 °C is the lower bound operating temperature");
     }
+    // 6 "Digits" available on the LCD display but
+    // - '.' takes no space on the LCD display
+    // - '°' takes up 2 bytes
+    // so the buffer has to hold 8 bytes;
+    let mut lcd_bytes = [0u8; 8];
+
+    lcd_bytes[5..8].copy_from_slice("°C".as_bytes());
+    if integer_part <= 0 {
+        lcd_bytes[0..1].copy_from_slice("-".as_bytes());
+    } else {
+        lcd_bytes[0..1].copy_from_slice(" ".as_bytes());
+    }
+    assert!(decimal_part > 0);
+    let decimal_part = decimal_part as u32;
+    let integer_part = integer_part.abs() as u32;
+
+    // the buffer will hold [" XXX°C"]
+    // hundreds digit
+    let h = integer_part / 100;
+    // tens digit
+    let t = integer_part / 10 - 10 * h;
+    // units digit
+    let u = integer_part - 10 * t + 100 * h;
+    // deci digit
+    let d = decimal_part / 10_u32.pow(decimal_part.ilog10());
+
+    let start = if h != 0 {
+        // the buffer will hold ["  XXX°C"]
+        lcd_bytes[1..2].copy_from_slice(" ".as_bytes());
+        lcd_bytes[2..3].copy_from_slice(digit(h).as_bytes());
+        lcd_bytes[3..4].copy_from_slice(digit(t).as_bytes());
+        lcd_bytes[4..5].copy_from_slice(digit(u).as_bytes());
+        2
+    } else {
+        // the buffer will hold ["sXX.X°C"] where s is either " " or "-"
+        lcd_bytes[1..2].copy_from_slice(digit(t).as_bytes());
+        lcd_bytes[2..3].copy_from_slice(digit(u).as_bytes());
+        lcd_bytes[3..4].copy_from_slice(".".as_bytes());
+        lcd_bytes[4..5].copy_from_slice(digit(d).as_bytes());
+        0
+    };
+
+    lcd.clear();
+    lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start).unwrap();
+    lcd.display();
 }
 
 fn digit(a: u32) -> &'static str {
