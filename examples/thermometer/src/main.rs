@@ -21,7 +21,7 @@ async fn main(peripherals: pins::Peripherals) {
     let pins::Peripherals {
         lcd: lcd_peris,
         pins: pin_peris,
-        i2c: i2c_peris
+        i2c: i2c_peris,
     } = peripherals;
     i2c_bus::init(i2c_peris);
     sensors::init().await;
@@ -46,10 +46,11 @@ async fn main(peripherals: pins::Peripherals) {
                 Ok(samples) => {
                     for (reading_channel, sample) in samples.samples() {
                         match reading_channel.unit() {
-                            MeasurementUnit::Celsius => print_temp_to_lcd(&mut lcd, sample, reading_channel),
+                            MeasurementUnit::Celsius => {
+                                print_temp_to_lcd(&mut lcd, sample, reading_channel)
+                            }
                             _ => {}
                         }
-
                     }
                 }
                 Err(err) => {
@@ -79,9 +80,13 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     };
 
     match sample.metadata() {
-        SampleMetadata::SymmetricalError { deviation:_, bias: _, scaling: _} |
-        SampleMetadata::UnknownAccuracy |
-        SampleMetadata::NoMeasurementError => {
+        SampleMetadata::SymmetricalError {
+            deviation: _,
+            bias: _,
+            scaling: _,
+        }
+        | SampleMetadata::UnknownAccuracy
+        | SampleMetadata::NoMeasurementError => {
             // 6 "Digits" available on the LCD display but
             // - '.' takes no space on the LCD display
             // - '°' takes up 2 bytes
@@ -90,10 +95,9 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
 
             lcd_bytes[5..8].copy_from_slice("°C".as_bytes());
 
-            let start= if value >= 1000_f32 {
+            let start = if value >= 1000_f32 {
                 unreachable!("No way that this sensor survives 1000 °C");
-            }
-            else if value >= 100_f32  {
+            } else if value >= 100_f32 {
                 // Unlikely but possible
                 let h = digit((value / 100_f32) as u32 - (value / 1000_f32) as u32 * 10);
                 let d = digit((value / 10_f32) as u32 - (value / 100_f32) as u32 * 10);
@@ -103,8 +107,7 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
                 lcd_bytes[3..4].copy_from_slice(d.as_bytes());
                 lcd_bytes[4..5].copy_from_slice(u.as_bytes());
                 2
-            }
-            else if value >= 0_f32 {
+            } else if value >= 0_f32 {
                 let d = digit((value / 10_f32) as u32 - (value / 100_f32) as u32 * 10);
                 let u = digit(value as u32 - ((value / 10_f32) as u32 * 10));
                 let dec = digit((value * 10_f32) as u32 - value as u32 * 10);
@@ -115,8 +118,7 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
                 lcd_bytes[3..4].copy_from_slice(dec.as_bytes());
                 lcd_bytes[4..5].copy_from_slice(cent.as_bytes());
                 0
-            }
-            else if value >= -100_f32 {
+            } else if value >= -100_f32 {
                 let value = value.abs();
                 let d = digit((value / 10_f32) as u32 - ((value / 100_f32) as u32 * 10));
                 let u = digit(value as u32 - ((value / 10_f32) as u32 * 10));
@@ -128,19 +130,18 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
                 lcd_bytes[3..4].copy_from_slice(".".as_bytes());
                 lcd_bytes[4..5].copy_from_slice(dec.as_bytes());
                 0
-            }
-            else {
+            } else {
                 unreachable!("No way that this sensor survives -100°C");
             };
 
             lcd.clear();
-            lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start).unwrap();
+            lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start)
+                .unwrap();
             lcd.display();
-        },
-        _ => unimplemented!()
+        }
+        _ => unimplemented!(),
     }
 }
-
 
 fn digit(a: u32) -> &'static str {
     match a {
