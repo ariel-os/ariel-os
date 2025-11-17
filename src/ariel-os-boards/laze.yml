@@ -1,0 +1,253 @@
+# yamllint disable-file
+
+builders:
+- name: ai-c3
+  parent: esp32-c3-mini-1
+- name: bbc-microbit-v1
+  parent: nrf51822-xxaa
+  provides:
+  - has_buttons
+- name: bbc-microbit-v2
+  parent: nrf52833
+  provides:
+  - has_buttons
+- name: dfrobot-firebeetle2-esp32-c6
+  parent: esp32c6fx4
+  provides:
+  - has_buttons
+  - has_leds
+- name: dwm1001
+  parent: nrf52832
+  provides:
+  - has_buttons
+  - has_leds
+- name: espressif-esp32-c3-devkit-rust-1
+  parent: esp32-c3-mini-1
+  provides:
+  - has_buttons
+  - has_leds
+- name: espressif-esp32-c3-lcdkit
+  parent: esp32-c3-mini-1
+- name: espressif-esp32-c6-devkitc-1
+  parent: esp32-c6-wroom-1
+  provides:
+  - has_buttons
+- name: espressif-esp32-devkitc
+  parent: esp-wroom-32
+  provides:
+  - has_buttons
+- name: espressif-esp32-s2-devkitc-1
+  parent: esp32-s2-solo-2
+  provides:
+  - has_buttons
+  - has_usb_device_port
+- name: espressif-esp32-s3-devkitc-1
+  parent: esp32-s3-wroom-1
+  provides:
+  - has_buttons
+  - has_usb_device_port
+- name: heltec-wifi-lora-32-v3
+  parent: esp32s3fx8
+  provides:
+  - has_buttons
+  - has_leds
+- name: native
+  parent: native-chip
+- name: nordic-thingy-91-x-nrf9151
+  parent: nrf9151
+  provides:
+  - has_buttons
+  - has_leds
+- name: nrf52840-mdk
+  parent: nrf52840
+  provides:
+  - has_buttons
+  - has_leds
+- name: nrf52840dk
+  parent: nrf52840
+  provides:
+  - has_buttons
+  - has_leds
+  - has_usb_device_port
+- name: nrf52dk
+  parent: nrf52832
+  provides:
+  - has_buttons
+  - has_leds
+- name: nrf5340dk-net
+  parent: nrf5340-net
+- name: nrf5340dk
+  parent: nrf5340
+  provides:
+  - has_buttons
+  - has_leds
+  - has_usb_device_port
+- name: nrf9151-dk
+  parent: nrf9151
+  provides:
+  - has_buttons
+  - has_leds
+- name: nrf9160dk-nrf9160
+  parent: nrf9160
+  provides:
+  - has_buttons
+  - has_leds
+- name: particle-xenon
+  parent: nrf52840
+  provides:
+  - has_buttons
+  - has_leds
+  - has_usb_device_port
+- name: rpi-pico-w
+  parent: rp2040
+  provides:
+  - has_ble_cyw43
+  - has_usb_device_port
+  - has_wifi_cyw43
+- name: rpi-pico
+  parent: rp2040
+  provides:
+  - has_leds
+  - has_usb_device_port
+- name: rpi-pico2-w
+  parent: rp235xa
+  provides:
+  - has_ble_cyw43
+  - has_usb_device_port
+  - has_wifi_cyw43
+- name: rpi-pico2
+  parent: rp235xa
+  provides:
+  - has_leds
+  - has_usb_device_port
+- name: seeedstudio-lora-e5-mini
+  parent: stm32wle5jc
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: seeedstudio-xiao-esp32c6
+  parent: esp32c6fx4
+  provides:
+  - has_buttons
+  - has_leds
+- name: st-b-l475e-iot01a
+  parent: stm32l475vg
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=UART5
+- name: st-nucleo-c031c6
+  parent: stm32c031c6
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-nucleo-f042k6
+  parent: stm32f042k6
+  provides:
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-nucleo-f401re
+  parent: stm32f401re
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-nucleo-f411re
+  parent: stm32f411re
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-nucleo-f767zi
+  parent: stm32f767zi
+  provides:
+  - has_buttons
+  - has_eth_stm32
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-nucleo-h753zi
+  parent: stm32h753zi
+  provides:
+  - has_buttons
+  - has_eth_stm32
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=UART5
+- name: st-nucleo-h755zi-q
+  parent: stm32h755zi
+  provides:
+  - has_buttons
+  - has_eth_stm32
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=UART5
+- name: st-nucleo-wb55
+  parent: stm32wb55rg
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART1
+- name: st-nucleo-wba55
+  parent: stm32wba55cg
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
+- name: st-steval-mkboxpro
+  parent: stm32u585ai
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_VBUS_DETECTION=false
+    - CONFIG_SWI=USART2
+- name: stm32u083c-dk
+  parent: stm32u083mc
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART4_LPUART3

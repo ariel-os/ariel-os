@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use embassy_rp::block::ImageDef;
 // Safety:
 // This is where tooling expects this.

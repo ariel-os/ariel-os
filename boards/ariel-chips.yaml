@@ -1,0 +1,45 @@
+# This file contains Ariel OS specific information needed by sbd-gen for
+# generating an Ariel OS BSP crate.
+ariel:
+  # This list contains all currently supported chips. The names must correspond
+  # to an Ariel OS laze context.
+  chips:
+    - esp-c3-01m
+    - esp-wroom-32
+    - esp32-c3-mini-1
+    - esp32-c6-wroom-1
+    - esp32-s3-wroom-1
+    - esp32-s2-solo-2
+    - esp32c6
+    - esp32c6fx4
+    - esp32s2
+    - esp32s2fx2
+    - esp32s2fx4
+    - esp32s2fx4r2
+    - esp32s3
+    - esp32s3fx8
+    - native-chip
+    - nrf51822-xxaa
+    - nrf52
+    - nrf52832
+    - nrf52833
+    - nrf52840
+    - nrf5340
+    - nrf5340-net
+    - nrf9151
+    - nrf9160
+    - rp2040
+    - rp235xa
+    - stm32c031c6
+    - stm32f042k6
+    - stm32f401re
+    - stm32f411re
+    - stm32f767zi
+    - stm32h753zi
+    - stm32h755zi
+    - stm32l475vg
+    - stm32u083mc
+    - stm32u585ai
+    - stm32wb55rg
+    - stm32wba55cg
+    - stm32wle5jc

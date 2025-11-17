@@ -1,5 +1,7 @@
 //! Provides support for the SPI communication bus in main mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
     spi::{BitOrder, Mode, main::Kilohertz},
@@ -21,6 +23,7 @@ use esp_hal::{
     context = "esp32",
     context = "esp32c3",
     context = "esp32c6",
+    context = "esp32s2",
     context = "esp32s3"
 ))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(80);
@@ -144,5 +147,7 @@ define_spi_drivers!(SPI2, SPI3);
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c6")]
 define_spi_drivers!(SPI2);
+#[cfg(context = "esp32s2")]
+define_spi_drivers!(SPI2, SPI3);
 #[cfg(context = "esp32s3")]
 define_spi_drivers!(SPI2, SPI3);

@@ -13,6 +13,13 @@ pub(crate) mod edhoc_ead {
     /// [Section 10.8 of the ACE-EDHOC
     /// profile](https://datatracker.ietf.org/doc/html/draft-ietf-ace-edhoc-oscore-profile-06#section-10.8).
     pub(crate) const ACETOKEN: u16 = 20;
+
+    /// (Requesting an) EAD Credential by value
+    ///
+    /// Value requested but not allocated; described in
+    /// [Section 4.14 of the ACE-EDHOC
+    /// profile](https://www.ietf.org/archive/id/draft-ietf-ace-edhoc-oscore-profile-09.html#name-requesting-authentication-c).
+    pub(crate) const CRED_BY_VALUE: u16 = 15;
 }
 
 /// The [COSE Algorithms](https://www.iana.org/assignments/cose/cose.xhtml#algorithms) registry

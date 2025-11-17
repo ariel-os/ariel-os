@@ -34,6 +34,7 @@ embedded-hal-async = { workspace = true }
 
 ariel-os-buildinfo = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-boards = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
@@ -86,6 +87,9 @@ spi = [
   "ariel-os-hal/spi",
 ]
 
+## Enables UART support.
+uart = ["ariel-os-embassy-common/uart", "ariel-os-hal/uart"]
+
 ## Enables USB support.
 usb = ["dep:embassy-usb", "ariel-os-hal/usb"]
 usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
@@ -135,7 +139,7 @@ ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
-network-config-static = ["network-config-override"]
+network-config-ipv4-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
 ble-config-override = []

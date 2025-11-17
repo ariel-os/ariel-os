@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::{Arch, SCHEDULER, Thread, cleanup};
 use core::{arch::global_asm, ptr::write_volatile};
 use cortex_m::peripheral::{SCB, scb::SystemHandler};

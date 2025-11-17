@@ -1,16 +1,16 @@
 [package]
 name = "ble-scanner"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["time"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 
 embassy-futures = { version = "0.1.1" }
-trouble-host = { workspace = true, features = ["derive", "scan"] }
 heapless = "0.8"
+trouble-host = { workspace = true, features = ["derive", "scan"] }
+
+[lints]
+workspace = true

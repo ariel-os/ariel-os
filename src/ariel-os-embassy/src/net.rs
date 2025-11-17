@@ -5,6 +5,11 @@
 //! custom network configuration.
 
 #![deny(missing_docs)]
+#![allow(unsafe_code)]
+#![allow(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
 
 use embassy_net::{Runner, Stack};
 use embassy_sync::once_lock::OnceLock;
@@ -160,7 +165,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
     }
 }
 
-#[cfg(feature = "network-config-static")]
+#[cfg(feature = "network-config-ipv4-static")]
 // SAFETY: the compiler prevents from defining multiple functions with the same name in the
 // same crate; the function signature is checked by the compiler as it is in the same crate as the
 // FFI declaration.

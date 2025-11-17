@@ -1,7 +1,8 @@
 //! This module provides an opinionated integration of `embassy`.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
+#![allow(unsafe_code)]
 
 pub use ariel_os_hal::hal;
 
@@ -151,6 +152,12 @@ pub(crate) fn init() {
     debug!("ariel-os-embassy::init(): using interrupt mode executor");
     let p = hal::init();
 
+    #[cfg(any(context = "nrf", context = "stm32"))]
+    {
+        use crate::hal::interrupt::{InterruptExt, Priority};
+        hal::SWI.set_priority(Priority::P1);
+    }
+
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
         hal::EXECUTOR.start(hal::SWI);
@@ -205,6 +212,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     debug!("ariel-os-embassy::init_task()");
 
+    #[cfg(board_init)]
+    ariel_os_boards::init(&mut peripherals);
+
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
 
@@ -213,6 +223,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "spi")]
     hal::spi::init(&mut peripherals);
+
+    #[cfg(feature = "uart")]
+    hal::uart::init(&mut peripherals);
 
     #[cfg(feature = "hwrng")]
     hal::hwrng::construct_rng(&mut peripherals);

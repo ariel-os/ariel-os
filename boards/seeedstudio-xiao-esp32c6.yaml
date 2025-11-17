@@ -1,0 +1,17 @@
+boards:
+  seeedstudio-xiao-esp32c6:
+    chip: esp32c6fx4
+    leds:
+      led0:
+        pin: GPIO15
+        color: yellow
+        active: low
+        aliases:
+          - D4
+          - USER_LED
+    buttons:
+      button0:
+        pin: GPIO9
+        active: low
+        aliases:
+          - BOOT

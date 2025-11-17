@@ -1,0 +1,3 @@
+boards:
+  espressif-esp32-c3-lcdkit:
+    chip: esp32-c3-mini-1

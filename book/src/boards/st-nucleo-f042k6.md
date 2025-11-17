@@ -4,7 +4,7 @@
 
 - **Tier:** 3
 - **Ariel OS Name:** `st-nucleo-f042k6`
-- **Chip:** STM32F042K6
+- **Chip:** [STM32F042K6](../chips/stm32f042k6.md)
 - **Chip Ariel OS Name:** `stm32f042k6`
 
 ### References
@@ -13,64 +13,21 @@
 
 ## Support Matrix
 
-<table>
-  <thead>
-    <tr>
-      <th>Functionality</th>
-      <th>Support Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GPIO</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>Debug Output</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>I2C Controller Mode</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-    <tr>
-      <td>SPI Main Mode</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-    <tr>
-      <td>Logging</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>User USB</td>
-      <td class="support-cell" title="not available on this piece of hardware">–</td>
-    </tr>
-    <tr>
-      <td>Wi-Fi</td>
-      <td class="support-cell" title="not available on this piece of hardware">–</td>
-    </tr>
-    <tr>
-      <td>Ethernet over USB</td>
-      <td class="support-cell" title="not available on this piece of hardware">–</td>
-    </tr>
-    <tr>
-      <td>Hardware Random Number Generator</td>
-      <td class="support-cell" title="not available on this piece of hardware">–</td>
-    </tr>
-    <tr>
-      <td>Persistent Storage</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-  </tbody>
-</table>
+|Functionality|Support Status|
+|---|:---:|
+|GPIO|<span title="supported">✅</span>|
+|Debug Output|<span title="supported">✅</span>|
+|I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|UART|<span title="needs testing">🚦</span>|
+|Logging|<span title="supported">✅</span>|
+|User USB|<span title="not available on this piece of hardware">–</span>|
+|Wi-Fi|<span title="not available on this piece of hardware">–</span>|
+|Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
+|Hardware Random Number Generator|<span title="not available on this piece of hardware">–</span>|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^would-need-to-allocate-some-flash]|
 
-<style>
-.support-cell {
-  text-align: center;
-}
-</style>
-
-Legend:
+<p>Legend:</p>
 
 <dl>
   <div>
@@ -94,3 +51,5 @@ dt, dd {
   display: inline;
 }
 </style>
+
+[^would-need-to-allocate-some-flash]: Would need to allocate some flash.

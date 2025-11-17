@@ -1,15 +1,25 @@
+# @generated
+
 [package]
 name = "ariel-os-boards"
-version = "0.2.0"
-license.workspace = true
-edition.workspace = true
-rust-version.workspace = true
 
-[lints]
+[package.edition]
 workspace = true
 
-[dependencies]
+[package.license]
+workspace = true
+
+[package.rust-version]
+workspace = true
+
+[dependencies.ariel-os-embassy-common]
+workspace = true
+
+[dependencies.ariel-os-hal]
+workspace = true
+
+[dependencies.cfg-if]
+workspace = true
 
 [features]
-# Allows to have no boards selected, useful to run platform-independent tooling
 no-boards = []

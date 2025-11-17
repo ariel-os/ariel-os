@@ -4,8 +4,9 @@ edition.workspace = true
 license.workspace = true
 publish = false
 
-[lints]
-workspace = true
+[[test]]
+name = "test"
+harness = false
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
@@ -14,6 +15,5 @@ ariel-os-boards = { path = "../../src/ariel-os-boards" }
 [dev-dependencies]
 embedded-test = { workspace = true }
 
-[[test]]
-name = "test"
-harness = false
+[lints]
+workspace = true

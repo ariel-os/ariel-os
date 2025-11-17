@@ -68,15 +68,28 @@ This is useful for readers, to quickly access the mentioned item, but it also he
 
 ### `unsafe` Code
 
-When `unsafe` is used, a `SAFETY` comment MUST be added, in the style [supported by Clippy](https://rust-lang.github.io/rust-clippy/master/index.html#/undocumented_unsafe_blocks).
+Code containing `unsafe` is denied outside of modules where the [`unsafe-code`](https://doc.rust-lang.org/rustc/lints/listing/allowed-by-default.html#unsafe-code) lint is explicitly `#[expect]`ed
+(or, in complex situations, `#[allow]`ed).
 
-TODO: enforce it in CI
+For all `unsafe` blocks, a `SAFETY` comment MUST be added, in the style [of the `undocumented-unsafe-blocks` Clippy lint](https://rust-lang.github.io/rust-clippy/master/index.html#/undocumented_unsafe_blocks).
+
+Any `unsafe` function MUST be documented with the preconditions for sound use in a `# Safety` section, in the [style of the `missing-safety-doc` Clippy lint](https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc).
 
 ### Naming Conventions
 
 Names SHOULD adhere to the [official API guidelines](https://rust-lang.github.io/api-guidelines/naming.html).
 
 TODO: how to name error types/error enum variants (`CannotDoSth` vs `DoingSth`)?
+
+### Code formatting
+
+The code is expected to be formatted following the [Rust Style Guide](https://doc.rust-lang.org/style-guide/index.html).
+
+You can quickly format the code in the ariel-os repository using this command:
+
+```sh
+laze build fmt
+```
 
 ## Dependencies
 

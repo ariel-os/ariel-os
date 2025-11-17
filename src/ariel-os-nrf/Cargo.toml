@@ -24,6 +24,7 @@ embassy-nrf = { workspace = true, default-features = false, features = [
   "rt",
 ] }
 embedded-hal-async = { workspace = true }
+embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
 portable-atomic = { workspace = true }
 ariel-os-debug = { workspace = true }
@@ -84,6 +85,9 @@ i2c = ["ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
 spi = ["ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables storage support.
 storage = ["dep:embassy-embedded-hal"]

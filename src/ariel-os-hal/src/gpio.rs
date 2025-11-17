@@ -218,7 +218,9 @@ pub mod input {
         /// inputs.
         #[must_use]
         pub fn schmitt_trigger(self, enable: bool) -> Self {
-            #[expect(
+            // Allowed for some time while the lint false-positives on stable but is already
+            // understood as legitimate in nightly
+            #[allow(
                 clippy::assertions_on_constants,
                 reason = "the constant depends on the HAL"
             )]

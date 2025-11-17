@@ -1,0 +1,19 @@
+[package]
+name = "sensors-debug"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "i2c",
+  "sensors",
+  "time",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
+embassy-sync = { workspace = true }
+once_cell = { workspace = true }
+
+[lints]
+workspace = true

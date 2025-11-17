@@ -4,7 +4,7 @@
 
 - **Tier:** 1
 - **Ariel OS Name:** `espressif-esp32-s3-devkitc-1`
-- **Chip:** ESP32-S3
+- **Chip:** [ESP32-S3](../chips/esp32s3.md)
 - **Chip Ariel OS Name:** `esp32s3`
 
 ### References
@@ -13,64 +13,21 @@
 
 ## Support Matrix
 
-<table>
-  <thead>
-    <tr>
-      <th>Functionality</th>
-      <th>Support Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>GPIO</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>Debug Output</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>I2C Controller Mode</td>
-      <td class="support-cell" title="needs testing">🚦</td>
-    </tr>
-    <tr>
-      <td>SPI Main Mode</td>
-      <td class="support-cell" title="needs testing">🚦</td>
-    </tr>
-    <tr>
-      <td>Logging</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>User USB</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-    <tr>
-      <td>Wi-Fi</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>Ethernet over USB</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-    <tr>
-      <td>Hardware Random Number Generator</td>
-      <td class="support-cell" title="supported">✅</td>
-    </tr>
-    <tr>
-      <td>Persistent Storage</td>
-      <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-    </tr>
-  </tbody>
-</table>
+|Functionality|Support Status|
+|---|:---:|
+|GPIO|<span title="supported">✅</span>|
+|Debug Output|<span title="supported">✅</span>|
+|I2C Controller Mode|<span title="needs testing">🚦</span>|
+|SPI Main Mode|<span title="needs testing">🚦</span>|
+|UART|<span title="supported">✅</span>|
+|Logging|<span title="supported">✅</span>|
+|User USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^usb-does-not-enumerate][^see-also-https-github-com-ariel-os-ariel-os-issues-903]|
+|Wi-Fi|<span title="supported">✅</span>|
+|Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|Hardware Random Number Generator|<span title="supported">✅</span>|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
-<style>
-.support-cell {
-  text-align: center;
-}
-</style>
-
-Legend:
+<p>Legend:</p>
 
 <dl>
   <div>
@@ -94,3 +51,7 @@ dt, dd {
   display: inline;
 }
 </style>
+
+[^usb-does-not-enumerate]: USB does not enumerate.
+[^see-also-https-github-com-ariel-os-ariel-os-issues-903]: See also: https://github.com/ariel-os/ariel-os/issues/903.
+[^requires-partitioning-support]: Requires partitioning support.

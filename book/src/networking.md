@@ -42,6 +42,7 @@ The configuration can be customized with the following environment variables:
 | `CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN` | `24`         |
 | `CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS` | `10.42.0.1`  |
 
+> [!NOTE]
 > Non-static IPv6 address allocation will be supported in the future.
 
 ### Support for Network Protocols
