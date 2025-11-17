@@ -61,7 +61,8 @@ threading = [
 time = ["ariel-os-embassy/time"]
 # Enables the [`random`] module.
 random = ["dep:ariel-os-random", "ariel-os-embassy/random"]
-## Enables a cryptographically secure random number generator in the [`random`] module.
+## Enables a cryptographically secure random number generator in the [`random`]
+## module and support for the `getrandom` crate.
 csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 # Enables seeding the random number generator from hardware.
 hwrng = ["ariel-os-embassy/hwrng"]
@@ -70,6 +71,8 @@ hwrng = ["ariel-os-embassy/hwrng"]
 sensors = ["dep:ariel-os-sensors"]
 
 #! ## Network protocols
+# Enables support for DHCPv4.
+dhcpv4 = ["ariel-os-embassy/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["ariel-os-embassy/tcp"]
 ## Enables support for UDP.
@@ -97,14 +100,16 @@ coap-server-config-unprotected = [
 # build system that knows who provides an abort and assert handler.
 liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
 liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
-# Selects static IP configuration.
-network-config-static = ["ariel-os-embassy/network-config-static"]
+# Selects static IPv4 configuration.
+network-config-ipv4-static = ["ariel-os-embassy/network-config-ipv4-static"]
 
 #! ## Serial communication
 ## Enables I2C support.
 i2c = ["ariel-os-embassy/i2c"]
 ## Enables SPI support.
 spi = ["ariel-os-embassy/spi"]
+## Enables UART support.
+uart = ["ariel-os-embassy/uart"]
 ## Enables USB support.
 usb = ["ariel-os-embassy/usb"]
 ## Enables USB HID support.
@@ -203,4 +208,11 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts", "ariel-os-rt/_test"]
+_test = [
+  "i2c",
+  "no-boards",
+  "spi",
+  "external-interrupts",
+  "uart",
+  "ariel-os-rt/_test",
+]

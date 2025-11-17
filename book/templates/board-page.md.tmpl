@@ -1,0 +1,40 @@
+# {{ board_info.name }}
+
+## Board Info
+
+- **Tier:** {{ board_info.tier }}
+- **Ariel OS Name:** `{{ board_info.technical_name }}`
+- **Chip:** [{{ board_info.chip }}](../chips/{{ board_info.chip_technical_name }}.md)
+- **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
+
+### References
+
+- [Manufacturer link]({{ board_info.url }})
+
+## Support Matrix
+
+|Functionality|Support Status|
+|---|:---:|
+{%- for functionality in board_info.functionalities %}
+|{{ functionality.title }}|<span title="{{ functionality.description }}">{{ functionality.icon }}</span>{%- if functionality.comments %}{%- for comment in functionality.comments %}[^{{ comment|slugify }}]{%- endfor %}{%- endif %}|
+{%- endfor %}
+
+<p>Legend:</p>
+
+<dl>
+  {%- for support_key in support_keys %}
+  <div>
+    <dt>{{ support_key.icon }}</dt><dd>{{ support_key.description }}</dd>
+  </div>
+  {%- endfor %}
+</dl>
+<style>
+dt, dd {
+  display: inline;
+}
+</style>
+{% for functionality in board_info.functionalities %}
+  {%- for comment in functionality.comments %}
+[^{{ comment|slugify }}]: {{ comment|capitalize_first }}.
+  {%- endfor %}
+{%- endfor %}

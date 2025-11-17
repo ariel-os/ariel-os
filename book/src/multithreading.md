@@ -24,6 +24,7 @@ Ariel OS currently supports symmetric multiprocessing (SMP) on the following MC
 When the `sw/threading` [laze module][laze-modules-book] is selected and when available on the MCU, the `multi-core` laze module automatically gets selected, which enables SMP.
 To disable multicore, disable the `multi-core` [laze module][laze-modules-book].
 
+> [!NOTE]
 > Porting single-core applications to support multicore requires no changes to them.
 
 ### Priority Scheduling

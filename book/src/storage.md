@@ -51,11 +51,13 @@ The storage module requires at least two flash pages.
 The effective storage space available is `(N - 1) * PAGE_SIZE`,
 where `N` is the number of flash pages allocated.
 
+> [!NOTE]
 > Currently storage is only supported on flash whose pages have a uniform size.
 
 These pages are allocated by Ariel OS after the `rodata` section in the flash
 when the module is enabled.
 
+> [!WARNING]
 > Updating the firmware can move and invalidate the storage pages
   when the firmware size differs from the previous version.
 

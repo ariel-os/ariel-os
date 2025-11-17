@@ -1,6 +1,11 @@
 //! This module provides an event that can be waited for.
 
+#![expect(unsafe_code)]
 #![deny(missing_docs)]
+#![expect(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
 
 use core::cell::UnsafeCell;
 

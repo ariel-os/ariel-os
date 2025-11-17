@@ -5,53 +5,76 @@ for a board/device to Ariel OS.
 
 Feel free to report anything that is unclear or missing!
 
+> [!NOTE]
 > This guide requires working on your own copy of Ariel OS.
 > You may want to fork the repository to easily upstream your changes later.
 
+> [!IMPORTANT]
 > Unless documented in the User Guide, please expect the module and context names that are defined in the `laze-project.yml` file to change.
 > We're still figuring out a proper naming scheme.
 > You've been warned.
 
 ## Adding Support for a Board
 
-The more similar a board is to one that is already supported, the easier.
-It is usually best to copy and adapt an existing one.
+Ariel OS uses [sbd][sbd] (Structured Board Description) files to describe boards.
 
 - Ensure that the HAL [is supported in `ariel-os-hal`](#adding-support-for-an-embassy-halmcu-family).
-- In `laze-project.yml`:
-  - `parent`: The MCU's laze context.
-  - If the MCU does not have a dedicated software interrupt (SWI), choose one
-    now and set the `CONFIG_SWI` environment variable.
-  - Ensure there is a way to flash the board:
-    - If the MCU is supported by probe-rs, specify `PROBE_RS_CHIP`
-      and `PROBE_RS_PROTOCOL`.
-      `PROBE_RS_PROTOCOL` can be omitted to inherit the default value from the `ariel-os` laze context.
-    - If the board is based on `esp`, it should inherit the espflash support.
-    - If neither of these are supported, please open an issue.
-  - Add a builder for the actual board that uses the context from above as `parent`.
-
-Whether to add an intermediate context or just a builder depends on whether the
-MCU-specific code can be re-used.
-
-Example for the `st-nucleo-f401re` board:
+- Ensure that the chip [is supported](#adding-support-for-an-mcu-from-a-supported-mcu-family).
+- Create a new board description file `boards/<your-board-name>.yaml`.
+  - It is usually best to copy and adapt an existing one.
+  - `chip`: The board's chip, needs to correspond to an existing laze context in `laze-project.yml`.
+- In `doc/support_matrix.yml`:
+  - Add an entry under `boards`. Include a link to a `web.archive.org` snapshot that describes the board.
+  - Update the generated support pages from the book using `laze build update-book`.
+- Some MCU families need extra steps, see [Extra steps for some MCU families](#extra-steps-for-some-mcu-families).
 
 ```yaml
-builders:
-  # ...
-  - name: st-nucleo-f401re
-    parent: stm32f401re
-    provides:
-      - has_swi
-    env:
-      CARGO_ENV:
-        - CONFIG_SWI=USART2
+# boards/<your-board-name>.yaml
+boards:
+  st-nucleo-f401re:
+    chip: stm32f401re
+    # Generally the board description is supposed to be OS agnostic.
+    # In order to be useful, we allow OS specific configuration in subtrees.
+    # Ariel OS specific configuration is in the `ariel` subtree.
+    # It contains e.g., the choice of SWI interrupt used for the embassy interrupt executor,
+    # which is needed to be set on e.g., stm32 MCUs.
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PB5
+        color: green
+        active: high
+    buttons:
+      button0:
+        pin: PC13
+        active: high
 ```
 
+With the board description file in place, regenerate the `ariel-os-boards` crate.
+To do that, install [`sbd-gen`][sbd] with `cargo install sbd-gen`, then run the following command from the `ariel os` repository root:
+
+```sh
+sbd-gen generate-ariel boards -o src/ariel-os-boards --mode update
+```
+
+> [!TIP]
 > To build every example and test for a board the following command can be used (as this is only for compilation the credentials do not need to be valid):
 >
 > ```sh
 > CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build --global -b <builder>
 > ```
+
+## Extra Steps for Some MCU Families
+
+### `stm32`
+
+- STM32 chips do not have a dedicated SWI, so you need to choose one. Select any unused interrupt, like one of the UARTs, and set the `boards.<board_name>.ariel.swi` field in the board description.
+- Each STM32 MCU needs an entry for configuring the clock config, in `src/ariel-os-stm32/src/lib.rs` `rcc_config()`.
+
+### `esp32`
+
+- Some ancillary esp-hal crates require a chip-specific feature to be enabled. You will need to add a device-specific dependency section to `ariel-os-debug`, and `ariel-os-esp`, similar to the existing ones.
 
 ## Adding Support for an MCU from a Supported MCU family
 
@@ -59,6 +82,9 @@ builders:
   - Add a context for the MCU (if it does not already exist).
     - `parent`: The closest Embassy HAL's context.
     - `selects`: A [rustc-target](#adding-support-for-a-processor-architecture) module or one of the `cortex-m*` modules if applicable.
+- In `doc/support_matrix.yml`:
+  - Add an entry under `chips`, with the laze context and supported features.
+  - Update the generated support pages from the book using `laze build update-book`.
 
 MCU-specific items inside Ariel OS crates are gated behind
 `#[cfg(context = $CONTEXT)]` attributes, where `$CONTEXT` is the [MCU's `laze
@@ -121,3 +147,6 @@ Add `--cfg $HAL` as needed.
 
 Chances are that if you need to add this, you will also have to add support for
 the processor architecture to `ariel-os-bench`, `ariel-os-rt`, `ariel-os-threads`.
+
+[sbd]: https://github.com/ariel-os/sbd
+[ci-builder-lists]: https://github.com/ariel-os/ariel-os/blob/5c23c04cd51c5cfebd561c9d27a47d4e26cdb649/.github/workflows/build.yml#L147-L168

@@ -1,12 +1,12 @@
 [package]
 name = "bench_sched_flags"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { workspace = true, default-features = true, features = ["bench"] }
 ariel-os-boards = { workspace = true }
+
+[lints]
+workspace = true

@@ -11,7 +11,7 @@
 //! feature; please refer to the documentation of those crates for details on the supported syntax.
 
 #![cfg_attr(not(test), no_std)]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 #[featurecomb::comb]
@@ -36,15 +36,43 @@ pub mod defmt {
     pub use defmt::{Formatter, Str, export, unreachable};
 }
 
+#[cfg(feature = "defmt")]
+pub use defmt::{Debug2Format, Display2Format};
+
 #[cfg(feature = "log")]
 #[doc(hidden)]
 pub mod log {
+    use core::fmt::{Debug, Display, Formatter};
+
     // Re-export only the minimum set of items to minimize breaking changes in case `log`
     // adds/removes any items.
     pub use log::{debug, error, info, trace, warn};
+
+    /// No-op wrapper that formats the Debug trait (drop-in replacement for the equivalent `defmt`
+    /// type)
+    pub struct Debug2Format<T: Debug>(pub T);
+
+    impl<T: Debug> Debug for Debug2Format<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
+            self.0.fmt(f)
+        }
+    }
+
+    /// No-op wrapper that formats the Display trait (drop-in replacement for the equivalent
+    /// `defmt` type)
+    pub struct Display2Format<T: Display>(pub T);
+
+    impl<T: Display> Display for Display2Format<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
+            self.0.fmt(f)
+        }
+    }
 }
 
-// NOTE: log macros are defined within private modules so that `doc_auto_cfg` does not produce
+#[cfg(feature = "log")]
+pub use log::{Debug2Format, Display2Format};
+
+// NOTE: log macros are defined within private modules so that `doc_cfg` does not produce
 // "feature flairs" on them.
 // The macros are still exported even though they are defined "within" private modules.
 //

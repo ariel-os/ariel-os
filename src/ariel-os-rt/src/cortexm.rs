@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use cortex_m as _;
 use cortex_m_rt::{__RESET_VECTOR, ExceptionFrame, entry, exception};
 

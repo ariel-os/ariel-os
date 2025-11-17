@@ -1,14 +1,19 @@
 #![no_main]
 #![no_std]
-#![feature(type_alias_impl_trait)]
+#![feature(impl_trait_in_assoc_type)]
 
-mod pins;
 mod routes;
 
 use ariel_os::{asynch::Spawner, cell::StaticCell, net, time::Duration};
 
+ariel_os::hal::group_peripherals!(Peripherals {
+    #[cfg(feature = "button-reading")]
+    buttons: ariel_os_boards::pins::ButtonPeripherals,
+});
+
 #[cfg(feature = "button-reading")]
 use embassy_sync::once_lock::OnceLock;
+use picoserve::AppBuilder;
 
 const HTTP_PORT: u16 = 80;
 const WEB_TASK_POOL_SIZE: usize = 2;
@@ -45,19 +50,19 @@ async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRou
 }
 
 #[ariel_os::spawner(autostart, peripherals)]
-fn main(spawner: Spawner, peripherals: pins::Peripherals) {
+fn main(spawner: Spawner, peripherals: Peripherals) {
     #[cfg(feature = "button-reading")]
     {
         use ariel_os::gpio::{Input, Pull};
 
-        let button = Input::new(peripherals.button.btn1, Pull::Up);
+        let button = Input::new(peripherals.buttons.button0, Pull::Up);
         let _ = BUTTON_INPUT.init(button);
     }
     #[cfg(not(feature = "button-reading"))]
     // Mark it used even when not.
     let _ = peripherals;
 
-    let app = APP.init_with(routes::make_app);
+    let app = APP.init_with(|| routes::AppBuilder.build_app());
 
     for task_id in 0..WEB_TASK_POOL_SIZE {
         spawner.spawn(web_task(task_id, app)).unwrap();

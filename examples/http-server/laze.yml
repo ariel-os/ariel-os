@@ -9,16 +9,13 @@ apps:
       - ?button-reading
     conflicts:
       - ram-small
-      # needs `feature(type_alias_impl_trait)`
+      # needs `feature(impl_trait_in_assoc_type)`
       - stable
 
 modules:
   - name: button-reading
-    context:
-      - nrf52840dk
-      - nrf5340dk
-      - nrf9160dk-nrf9160
-      - st-nucleo-wb55
+    selects:
+      - has_buttons
     env:
       global:
         FEATURES:

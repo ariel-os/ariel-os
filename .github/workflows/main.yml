@@ -30,7 +30,7 @@ jobs:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
 
       - name: Install laze
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
         with:
           tool: laze@0.1
 
@@ -72,7 +72,7 @@ jobs:
       - name: Check for missing `rust-version` keys in `ariel-os*` crates
         run: |
           find src -iwholename 'src/ariel-os*/Cargo.toml' -exec sh -c \
-            'grep -q --with-filename '^rust-version' "$0" || (echo "$0 is missing a rust-version key"; kill $PPID)' \{\} \;
+            'grep -q --with-filename 'rust-version' "$0" || (echo "$0 is missing a rust-version key"; kill $PPID)' \{\} \;
 
       - id: get_toolchain
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
@@ -89,7 +89,7 @@ jobs:
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
 
       - name: Install cargo-deny
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
         with:
           tool: cargo-deny
 
@@ -132,6 +132,7 @@ jobs:
                 spi,
                 storage,
                 tcp,
+                uart,
                 udp,
                 usb,
                 usb-ethernet,
@@ -157,7 +158,7 @@ jobs:
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="esp32c6"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="esp32c6" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for ESP32
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -171,12 +172,13 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-esp
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for RP
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -190,12 +192,13 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-rp
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -209,13 +212,14 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-nrf
             --target=thumbv7em-none-eabi
             --
             --deny warnings
 
-      - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rg"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rg" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for STM32
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -227,11 +231,14 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                uart,
                 "
             -p ariel-os-stm32
             --
             --deny warnings
 
+      # Reset `RUSTFLAGS`.
+      - run: echo 'RUSTFLAGS=' >> $GITHUB_ENV
       - name: clippy
         uses: clechasseur/rs-clippy-check@69da786488ddcceb16285b0219841750089369ba # v5
         with:
@@ -290,6 +297,7 @@ jobs:
                     storage,
                     tcp,
                     threading,
+                    uart,
                     udp,
                     usb,
                     usb-hid,
@@ -307,6 +315,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-esp
 
@@ -320,6 +329,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-rp
 
@@ -332,6 +342,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-nrf
 
@@ -344,6 +355,7 @@ jobs:
                     external-interrupts,
                     i2c,
                     spi,
+                    uart,
                     " \
                 -p ariel-os-stm32
 
@@ -355,7 +367,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: rustfmt
-        run: cargo fmt --check --all
+        run: cargo fmt --check --all -- --config format_generated_files=false
 
   lint-yamllint:
     runs-on: ubuntu-latest
@@ -378,7 +390,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Install taplo
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
         with:
           tool: taplo
           fallback: none
@@ -394,13 +406,12 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Install cargo-manifest-check
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
         with:
           tool: cargo-manifest-check@0.2
 
-      # For now, only run cargo-manifest-check on ariel-os-identity.
       - name: cargo-manifest-check
-        run: cargo manifest-check src/ariel-os-identity
+        run: cargo manifest-check src/ariel-os-identity src/ariel-os-buildinfo src/ariel-os-debug-log src/ariel-os-coap src/ariel-os-macros src/ariel-os-power src/ariel-os-runqueue src/ariel-os-sensors-utils src/ariel-os-stm32-mapping src/ariel-os-utils tests/ examples/
 
   lint-ruff:
     runs-on: ubuntu-latest
@@ -422,23 +433,35 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: typos
-        uses: crate-ci/typos@85f62a8a84f939ae994ab3763f01a0296d61a7ee # v1.36.2
+        uses: crate-ci/typos@07d900b8fa1097806b8adb6391b0d3e0ac2fdea7 # v1.39.0
 
-      - name: Check the support matrix generation exit code
+      - name: Check that the book summary has an up-to-date board list
+        run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --check
+
+      - name: Check that the board pages are all up-to-date
+        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl
+
+      - name: Check that the chip pages are all up-to-date
+        run: ./doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --check --template-path book/templates/chip-page.md.tmpl
+
+      - name: Check that the support matrices are up-to-date
         run: |
-          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 1
-          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 2
-          ./doc/gen_support_matrix_html.rs generate doc/support_matrix.yml /dev/null --tier 3
+          ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier1.html --tier 1 --template-path book/templates/support-matrix.html.tmpl --check
+          ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier2.html --tier 2 --template-path book/templates/support-matrix.html.tmpl --check
+          ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix_tier3.html --tier 3 --template-path book/templates/support-matrix.html.tmpl --check
 
-      - name: Install mdbook and mdbook utils
-        uses: taiki-e/install-action@8ea32481661d5e04d602f215b94f17e4014b44f9 # v2
+      - name: Check that the board index page is up-to-date
+        run: |
+          ./doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl --check
+
+      - name: Check that the chip index page is up-to-date
+        run: |
+          ./doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl --check
+
+      - name: Install mdbook
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
         with:
-          tool: mdbook, mdbook-cmdrun
-
-      - name: Check for unexpected cmdrun uses
-        run: |
-            cd book
-            ./cmdrun-check.sh
+          tool: mdbook@0.5.0-alpha.1
 
       - name: Build the book
         run: |
@@ -446,7 +469,23 @@ jobs:
           mdbook build
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@885c65f3dc543b57c898c8099f4e08c8afd178a2 # v2
+        uses: lycheeverse/lychee-action@a8c4c7cb88f0c7386610c35eb25108e448569cb0 # v2
         with:
           args: --offline --require-https --no-progress --include-fragments --include-verbatim -v '*.md' book/book
           fail: true
+
+  sbd-gen-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Install sbd-gen
+        uses: taiki-e/install-action@6cc14f7f2f4b3129aff07a8b071d2d4f2733465d # v2
+        with:
+          tool: sbd-gen@0.1.9
+
+      - name: Check sbd-gen output
+        run: |
+          sbd-gen generate-ariel --mode check boards -o src/ariel-os-boards

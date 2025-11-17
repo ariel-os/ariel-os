@@ -86,18 +86,13 @@ pub mod output {
 pub use ariel_os_embassy_common::gpio::UnsupportedSpeed as Speed;
 
 /// Available drive strength settings.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Default)]
 pub enum DriveStrength {
     /// Standard.
+    #[default]
     Standard,
     /// High.
     High, // Around 10 mA
-}
-
-impl Default for DriveStrength {
-    fn default() -> Self {
-        Self::Standard
-    }
 }
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {

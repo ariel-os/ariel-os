@@ -1,11 +1,8 @@
 [package]
 name = "http-server"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
@@ -18,3 +15,6 @@ serde = { workspace = true, optional = true }
 
 [features]
 button-reading = ["dep:serde"]
+
+[lints]
+workspace = true

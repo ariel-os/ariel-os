@@ -32,6 +32,9 @@ functionalities:
   - name: spi_main
     title: SPI Main Mode
     description: SPI in main mode
+  - name: uart
+    title: UART
+    description: UART
   - name: logging
     title: Logging
     description:
@@ -55,12 +58,14 @@ functionalities:
 chips:
   nrf51822-xxaa:
     name: nRF51822-xxAA
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
+      uart: not_currently_supported
       logging: supported
       storage: not_currently_supported
       wifi: not_available
@@ -69,12 +74,14 @@ chips:
 
   nrf52832:
     name: nRF52832
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
@@ -83,30 +90,37 @@ chips:
 
   nrf52833:
     name: nRF52833
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb: needs_testing
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
+      user_usb: needs_testing
 
   nrf52840:
     name: nRF52840
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
 
   nrf5340:
     name: nRF5340
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
@@ -116,12 +130,14 @@ chips:
           - no standalone RNG in the application core, only in the CryptoCell which is not currently supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
 
   nrf9151:
     name: nRF9151
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
@@ -131,12 +147,16 @@ chips:
           - only available through the CryptoCell
       i2c_controller: supported
       spi_main: supported
+      uart: needs_testing
       logging: supported
       storage: supported
       wifi: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
 
   nrf9160:
     name: nRF9160
+    manufacturer: Nordic Semiconductor
     support:
       gpio: supported
       debug_output: supported
@@ -146,78 +166,268 @@ chips:
           - only available through the CryptoCell
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
 
   rp2040:
     name: RP2040
+    manufacturer: Raspberry Pi
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
 
   rp235xa:
     name: RP235xa
+    manufacturer: Raspberry Pi
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart:
+        status: not_currently_supported
+        comments:
+          - uart-loopback test only works once after a power cycle
+          - "See also: https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140"
       logging: supported
       storage: supported
       wifi: not_available
 
   esp32c3:
     name: ESP32-C3
+    manufacturer: Espressif
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
         comments:
           - requires partitioning support
       wifi:
-        status: supported_with_caveats
+        status: supported
+      user_usb:
+        status: not_available
         comments:
-          - not currently compatible with threading
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+
+  # Currently identical to esp32c3.
+  esp32c3fx4:
+    name: ESP32-C3Fx4
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
   esp32c6:
     name: ESP32-C6
+    manufacturer: Espressif
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
         comments:
           - requires partitioning support
       wifi:
-        status: supported_with_caveats
+        status: supported
+      user_usb:
+        status: not_available
         comments:
-          - not currently compatible with threading
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
 
-  esp32s3:
-    name: ESP32-S3
+  # Currently identical to esp32c6.
+  esp32c6fx4:
+    name: ESP32-C6Fx4
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+
+  esp32s2:
+    name: ESP32-S2
+    manufacturer: Espressif
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: needs_testing
       spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
+  # Currently identical to esp32s2.
+  esp32s2fx2:
+    name: ESP32-S2Fx2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
+  # Currently identical to esp32s2.
+  esp32s2fx4:
+    name: ESP32-S2Fx4
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
+  # Currently identical to esp32s2.
+  esp32s2fx4r2:
+    name: ESP32-S2Fx4R2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
+  esp32s3:
+    name: ESP32-S3
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/ariel-os/ariel-os/issues/903"
+      ethernet_over_usb: not_currently_supported
+      wifi: supported
+
+  # Currently identical to esp32s3.
+  esp32s3fx8:
+    name: ESP32-S3Fx8
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -233,6 +443,7 @@ chips:
 
   stm32c031c6:
     name: STM32C031C6
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
@@ -240,6 +451,7 @@ chips:
       hwrng: not_available
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
@@ -250,6 +462,7 @@ chips:
 
   stm32f042k6:
     name: STM32F042K6
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
@@ -257,6 +470,7 @@ chips:
       hwrng: not_available
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
+      uart: needs_testing
       logging: supported
       storage:
         status: not_currently_supported
@@ -267,42 +481,84 @@ chips:
 
   stm32f401re:
     name: STM32F401RE
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb: needs_testing
       hwrng: not_available
       i2c_controller: needs_testing
       spi_main: needs_testing
+      uart: supported
       logging: supported
       storage:
         status: not_currently_supported
         comments:
           - unsupported heterogeneous flash organization
       wifi: not_available
+      user_usb: needs_testing
 
   stm32f411re:
     name: STM32F411RE
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb: not_currently_supported
       hwrng: not_available
       i2c_controller: supported
       spi_main: supported
+      uart: needs_testing
       logging: supported
       storage:
         status: not_currently_supported
         comments:
           - unsupported heterogeneous flash organization
+      wifi: not_available
+      user_usb:
+        status: not_currently_supported
+        comments:
+          - a more complete clock configuration needs to be provided
+
+  stm32h753zi:
+    name: STM32H753ZI
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_output: supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/embassy-rs/embassy/issues/2376"
+          - "Workaround in: https://github.com/ariel-os/ariel-os/pull/1126"
+      hwrng: not_currently_supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      uart: not_currently_supported
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
       wifi: not_available
 
   stm32h755zi:
     name: STM32H755ZI
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/embassy-rs/embassy/issues/2376"
+          - "Workaround in: https://github.com/ariel-os/ariel-os/pull/1126"
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -312,12 +568,20 @@ chips:
 
   stm32l475vg:
     name: STM32L475VG
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/embassy-rs/embassy/issues/2376"
+          - "Workaround in: https://github.com/ariel-os/ariel-os/pull/1126"
       hwrng: supported
       i2c_controller: needs_testing
       spi_main: needs_testing
+      uart: needs_testing
       logging: supported
       storage:
         status: supported_with_caveats
@@ -325,14 +589,35 @@ chips:
           - removing items not supported
       wifi: not_available
 
+  stm32u073kc:
+    name: STM32U073KC
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_output: supported
+      ethernet_over_usb: needs_testing
+      hwrng: supported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+      user_usb: supported
+
   stm32u083mc:
     name: STM32U083MC
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -342,24 +627,34 @@ chips:
 
   stm32u585ai:
     name: STM32U585AI
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/embassy-rs/embassy/issues/2376"
+          - "Workaround in: https://github.com/ariel-os/ariel-os/pull/1126"
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
 
   stm32wb55rg:
     name: STM32WB55RG
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
+      uart: supported
       logging: supported
       storage:
         status: supported_with_caveats
@@ -369,12 +664,14 @@ chips:
 
   stm32wba55cg:
     name: STM32WBA55CG
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
+      uart: needs_testing
       logging: supported
       storage:
         status: not_currently_supported
@@ -386,14 +683,19 @@ chips:
 
   stm32wle5jc:
     name: STM32WLE5JC
+    manufacturer: STMicroelectronics
     support:
       gpio: supported
       debug_output: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
+      uart: needs_testing
       logging: supported
-      storage: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
       wifi: not_available
       user_usb: not_available
       ethernet_over_usb: not_available
@@ -423,8 +725,6 @@ boards:
     chip: nrf9151
     tier: "2"
     support:
-      user_usb: not_available
-      ethernet_over_usb: not_available
       wifi:
         status: not_currently_supported
         comments:
@@ -455,14 +755,19 @@ boards:
       user_usb: supported
       ethernet_over_usb: supported
 
+  nrf9151-dk:
+    name: nRF9151-DK
+    url: https://web.archive.org/web/20250622211955/https://www.nordicsemi.com/Products/Development-hardware/nRF9151-DK
+    chip: nrf9151
+    tier: "2"
+    support:
+
   nrf9160dk-nrf9160:
     name: nRF9160-DK
     url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
     chip: nrf9160
     tier: "2"
     support:
-      user_usb: not_available
-      ethernet_over_usb: not_available
 
   rpi-pico:
     name: Raspberry Pi Pico
@@ -502,17 +807,26 @@ boards:
       wifi: supported
       ethernet_over_usb: supported
 
+  dfrobot-firebeetle2-esp32-c6:
+    name: DFRobot FireBeetle 2 ESP32-C6
+    url: https://web.archive.org/web/20250710082029/https://wiki.dfrobot.com/SKU_DFR1075_FireBeetle_2_Board_ESP32_C6
+    chip: esp32c6fx4
+    tier: "2"
+    support:
+
+  espressif-esp32-c3-devkit-rust-1:
+    name: Espressif ESP32-C3-DevKit-RUST-1
+    url: http://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2
+    chip: esp32c3
+    tier: "3"
+    support:
+
   espressif-esp32-c3-lcdkit:
     name: Espressif ESP32-C3-LCDkit
     url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en
     chip: esp32c3
     tier: "1"
     support:
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
-      ethernet_over_usb: not_available
 
   espressif-esp32-c6-devkitc-1:
     name: Espressif ESP32-C6-DevKitC-1
@@ -520,11 +834,13 @@ boards:
     chip: esp32c6
     tier: "1"
     support:
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
-      ethernet_over_usb: not_available
+
+  espressif-esp32-s2-devkitc-1:
+    name: Espressif ESP32-S2-DevKitC-1
+    url: https://web.archive.org/web/20251022182104/https://www.espressif.com/en/dev-board/esp32-s2-devkitc-1-en
+    chip: esp32s2
+    tier: "3"
+    support:
 
   espressif-esp32-s3-devkitc-1:
     name: Espressif ESP32-S3-DevKitC-1
@@ -538,6 +854,13 @@ boards:
     url: https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/
     chip: esp32s3
     tier: "3"
+    support:
+
+  seeedstudio-xiao-esp32c6:
+    name: Seeed Studio XIAO ESP32C6
+    url: https://web.archive.org/web/20250827114042/https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
+    chip: esp32c6fx4
+    tier: "2"
     support:
 
   seeedstudio-lora-e5-mini:
@@ -600,6 +923,21 @@ boards:
       wifi: not_available
       ethernet_over_usb: not_available
 
+  st-nucleo-h753zi:
+    name: ST NUCLEO-H753ZI
+    url: https://web.archive.org/web/20240625050043/https://www.st.com/en/evaluation-tools/nucleo-h753zi.html
+    chip: stm32h753zi
+    tier: "3"
+    support:
+      user_usb: supported
+      wifi: not_available
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - USB does not enumerate
+          - "See also: https://github.com/embassy-rs/embassy/issues/2376"
+          - "Workaround in: https://github.com/ariel-os/ariel-os/pull/1126"
+
   st-nucleo-h755zi-q:
     name: ST NUCLEO-H755ZI-Q
     url: https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html
@@ -655,7 +993,4 @@ boards:
     support:
       user_usb: supported
       wifi: not_available
-      ethernet_over_usb:
-        status: not_currently_supported
-        comments:
-          - not enough RAM
+      ethernet_over_usb: supported

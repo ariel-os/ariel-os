@@ -27,16 +27,11 @@ pub enum Mode {
 /// Note: configuring the bit order is not supported on all MCU families.
 // NOTE(hal): the RP2040 and RP2350 always send the MSb first
 #[doc(hidden)]
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Default)]
 pub enum BitOrder {
     /// Most significant bit first.
+    #[default]
     MsbFirst,
     /// Least significant bit first.
     LsbFirst,
-}
-
-impl Default for BitOrder {
-    fn default() -> Self {
-        Self::MsbFirst
-    }
 }

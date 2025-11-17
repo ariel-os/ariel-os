@@ -10,8 +10,9 @@ fn main() {
     // Put the linker scripts somewhere the linker can find them
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
-    if let Some(context) = context_any(&["cortex-m", "riscv", "xtensa"]) {
+    if let Some(context) = context_any(&["esp32c3", "cortex-m", "riscv", "xtensa"]) {
         let insert_somewhere = match context {
+            "esp32c3" => "INSERT AFTER .rwdata_dummy;",
             "cortex-m" => "INSERT BEFORE .data;",
             "riscv" => "INSERT BEFORE .trap;",
             _ => "",
@@ -19,7 +20,7 @@ fn main() {
 
         let region = match context {
             "cortex-m" => "RAM",
-            "riscv" | "xtensa" => "RWDATA",
+            "riscv" | "xtensa" | "esp32c3" => "RWDATA",
             _ => unreachable!(),
         };
 

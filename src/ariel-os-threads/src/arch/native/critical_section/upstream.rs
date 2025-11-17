@@ -3,6 +3,9 @@
 //! 2. Don't register `StdCriticalSection` as the global impl.
 //! 3. Allow static mut refs.
 //! 4. Add unsafes around the static mut accesses.
+
+#![expect(unsafe_code)]
+
 use std::cell::Cell;
 use std::mem::MaybeUninit;
 use std::sync::{Mutex, MutexGuard};

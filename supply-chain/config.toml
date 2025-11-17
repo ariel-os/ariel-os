@@ -112,9 +112,6 @@ audit-as-crates-io = true
 [policy.rbi]
 audit-as-crates-io = true
 
-[policy.try-lock]
-audit-as-crates-io = true
-
 [policy.xtensa-lx]
 audit-as-crates-io = true
 

@@ -9,6 +9,7 @@ There are three main CI workflows that are relevant for PRs: `CI`, `Build`, and 
 The `CI` workflow runs various checks and linters and runs host-side crate tests.
 It is relatively quick (usually runs in 3 minutes or less, with many checks running in just a few seconds), and is run for *every* PR.
 
+> [!NOTE]
 > Before requesting a review, linting errors should usually be addressed.
 
 ### The `Build` Workflow
@@ -23,6 +24,7 @@ On top of a label for each MCU (sub)family, there are a few other labels with di
 The `ci-build:skip` label additionally allows to skip almost everything in the `Build` workflow.
 As this workflow is more costly and takes much longer (about 10–45 minutes depending on the set of builders and on runner contention), selecting the right label is important to make sure the changes compile correctly while managing the load on the runners.
 
+> [!NOTE]
 > When opening a draft PR, it is recommended to *not* attach a label at first, to limit the load on the runners.
 > *Before* marking the PR as ready for review, a label should be attached (and the workflow manually re-run through the web interface) to check that the changes compile as expected: as this can take some time, not *all* jobs need to be green yet, but at least a few should.
 > When re-running the workflow, it is essential to select “Re-run all jobs” instead of “Re-run failed jobs” so that the `check-labels` job re-runs, otherwise its output—the attached label—might get incorrectly reused.
@@ -43,6 +45,7 @@ As this workflow is more costly and takes much longer (about 10–45 minutes de
 When a CI job is successful it will write to a cache that is keyed on a hash of the file tree.
 This allows it to re-run in mere seconds if changes to the future PR only affect the commit chain—e.g., squashing or editing commit messages—while leaving the tree as-is.
 
+> [!TIP]
 > This means that, when needing to edit the commit chain without changing the tree, it is better to *wait* for the jobs to complete before editing it, to benefit from this caching behavior. Otherwise what was run but not committed to the cache just gets thrown away.
 
 ### The Docs Preview
@@ -50,6 +53,7 @@ This allows it to re-run in mere seconds if changes to the future PR only affect
 This workflow builds the documentation—currently the rustdoc docs and the book—deploys it, and adds a bot comment to the PR.
 This comment contains links that allow accessing the deployed documentation.
 
+> [!IMPORTANT]
 > When making a PR with changes that affect the documentation, the preview should be checked to make sure the docs are rendered as expected.
 
 ## Dependency Vetting
@@ -75,12 +79,9 @@ The following steps must be followed when preparing a new release of `ariel-os`:
 1. Check whether deprecated items should be removed, if any.
 1. Update the version numbers of the crates that need to be bumped.
 
-    <div class="warning">
-        <ul>
-            <li>The crates in <code>/src/lib/</code> are managed separately and their version numbers should <em>not</em> be bumped.</li>
-            <li>The <code>ariel-os-sensors</code> crate's version is decoupled from the rest of the OS, as every sensor driver relies on it, and bumping it may result in fragmenting the entire ecosystem of sensor drivers.</li>
-        </ul>
-    </div>
+    > [!IMPORTANT]
+    > - The crates in `/src/lib/` are managed separately and their version numbers should *not* be bumped.
+    > - The `ariel-os-sensors` crate's version is decoupled from the rest of the OS, as every sensor driver relies on it, and bumping it may result in fragmenting the entire ecosystem of sensor drivers.
 
 1. Update the changelog manually, going through merge commits, especially focusing on PRs with the [`breaking`][issue-label-breaking] and [`changelog:highlight`][issue-label-changelog-highlight] labels, and skipping those with the [`changelog:skip`][issue-label-changelog-skip] label.
    If PR descriptions contain the string `BREAKING CHANGE` (in line with the [Conventional Commits][conventional-commits-spec] specification), these may be highlighted in the changelog.

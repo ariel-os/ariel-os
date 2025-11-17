@@ -1,26 +1,26 @@
 [package]
 name = "test-coap"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
 
-[lints]
-workspace = true
-
 [dependencies]
-embassy-sync = { workspace = true }
 ariel-os = { path = "../../src/ariel-os" }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-embassy-futures = { workspace = true }
-embedded-nal-coap = { workspace = true }
-coap-request = "0.2.0-alpha.2"
-coap-message = "0.3.2"
-coap-message-demos = { version = "0.4.0", default-features = false }
-coap-request-implementations = "0.1.0-alpha.4"
 coap-handler = "0.2.0"
 coap-handler-implementations = "0.5.0"
+coap-message = "0.3.2"
+coap-message-demos = { version = "0.4.0", default-features = false }
+coap-request = "0.2.0-alpha.2"
+coap-request-implementations = "0.1.0-alpha.4"
+embassy-futures = { workspace = true }
+embassy-sync = { workspace = true }
+embedded-nal-coap = { workspace = true }
 
 coap-scroll-ring-server = "0.2.0"
 scroll-ring = "0.1.1"
 
 ariel-os-coap = { workspace = true }
+
+[lints]
+workspace = true

@@ -6,6 +6,23 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "0.4.27 -> 0.4.28"
 
+[[audits.rand_pcg]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "0.3.1 -> 0.9.0"
+
+[[audits.scroll-ring]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "0.1.2 -> 0.1.3"
+notes = "Changes affect only a dependency version, whose safety is out of scope (vetted independently), and will not affect the operation of this crate."
+
+[[audits.try-lock-portable-atomic]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+version = "0.2.5-patch0"
+notes = "Note that there are several deprecated functions that are documented to not be sound and deprecated; users need to heed those deprecation warnings to use the crate soundly."
+
 [[trusted.aho-corasick]]
 criteria = "safe-to-deploy"
 user-id = 189 # Andrew Gallant (BurntSushi)
@@ -406,12 +423,6 @@ end = "2026-09-01"
 criteria = "safe-to-deploy"
 user-id = 6743 # Ed Page (epage)
 start = "2025-07-08"
-end = "2026-09-01"
-
-[[trusted.try-lock]]
-criteria = "safe-to-deploy"
-user-id = 359 # Sean McArthur (seanmonstar)
-start = "2020-07-10"
 end = "2026-09-01"
 
 [[trusted.trybuild]]

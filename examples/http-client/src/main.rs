@@ -61,7 +61,7 @@ async fn main() {
     if let Err(err) = send_http_get_request(&mut client, ENDPOINT_URL).await {
         error!(
             "Error while sending an HTTP request: {:?}",
-            defmt::Debug2Format(&err)
+            Debug2Format(&err)
         );
     }
 

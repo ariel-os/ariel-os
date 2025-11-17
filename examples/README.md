@@ -21,6 +21,7 @@ This directory contains example applications that showcase how to use Ariel OS.
 - [minimal/](./minimal): Minimized to the max Ariel OS config
 - [power/](./power): Demonstrates power management functionality
 - [random/](./random): Demonstrates obtaining random values
+- [sensors-debug/](./sensors-debug): Demonstrates accessing the sensor API.
 - [storage/](./storage): Demonstrates persistent storage interaction
 - [tcp-echo/](./tcp-echo): TCP echo example
 - [testing/](./testing): Demonstrates `embedded-test` integration

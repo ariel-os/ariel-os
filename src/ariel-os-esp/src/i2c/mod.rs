@@ -14,6 +14,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.I2C0.take().unwrap();
         } else if #[cfg(context = "esp32c6")] {
             let _ = peripherals.I2C0.take().unwrap();
+        } else if #[cfg(context = "esp32s2")] {
+            let _ = peripherals.I2C0.take().unwrap();
+            let _ = peripherals.I2C1.take().unwrap();
         } else if #[cfg(context = "esp32s3")] {
             let _ = peripherals.I2C0.take().unwrap();
             let _ = peripherals.I2C1.take().unwrap();

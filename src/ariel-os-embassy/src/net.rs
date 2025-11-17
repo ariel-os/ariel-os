@@ -5,6 +5,11 @@
 //! custom network configuration.
 
 #![deny(missing_docs)]
+#![allow(unsafe_code)]
+#![allow(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
 
 use embassy_net::{Runner, Stack};
 use embassy_sync::once_lock::OnceLock;
@@ -70,16 +75,18 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    #[cfg(not(feature = "network-config-override"))]
-    {
-        embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
-    }
-    #[cfg(feature = "network-config-override")]
-    {
-        unsafe extern "Rust" {
-            fn __ariel_os_network_config() -> embassy_net::Config;
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "network-config-override")] {
+            unsafe extern "Rust" {
+                fn __ariel_os_network_config() -> embassy_net::Config;
+            }
+            unsafe { __ariel_os_network_config() }
+        } else if #[cfg(feature = "dhcpv4")] {
+            embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
+        } else if #[cfg(not(context = "ariel-os"))] {
+            // For platform-independent tooling.
+            embassy_net::Config::default()
         }
-        unsafe { __ariel_os_network_config() }
     }
 }
 
@@ -158,7 +165,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
     }
 }
 
-#[cfg(feature = "network-config-static")]
+#[cfg(feature = "network-config-ipv4-static")]
 // SAFETY: the compiler prevents from defining multiple functions with the same name in the
 // same crate; the function signature is checked by the compiler as it is in the same crate as the
 // FFI declaration.
