@@ -8,7 +8,7 @@ mod sensors;
 use ariel_os::{
     debug::log::{error, info},
     sensors::{
-        Category, MeasurementUnit, REGISTRY, Reading as _,
+        Category, MeasurementUnit, REGISTRY, Reading as _, Label,
         sensor::{ReadingChannel, Sample},
     },
     time::Timer,
@@ -46,9 +46,10 @@ async fn main(peripherals: pins::Peripherals) {
 
             match reading {
                 Ok(samples) => {
-                    for (reading_channel, sample) in samples.samples() {
-                        // Even though the sensor is guaranteed to be a temperature sensor,
-                        // a single sensor could provide multiple readings including ones that aren't temperature
+                    for (reading_channel, sample) in samples.samples()
+                        .filter(|(reading_channel, _)| {matches!(reading_channel.label(), Label::Temperature)})
+                    {
+                        // Our code only supports Celsius right now
                         match reading_channel.unit() {
                             MeasurementUnit::Celsius => {
                                 print_temp_to_lcd(&mut lcd, sample, reading_channel)
@@ -86,7 +87,7 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
         let int_part = value as i32 / 10_i32.pow(- channel_scaling as u32);
         (
             int_part,
-            value.unsigned_abs().strict_sub(int_part.unsigned_abs() * 10_u32.pow(channel_scaling as u32)),
+            value.unsigned_abs() - int_part.unsigned_abs() * 10_u32.pow(- channel_scaling as u32),
         )
     } else {
         // Just multiply
