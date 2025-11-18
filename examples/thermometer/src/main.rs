@@ -8,12 +8,12 @@ mod sensors;
 use ariel_os::{
     debug::log::{error, info},
     sensors::{
-        REGISTRY, Reading as _,
+        Category, MeasurementUnit, REGISTRY, Reading as _,
         sensor::{ReadingChannel, Sample},
     },
     time::Timer,
 };
-use ariel_os_sensors::MeasurementUnit;
+
 use stm32_lcd_driver::Lcd;
 
 #[ariel_os::task(autostart, peripherals)]
@@ -30,21 +30,30 @@ async fn main(peripherals: pins::Peripherals) {
 
     let mut lcd = Lcd::new(lcd_peris.lcd, pin_peris.into_pins());
     lcd.initialize().await;
+
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        for sensor in REGISTRY.sensors() {
+        for sensor in REGISTRY
+            .sensors()
+            .filter(|s| s.categories().contains(&Category::Temperature))
+        {
             if let Err(err) = sensor.trigger_measurement() {
                 error!("Error when triggering a measurement: {}", err);
             }
         }
 
         // Then, collect and display the readings one at a time.
-        for sensor in REGISTRY.sensors() {
+        for sensor in REGISTRY
+            .sensors()
+            .filter(|s| s.categories().contains(&Category::Temperature))
+        {
             let reading = sensor.wait_for_reading().await;
 
             match reading {
                 Ok(samples) => {
                     for (reading_channel, sample) in samples.samples() {
+                        // Even though sensors that aren't temperature sensors are filtered out,
+                        // A single sensor could provide multiple readings including ones that aren't temperature
                         match reading_channel.unit() {
                             MeasurementUnit::Celsius => {
                                 print_temp_to_lcd(&mut lcd, sample, reading_channel)
@@ -73,21 +82,16 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     };
 
     let channel_scaling = reading_channel.scaling();
-    let (integer_part, decimal_part) =  if channel_scaling < 0 {
-        let int_part = value as i32 / 10_i32.pow(channel_scaling.abs() as u32);
-        (int_part, value.abs() - int_part.abs() * 10_i32.pow(channel_scaling.abs() as u32))
-    } else {
-        let int_part = value as i32 / 10_i32.pow(channel_scaling as u32);
-        (int_part, value.abs() - int_part.abs() * 10_i32.pow(channel_scaling as u32))
-    };
 
+    let integer_part = value as i32 / 10_i32.pow(channel_scaling.abs() as u32);
+    let decimal_part = value.abs() - int_part.abs() * 10_i32.pow(channel_scaling.abs() as u32);
 
-
-    if integer_part >= 125 {
-        unreachable!("125 °C is the upper bound on operating temperature");
-    } else if integer_part <= -40 {
-        unreachable!("-40 °C is the lower bound operating temperature");
+    if integer_part >= 1000 {
+        unreachable!();
+    } else if integer_part <= -100 {
+        unreachable!();
     }
+
     // 6 "Digits" available on the LCD display but
     // - '.' takes no space on the LCD display
     // - '°' takes up 2 bytes
@@ -104,7 +108,6 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     let decimal_part = decimal_part as u32;
     let integer_part = integer_part.abs() as u32;
 
-    // the buffer will hold [" XXX°C"]
     // hundreds digit
     let h = integer_part / 100;
     // tens digit
@@ -131,7 +134,8 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     };
 
     lcd.clear();
-    lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start).unwrap();
+    lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start)
+        .unwrap();
     lcd.display();
 }
 
