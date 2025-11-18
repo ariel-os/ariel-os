@@ -104,7 +104,7 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     } else {
         lcd_bytes[0..1].copy_from_slice(" ".as_bytes());
     }
-    assert!(decimal_part > 0);
+    assert!(decimal_part >= 0);
     let decimal_part = decimal_part as u32;
     let integer_part = integer_part.abs() as u32;
 
