@@ -39,6 +39,8 @@ async fn main(peripherals: pins::Peripherals) {
         {
             if let Err(err) = sensor.trigger_measurement() {
                 error!("Error when triggering a measurement: {}", err);
+                Timer::after_secs(2).await;
+                continue;
             }
             let reading = sensor.wait_for_reading().await;
 
