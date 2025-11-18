@@ -14,7 +14,7 @@ use ariel_os::{
     time::Timer,
 };
 
-use stm32_lcd_driver::Lcd;
+use stm32_lcd_driver::{Lcd, Digit};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
@@ -33,41 +33,35 @@ async fn main(peripherals: pins::Peripherals) {
 
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        for sensor in REGISTRY
-            .sensors()
-            .filter(|s| s.categories().contains(&Category::Temperature))
+        match REGISTRY.sensors()
+                .find(|s| s.categories().contains(&Category::Temperature))
         {
-            if let Err(err) = sensor.trigger_measurement() {
-                error!("Error when triggering a measurement: {}", err);
-            }
-        }
+            Some(sensor) => {
+                if let Err(err) = sensor.trigger_measurement() {
+                    error!("Error when triggering a measurement: {}", err);
+                }
+                let reading = sensor.wait_for_reading().await;
 
-        // Then, collect and display the readings one at a time.
-        for sensor in REGISTRY
-            .sensors()
-            .filter(|s| s.categories().contains(&Category::Temperature))
-        {
-            let reading = sensor.wait_for_reading().await;
-
-            match reading {
-                Ok(samples) => {
-                    for (reading_channel, sample) in samples.samples() {
-                        // Even though sensors that aren't temperature sensors are filtered out,
-                        // A single sensor could provide multiple readings including ones that aren't temperature
-                        match reading_channel.unit() {
-                            MeasurementUnit::Celsius => {
-                                print_temp_to_lcd(&mut lcd, sample, reading_channel)
+                match reading {
+                    Ok(samples) => {
+                        for (reading_channel, sample) in samples.samples() {
+                            // Even though the sensor is guaranteed to be a temperature sensor,
+                            // a single sensor could provide multiple readings including ones that aren't temperature
+                            match reading_channel.unit() {
+                                MeasurementUnit::Celsius => {
+                                    print_temp_to_lcd(&mut lcd, sample, reading_channel)
+                                }
+                                _ => {}
                             }
-                            _ => {}
                         }
                     }
-                }
-                Err(err) => {
-                    error!("Error when reading: {}", err);
+                    Err(err) => {
+                        error!("Error when reading: {}", err);
+                    }
                 }
             }
+            None => info!("There aren't any registered temperature sensors")
         }
-
         Timer::after_secs(2).await;
     }
 }
@@ -92,18 +86,14 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
         unreachable!();
     }
 
-    // 6 "Digits" available on the LCD display but
-    // - '.' takes no space on the LCD display
-    // - '°' takes up 2 bytes
-    // so the buffer has to hold 8 bytes;
-    let mut lcd_bytes = [0u8; 8];
+    lcd.clear();
 
-    lcd_bytes[5..8].copy_from_slice("°C".as_bytes());
-    if integer_part <= 0 {
-        lcd_bytes[0..1].copy_from_slice("-".as_bytes());
+    if integer_part >= 0 {
+        lcd.write_digit(Digit::Space, 0).unwrap();
     } else {
-        lcd_bytes[0..1].copy_from_slice(" ".as_bytes());
+        lcd.write_digit(Digit::Minus, 0).unwrap();
     }
+
     let decimal_part = decimal_part as u32;
     let integer_part = integer_part.abs() as u32;
 
@@ -116,40 +106,37 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     // deci digit
     let d = decimal_part / 10_u32.pow(decimal_part.ilog10());
 
-    let start = if h != 0 {
-        // the buffer will hold ["  XXX°C"]
-        lcd_bytes[1..2].copy_from_slice(" ".as_bytes());
-        lcd_bytes[2..3].copy_from_slice(digit(h).as_bytes());
-        lcd_bytes[3..4].copy_from_slice(digit(t).as_bytes());
-        lcd_bytes[4..5].copy_from_slice(digit(u).as_bytes());
-        2
+    if h != 0 {
+        // "htu"
+        lcd.write_digit(digit(h), 1).unwrap();
+        lcd.write_digit(digit(t), 2).unwrap();
+        lcd.write_digit(digit(u), 3).unwrap();
     } else {
-        // the buffer will hold ["sXX.X°C"] where s is either " " or "-"
-        lcd_bytes[1..2].copy_from_slice(digit(t).as_bytes());
-        lcd_bytes[2..3].copy_from_slice(digit(u).as_bytes());
-        lcd_bytes[3..4].copy_from_slice(".".as_bytes());
-        lcd_bytes[4..5].copy_from_slice(digit(d).as_bytes());
-        0
+        // "tu.d"
+        lcd.write_digit(digit(t), 1).unwrap();
+        lcd.write_digit(digit(u), 2).unwrap();
+        // Decimal Point is written at the same point the units number
+        lcd.write_digit(Digit::Dp, 2).unwrap();
+        lcd.write_digit(digit(d), 3).unwrap();
     };
 
-    lcd.clear();
-    lcd.write_string(str::from_utf8(&lcd_bytes).unwrap(), start)
-        .unwrap();
+    lcd.write_digit(Digit::Degree, 4).unwrap();
+    lcd.write_digit(Digit::C, 5).unwrap();
     lcd.display();
 }
 
-fn digit(a: u32) -> &'static str {
+fn digit(a: u32) -> Digit {
     match a {
-        1 => "1",
-        2 => "2",
-        3 => "3",
-        4 => "4",
-        5 => "5",
-        6 => "6",
-        7 => "7",
-        8 => "8",
-        9 => "9",
-        0 => "0",
+        1 => Digit::_1,
+        2 => Digit::_2,
+        3 => Digit::_3,
+        4 => Digit::_4,
+        5 => Digit::_5,
+        6 => Digit::_6,
+        7 => Digit::_7,
+        8 => Digit::_8,
+        9 => Digit::_9,
+        0 => Digit::_0,
         a => unreachable!("{}", a),
     }
 }
