@@ -118,7 +118,11 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     // units digit
     let u = integer_part - 10 * t + 100 * h;
     // deci digit
-    let d = decimal_part / 10_u32.pow(decimal_part.ilog10());
+    let d = if decimal_part == 0 {
+        0
+    } else {
+        decimal_part / 10_u32.pow(decimal_part.ilog10())
+    };
 
     if h != 0 {
         // "htu"
