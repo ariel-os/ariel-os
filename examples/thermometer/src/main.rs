@@ -33,36 +33,37 @@ async fn main(peripherals: pins::Peripherals) {
 
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        match REGISTRY
+        if let Some(sensor) =  REGISTRY
             .sensors()
             .find(|s| s.categories().contains(&Category::Temperature))
         {
-            Some(sensor) => {
-                if let Err(err) = sensor.trigger_measurement() {
-                    error!("Error when triggering a measurement: {}", err);
-                }
-                let reading = sensor.wait_for_reading().await;
+            if let Err(err) = sensor.trigger_measurement() {
+                error!("Error when triggering a measurement: {}", err);
+            }
+            let reading = sensor.wait_for_reading().await;
 
-                match reading {
-                    Ok(samples) => {
-                        for (reading_channel, sample) in samples.samples() {
-                            // Even though the sensor is guaranteed to be a temperature sensor,
-                            // a single sensor could provide multiple readings including ones that aren't temperature
-                            match reading_channel.unit() {
-                                MeasurementUnit::Celsius => {
-                                    print_temp_to_lcd(&mut lcd, sample, reading_channel)
-                                }
-                                _ => {}
+            match reading {
+                Ok(samples) => {
+                    for (reading_channel, sample) in samples.samples() {
+                        // Even though the sensor is guaranteed to be a temperature sensor,
+                        // a single sensor could provide multiple readings including ones that aren't temperature
+                        match reading_channel.unit() {
+                            MeasurementUnit::Celsius => {
+                                print_temp_to_lcd(&mut lcd, sample, reading_channel)
                             }
+                            _ => {}
                         }
                     }
-                    Err(err) => {
-                        error!("Error when reading: {}", err);
-                    }
+                }
+                Err(err) => {
+                    error!("Error when reading: {}", err);
                 }
             }
-            None => info!("There aren't any registered temperature sensors"),
         }
+        else {
+            info!("There aren't any registered temperature sensors");
+        }
+
         Timer::after_secs(2).await;
     }
 }
