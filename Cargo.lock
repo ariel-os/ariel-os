@@ -522,6 +522,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensor-stts22h"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-embassy",
+ "ariel-os-hal",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "embedded-hal-async",
+]
+
+[[package]]
 name = "ariel-os-sensors"
 version = "0.1.0"
 dependencies = [
@@ -530,6 +544,16 @@ dependencies = [
  "embassy-sync 0.6.2",
  "linkme",
  "pin-project",
+]
+
+[[package]]
+name = "ariel-os-sensors-utils"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-sensors",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "portable-atomic",
 ]
 
 [[package]]
@@ -4947,6 +4971,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-sensor-stts22h",
  "ariel-os-sensors",
  "embassy-sync 0.6.2",
  "once_cell",
