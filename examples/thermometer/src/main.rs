@@ -78,9 +78,20 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
 
     let channel_scaling = reading_channel.scaling();
 
-    let integer_part: i32 = value as i32 / 10_i32.pow(channel_scaling.abs() as u32);
-    let decimal_part: u32 = value.unsigned_abs()
-        - integer_part.unsigned_abs() * 10_u32.pow(channel_scaling.abs() as u32);
+    let (integer_part, decimal_part) = if channel_scaling < 0 {
+        // Fixed point arithmetic
+        let int_part = value as i32 / 10_i32.pow(- channel_scaling as u32);
+        (
+            int_part,
+            value.unsigned_abs().strict_sub(int_part.unsigned_abs() * 10_u32.pow(channel_scaling as u32)),
+        )
+    } else {
+        // Just multiply
+        (
+            value as i32 * 10_i32.pow(channel_scaling as u32),
+            0,
+        )
+    };
 
     if integer_part >= 1000 {
         unreachable!();
