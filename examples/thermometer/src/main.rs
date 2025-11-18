@@ -14,7 +14,7 @@ use ariel_os::{
     time::Timer,
 };
 
-use stm32_lcd_driver::{Lcd, Digit};
+use stm32_lcd_driver::{Digit, Lcd};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
@@ -33,8 +33,9 @@ async fn main(peripherals: pins::Peripherals) {
 
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        match REGISTRY.sensors()
-                .find(|s| s.categories().contains(&Category::Temperature))
+        match REGISTRY
+            .sensors()
+            .find(|s| s.categories().contains(&Category::Temperature))
         {
             Some(sensor) => {
                 if let Err(err) = sensor.trigger_measurement() {
@@ -60,7 +61,7 @@ async fn main(peripherals: pins::Peripherals) {
                     }
                 }
             }
-            None => info!("There aren't any registered temperature sensors")
+            None => info!("There aren't any registered temperature sensors"),
         }
         Timer::after_secs(2).await;
     }
@@ -78,7 +79,8 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
     let channel_scaling = reading_channel.scaling();
 
     let integer_part: i32 = value as i32 / 10_i32.pow(channel_scaling.abs() as u32);
-    let decimal_part: u32 = value.unsigned_abs() - integer_part.unsigned_abs() * 10_u32.pow(channel_scaling.abs() as u32);
+    let decimal_part: u32 = value.unsigned_abs()
+        - integer_part.unsigned_abs() * 10_u32.pow(channel_scaling.abs() as u32);
 
     if integer_part >= 1000 {
         unreachable!();
