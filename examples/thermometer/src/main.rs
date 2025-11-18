@@ -33,41 +33,40 @@ async fn main(peripherals: pins::Peripherals) {
 
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        if let Some(sensor) = REGISTRY
+        let Some(sensor) = REGISTRY
             .sensors()
-            .find(|s| s.categories().contains(&Category::Temperature))
-        {
-            if let Err(err) = sensor.trigger_measurement() {
-                error!("Error when triggering a measurement: {}", err);
-                Timer::after_secs(2).await;
-                continue;
-            }
-            let reading = sensor.wait_for_reading().await;
+            .find(|s| s.categories().contains(&Category::Temperature)) else {
+            info!("There aren't any registered temperature sensors");
+            break;
+        };
 
-            match reading {
-                Ok(samples) => {
-                    for (reading_channel, sample) in
-                        samples.samples().filter(|(reading_channel, _)| {
-                            matches!(reading_channel.label(), Label::Temperature)
-                        })
-                    {
-                        // Our code only supports Celsius right now
-                        match reading_channel.unit() {
-                            MeasurementUnit::Celsius => {
-                                print_temp_to_lcd(&mut lcd, sample, reading_channel)
-                            }
-                            _ => {}
+        if let Err(err) = sensor.trigger_measurement() {
+            error!("Error when triggering a measurement: {}", err);
+            Timer::after_secs(2).await;
+            continue;
+        }
+        let reading = sensor.wait_for_reading().await;
+
+        match reading {
+            Ok(samples) => {
+                for (reading_channel, sample) in
+                    samples.samples().filter(|(reading_channel, _)| {
+                        matches!(reading_channel.label(), Label::Temperature)
+                    })
+                {
+                    // Our code only supports Celsius right now
+                    match reading_channel.unit() {
+                        MeasurementUnit::Celsius => {
+                            print_temp_to_lcd(&mut lcd, sample, reading_channel)
                         }
+                        _ => {}
                     }
                 }
-                Err(err) => {
-                    error!("Error when reading: {}", err);
-                }
             }
-        } else {
-            info!("There aren't any registered temperature sensors");
+            Err(err) => {
+                error!("Error when reading: {}", err);
+            }
         }
-
         Timer::after_secs(2).await;
     }
 }
