@@ -8,7 +8,7 @@ mod sensors;
 use ariel_os::{
     debug::log::{error, info},
     sensors::{
-        Category, MeasurementUnit, REGISTRY, Reading as _, Label,
+        Category, Label, MeasurementUnit, REGISTRY, Reading as _,
         sensor::{ReadingChannel, Sample},
     },
     time::Timer,
@@ -33,7 +33,7 @@ async fn main(peripherals: pins::Peripherals) {
 
     loop {
         // Trigger measurements for each sensor driver in parallel.
-        if let Some(sensor) =  REGISTRY
+        if let Some(sensor) = REGISTRY
             .sensors()
             .find(|s| s.categories().contains(&Category::Temperature))
         {
@@ -46,8 +46,10 @@ async fn main(peripherals: pins::Peripherals) {
 
             match reading {
                 Ok(samples) => {
-                    for (reading_channel, sample) in samples.samples()
-                        .filter(|(reading_channel, _)| {matches!(reading_channel.label(), Label::Temperature)})
+                    for (reading_channel, sample) in
+                        samples.samples().filter(|(reading_channel, _)| {
+                            matches!(reading_channel.label(), Label::Temperature)
+                        })
                     {
                         // Our code only supports Celsius right now
                         match reading_channel.unit() {
@@ -62,8 +64,7 @@ async fn main(peripherals: pins::Peripherals) {
                     error!("Error when reading: {}", err);
                 }
             }
-        }
-        else {
+        } else {
             info!("There aren't any registered temperature sensors");
         }
 
@@ -84,17 +85,14 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
 
     let (integer_part, decimal_part) = if channel_scaling < 0 {
         // Fixed point arithmetic
-        let int_part = value as i32 / 10_i32.pow(- channel_scaling as u32);
+        let int_part = value as i32 / 10_i32.pow(-channel_scaling as u32);
         (
             int_part,
-            value.unsigned_abs() - int_part.unsigned_abs() * 10_u32.pow(- channel_scaling as u32),
+            value.unsigned_abs() - int_part.unsigned_abs() * 10_u32.pow(-channel_scaling as u32),
         )
     } else {
         // Just multiply
-        (
-            value as i32 * 10_i32.pow(channel_scaling as u32),
-            0,
-        )
+        (value as i32 * 10_i32.pow(channel_scaling as u32), 0)
     };
 
     if integer_part >= 1000 {
