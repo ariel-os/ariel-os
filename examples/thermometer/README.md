@@ -1,4 +1,4 @@
-# sensors-debug
+# thermometer
 
 ## About
 
