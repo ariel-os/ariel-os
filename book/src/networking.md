@@ -65,6 +65,14 @@ The configuration can be customized with the following environment variables:
 > [!NOTE]
 > Non-static IPv6 address allocation will be supported in the future.
 
+#### Hard-Coded Static Configuration
+
+Instead of using DHCP or passing static configuration through environment variables it is also possible to use hard-coded static configuration if needed.
+To do that, the `network-config-override` Cargo feature needs to be enabled, and the [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] can be used to set the configuration.
+
+> [!NOTE]
+> The `network-config-override` Cargo feature is internally used by the `network-config-ipv4-static` and `network-config-ipv6-static` laze modules.
+
 ### Support for Network Protocols
 
 Support for various network protocols can be enabled through [Cargo features listed in the documentation][rustdoc-homepage].
