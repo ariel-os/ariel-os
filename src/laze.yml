@@ -11,6 +11,7 @@ subdirs:
   - ariel-os-rp
   - ariel-os-runqueue
   - ariel-os-sensors
+  - ariel-os-sensors-utils
   - ariel-os-stm32
   - ariel-os-threads
   - lib
