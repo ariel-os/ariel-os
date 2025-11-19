@@ -30,7 +30,8 @@ async fn main(peripherals: pins::Peripherals) {
         // Trigger measurements for each sensor driver in parallel.
         let Some(sensor) = REGISTRY
             .sensors()
-            .find(|s| s.categories().contains(&Category::Temperature)) else {
+            .find(|s| s.categories().contains(&Category::Temperature))
+        else {
             info!("There aren't any registered temperature sensors");
             break;
         };
@@ -44,10 +45,9 @@ async fn main(peripherals: pins::Peripherals) {
 
         match reading {
             Ok(samples) => {
-                for (reading_channel, sample) in
-                    samples.samples().filter(|(reading_channel, _)| {
-                        reading_channel.label() == Label::Temperature
-                    })
+                for (reading_channel, sample) in samples
+                    .samples()
+                    .filter(|(reading_channel, _)| reading_channel.label() == Label::Temperature)
                 {
                     // Our code only supports Celsius right now
                     match reading_channel.unit() {
