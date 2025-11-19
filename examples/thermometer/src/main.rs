@@ -46,7 +46,7 @@ async fn main(peripherals: pins::Peripherals) {
             Ok(samples) => {
                 for (reading_channel, sample) in
                     samples.samples().filter(|(reading_channel, _)| {
-                        matches!(reading_channel.label(), Label::Temperature)
+                        reading_channel.label() == Label::Temperature
                     })
                 {
                     // Our code only supports Celsius right now
