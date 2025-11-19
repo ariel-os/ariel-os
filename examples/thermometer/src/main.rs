@@ -18,17 +18,12 @@ use stm32_lcd_driver::{Digit, Lcd};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
-    let pins::Peripherals {
-        lcd: lcd_peris,
-        pins: pin_peris,
-        i2c: i2c_peris,
-    } = peripherals;
-    i2c_bus::init(i2c_peris);
+    i2c_bus::init(peripherals.i2c);
     sensors::init().await;
 
     info!("Will print the readings of temperature sensor on the LCD Screen");
 
-    let mut lcd = Lcd::new(lcd_peris.lcd, pin_peris.into_pins());
+    let mut lcd = Lcd::new(peripherals.lcd.lcd, peripherals.pins.into_pins());
     lcd.initialize().await;
 
     loop {
