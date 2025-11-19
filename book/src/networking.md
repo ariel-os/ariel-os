@@ -65,6 +65,11 @@ The configuration must be customized with the following environment variables:
 > [!NOTE]
 > Non-static IPv6 address allocation will be supported in the future.
 
+#### Custom Configuration Provider
+
+Instead of using DHCP or passing static configuration through environment variables it is also possible to use a custom configuration provider if needed.
+To do that, the `network-config-override` [laze module](./build-system.md#laze-modules) needs to be enabled, and the [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] can be used to provide the configuration.
+
 ### Support for Network Protocols
 
 Support for various network protocols can be enabled through [Cargo features listed in the documentation][rustdoc-homepage].
