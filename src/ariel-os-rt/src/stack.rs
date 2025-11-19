@@ -1,4 +1,4 @@
-//! Stack usage helpers.
+//! Provides stack usage helpers.
 
 #![expect(unsafe_code)]
 
@@ -9,7 +9,7 @@ use crate::arch::sp;
 /// Bytes that's used to pain stacks.
 const STACK_PAINT_COLOR: u8 = 0xCC;
 
-/// Struct representing the currently active stack.
+/// Represents the currently active stack.
 ///
 /// # Stack painting
 ///
@@ -57,12 +57,12 @@ pub struct Stack {
 }
 
 impl Stack {
-    /// Gets a handle for the currently active stack.
+    /// Returns a handle for the currently active stack.
     ///
     /// # Panics
     ///
     /// Panics when the world is on fire (e.g., when the limits returned by
-    /// the architecture dependent code don't make sense).
+    /// the architecture-dependent code don't make sense).
     #[must_use]
     pub fn get() -> Self {
         let sp = sp();
@@ -168,12 +168,14 @@ impl Stack {
     }
 
     /// Returns this [`Stack`]'s `lowest` address.
+    #[doc(hidden)]
     #[must_use]
     pub fn highest(&self) -> usize {
         self.highest
     }
 
     /// Returns this [`Stack`]'s `highest` address.
+    #[doc(hidden)]
     #[must_use]
     pub fn lowest(&self) -> usize {
         self.lowest
