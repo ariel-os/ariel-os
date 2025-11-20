@@ -5705,6 +5705,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "threading-waitqueue"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "tinyrlibc"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
