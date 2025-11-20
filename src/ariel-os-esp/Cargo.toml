@@ -10,12 +10,18 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+allocator-api2 = { version = "0.3.0", default-features = false, features = [
+  "alloc",
+], optional = true }
 cfg-if = { workspace = true }
+critical-section = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false }
 embassy-time = { workspace = true, optional = true }
-embassy-time-driver = { workspace = true, features = [ "tick-hz-1_000_000" ], optional = true }
+embassy-time-driver = { workspace = true, features = [
+  "tick-hz-1_000_000",
+], optional = true }
 embassy-time-queue-utils = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
@@ -31,10 +37,11 @@ esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "wifi",
 ], optional = true }
-esp-radio-rtos-driver = { workspace = true, default-features = false, optional = true }
+esp-radio-rtos-driver = { workspace = true, default-features = false, features = [
+  "ipc-implementations",
+], optional = true }
 esp-rom-sys = { workspace = true }
 esp-sync = { workspace = true, optional = true }
-esp-wifi-sys = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
 once_cell = { workspace = true }
 paste = { workspace = true }
@@ -61,7 +68,6 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
-esp-wifi-sys = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32c3"] }
@@ -73,7 +79,6 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
-esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32c6"] }
@@ -85,7 +90,6 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c6"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
-esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s2"] }
@@ -94,7 +98,6 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32s2"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
-esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s3"] }
@@ -106,7 +109,6 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32s3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
-esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -125,7 +127,7 @@ spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
 uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables threading support.
-threading = ["dep:ariel-os-threads", "dep:esp-wifi-sys"]
+threading = ["dep:ariel-os-threads"]
 
 ## Enables timers
 time = [
@@ -147,7 +149,14 @@ usb = []
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "dep:esp-radio-rtos-driver", "wifi"]
+wifi-esp = [
+  "dep:allocator-api2",
+  "dep:embassy-time",
+  "dep:esp-alloc",
+  "dep:esp-radio",
+  "dep:esp-radio-rtos-driver",
+  "wifi",
+]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.
