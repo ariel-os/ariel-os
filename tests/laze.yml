@@ -9,6 +9,7 @@ subdirs:
   - random-getrandom
   - spi-loopback
   - spi-main
+  - stack-painting
   - threading-dynamic-prios
   - threading-fpu
   - threading-lock
