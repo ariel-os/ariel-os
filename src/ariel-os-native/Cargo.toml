@@ -18,7 +18,7 @@ embassy-time = { workspace = true, default-features = false, features = [
   "std",
 ] }
 embedded-hal-async = { workspace = true }
-getrandom = { version = "0.2", optional = true }
+getrandom = { version = "0.3", optional = true }
 ariel-os-buildinfo = { workspace = true }
 ariel-os-debug = { workspace = true, features = ["std"] }
 ariel-os-embassy-common = { workspace = true }

@@ -495,6 +495,8 @@ contexts:
       - has_device_identity
       - has_hwrng
       - sw/benchmark
+    provides_unique:
+      - getrandom03-provider
     disables:
       - semihosting
       - defmt
@@ -1373,16 +1375,27 @@ modules:
     help: The board's peripherals are suitable for passing into ariel_os_random::construct_rng.
     selects:
       - has_hwrng
+      # Support for getrandom should be there automatically as soon as we have
+      # a CSPRNG, which is currently equivalent to having a hwrng, but may
+      # later be moved into the equivalent of the ariel-os-random/csprng
+      # feature.
+      - ?getrandom03-provider-ariel
     env:
       global:
         FEATURES:
           - ariel-os/hwrng
-        RUSTFLAGS:
-          - --cfg getrandom_backend=\"custom\"
 
   - name: has_hwrng
     selects:
       - doc-only
+
+  - name: getrandom03-provider-ariel
+    provides_unique:
+      - getrandom03-provider
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg getrandom_backend=\"custom\"
 
   - name: coap
     help: Basic support for the CoAP protocol.
