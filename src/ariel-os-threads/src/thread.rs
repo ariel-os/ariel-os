@@ -54,6 +54,8 @@ pub enum ThreadState {
     ChannelRxBlocked(usize),
     /// Waiting to send on a [`crate::sync::Channel`], i.e. waiting for the receiver.
     ChannelTxBlocked(usize),
+    /// Waiting for a [`super::wait_queue::WaitQueue`].
+    WaitQueueBlocked,
 }
 
 impl Thread {
