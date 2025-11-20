@@ -10,6 +10,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+allocator-api2 = { version = "0.3.0", default-features = false, features = ["alloc"], optional = true }
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
@@ -150,7 +151,7 @@ usb = []
 wifi = []
 
 ## Enables built-in Wi-Fi hardware.
-wifi-esp = ["dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "dep:esp-radio-rtos-driver", "wifi"]
+wifi-esp = ["dep:allocator-api2", "dep:embassy-time", "dep:esp-alloc", "dep:esp-radio", "dep:esp-radio-rtos-driver", "wifi"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.

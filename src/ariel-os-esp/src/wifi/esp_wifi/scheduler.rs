@@ -42,7 +42,7 @@ impl Scheduler for ArielScheduler {
     }
 
     fn usleep(&self, us: u32) {
-        todo!("not implemented");
+        ariel_os_embassy::blocker::block_on(ariel_os_embassy::time::Timer::after_micros(us));
     }
 
     fn now(&self) -> u64 {

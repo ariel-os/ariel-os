@@ -11,6 +11,11 @@ use esp_radio::{
 use once_cell::sync::OnceCell;
 use static_cell::StaticCell;
 
+#[cfg(feature = "threading")]
+mod scheduler;
+#[cfg(feature = "threading")]
+mod semaphore;
+
 pub type NetworkDevice = WifiDevice<'static>;
 
 pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {

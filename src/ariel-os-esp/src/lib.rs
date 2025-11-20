@@ -6,9 +6,6 @@
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
-#[cfg(all(feature = "threading", feature = "wifi"))]
-mod preempt;
-
 pub mod gpio;
 
 #[cfg(feature = "hwrng")]

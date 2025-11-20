@@ -330,6 +330,7 @@ dependencies = [
 name = "ariel-os-esp"
 version = "0.2.0"
 dependencies = [
+ "allocator-api2",
  "ariel-os-debug",
  "ariel-os-embassy-common",
  "ariel-os-random",
