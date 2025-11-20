@@ -44,7 +44,7 @@ impl Lock {
 
     /// Returns the current lock state.
     ///
-    /// true if locked, false otherwise
+    /// true if locked, false otherwise.
     pub fn is_locked(&self) -> bool {
         critical_section::with(|_| {
             let state = unsafe { &*self.state.get() };
@@ -76,7 +76,7 @@ impl Lock {
     /// Get the lock (non-blocking).
     ///
     /// If the lock was unlocked, it will be locked and the function returns true.
-    /// If the lock was locked, the function returns false
+    /// If the lock was locked, the function returns false.
     pub fn try_acquire(&self) -> bool {
         critical_section::with(|_| {
             let state = unsafe { &mut *self.state.get() };

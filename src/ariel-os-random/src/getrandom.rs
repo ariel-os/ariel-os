@@ -8,7 +8,7 @@ use rand_core::RngCore as _;
 
 use getrandom::Error;
 
-/// Implements RNG access for the `getrandom` crate
+/// Implements RNG access for the `getrandom` crate.
 ///
 /// # Safety
 ///

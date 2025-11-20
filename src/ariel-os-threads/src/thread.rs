@@ -33,7 +33,7 @@ pub struct Thread {
     pub stack_highest: usize,
 }
 
-/// Possible states of a thread
+/// Possible states of a thread.
 #[derive(Copy, Clone, PartialEq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ThreadState {
