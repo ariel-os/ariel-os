@@ -1,5 +1,5 @@
 [package]
-name = "sensors-debug"
+name = "thermometer"
 edition.workspace = true
 license.workspace = true
 publish = false
@@ -13,6 +13,9 @@ ariel-os = { path = "../../src/ariel-os", features = [
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensor-stts22h = { path = "../../src/sensors/ariel-os-sensor-stts22h" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
+
+stm32-lcd-driver = { git = "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git", rev = "24482c9d80793e97c4fe457a99102650c2152f41" }
+
 embassy-sync = { workspace = true }
 once_cell = { workspace = true }
 
