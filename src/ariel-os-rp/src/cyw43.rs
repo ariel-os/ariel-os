@@ -100,9 +100,15 @@ pub async fn device<'a, 'b: 'a>(
         let controller: ExternalController<_, SLOTS> = ExternalController::new(bt_device);
         let resources = ariel_os_embassy_common::ble::get_ble_host_resources();
         let mut rng = ariel_os_random::crypto_rng();
-        let stack = trouble_host::new(controller, resources)
-            .set_random_generator_seed(&mut rng)
-            .set_random_address(config.address);
+        let stack = trouble_host::new(controller, resources).set_random_generator_seed(&mut rng);
+
+        // If a static random address is set, change to it, otherwise use the public address of the device
+        let stack = if let Some(address) = config.address {
+            stack.set_random_address(address)
+        } else {
+            stack
+        };
+
         let _ = ble::STACK.init(stack);
 
         (net_device, control, runner)

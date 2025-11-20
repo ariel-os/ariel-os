@@ -232,3 +232,34 @@ macro_rules! ipv6_addr_from_env_or {
         }
     }};
 }
+
+/// Reads a MAC address at compile time from the given environment variable, produces an
+/// `[u8; 6]`.
+///
+/// - The `$default` parameter allows to provide a fallback value for when the environment variable
+///   is not found.
+/// - The `$doc` parameter allows to provide a documentation string for this tunable (see
+///   [`str_from_env!`](str_from_env)).
+///
+/// # Errors
+///
+/// - Produces a compile-time error when [`option_env!`](option_env) does.
+/// - Produces a compile-time error when the environment variable cannot be parsed into a MAC
+///   address.
+#[macro_export]
+macro_rules! mac_addr_from_env_or {
+    // $doc is currently unused
+    ($env_var:literal, $default:literal, $doc:literal $(,)?) => {{
+        const {
+            const str_addr: &str = if let Some(str_value) = option_env!($env_var) {
+                str_value
+            } else {
+                $default
+            };
+            // check length
+            const mac: [u8; 6] =
+                $crate::const_str::hex!($crate::const_str::replace!(str_addr, ":", ""));
+            mac
+        }
+    }};
+}
