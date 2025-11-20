@@ -4,10 +4,10 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
-esp_bootloader_esp_idf::esp_app_desc!();
+#[cfg(feature = "wifi")]
+extern crate alloc;
 
-#[cfg(all(feature = "threading", feature = "wifi"))]
-mod preempt;
+esp_bootloader_esp_idf::esp_app_desc!();
 
 pub mod gpio;
 
