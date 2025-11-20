@@ -24,6 +24,7 @@ pub struct SupportKeyInfo {
 pub struct FunctionalityInfo {
     pub name: String,
     pub title: String, // FIXME: rename this
+    pub support_criteria: Vec<SupportCriteria>,
     pub description: String,
 }
 
@@ -45,6 +46,14 @@ pub struct BoardInfo {
     pub chip: String,
     pub tier: String,
     pub support: HashMap<String, SupportInfo>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+#[serde(untagged)]
+pub enum SupportCriteria {
+    AppOnly(String),
+    WithModule(HashMap<String, String>),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
