@@ -22,7 +22,9 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         let variant = variant_name(i);
         let func_name = from_variant_func_name(i);
         quote! {
+            /// *For driver implementors only.*
             #[doc = concat!("Creates a new [`Samples`] containing ", #i, " sample(s).")]
+            /// Similar constructors exist to return more than one sample.
             pub fn #func_name(sensor: &'static dyn Sensor, samples: [Sample; #i]) -> Self {
                 Self {
                     samples: InnerSamples::#variant(samples),
@@ -91,10 +93,28 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         ///
         /// This type implements [`Reading`] to iterate over the samples.
         ///
-        /// # Note
+        /// # For implementors
         ///
-        /// This type is automatically generated, the number of [`Sample`]s that can be stored is
-        /// automatically adjusted.
+        /// This type is automatically generated and the number of [`Sample`]s it can contain is
+        /// automatically adjusted based on the set of `max-sample-min-count-*` Cargo features
+        /// enabled in the build.
+        /// When writing a sensor driver, its crate must enable the `max-sample-min-count-$s`
+        /// feature, where `$s` is the number of samples the sensor driver returns.
+        /// This makes sure this type can accommodate at least `$s` [`Sample`]s.
+        /// Additionally, constructor functions of the form `Samples::from_$i()` are generated on
+        /// this type, with `$i` being at least `$s`.
+        /// **The number of samples returned must be the same as the number of channels of the
+        /// sensor driver.**
+        ///
+        /// ## Example
+        ///
+        /// For a 3-axis accelerometer, the `max-sample-min-count-3` Cargo feature needs to be
+        /// enabled, and the [`Samples`] instance can be created using the following (assuming
+        /// `self` refers to the sensor driver returning the samples):
+        ///
+        /// ```ignore
+        /// Samples::from_3(self, [x, y, z])
+        /// ```
         #[derive(Copy, Clone)]
         pub struct Samples {
             samples: InnerSamples,
@@ -148,10 +168,26 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
         /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
         ///
-        /// # Note
+        /// # For implementors
         ///
-        /// This type is automatically generated, the number of [`ReadingChannel`]s that can be
-        /// stored is automatically adjusted.
+        /// This type is automatically generated and the number of [`ReadingChannel`]s it can
+        /// contain is automatically adjusted based on the set of `max-sample-min-count-*` Cargo
+        /// features enabled in the build.
+        /// When writing a sensor driver, its crate must enable the `max-sample-min-count-$s`
+        /// feature, where `$s` is the number of samples the sensor driver returns.
+        /// This makes sure this type can accommodate at least `$s` [`ReadingChannel`]s.
+        /// Additionally, `From` implementations are generated to instantiate this type from an
+        /// array of [`ReadingChannel`]s.
+        ///
+        /// ## Example
+        ///
+        /// ```
+        /// # use ariel_os_sensors::{Label, MeasurementUnit, sensor::{ReadingChannel, ReadingChannels}};
+        /// let reading_channel = ReadingChannel::new(Label::Temperature, -1, MeasurementUnit::Celsius);
+        /// # let _ =
+        /// ReadingChannels::from([reading_channel])
+        /// # ;
+        /// ```
         #[derive(Debug, Copy, Clone)]
         pub struct ReadingChannels {
             channels: InnerReadingChannels,
