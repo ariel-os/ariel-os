@@ -145,5 +145,8 @@ defmt = [
   "ariel-os-nrf/defmt",
   "ariel-os-rp/defmt",
   "ariel-os-stm32/defmt",
+  "embedded-hal/defmt-03",
+  "embedded-hal-async/defmt-03",
+  "embedded-io?/defmt-03",
 ]
 log = ["ariel-os-esp/log"]
