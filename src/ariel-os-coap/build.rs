@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use std::fmt::Write as _;
 
-/// Second-level item for deserializing a `peers.yml`
+/// Second-level item for deserializing a `peers.yml`.
 ///
 /// (The top level is a list thereof).
 #[derive(Deserialize)]

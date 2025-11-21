@@ -53,7 +53,7 @@ pub enum MeasurementUnit {
     Lumen,
     /// Lux (lx).
     Lux,
-    /// Meter (m)
+    /// Meter (m).
     Meter,
     /// Meter per second (m/s).
     MeterPerSecond,

@@ -179,7 +179,7 @@ unsafe impl<T> Sync for Mutex<T> {}
 
 /// Grants access to the [`Mutex`] inner data.
 ///
-/// Dropping the [`MutexGuard`] will unlock the [`Mutex`];
+/// Dropping the [`MutexGuard`] will unlock the [`Mutex`].
 #[must_use = "if unused the Mutex will immediately unlock"]
 pub struct MutexGuard<'a, T> {
     mutex: &'a Mutex<T>,

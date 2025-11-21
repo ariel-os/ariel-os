@@ -45,9 +45,9 @@ const STACK_PAINT_COLOR: u8 = 0xCC;
 #[derive(Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Stack {
-    /// Lowest stack address
+    /// Lowest stack address.
     lowest: usize,
-    /// Highest stack address
+    /// Highest stack address.
     highest: usize,
 
     /// Basically we need to ensure that `lowest` and `highest` precisely correspond

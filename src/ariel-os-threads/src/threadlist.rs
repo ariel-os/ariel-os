@@ -10,7 +10,7 @@ pub struct ThreadList {
 }
 
 impl ThreadList {
-    /// Creates a new empty [`ThreadList`]
+    /// Creates a new empty [`ThreadList`].
     pub const fn new() -> Self {
         Self { head: None }
     }
