@@ -30,10 +30,15 @@ CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 
 ### Network Configuration
 
-DHCPv4 is used by default for network configuration, including for IP address allocation.
-This is enabled by the `network-config-ipv4-dhcp` [laze module](./build-system.md#laze-modules), selected by default.
+#### IPv4
 
-In order to provide a static configuration, select the `network-config-ipv4-static` [laze module](./build-system.md#laze-modules), which will take precedence.
+Support for IPv4 is enabled by default.
+When unneeded, it can be disabled by disabling the `ipv4` [laze module](./build-system.md#laze-modules).
+
+DHCPv4 is used by default for IPv4 network configuration, including for address allocation.
+This is enabled by the `network-config-ipv4-dhcp` [laze module](./build-system.md#laze-modules), selected by default for IPv4.
+
+In order to provide a static configuration instead, select the `network-config-ipv4-static` [laze module](./build-system.md#laze-modules), which will take precedence.
 The configuration can be customized with the following environment variables:
 
 | Variable                                 | Default      |
@@ -42,8 +47,31 @@ The configuration can be customized with the following environment variables:
 | `CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN` | `24`         |
 | `CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS` | `10.42.0.1`  |
 
+#### IPv6
+
+Support for IPv6 is not currently enabled by default, but can be enabled by selecting the `ipv6` [laze module](./build-system.md#laze-modules).
+IPv4 and IPv6 can both be enabled at the same time.
+
+IPv6 currently only supports static configuration, which can be selected with the `network-config-ipv6-static` [laze module](./build-system.md#laze-modules).
+
+The configuration can be customized with the following environment variables:
+
+| Variable                                 | Default                     |
+| --                                       | --                          |
+| `CONFIG_NET_IPV6_STATIC_ADDRESS`         | *No default, but mandatory* |
+| `CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` | `64`                        |
+| `CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS` | *No default, but mandatory* |
+
 > [!NOTE]
 > Non-static IPv6 address allocation will be supported in the future.
+
+#### Hard-Coded Static Configuration
+
+Instead of using DHCP or passing static configuration through environment variables it is also possible to use hard-coded static configuration if needed.
+To do that, the `network-config-override` Cargo feature needs to be enabled, and the [`#[ariel_os::config]` attribute macro][config-attr-macro-rustdoc] can be used to set the configuration.
+
+> [!NOTE]
+> The `network-config-override` Cargo feature is internally used by the `network-config-ipv4-static` and `network-config-ipv6-static` laze modules.
 
 ### Support for Network Protocols
 
