@@ -435,6 +435,7 @@ dependencies = [
  "ariel-os-random",
  "ariel-os-rt",
  "cfg-if",
+ "cortex-m",
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
@@ -442,11 +443,27 @@ dependencies = [
  "embassy-sync 0.6.2",
  "embedded-hal-async",
  "embedded-io-async",
+ "nrf-modem",
  "nrf-sdc",
  "paste",
  "portable-atomic",
  "static_cell",
+ "tinyrlibc",
  "trouble-host",
+]
+
+[[package]]
+name = "ariel-os-nrf91-gnss"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-sensors",
+ "defmt 1.0.1",
+ "embassy-sync 0.6.2",
+ "futures",
+ "nrf-modem",
+ "portable-atomic",
+ "time",
 ]
 
 [[package]]
@@ -647,6 +664,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ef1e3e699d84ab1b0911a1010c5c106aa34ae89aeac103be5ce0c3859db1e891"
 dependencies = [
  "term",
+]
+
+[[package]]
+name = "at-commands"
+version = "0.5.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d535a7e70f2244f8e1fa6bd34c6ad54d873b92797917cc6df7e88d76b64249ba"
+dependencies = [
+ "defmt 0.3.100",
 ]
 
 [[package]]
@@ -994,9 +1020,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.2.22"
+version = "1.2.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32db95edf998450acc7881c932f94cd9b05c87b4b2599e8bab064753da4acfd1"
+checksum = "deec109607ca693028562ed836a5f1c4b8bd77755c4e132fc5ce11b0b6211ae7"
 dependencies = [
  "shlex",
 ]
@@ -1677,6 +1703,15 @@ checksum = "e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb"
 dependencies = [
  "const-oid",
  "zeroize",
+]
+
+[[package]]
+name = "deranged"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d630bccd429a5bb5a64b5e94f693bfc48c9f8566418fda4c494cc94f911f87cc"
+dependencies = [
+ "powerfmt",
 ]
 
 [[package]]
@@ -2989,6 +3024,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8d1add55171497b4705a648c6b583acafb01d58050a51727785f0b2c8e0a2b2"
 
 [[package]]
+name = "gnss-sensor-reader"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-nrf91-gnss",
+ "linkme",
+]
+
+[[package]]
 name = "gpio"
 version = "0.0.0"
 dependencies = [
@@ -3011,6 +3056,15 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+]
+
+[[package]]
+name = "grounded"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "917d82402c7eb9755fdd87d52117701dae9e413a6abb309fac2a13af693b6080"
+dependencies = [
+ "portable-atomic",
 ]
 
 [[package]]
@@ -3702,6 +3756,9 @@ name = "linked_list_allocator"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9afa463f5405ee81cdb9cc2baf37e08ec7e4c8209442b5d72c04cfb2cd6e6286"
+dependencies = [
+ "spinning_top",
+]
 
 [[package]]
 name = "linkme"
@@ -3743,6 +3800,12 @@ checksum = "b4ce301924b7887e9d637144fdade93f9dfff9b60981d4ac161db09720d39aa5"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "llvm-tools"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "955be5d0ca0465caf127165acb47964f911e2bc26073e865deb8be7189302faf"
 
 [[package]]
 name = "lock_api"
@@ -3890,6 +3953,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
+name = "nrf-modem"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "33f1a7a9bd2319d97302333fc41b70251321b15ea19fb0d0563f3033fdc3fde1"
+dependencies = [
+ "arrayvec",
+ "at-commands",
+ "cc",
+ "cortex-m",
+ "critical-section",
+ "defmt 1.0.1",
+ "embassy-sync 0.6.2",
+ "embedded-io-async",
+ "futures",
+ "grounded",
+ "linked_list_allocator",
+ "nrf9120-pac",
+ "nrf9160-pac",
+ "nrfxlib-sys",
+ "num_enum 0.7.3",
+]
+
+[[package]]
 name = "nrf-mpsl"
 version = "0.1.0"
 source = "git+https://github.com/ariel-os/nrf-sdc.git?rev=8ce4780b691ec6850b05a0382cef395846b67e02#8ce4780b691ec6850b05a0382cef395846b67e02"
@@ -3953,6 +4039,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "nrf9120-pac"
+version = "0.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c012f18dc278aa33741722d374bc84e3d2d7694e29745f0bb83e56b2d6faf9b"
+dependencies = [
+ "cortex-m",
+ "vcell",
+]
+
+[[package]]
+name = "nrf9160-pac"
+version = "0.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7344d74afb5684e00c48d175cad9619f36d629cfb0687d33b4d1bb86fba688f4"
+dependencies = [
+ "cortex-m",
+ "vcell",
+]
+
+[[package]]
+name = "nrfxlib-sys"
+version = "2.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1922de3a50ef4d37e7d5fec8ebc4c0c9c4a5a077cecc43e198bbbf8f5a16436a"
+dependencies = [
+ "bindgen",
+ "llvm-tools",
+ "regex",
+]
+
+[[package]]
 name = "num-bigint"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3961,6 +4078,12 @@ dependencies = [
  "num-integer",
  "num-traits",
 ]
+
+[[package]]
+name = "num-conv"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
 
 [[package]]
 name = "num-derive"
@@ -4416,6 +4539,12 @@ checksum = "e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585"
 dependencies = [
  "zerovec",
 ]
+
+[[package]]
+name = "powerfmt"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
 name = "ppv-lite86"
@@ -5182,6 +5311,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "spinning_top"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b9eb1a2f4c41445a3a0ff9abc5221c5fcd28e1f13cd7c0397706f9ac938ddb0"
+dependencies = [
+ "lock_api",
+]
+
+[[package]]
 name = "ssmarshal"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5503,6 +5641,45 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "embassy-executor",
+ "portable-atomic",
+]
+
+[[package]]
+name = "time"
+version = "0.3.43"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83bde6f1ec10e72d583d91623c939f623002284ef622b87de38cfd546cbf2031"
+dependencies = [
+ "deranged",
+ "num-conv",
+ "powerfmt",
+ "time-core",
+ "time-macros",
+]
+
+[[package]]
+name = "time-core"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40868e7c1d2f0b8d73e4a8c7f0ff63af4f6d19be117e90bd73eb1d62cf831c6b"
+
+[[package]]
+name = "time-macros"
+version = "0.2.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "30cfb0125f12d9c277f35663a0a33f8c30190f4e4574868a330595412d34ebf3"
+dependencies = [
+ "num-conv",
+ "time-core",
+]
+
+[[package]]
+name = "tinyrlibc"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5d07d242693682e46801cb0186c583858bce022f698401b3f04bbd729c9a87e7"
+dependencies = [
+ "cc",
  "portable-atomic",
 ]
 

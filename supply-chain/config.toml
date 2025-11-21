@@ -157,6 +157,10 @@ criteria = "safe-to-deploy"
 version = "4.0.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.at-commands]]
+version = "0.5.5"
+criteria = "safe-to-deploy"
+
 [[exemptions.atomic-polyfill]]
 version = "1.0.3"
 criteria = "safe-to-deploy"
@@ -769,6 +773,10 @@ criteria = "safe-to-deploy"
 version = "0.5.1"
 criteria = "safe-to-deploy"
 
+[[exemptions.grounded]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.half]]
 version = "2.6.0"
 criteria = "safe-to-deploy"
@@ -893,6 +901,10 @@ criteria = "safe-to-deploy"
 version = "0.10.5"
 criteria = "safe-to-deploy"
 
+[[exemptions.llvm-tools]]
+version = "0.1.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.managed]]
 version = "0.8.0"
 criteria = "safe-to-deploy"
@@ -933,6 +945,10 @@ criteria = "safe-to-deploy"
 version = "0.1.4"
 criteria = "safe-to-deploy"
 
+[[exemptions.nrf-modem]]
+version = "0.7.3"
+criteria = "safe-to-deploy"
+
 [[exemptions.nrf-mpsl]]
 version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
 criteria = "safe-to-deploy"
@@ -951,6 +967,18 @@ criteria = "safe-to-deploy"
 
 [[exemptions.nrf-sdc-sys]]
 version = "0.1.0@git:8ce4780b691ec6850b05a0382cef395846b67e02"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf9120-pac]]
+version = "0.12.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrf9160-pac]]
+version = "0.12.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.nrfxlib-sys]]
+version = "2.9.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.num_enum]]
@@ -1229,6 +1257,10 @@ criteria = "safe-to-deploy"
 version = "0.9.8"
 criteria = "safe-to-deploy"
 
+[[exemptions.spinning_top]]
+version = "0.2.5"
+criteria = "safe-to-deploy"
+
 [[exemptions.ssmarshal]]
 version = "1.0.0"
 criteria = "safe-to-deploy"
@@ -1263,6 +1295,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.term]]
 version = "1.0.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.tinyrlibc]]
+version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.trouble-host]]
