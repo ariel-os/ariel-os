@@ -22,36 +22,51 @@ support_keys:
 functionalities:
   - name: gpio
     title: GPIO
+    # Name of the laze app (as defined in the app's laze.yml)
+    # or laze module (as defined in laze-project.yml)
+    # that must be built for the functionality to be marked
+    # as supported for a specific piece of hardware.
+    support_criteria: tests_gpio
     description:
   - name: debug_output
     title: Debug Output
+    support_criteria: example-log
     description:
   - name: i2c_controller
     title: I2C Controller Mode
+    support_criteria: i2c-loopback
     description: I2C in controller mode
   - name: spi_main
     title: SPI Main Mode
+    support_criteria: spi-loopback
     description: SPI in main mode
   - name: uart
     title: UART
+    support_criteria: uart-loopback
     description: UART
   - name: logging
     title: Logging
+    support_criteria: example-log
     description:
   - name: user_usb
     title: User USB
+    support_criteria: example-usb-serial
     description:
   - name: wifi
     title: Wi-Fi
+    support_criteria: wifi
     description:
   - name: ethernet_over_usb
     title: Ethernet over USB
+    support_criteria: usb-ethernet
     description:
   - name: hwrng
     title: Hardware Random Number Generator
+    support_criteria: test-random-getrandom
     description:
   - name: storage
     title: Persistent Storage
+    support_criteria: example-storage
     description:
 
 # Encodes support status for each chip.

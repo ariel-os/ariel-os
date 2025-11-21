@@ -24,6 +24,7 @@ pub struct SupportKeyInfo {
 pub struct FunctionalityInfo {
     pub name: String,
     pub title: String, // FIXME: rename this
+    pub support_criteria: String,
     pub description: String,
 }
 
