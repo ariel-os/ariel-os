@@ -4,6 +4,7 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
+pub mod cell;
 pub mod gpio;
 
 #[cfg(context = "cortex-m")]

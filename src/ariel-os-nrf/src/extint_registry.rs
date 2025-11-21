@@ -1,5 +1,5 @@
 use ariel_os_embassy_common::gpio::input::InterruptError;
-use embassy_nrf::{Peripheral, gpio::Pin};
+use embassy_nrf::{Peri, gpio::Pin};
 use portable_atomic::{AtomicU8, Ordering};
 
 #[cfg(context = "nrf51")]
@@ -25,9 +25,9 @@ impl ExtIntRegistry {
     /// # Errors
     ///
     /// Returns `Err(InterruptError::NoIntChannelAvailable)` if an interrupt channel is not available.
-    pub fn use_interrupt_for_pin<PIN: Peripheral<P: Pin>>(
+    pub fn use_interrupt_for_pin<P: Pin>(
         &self,
-        _pin: &mut PIN, // Require the caller to have the peripheral
+        _pin: &mut Peri<'_, P>, // Require the caller to have the peripheral
     ) -> Result<(), InterruptError> {
         // NOTE(ordering): this acts as a lock, so we use Acquire/Release ordering.
         let update_res = self.used_interrupt_channel_count.fetch_update(

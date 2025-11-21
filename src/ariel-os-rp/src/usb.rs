@@ -1,5 +1,5 @@
 use embassy_rp::{
-    bind_interrupts, peripherals,
+    Peri, bind_interrupts, peripherals,
     usb::{Driver, InterruptHandler},
 };
 
@@ -10,7 +10,7 @@ bind_interrupts!(struct Irqs {
 pub type UsbDriver = Driver<'static, peripherals::USB>;
 
 pub struct Peripherals {
-    usb: peripherals::USB,
+    usb: Peri<'static, peripherals::USB>,
 }
 
 impl Peripherals {
