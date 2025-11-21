@@ -7,6 +7,8 @@ It explains how to compile and run the `hello-word` example to verify your setup
 
 1. Install the needed build dependencies.
 
+    <!-- If you modify these instructions, you should update .github/workflows/build-templates.yml to reflect that. -->
+
     **Ubuntu (GNU/Linux)**
 
    <!-- gcc and curl are only required for espup, but it doesn't hurt to install those here. -->
