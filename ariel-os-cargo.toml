@@ -28,8 +28,6 @@ embassy-executor-macros = { git = "https://github.com/ariel-os/embassy", rev = "
 embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "ed7d22c1881b64f9bdd2e69a5777b002279033a6" }
 # branch = "embassy-nrf-v0.3.1+ariel-os"
 embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "1d258e63acc0a322ccea28786a4143115ba303b8" }
-# branch = "embassy-net-v0.6.0+ariel-os"
-embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "3d9f77ee05cdb18f1cd676233bcda9b6f7be3369" }
 # branch = "embassy-rp-v0.4.0+ariel-os+trng-panic-fix"
 embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "1dd58227a73efa8da2aef96aaccf17b8749b9f7b" }
 # branch = "embassy-stm32-v0.2.0+ariel-os"
