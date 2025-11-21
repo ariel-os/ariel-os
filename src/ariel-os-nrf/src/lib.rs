@@ -31,6 +31,14 @@ pub mod i2c;
 #[doc(hidden)]
 pub mod identity;
 
+#[cfg(feature = "nrf91-modem")]
+#[doc(hidden)]
+pub mod modem;
+
+#[cfg(feature = "ltem-nrf-modem")]
+#[doc(hidden)]
+pub mod ltem;
+
 #[cfg(feature = "spi")]
 pub mod spi;
 
