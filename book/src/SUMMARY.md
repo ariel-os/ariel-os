@@ -6,6 +6,7 @@
 
 - [Overview](./hardware-functionality-support.md)
 - [Boards](./boards/index.md)
+  - [Arduino UNO Q](./boards/arduino-uno-q.md)
   - [BBC micro:bit V1](./boards/bbc-microbit-v1.md)
   - [BBC micro:bit V2](./boards/bbc-microbit-v2.md)
   - [DFRobot FireBeetle 2 ESP32-C6](./boards/dfrobot-firebeetle2-esp32-c6.md)

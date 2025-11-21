@@ -37,6 +37,7 @@ Tier 2 hardware only gets tested infrequently, but Ariel OS maintainers do have 
 
 Tier 3 hardware is build-tested only, as Ariel OS maintainers do not have access to the hardware.
 
+- [Arduino UNO Q](./arduino-uno-q.md)
 - [BBC micro:bit V1](./bbc-microbit-v1.md)
 - [Espressif ESP32-C3-DevKit-RUST-1](./espressif-esp32-c3-devkit-rust-1.md)
 - [Espressif ESP32-S2-DevKitC-1](./espressif-esp32-s2-devkitc-1.md)
