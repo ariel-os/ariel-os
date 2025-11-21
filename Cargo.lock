@@ -533,6 +533,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensors-utils"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-sensors",
+ "embassy-sync 0.6.2",
+ "embassy-time",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-stm32"
 version = "0.2.0"
 dependencies = [
