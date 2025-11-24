@@ -45,3 +45,6 @@ xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "643ac64a2ed
 
 # branch = "v0.6.2+ariel-os"
 embedded-test = { git = "https://github.com/ariel-os/embedded-test", rev = "20642538eb4e6fa44b5f37723b07946c74b5c757" }
+
+# nrf-modem: https://github.com/diondokter/nrf-modem/pull/52, branch = "towards-dect"
+nrf-modem = { git = "https://github.com/chrysn-pull-requests/nrf-modem", rev = "47fa56901be8a800db9b75de5c10ac7ab22afea1" }
