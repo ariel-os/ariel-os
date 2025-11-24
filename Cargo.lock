@@ -4092,7 +4092,7 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 [[package]]
 name = "nrf-modem"
 version = "0.9.2"
-source = "git+https://github.com/chrysn-pull-requests/nrf-modem?rev=47fa56901be8a800db9b75de5c10ac7ab22afea1#47fa56901be8a800db9b75de5c10ac7ab22afea1"
+source = "git+https://github.com/chrysn-pull-requests/nrf-modem?rev=46a9f17370594b601dc82085492db66352108fb9#46a9f17370594b601dc82085492db66352108fb9"
 dependencies = [
  "arrayvec",
  "at-commands",

@@ -1,5 +1,9 @@
 #![expect(unsafe_code)]
 
+use embassy_sync::{
+    blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock,
+};
+
 use embassy_nrf::{
     interrupt, pac,
     pac::{
@@ -25,6 +29,9 @@ unsafe extern "C" {
     static _MODEM_start: u8;
     static _MODEM_length: u8;
 }
+
+static SETUP_RESULT: OnceLock<Mutex<CriticalSectionRawMutex, Option<nrf_modem::dect::DectPhy>>> =
+    OnceLock::new();
 
 // Workaround used in the nrf mdk: file system_nrf91.c , function SystemInit(), after `#if !defined(NRF_SKIP_UICR_HFXO_WORKAROUND)`
 // Use this until commit `3e2b23d2f453d10324896484f9d045d2821bd567` is included in the embassy-nrf version we use.
@@ -132,13 +139,27 @@ pub async fn driver() {
 
     // FIXME: make configurable
     #[cfg(feature = "executor-interrupt")]
-    nrf_modem::init_dect_with_custom_layout(
-        memory_layout,
-        nrf_modem::dect::dect_event,
-        crate::SWI.number() as u8,
-    )
-    .unwrap();
+    let result =
+        nrf_modem::dect::DectPhy::init_with_custom_layout(memory_layout, crate::SWI.number() as u8)
+            .await
+            .unwrap();
     #[cfg(not(feature = "executor-interrupt"))]
-    nrf_modem::init_dect_with_custom_layout(memory_layout, nrf_modem::dect::dect_event).unwrap();
-    // FIXME: return the resulting object somewhere
+    let result = nrf_modem::dect::DectPhy::init_with_custom_layout(memory_layout)
+        .await
+        .unwrap();
+
+    SETUP_RESULT
+        .init(Some(result).into())
+        .ok()
+        .expect("Driver initialized only once");
+}
+
+pub async fn take_modem() -> nrf_modem::dect::DectPhy {
+    SETUP_RESULT
+        .get()
+        .await
+        .try_lock()
+        .expect("Two tasks racing for lock, one would fail the take")
+        .take()
+        .expect("Stack was already taken")
 }
