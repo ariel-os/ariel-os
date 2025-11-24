@@ -130,12 +130,15 @@ pub async fn driver() {
         ..Default::default()
     };
 
+    // FIXME: make configurable
     #[cfg(feature = "executor-interrupt")]
-    nrf_modem::init_with_custom_layout(system_mode, memory_layout, crate::SWI.number() as u8)
-        .await
-        .unwrap();
+    nrf_modem::init_dect_with_custom_layout(
+        memory_layout,
+        nrf_modem::dect::dect_event,
+        crate::SWI.number() as u8,
+    )
+    .unwrap();
     #[cfg(not(feature = "executor-interrupt"))]
-    nrf_modem::init_with_custom_layout(system_mode, memory_layout)
-        .await
-        .unwrap();
+    nrf_modem::init_dect_with_custom_layout(memory_layout, nrf_modem::dect::dect_event).unwrap();
+    // FIXME: return the resulting object somewhere
 }

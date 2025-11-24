@@ -1753,6 +1753,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "nrf-modem",
 ]
 
 [[package]]
@@ -3369,7 +3370,6 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "nrf-modem",
 ]
 
 [[package]]
@@ -4092,8 +4092,7 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 [[package]]
 name = "nrf-modem"
 version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08403889ebafa600d6f47ad680eaeb3de8f5d7ddece411b613d1334887632349"
+source = "git+https://github.com/chrysn-pull-requests/nrf-modem?rev=47fa56901be8a800db9b75de5c10ac7ab22afea1#47fa56901be8a800db9b75de5c10ac7ab22afea1"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4105,6 +4104,7 @@ dependencies = [
  "embedded-io-async 0.6.1",
  "futures",
  "grounded",
+ "heapless 0.8.0",
  "linked_list_allocator",
  "nrf9120-pac",
  "nrf9160-pac",
@@ -4197,9 +4197,8 @@ dependencies = [
 
 [[package]]
 name = "nrfxlib-sys"
-version = "2.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1922de3a50ef4d37e7d5fec8ebc4c0c9c4a5a077cecc43e198bbbf8f5a16436a"
+version = "3.0.2"
+source = "git+https://github.com/chrysn-pull-requests/nrfxlib-sys?branch=test-dect-bis#8af2554d37bf1be6fe0c10594c18d356f538c872"
 dependencies = [
  "bindgen 0.70.1",
  "llvm-tools",

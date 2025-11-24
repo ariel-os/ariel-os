@@ -8,7 +8,7 @@ publish = false
 ariel-os = { path = "../../src/ariel-os" }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 
-nrf-modem = { workspace = true, optional = true }
+nrf-modem = { workspace = true, optional = true, features = ["dect"] }
 
 [lints]
 workspace = true
