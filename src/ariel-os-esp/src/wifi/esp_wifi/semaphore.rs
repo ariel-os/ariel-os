@@ -21,9 +21,12 @@ impl Semaphore {
 
     fn new_mutex(recursive: bool) -> Self {
         if recursive {
-            Self::RecursiveLock { recursive_lock: RecursiveLock::new() }
-        } else
-           Self::Lock { lock: Lock::new() }
+            Self::RecursiveLock {
+                recursive_lock: RecursiveLock::new(),
+            }
+        } else {
+            Self::Lock { lock: Lock::new() }
+        }
     }
 }
 
