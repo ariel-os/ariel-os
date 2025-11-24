@@ -3369,6 +3369,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "nrf-modem",
 ]
 
 [[package]]
@@ -4090,9 +4091,9 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
 name = "nrf-modem"
-version = "0.7.3"
+version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33f1a7a9bd2319d97302333fc41b70251321b15ea19fb0d0563f3033fdc3fde1"
+checksum = "08403889ebafa600d6f47ad680eaeb3de8f5d7ddece411b613d1334887632349"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4100,7 +4101,7 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.0.1",
- "embassy-sync 0.6.2",
+ "embassy-sync 0.7.2",
  "embedded-io-async 0.6.1",
  "futures",
  "grounded",

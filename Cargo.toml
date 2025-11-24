@@ -169,7 +169,7 @@ bt-hci = { version = "0.6.0" }
 #nrf-sdc = { version = "0.4.0" }
 nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
 
-nrf-modem = { version = "0.7.3" }
+nrf-modem = { version = "0.9.2" }
 tinyrlibc = "0.5.0"
 
 [workspace.lints.rust]
