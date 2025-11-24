@@ -62,6 +62,8 @@ allow-git = [
   "https://gitlab.com/etonomy/riot-module-examples",
   # while https://github.com/twittner/minicbor/pull/9 is open
   "https://github.com/chrysn-pull-requests/minicbor",
+  # for the thermometer example
+  "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver",
 ]
 
 [sources.allow-org]

@@ -8,4 +8,6 @@ This application is demonstrating the sensor API usage in Ariel OS.
 
 In this directory, run
 
-    laze build -b nrf52840dk run
+    laze build -b stm32u083c-dk run
+
+This test requires an STTS22H sensor (temperature sensor) attached to the pins configured in the `pins` module.
