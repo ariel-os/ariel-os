@@ -10,20 +10,25 @@ use esp_radio_rtos_driver::{
 
 enum Semaphore {
     Counting { semaphore: sync::Semaphore },
-    Lock { lock: Lock }
+    Lock { lock: Lock },
     RecursiveLock { recursive_lock: RecursiveLock },
 }
 
 impl Semaphore {
     fn new_counting(initial: u32, max: u32) -> Self {
-        Self::Counting { semaphore: sync::Semaphore::new_counting(initial, max) }
+        Self::Counting {
+            semaphore: sync::Semaphore::new_counting(initial, max),
+        }
     }
 
     fn new_mutex(recursive: bool) -> Self {
         if recursive {
-            Self::RecursiveLock { recursive_lock: RecursiveLock::new() }
-        } else
-           Self::Lock { lock: Lock::new() }
+            Self::RecursiveLock {
+                recursive_lock: RecursiveLock::new(),
+            }
+        } else {
+            Self::Lock { lock: Lock::new() }
+        }
     }
 }
 
