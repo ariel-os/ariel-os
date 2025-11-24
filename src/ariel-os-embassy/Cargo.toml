@@ -138,6 +138,8 @@ ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
+nrf91-modem = ["ariel-os-hal/nrf91-modem"]
+
 threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
 network-config-ipv4-static = ["network-config-override"]
 network-config-override = []
