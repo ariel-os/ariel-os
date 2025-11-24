@@ -10,7 +10,7 @@ use esp_radio_rtos_driver::{
 
 enum Semaphore {
     Counting { semaphore: sync::Semaphore },
-    Lock { lock: Lock }
+    Lock { lock: Lock },
     RecursiveLock { recursive_lock: RecursiveLock },
 }
 
