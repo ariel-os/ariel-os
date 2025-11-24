@@ -42,7 +42,7 @@ pub mod eth;
 use embassy_stm32::Config;
 
 #[doc(hidden)]
-pub use embassy_stm32::{interrupt, OptionalPeripherals, Peri, PeripheralType, Peripherals};
+pub use embassy_stm32::{OptionalPeripherals, Peri, PeripheralType, Peripherals, interrupt};
 
 pub use embassy_stm32::peripherals;
 
