@@ -4319,9 +4319,9 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
 name = "nrf-modem"
-version = "0.7.3"
+version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33f1a7a9bd2319d97302333fc41b70251321b15ea19fb0d0563f3033fdc3fde1"
+checksum = "9d35a7f0d855e9c79900047ccd03bab927c3135581e8f4afa4b28ff007269a1c"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4329,8 +4329,8 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.0.1",
- "embassy-sync 0.6.2",
- "embedded-io-async 0.6.1",
+ "embassy-sync 0.7.2",
+ "embedded-io-async 0.7.0",
  "futures",
  "grounded",
  "linked_list_allocator",
@@ -4425,9 +4425,9 @@ dependencies = [
 
 [[package]]
 name = "nrfxlib-sys"
-version = "2.9.2"
+version = "3.0.3+3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1922de3a50ef4d37e7d5fec8ebc4c0c9c4a5a077cecc43e198bbbf8f5a16436a"
+checksum = "573d7e42c0dc325e4631bc22346d5c046ed68c4253c3da8fc990b3380fa8633d"
 dependencies = [
  "bindgen 0.70.1",
  "llvm-tools",
