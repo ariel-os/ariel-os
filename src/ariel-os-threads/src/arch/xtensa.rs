@@ -2,7 +2,7 @@
 
 use esp_hal::{interrupt, peripherals::Interrupt, trapframe::TrapFrame};
 
-use crate::{cleanup, Arch, SCHEDULER};
+use crate::{Arch, SCHEDULER, cleanup};
 
 pub struct Cpu;
 
