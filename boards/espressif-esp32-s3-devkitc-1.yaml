@@ -7,3 +7,5 @@ boards:
       button0:
         pin: GPIO0
         active: low
+        aliases:
+          - BOOT

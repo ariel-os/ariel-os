@@ -4,7 +4,7 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_rp::{
-        Peripheral,
+        Peri,
         gpio::{Level, Pull},
     };
 
@@ -23,11 +23,11 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = true;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new<'a, P: InputPin>(
+        pin: Peri<'a, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
-    ) -> Result<Input<'static>, core::convert::Infallible> {
+    ) -> Result<Input<'a>, core::convert::Infallible> {
         let pull = from_pull(pull);
 
         let mut input = Input::new(pin, pull);
@@ -38,11 +38,11 @@ pub mod input {
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new_int_enabled<'a, P: InputPin>(
+        pin: Peri<'a, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
-    ) -> Result<IntEnabledInput<'static>, InterruptError> {
+    ) -> Result<IntEnabledInput<'a>, InterruptError> {
         // This HAL does not require special treatment of external interrupts.
         match new(pin, pull, schmitt_trigger) {
             Ok(input) => Ok(input),
@@ -59,7 +59,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_rp::{Peripheral, gpio::Level};
+    use embassy_rp::{Peri, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_rp::gpio::{Output, Pin as OutputPin};
@@ -70,12 +70,12 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = true;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+    pub fn new<'a, P: OutputPin>(
+        pin: Peri<'a, P>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         speed: super::Speed,
-    ) -> Output<'static> {
+    ) -> Output<'a> {
         let initial_level = match initial_level {
             ariel_os_embassy_common::gpio::Level::Low => Level::Low,
             ariel_os_embassy_common::gpio::Level::High => Level::High,

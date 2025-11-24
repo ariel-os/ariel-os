@@ -30,6 +30,7 @@ subdirs:
   - threading-channel
   - threading-event
   - threading-multicore
+  - threading-waitqueue
   - udp-echo
   - usb-keyboard
   - usb-serial

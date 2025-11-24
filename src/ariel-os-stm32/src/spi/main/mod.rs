@@ -8,7 +8,7 @@ use ariel_os_embassy_common::{
 };
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    Peripheral, gpio,
+    Peri, gpio,
     mode::Blocking,
     peripherals,
     spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi},
@@ -93,9 +93,9 @@ macro_rules! define_spi_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sck_pin: impl Peripheral<P: SckPin<peripherals::$peripheral>> + 'static,
-                    miso_pin: impl Peripheral<P: MisoPin<peripherals::$peripheral>> + 'static,
-                    mosi_pin: impl Peripheral<P: MosiPin<peripherals::$peripheral>> + 'static,
+                    sck_pin: Peri<'static, impl SckPin<peripherals::$peripheral>>,
+                    miso_pin: Peri<'static, impl MisoPin<peripherals::$peripheral>>,
+                    mosi_pin: Peri<'static, impl MosiPin<peripherals::$peripheral>>,
                     config: Config,
                 ) -> Spi {
                     // Make this struct a compile-time-enforced singleton: having multiple statics

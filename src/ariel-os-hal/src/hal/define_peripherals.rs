@@ -13,6 +13,7 @@
 ///
 // Inspired by https://github.com/adamgreig/assign-resources/tree/94ad10e2729afdf0fd5a77cd12e68409a982f58a
 // under MIT license
+#[cfg(not(context = "esp"))]
 #[macro_export]
 macro_rules! define_peripherals {
     (
@@ -30,7 +31,49 @@ macro_rules! define_peripherals {
         pub struct $peripherals {
             $(
                 $(#[$inner])*
-                pub $peripheral_name: peripherals::$peripheral_field
+                pub $peripheral_name: $crate::hal::peripheral::Peri<'static, peripherals::$peripheral_field>
+            ),*
+        }
+
+        $($(
+            #[allow(missing_docs, non_camel_case_types)]
+            pub type $peripheral_alias = peripherals::$peripheral_field;
+        )?)*
+
+        impl $crate::hal::TakePeripherals<$peripherals> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $peripherals {
+                $peripherals {
+                    $(
+                        $(#[$inner])*
+                        $peripheral_name: self.$peripheral_field.take().unwrap()
+                    ),*
+                }
+            }
+        }
+    }
+}
+
+// This is almost identical to the version above, only the line that contains `Peri` is different.
+// TODO(bump): unify
+#[cfg(context = "esp")]
+#[macro_export]
+macro_rules! define_peripherals {
+    (
+        $(#[$outer:meta])*
+        $peripherals:ident {
+            $(
+                $(#[$inner:meta])*
+                $peripheral_name:ident : $peripheral_field:ident $(=$peripheral_alias:ident)?
+            ),*
+            $(,)?
+        }
+    ) => {
+        #[allow(dead_code,non_snake_case)]
+        $(#[$outer])*
+        pub struct $peripherals {
+            $(
+                $(#[$inner])*
+                pub $peripheral_name: peripherals::$peripheral_field<'static>
             ),*
         }
 
