@@ -254,7 +254,7 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.hsi48 = Some(Hsi48Config {
             sync_from_usb: true,
         }); // needed for USB
-            // No HSE fitted on the stm32u083c-dk board
+        // No HSE fitted on the stm32u083c-dk board
         rcc.hsi = true;
         rcc.sys = Sysclk::PLL1_R;
         rcc.pll = Some(Pll {
