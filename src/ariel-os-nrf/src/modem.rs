@@ -77,20 +77,31 @@ pub async fn driver() {
         ..Default::default()
     };
 
-    let system_mode = SystemMode {
-        lte_support: true,
-        lte_psm_support: true,
-        nbiot_support: false,
-        gnss_support: true,
-        preference: ConnectionPreference::None,
-    };
+    if cfg!(feature = "radiocore-firmware-dect") {
+        // In DECT mode, more of what happens later is left to the application, so we just do the core
+        // initialization; the application then relies on that init to have been done before running
+        // any DECT-specific initialization.
 
-    #[cfg(feature = "executor-interrupt")]
-    nrf_modem::init_with_custom_layout(system_mode, memory_layout, crate::SWI.number() as u8)
-        .await
-        .unwrap();
-    #[cfg(not(feature = "executor-interrupt"))]
-    nrf_modem::init_with_custom_layout(system_mode, memory_layout)
-        .await
-        .unwrap();
+        #[cfg(feature = "executor-interrupt")]
+        nrf_modem::init_with_custom_layout_core(memory_layout, crate::SWI.number() as u8).unwrap();
+        #[cfg(not(feature = "executor-interrupt"))]
+        nrf_modem::init_with_custom_layout_core(memory_layout).unwrap();
+    } else {
+        let system_mode = SystemMode {
+            lte_support: true,
+            lte_psm_support: true,
+            nbiot_support: false,
+            gnss_support: true,
+            preference: ConnectionPreference::None,
+        };
+
+        #[cfg(feature = "executor-interrupt")]
+        nrf_modem::init_with_custom_layout(system_mode, memory_layout, crate::SWI.number() as u8)
+            .await
+            .unwrap();
+        #[cfg(not(feature = "executor-interrupt"))]
+        nrf_modem::init_with_custom_layout(system_mode, memory_layout)
+            .await
+            .unwrap();
+    }
 }

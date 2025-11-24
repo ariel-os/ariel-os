@@ -1898,6 +1898,20 @@ modules:
         CARGO_WRAPPER:
           - criticalup run
 
+  - name: nrf-radiocore-firmware-dect
+    help: |
+      Expect that the Nordic MCU's radio core runs the DECT variant of vendor firmware.
+
+      This must match
+    # No `provides-unique: [nrf-radiocore-firmware]` because this is the exotic
+    # option, and because nrf-modem too only does the selection in one way.
+    context:
+      - nrf9151
+    env:
+      global:
+        FEATURES:
+          - ariel-os/nrf-radiocore-firmware-dect
+
 builders:
   # host builder (for housekeeping tasks)
   - name: host

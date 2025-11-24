@@ -150,6 +150,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-macros",
+ "ariel-os-nrf",
  "ariel-os-power",
  "ariel-os-random",
  "ariel-os-rt",
