@@ -2,3 +2,13 @@ apps:
   - name: device-metadata
     selects:
       - debug-console
+      - ?nrf91-modem-metadata
+
+modules:
+  - name: nrf91-modem-metadata
+    selects:
+      - nrf91-modem
+    env:
+      global:
+        FEATURES:
+          - nrf-modem
