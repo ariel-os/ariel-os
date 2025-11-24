@@ -24,8 +24,6 @@ async fn main() {
 
 #[cfg(feature = "nrf-modem")]
 async fn nrf_modem_info() {
-    use nrf_modem::*;
-
     info!("We have an nRF modem");
 
     let manufacturer: &str = &nrf_modem::send_at::<64>("AT+CGMI").await.unwrap();
