@@ -106,14 +106,14 @@ impl Stack {
     /// Returns the amount of currently free stack space.
     #[must_use]
     #[inline(always)]
-    pub fn free(&self) -> usize {
-        self.size() - self.used()
+    pub fn current_free_space(&self) -> usize {
+        self.size() - self.current_usage()
     }
 
     /// Returns the amount of currently used stack space.
     #[must_use]
     #[inline(always)]
-    pub fn used(&self) -> usize {
+    pub fn current_usage(&self) -> usize {
         self.highest - sp()
     }
 
@@ -136,14 +136,14 @@ impl Stack {
         free
     }
 
-    /// Returns the maximum stack space used since last repaint.
+    /// Returns the peak amount of stack used since last repaint.
     ///
     /// Equivalent to `size() - free_min()`.
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
     #[inline(always)]
-    pub fn used_max(&self) -> usize {
+    pub fn peak_usage(&self) -> usize {
         self.size() - self.free_min()
     }
 
@@ -173,7 +173,7 @@ impl Stack {
             // current stack frame's stack pointer.
             // This does not prevent this from being interrupted by an ISR, in which case
             // the stack is dirtied again, but that doesn't cause any unsafety and just
-            // makes any following `used_max()` call include whatever the ISR wrote on this stack.
+            // makes any following `peak_usage()` call include whatever the ISR wrote on this stack.
             unsafe {
                 write_volatile(pos as *mut u8, STACK_PAINT_COLOR);
             }
