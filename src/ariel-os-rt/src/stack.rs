@@ -121,7 +121,7 @@ impl Stack {
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
-    pub fn free_min(&self) -> usize {
+    fn free_min(&self) -> usize {
         let mut free = 0usize;
         for pos in self.lowest..self.highest {
             // SAFETY: dereferencing ptr to valid memory, read only
