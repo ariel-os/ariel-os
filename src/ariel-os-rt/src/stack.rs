@@ -94,14 +94,14 @@ impl Stack {
 
     /// Returns the total size of the current stack.
     #[must_use]
-    pub fn size(&self) -> usize {
+    pub fn total_size(&self) -> usize {
         self.highest - self.lowest
     }
 
     /// Returns the amount of currently free stack space.
     #[must_use]
     pub fn free(&self) -> usize {
-        self.size() - self.used()
+        self.total_size() - self.used()
     }
 
     /// Returns the amount of currently used stack space.
@@ -128,12 +128,12 @@ impl Stack {
 
     /// Returns the maximum stack space used since last repaint.
     ///
-    /// Equivalent to `size() - free_min()`.
+    /// Equivalent to `total_size() - free_min()`.
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
     pub fn used_max(&self) -> usize {
-        self.size() - self.free_min()
+        self.total_size() - self.free_min()
     }
 
     /// Repaints the stack.
