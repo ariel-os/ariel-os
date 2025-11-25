@@ -114,7 +114,7 @@ impl Stack {
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
-    pub fn free_min(&self) -> usize {
+    fn free_min(&self) -> usize {
         let mut free = 0usize;
         for pos in self.lowest..self.highest {
             // SAFETY: dereferencing ptr to valid memory, read only
@@ -127,8 +127,6 @@ impl Stack {
     }
 
     /// Returns the peak amount of stack used since last repaint.
-    ///
-    /// Equivalent to `total_size() - free_min()`.
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
