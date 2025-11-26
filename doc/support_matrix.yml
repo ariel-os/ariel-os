@@ -799,6 +799,9 @@ boards:
     support:
       user_usb: supported
       ethernet_over_usb: supported
+    builders:
+      - nrf5340dk
+      - nrf5340dk-net
 
   nrf9151-dk:
     name: nRF9151-DK
