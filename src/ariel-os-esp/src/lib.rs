@@ -4,8 +4,7 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
-#[cfg(all(feature = "threading", feature = "wifi"))]
-mod preempt;
+esp_bootloader_esp_idf::esp_app_desc!();
 
 pub mod gpio;
 
@@ -42,130 +41,44 @@ pub mod usb;
 pub mod wifi;
 
 #[doc(hidden)]
-pub mod peripheral {
-    pub use esp_hal::peripheral::Peripheral;
-}
+pub mod peripheral {}
 
+#[doc(hidden)]
 pub mod peripherals {
-    //! Types for the peripheral singletons.
-
-    #![expect(missing_docs)]
-
     pub use esp_hal::peripherals::*;
-
-    pub type GPIO0 = esp_hal::gpio::GpioPin<0>;
-    pub type GPIO1 = esp_hal::gpio::GpioPin<1>;
-    pub type GPIO2 = esp_hal::gpio::GpioPin<2>;
-    pub type GPIO3 = esp_hal::gpio::GpioPin<3>;
-    pub type GPIO4 = esp_hal::gpio::GpioPin<4>;
-    pub type GPIO5 = esp_hal::gpio::GpioPin<5>;
-    pub type GPIO6 = esp_hal::gpio::GpioPin<6>;
-    pub type GPIO7 = esp_hal::gpio::GpioPin<7>;
-    pub type GPIO8 = esp_hal::gpio::GpioPin<8>;
-    pub type GPIO9 = esp_hal::gpio::GpioPin<9>;
-
-    pub type GPIO10 = esp_hal::gpio::GpioPin<10>;
-    pub type GPIO11 = esp_hal::gpio::GpioPin<11>;
-    pub type GPIO12 = esp_hal::gpio::GpioPin<12>;
-    pub type GPIO13 = esp_hal::gpio::GpioPin<13>;
-    pub type GPIO14 = esp_hal::gpio::GpioPin<14>;
-    pub type GPIO15 = esp_hal::gpio::GpioPin<15>;
-    pub type GPIO16 = esp_hal::gpio::GpioPin<16>;
-    pub type GPIO17 = esp_hal::gpio::GpioPin<17>;
-    pub type GPIO18 = esp_hal::gpio::GpioPin<18>;
-    pub type GPIO19 = esp_hal::gpio::GpioPin<19>;
-    pub type GPIO20 = esp_hal::gpio::GpioPin<20>;
-    pub type GPIO21 = esp_hal::gpio::GpioPin<21>;
-
-    cfg_if::cfg_if! {
-        if #[cfg(context = "esp32c6")] {
-            pub type GPIO22 = esp_hal::gpio::GpioPin<22>;
-            pub type GPIO23 = esp_hal::gpio::GpioPin<23>;
-            pub type GPIO24 = esp_hal::gpio::GpioPin<24>;
-            pub type GPIO25 = esp_hal::gpio::GpioPin<25>;
-            pub type GPIO26 = esp_hal::gpio::GpioPin<26>;
-            pub type GPIO27 = esp_hal::gpio::GpioPin<27>;
-            pub type GPIO28 = esp_hal::gpio::GpioPin<28>;
-            pub type GPIO29 = esp_hal::gpio::GpioPin<29>;
-            pub type GPIO30 = esp_hal::gpio::GpioPin<30>;
-        }
-        else if #[cfg(context = "esp32s3")] {
-            pub type GPIO26 = esp_hal::gpio::GpioPin<26>;
-            pub type GPIO27 = esp_hal::gpio::GpioPin<27>;
-            pub type GPIO28 = esp_hal::gpio::GpioPin<28>;
-            pub type GPIO29 = esp_hal::gpio::GpioPin<29>;
-            pub type GPIO30 = esp_hal::gpio::GpioPin<30>;
-            pub type GPIO31 = esp_hal::gpio::GpioPin<31>;
-            pub type GPIO32 = esp_hal::gpio::GpioPin<32>;
-            pub type GPIO33 = esp_hal::gpio::GpioPin<33>;
-            pub type GPIO34 = esp_hal::gpio::GpioPin<34>;
-            pub type GPIO35 = esp_hal::gpio::GpioPin<35>;
-            pub type GPIO36 = esp_hal::gpio::GpioPin<36>;
-            pub type GPIO37 = esp_hal::gpio::GpioPin<37>;
-            pub type GPIO38 = esp_hal::gpio::GpioPin<38>;
-            pub type GPIO39 = esp_hal::gpio::GpioPin<39>;
-            pub type GPIO40 = esp_hal::gpio::GpioPin<40>;
-            pub type GPIO41 = esp_hal::gpio::GpioPin<41>;
-            pub type GPIO42 = esp_hal::gpio::GpioPin<42>;
-            pub type GPIO43 = esp_hal::gpio::GpioPin<43>;
-            pub type GPIO44 = esp_hal::gpio::GpioPin<44>;
-            pub type GPIO45 = esp_hal::gpio::GpioPin<45>;
-            pub type GPIO46 = esp_hal::gpio::GpioPin<46>;
-            pub type GPIO47 = esp_hal::gpio::GpioPin<47>;
-            pub type GPIO48 = esp_hal::gpio::GpioPin<48>;
-        }
-        else if #[cfg(context = "esp32")] {
-            pub type GPIO22 = esp_hal::gpio::GpioPin<22>;
-            pub type GPIO23 = esp_hal::gpio::GpioPin<23>;
-            pub type GPIO24 = esp_hal::gpio::GpioPin<24>;
-            pub type GPIO25 = esp_hal::gpio::GpioPin<25>;
-            pub type GPIO26 = esp_hal::gpio::GpioPin<26>;
-            pub type GPIO27 = esp_hal::gpio::GpioPin<27>;
-            pub type GPIO32 = esp_hal::gpio::GpioPin<32>;
-            pub type GPIO33 = esp_hal::gpio::GpioPin<33>;
-            pub type GPIO34 = esp_hal::gpio::GpioPin<34>;
-            pub type GPIO35 = esp_hal::gpio::GpioPin<35>;
-            pub type GPIO36 = esp_hal::gpio::GpioPin<36>;
-            pub type GPIO37 = esp_hal::gpio::GpioPin<37>;
-            pub type GPIO38 = esp_hal::gpio::GpioPin<38>;
-            pub type GPIO39 = esp_hal::gpio::GpioPin<39>;
-        }
-    }
 }
+
+#[cfg(feature = "time")]
+mod time_driver;
 
 #[doc(hidden)]
 pub use esp_hal::peripherals::OptionalPeripherals;
 
-#[cfg(feature = "executor-single-thread")]
+// TODO(bump):
+// - use this for all peripheral types (spi/i2c/uart) if needed
 #[doc(hidden)]
-pub use esp_hal_embassy::Executor;
+pub trait IntoPeripheral<'a, T: 'a> {
+    fn into_hal_peripheral(self) -> T;
+}
+
+#[doc(hidden)]
+impl<'a, T: 'a> IntoPeripheral<'a, T> for T {
+    fn into_hal_peripheral(self) -> T {
+        self
+    }
+}
 
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    let mut config = esp_hal::Config::default();
-    config.cpu_clock = esp_hal::clock::CpuClock::max();
+    let config = esp_hal::Config::default().with_cpu_clock(esp_hal::clock::CpuClock::max());
 
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
 
-    #[cfg(any(feature = "hwrng", feature = "wifi-esp"))]
-    #[cfg_attr(feature = "wifi-esp", expect(unused_mut))]
-    let mut rng = esp_hal::rng::Rng::new(peripherals.RNG.take().unwrap());
-
     #[cfg(feature = "hwrng")]
-    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
-
-    #[cfg(feature = "wifi-esp")]
     {
-        use esp_hal::timer::timg::TimerGroup;
-
-        ariel_os_debug::log::debug!("ariel-os-embassy::hal::esp::init(): wifi");
-
-        let timer = TimerGroup::new(peripherals.TIMG0.take().unwrap()).timer0;
-
-        let init = esp_wifi::init(timer, rng, peripherals.RADIO_CLK.take().unwrap()).unwrap();
-
-        wifi::esp_wifi::WIFI_INIT.set(init).unwrap();
+        let mut rng = esp_hal::rng::Rng::new();
+        ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
     }
 
     let embassy_timer = {
@@ -180,7 +93,10 @@ pub fn init() -> OptionalPeripherals {
         }
     };
 
-    esp_hal_embassy::init(embassy_timer);
+    crate::time_driver::init(embassy_timer);
 
     peripherals
 }
+
+#[cfg(feature = "time")]
+embassy_time_driver::time_driver_impl!(static TIMER_QUEUE: crate::time_driver::TimerQueue = crate::time_driver::TimerQueue::new());

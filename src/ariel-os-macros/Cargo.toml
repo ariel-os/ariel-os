@@ -11,7 +11,7 @@ license.workspace = true
 proc-macro = true
 
 [dependencies]
-proc-macro-crate = "3.1.0"
+proc-macro-crate = "3.4.0"
 proc-macro2 = "1.0.78"
 quote = "1.0.35"
 syn = { version = "2.0.47", features = ["full"] }

@@ -34,7 +34,7 @@ ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
 
 [build-dependencies]
-stm32-metapac = { version = "16.0.0", default-features = false, features = [
+stm32-metapac = { version = "18.0.0", default-features = false, features = [
   "metadata",
 ] }
 

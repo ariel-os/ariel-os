@@ -12,7 +12,10 @@
 )]
 
 use embassy_net::{Runner, Stack};
-use embassy_sync::once_lock::OnceLock;
+use embassy_sync::{
+    blocking_mutex::{Mutex, raw::CriticalSectionRawMutex},
+    once_lock::OnceLock,
+};
 
 use crate::{NetworkDevice, cell::SameExecutorCell};
 
@@ -24,13 +27,16 @@ pub(crate) const ETHERNET_MTU: usize = 1514;
 /// Required to create a UDP or TCP socket.
 pub type NetworkStack = Stack<'static>;
 
-pub(crate) static STACK: OnceLock<SameExecutorCell<NetworkStack>> = OnceLock::new();
+pub(crate) static STACK: OnceLock<Mutex<CriticalSectionRawMutex, SameExecutorCell<NetworkStack>>> =
+    OnceLock::new();
 
 /// Returns a new [`NetworkStack`].
 ///
 /// Returns [`None`] if networking is not yet initialized.
 pub async fn network_stack() -> Option<NetworkStack> {
-    STACK.get().await.get_async().await.copied()
+    // SAFETY: safe unless intentionally exploited.
+    let spawner = unsafe { crate::asynch::Spawner::for_current_executor().await };
+    STACK.get().await.lock(|inner| inner.get(spawner).copied())
 }
 
 /// Returns a seed suitable for [`embassy_net::new()`], on a best-effort basis.
