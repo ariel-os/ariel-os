@@ -7,6 +7,8 @@
 - **Chip:** [nRF52833](../chips/nrf52833.md)
 - **Chip Ariel OS Name:** `nrf52833`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/)

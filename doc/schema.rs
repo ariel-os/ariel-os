@@ -46,6 +46,7 @@ pub struct BoardInfo {
     pub chip: String,
     pub tier: String,
     pub support: HashMap<String, SupportInfo>,
+    pub builders: Option<Vec<String>>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

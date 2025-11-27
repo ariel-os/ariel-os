@@ -7,6 +7,8 @@
 - **Chip:** [nRF51822-xxAA](../chips/nrf51822-xxaa.md)
 - **Chip Ariel OS Name:** `nrf51822-xxaa`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250109121140/https://microbit.org/get-started/features/overview/#original-micro:bit)

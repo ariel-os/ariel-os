@@ -7,6 +7,16 @@
 - **Chip:** [{{ board_info.chip }}](../chips/{{ board_info.chip_technical_name }}.md)
 - **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
 
+{% if board_info.builders %}
+## Laze Builders
+
+Supported laze builders for that board (`laze build -b <builder_name>`):
+
+{%- for builder in board_info.builders %}
+- `{{ builder }}`
+{%- endfor %}
+{%- endif %}
+
 ### References
 
 - [Manufacturer link]({{ board_info.url }})

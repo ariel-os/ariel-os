@@ -7,6 +7,8 @@
 - **Chip:** [RP235xa](../chips/rp235xa.md)
 - **Chip Ariel OS Name:** `rp235xa`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/)

@@ -7,6 +7,8 @@
 - **Chip:** [STM32F042K6](../chips/stm32f042k6.md)
 - **Chip Ariel OS Name:** `stm32f042k6`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f042k6.html)

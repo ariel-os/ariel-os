@@ -7,6 +7,8 @@
 - **Chip:** [nRF52832](../chips/nrf52832.md)
 - **Chip Ariel OS Name:** `nrf52832`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK)
