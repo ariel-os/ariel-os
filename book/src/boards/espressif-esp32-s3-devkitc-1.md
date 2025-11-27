@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-S3](../chips/esp32s3.md)
 - **Chip Ariel OS Name:** `esp32s3`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en)

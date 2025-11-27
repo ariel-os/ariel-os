@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-C3](../chips/esp32c3.md)
 - **Chip Ariel OS Name:** `esp32c3`
 
+
+
 ### References
 
 - [Manufacturer link](http://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2)

@@ -7,6 +7,8 @@
 - **Chip:** [STM32L475VG](../chips/stm32l475vg.md)
 - **Chip Ariel OS Name:** `stm32l475vg`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html)

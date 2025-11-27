@@ -7,6 +7,8 @@
 - **Chip:** [STM32WBA55CG](../chips/stm32wba55cg.md)
 - **Chip Ariel OS Name:** `stm32wba55cg`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wba55cg.html)

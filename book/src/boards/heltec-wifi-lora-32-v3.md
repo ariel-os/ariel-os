@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-S3](../chips/esp32s3.md)
 - **Chip Ariel OS Name:** `esp32s3`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/)
