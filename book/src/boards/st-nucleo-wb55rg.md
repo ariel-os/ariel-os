@@ -1,30 +1,34 @@
-# Seeed Studio LoRa-E5 mini
+# ST NUCLEO-WB55RG
 
-## Board Info
+## laze Builders
 
-- **Tier:** 3
-- **Ariel OS Name:** `seeedstudio-lora-e5-mini`
-- **Chip:** [STM32WLE5JC](../chips/stm32wle5jc.md)
-- **Chip Ariel OS Name:** `stm32wle5jc`
+For more information on laze builders, check out [this page](../build-system.md).
+### `st-nucleo-wb55`
 
-### References
+- **Tier:** 1
+- **Chip:** [STM32WB55RG](../chips/stm32wb55rg.md)
+- **Chip Ariel OS Name:** `stm32wb55rg`
 
-- [Manufacturer link](https://web.archive.org/web/20250802201959/https://wiki.seeedstudio.com/LoRa_E5_mini/)
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-## Support Matrix
+```bash
+laze build -b st-nucleo-wb55
+```
+
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
 |GPIO|<span title="supported">✅</span>|
 |Debug Output|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
-|SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
-|UART|<span title="needs testing">🚦</span>|
+|I2C Controller Mode|<span title="supported">✅</span>|
+|SPI Main Mode|<span title="supported">✅</span>|
+|UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="not available on this piece of hardware">–</span>|
+|User USB|<span title="supported">✅</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
-|Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
-|Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
+|Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|Ethernet over USB|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
 
@@ -53,4 +57,10 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html)
+
+
+  
 [^removing-items-not-supported]: Removing items not supported.

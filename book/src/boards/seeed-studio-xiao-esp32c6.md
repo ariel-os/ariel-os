@@ -1,17 +1,21 @@
-# DFRobot FireBeetle 2 ESP32-C6
+# Seeed Studio XIAO ESP32C6
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `seeedstudio-xiao-esp32c6`
 
 - **Tier:** 2
-- **Ariel OS Name:** `dfrobot-firebeetle2-esp32-c6`
 - **Chip:** [ESP32-C6Fx4](../chips/esp32c6fx4.md)
 - **Chip Ariel OS Name:** `esp32c6fx4`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250710082029/https://wiki.dfrobot.com/SKU_DFR1075_FireBeetle_2_Board_ESP32_C6)
+```bash
+laze build -b seeedstudio-xiao-esp32c6
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,5 +57,11 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250827114042/https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/)
+
+
+  
 [^no-generic-usb-peripheral]: No generic USB peripheral.
 [^requires-partitioning-support]: Requires partitioning support.

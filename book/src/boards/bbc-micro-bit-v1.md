@@ -1,17 +1,21 @@
-# nRF52-DK
+# BBC micro:bit V1
 
-## Board Info
+## laze Builders
 
-- **Tier:** 2
-- **Ariel OS Name:** `nrf52dk`
-- **Chip:** [nRF52832](../chips/nrf52832.md)
-- **Chip Ariel OS Name:** `nrf52832`
+For more information on laze builders, check out [this page](../build-system.md).
+### `bbc-microbit-v1`
 
-### References
+- **Tier:** 3
+- **Chip:** [nRF51822-xxAA](../chips/nrf51822-xxaa.md)
+- **Chip Ariel OS Name:** `nrf51822-xxaa`
 
-- [Manufacturer link](https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK)
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-## Support Matrix
+```bash
+laze build -b bbc-microbit-v1
+```
+
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -19,14 +23,14 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
-|UART|<span title="supported">✅</span>|
+|UART|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
-|Bluetooth Low Energy|<span title="supported">✅</span>|
+|Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
-|Persistent Storage|<span title="supported">✅</span>|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 
 <p>Legend:</p>
 
@@ -52,3 +56,10 @@ dt, dd {
   display: inline;
 }
 </style>
+
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250109121140/https://microbit.org/get-started/features/overview/#original-micro:bit)
+
+
+  

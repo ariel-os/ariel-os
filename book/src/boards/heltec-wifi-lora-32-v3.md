@@ -1,17 +1,21 @@
 # Heltec WiFi LoRa 32 V3
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `heltec-wifi-lora-32-v3`
 
 - **Tier:** 3
-- **Ariel OS Name:** `heltec-wifi-lora-32-v3`
 - **Chip:** [ESP32-S3](../chips/esp32s3.md)
 - **Chip Ariel OS Name:** `esp32s3`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/)
+```bash
+laze build -b heltec-wifi-lora-32-v3
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,4 +57,10 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/)
+
+
+  
 [^requires-partitioning-support]: Requires partitioning support.

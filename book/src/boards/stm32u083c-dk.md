@@ -1,17 +1,21 @@
 # STM32U083C-DK
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `stm32u083c-dk`
 
 - **Tier:** 1
-- **Ariel OS Name:** `stm32u083c-dk`
 - **Chip:** [STM32U083MC](../chips/stm32u083mc.md)
 - **Chip Ariel OS Name:** `stm32u083mc`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html)
+```bash
+laze build -b stm32u083c-dk
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,4 +57,10 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html)
+
+
+  
 [^removing-items-not-supported]: Removing items not supported.

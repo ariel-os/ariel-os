@@ -1,17 +1,21 @@
 # ST NUCLEO-C031C6
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `st-nucleo-c031c6`
 
 - **Tier:** 1
-- **Ariel OS Name:** `st-nucleo-c031c6`
 - **Chip:** [STM32C031C6](../chips/stm32c031c6.md)
 - **Chip Ariel OS Name:** `stm32c031c6`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html)
+```bash
+laze build -b st-nucleo-c031c6
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,4 +57,10 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html)
+
+
+  
 [^would-need-to-allocate-some-flash]: Would need to allocate some flash.

@@ -1,31 +1,35 @@
-# nRF9160-DK
+# nRF52-DK
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `nrf52dk`
 
 - **Tier:** 2
-- **Ariel OS Name:** `nrf9160dk-nrf9160`
-- **Chip:** [nRF9160](../chips/nrf9160.md)
-- **Chip Ariel OS Name:** `nrf9160`
+- **Chip:** [nRF52832](../chips/nrf52832.md)
+- **Chip Ariel OS Name:** `nrf52832`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk)
+```bash
+laze build -b nrf52dk
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
 |GPIO|<span title="supported">✅</span>|
 |Debug Output|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="supported">✅</span>|
-|SPI Main Mode|<span title="supported">✅</span>|
+|I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
-|Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
+|Bluetooth Low Energy|<span title="supported">✅</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
-|Hardware Random Number Generator|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^only-available-through-the-cryptocell]|
+|Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
 
 <p>Legend:</p>
@@ -53,4 +57,9 @@ dt, dd {
 }
 </style>
 
-[^only-available-through-the-cryptocell]: Only available through the CryptoCell.
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK)
+
+
+  
