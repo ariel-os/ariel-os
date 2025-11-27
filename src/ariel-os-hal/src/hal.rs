@@ -33,7 +33,7 @@ pub use crate::group_peripherals;
 pub use define_peripherals::*;
 
 cfg_if::cfg_if! {
-    if #[cfg(context = "native")] {
+    if #[cfg(any(context = "native", context = "m-chip"))] {
         mod dummy;
         pub use ariel_os_native::*;
         pub use dummy::{gpio, peripheral};
