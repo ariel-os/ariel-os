@@ -5517,6 +5517,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "threading-semaphore"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "tinystr"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
