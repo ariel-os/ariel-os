@@ -178,23 +178,20 @@ fn __ariel_os_network_config() -> embassy_net::Config {
 
     cfg_if::cfg_if! {
         if #[cfg(feature = "network-config-ipv4-static")] {
-            use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
+            use ariel_os_utils::{ipv4_addr_from_env, u8_from_env};
 
-            let ipaddr = ipv4_addr_from_env_or!(
+            let ipaddr = ipv4_addr_from_env!(
                 "CONFIG_NET_IPV4_STATIC_ADDRESS",
-                "10.42.0.61",
                 "static IPv4 address",
             );
 
-            let gw_addr = ipv4_addr_from_env_or!(
+            let gw_addr = ipv4_addr_from_env!(
                 "CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS",
-                "10.42.0.1",
                 "static IPv4 gateway address",
             );
 
-            const PREFIX_LEN: u8 = u8_from_env_or!(
+            const PREFIX_LEN: u8 = u8_from_env!(
                 "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
-                24,
                 "static IPv4 CIDR prefix length"
             );
             const {
