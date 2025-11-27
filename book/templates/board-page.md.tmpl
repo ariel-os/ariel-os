@@ -1,22 +1,29 @@
 # {{ board_info.name }}
 
-## Board Info
+## laze Builders
 
-- **Tier:** {{ board_info.tier }}
-- **Ariel OS Name:** `{{ board_info.technical_name }}`
-- **Chip:** [{{ board_info.chip }}](../chips/{{ board_info.chip_technical_name }}.md)
-- **Chip Ariel OS Name:** `{{ board_info.chip_technical_name }}`
+For more information on laze builders, check out [this page](../build-system.md).
 
-### References
+{%- for builder in board_info.builders %}
+### `{{ builder.technical_name }}`
 
-- [Manufacturer link]({{ board_info.url }})
+- **Tier:** {{ builder.tier }}
+- **Chip:** [{{ builder.chip }}](../chips/{{ builder.chip_technical_name }}.md)
+- **Chip Ariel OS Name:** `{{ builder.chip_technical_name }}`
 
-## Support Matrix
+To target this laze builder, run the following command in the root of your ArielOS app:
+
+```bash
+laze build -b {{ builder.technical_name }}
+```
+
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
-{%- for functionality in board_info.functionalities %}
+{%- for functionality in builder.functionalities %}
 |{{ functionality.title }}|<span title="{{ functionality.description }}">{{ functionality.icon }}</span>{%- if functionality.comments %}{%- for comment in functionality.comments %}[^{{ comment|slugify }}]{%- endfor %}{%- endif %}|
+{%- endfor %}
 {%- endfor %}
 
 <p>Legend:</p>
@@ -33,8 +40,15 @@ dt, dd {
   display: inline;
 }
 </style>
-{% for functionality in board_info.functionalities %}
-  {%- for comment in functionality.comments %}
+
+## References
+
+- [Manufacturer link]({{ board_info.url }})
+
+{% for builder in board_info.builders %}
+  {% for functionality in builder.functionalities %}
+    {%- for comment in functionality.comments %}
 [^{{ comment|slugify }}]: {{ comment|capitalize_first }}.
+    {%- endfor %}
   {%- endfor %}
 {%- endfor %}

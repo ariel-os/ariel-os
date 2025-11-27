@@ -6,8 +6,8 @@
 
 - [Overview](./hardware-functionality-support.md)
 - [Boards](./boards/index.md)
-{%- for board in boards %}
-  - [{{ board.name }}](./boards/{{ board.technical_name }}.md)
+{%- for board in boards|sort(attribute="name") %}
+  - [{{ board.name }}](./boards/{{ board.name|slugify }}.md)
 {%- endfor %}
 - [Chips](./chips/index.md)
 {%- for chip_technical_name, chip_info in chips|dictsort %}
