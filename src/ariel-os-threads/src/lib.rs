@@ -40,6 +40,7 @@ mod blocker;
 mod ensure_once;
 mod thread;
 mod threadlist;
+mod timeout;
 
 #[cfg(feature = "multi-core")]
 mod smp;
@@ -65,6 +66,7 @@ pub mod events {
 pub use ariel_os_runqueue::{RunqueueId, ThreadId};
 pub use blocker::block_on;
 pub use thread_flags as flags;
+pub use timeout::{sleep, sleep_until};
 
 #[cfg(feature = "core-affinity")]
 pub use smp::CoreAffinity;
@@ -781,7 +783,6 @@ pub fn yield_same() {
 }
 
 /// Suspends/ pauses the current thread's execution.
-#[doc(alias = "sleep")]
 pub fn park() {
     SCHEDULER.with_mut(|mut scheduler| {
         let Some(tid) = scheduler.current_tid() else {

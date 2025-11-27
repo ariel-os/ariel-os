@@ -31,6 +31,8 @@ embassy-net = { git = "https://github.com/kaspar030/embassy", rev = "f88320aea64
 embassy-rp = { git = "https://github.com/kaspar030/embassy", rev = "0314802282e112a47b4ccb303c0e7f09cf33df53" }
 # branch = "embassy-stm32-v0.4.0+ariel-os"
 embassy-stm32 = { git = "https://github.com/kaspar030/embassy", rev = "1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c" }
+# branch = "embassy-time-v0.5.0+ariel-os"
+embassy-time = { git = "https://github.com/ariel-os/embassy", rev = "32919cd38e4a5ad5fc21dfb339abd45a74bd1dc9" }
 
 # ariel-os esp-hal fork, using branch = "esp-hal-v1.0.0+20251203+ariel-os"
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
