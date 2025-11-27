@@ -1,4 +1,4 @@
-//! Helpers for [`udp_nal`] -- conversion and error types
+//! Helpers for [`udp_nal`] -- conversion and error types.
 
 use core::net::{SocketAddr, SocketAddrV4, SocketAddrV6};
 
@@ -35,7 +35,7 @@ pub(super) fn is_unspec_ip(addr: SocketAddr) -> bool {
     }
 }
 
-/// Unified error type for [`embedded_nal_async`] operations on UDP sockets
+/// Unified error type for [`embedded_nal_async`] operations on UDP sockets.
 #[derive(Debug)]
 #[non_exhaustive]
 #[allow(
@@ -43,14 +43,14 @@ pub(super) fn is_unspec_ip(addr: SocketAddr) -> bool {
     reason = "false positive -- they're not called SomethingError because they are a Self (which is named Error), but because they contain a type SomethingError"
 )]
 pub enum Error {
-    /// Error stemming from failure to send
+    /// Error stemming from failure to send.
     RecvError(udp::RecvError),
-    /// Error stemming from failure to send
+    /// Error stemming from failure to send.
     SendError(udp::SendError),
-    /// Error stemming from failure to bind to an address/port
+    /// Error stemming from failure to bind to an address/port.
     BindError(udp::BindError),
     /// Error stemming from failure to represent the given address family for lack of enabled
-    /// embassy-net features
+    /// embassy-net features.
     #[expect(dead_code, reason = "feature selection currently disabled")]
     AddressFamilyUnavailable,
 }

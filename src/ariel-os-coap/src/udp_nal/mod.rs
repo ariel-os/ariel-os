@@ -1,4 +1,4 @@
-//! UDP sockets usable through [`embedded_nal_async`]
+//! UDP sockets usable through [`embedded_nal_async`].
 //!
 //! The full [`embedded_nal_async::UdpStack`] is *not* implemented at the moment: As its API allows
 //! arbitrary creation of movable sockets, embassy's [`udp::UdpSocket`] type could only be created if
@@ -41,7 +41,7 @@ pub struct ConnectedUdp<'a> {
     socket: udp::UdpSocket<'a>,
 }
 
-/// A UDP socket that has been bound locally (either to a unique address or just to a port)
+/// A UDP socket that has been bound locally (either to a unique address or just to a port).
 ///
 /// Its operations are accessible through the [`nal::UnconnectedUdp`] trait.
 pub struct UnconnectedUdp<'a> {
@@ -55,7 +55,7 @@ pub struct UnconnectedUdp<'a> {
     reason = "pub item is being prepared for embedded-nal-async where it will be reachable publicly"
 )]
 impl<'a> ConnectedUdp<'a> {
-    /// Create a [`ConnectedUdp`] by assigning it a remote and a concrete local address
+    /// Create a [`ConnectedUdp`] by assigning it a remote and a concrete local address.
     ///
     /// ## Prerequisites
     ///
@@ -85,7 +85,7 @@ impl<'a> ConnectedUdp<'a> {
     }
 
     /// Create a [`ConnectedUdp`] by assigning it a remote and a local address (the latter may
-    /// happen lazily)
+    /// happen lazily).
     ///
     /// ## Prerequisites
     ///

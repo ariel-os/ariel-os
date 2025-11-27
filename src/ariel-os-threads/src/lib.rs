@@ -120,7 +120,7 @@ pub type ThreadFn = fn();
 #[linkme::distributed_slice]
 pub static THREAD_FNS: [ThreadFn] = [..];
 
-/// Struct holding all scheduler state
+/// Struct holding all scheduler state.
 struct Scheduler {
     /// Global thread runqueue.
     #[cfg(not(feature = "infini-core"))]
@@ -648,7 +648,7 @@ where
     unsafe { create_raw(func, arg, stack, prio, core_affinity) }
 }
 
-/// Low-level function to create a thread without argument
+/// Low-level function to create a thread without argument.
 ///
 /// # Panics
 ///

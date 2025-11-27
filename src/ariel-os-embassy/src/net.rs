@@ -90,7 +90,7 @@ pub(crate) fn config() -> embassy_net::Config {
     }
 }
 
-/// Constructor for [`DummyDriver`]
+/// Constructor for [`DummyDriver`].
 ///
 /// This is a standalone function instead of an associated method to ease moving [`DummyDriver`]
 /// into [`embassy_net`].
