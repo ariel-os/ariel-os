@@ -3,6 +3,8 @@
 This guide is intended to get you started in about 5 minutes.
 It explains how to compile and run the `hello-word` example to verify your setup, and how to bootstrap a new application.
 
+<!-- If you modify these instructions, you should update .github/workflows/build-templates.yml to reflect that. -->
+
 ## Installing the build prerequisites
 
 1. Install the needed build dependencies.
