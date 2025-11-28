@@ -86,8 +86,8 @@ jobs:
       - name: "ariel-os-hello compilation test"
         run: |
           cd ariel-os-hello
-          export LAZE_BUILDERS='espressif-esp32-c6-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55'
-          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
+          export CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password'
+          laze build --global
 
   report-failure:
     runs-on: ubuntu-latest
