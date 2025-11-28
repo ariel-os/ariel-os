@@ -116,6 +116,7 @@ jobs:
             --verbose
             --locked
             --features "
+                ariel-os-sensors/max-sample-min-count-12,
                 ble,
                 coap,
                 csprng,
@@ -276,6 +277,7 @@ jobs:
                 -p ariel-os \
                 -p coapcore \
                 --features "
+                    ariel-os-sensors/max-sample-min-count-12,
                     bench,
                     ble,
                     coap,
