@@ -1,0 +1,10 @@
+apps:
+  - name: threading-semaphore
+    selects:
+      - sw/threading
+      - "context::stm32c031c6":
+          - too-little-memory
+    conflicts:
+      # This example uses three threads with the default stack size of 2KiB,
+      # which is too much for the smallest MCUs.
+      - ram-tiny
