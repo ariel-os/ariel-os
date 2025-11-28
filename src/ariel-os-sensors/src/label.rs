@@ -31,6 +31,8 @@ pub enum Label {
     Longitude,
     /// Opaque channel: the associated sample is intended for the sensor driver only, and no guarantees are provided.
     Opaque,
+    /// Opaque channel marker used by `GnssTimeExt`.
+    OpaqueGnssTime,
     /// Relative humidity.
     RelativeHumidity,
     /// Heading.
@@ -60,7 +62,7 @@ impl core::fmt::Display for Label {
             Self::GroundSpeed => write!(f, "Ground speed"),
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
-            Self::Opaque => write!(f, "[opaque]"),
+            Self::Opaque | Self::OpaqueGnssTime => write!(f, "[opaque]"),
             Self::RelativeHumidity => write!(f, "Relative humidity"),
             Self::Heading => write!(f, "Heading"),
             Self::Temperature => write!(f, "Temperature"),

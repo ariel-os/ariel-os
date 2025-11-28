@@ -160,6 +160,11 @@ pub(crate) fn init() {
 
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
+        #[cfg(feature = "nrf91-modem")]
+        {
+            use crate::hal::interrupt::{InterruptExt as _, Priority};
+            hal::SWI.set_priority(Priority::P1);
+        }
         hal::EXECUTOR.start(hal::SWI);
         hal::EXECUTOR.spawner().must_spawn(init_task(p));
     }
@@ -258,6 +263,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let ble_config = ble::config();
     #[cfg(all(feature = "ble", not(context = "rp")))]
     hal::ble::driver(ble_peripherals, spawner, ble_config);
+
+    #[cfg(feature = "nrf91-modem")]
+    {
+        hal::modem::driver().await;
+    }
 
     #[cfg(feature = "usb")]
     let mut usb_builder = {

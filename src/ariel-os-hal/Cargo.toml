@@ -103,6 +103,8 @@ ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
 
+nrf91-modem = ["ariel-os-nrf/nrf91-modem"]
+
 hwrng = [
   "ariel-os-esp/hwrng",
   "ariel-os-native/hwrng",
