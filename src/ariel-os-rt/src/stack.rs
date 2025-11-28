@@ -94,19 +94,19 @@ impl Stack {
 
     /// Returns the total size of the current stack.
     #[must_use]
-    pub fn size(&self) -> usize {
+    pub fn total_size(&self) -> usize {
         self.highest - self.lowest
     }
 
     /// Returns the amount of currently free stack space.
     #[must_use]
-    pub fn free(&self) -> usize {
-        self.size() - self.used()
+    pub fn current_free_space(&self) -> usize {
+        self.total_size() - self.current_usage()
     }
 
     /// Returns the amount of currently used stack space.
     #[must_use]
-    pub fn used(&self) -> usize {
+    pub fn current_usage(&self) -> usize {
         self.highest - sp()
     }
 
@@ -114,7 +114,7 @@ impl Stack {
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
-    pub fn free_min(&self) -> usize {
+    fn free_min(&self) -> usize {
         let mut free = 0usize;
         for pos in self.lowest..self.highest {
             // SAFETY: dereferencing ptr to valid memory, read only
@@ -129,14 +129,12 @@ impl Stack {
         free
     }
 
-    /// Returns the maximum stack space used since last repaint.
-    ///
-    /// Equivalent to `size() - free_min()`.
+    /// Returns the peak amount of stack used since last repaint.
     ///
     /// This re-calculates and thus runs in `O(n)`!
     #[must_use]
-    pub fn used_max(&self) -> usize {
-        self.size() - self.free_min()
+    pub fn peak_usage(&self) -> usize {
+        self.total_size() - self.free_min()
     }
 
     /// Repaints the stack.
@@ -165,7 +163,7 @@ impl Stack {
             // current stack frame's stack pointer.
             // This does not prevent this from being interrupted by an ISR, in which case
             // the stack is dirtied again, but that doesn't cause any unsafety and just
-            // makes any following `used_max()` call include whatever the ISR wrote on this stack.
+            // makes any following `peak_usage()` call include whatever the ISR wrote on this stack.
             unsafe {
                 write_volatile(pos as *mut u8, STACK_PAINT_COLOR);
             }
