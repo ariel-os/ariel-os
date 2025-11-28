@@ -68,6 +68,7 @@ jobs:
               -p ariel-os \
               -p coapcore \
               --features "
+                  ariel-os-sensors/max-sample-min-count-12,
                   bench,
                   coap,
                   core-affinity,
