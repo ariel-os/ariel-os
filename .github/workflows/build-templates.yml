@@ -78,7 +78,10 @@ jobs:
       # we verified previously that ariel-os-hello and the generated
       # ariel-os-template have the same file tree, so we only build ariel-os-hello
       - name: "ariel-os-hello compilation test"
-        run: cd ariel-os-hello && LAZE_BUILDERS=espressif-esp32-c6-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55 CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
+        run: |
+          cd ariel-os-hello
+          export LAZE_BUILDERS='espressif-esp32-c6-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55'
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
 
   report-failure:
     runs-on: ubuntu-latest
