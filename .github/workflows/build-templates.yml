@@ -89,11 +89,7 @@ jobs:
           export CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password'
           laze build --global
 
-  report-failure:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Report nightly failure
+      - name: Report failure
         if: failure() && github.event_name == 'schedule' && github.repository == 'ariel-os/ariel-os'
         uses: s3krit/matrix-message-action@v0.0.3
         with:
