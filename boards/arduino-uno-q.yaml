@@ -1,0 +1,31 @@
+boards:
+  arduino-uno-q:
+    chip: stm32u585ai
+    flags:
+      - has_usb_device_port
+    ariel:
+      flags:
+        - has_swi
+      global_env:
+        CARGO_ENV:
+          - CONFIG_VBUS_DETECTION=false
+          - CONFIG_SWI=USART2
+    leds:
+      led0:
+        color: red
+        pin: PH10
+      led1:
+        color: green
+        pin: PH11
+      led2:
+        color: blue
+        pin: PH12
+      led3:
+        color: red
+        pin: PH13
+      led4:
+        color: green
+        pin: PH14
+      led5:
+        color: blue
+        pin: PH15
