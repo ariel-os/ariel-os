@@ -9,7 +9,7 @@ on:
     - cron: '17 3 * * *'
 
 concurrency:
-  group: ${{ github.head_ref || github.run_id }}-build
+  group: ${{ github.head_ref || github.run_id }}-build-templates
   cancel-in-progress: true
 
 jobs:
