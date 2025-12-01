@@ -1,10 +1,9 @@
 #![expect(unsafe_code)]
 
 use esp_hal::{
-    Cpu,
-    cpu_control::{CpuControl, Stack},
     interrupt,
-    peripherals::{CPU_CTRL, Interrupt, SYSTEM},
+    peripherals::{CPU_CTRL, Interrupt},
+    system::{Cpu, CpuControl, Stack},
 };
 
 use super::{CoreId, ISR_STACKSIZE_CORE1, Multicore, StackLimits};
@@ -26,7 +25,7 @@ impl Multicore for Chip {
     type Stack = Stack<ISR_STACKSIZE_CORE1>;
 
     fn core_id() -> CoreId {
-        esp_hal::Cpu::current().into()
+        Cpu::current().into()
     }
 
     fn startup_other_cores(stack: &'static mut Self::Stack) {
@@ -35,7 +34,7 @@ impl Multicore for Chip {
             // Use `CPU_INTR1` to trigger the scheduler on our second core.
             // We need to use a different interrupt here than on the first core so that
             // we specifically trigger the scheduler on one or the other core.
-            interrupt::disable(esp_hal::Cpu::ProCpu, Interrupt::FROM_CPU_INTR1);
+            interrupt::disable(Cpu::ProCpu, Interrupt::FROM_CPU_INTR1);
             Self::schedule_on_core(Self::core_id());
             // Panics if `FROM_CPU_INTR1` is among `esp_hal::interrupt::RESERVED_INTERRUPTS`,
             // which isn't the case.
@@ -52,21 +51,14 @@ impl Multicore for Chip {
     }
 
     fn schedule_on_core(id: CoreId) {
-        let ptr = unsafe { &*SYSTEM::PTR };
+        let ptr = esp_hal::peripherals::SYSTEM::regs();
         let mut id = id.0;
-        let already_set = match id {
-            0 => ptr
-                .cpu_intr_from_cpu_0()
-                .read()
-                .cpu_intr_from_cpu_0()
-                .bit_is_set(),
-            1 => ptr
-                .cpu_intr_from_cpu_1()
-                .read()
-                .cpu_intr_from_cpu_1()
-                .bit_is_set(),
-            _ => unreachable!(),
-        };
+        let already_set = ptr
+            .cpu_intr_from_cpu(id.into())
+            .read()
+            .cpu_intr()
+            .bit_is_set();
+
         if already_set {
             // If a scheduling attempt is already pending, there must have been multiple
             // changes in the runqueue at the same time.
@@ -74,15 +66,8 @@ impl Multicore for Chip {
             // have the most recent runqueue state.
             id ^= 1;
         }
-        match id {
-            0 => ptr
-                .cpu_intr_from_cpu_0()
-                .write(|w| w.cpu_intr_from_cpu_0().set_bit()),
-            1 => ptr
-                .cpu_intr_from_cpu_1()
-                .write(|w| w.cpu_intr_from_cpu_1().set_bit()),
-            _ => unreachable!(),
-        };
+        ptr.cpu_intr_from_cpu(id.into())
+            .write(|w| w.cpu_intr().set_bit());
     }
 }
 

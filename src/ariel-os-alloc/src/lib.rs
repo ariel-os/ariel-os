@@ -85,7 +85,7 @@ mod alloc {
             CONFIG_HEAPSIZE
         );
 
-        esp_alloc::heap_allocator!(CONFIG_HEAPSIZE);
+        esp_alloc::heap_allocator!(#[unsafe(link_section = ".uninit")] size: CONFIG_HEAPSIZE);
     }
 
     /// Initializes **no** heap.

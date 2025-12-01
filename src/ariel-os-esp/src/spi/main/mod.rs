@@ -12,7 +12,6 @@ use esp_hal::{
         self,
         interconnect::{PeripheralInput, PeripheralOutput},
     },
-    peripheral::Peripheral,
     peripherals,
     spi::master::Spi as InnerSpi,
 };
@@ -63,10 +62,10 @@ pub enum Frequency {
 ariel_os_embassy_common::impl_spi_from_frequency!();
 ariel_os_embassy_common::impl_spi_frequency_const_functions!(MAX_FREQUENCY);
 
-impl From<Frequency> for fugit::HertzU32 {
+impl From<Frequency> for esp_hal::time::Rate {
     fn from(freq: Frequency) -> Self {
         match freq {
-            Frequency::F(kilohertz) => fugit::HertzU32::kHz(kilohertz.to_kHz()),
+            Frequency::F(kilohertz) => esp_hal::time::Rate::from_khz(kilohertz.raw()),
         }
     }
 }
@@ -75,21 +74,21 @@ macro_rules! define_spi_drivers {
     ($( $peripheral:ident ),* $(,)?) => {
         $(
             /// Peripheral-specific SPI driver.
-            pub struct $peripheral {
-                spim: YieldingAsync<BlockingAsync<InnerSpi<'static, esp_hal::Blocking>>>,
+            pub struct $peripheral<'a> {
+                spim: YieldingAsync<BlockingAsync<InnerSpi<'a, esp_hal::Blocking>>>,
             }
 
-            impl $peripheral {
+            impl<'a> $peripheral<'a> {
                 /// Returns a driver implementing [`embedded_hal_async::spi::SpiBus`] for this SPI
                 /// peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sck_pin: impl Peripheral<P: PeripheralOutput> + 'static,
-                    miso_pin: impl Peripheral<P: PeripheralInput> + 'static,
-                    mosi_pin: impl Peripheral<P: PeripheralOutput> + 'static,
+                    sck_pin: impl PeripheralOutput<'a>,
+                    miso_pin: impl PeripheralInput<'a>,
+                    mosi_pin: impl PeripheralOutput<'a>,
                     config: Config,
-                ) -> Spi {
+                ) -> Spi<'a> {
                     // Make this struct a compile-time-enforced singleton: having multiple statics
                     // defined with the same name would result in a compile-time error.
                     paste::paste! {
@@ -97,11 +96,11 @@ macro_rules! define_spi_drivers {
                         static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
                     }
 
-                    let mut spi_config = esp_hal::spi::master::Config::default();
-                    spi_config.frequency = config.frequency.into();
-                    spi_config.mode = crate::spi::from_mode(config.mode);
-                    spi_config.read_bit_order = crate::spi::from_bit_order(config.bit_order);
-                    spi_config.write_bit_order = crate::spi::from_bit_order(config.bit_order);
+                    let mut spi_config = esp_hal::spi::master::Config::default()
+                        .with_frequency(config.frequency.into())
+                        .with_mode(crate::spi::from_mode(config.mode))
+                        .with_read_bit_order(crate::spi::from_bit_order(config.bit_order))
+                        .with_write_bit_order(crate::spi::from_bit_order(config.bit_order));
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -124,14 +123,14 @@ macro_rules! define_spi_drivers {
         )*
 
         /// Peripheral-agnostic driver.
-        pub enum Spi {
+        pub enum Spi<'a> {
             $(
                 #[doc = concat!(stringify!($peripheral), " peripheral.")]
-                $peripheral($peripheral)
+                $peripheral($peripheral<'a>)
             ),*
         }
 
-        impl embedded_hal_async::spi::ErrorType for Spi {
+        impl<'a> embedded_hal_async::spi::ErrorType for Spi<'a> {
             type Error = esp_hal::spi::Error;
         }
 

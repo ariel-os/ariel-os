@@ -8,7 +8,7 @@ use ariel_os_embassy_common::{
 };
 
 use embassy_nrf::{
-    Peripheral, bind_interrupts,
+    Peri, bind_interrupts,
     gpio::Pin as GpioPin,
     peripherals,
     spim::{InterruptHandler, Spim},
@@ -149,7 +149,7 @@ macro_rules! define_spi_drivers {
         $(
             /// Peripheral-specific SPI driver.
             pub struct $peripheral {
-                spim: Spim<'static, peripherals::$peripheral>,
+                spim: Spim<'static>,
             }
 
             impl $peripheral {
@@ -158,9 +158,9 @@ macro_rules! define_spi_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sck_pin: impl Peripheral<P: GpioPin> + 'static,
-                    miso_pin: impl Peripheral<P: GpioPin> + 'static,
-                    mosi_pin: impl Peripheral<P: GpioPin> + 'static,
+                    sck_pin: Peri<'static, impl GpioPin>,
+                    miso_pin: Peri<'static, impl GpioPin>,
+                    mosi_pin: Peri<'static, impl GpioPin>,
                     config: Config,
                 ) -> Spi {
                     let mut spi_config = embassy_nrf::spim::Config::default();

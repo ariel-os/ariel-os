@@ -5,8 +5,8 @@
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
-    Peripheral, bind_interrupts,
-    i2c::{EventInterruptHandler, I2c as InnerI2c, SclPin, SdaPin},
+    Peri, bind_interrupts,
+    i2c::{EventInterruptHandler, I2c as InnerI2c, SclPin, SdaPin, mode::Master},
     mode::Blocking,
     peripherals,
     time::Hertz,
@@ -129,7 +129,7 @@ macro_rules! define_i2c_drivers {
             // not generic over the I2C peripheral, and is only done for consistency with
             // other HALs.
             pub struct $peripheral {
-                twim: YieldingAsync<BlockingAsync<InnerI2c<'static, Blocking>>>,
+                twim: YieldingAsync<BlockingAsync<InnerI2c<'static, Blocking, Master>>>,
             }
 
             impl $peripheral {
@@ -138,11 +138,12 @@ macro_rules! define_i2c_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sda_pin: impl Peripheral<P: SdaPin<peripherals::$peripheral>> + 'static,
-                    scl_pin: impl Peripheral<P: SclPin<peripherals::$peripheral>> + 'static,
+                    sda_pin: Peri<'static, impl SdaPin<peripherals::$peripheral>>,
+                    scl_pin: Peri<'static, impl SclPin<peripherals::$peripheral>>,
                     config: Config,
                 ) -> I2c {
                     let mut i2c_config = embassy_stm32::i2c::Config::default();
+                    i2c_config.frequency = config.frequency.into();
                     i2c_config.sda_pullup = config.sda_pullup;
                     i2c_config.scl_pullup = config.scl_pullup;
                     i2c_config.timeout = ariel_os_embassy_common::i2c::controller::I2C_TIMEOUT;
@@ -166,12 +167,10 @@ macro_rules! define_i2c_drivers {
                     // peripheral multiple times.
                     let twim_peripheral = unsafe { peripherals::$peripheral::steal() };
 
-                    let frequency = config.frequency;
                     let i2c = InnerI2c::new_blocking(
                         twim_peripheral,
                         scl_pin,
                         sda_pin,
-                        frequency.into(),
                         i2c_config,
                     );
 

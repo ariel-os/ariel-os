@@ -21,7 +21,7 @@ embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
-ariel-os-esp = { path = "../ariel-os-esp" }
+ariel-os-esp = { path = "../ariel-os-esp", features = ["time"] }
 
 [target.'cfg(context = "native")'.dependencies]
 ariel-os-native = { path = "../ariel-os-native" }
@@ -132,7 +132,7 @@ wifi-esp = ["ariel-os-esp/wifi-esp"]
 
 eth-stm32 = ["ariel-os-stm32/eth-stm32"]
 
-executor-single-thread = ["ariel-os-esp/executor-single-thread"]
+#executor-single-thread = ["ariel-os-esp/executor-single-thread"]
 
 executor-interrupt = [
   #"ariel-os-esp/executor-interrupt",

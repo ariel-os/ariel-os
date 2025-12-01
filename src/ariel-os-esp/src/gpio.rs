@@ -3,13 +3,10 @@
 pub mod input {
     //! Input-specific types.
 
-    use esp_hal::{
-        gpio::{Level, Pull},
-        peripheral::Peripheral,
-    };
+    use esp_hal::gpio::{Level, Pull};
 
     #[doc(hidden)]
-    pub use esp_hal::gpio::{Input, InputPin};
+    pub use esp_hal::gpio::{Input, InputConfig, InputPin};
 
     #[cfg(feature = "external-interrupts")]
     use ariel_os_embassy_common::gpio::input::InterruptError;
@@ -23,23 +20,24 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new<'a>(
+        pin: impl InputPin + 'a,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<Input<'static>, core::convert::Infallible> {
+    ) -> Result<Input<'a>, core::convert::Infallible> {
         let pull = from_pull(pull);
+        let config = InputConfig::default().with_pull(pull);
 
-        Ok(Input::new(pin, pull))
+        Ok(Input::new(pin, config))
     }
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new_int_enabled<'a>(
+        pin: impl InputPin + 'a,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by hardware
-    ) -> Result<IntEnabledInput<'static>, InterruptError> {
+    ) -> Result<IntEnabledInput<'a>, InterruptError> {
         #[expect(clippy::used_underscore_binding, reason = "just propagating")]
         match new(pin, pull, _schmitt_trigger) {
             Ok(input) => Ok(input),
@@ -56,10 +54,10 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use esp_hal::{gpio::Level, peripheral::Peripheral};
+    use esp_hal::gpio::Level;
 
     #[doc(hidden)]
-    pub use esp_hal::gpio::{Output, OutputPin};
+    pub use esp_hal::gpio::{Output, OutputConfig, OutputPin};
 
     /// Whether outputs support configuring their drive strength.
     pub const DRIVE_STRENGTH_CONFIGURABLE: bool = true;
@@ -67,19 +65,18 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+    pub fn new<'a>(
+        pin: impl OutputPin + 'a,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         _speed: super::Speed, // Not supported by hardware
-    ) -> Output<'static> {
+    ) -> Output<'a> {
         let initial_level = match initial_level {
             ariel_os_embassy_common::gpio::Level::Low => Level::Low,
             ariel_os_embassy_common::gpio::Level::High => Level::High,
         };
-        let mut output = Output::new(pin, initial_level);
-        output.set_drive_strength(drive_strength.into());
-        output
+        let config = OutputConfig::default().with_drive_strength(drive_strength.into());
+        Output::new(pin, initial_level, config)
     }
 }
 

@@ -4,7 +4,7 @@
 
 use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError};
 use embassy_nrf::{
-    Peripheral, bind_interrupts,
+    Peri, bind_interrupts,
     buffered_uarte::{BufferedUarte, InterruptHandler},
     gpio::Pin as GpioPin,
     peripherals,
@@ -210,7 +210,7 @@ macro_rules! define_uart_drivers {
         $(
             /// Peripheral-specific UART driver.
             pub struct $peripheral<'d> {
-                uart: BufferedUarte<'d, peripherals::$peripheral, peripherals::$timer>,
+                uart: BufferedUarte<'d>,
             }
 
             // Make this struct a compile-time-enforced singleton: having multiple statics
@@ -236,9 +236,9 @@ macro_rules! define_uart_drivers {
                 ///
                 /// This never returns an error.
                 #[expect(clippy::new_ret_no_self)]
-                pub fn new(
-                    rx_pin: impl Peripheral<P: GpioPin> + 'd,
-                    tx_pin: impl Peripheral<P: GpioPin> + 'd,
+                pub fn new<T: GpioPin, U: GpioPin>(
+                    rx_pin: Peri<'d, T>,
+                    tx_pin: Peri<'d, U>,
                     rx_buffer: &'d mut [u8],
                     tx_buffer: &'d mut [u8],
                     config: Config,
@@ -273,9 +273,9 @@ macro_rules! define_uart_drivers {
                         ppi_ch1_peripheral,
                         ppi_ch2_peripheral,
                         ppi_group_peripheral,
-                        Irqs,
                         rx_pin,
                         tx_pin,
+                        Irqs,
                         uart_config,
                         rx_buffer,
                         tx_buffer

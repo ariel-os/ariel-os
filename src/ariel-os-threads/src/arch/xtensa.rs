@@ -1,12 +1,8 @@
 #![expect(unsafe_code)]
 
-use esp_hal::{
-    interrupt,
-    peripherals::{Interrupt, SYSTEM},
-    trapframe::TrapFrame,
-};
+use esp_hal::{interrupt, peripherals::Interrupt, trapframe::TrapFrame};
 
-use crate::{Arch, SCHEDULER, cleanup};
+use crate::{cleanup, Arch, SCHEDULER};
 
 pub struct Cpu;
 
@@ -16,10 +12,10 @@ impl Arch for Cpu {
 
     fn schedule() {
         #[cfg(not(feature = "multi-core"))]
-        unsafe {
-            (&*SYSTEM::PTR)
-                .cpu_intr_from_cpu_0()
-                .modify(|_, w| w.cpu_intr_from_cpu_0().set_bit());
+        {
+            let system = esp_hal::peripherals::SYSTEM::regs();
+            let reg = system.cpu_intr_from_cpu(0);
+            reg.write(|w| w.cpu_intr().set_bit());
         }
         #[cfg(feature = "multi-core")]
         crate::smp::schedule_on_core(crate::core_id())
@@ -60,7 +56,7 @@ impl Arch for Cpu {
     }
 
     fn start_threading() {
-        interrupt::disable(esp_hal::Cpu::ProCpu, Interrupt::FROM_CPU_INTR0);
+        interrupt::disable(esp_hal::system::Cpu::ProCpu, Interrupt::FROM_CPU_INTR0);
         Self::schedule();
         // Panics if `FROM_CPU_INTR0` is among `esp_hal::interrupt::RESERVED_INTERRUPTS`,
         // which isn't the case.
@@ -81,14 +77,13 @@ const fn default_trap_frame() -> TrapFrame {
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
-    unsafe {
-        // clear FROM_CPU_INTR0
-        (&*SYSTEM::PTR)
-            .cpu_intr_from_cpu_0()
-            .modify(|_, w| w.cpu_intr_from_cpu_0().clear_bit());
-
-        sched(trap_frame)
+    {
+        let system = esp_hal::peripherals::SYSTEM::regs();
+        let reg = system.cpu_intr_from_cpu(0);
+        reg.write(|w| w.cpu_intr().clear_bit());
     }
+
+    unsafe { sched(trap_frame) }
 }
 
 #[cfg(feature = "multi-core")]
@@ -98,10 +93,10 @@ extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR1(trap_frame: &mut TrapFrame) {
     unsafe {
-        // clear FROM_CPU_INTR0
-        (&*SYSTEM::PTR)
-            .cpu_intr_from_cpu_1()
-            .modify(|_, w| w.cpu_intr_from_cpu_1().clear_bit());
+        // clear FROM_CPU_INTR1
+        esp_hal::peripherals::SYSTEM::regs()
+            .cpu_intr_from_cpu(1)
+            .modify(|_, w| w.cpu_intr().clear_bit());
 
         sched(trap_frame)
     }

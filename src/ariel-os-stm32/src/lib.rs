@@ -8,7 +8,7 @@ pub mod gpio;
 
 #[doc(hidden)]
 pub mod peripheral {
-    pub use embassy_stm32::Peripheral;
+    pub use embassy_stm32::Peri;
 }
 
 #[cfg(feature = "external-interrupts")]
@@ -42,7 +42,7 @@ pub mod eth;
 use embassy_stm32::Config;
 
 #[doc(hidden)]
-pub use embassy_stm32::{OptionalPeripherals, Peripherals, interrupt};
+pub use embassy_stm32::{interrupt, OptionalPeripherals, Peri, PeripheralType, Peripherals};
 
 pub use embassy_stm32::peripherals;
 
@@ -66,6 +66,21 @@ static SHARED_DATA: MaybeUninit<SharedData> = MaybeUninit::uninit();
 #[cfg(feature = "executor-interrupt")]
 #[doc(hidden)]
 pub static EXECUTOR: Executor = Executor::new();
+
+// TODO(bump):
+// - use this where needed
+// - replicate for rp, nrf
+#[doc(hidden)]
+pub trait IntoPeripheral<'a, T: PeripheralType> {
+    fn into_hal_peripheral(self) -> Peri<'a, T>;
+}
+
+#[doc(hidden)]
+impl<'a, T: PeripheralType> IntoPeripheral<'a, T> for Peri<'a, T> {
+    fn into_hal_peripheral(self) -> Peri<'a, T> {
+        self
+    }
+}
 
 #[doc(hidden)]
 #[must_use]
@@ -269,7 +284,7 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.hsi48 = Some(Hsi48Config {
             sync_from_usb: true,
         }); // needed for USB
-        // No HSE fitted on the stm32u083c-dk board
+            // No HSE fitted on the stm32u083c-dk board
         rcc.hsi = true;
         rcc.sys = Sysclk::PLL1_R;
         rcc.pll = Some(Pll {

@@ -5,12 +5,7 @@
 )]
 
 use ariel_os_embassy_common::gpio::input::InterruptError;
-use embassy_stm32::{
-    OptionalPeripherals, Peripheral,
-    exti::{AnyChannel, Channel as _},
-    gpio::Pin,
-    peripherals,
-};
+use embassy_stm32::{OptionalPeripherals, Peri, exti::AnyChannel, gpio::Pin, peripherals};
 use portable_atomic::{AtomicBool, AtomicU16, Ordering};
 
 pub static EXTINT_REGISTRY: ExtIntRegistry = ExtIntRegistry::new();
@@ -61,14 +56,13 @@ impl ExtIntRegistry {
     /// # Panics
     ///
     /// Will panic if the interrupt channels have not been captured during initialization.
-    pub fn get_interrupt_channel_for_pin<P: Peripheral<P = T>, T: Pin>(
+    pub fn get_interrupt_channel_for_pin<T: Pin>(
         &self,
-        pin: P,
-    ) -> Result<AnyChannel, InterruptError> {
+        pin: &Peri<'_, T>,
+    ) -> Result<Peri<'_, AnyChannel>, InterruptError> {
         // Make sure that the interrupt channels have been captured during initialization.
         assert!(self.initialized.load(Ordering::Acquire));
 
-        let pin = pin.into_ref().map_into();
         let pin_number = pin.pin();
 
         // As interrupt channels are mutually exclusive between ports (ie., if channel i has
@@ -93,22 +87,22 @@ impl ExtIntRegistry {
         // making sure multiple instances are not used at the same time as the mandatory
         // `init()` method has collected all channel peripherals beforehand.
         let ch = match ch_number {
-            0 => unsafe { peripherals::EXTI0::steal() }.degrade(),
-            1 => unsafe { peripherals::EXTI1::steal() }.degrade(),
-            2 => unsafe { peripherals::EXTI2::steal() }.degrade(),
-            3 => unsafe { peripherals::EXTI3::steal() }.degrade(),
-            4 => unsafe { peripherals::EXTI4::steal() }.degrade(),
-            5 => unsafe { peripherals::EXTI5::steal() }.degrade(),
-            6 => unsafe { peripherals::EXTI6::steal() }.degrade(),
-            7 => unsafe { peripherals::EXTI7::steal() }.degrade(),
-            8 => unsafe { peripherals::EXTI8::steal() }.degrade(),
-            9 => unsafe { peripherals::EXTI9::steal() }.degrade(),
-            10 => unsafe { peripherals::EXTI10::steal() }.degrade(),
-            11 => unsafe { peripherals::EXTI11::steal() }.degrade(),
-            12 => unsafe { peripherals::EXTI12::steal() }.degrade(),
-            13 => unsafe { peripherals::EXTI13::steal() }.degrade(),
-            14 => unsafe { peripherals::EXTI14::steal() }.degrade(),
-            15 => unsafe { peripherals::EXTI15::steal() }.degrade(),
+            0 => unsafe { peripherals::EXTI0::steal() }.into(),
+            1 => unsafe { peripherals::EXTI1::steal() }.into(),
+            2 => unsafe { peripherals::EXTI2::steal() }.into(),
+            3 => unsafe { peripherals::EXTI3::steal() }.into(),
+            4 => unsafe { peripherals::EXTI4::steal() }.into(),
+            5 => unsafe { peripherals::EXTI5::steal() }.into(),
+            6 => unsafe { peripherals::EXTI6::steal() }.into(),
+            7 => unsafe { peripherals::EXTI7::steal() }.into(),
+            8 => unsafe { peripherals::EXTI8::steal() }.into(),
+            9 => unsafe { peripherals::EXTI9::steal() }.into(),
+            10 => unsafe { peripherals::EXTI10::steal() }.into(),
+            11 => unsafe { peripherals::EXTI11::steal() }.into(),
+            12 => unsafe { peripherals::EXTI12::steal() }.into(),
+            13 => unsafe { peripherals::EXTI13::steal() }.into(),
+            14 => unsafe { peripherals::EXTI14::steal() }.into(),
+            15 => unsafe { peripherals::EXTI15::steal() }.into(),
             _ => unreachable!(),
         };
 

@@ -47,9 +47,10 @@ contexts:
           SCRIPTS=${SCRIPTS}
           CONFIG_BOARD=${builder}
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
+          CARGO_BUILD_BUILD_DIR=${relroot}/${build-dir}/bin/cargo-build-${RUSTC_TARGET}
+          CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
-          CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
           CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       PROFILE: release
@@ -378,13 +379,20 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
-      - has_executor_single_thread_support
+      #- has_executor_single_thread_support
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
       RUSTFLAGS:
         # linkall first
-        - -Clink-arg=-Tlinkall.x
+        #- -Clink-arg=-Tlinkall.x
+        - -Clink-arg=-Tmemory.x
+        - -Clink-arg=-Talias.x
+        - -Clink-arg=-Tisr_stack.x
+        - -Clink-arg=-Tesp32s3.x
+        - -Clink-arg=-Thal-defaults.x
+        - -Clink-arg=-Tisr_stack_late.x
+
         # this might be needed for backtraces. it is needed for probe-rs.
         - -C force-frame-pointers
 
@@ -845,7 +853,7 @@ modules:
         RUSTFLAGS:
           - --cfg context=\"xtensa\"
           - --cfg nightly
-          - -Clink-arg=-Tisr_stack.x
+          #- -Clink-arg=-Tisr_stack.x
         CFLAGS:
           - -mlongcalls
         CARGO_ARGS:
@@ -1564,13 +1572,15 @@ modules:
   - name: wifi-esp
     selects:
       - alloc
+      - multi-core:
+        - core-affinity
     context:
       - esp
     provides_unique:
       - network_device
     env:
       global:
-        # esp-wifi needs a lot of ISR stack.
+        # esp-radio needs a lot of ISR stack.
         isr_stacksize_required:
           - "32768"
         # heap size is configured by the device
@@ -1648,6 +1658,15 @@ modules:
       global:
         FEATURES:
           - ariel-os/multi-core
+
+  - name: core-affinity
+    help: allow threads to be bound to a specific core
+    selects:
+      - multi-core
+    env:
+      global:
+        FEATURES:
+          - ariel-os/core-affinity
 
   - name: has_multi_core_support
     selects:

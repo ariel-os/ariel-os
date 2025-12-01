@@ -1,7 +1,7 @@
 //! Common BLE types to be used across different HALs.
 
 use static_cell::StaticCell;
-use trouble_host::HostResources;
+use trouble_host::{HostResources, prelude::DefaultPacketPool};
 
 /// Maximum Transmission Unit (MTU) for BLE connections. 27 should work for all BLE versions.
 ///
@@ -17,7 +17,7 @@ pub const MAX_CHANNELS: usize = 1;
 static HOST_RESOURCES: StaticCell<BleHostResources> = StaticCell::new();
 
 /// Alias for the BLE host resources, setting the generic parameters to the constants for convenience.
-pub type BleHostResources = HostResources<MAX_CONNS, MAX_CHANNELS, MTU>;
+pub type BleHostResources = HostResources<DefaultPacketPool, MAX_CONNS, MAX_CHANNELS, MTU>;
 
 /// Initializes the BLE host resources.
 ///
