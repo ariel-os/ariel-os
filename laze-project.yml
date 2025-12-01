@@ -34,8 +34,9 @@ contexts:
       RUSTFLAGS:
         - ${RUSTFLAGS_CONTEXTS}
       SCRIPTS: ${relroot}/scripts
-      CARGO_ARGS:
-        - --config ${relroot}/${root}/ariel-os-cargo.toml
+      # Temporarily disabled, as this could not be overwritten, see <https://github.com/ariel-os/ariel-os/issues/1587>
+#       CARGO_ARGS:
+#         - --config ${relroot}/${root}/ariel-os-cargo.toml
       # While laze allows "export:" in rules and tasks to export laze
       # variables to a rule's recipe shell environment, this would require
       # those to be listed for *all* rules and tasks where they are needed.
