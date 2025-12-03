@@ -25,7 +25,7 @@ embassy-net = { workspace = true, features = [
   "proto-ipv4",
   "proto-ipv6",
   "udp",
-] }
+], optional = true }
 embassy-sync = { workspace = true }
 embedded-nal-async = "0.8"
 embedded-nal-coap = { workspace = true }
@@ -69,13 +69,20 @@ coap-server-config-storage = ["dep:ariel-os-storage"]
 coap-server-config-unprotected = []
 coap-server-config-demokeys = []
 
+coap-transport-udp = ["dep:embassy-net"]
+
 # Plain feature forwards and selected by laze to fill up the default features on demand.
 liboscore-provide-abort = ["coapcore/liboscore-provide-abort"]
 liboscore-provide-assert = ["coapcore/liboscore-provide-assert"]
 
 ## Enables an arbitrary set of features in dependencies where dependencies fail
 ## if no features are configured at all.
-doc = ["coap-server", "embassy-net/medium-ip", "embassy-net/proto-ipv6"]
+doc = [
+  "coap-server",
+  "coap-transport-udp",
+  "embassy-net/medium-ip",
+  "embassy-net/proto-ipv6",
+]
 
 ## Enables defmt logging of coapcore
 defmt = ["coapcore/defmt"]

@@ -121,6 +121,7 @@ jobs:
             --features "
                 ble,
                 coap,
+                coap-transport-udp,
                 csprng,
                 defmt,
                 dns,

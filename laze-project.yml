@@ -1438,8 +1438,8 @@ modules:
       by coap-client and/or coap-server as per the needs of other modules and
       the application.
     selects:
+      - coap-transport
       - random
-      - network
       # A NoSec version (coap-server-config-unprotected) could be made to be
       # buildable without a C compiler, but right now it's easier to just make
       # the C compiler a prerequisite.
@@ -1456,6 +1456,17 @@ modules:
           - ariel-os/coap
         executor_stacksize_required:
           - "32768"
+
+  - name: coap-transport-udp
+    help: The transport of CoAP that uses the CoAP-over-UDP transport on the network stack.
+    # On the long run, this should not be unique, but currently it is.
+    provides_unique: [coap-transport]
+    selects:
+      - network
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-transport-udp
 
   - name: coap-server
     help: Support for applications to set up CoAP server handlers.
