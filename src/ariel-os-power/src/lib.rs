@@ -11,11 +11,7 @@ pub fn reboot() -> ! {
         if #[cfg(context = "cortex-m")] {
             cortex_m::peripheral::SCB::sys_reset()
         } else if #[cfg(context = "esp")] {
-            // TODO: when updating `esp_hal`, use `system::software_reset()` instead, remove the
-            // semicolon and the empty loop below as `system::software_reset()` never returns.
-            esp_hal::reset::software_reset();
-            #[expect(clippy::empty_loop, reason = "software_reset() should eventually never return")]
-            loop {}
+            esp_hal::system::software_reset()
         } else if #[cfg(context = "native")] {
             std::process::exit(0)
         } else if #[cfg(context = "ariel-os")] {

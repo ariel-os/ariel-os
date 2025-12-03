@@ -53,7 +53,7 @@ pub mod uart;
 pub mod usb;
 
 pub use executor::{Executor, Spawner};
-pub use peripheral::{OptionalPeripherals, Peripheral};
+pub use peripheral::OptionalPeripherals;
 
 #[doc(hidden)]
 #[must_use]

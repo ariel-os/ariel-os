@@ -31,7 +31,10 @@ subdirs:
   - threading-channel
   - threading-event
   - threading-multicore
+  - threading-recursive-lock
+  - threading-semaphore
   - threading-timers
+  - threading-waitqueue
   - udp-echo
   - usb-keyboard
   - usb-serial

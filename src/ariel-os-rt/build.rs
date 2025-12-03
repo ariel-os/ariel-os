@@ -19,6 +19,7 @@ fn main() {
             "esp32c3" => "INSERT AFTER .rwdata_dummy;",
             "cortex-m" => "INSERT BEFORE .data;",
             "riscv" => "INSERT BEFORE .trap;",
+            "xtensa" => "INSERT AFTER .bss;",
             _ => "",
         };
 
@@ -47,6 +48,7 @@ fn main() {
     }
 
     std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
+    std::fs::copy("isr_stack_late.x", out.join("isr_stack_late.x")).unwrap();
     std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
     std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
 

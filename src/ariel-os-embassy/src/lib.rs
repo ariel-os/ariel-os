@@ -4,6 +4,7 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![allow(unsafe_code)]
 
+pub use ariel_os_embassy_common::cell;
 pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
@@ -121,7 +122,6 @@ cfg_if::cfg_if! {
 pub use net::NetworkStack;
 
 pub mod asynch;
-pub mod cell;
 pub mod delegate;
 
 #[cfg(feature = "executor-thread")]
@@ -204,7 +204,8 @@ fn init() {
 #[embassy_executor::task]
 #[allow(clippy::too_many_lines)]
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
-    let spawner = asynch::Spawner::for_current_executor().await;
+    // SAFETY: safe unless intentionally exploited.
+    let spawner = unsafe { asynch::Spawner::for_current_executor().await };
     asynch::set_spawner(spawner.make_send());
 
     #[cfg(feature = "debug-uart")]
@@ -393,7 +394,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         spawner.spawn(net::net_task(runner)).unwrap();
 
         if crate::net::STACK
-            .init(SameExecutorCell::new(stack, spawner))
+            .init(embassy_sync::blocking_mutex::Mutex::new(
+                SameExecutorCell::new(stack, spawner),
+            ))
             .is_err()
         {
             unreachable!();

@@ -72,19 +72,20 @@ portable-atomic = { version = "1.11.0", default-features = false, features = [
 ] }
 semihosting = { version = "0.1.16", default-features = false }
 
-embassy-embedded-hal = { version = "0.3.0", default-features = false }
-embassy-executor = { version = "0.7.0", default-features = false }
-embassy-futures = { version = "0.1.1", default-features = false }
-embassy-hal-internal = { version = "0.2.0", default-features = false }
-embassy-net = { version = "0.6", default-features = false }
-embassy-net-driver-channel = { version = "0.3.0", default-features = false }
-embassy-nrf = { version = "0.3.1", default-features = false }
-embassy-rp = { version = "0.4", default-features = false }
-embassy-stm32 = { version = "0.2", default-features = false }
-embassy-sync = { version = "0.6.1", default-features = false }
-embassy-time = { version = "0.4.0", default-features = false }
-embassy-time-queue-utils = { version = "0.1.0", default-features = false }
-embassy-usb = { version = "0.4.0", default-features = false }
+embassy-embedded-hal = { version = "0.5.0", default-features = false }
+embassy-executor = { version = "0.9.1", default-features = false }
+embassy-futures = { version = "0.1.2", default-features = false }
+embassy-hal-internal = { version = "0.3.0", default-features = false }
+embassy-net = { version = "0.7.1", default-features = false }
+embassy-net-driver-channel = { version = "0.3.2", default-features = false }
+embassy-nrf = { version = "0.8.0", default-features = false }
+embassy-rp = { version = "0.8", default-features = false }
+embassy-stm32 = { version = "0.4", default-features = false }
+embassy-sync = { version = "0.7.2", default-features = false }
+embassy-time = { version = "0.5.0", default-features = false }
+embassy-time-driver = { version = "0.2.1", default-features = false }
+embassy-time-queue-utils = { version = "0.3.0", default-features = false }
+embassy-usb = { version = "0.5.1", default-features = false }
 
 embedded-hal = { version = "1.0.0", default-features = false }
 embedded-hal-async = { version = "1.0.0", default-features = false }
@@ -97,17 +98,20 @@ embedded-test = { version = "0.6.1", default-features = false, features = [
   "ariel-os",
 ] }
 
-esp-alloc = { version = "0.6.0", default-features = false }
-esp-hal = { version = "0.23.1", default-features = false, features = [
+esp-alloc = { version = "0.9.0", default-features = false }
+esp-bootloader-esp-idf = { version = "0.4.0", features = ["esp-rom-sys"] }
+esp-hal = { version = "1.0.0", default-features = false, features = [
   "unstable",
 ] }
-esp-hal-embassy = { version = "0.6.0", default-features = false }
-esp-println = { version = "0.13.0", default-features = false }
-esp-wifi = { version = "0.12.0", default-features = false }
-esp-wifi-sys = { version = "0.7.1", default-features = false }
+esp-println = { version = "0.16.0", default-features = false }
+esp-radio = { version = "0.17.0", default-features = false }
+esp-radio-rtos-driver = { version = "0.2.0", default-features = false }
+esp-wifi-sys = { version = "0.8.1", default-features = false }
+esp-rom-sys = { version = "0.1.2", default-features = false }
+esp-sync = { version = "0.1.0", default-features = false }
 
-esp-storage = { version = "0.7.0" }
-xtensa-lx-rt = { version = "0.18.0", default-features = false }
+esp-storage = { version = "0.8.0" }
+xtensa-lx-rt = { version = "0.21.0", default-features = false }
 
 linkme = { version = "0.3.32" }
 
@@ -158,11 +162,14 @@ rtt-target = { version = "0.6.0" }
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.1.1", default-features = false }
-trouble-host = "0.1"
-bt-hci = { version = "0.2.0" }
-nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691ec6850b05a0382cef395846b67e02" }
+trouble-host = { version = "0.5.0" }
+bt-hci = { version = "0.6.0" }
 
-nrf-modem = { version = "0.7.3" }
+# nrf-sdc 0.4.0 has not been released, yet. need it for bt-hci 0.6 bump
+#nrf-sdc = { version = "0.4.0" }
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
+
+nrf-modem = { version = "0.9.2" }
 tinyrlibc = "0.5.0"
 
 [workspace.lints.rust]

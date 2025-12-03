@@ -16,5 +16,23 @@ async fn main() {
         info!("Device's first EUI-48 address: {}", eui48);
     }
 
+    #[cfg(feature = "nrf-modem")]
+    nrf_modem_info().await;
+
     exit(ExitCode::SUCCESS);
+}
+
+#[cfg(feature = "nrf-modem")]
+async fn nrf_modem_info() {
+    info!("We have an nRF modem");
+
+    let manufacturer: &str = &nrf_modem::send_at::<64>("AT+CGMI").await.unwrap();
+    let model: &str = &nrf_modem::send_at::<64>("AT+CGMM").await.unwrap();
+    let revision: &str = &nrf_modem::send_at::<64>("AT+CGMR").await.unwrap();
+    let serial: &str = &nrf_modem::send_at::<64>("AT+CGSN").await.unwrap();
+
+    info!(
+        "Modem details: {} model {} revision {}, S/N {}",
+        manufacturer, model, revision, serial
+    );
 }

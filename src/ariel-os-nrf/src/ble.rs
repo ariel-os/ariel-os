@@ -1,19 +1,28 @@
 use embassy_executor::Spawner;
 use embassy_nrf::peripherals;
-use embassy_sync::once_lock::OnceLock;
+use embassy_sync::{
+    blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock,
+};
 use nrf_sdc::{
     self as sdc, SoftdeviceController,
     mpsl::{self, MultiprotocolServiceLayer},
 };
+
 use static_cell::StaticCell;
-use trouble_host::Stack;
+use trouble_host::{Stack, prelude::DefaultPacketPool};
 
 use ariel_os_debug::log::debug;
-use ariel_os_embassy_common::ble::MTU;
+use ariel_os_embassy_common::{ble::MTU, cell::SameExecutorCell};
 
-use crate::irqs::Irqs;
+use crate::{irqs::Irqs, peripheral::Peri};
 
-static STACK: OnceLock<Stack<'static, SoftdeviceController<'static>>> = OnceLock::new();
+pub type BleStack = Stack<'static, SoftdeviceController<'static>, DefaultPacketPool>;
+
+static STACK: StaticCell<SameExecutorCell<BleStack>> = StaticCell::new();
+// The stack can effectively only be taken by a single application; once taken, the Option is None.
+static STACKREF: OnceLock<
+    Mutex<CriticalSectionRawMutex, Option<&'static mut SameExecutorCell<BleStack>>>,
+> = OnceLock::new();
 static MPSL: StaticCell<MultiprotocolServiceLayer<'_>> = StaticCell::new();
 static SDC_MEM: StaticCell<sdc::Mem<SDC_MEM_SIZE>> = StaticCell::new();
 static RNG: StaticCell<ariel_os_random::CryptoRngSend> = StaticCell::new();
@@ -58,31 +67,47 @@ const L2CAP_TXQ: u8 = 3;
 // Size of the RX buffer (number of packets), minimum is 1, SoftDevice default is 2 (SDC_DEFAULT_RX_PACKET_COUNT).
 const L2CAP_RXQ: u8 = 2;
 
-pub async fn ble_stack() -> &'static Stack<'static, SoftdeviceController<'static>> {
-    STACK.get().await
+// Takes the handle of the global BLE stack.
+//
+// Must only be called on the system executor that runs the stack.
+//
+// # Panics
+//
+// Panics when called from the wrong executor.
+pub async fn ble_stack() -> &'static mut BleStack {
+    STACKREF
+        .get()
+        .await
+        .try_lock()
+        .expect("Two tasks racing for lock, one would fail the main-executor check")
+        .take()
+        .expect("Stack was already taken")
+        .get_mut_async()
+        .await
+        .expect("Stack needs to be taken from main executor")
 }
 
 #[cfg(context = "nrf52")]
 pub struct Peripherals {
-    pub ppi_ch17: peripherals::PPI_CH17,
-    pub ppi_ch18: peripherals::PPI_CH18,
-    pub ppi_ch20: peripherals::PPI_CH20,
-    pub ppi_ch21: peripherals::PPI_CH21,
-    pub ppi_ch22: peripherals::PPI_CH22,
-    pub ppi_ch23: peripherals::PPI_CH23,
-    pub ppi_ch24: peripherals::PPI_CH24,
-    pub ppi_ch25: peripherals::PPI_CH25,
-    pub ppi_ch26: peripherals::PPI_CH26,
-    pub ppi_ch27: peripherals::PPI_CH27,
-    pub ppi_ch28: peripherals::PPI_CH28,
-    pub ppi_ch29: peripherals::PPI_CH29,
+    pub ppi_ch17: Peri<'static, peripherals::PPI_CH17>,
+    pub ppi_ch18: Peri<'static, peripherals::PPI_CH18>,
+    pub ppi_ch20: Peri<'static, peripherals::PPI_CH20>,
+    pub ppi_ch21: Peri<'static, peripherals::PPI_CH21>,
+    pub ppi_ch22: Peri<'static, peripherals::PPI_CH22>,
+    pub ppi_ch23: Peri<'static, peripherals::PPI_CH23>,
+    pub ppi_ch24: Peri<'static, peripherals::PPI_CH24>,
+    pub ppi_ch25: Peri<'static, peripherals::PPI_CH25>,
+    pub ppi_ch26: Peri<'static, peripherals::PPI_CH26>,
+    pub ppi_ch27: Peri<'static, peripherals::PPI_CH27>,
+    pub ppi_ch28: Peri<'static, peripherals::PPI_CH28>,
+    pub ppi_ch29: Peri<'static, peripherals::PPI_CH29>,
 
-    pub rtc0: peripherals::RTC0,
-    pub timer0: peripherals::TIMER0,
-    pub temp: peripherals::TEMP,
-    pub ppi_ch19: peripherals::PPI_CH19,
-    pub ppi_ch30: peripherals::PPI_CH30,
-    pub ppi_ch31: peripherals::PPI_CH31,
+    pub rtc0: Peri<'static, peripherals::RTC0>,
+    pub timer0: Peri<'static, peripherals::TIMER0>,
+    pub temp: Peri<'static, peripherals::TEMP>,
+    pub ppi_ch19: Peri<'static, peripherals::PPI_CH19>,
+    pub ppi_ch30: Peri<'static, peripherals::PPI_CH30>,
+    pub ppi_ch31: Peri<'static, peripherals::PPI_CH31>,
 }
 
 #[cfg(context = "nrf52")]
@@ -119,23 +144,23 @@ impl Peripherals {
 
 #[cfg(context = "nrf53")]
 pub struct Peripherals {
-    pub ppi_ch3: peripherals::PPI_CH3,
-    pub ppi_ch4: peripherals::PPI_CH4,
-    pub ppi_ch5: peripherals::PPI_CH5,
-    pub ppi_ch6: peripherals::PPI_CH6,
-    pub ppi_ch7: peripherals::PPI_CH7,
-    pub ppi_ch8: peripherals::PPI_CH8,
-    pub ppi_ch9: peripherals::PPI_CH9,
-    pub ppi_ch10: peripherals::PPI_CH10,
-    pub ppi_ch11: peripherals::PPI_CH11,
-    pub ppi_ch12: peripherals::PPI_CH12,
+    pub ppi_ch3: Peri<'static, peripherals::PPI_CH3>,
+    pub ppi_ch4: Peri<'static, peripherals::PPI_CH4>,
+    pub ppi_ch5: Peri<'static, peripherals::PPI_CH5>,
+    pub ppi_ch6: Peri<'static, peripherals::PPI_CH6>,
+    pub ppi_ch7: Peri<'static, peripherals::PPI_CH7>,
+    pub ppi_ch8: Peri<'static, peripherals::PPI_CH8>,
+    pub ppi_ch9: Peri<'static, peripherals::PPI_CH9>,
+    pub ppi_ch10: Peri<'static, peripherals::PPI_CH10>,
+    pub ppi_ch11: Peri<'static, peripherals::PPI_CH11>,
+    pub ppi_ch12: Peri<'static, peripherals::PPI_CH12>,
 
-    pub rtc0: peripherals::RTC0,
-    pub timer0: peripherals::TIMER0,
-    pub timer1: peripherals::TIMER1,
-    pub ppi_ch0: peripherals::PPI_CH0,
-    pub ppi_ch1: peripherals::PPI_CH1,
-    pub ppi_ch2: peripherals::PPI_CH2,
+    pub rtc0: Peri<'static, peripherals::RTC0>,
+    pub timer0: Peri<'static, peripherals::TIMER0>,
+    pub timer1: Peri<'static, peripherals::TIMER1>,
+    pub ppi_ch0: Peri<'static, peripherals::PPI_CH0>,
+    pub ppi_ch1: Peri<'static, peripherals::PPI_CH1>,
+    pub ppi_ch2: Peri<'static, peripherals::PPI_CH2>,
 }
 
 #[cfg(context = "nrf53")]
@@ -218,7 +243,9 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
     let resources = ariel_os_embassy_common::ble::get_ble_host_resources();
 
     let stack = trouble_host::new(sdc, resources).set_random_address(config.address);
-    let _ = STACK.init(stack);
+    let stackref = STACK.init(SameExecutorCell::new(stack, spawner));
+    // Error case is unrechable: just init'ed another once item.
+    let _ = STACKREF.init(Some(stackref).into());
 
     debug!("nRF BLE driver initialized");
 }
@@ -263,7 +290,7 @@ fn build_sdc<'d, const N: usize>(
     let builder = builder.central_count(1)?;
 
     #[allow(clippy::cast_possible_truncation)]
-    let builder = builder.buffer_cfg(MTU as u8, MTU as u8, L2CAP_TXQ, L2CAP_RXQ)?;
+    let builder = builder.buffer_cfg(MTU as u16, MTU as u16, L2CAP_TXQ, L2CAP_RXQ)?;
 
     builder.build(p, rng, mpsl, mem)
 }

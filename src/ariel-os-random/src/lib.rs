@@ -29,12 +29,15 @@ mod getrandom;
 
 use core::{cell::RefCell, marker::PhantomData};
 
-use embassy_sync::once_lock::OnceLock;
+use embassy_sync::{
+    blocking_mutex::{Mutex, raw::CriticalSectionRawMutex},
+    once_lock::OnceLock,
+};
 use rand_core::{RngCore, SeedableRng as _};
 
 /// A global RNG.
 // The Mutex<RefCell> can probably be simplified
-static RNG: OnceLock<RefCell<SelectedRng>> = OnceLock::new();
+static RNG: OnceLock<Mutex<CriticalSectionRawMutex, RefCell<SelectedRng>>> = OnceLock::new();
 
 /// Type of the global RNG when needing the ability to produce cryptographically secure random
 /// numbers.
@@ -61,7 +64,7 @@ fn with_global<R>(action: impl FnOnce(&mut SelectedRng) -> R) -> R {
     let rng = RNG
         .try_get()
         .expect("Initialization should have populated RNG");
-    action(&mut rng.borrow_mut())
+    rng.lock(|rng| action(&mut rng.borrow_mut()))
 }
 
 /// The OS provided fast random number generator.
@@ -266,7 +269,7 @@ impl<R: rand_core_06::RngCore> RngCore for RngAdapter<'_, R> {
 /// - Panics if this function is called multiple times.
 #[doc(hidden)]
 pub fn construct_rng(hwrng: &mut impl RngCore) {
-    RNG.init(RefCell::new(SelectedRng::from_rng(hwrng)))
+    RNG.init(Mutex::new(RefCell::new(SelectedRng::from_rng(hwrng))))
         .unwrap();
 }
 

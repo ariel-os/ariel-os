@@ -14,6 +14,7 @@ ariel-os-buildinfo = { workspace = true }
 ariel-os-utils = { workspace = true }
 defmt = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
+embassy-executor = { workspace = true }
 embassy-time = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }

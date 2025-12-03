@@ -1,4 +1,4 @@
-use embassy_stm32::{bind_interrupts, peripherals, usb, usb::Driver};
+use embassy_stm32::{Peri, bind_interrupts, peripherals, usb, usb::Driver};
 
 bind_interrupts!(struct Irqs {
     #[cfg(capability = "hw/stm32-usb-synopsis")]
@@ -27,9 +27,9 @@ type UsbPeripheral = peripherals::USB_OTG_FS;
 pub type UsbDriver = Driver<'static, UsbPeripheral>;
 
 pub struct Peripherals {
-    usb: UsbPeripheral,
-    dp: peripherals::PA12,
-    dm: peripherals::PA11,
+    usb: Peri<'static, UsbPeripheral>,
+    dp: Peri<'static, peripherals::PA12>,
+    dm: Peri<'static, peripherals::PA11>,
 }
 
 impl Peripherals {

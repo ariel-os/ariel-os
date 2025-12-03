@@ -69,6 +69,7 @@ impl embedded_io_async::Error for Error {
             // error.
             // FIXME we're not there in this impl yet.
             Self::RecvError(udp::RecvError::Truncated) => embedded_io_async::ErrorKind::Other,
+            Self::SendError(udp::SendError::PacketTooLarge) => todo!(),
         }
     }
 }
