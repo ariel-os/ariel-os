@@ -8,7 +8,7 @@ license.workspace = true
 
 [dependencies]
 ariel-os-debug = { workspace = true }
-ariel-os-embassy = { workspace = true, features = ["net"] }
+ariel-os-embassy = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-random = { workspace = true, features = ["csprng"] }
 ariel-os-storage = { workspace = true, optional = true }
@@ -69,7 +69,7 @@ coap-server-config-storage = ["dep:ariel-os-storage"]
 coap-server-config-unprotected = []
 coap-server-config-demokeys = []
 
-coap-transport-udp = ["dep:embassy-net"]
+coap-transport-udp = ["dep:embassy-net", "ariel-os-embassy/net"]
 
 # Plain feature forwards and selected by laze to fill up the default features on demand.
 liboscore-provide-abort = ["coapcore/liboscore-provide-abort"]
