@@ -173,6 +173,8 @@ dependencies = [
  "embedded-alloc",
  "embedded-test",
  "esp-alloc",
+ "esp-hal",
+ "esp-metadata-generated",
 ]
 
 [[package]]

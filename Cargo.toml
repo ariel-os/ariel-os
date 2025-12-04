@@ -103,6 +103,7 @@ esp-bootloader-esp-idf = { version = "0.4.0", features = ["esp-rom-sys"] }
 esp-hal = { version = "1.0.0", default-features = false, features = [
   "unstable",
 ] }
+esp-metadata-generated = { version = "0.3.0", default-features = false }
 esp-println = { version = "0.16.0", default-features = false }
 esp-radio = { version = "0.17.0", default-features = false }
 esp-radio-rtos-driver = { version = "0.2.0", default-features = false }
