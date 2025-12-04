@@ -57,6 +57,7 @@
 //! Sensor drivers must implement the [`Sensor`] trait.
 //!
 #![no_std]
+#![feature(doc_cfg)]
 #![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 
