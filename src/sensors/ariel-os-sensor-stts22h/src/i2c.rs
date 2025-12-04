@@ -1,7 +1,6 @@
 //! Driver for the sensor used over I2C.
 
 use ariel_os_debug_log::debug;
-use ariel_os_hal::i2c::controller::I2cDevice;
 use ariel_os_sensors::{
     Category, Label, MeasurementUnit, Sensor,
     sensor::{
@@ -49,16 +48,16 @@ ariel_os_hal::define_peripherals!(
 );
 
 /// Driver to use an STTS22H over I2C.
-pub struct Stts22h {
+pub struct Stts22h<I2C> {
     state: AtomicState,
     label: Option<&'static str>,
-    i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2cDevice>>,
+    i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2C>>,
     address: AtomicU8,
     signaling: Signal<CriticalSectionRawMutex, ()>,
     reading_signal: ReadingSignal<Result<Samples, ReadingError>>,
 }
 
-impl Stts22h {
+impl<I2C: I2c + Send> Stts22h<I2C> {
     /// Creates an uninitialized driver.
     #[expect(clippy::new_without_default)]
     #[must_use]
@@ -77,7 +76,7 @@ impl Stts22h {
     pub async fn init(
         &'static self,
         _peripherals: Peripherals,
-        mut i2c_device: I2cDevice,
+        mut i2c_device: I2C,
         config: Config,
     ) {
         if !self.i2c.is_set() {
@@ -94,7 +93,7 @@ impl Stts22h {
         }
     }
 
-    async fn reset(i2c_device: &mut I2cDevice, address: I2cAddress) -> Result<(), ()> {
+    async fn reset(i2c_device: &mut I2C, address: I2cAddress) -> Result<(), ()> {
         // Set IF_ADD_INC first to reset the thresholds registers in one transaction.
         i2c_device
             .write(
@@ -183,7 +182,7 @@ impl Stts22h {
     }
 }
 
-impl Sensor for Stts22h {
+impl<I2C: Send> Sensor for Stts22h<I2C> {
     fn trigger_measurement(&self) -> Result<(), TriggerMeasurementError> {
         if self.state.get() != State::Enabled {
             return Err(TriggerMeasurementError::NonEnabled);
