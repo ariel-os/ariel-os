@@ -22,6 +22,7 @@ ariel-os-debug-log = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-str = { workspace = true }
 critical-section = { workspace = true, optional = true }
+defmt-rtt = { workspace = true, optional = true }
 embassy-sync = { workspace = true }
 featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
@@ -68,6 +69,7 @@ log = ["dep:critical-section", "dep:log", "ariel-os-debug-log/log"]
 semihosting = ["dep:semihosting"]
 
 # Debug output backends
+defmt-rtt = ["dep:defmt-rtt"]
 esp-println = ["dep:esp-println"]
 rtt-target = ["dep:rtt-target"]
 std = []
