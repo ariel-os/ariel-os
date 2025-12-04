@@ -85,6 +85,15 @@ pub fn print_panic(info: &core::panic::PanicInfo<'_>) {
     println!("panicked at {}:\n{}", location, message);
 }
 
+#[cfg(all(feature = "debug-console", feature = "defmt-rtt"))]
+mod backend {
+    pub use ariel_os_debug_log::println;
+    use defmt_rtt as _;
+
+    #[doc(hidden)]
+    pub fn init() {}
+}
+
 #[cfg(all(feature = "debug-console", feature = "rtt-target"))]
 mod backend {
     #[cfg(not(feature = "defmt"))]
