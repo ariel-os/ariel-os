@@ -138,6 +138,7 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
     // FIXME: Should we allow users to override that? After all, this is just convenience and may
     // be limiting in special applications.
     let handler = handler.with_wkc();
+    #[cfg(not(feature = "coap-server-config-unprotected"))]
     let handler = coapcore::OscoreEdhocHandler::new(
         handler,
         security_config,

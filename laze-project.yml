@@ -1439,7 +1439,6 @@ modules:
       the application.
     selects:
       - coap-transport
-      - random
       # A NoSec version (coap-server-config-unprotected) could be made to be
       # buildable without a C compiler, but right now it's easier to just make
       # the C compiler a prerequisite.
@@ -1463,6 +1462,7 @@ modules:
     provides_unique: [coap-transport]
     selects:
       - network
+      - random
     env:
       global:
         FEATURES:
@@ -1492,6 +1492,7 @@ modules:
     selects:
       - coap
       - sw/storage
+      - random
     provides_unique:
       - coap-server-config
     env:
@@ -1526,6 +1527,7 @@ modules:
       This configuration may change over time, in lockstep with the examples' setup.
     selects:
       - coap
+      - random
     provides_unique: [coap-server-config]
     env:
       global:
