@@ -1,7 +1,7 @@
 //! Provides power management functionality.
 
 #![deny(missing_docs)]
-#![cfg_attr(not(context = "native"), no_std)]
+#![cfg_attr(not(any(context = "native", context = "m-chip")), no_std)]
 
 /// Reboots the MCU.
 ///
@@ -16,7 +16,7 @@ pub fn reboot() -> ! {
             esp_hal::reset::software_reset();
             #[expect(clippy::empty_loop, reason = "software_reset() should eventually never return")]
             loop {}
-        } else if #[cfg(context = "native")] {
+        } else if #[cfg(any(context = "native", context = "m-chip"))] {
             std::process::exit(0)
         } else if #[cfg(context = "ariel-os")] {
             compile_error!("reboot is not yet implemented for this platform")

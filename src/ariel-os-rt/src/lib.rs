@@ -1,4 +1,4 @@
-#![cfg_attr(not(any(test, context = "native")), no_std)]
+#![cfg_attr(not(any(test, context = "native", context = "m-chip")), no_std)]
 #![cfg_attr(test, no_main)]
 //
 #![allow(incomplete_features)]
@@ -30,7 +30,7 @@ cfg_if::cfg_if! {
         mod riscv;
         use riscv as arch;
     }
-    else if #[cfg(context = "native")] {
+    else if #[cfg(any(context = "native", context = "m-chip"))] {
         mod native;
         use native as arch;
     }
@@ -129,7 +129,7 @@ mod isr_stack {
 #[cfg(all(
     feature = "_panic-handler",
     not(feature = "_test"),
-    not(context = "native")
+    not(any(context = "native", context = "m-chip"))
 ))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {

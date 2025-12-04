@@ -511,6 +511,29 @@ contexts:
       CARGO_TARGET_PREFIX: CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU
       CARGO_RUNNER: '"sh -c"'
 
+  - name: m-chip
+    # This intermediary context is necessary so we can generate the native "board" on macOS
+    # using sbd.
+    parent: ariel-os
+    selects:
+      - infini-core
+      - ?debug-console
+    provides:
+      - has_device_identity
+      - has_hwrng
+      - sw/benchmark
+    disables:
+      - semihosting
+      - defmt
+      - probe-rs
+    env:
+      RUSTC_TARGET: aarch64-apple-darwin
+      RUSTFLAGS:
+        # macOS linker flags - keep linkme sections with dead code stripping
+        - -Clink-arg=-Wl,-dead_strip_dylibs
+      CARGO_TARGET_PREFIX: CARGO_TARGET_AARCH64_APPLE_DARWIN
+      CARGO_RUNNER: '"sh -c"'
+
   - name: stm32
     help: STM32 support (based on embassy-stm32)
     parent: ariel-os
@@ -1659,6 +1682,7 @@ modules:
       - critical-section
     context:
       - native
+      - m-chip
     env:
       global:
         FEATURES:

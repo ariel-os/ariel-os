@@ -55,6 +55,10 @@ panic-semihosting = { version = "0.6.0", features = ["exit"] }
 atomic-wait = { version = "1.1.0" }
 critical-section = { workspace = true, features = ["restore-state-bool"] }
 
+[target.'cfg(context = "m-chip")'.dependencies]
+atomic-wait = { version = "1.1.0" }
+critical-section = { workspace = true, features = ["restore-state-bool"] }
+
 [target.'cfg(context = "rp")'.dependencies]
 static_cell = { workspace = true, optional = true }
 rp-pac = { workspace = true, optional = true }
