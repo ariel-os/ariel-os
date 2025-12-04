@@ -38,6 +38,7 @@ embassy-time = { git = "https://github.com/ariel-os/embassy", rev = "32919cd38e4
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 esp-bootloader-esp-idf = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 esp-hal = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
+esp-metadata-generated = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 esp-radio = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
 esp-radio-rtos-driver = { git = "https://github.com/ariel-os/esp-hal", rev = "8946029ffa852b2e7c41cca87d62efbeb374dee4" }
