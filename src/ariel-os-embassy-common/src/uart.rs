@@ -117,6 +117,21 @@ macro_rules! impl_async_uart_for_driver_enum {
         }
 
 
+        impl embedded_io_async::BufRead for $driver_enum<'_> {
+            async fn fill_buf(&mut self) -> Result<&[u8], Self::Error> {
+                match self {
+                    $( Self::$peripheral(uart) => embedded_io_async::BufRead::fill_buf(&mut uart.uart).await, )*
+                }
+            }
+
+            fn consume(&mut self, amt: usize) {
+                match self {
+                    $( Self::$peripheral(uart) => embedded_io_async::BufRead::consume(&mut uart.uart, amt), )*
+                }
+            }
+        }
+
+
         impl embedded_io_async::ReadReady for $driver_enum<'_> {
             fn read_ready(&mut self) -> Result<bool, Self::Error> {
                 match self {
