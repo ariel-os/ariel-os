@@ -21,7 +21,7 @@ use wait_queue::ArielWaitQueue;
 pub type NetworkDevice = WifiDevice<'static>;
 
 pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {
-    let config = Config::default().with_power_save_mode(PowerSaveMode::None);
+    let config = Config::default();
     let wifi = peripherals.WIFI.take().unwrap();
 
     let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
