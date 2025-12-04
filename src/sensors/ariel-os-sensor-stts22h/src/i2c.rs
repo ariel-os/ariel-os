@@ -254,3 +254,86 @@ impl<I2C: Send> Sensor for Stts22h<I2C> {
         0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use embedded_hal_async::i2c::{ErrorKind, Operation};
+
+    use super::*;
+
+    #[derive(Debug)]
+    enum Error {}
+
+    impl embedded_hal_async::i2c::Error for Error {
+        fn kind(&self) -> ErrorKind {
+            ErrorKind::Other
+        }
+    }
+
+    struct I2cDeviceMock {}
+
+    impl embedded_hal_async::i2c::ErrorType for I2cDeviceMock {
+        type Error = Error;
+    }
+
+    impl I2c for I2cDeviceMock {
+        async fn transaction(
+            &mut self,
+            _address: embedded_hal_async::i2c::SevenBitAddress,
+            operations: &mut [Operation<'_>],
+        ) -> Result<(), Self::Error> {
+            match operations {
+                [Operation::Write(wbuf), Operation::Read(rbuf)] => match wbuf[0] {
+                    addr if addr == Register::StatusRegAddr as u8 => {}
+                    addr if addr == Register::TempLOutRegAddr as u8 => {
+                        rbuf.copy_from_slice(&2500i32.to_le_bytes()[..rbuf.len()]);
+                    }
+                    addr => {
+                        panic!("Unknown register: {addr:#x}")
+                    }
+                },
+                _ => {}
+            }
+
+            Ok(())
+        }
+    }
+
+    #[test]
+    fn fetch_temperature_reading() {
+        use ariel_os_sensors::{Reading, sensor::SampleMetadata};
+
+        let i2c_device = I2cDeviceMock {};
+
+        static STTS22H: Stts22h<I2cDeviceMock> = Stts22h::<I2cDeviceMock>::new(Some("label"));
+
+        let config = Config::default();
+
+        let peripherals = Peripherals {};
+
+        embassy_futures::block_on(async {
+            STTS22H.init(peripherals, i2c_device, config).await;
+        });
+
+        embassy_futures::block_on(async {
+            embassy_futures::select::select(STTS22H.run(), async {
+                STTS22H.trigger_measurement().unwrap();
+
+                let reading = STTS22H.wait_for_reading().await.unwrap();
+
+                assert_eq!(reading.sample().0.label(), Label::Temperature);
+
+                assert_eq!(reading.sample().1.value(), Ok(2500));
+                assert_eq!(
+                    reading.sample().1.metadata(),
+                    SampleMetadata::SymmetricalError {
+                        deviation: 50,
+                        bias: 0,
+                        scaling: -2,
+                    }
+                );
+            })
+            .await;
+        });
+    }
+}
