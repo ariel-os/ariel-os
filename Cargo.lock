@@ -529,8 +529,7 @@ dependencies = [
 name = "ariel-os-sensor-stts22h"
 version = "0.1.0"
 dependencies = [
- "ariel-os-debug",
- "ariel-os-embassy",
+ "ariel-os-debug-log",
  "ariel-os-hal",
  "ariel-os-sensors",
  "ariel-os-sensors-utils",

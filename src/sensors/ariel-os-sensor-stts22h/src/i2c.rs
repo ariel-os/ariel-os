@@ -1,7 +1,6 @@
 //! Driver for the sensor used over I2C.
 
-use ariel_os_debug::log::debug;
-use ariel_os_embassy::api::time::Timer;
+use ariel_os_debug_log::debug;
 use ariel_os_hal::i2c::controller::I2cDevice;
 use ariel_os_sensors::{
     Category, Label, MeasurementUnit, Sensor,
@@ -15,6 +14,7 @@ use ariel_os_sensors_utils::AtomicState;
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock, signal::Signal,
 };
+use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 use portable_atomic::{AtomicU8, Ordering};
 
@@ -43,7 +43,7 @@ pub struct Config {
     pub address: I2cAddress,
 }
 
-ariel_os_embassy::hal::define_peripherals!(
+ariel_os_hal::define_peripherals!(
     /// Peripherals required by the sensor driver.
     Peripherals {}
 );

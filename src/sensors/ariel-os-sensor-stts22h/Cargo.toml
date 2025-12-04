@@ -9,8 +9,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-ariel-os-debug = { workspace = true }
-ariel-os-embassy = { workspace = true }
+ariel-os-debug-log = { workspace = true }
 ariel-os-hal = { workspace = true, features = ["i2c"] }
 ariel-os-sensors = { workspace = true }
 ariel-os-sensors-utils = { workspace = true }
