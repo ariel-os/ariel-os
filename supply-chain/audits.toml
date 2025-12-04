@@ -1,6 +1,18 @@
 
 # cargo-vet audits file
 
+[[audits.embassy-net-driver-channel]]
+who = "Antoine Lavandier <antoine.lavandier@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.3.0 -> 0.3.2"
+notes = "These changes amount to minor formatting/refactor of a few lines of code and updates dependencies"
+
+[[audits.embassy-sync]]
+who = "Antoine Lavandier <antoine.lavandier@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.6.2 -> 0.7.2"
+notes = "Few new unsafe code was added and it is documented. There are some unsafe Send/Sync impl that seem to rely on earlier Send impls for mutex and thus it should be fine."
+
 [[audits.log]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
