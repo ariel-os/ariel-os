@@ -366,10 +366,16 @@ mod clist {
 
         pub fn advance(&mut self, rq: u8) -> bool {
             let tail = self.tail[rq as usize];
+
+            if (tail as usize) >= self.next_idxs.len() {
+                // Catches the case if the runqueue is empty (in which case
+                // `head == tail == Self::sentinel() == 0xff`).
+                return false;
+            }
+
             let head = self.next_idxs[tail as usize];
             if tail == head {
-                // Catches the case that the runqueue only has a single element,
-                // or is empty (in which case head == tail == Self::sentinel())
+                // Catches the case that the runqueue only has a single element.
                 return false;
             }
             self.tail[rq as usize] = head;
