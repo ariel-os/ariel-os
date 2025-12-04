@@ -1,18 +1,18 @@
 [package]
 name = "usb-keyboard"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = [
-  "time",
   "override-usb-config",
+  "time",
   "usb-hid",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embassy-sync = { workspace = true }
 static_cell = { workspace = true }
+
+[lints]
+workspace = true

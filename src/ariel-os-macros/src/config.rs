@@ -11,7 +11,6 @@
 ///
 /// | Driver    | Expected type                      | Cargo feature to enable   |
 /// | --------- | ---------------------------------- | ------------------------- |
-// | `ble`     | `ariel_os::reexports::ble::Config` | `ble-config-override`     |
 /// | `network` | `embassy_net::Config`              | `network-config-override` |
 /// | `usb`     | `embassy_usb::Config`              | `override-usb-config`     |
 ///
@@ -59,10 +58,6 @@ pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
     let ariel_os_crate = utils::ariel_os_crate();
 
     let (config_fn_name, return_type) = match attrs.kind {
-        // Some(ConfigKind::Ble) => (
-        //     format_ident!("__ariel_os_ble_config"),
-        //     quote! {#ariel_os_crate::reexports::ble::Config},
-        // ),
         Some(ConfigKind::Network) => (
             format_ident!("__ariel_os_network_config"),
             quote! {#ariel_os_crate::reexports::embassy_net::Config},
@@ -144,7 +139,6 @@ mod config_macro {
 
     #[derive(Debug, Clone, Copy)]
     pub enum ConfigKind {
-        // Ble,
         Network,
         Usb,
     }
@@ -152,7 +146,6 @@ mod config_macro {
     impl ConfigKind {
         pub fn as_name(self) -> &'static str {
             match self {
-                // Self::Ble => "ble",
                 Self::Network => "network",
                 Self::Usb => "usb",
             }

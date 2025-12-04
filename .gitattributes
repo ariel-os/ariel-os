@@ -1,1 +1,9 @@
-book/src/support_matrix.html linguist-generated=true
+book/src/SUMMARY.md linguist-generated=true
+book/src/boards/*.md linguist-generated=true
+book/src/chips/*.md linguist-generated=true
+book/src/support_matrix_tier1.html linguist-generated=true
+book/src/support_matrix_tier2.html linguist-generated=true
+book/src/support_matrix_tier3.html linguist-generated=true
+src/ariel-os-boards/laze.yml linguist-generated=true
+src/ariel-os-boards/build.rs linguist-generated=true
+src/ariel-os-boards/src/*.rs linguist-generated=true

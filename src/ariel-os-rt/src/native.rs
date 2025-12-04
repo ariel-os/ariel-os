@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 // This is the entrypoint that libc executes.
 //
 // We specify this here (in `ariel-os-rt`) because Ariel OS applications don't

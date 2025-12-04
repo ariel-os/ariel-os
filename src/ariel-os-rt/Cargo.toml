@@ -3,6 +3,7 @@ name = "ariel-os-rt"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
@@ -55,6 +56,7 @@ _panic-handler = []
 single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory"]
+nrf91-modem = []
 
 # features needed for `cargo test`
 _test = []

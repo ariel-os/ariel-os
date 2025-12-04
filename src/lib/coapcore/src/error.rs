@@ -10,9 +10,14 @@ pub struct CredentialError {
     pub(crate) position: Option<usize>,
 }
 
+/// Classification of a [`CredentialError`].
+///
+/// The variants in here are mainly used for debug output, and all signify *that*
+/// the processing of the token was not successful. This type can be used to
+/// construct a [`CredentialError`].
 #[derive(Debug, Copy, Clone)]
 #[non_exhaustive]
-pub(crate) enum CredentialErrorDetail {
+pub enum CredentialErrorDetail {
     /// Input data contains items that violate a protocol.
     ///
     /// This is somewhat fuzzy towards

@@ -1,5 +1,7 @@
 //! Provides support for the I2C communication bus in controller mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::{i2c::controller::Kilohertz, impl_async_i2c_for_driver_enum};
 use embassy_embedded_hal::adapter::{BlockingAsync, YieldingAsync};
 use embassy_stm32::{
@@ -227,7 +229,7 @@ define_i2c_drivers!(
    I2C2_EV + I2C2_ER => I2C2,
    I2C3_EV + I2C3_ER => I2C3,
 );
-#[cfg(context = "stm32h755zi")]
+#[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
 define_i2c_drivers!(
    I2C1_EV + I2C1_ER => I2C1,
    I2C2_EV + I2C2_ER => I2C2,
@@ -247,7 +249,7 @@ define_i2c_drivers!(
    I2C3_EV + I2C3_ER => I2C3,
    I2C4_EV + I2C4_ER => I2C4,
 );
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 define_i2c_drivers!(
    I2C1 => I2C1,
    // FIXME: the other three I2C peripherals share the same interrupt

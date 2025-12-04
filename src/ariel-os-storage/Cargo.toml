@@ -3,6 +3,7 @@ name = "ariel-os-storage"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 description = "Ariel OS storage API"
 
 [lints]

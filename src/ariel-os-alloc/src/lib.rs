@@ -2,6 +2,7 @@
 
 #![no_std]
 #![deny(missing_docs)]
+#![expect(unsafe_code)]
 // required for tests:
 #![cfg_attr(test, no_main)]
 
@@ -25,6 +26,7 @@ mod alloc {
     ///
     /// Call only once!
     pub unsafe fn init() {
+        // SAFETY: Propagates the call-only-once requirement.
         unsafe {
             #[cfg(context = "cortex-m")]
             init_embedded_alloc();

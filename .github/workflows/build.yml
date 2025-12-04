@@ -27,7 +27,7 @@ jobs:
       # Need to get two commits so we can get the PR's commit, not just the
       # merge commit.
       - name: Check out repository code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
           fetch-depth: 2
 
@@ -42,7 +42,7 @@ jobs:
       # because that would not work for the merge queue.
       - name: "Get PR build labels through the commit hash of the pull request"
         id: get-pr-labels
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           result-encoding: string
           script: |
@@ -119,7 +119,7 @@ jobs:
             &
 
       - name: Check out repository code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - name: Get git tree hash
         id: get-tree-hash
@@ -127,7 +127,7 @@ jobs:
             git rev-parse HEAD^{tree} > .tree-hash
             echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         id: result-cache
         with:
           path: .tree-hash
@@ -143,28 +143,35 @@ jobs:
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
+          allow_context() {
+            hal_contexts='context::esp,context::host,context::native,context::nrf,context::rp,context::stm32'
+
+            echo "$hal_contexts" | tr ',' '\n' | grep -v "^context::${1}$" | paste -sd ','
+          }
           case '${{ needs.check-labels.outputs.label }}' in
             'ci-build:esp')
-              echo "LAZE_BUILDERS=ai-c3,espressif-esp32-c3-lcdkit,espressif-esp32-c6-devkitc-1,espressif-esp32-devkitc,espressif-esp32-s3-devkitc-1,heltec-wifi-lora-32-v3" >> "$GITHUB_ENV"
+              echo "NEEDS_XTENSA_TOOLCHAIN=1" >> "$GITHUB_ENV"
+              echo "LAZE_DISABLE=$(allow_context esp)" >> "$GITHUB_ENV"
               ;;
             'ci-build:full')
+              echo "NEEDS_XTENSA_TOOLCHAIN=1" >> "$GITHUB_ENV"
               # Not setting `LAZE_BUILDERS` so that the build is not limited
               ;;
             'ci-build:native')
               echo "LAZE_BUILDERS=native" >> "$GITHUB_ENV"
               ;;
             'ci-build:nrf')
-              # Purely redundant boards are excluded for now.
-              echo "LAZE_BUILDERS=bbc-microbit-v1,bbc-microbit-v2,nordic-thingy-91-x-nrf9151,nrf52840dk,nrf52dk,nrf5340dk,nrf5340dk-net,nrf9160dk-nrf9160" >> "$GITHUB_ENV"
+              echo "LAZE_DISABLE=$(allow_context nrf)" >> "$GITHUB_ENV"
               ;;
             'ci-build:rp')
-              echo "LAZE_BUILDERS=rpi-pico,rpi-pico2,rpi-pico2-w,rpi-pico-w" >> "$GITHUB_ENV"
+              echo "LAZE_DISABLE=$(allow_context rp)" >> "$GITHUB_ENV"
               ;;
             'ci-build:small')
+              echo "NEEDS_XTENSA_TOOLCHAIN=1" >> "$GITHUB_ENV"
               echo "LAZE_BUILDERS=ai-c3,espressif-esp32-devkitc,espressif-esp32-c6-devkitc-1,espressif-esp32-s3-devkitc-1,bbc-microbit-v2,native,nrf52840dk,nrf5340dk,rpi-pico,rpi-pico-w,st-nucleo-c031c6,st-nucleo-h755zi-q,st-nucleo-wb55" >> "$GITHUB_ENV"
               ;;
             'ci-build:stm32')
-              echo "LAZE_BUILDERS=seeedstudio-lora-e5-mini,st-b-l475e-iot01a,st-steval-mkboxpro,st-nucleo-c031c6,st-nucleo-f042k6,st-nucleo-f401re,st-nucleo-f411re,st-nucleo-f767zi,st-nucleo-h755zi-q,st-nucleo-wb55,st-nucleo-wba55,stm32u083c-dk" >> "$GITHUB_ENV"
+              echo "LAZE_DISABLE=$(allow_context stm32)" >> "$GITHUB_ENV"
               ;;
             *)
               # Can happen if `check-labels` finds no labels but still completes
@@ -190,7 +197,7 @@ jobs:
       - name: Install stable toolchain
         if: steps.should-skip.outputs.result != 'true'
         # configure MSRV here:
-        uses: dtolnay/rust-toolchain@1.85
+        uses: dtolnay/rust-toolchain@1.90
         with:
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
           # rust-src: Used for -Zbuild-std.
@@ -198,12 +205,12 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (env.LAZE_BUILDERS == null || contains(env.LAZE_BUILDERS, 'esp32-s3'))
+        if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1')
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
-          version: "1.85.0.0"
-          buildtargets: esp32s3
+          version: "1.90.0.0"
+          buildtargets: esp32,esp32s2,esp32s3
           override: false
           export: false
 
@@ -214,7 +221,7 @@ jobs:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
-        uses: taiki-e/install-action@6e092deb71cc9ba464addeccefe34c0d06921585 # v2
+        uses: taiki-e/install-action@62da238c048aa0f865cc5a322082957d34e7fc1a # v2
         if: steps.should-skip.outputs.result != 'true'
         with:
           tool: laze@0.1
@@ -246,6 +253,8 @@ jobs:
         if: steps.should-skip.outputs.result != 'true'
         run: |
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
+          echo "LAZE_DISABLE=${LAZE_DISABLE}"
+          laze build -mg info-boards | uniq
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
 
       # cleanup previous build artifacts. do in background (no need to wait).

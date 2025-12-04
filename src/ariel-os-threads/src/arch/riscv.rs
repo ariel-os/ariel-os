@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::{Arch, SCHEDULER, Thread, cleanup};
 #[cfg(context = "esp32c6")]
 use esp_hal::peripherals::INTPRI as SYSTEM;

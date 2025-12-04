@@ -89,6 +89,7 @@ enum SecContextStage<Crypto: lakers::Crypto> {
         // all
         c_r: COwn,
         c_i: lakers::ConnId,
+        requested_cred_by_value: bool,
     },
     //
     EdhocResponderSentM2 {
@@ -283,6 +284,8 @@ impl<
             let message_1 =
                 &lakers::EdhocMessageBuffer::new_from_slice(edhoc_m1).map_err(too_small)?;
 
+            let mut requested_cred_by_value = false;
+
             let (responder, c_i, ead_1) = lakers::EdhocResponder::new(
                 (self.crypto_factory)(),
                 lakers::EDHOCMethod::StatStat,
@@ -292,10 +295,14 @@ impl<
             .process_message_1(message_1)
             .map_err(render_error)?;
 
-            if ead_1.is_some_and(|e| e.is_critical) {
-                error!("Critical EAD1 item received, aborting");
-                // FIXME: send error message
-                return Err(CoAPError::bad_request());
+            if let Some(ead_1) = ead_1 {
+                if ead_1.label == crate::iana::edhoc_ead::CRED_BY_VALUE {
+                    requested_cred_by_value = true;
+                } else if ead_1.is_critical {
+                    error!("Critical EAD1 item received, aborting");
+                    // FIXME: send error message
+                    return Err(CoAPError::bad_request());
+                }
             }
 
             let c_r = self.cown_but_not(c_i.as_slice());
@@ -305,6 +312,7 @@ impl<
                     c_r,
                     c_i,
                     responder,
+                    requested_cred_by_value,
                 },
                 authorization: self.authorities.nosec_authorization(),
             });
@@ -343,6 +351,7 @@ impl<
                             c_r: matched_c_r,
                             c_i,
                             responder: taken,
+                            requested_cred_by_value,
                         },
                     authorization,
                 } = taken
@@ -359,7 +368,11 @@ impl<
                     // no better way). Also, conveniently, this covers our privacy well.
                     // (Sending ByValue would still work)
                     .prepare_message_2(
-                        lakers::CredentialTransfer::ByReference,
+                        if requested_cred_by_value {
+                            lakers::CredentialTransfer::ByValue
+                        } else {
+                            lakers::CredentialTransfer::ByReference
+                        },
                         Some(c_r.into()),
                         &None,
                     )?;

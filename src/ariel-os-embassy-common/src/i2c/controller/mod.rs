@@ -171,13 +171,13 @@ macro_rules! impl_async_i2c_for_driver_enum {
 #[macro_export]
 macro_rules! handle_i2c_timeout_res {
     ($i2c:ident, $op:ident, $address:ident, $( $param:ident ),+) => {{
-        let res = $crate::reexports::embassy_futures::select::select(
+        let res = $crate::reexports::embassy_time::with_timeout(
+            $crate::i2c::controller::I2C_TIMEOUT,
             // Disambiguate between the trait methods and the direct methods.
             $crate::reexports::embedded_hal_async::i2c::I2c::$op(&mut $i2c.twim, $address, $( $param ),+),
-            $crate::reexports::embassy_time::Timer::after($crate::i2c::controller::I2C_TIMEOUT),
         ).await;
 
-        if let $crate::reexports::embassy_futures::select::Either::First(op) = res {
+        if let Ok(op) = res {
             // `from_error` is defined in each HAL
             op.map_err(from_error)
         } else {

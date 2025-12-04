@@ -12,7 +12,7 @@ on:
       - main
     paths:
       - book/**
-      - doc/gen_support_matrix_html.rs
+      - doc/gen_book.rs
       - doc/support_matrix.yml
       - src/**
       - Cargo.toml
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
       - id: get_toolchain
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
@@ -79,19 +79,33 @@ jobs:
                   hwrng,
                   i2c,
                   mdns,
+                  multicast,
                   net,
                   no-boards,
                   random,
                   ariel-os-coap/doc,
+                  sensors,
                   spi,
                   storage,
                   tcp,
                   threading,
+                  uart,
                   udp,
                   usb,
                   usb-hid,
                   coapcore/_nightly_docs
                   "
+          cargo doc \
+            --target=riscv32imac-unknown-none-elf \
+            --no-deps \
+            -p embedded-hal@1.0.0 \
+            -p embedded-hal-async \
+            -p embedded-io-async
+          cargo doc \
+            --no-deps \
+            -p embedded-hal@1.0.0 \
+            -p embedded-hal-async \
+            -p embedded-io-async
           RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly' cargo doc \
               --target=riscv32imac-unknown-none-elf \
               --no-deps \
@@ -101,6 +115,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-esp
           RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" --cfg nightly' cargo doc \
@@ -110,6 +125,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-rp
           RUSTDOCFLAGS='-D warnings --cfg context="nrf52840" --cfg nightly' cargo doc \
@@ -119,6 +135,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-nrf
           RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" --cfg nightly' cargo doc \
@@ -128,6 +145,7 @@ jobs:
                   external-interrupts,
                   i2c,
                   spi,
+                  uart,
                   " \
               -p ariel-os-stm32
           echo "<meta http-equiv=\"refresh\" content=\"0; url=ariel_os\">" > target/doc/index.html
@@ -135,15 +153,10 @@ jobs:
           mv target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
           mv target/doc/* ./_site/dev/docs/api
 
-      - name: Install mdbook and mdbook utils
-        uses: taiki-e/install-action@6e092deb71cc9ba464addeccefe34c0d06921585 # v2
+      - name: Install mdbook
+        uses: taiki-e/install-action@62da238c048aa0f865cc5a322082957d34e7fc1a # v2
         with:
-          tool: mdbook, mdbook-cmdrun
-
-      - name: Check for unexpected cmdrun uses
-        run: |
-          cd book
-          ./cmdrun-check.sh
+          tool: mdbook@0.5.0-alpha.1
 
       - name: Build the book
         run: |
@@ -170,7 +183,7 @@ jobs:
 
       - name: Upload artifact (PR)
         if: github.event_name == 'pull_request' && steps.check.conclusion == 'success'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: pr-${{ github.event.number }}-docs
           path: ./_site
@@ -179,7 +192,7 @@ jobs:
 
       - name: Upload artifact (PR number)
         if: github.event_name == 'pull_request' && steps.check.conclusion == 'success'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: pr-number
           path: ./pr

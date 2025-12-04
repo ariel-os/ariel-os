@@ -1,13 +1,13 @@
 [package]
 name = "i2c-scanner"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["i2c"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embedded-hal-async = { workspace = true }
+
+[lints]
+workspace = true

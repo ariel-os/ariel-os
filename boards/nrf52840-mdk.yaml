@@ -1,0 +1,11 @@
+boards:
+  nrf52840-mdk:
+    chip: nrf52840
+    leds:
+      led0:
+        # note: this is the RGB LED red channel
+        color: red
+        pin: P0_23
+    buttons:
+      button0:
+        pin: P1_00

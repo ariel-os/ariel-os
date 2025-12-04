@@ -3,6 +3,7 @@ name = "ariel-os-embassy"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
@@ -21,11 +22,11 @@ embassy-executor = { workspace = true }
 embassy-futures = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
-  "dhcpv4",
   "medium-ethernet",
 ] }
 embassy-sync = { workspace = true }
 embassy-time = { workspace = true, optional = true }
+embassy-time-queue-utils = { workspace = true, optional = true }
 embassy-usb = { workspace = true, optional = true }
 
 embedded-hal = { workspace = true }
@@ -33,6 +34,7 @@ embedded-hal-async = { workspace = true }
 
 ariel-os-buildinfo = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-boards = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
@@ -70,7 +72,7 @@ external-interrupts = [
   "ariel-os-embassy-common/external-interrupts",
   "ariel-os-hal/external-interrupts",
 ]
-time = ["dep:embassy-time"]
+time = ["dep:embassy-time", "dep:embassy-time-queue-utils"]
 
 ## Enables I2C support.
 i2c = [
@@ -85,6 +87,9 @@ spi = [
   "ariel-os-hal/spi",
 ]
 
+## Enables UART support.
+uart = ["ariel-os-embassy-common/uart", "ariel-os-hal/uart"]
+
 ## Enables USB support.
 usb = ["dep:embassy-usb", "ariel-os-hal/usb"]
 usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
@@ -97,6 +102,12 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 ## Use a hardware RNG to seed into the ariel-os-random system-wide RNG
 hwrng = ["ariel-os-hal/hwrng"]
 
+## Enables support for IPv4.
+ipv4 = ["embassy-net?/proto-ipv4"]
+## Enables support for IPv6.
+ipv6 = ["embassy-net?/proto-ipv6"]
+## Enables support for DHCPv4.
+dhcpv4 = ["embassy-net?/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["embassy-net?/tcp"]
 ## Enables support for UDP.
@@ -105,6 +116,8 @@ udp = ["embassy-net?/udp"]
 dns = ["embassy-net?/dns"]
 ## Enables support for mDNS.
 mdns = ["embassy-net?/mdns"]
+## Enables support for multicast (for both IPv4 and/or IPv6 if enabled).
+multicast = ["embassy-net?/multicast"]
 
 ## Enable storage support [`ariel-os::storage`].
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
@@ -121,19 +134,41 @@ eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 ble = [
   "dep:trouble-host",
   "ariel-os-embassy-common/ble",
-  # Some HALs need hwrng to initialize the BLE stack.
-  "hwrng",
   "ariel-os-hal/ble",
+  # Random is needed for BLE initialization and Address generation
+  "ariel-os-random/csprng",
+  "hwrng",
+  "random",
 ]
 ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
 ble-central = ["ble", "ariel-os-hal/ble-central"]
 
-threading = ["dep:ariel-os-threads", "ariel-os-hal/threading"]
-network-config-static = ["network-config-override"]
+nrf91-modem = ["ariel-os-hal/nrf91-modem"]
+
+threading = [
+  "dep:ariel-os-threads",
+  "ariel-os-hal/threading",
+  # this sets the default timer queue size, which is currently 64. See `generic-queue-*` features.
+  "embassy-time-queue-utils?/_generic-queue",
+]
+
+# See ariel-os/Cargo.toml for more details
+## Generic Queue with 8 timers
+timer-generic-queue-8 = ["embassy-time?/generic-queue-8"]
+## Generic Queue with 16 timers
+timer-generic-queue-16 = ["embassy-time?/generic-queue-16"]
+## Generic Queue with 32 timers
+timer-generic-queue-32 = ["embassy-time?/generic-queue-32"]
+## Generic Queue with 64 timers
+timer-generic-queue-64 = ["embassy-time?/generic-queue-64"]
+## Generic Queue with 128 timers
+timer-generic-queue-128 = ["embassy-time?/generic-queue-128"]
+
+network-config-ipv4-static = ["network-config-override"]
+network-config-ipv6-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
-ble-config-override = []
 
 executor-single-thread = [
   "ariel-os-hal/executor-single-thread",
@@ -147,10 +182,15 @@ defmt = [
   "embassy-net?/defmt",
   "embassy-time?/defmt",
   "embassy-usb?/defmt",
+  "embedded-hal/defmt-03",
+  "embedded-hal-async/defmt-03",
+  "embedded-io/defmt-03",
+  "embedded-io-async/defmt-03",
   "ariel-os-hal/defmt",
   "ariel-os-embassy-common/defmt",
+  "trouble-host?/defmt",
   "usbd-hid?/defmt",
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["executor-none", "i2c", "spi", "external-interrupts"]
+_test = ["dhcpv4", "executor-none", "i2c", "spi", "time", "external-interrupts"]

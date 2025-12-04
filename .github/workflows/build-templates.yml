@@ -1,0 +1,95 @@
+name: Build templates
+
+on:
+  schedule:
+    # run every morning at 2:00am
+    - cron: '0 2 * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}-build-templates
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # clang-sys and thus bindgen is sensitive to multiple installed versions
+      # around, see eg. https://github.com/rust-lang/rust-bindgen/issues/2682
+      #
+      # CLANG_PATH should be set to the most recent clang installed, no matter
+      # what /usr/bin/clang is, for some parts of the code will go for the
+      # newest standard library. It may also need to be aligned with the clang
+      # version which Xtensa provides.
+      CLANG_PATH: /usr/bin/clang-18
+
+    steps:
+      # Use shell commands to install dependencies to be as close to the setup described by
+      # https://ariel-os.github.io/ariel-os/dev/docs/book/getting-started.html as possible
+      - name: install build dependencies
+        run: sudo apt update && sudo apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
+
+      - name: install Rust toolchain via rustup
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly --profile minimal --component rust-std,rustfmt
+
+      - name: install Rust toolchain for ESP devices
+        run: |
+          cargo install espup --locked
+          espup install
+
+      - name: Install cargo-generate
+        uses: taiki-e/install-action@62da238c048aa0f865cc5a322082957d34e7fc1a # v2
+        with:
+          tool: cargo-generate
+
+      - name: install laze
+        run: cargo install laze
+
+      - name: git clone ariel-os-hello repository
+        run: git clone https://github.com/ariel-os/ariel-os-hello
+
+      - name: use cargo generate to ariel-os-template
+        run: cargo generate --git https://github.com/ariel-os/ariel-os-template --name ariel-os-hello --destination /tmp
+
+      - name: verify that the file tree is identical between ariel-os-hello and the generated ariel-os-template
+        run: diff -r -x .git -x Cargo.lock ./ariel-os-hello /tmp/ariel-os-hello
+
+      - name: use laze to install toolchains
+        run: cd ariel-os-hello && laze build install-toolchain
+
+      - name: "Show installed versions"
+        run: |
+          set -x
+          set +e
+          env
+          llvm-config --libs
+          cargo version
+          laze --version
+          arm-none-eabi-gcc --version
+          clang --version
+          set +x
+          # Check which alternative versions are installed
+          IFS=":"; for p in $PATH; do ls $p/llvm-config-* $p/clang-* 2>/dev/null; done
+          sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
+          true
+
+      # we verified previously that ariel-os-hello and the generated
+      # ariel-os-template have the same file tree, so we only build ariel-os-hello
+      - name: "ariel-os-hello compilation test"
+        run: |
+          cd ariel-os-hello
+          export LAZE_BUILDERS='espressif-esp32-c6-devkitc-1,espressif-esp32-s3-devkitc-1,nrf52840dk,rpi-pico-w,st-nucleo-wb55'
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build
+
+      - name: Report failure
+        if: failure() && github.event_name == 'schedule' && github.repository == 'ariel-os/ariel-os'
+        uses: s3krit/matrix-message-action@v0.0.3
+        with:
+          room_id: ${{ secrets.MATRIX_ROOM_ID }}
+          access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          message: "The ariel-os-template build [failed](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+          server: "matrix.org"

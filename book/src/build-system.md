@@ -30,7 +30,9 @@ Tasks available in Ariel OS include:
 - `reset`: Reboots the target.
 - `tree`: Prints the application's `cargo tree`.
 - `vscode-config`: update rust-analyzer configuration for VSCode, see [vscode-configuration](./vscode-configuration.md)
+- `fmt`: Formats the project's Rust source code following the [Coding Conventions](./coding-conventions.md) (formats all Rust files except generated ones).
 
+> [!IMPORTANT]
 > As some tasks may trigger a rebuild, it is necessary to pass the same settings to related consecutive commands:
 `laze build -DFOO=1 flash` followed by `laze build -DFOO=other debug` might not
 work as expected, as the second command could be rebuilding the application
@@ -40,8 +42,9 @@ before starting the debug session.
 
 laze allows enabling/disabling individual features using [*modules*](#laze-modules), which can be selected
 or disabled on the command line using `--select <module>` or `--disable <module>`.
-To specify laze modules for an out-of-tree application, see [below](#enabling-laze-modules-for-an-application).
+To enable or disable laze modules for an out-of-tree application, see [below](#enabling-laze-modules-for-an-application).
 
+> [!NOTE]
 > Modules are documented in their respective pages.
 
 [laze]: https://kaspar030.github.io/laze/dev/
@@ -67,6 +70,7 @@ Ariel OS's source and configuration are imported using [laze's `imports`][laze-
 The [project templates](./getting-started.md#starting-an-application-project-from-a-template-repository) use a [`git` import][laze-git-import-book] to ask laze to clone Ariel OS's repository.
 The cloned repository is stored inside `build/imports`.
 
+> [!NOTE]
 > It is currently recommended to use Ariel OS's commit ID to track the repository, to avoid surprising changes.
 > This commit ID needs to be updated to update the version of Ariel OS used by the application.
 
@@ -87,14 +91,15 @@ apps:
       - random
 ```
 
+> [!NOTE]
 > Note that, while the [CLI option is named `--select`](#laze-modules), the configuration key is `selects`.
 
 The specified modules will be enabled for the application, some of which may enable associated Cargo features (as individually documented for each laze module).
 If a module is not available on a target—e.g., because networking is not available on the target, or not yet supported by Ariel OS—laze will prevent the application to be compiled for that target.
 
-### Forbidding laze modules for an application
+### Disabling laze modules for an application
 
-Conversely, to forbid laze modules through the configuration file, the [`conflicts` array][laze-module-conflicts-book] is used:
+Conversely, to disable laze modules through the configuration file, the [`conflicts` array][laze-module-conflicts-book] is used:
 
 ```yaml
 apps:

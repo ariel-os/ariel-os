@@ -1,27 +1,4 @@
 apps:
   - name: blinky
-    context:
-      # list of contexts that have an entry in `pins.rs`
-      - bbc-microbit-v1
-      - bbc-microbit-v2
-      - esp
-      - heltec-wifi-lora-32-v3
-      - nordic-thingy-91-x-nrf9151
-      - nrf52840dk
-      - nrf5340dk
-      - nrf9160dk-nrf9160
-      - nrf52dk
-      - particle-xenon
-      - rp
-      - seeedstudio-lora-e5-mini
-      - st-b-l475e-iot01a
-      - st-nucleo-c031c6
-      - st-nucleo-f042k6
-      - st-nucleo-f401re
-      - st-nucleo-f411re
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
-      - st-nucleo-wba55
-      - st-nucleo-f767zi
-      - st-steval-mkboxpro
-      - stm32u083c-dk
+    selects:
+      - has_leds

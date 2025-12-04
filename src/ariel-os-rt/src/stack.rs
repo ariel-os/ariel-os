@@ -1,4 +1,7 @@
 //! Stack usage helpers.
+
+#![expect(unsafe_code)]
+
 use core::{marker::PhantomData, ptr::write_volatile};
 
 use crate::arch::sp;
@@ -118,6 +121,9 @@ impl Stack {
             // See assumptions in Struct level documentation.
             if unsafe { *(pos as *const u8) } == 0xCC {
                 free += 1;
+            } else {
+                // Stop at the paint border.
+                break;
             }
         }
         free

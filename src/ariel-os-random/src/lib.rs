@@ -24,10 +24,13 @@
 //! [`FastRng`] or [`CryptoRng`] is guaranteed.
 #![no_std]
 
+#[cfg(feature = "csprng")]
+mod getrandom;
+
 use core::{cell::RefCell, marker::PhantomData};
 
 use embassy_sync::once_lock::OnceLock;
-use rand_core::{RngCore, SeedableRng};
+use rand_core::{RngCore, SeedableRng as _};
 
 /// A global RNG.
 // The Mutex<RefCell> can probably be simplified
@@ -84,8 +87,21 @@ impl RngCore for FastRng {
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         self.inner.fill_bytes(dest);
     }
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.inner.try_fill_bytes(dest)
+}
+
+impl rand_core_06::RngCore for FastRng {
+    fn next_u32(&mut self) -> u32 {
+        self.inner.next_u32()
+    }
+    fn next_u64(&mut self) -> u64 {
+        self.inner.next_u64()
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.inner.fill_bytes(dest);
+    }
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+        self.inner.fill_bytes(dest);
+        Ok(())
     }
 }
 
@@ -109,8 +125,21 @@ impl RngCore for FastRngSend {
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         self.inner.fill_bytes(dest);
     }
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        self.inner.try_fill_bytes(dest)
+}
+
+impl rand_core_06::RngCore for FastRngSend {
+    fn next_u32(&mut self) -> u32 {
+        self.inner.next_u32()
+    }
+    fn next_u64(&mut self) -> u64 {
+        self.inner.next_u64()
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.inner.fill_bytes(dest);
+    }
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+        self.inner.fill_bytes(dest);
+        Ok(())
     }
 }
 
@@ -139,12 +168,26 @@ mod csprng {
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             with_global(|i| i.fill_bytes(dest));
         }
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-            with_global(|i| i.try_fill_bytes(dest))
+    }
+
+    impl rand_core_06::RngCore for CryptoRng {
+        fn next_u32(&mut self) -> u32 {
+            with_global(RngCore::next_u32)
+        }
+        fn next_u64(&mut self) -> u64 {
+            with_global(RngCore::next_u64)
+        }
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            with_global(|i| i.fill_bytes(dest));
+        }
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+            with_global(|i| i.fill_bytes(dest));
+            Ok(())
         }
     }
 
     impl rand_core::CryptoRng for super::CryptoRng {}
+    impl rand_core_06::CryptoRng for super::CryptoRng {}
 
     /// Asserts that [`SelectedRng`] is [`CryptoRng`], justifying the implementation above.
     trait _AssertCryptoRng: rand_core::CryptoRng {}
@@ -177,12 +220,42 @@ mod csprng_send {
         fn fill_bytes(&mut self, dest: &mut [u8]) {
             self.inner.fill_bytes(dest);
         }
-        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-            self.inner.try_fill_bytes(dest)
+    }
+
+    impl rand_core_06::RngCore for CryptoRngSend {
+        fn next_u32(&mut self) -> u32 {
+            self.inner.next_u32()
+        }
+        fn next_u64(&mut self) -> u64 {
+            self.inner.next_u64()
+        }
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            self.inner.fill_bytes(dest);
+        }
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core_06::Error> {
+            self.inner.fill_bytes(dest);
+            Ok(())
         }
     }
 
     impl rand_core::CryptoRng for super::CryptoRngSend {}
+    impl rand_core_06::CryptoRng for super::CryptoRngSend {}
+}
+
+/// Adapter to bridge the gap between the old and new RngCore traits.
+#[doc(hidden)]
+pub struct RngAdapter<'a, R: rand_core_06::RngCore>(pub &'a mut R);
+
+impl<R: rand_core_06::RngCore> RngCore for RngAdapter<'_, R> {
+    fn next_u32(&mut self) -> u32 {
+        rand_core_06::RngCore::next_u32(&mut self.0)
+    }
+    fn next_u64(&mut self) -> u64 {
+        rand_core_06::RngCore::next_u64(&mut self.0)
+    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        rand_core_06::RngCore::fill_bytes(&mut self.0, dest);
+    }
 }
 
 /// Populates the global RNG from a seed value.
@@ -192,20 +265,17 @@ mod csprng_send {
 /// - Panics if the underlying RNG returns an error.
 /// - Panics if this function is called multiple times.
 #[doc(hidden)]
-pub fn construct_rng(hwrng: impl RngCore) {
-    RNG.init(RefCell::new(
-        SelectedRng::from_rng(hwrng).expect("Hardware RNG failed to provide entropy"),
-    ))
-    .unwrap();
+pub fn construct_rng(hwrng: &mut impl RngCore) {
+    RNG.init(RefCell::new(SelectedRng::from_rng(hwrng)))
+        .unwrap();
 }
 
 /// Returns a suitably initialized fast random number generator.
-#[expect(clippy::missing_panics_doc, reason = "does not panic")]
 #[must_use]
 #[inline]
 pub fn fast_rng() -> FastRng {
     FastRng {
-        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i).expect("Global RNG is infallible")),
+        inner: with_global(rand_pcg::Pcg32::from_rng),
         _private: PhantomData,
     }
 }
@@ -218,7 +288,7 @@ pub fn fast_rng() -> FastRng {
 #[inline]
 pub fn fast_rng_send() -> FastRngSend {
     FastRngSend {
-        inner: with_global(|i| rand_pcg::Pcg32::from_rng(i).expect("Global RNG is infallible")),
+        inner: with_global(rand_pcg::Pcg32::from_rng),
     }
 }
 
@@ -241,8 +311,6 @@ pub fn crypto_rng() -> CryptoRng {
 #[cfg(feature = "csprng")]
 pub fn crypto_rng_send() -> CryptoRngSend {
     CryptoRngSend {
-        inner: with_global(|i| {
-            rand_chacha::ChaCha20Rng::from_rng(i).expect("Global RNG is infallible")
-        }),
+        inner: with_global(rand_chacha::ChaCha20Rng::from_rng),
     }
 }

@@ -1,0 +1,13 @@
+boards:
+  stm32u083c-dk:
+    chip: stm32u083mc
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: USART4_LPUART3
+    leds:
+      led0:
+        pin: PA5
+    buttons:
+      button0:
+        pin: PC2

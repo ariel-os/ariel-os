@@ -33,7 +33,7 @@
 #[proc_macro_attribute]
 pub fn spawner(args: TokenStream, item: TokenStream) -> TokenStream {
     use quote::{format_ident, quote};
-    use syn::{Error, spanned::Spanned};
+    use syn::{Error, spanned::Spanned as _};
 
     #[allow(clippy::wildcard_imports)]
     use spawner::*;

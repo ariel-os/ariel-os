@@ -1,11 +1,8 @@
 [package]
 name = "example-random"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 # Enabling the feature "random" is somewhat redundant with laze.yml's selects:
@@ -13,3 +10,6 @@ workspace = true
 ariel-os = { path = "../../src/ariel-os", features = ["random"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 rand = { workspace = true }
+
+[lints]
+workspace = true

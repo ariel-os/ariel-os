@@ -1,0 +1,3 @@
+boards:
+  ai-c3:
+    chip: esp32-c3-mini-1

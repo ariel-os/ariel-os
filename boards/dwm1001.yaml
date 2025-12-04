@@ -1,0 +1,30 @@
+boards:
+  dwm1001:
+    chip: nrf52832
+    leds:
+      led0:
+        pin: P0_14
+        aliases:
+          - D12
+          - GPIO14
+        color: green
+      led1:
+        pin: P0_30
+        aliases:
+          - D9
+        color: red
+      led2:
+        pin: P0_22
+        aliases:
+          - D11
+        color: red
+      led3:
+        pin: P0_31
+        aliases:
+          - D10
+        color: red
+    buttons:
+      button0:
+        pin: P0_02
+        aliases:
+          - BT_WAKE_UP

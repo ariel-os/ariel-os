@@ -1,5 +1,7 @@
 //! Provides support for the SPI communication bus in main mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
     spi::{Mode, main::Kilohertz},

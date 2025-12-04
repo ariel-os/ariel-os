@@ -5,6 +5,11 @@
 //! custom network configuration.
 
 #![deny(missing_docs)]
+#![allow(unsafe_code)]
+#![allow(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
 
 use embassy_net::{Runner, Stack};
 use embassy_sync::once_lock::OnceLock;
@@ -70,16 +75,18 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    #[cfg(not(feature = "network-config-override"))]
-    {
-        embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
-    }
-    #[cfg(feature = "network-config-override")]
-    {
-        unsafe extern "Rust" {
-            fn __ariel_os_network_config() -> embassy_net::Config;
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "network-config-override")] {
+            unsafe extern "Rust" {
+                fn __ariel_os_network_config() -> embassy_net::Config;
+            }
+            unsafe { __ariel_os_network_config() }
+        } else if #[cfg(feature = "dhcpv4")] {
+            embassy_net::Config::dhcpv4(embassy_net::DhcpConfig::default())
+        } else if #[cfg(not(context = "ariel-os"))] {
+            // For platform-independent tooling.
+            embassy_net::Config::default()
         }
-        unsafe { __ariel_os_network_config() }
     }
 }
 
@@ -158,35 +165,85 @@ impl embassy_net::driver::RxToken for DummyDriver {
     }
 }
 
-#[cfg(feature = "network-config-static")]
+#[cfg(any(
+    feature = "network-config-ipv4-static",
+    feature = "network-config-ipv6-static"
+))]
 // SAFETY: the compiler prevents from defining multiple functions with the same name in the
 // same crate; the function signature is checked by the compiler as it is in the same crate as the
 // FFI declaration.
 #[unsafe(no_mangle)]
 fn __ariel_os_network_config() -> embassy_net::Config {
-    use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
+    let mut config = embassy_net::Config::default();
 
-    let ipaddr = ipv4_addr_from_env_or!(
-        "CONFIG_NET_IPV4_STATIC_ADDRESS",
-        "10.42.0.61",
-        "static IPv4 address",
-    );
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "network-config-ipv4-static")] {
+            use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
 
-    let gw_addr = ipv4_addr_from_env_or!(
-        "CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS",
-        "10.42.0.1",
-        "static IPv4 gateway address",
-    );
+            let ipaddr = ipv4_addr_from_env_or!(
+                "CONFIG_NET_IPV4_STATIC_ADDRESS",
+                "10.42.0.61",
+                "static IPv4 address",
+            );
 
-    let prefix_len = u8_from_env_or!(
-        "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
-        24,
-        "static IPv4 CIDR prefix length"
-    );
+            let gw_addr = ipv4_addr_from_env_or!(
+                "CONFIG_NET_IPV4_STATIC_GATEWAY_ADDRESS",
+                "10.42.0.1",
+                "static IPv4 gateway address",
+            );
 
-    embassy_net::Config::ipv4_static(embassy_net::StaticConfigV4 {
-        address: embassy_net::Ipv4Cidr::new(ipaddr, prefix_len),
-        dns_servers: heapless::Vec::new(),
-        gateway: Some(gw_addr),
-    })
+            const PREFIX_LEN: u8 = u8_from_env_or!(
+                "CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN",
+                24,
+                "static IPv4 CIDR prefix length"
+            );
+            const {
+                assert!(
+                    PREFIX_LEN <= 32,
+                    "`CONFIG_NET_IPV4_STATIC_CIDR_PREFIX_LEN` must be <= 32",
+                );
+            }
+
+            config.ipv4 = embassy_net::ConfigV4::Static(embassy_net::StaticConfigV4 {
+                address: embassy_net::Ipv4Cidr::new(ipaddr, PREFIX_LEN),
+                dns_servers: heapless::Vec::new(),
+                gateway: Some(gw_addr),
+            });
+        } else if #[cfg(feature = "dhcpv4")] {
+            config.ipv4 = embassy_net::ConfigV4::Dhcp(embassy_net::DhcpConfig::default());
+        }
+    }
+
+    #[cfg(feature = "network-config-ipv6-static")]
+    {
+        let ipaddr = ariel_os_utils::ipv6_addr_from_env!(
+            "CONFIG_NET_IPV6_STATIC_ADDRESS",
+            "static IPv6 address",
+        );
+
+        let gw_addr = ariel_os_utils::ipv6_addr_from_env!(
+            "CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS",
+            "static IPv6 gateway address",
+        );
+
+        const PREFIX_LEN: u8 = ariel_os_utils::u8_from_env_or!(
+            "CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN",
+            64,
+            "static IPv6 CIDR prefix length"
+        );
+        const {
+            assert!(
+                PREFIX_LEN <= 128,
+                "`CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` must be <= 128",
+            );
+        }
+
+        config.ipv6 = embassy_net::ConfigV6::Static(embassy_net::StaticConfigV6 {
+            address: embassy_net::Ipv6Cidr::new(ipaddr, PREFIX_LEN),
+            dns_servers: heapless::Vec::new(),
+            gateway: Some(gw_addr),
+        });
+    }
+
+    config
 }

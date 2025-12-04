@@ -8,7 +8,7 @@
 //! - ⚙️  The git repository is available on
 //!   [GitHub](https://github.com/ariel-os/ariel-os).
 //! - ✨ [Examples](https://github.com/ariel-os/ariel-os/tree/main/examples)
-//!   demonstrates various features of Ariel OS.
+//!   demonstrate various features of Ariel OS.
 //! - 🧪 A set of [test cases](https://github.com/ariel-os/ariel-os/tree/main/tests)
 //!   further verifies the capabilities of Ariel OS.
 //! - 🚧 The [roadmap](https://github.com/ariel-os/ariel-os/issues/242)
@@ -20,7 +20,7 @@
 //!  to configure the operating system.
 #![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 #[cfg(feature = "bench")]
@@ -33,6 +33,8 @@ pub use ariel_os_buildinfo as buildinfo;
 pub use ariel_os_coap as coap;
 #[doc(inline)]
 pub use ariel_os_debug as debug;
+#[doc(inline)]
+pub use ariel_os_hal::api::*;
 #[doc(inline)]
 pub use ariel_os_identity as identity;
 #[doc(inline)]

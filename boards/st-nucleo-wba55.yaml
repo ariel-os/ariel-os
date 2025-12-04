@@ -1,0 +1,34 @@
+boards:
+  st-nucleo-wba55:
+    chip: stm32wba55cg
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PB4
+        aliases:
+          - LD1
+        color: blue
+      led1:
+        pin: PA9
+        aliases:
+          - LD2
+        color: green
+      led2:
+        pin: PB8
+        aliases:
+          - LD3
+        color: red
+    buttons:
+      button0:
+        pin: PC13
+        aliases:
+          - B1
+      button1:
+        pin: PB6
+        aliases:
+          - B2
+      button2:
+        pin: PB7
+        aliases:
+          - B3

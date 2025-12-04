@@ -3,12 +3,22 @@ name = "ariel-os-hal"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
 
 [dependencies]
+ariel-os-embassy-common = { workspace = true }
+
 cfg-if.workspace = true
+const_panic.workspace = true
+
+embassy-embedded-hal = { workspace = true, optional = true }
+embassy-sync = { workspace = true, optional = true }
+
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
 ariel-os-esp = { path = "../ariel-os-esp" }
@@ -30,8 +40,6 @@ ariel-os-stm32 = { workspace = true }
 embassy-executor = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-usb = { workspace = true }
-embedded-hal = { workspace = true }
-embedded-hal-async = { workspace = true }
 embedded-storage-async = { workspace = true }
 
 ariel-os-embassy-common = { workspace = true }
@@ -43,6 +51,7 @@ trouble-host = { workspace = true, optional = true }
 
 [features]
 external-interrupts = [
+  "ariel-os-embassy-common/external-interrupts",
   "ariel-os-esp/external-interrupts",
   "ariel-os-nrf/external-interrupts",
   "ariel-os-rp/external-interrupts",
@@ -50,6 +59,10 @@ external-interrupts = [
 ]
 
 i2c = [
+  "dep:embassy-embedded-hal",
+  "dep:embassy-sync",
+
+  "ariel-os-embassy-common/i2c",
   "ariel-os-esp/i2c",
   "ariel-os-nrf/i2c",
   "ariel-os-rp/i2c",
@@ -57,10 +70,19 @@ i2c = [
 ]
 
 spi = [
+  "ariel-os-embassy-common/spi",
   "ariel-os-esp/spi",
   "ariel-os-nrf/spi",
   "ariel-os-rp/spi",
   "ariel-os-stm32/spi",
+]
+
+uart = [
+  "ariel-os-embassy-common/uart",
+  "ariel-os-esp/uart",
+  "ariel-os-nrf/uart",
+  "ariel-os-rp/uart",
+  "ariel-os-stm32/uart",
 ]
 
 usb = [
@@ -70,10 +92,18 @@ usb = [
   "ariel-os-stm32/usb",
 ]
 
-ble = ["dep:bt-hci", "dep:embedded-io", "dep:trouble-host", "ariel-os-nrf/ble"]
+ble = [
+  "dep:bt-hci",
+  "dep:embedded-io",
+  "dep:trouble-host",
+  "ariel-os-embassy-common/ble",
+  "ariel-os-nrf/ble",
+]
 ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
+
+nrf91-modem = ["ariel-os-nrf/nrf91-modem"]
 
 hwrng = [
   "ariel-os-esp/hwrng",
@@ -117,5 +147,8 @@ defmt = [
   "ariel-os-nrf/defmt",
   "ariel-os-rp/defmt",
   "ariel-os-stm32/defmt",
+  "embedded-hal/defmt-03",
+  "embedded-hal-async/defmt-03",
+  "embedded-io?/defmt-03",
 ]
 log = ["ariel-os-esp/log"]

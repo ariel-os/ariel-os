@@ -2,6 +2,7 @@
 name = "ariel-os-threads"
 version = "0.2.0"
 edition.workspace = true
+rust-version.workspace = true
 license.workspace = true
 description = "generic embedded scheduler & IPC"
 include = ["src/**/*", "README.md"]
@@ -34,6 +35,10 @@ esp-hal = { workspace = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32c6"] }
+
+[target.'cfg(context = "esp32s2")'.dependencies]
+esp-hal = { workspace = true, features = ["esp32s2"] }
+static_cell = { workspace = true, optional = true }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s3"] }

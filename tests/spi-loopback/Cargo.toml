@@ -1,15 +1,16 @@
 [package]
 name = "spi-loopback"
-license.workspace = true
 edition.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
+publish = false
 
 [dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["spi"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embassy-sync = { workspace = true }
 embedded-hal-async = { workspace = true }
 once_cell = { workspace = true }
-ariel-os = { path = "../../src/ariel-os", features = ["spi"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
 static_cell = { workspace = true }
+
+[lints]
+workspace = true

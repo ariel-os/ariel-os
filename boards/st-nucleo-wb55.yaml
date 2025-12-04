@@ -1,0 +1,36 @@
+boards:
+  st-nucleo-wb55:
+    chip: stm32wb55rg
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: USART1
+    leds:
+      led0:
+        pin: PB5
+        color: blue
+        aliases:
+          - LED1
+      led1:
+        pin: PB0
+        color: green
+        aliases:
+          - LED2
+      led2:
+        pin: PB1
+        color: red
+        aliases:
+          - LED3
+    buttons:
+      button0:
+        pin: PC4
+        aliases:
+          - SW1
+      button1:
+        pin: PD0
+        aliases:
+          - SW2
+      button2:
+        pin: PD1
+        aliases:
+          - SW3

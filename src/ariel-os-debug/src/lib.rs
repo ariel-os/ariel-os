@@ -2,6 +2,10 @@
 
 #![cfg_attr(not(any(test, feature = "std")), no_std)]
 #![cfg_attr(test, no_main)]
+#![cfg_attr(
+    all(feature = "log", not(target_has_atomic = "ptr")),
+    expect(unsafe_code)
+)]
 #![deny(missing_docs)]
 
 #[featurecomb::comb]

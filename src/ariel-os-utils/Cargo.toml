@@ -1,12 +1,13 @@
 [package]
 name = "ariel-os-utils"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+const-str = { workspace = true }
+const_panic = { workspace = true }
 
 [lints]
 workspace = true
-
-[dependencies]
-const_panic = { workspace = true }
-const-str = { workspace = true }

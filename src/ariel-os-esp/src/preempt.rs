@@ -1,13 +1,18 @@
-/// This module provides the hooks for `esp-wifi` to schedule its threads
-/// with the Ariel OS scheduler.
-use core::ffi::c_void;
+//! This module provides the hooks for `esp-wifi` to schedule its threads
+//! with the Ariel OS scheduler.
+
+#![expect(unsafe_code)]
+
+use core::{ffi::c_void, sync::atomic::AtomicUsize};
 
 use ariel_os_debug::log::{debug, trace};
 use ariel_os_threads::{THREAD_COUNT, create_raw, current_tid, yield_same};
 use esp_wifi::{TimeBase, preempt::Scheduler};
 use esp_wifi_sys::include::malloc;
 
-static THREAD_SEMAPHORES: [usize; THREAD_COUNT] = [0; THREAD_COUNT];
+/// The `AtomicUsize`s make sure this static is not promoted to read-only data.
+static THREAD_SEMAPHORES: [AtomicUsize; THREAD_COUNT] =
+    [const { AtomicUsize::new(0) }; THREAD_COUNT];
 
 struct ArielScheduler {}
 
@@ -49,17 +54,15 @@ impl Scheduler for ArielScheduler {
         let prio = ariel_os_embassy_common::executor_thread::PRIORITY;
         let core_affinity = None;
 
+        // SAFETY: *transmuting* between any two function pointers is fine.
+        let task =
+            unsafe { core::mem::transmute::<extern "C" fn(*mut c_void), extern "Rust" fn()>(task) };
+
         // SAFETY: Upholding `create_raw()` invariants: We know what we are doing.
-        let tid = unsafe {
-            create_raw(
-                task as usize,
-                param as usize,
-                stack_slice,
-                prio,
-                core_affinity,
-            )
-        };
-        usize::from(tid) as *const usize as *mut c_void
+        let tid =
+            unsafe { create_raw(task, Some(param as usize), stack_slice, prio, core_affinity) };
+
+        usize::from(tid) as *mut c_void
     }
 
     fn schedule_task_deletion(&self, _task_handle: *mut c_void) {
@@ -77,7 +80,8 @@ impl Scheduler for ArielScheduler {
         // NOTE(no-panic): this is always called from within a thread, so the `unwrap()` doesn't
         // panic.
         let tid = usize::from(current_tid().unwrap());
-        &THREAD_SEMAPHORES[tid] as *const usize as *mut c_void
+
+        THREAD_SEMAPHORES[tid].as_ptr() as *mut c_void
     }
 }
 

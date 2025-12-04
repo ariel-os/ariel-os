@@ -1,15 +1,16 @@
 <p align="center"> <img src="book/src/figures/ariel-hexacube-orange-rounded.svg" alt="logo" height="300"/> </p>
 
-[![Build Status][build-badge]][build-info]
 [![Book][book-badge]][documentation-mdbook]
 [![Documentation][rustdoc-badge]][documentation-dev-rustdoc]
 [![Matrix][matrix-badge]][matrix-link]
 [![OpenSSF Best Practices][openssf-badge]][openssf-project-page]
+[![Mastodon][mastodon-badge]][mastodon-link]
 
 Ariel OS is an operating system for secure, memory-safe, low-power Internet of Things (IoT).
 It is based on Rust from the ground up
 and [supports hardware](https://ariel-os.github.io/ariel-os/dev/docs/book/hardware-functionality-support.html)
 based on 32-bit microcontroller architectures (Cortex-M, RISC-V, and Xtensa).
+For a quick overview of our motivations and what we plan next, check our [roadmap](https://github.com/ariel-os/ariel-os/blob/main/ROADMAP.md).
 
 ## Goals and Design
 
@@ -28,9 +29,26 @@ See the [Getting Started page][getting-started-mdbook] in the User Guide to get 
 
 ![Terminal screencast of compiling and flashing the hello-world example](./book/src/hello-world_render.svg)
 
+## Documentation
+
+Multiple resources are available to learn Ariel OS:
+
+- 📔 Extensive documentation for Ariel OS can be found in the
+  [book](https://ariel-os.github.io/ariel-os/dev/docs/book/).
+- 🛠️ Reference documentation for Ariel OS can be found in the
+  [API documentation](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/).
+- ⚙️  The git repository is available on
+  [GitHub](https://github.com/ariel-os/ariel-os).
+- ✨ [Examples](https://github.com/ariel-os/ariel-os/tree/main/examples)
+  demonstrate various features of Ariel OS.
+- 🧪 A set of [test cases](https://github.com/ariel-os/ariel-os/tree/main/tests)
+  further verifies the capabilities of Ariel OS.
+- 🚧 The [roadmap](https://github.com/ariel-os/ariel-os/issues/242)
+  shows the planned features for Ariel OS.
+
 ## Minimum Supported Rust Version (MSRV) and Policy
 
-Ariel OS compiles with stable Rust version 1.85 and up.
+Ariel OS compiles with stable Rust version 1.90 and up.
 The MSRV can be increased in patch version updates.
 
 ## Security
@@ -63,8 +81,6 @@ Thanks to all the people who already contributed!
   <img src="https://contrib.rocks/image?repo=ariel-os/ariel-os" alt="All contributors" />
 </a>
 
-[build-badge]: https://github.com/ariel-os/ariel-os/actions/workflows/main.yml/badge.svg
-[build-info]: https://github.com/ariel-os/ariel-os/actions/workflows/main.yml
 [matrix-badge]: https://img.shields.io/badge/chat-Matrix-brightgreen.svg
 [matrix-link]: https://matrix.to/#/#ariel-os:matrix.org
 [book-badge]: https://img.shields.io/badge/Book-%F0%9F%93%94-blue
@@ -75,3 +91,5 @@ Thanks to all the people who already contributed!
 [hello-world-example]: https://github.com/ariel-os/ariel-os/tree/main/examples/hello-world
 [openssf-badge]: https://www.bestpractices.dev/projects/10610/badge
 [openssf-project-page]: https://www.bestpractices.dev/projects/10610
+[mastodon-badge]: https://img.shields.io/badge/social-Mastodon-informational.svg
+[mastodon-link]: https://floss.social/@ariel

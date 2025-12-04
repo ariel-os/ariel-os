@@ -5,13 +5,11 @@ use core::{
     task::{Context, Poll},
 };
 
-use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, channel::ReceiveFuture};
-
-use crate::{Category, Label, MeasurementUnit};
+use crate::{Category, Label, MeasurementUnit, signal};
 
 pub use crate::{
     Reading,
-    sample::{Accuracy, Sample},
+    sample::{Sample, SampleError, SampleMetadata},
 };
 
 ariel_os_macros::define_count_adjusted_sensor_enums!();
@@ -104,36 +102,70 @@ pub trait Sensor: Send + Sync {
 
 /// Future returned by [`Sensor::wait_for_reading()`].
 #[must_use = "futures do nothing unless you `.await` or poll them"]
-#[pin_project::pin_project(project = ReadingWaiterProj)]
-pub enum ReadingWaiter {
-    #[doc(hidden)]
-    Waiter {
-        #[pin]
-        waiter: ReceiveFuture<'static, CriticalSectionRawMutex, ReadingResult<Samples>, 1>,
-    },
-    #[doc(hidden)]
-    Err(ReadingError),
-    #[doc(hidden)]
-    Resolved,
+pub struct ReadingWaiter {
+    inner: ReadingWaiterInner,
+}
+
+impl ReadingWaiter {
+    /// Creates a new [`Future`] to send back [`Samples`].
+    ///
+    /// # Note
+    ///
+    /// For sensor driver implementors only.
+    pub fn new(fut: signal::ReceiveFuture<'static, ReadingResult<Samples>>) -> Self {
+        Self {
+            inner: ReadingWaiterInner::Waiter { waiter: fut },
+        }
+    }
+
+    /// Creates a new [`Future`] to send back an error that happened when obtaining a reading.
+    ///
+    /// # Note
+    ///
+    /// For sensor driver implementors only.
+    pub fn new_err(err: ReadingError) -> Self {
+        Self {
+            inner: ReadingWaiterInner::Err(err),
+        }
+    }
 }
 
 impl Future for ReadingWaiter {
     type Output = ReadingResult<Samples>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        core::pin::pin!(&mut self.inner).poll(cx)
+    }
+}
+
+#[must_use = "futures do nothing unless you `.await` or poll them"]
+#[pin_project::pin_project(project = ReadingWaiterInnerProj)]
+enum ReadingWaiterInner {
+    Waiter {
+        #[pin]
+        waiter: signal::ReceiveFuture<'static, ReadingResult<Samples>>,
+    },
+    Err(ReadingError),
+    Resolved,
+}
+
+impl Future for ReadingWaiterInner {
+    type Output = ReadingResult<Samples>;
+
+    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let this = self.as_mut().project();
         match this {
-            ReadingWaiterProj::Waiter { waiter } => waiter.poll(cx),
-            ReadingWaiterProj::Err(err) => {
+            ReadingWaiterInnerProj::Waiter { waiter } => waiter.poll(cx),
+            ReadingWaiterInnerProj::Err(err) => {
                 // Replace the error with a dummy error value, crafted from thin air, and mark the
                 // future as resolved, so that we do not take this dummy value into account later.
                 // This avoids requiring `Clone` on `ReadingError`.
                 let err = core::mem::replace(err, ReadingError::NonEnabled);
-                *self = ReadingWaiter::Resolved;
+                *self = Self::Resolved;
 
                 Poll::Ready(Err(err))
             }
-            ReadingWaiterProj::Resolved => unreachable!(),
+            ReadingWaiterInnerProj::Resolved => unreachable!(),
         }
     }
 }
@@ -323,4 +355,14 @@ mod tests {
 
     // Assert that the Sensor trait is object-safe
     static _SENSOR_REFS: &[&dyn Sensor] = &[];
+
+    #[test]
+    fn assert_type_sizes() {
+        // The size of these types is not a functional requirement of the API, but this makes sure
+        // they stay small to keep resource usage down.
+        assert!(size_of::<Category>() <= size_of::<u8>());
+        assert!(size_of::<Label>() <= size_of::<u8>());
+        assert!(size_of::<MeasurementUnit>() <= size_of::<u8>());
+        assert!(size_of::<ReadingChannel>() <= size_of::<u32>());
+    }
 }

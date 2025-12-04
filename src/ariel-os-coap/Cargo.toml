@@ -1,43 +1,43 @@
 [package]
 name = "ariel-os-coap"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
+license.workspace = true
 
 [dependencies]
-coapcore = { path = "../lib/coapcore", default-features = false }
+ariel-os-debug = { workspace = true }
+ariel-os-embassy = { workspace = true, features = ["net"] }
+ariel-os-macros = { path = "../ariel-os-macros" }
+ariel-os-random = { workspace = true, features = ["csprng"] }
+ariel-os-storage = { workspace = true, optional = true }
 coap-handler = "0.2.0"
 coap-handler-implementations = "0.5.0"
-critical-section.workspace = true
-embassy-futures = { workspace = true }
+coapcore = { path = "../lib/coapcore", default-features = false }
+critical-section = { workspace = true }
 # These features should be more selective and not enabled here, but as things
 # stand, this modules also contains the embedded-nal implementation for
 # embassy-net, and that needs its features in sync; enabling them all ensures a
 # working state until that NAL wrapper moves into embassy-net, where features
 # will be in sync all the time.
 embassy-net = { workspace = true, features = [
-  "udp",
   "proto-ipv4",
   "proto-ipv6",
+  "udp",
 ] }
-embassy-sync.workspace = true
+embassy-sync = { workspace = true }
 embedded-nal-async = "0.8"
 embedded-nal-coap = { workspace = true }
-lakers-crypto-rustcrypto = "0.8.0"
 lakers = { version = "0.8.0", default-features = false }
-ariel-os-debug.workspace = true
-ariel-os-embassy = { workspace = true, features = ["net"] }
-ariel-os-random = { workspace = true, features = ["csprng"] }
-ariel-os-storage = { workspace = true, optional = true }
-ariel-os-macros = { path = "../ariel-os-macros" }
+lakers-crypto-rustcrypto = "0.8.0"
 static_cell = { workspace = true }
 
-heapless = { workspace = true, features = ["serde"] }
-cfg-if = { workspace = true }
 # Used for constructing credentials
 cbor-macro = "0.1.0"
 cboritem = "0.1.2"
+cfg-if = { workspace = true }
+heapless = { workspace = true, features = ["serde"] }
 
 # FIXME: Should go out eventually
 hexlit = "0.5.5"
@@ -46,16 +46,13 @@ hexlit = "0.5.5"
 embedded-io-async = { workspace = true }
 
 [build-dependencies]
-serde_yml = "0.0.12"
-serde = "1"
 # "blessed" by Cargo basing its build script API on it <https://blog.rust-lang.org/inside-rust/2024/12/13/this-development-cycle-in-cargo-1.84.html#build-script-api>
 build-rs = "0.3.0"
 cbor-edn = "0.0.9"
 coap-numbers = "0.2"
 minicbor = { version = "0.26", features = ["std"] }
-
-[lints]
-workspace = true
+serde = "1"
+serde_yaml = "0.9.34"
 
 [features]
 # Enables the coap_run function through which a server is passed in. The
@@ -78,7 +75,10 @@ liboscore-provide-assert = ["coapcore/liboscore-provide-assert"]
 
 ## Enables an arbitrary set of features in dependencies where dependencies fail
 ## if no features are configured at all.
-doc = ["embassy-net/proto-ipv6", "embassy-net/medium-ip", "coap-server"]
+doc = ["coap-server", "embassy-net/medium-ip", "embassy-net/proto-ipv6"]
 
 ## Enables defmt logging of coapcore
 defmt = ["coapcore/defmt"]
+
+[lints]
+workspace = true

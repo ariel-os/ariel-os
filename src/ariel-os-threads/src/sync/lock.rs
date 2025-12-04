@@ -1,4 +1,11 @@
 //! This module provides a Lock implementation.
+
+#![expect(unsafe_code)]
+#![expect(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
+
 use core::cell::UnsafeCell;
 
 use crate::{ThreadState, threadlist::ThreadList};

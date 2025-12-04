@@ -1,13 +1,13 @@
 [package]
 name = "ariel-os-sensors"
+# The sensor API is versioned separately from the rest of Ariel OS.
+# Introducing a breaking change fragments the ecosystem of sensor drivers.
 version = "0.1.0"
-license.workspace = true
 edition.workspace = true
+# This crate's MSRV is decoupled from Ariel OS's.
 rust-version = "1.85"
 repository.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
 ariel-os-macros = { workspace = true }
@@ -16,6 +16,11 @@ embassy-sync = { workspace = true }
 linkme = { workspace = true }
 pin-project = { workspace = true }
 
+[dev-dependencies]
+critical-section = { workspace = true, features = ["std"] }
+embassy-futures = { workspace = true }
+static_cell = { workspace = true }
+
 [features]
 defmt = ["dep:defmt"]
 
@@ -23,7 +28,14 @@ defmt = ["dep:defmt"]
 max-sample-min-count-2 = ["ariel-os-macros/max-sample-min-count-2"]
 max-sample-min-count-3 = ["ariel-os-macros/max-sample-min-count-3"]
 max-sample-min-count-4 = ["ariel-os-macros/max-sample-min-count-4"]
+max-sample-min-count-5 = ["ariel-os-macros/max-sample-min-count-5"]
 max-sample-min-count-6 = ["ariel-os-macros/max-sample-min-count-6"]
 max-sample-min-count-7 = ["ariel-os-macros/max-sample-min-count-7"]
+max-sample-min-count-8 = ["ariel-os-macros/max-sample-min-count-8"]
 max-sample-min-count-9 = ["ariel-os-macros/max-sample-min-count-9"]
 max-sample-min-count-12 = ["ariel-os-macros/max-sample-min-count-12"]
+
+_test = []
+
+[lints]
+workspace = true

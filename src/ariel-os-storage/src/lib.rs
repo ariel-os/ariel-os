@@ -5,6 +5,7 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
+#![expect(unsafe_code)]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
@@ -13,7 +14,7 @@ mod storage;
 
 use core::ops::Range;
 
-use ariel_os_hal::{
+use ariel_os_hal::hal::{
     OptionalPeripherals,
     storage::{Flash, FlashError, init as flash_init},
 };

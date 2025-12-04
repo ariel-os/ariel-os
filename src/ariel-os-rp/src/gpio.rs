@@ -89,23 +89,17 @@ pub mod output {
 
 /// Available drive strength settings.
 // We provide our own type because the upstream type is not `Copy` and has no `Default` impl.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Default)]
 pub enum DriveStrength {
     /// 2 mA.
     _2mA,
-    /// 4 mA.
+    /// 4 mA. This is the reset value.
+    #[default]
     _4mA,
     /// 8 mA.
     _8mA,
     /// 12 mA.
     _12mA,
-}
-
-impl Default for DriveStrength {
-    fn default() -> Self {
-        // Reset value
-        Self::_4mA
-    }
 }
 
 impl From<DriveStrength> for embassy_rp::gpio::Drive {
@@ -137,19 +131,13 @@ impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
 // These values do not seem to be quantitatively defined on the RP2040.
 // We provide our own type because the `SlewRate` upstream type is not `Copy` and has no
 // `Default` impl.
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Default)]
 pub enum Speed {
-    /// Low.
+    /// Low. This is the reset value.
+    #[default]
     Low,
     /// High.
     High,
-}
-
-impl Default for Speed {
-    fn default() -> Self {
-        // Reset value
-        Self::Low
-    }
 }
 
 impl From<Speed> for embassy_rp::gpio::SlewRate {

@@ -1,11 +1,8 @@
 [package]
 name = "bench_sched_yield"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { workspace = true, default-features = true, features = [
@@ -13,3 +10,6 @@ ariel-os = { workspace = true, default-features = true, features = [
   "threading",
 ] }
 ariel-os-boards = { workspace = true }
+
+[lints]
+workspace = true

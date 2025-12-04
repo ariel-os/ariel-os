@@ -3,7 +3,7 @@
 use embassy_embedded_hal::shared_bus::asynch::spi::SpiDevice as InnerSpiDevice;
 use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
 
-use crate::{gpio, hal};
+use ariel_os_hal::{gpio, hal};
 
 pub use ariel_os_embassy_common::spi::main::*;
 

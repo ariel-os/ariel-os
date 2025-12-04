@@ -1,0 +1,3 @@
+boards:
+  nrf5340dk-net:
+    chip: nrf5340-net

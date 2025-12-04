@@ -18,7 +18,7 @@ use core::net::{Ipv6Addr, SocketAddr};
 
 use ariel_os_debug::log::info;
 use ariel_os_embassy::cell::SameExecutorCell;
-use coap_handler_implementations::ReportingHandlerBuilder;
+use coap_handler_implementations::ReportingHandlerBuilder as _;
 use embassy_net::udp::{PacketMetadata, UdpSocket};
 use embassy_sync::watch::Watch;
 use static_cell::StaticCell;

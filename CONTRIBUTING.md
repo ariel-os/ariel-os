@@ -11,6 +11,7 @@ Welcome and thanks for your interest in contributing to Ariel OS! We appreciate 
     - We use [Conventional Commits](https://www.conventionalcommits.org/en)
     - We use [DCO](#Developer-Certificate-of-Origin) to sign off commits.
 - Please check our [Coding Conventions](https://ariel-os.github.io/ariel-os/dev/docs/book/coding-conventions.html)
+- If you want to add support for a new board or a new chip, please check [the Developer Guide][adding-board-support]
 - Ariel OS is dual licensed under the [Apache-2.0](./LICENSE-APACHE) and [MIT](./LICENSE-MIT) licenses
 
 ## Developer Certificate of Origin
@@ -85,3 +86,4 @@ We use a [roadmap](https://github.com/ariel-os/ariel-os/issues/242) to track iss
 We are happy to hear from you and help you. The best way to reach us is to ask on our [Matrix chat room](https://matrix.to/#/#ariel-os:matrix.org).
 
 [text of the DCO]: https://developercertificate.org/
+[adding-board-support]: https://ariel-os.github.io/ariel-os/dev/docs/book/adding-board-support.html

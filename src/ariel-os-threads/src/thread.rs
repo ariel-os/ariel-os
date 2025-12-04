@@ -1,4 +1,6 @@
-use crate::{Arch, Cpu, RunqueueId, ThreadData, ThreadId, thread_flags::ThreadFlags};
+#![expect(unsafe_code)]
+
+use crate::{Arch as _, Cpu, RunqueueId, ThreadData, ThreadId, thread_flags::ThreadFlags};
 
 /// Main struct for holding thread data.
 #[derive(Debug)]
@@ -76,7 +78,7 @@ impl Thread {
     /// - must only be called before the stack is active (within `arch::setup_stack()`).
     #[allow(dead_code, reason = "not used in all configurations")]
     pub(crate) unsafe fn stack_paint_init(&mut self, sp: usize) {
-        // Byte that's used to pain stacks.
+        // Byte that's used to paint stacks.
         const STACK_PAINT_COLOR: u8 = 0xCC;
 
         for pos in self.stack_lowest..sp {

@@ -1,5 +1,7 @@
 //! Provides support for the I2C communication bus in controller mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 use esp_hal::{
     Async,
@@ -113,7 +115,8 @@ macro_rules! define_i2c_drivers {
                     twim_config.frequency = config.frequency.into();
                     #[cfg(any(context = "esp32c3", context = "esp32c6", context = "esp32s3"))]
                     let disabled_timeout = BusTimeout::Disabled;
-                    #[cfg(context = "esp32")]
+                    // TODO: use `BusTimeout::Disabled` on s2 after esp-hal bump to 1.0.0
+                    #[cfg(any(context = "esp32", context = "esp32s2"))]
                     // Use the maximum value as timeout cannot be disabled.
                     let disabled_timeout = BusTimeout::Maximum;
                     // Disable timeout as we implement it at a higher level.
@@ -187,5 +190,7 @@ define_i2c_drivers!(I2C0, I2C1);
 define_i2c_drivers!(I2C0);
 #[cfg(context = "esp32c6")]
 define_i2c_drivers!(I2C0);
+#[cfg(context = "esp32s2")]
+define_i2c_drivers!(I2C0, I2C1);
 #[cfg(context = "esp32s3")]
 define_i2c_drivers!(I2C0, I2C1);

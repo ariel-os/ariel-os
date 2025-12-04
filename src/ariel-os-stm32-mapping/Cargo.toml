@@ -1,9 +1,10 @@
 [package]
 name = "ariel-os-stm32-mapping"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
+license.workspace = true
 
 # BEGIN AUTO-GENERATED STM32 MAPPING
 [target.'cfg(context = "stm32c011d6")'.dependencies]

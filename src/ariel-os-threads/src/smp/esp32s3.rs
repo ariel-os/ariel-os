@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use esp_hal::{
     Cpu,
     cpu_control::{CpuControl, Stack},

@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::{Arch, SCHEDULER, Thread, cleanup};
 use core::{arch::global_asm, ptr::write_volatile};
 use cortex_m::peripheral::{SCB, scb::SystemHandler};
@@ -67,7 +69,7 @@ impl Arch for Cpu {
             write_volatile(stack_pos.offset(2), 2); // -> R2
             write_volatile(stack_pos.offset(3), 3); // -> R3
             write_volatile(stack_pos.offset(4), 12); // -> R12
-            write_volatile(stack_pos.offset(5), cleanup as usize); // -> LR
+            write_volatile(stack_pos.offset(5), cleanup as *const () as usize); // -> LR
             write_volatile(stack_pos.offset(6), func as usize); // -> PC
             write_volatile(stack_pos.offset(7), 0x01000000); // -> APSR
         }

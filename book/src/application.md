@@ -11,6 +11,7 @@ These ZSTs indeed are by design neither [`Copy`](https://doc.rust-lang.org/stabl
 Drivers therefore require such ZSTs to be provided to make sure that the caller has (a) access to the peripheral and (b) is the only one having access, since only a single instance of the type can exist at any time.
 Being ZSTs, they do not carry any data to the drivers, only their ownership is meaningful, which is enforced by taking them as parameters for drivers.
 
+> [!TIP]
 > If you are used to thinking about MCU peripherals as referenced by a base address (in the case of memory-mapped peripherals), you can think of these ZSTs as abstraction over these, with a zero-cost, statically-enforced lock ensuring exclusive access.
 
 These Embassy types are defined by [Embassy HAL crates][embassy-hal-crates] in the respective `peripherals` modules.
@@ -53,6 +54,7 @@ Functions can currently be registered as either `spawner`s or `task`s:
 
 Both of these can be provided with an instance of an Ariel OS peripheral struct when needed, using the `peripherals` macro parameters (see the macros' documentation) and taking that Ariel OS peripheral struct as parameter.
 
+> [!TIP]
 > The Embassy peripherals obtained this way are regular Embassy peripherals, which are compatible with both Ariel OS portable drivers and [Embassy HAL crates'][embassy-hal-crates] HAL-specific drivers.
 
 ### Examples

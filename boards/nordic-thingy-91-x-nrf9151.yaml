@@ -1,0 +1,9 @@
+boards:
+  nordic-thingy-91-x-nrf9151:
+    chip: nrf9151
+    leds:
+      led0:
+        pin: P0_29
+    buttons:
+      button0:
+        pin: P0_26

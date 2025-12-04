@@ -1,12 +1,10 @@
 [package]
 name = "ariel-os-debug-log"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [package.metadata.feature-groups]
 logging-facade.xor = { features = ["defmt", "log"] }
@@ -23,3 +21,6 @@ defmt = ["dep:defmt"]
 log = ["dep:log"]
 
 _test = []
+
+[lints]
+workspace = true

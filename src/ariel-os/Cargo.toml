@@ -3,9 +3,7 @@ name = "ariel-os"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
-
-# This should be the Ariel OS MSRV.
-rust-version = "1.85"
+rust-version.workspace = true
 
 [package.metadata.release]
 # We're using this crate to mangle our workspace level `CHANGELOG.md`.
@@ -31,6 +29,7 @@ ariel-os-buildinfo = { workspace = true }
 ariel-os-coap = { path = "../ariel-os-coap", optional = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy = { path = "../ariel-os-embassy" }
+ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-power = { path = "../ariel-os-power" }
@@ -62,15 +61,21 @@ threading = [
 time = ["ariel-os-embassy/time"]
 # Enables the [`random`] module.
 random = ["dep:ariel-os-random", "ariel-os-embassy/random"]
-## Enables a cryptographically secure random number generator in the [`random`] module.
+## Enables a cryptographically secure random number generator in the [`random`]
+## module and support for the `getrandom` crate.
 csprng = ["dep:ariel-os-random", "ariel-os-random?/csprng"]
 # Enables seeding the random number generator from hardware.
 hwrng = ["ariel-os-embassy/hwrng"]
-# Enables support for sensors.
-# *Currently experimental and undocumented.*
+## Enables unified support for sensors.
 sensors = ["dep:ariel-os-sensors"]
 
 #! ## Network protocols
+## Enables support for IPv4.
+ipv4 = ["ariel-os-embassy/ipv4"]
+## Enables support for IPv6.
+ipv6 = ["ariel-os-embassy/ipv6"]
+# Enables support for DHCPv4.
+dhcpv4 = ["ariel-os-embassy/dhcpv4"]
 ## Enables support for TCP.
 tcp = ["ariel-os-embassy/tcp"]
 ## Enables support for UDP.
@@ -79,6 +84,8 @@ udp = ["ariel-os-embassy/udp"]
 dns = ["ariel-os-embassy/dns"]
 ## Enables support for mDNS.
 mdns = ["ariel-os-embassy/mdns"]
+## Enables support for multicast (for both IPv4 and/or IPv6 if enabled).
+multicast = ["ariel-os-embassy/multicast"]
 ## Enables support for [CoAP](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html).
 coap = ["dep:ariel-os-coap", "random"]
 ## Enables applications to set up CoAP server handlers.
@@ -96,14 +103,18 @@ coap-server-config-unprotected = [
 # build system that knows who provides an abort and assert handler.
 liboscore-provide-abort = ["ariel-os-coap/liboscore-provide-abort"]
 liboscore-provide-assert = ["ariel-os-coap/liboscore-provide-assert"]
-# Selects static IP configuration.
-network-config-static = ["ariel-os-embassy/network-config-static"]
+# Selects static IPv4 configuration.
+network-config-ipv4-static = ["ariel-os-embassy/network-config-ipv4-static"]
+# Selects static IPv6 configuration.
+network-config-ipv6-static = ["ariel-os-embassy/network-config-ipv6-static"]
 
 #! ## Serial communication
 ## Enables I2C support.
 i2c = ["ariel-os-embassy/i2c"]
 ## Enables SPI support.
 spi = ["ariel-os-embassy/spi"]
+## Enables UART support.
+uart = ["ariel-os-embassy/uart"]
 ## Enables USB support.
 usb = ["ariel-os-embassy/usb"]
 ## Enables USB HID support.
@@ -114,8 +125,6 @@ usb-hid = ["ariel-os-embassy/usb-hid"]
 #! specific system functionality.
 #! The features below need to be enabled so that the provided custom
 #! configuration is taken into account.
-# Enables custom BLE configuration.
-ble-config-override = ["ariel-os-embassy/ble-config-override"]
 ## Enables custom network configuration.
 network-config-override = ["ariel-os-embassy/network-config-override"]
 ## Enables custom USB configuration.
@@ -155,6 +164,24 @@ ble-cyw43 = ["ariel-os-embassy/ble-cyw43"]
 ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
 ble-central = ["ble", "ariel-os-embassy/ble-central"]
+
+# ## Enables support for the nRF91xx SiP modem.
+nrf91-modem = ["ariel-os-embassy/nrf91-modem", "ariel-os-rt/nrf91-modem"]
+
+#! ## Timer queue size configuration
+#! Should only be enabled when threading is enabled, too.
+#! Default is 64 entries for regular boards and 8 entries for those with little ram.
+#! When more than this number of concurrent timers are used, the system will loop (and not sleep/idle anymore).
+## Enables support for up to 8 concurrent timers. (default on `ram-tiny` boards)
+timer-generic-queue-8 = ["ariel-os-embassy/timer-generic-queue-8"]
+## Enables support for up to 16 concurrent timers.
+timer-generic-queue-16 = ["ariel-os-embassy/timer-generic-queue-16"]
+## Enables support for up to 32 concurrent timers.
+timer-generic-queue-32 = ["ariel-os-embassy/timer-generic-queue-32"]
+## Enables support for up to 64 concurrent timers. (default)
+timer-generic-queue-64 = ["ariel-os-embassy/timer-generic-queue-64"]
+## Enables support for up to 128 concurrent timers.
+timer-generic-queue-128 = ["ariel-os-embassy/timer-generic-queue-128"]
 
 #! ## Development and debugging
 # Enables the debug console, required to use
@@ -202,4 +229,11 @@ executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
 executor-none = ["ariel-os-embassy/executor-none"]
 
 # features needed for `cargo test`
-_test = ["i2c", "no-boards", "spi", "external-interrupts", "ariel-os-rt/_test"]
+_test = [
+  "i2c",
+  "no-boards",
+  "spi",
+  "external-interrupts",
+  "uart",
+  "ariel-os-rt/_test",
+]

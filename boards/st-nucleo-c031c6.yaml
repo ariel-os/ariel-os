@@ -1,0 +1,11 @@
+boards:
+  st-nucleo-c031c6:
+    chip: stm32c031c6
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PA5
+    buttons:
+      button0:
+        pin: PC13

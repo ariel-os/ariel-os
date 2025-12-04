@@ -9,12 +9,12 @@ jobs:
     name: Lint PR Title
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
           fetch-depth: 0
 
       - name: Install committed
-        uses: taiki-e/install-action@6e092deb71cc9ba464addeccefe34c0d06921585 # v2
+        uses: taiki-e/install-action@62da238c048aa0f865cc5a322082957d34e7fc1a # v2
         with:
           tool: committed
 

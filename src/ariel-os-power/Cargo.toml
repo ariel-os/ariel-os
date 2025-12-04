@@ -1,12 +1,10 @@
 [package]
 name = "ariel-os-power"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
 cfg-if = { workspace = true }
@@ -16,3 +14,6 @@ cortex-m = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
 esp-hal = { workspace = true }
+
+[lints]
+workspace = true

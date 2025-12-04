@@ -21,12 +21,13 @@ use ariel_os::{
 #[ariel_os::task(autostart)]
 async fn run_scanner() {
     info!("starting ble stack");
+    let stack = ariel_os::ble::ble_stack().await;
 
     let Host {
         central,
         mut runner,
         ..
-    } = ariel_os::ble::ble_stack().await.build();
+    } = stack.build();
 
     let printer = Printer {
         seen: RefCell::new(Deque::new()),

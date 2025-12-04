@@ -1,0 +1,39 @@
+boards:
+  nrf5340dk:
+    chip: nrf5340
+    flags:
+      - has_usb_device_port
+    leds:
+      led0:
+        color: green
+        pin: P0_28
+        active: low
+      led1:
+        color: green
+        pin: P0_29
+        active: low
+      led2:
+        color: green
+        pin: P0_30
+        active: low
+      led3:
+        color: green
+        pin: P0_31
+
+    buttons:
+      button0:
+        color: green
+        pin: P0_23
+        active: low
+      button1:
+        color: green
+        pin: P0_24
+        active: low
+      button2:
+        color: green
+        pin: P0_08
+        active: low
+      button3:
+        color: green
+        pin: P0_09
+        active: low

@@ -1,17 +1,17 @@
 [package]
 name = "example-coap-server"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os" }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+coap-handler = "0.2.0"
+coap-handler-implementations = "0.5.0"
+coap-message = "0.3.2"
+coap-message-demos = { version = "0.4.0", default-features = false }
+embassy-sync = { workspace = true }
 
 [lints]
 workspace = true
-
-[dependencies]
-embassy-sync = { workspace = true }
-ariel-os = { path = "../../src/ariel-os" }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }
-coap-message = "0.3.2"
-coap-message-demos = { version = "0.4.0", default-features = false }
-coap-handler = "0.2.0"
-coap-handler-implementations = "0.5.0"

@@ -1,13 +1,13 @@
 [package]
 name = "thread-async-interop"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["time"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embassy-sync = { workspace = true, default-features = false }
 
 [lints]
 workspace = true
-
-[dependencies]
-embassy-sync = { workspace = true, default-features = false }
-ariel-os = { path = "../../src/ariel-os", features = ["time"] }
-ariel-os-boards = { path = "../../src/ariel-os-boards" }

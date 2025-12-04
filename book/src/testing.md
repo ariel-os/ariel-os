@@ -12,6 +12,7 @@ once set up, tests can be run by issuing `laze build -b <board> test`.
 `embedded-tests` can be used for any target that has `probe-rs` support (which currently means all targets).
 Both async and non-async code can be tested.
 
+> [!NOTE]
 > Currently, Ariel OS requires a fork of `embedded-test`. When using Ariel's
 build system, this will be used automatically.
 
@@ -81,6 +82,7 @@ apps:
       - embedded-test-only
 ```
 
+> [!IMPORTANT]
 > Even a library crate needs an entry in laze's `apps` in order to make the `test` task available.
 > Selecting `embedded-test-only` will make sure that `laze run` is disabled.
 

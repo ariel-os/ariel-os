@@ -1,7 +1,7 @@
 //! Items specific to the Nordic Semiconductor nRF MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -31,8 +31,15 @@ pub mod i2c;
 #[doc(hidden)]
 pub mod identity;
 
+#[cfg(feature = "nrf91-modem")]
+#[doc(hidden)]
+pub mod modem;
+
 #[cfg(feature = "spi")]
 pub mod spi;
+
+#[cfg(feature = "uart")]
+pub mod uart;
 
 #[cfg(feature = "storage")]
 #[doc(hidden)]

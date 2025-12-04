@@ -27,7 +27,7 @@ bind_interrupts!(struct Irqs {
 });
 
 pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
-    let rng = Rng::new(
+    let mut rng = Rng::new(
         peripherals
             .RNG
             // We don't even have to take it out, just use it to seed the RNG
@@ -36,5 +36,5 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
         Irqs,
     );
 
-    ariel_os_random::construct_rng(rng);
+    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
 }

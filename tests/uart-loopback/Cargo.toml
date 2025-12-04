@@ -1,0 +1,13 @@
+[package]
+name = "uart-loopback"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["time", "uart"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embedded-io-async = { workspace = true }
+
+[lints]
+workspace = true

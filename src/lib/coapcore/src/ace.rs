@@ -59,12 +59,16 @@ type UnprotectedAuthzInfoPost<'a> = AceCbor<'a>;
 /// registry](https://www.iana.org/assignments/cose/cose.xhtml#header-parameters).
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(minicbor::Decode, Debug)]
+#[allow(
+    missing_docs,
+    reason = "Fields correspond 1:1 to the domain items of the same name"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 pub struct HeaderMap<'a> {
     #[n(1)]
     // Might be extended as more exotic algorithms are supported
-    pub(crate) alg: Option<i32>,
+    pub alg: Option<i32>,
     #[cbor(b(5), with = "minicbor::bytes")]
     pub(crate) iv: Option<&'a [u8]>,
 }
@@ -234,11 +238,15 @@ struct SigStructureForSignature1<'a> {
     dead_code,
     reason = "Presence of the item makes CBOR derive tolerate the item"
 )]
+#[allow(
+    missing_docs,
+    reason = "Fields correspond 1:1 to the domain items of the same name"
+)]
 #[cbor(map)]
 #[non_exhaustive]
 pub struct CwtClaimsSet<'a> {
     #[n(3)]
-    pub(crate) aud: Option<&'a str>,
+    pub aud: Option<&'a str>,
     #[n(4)]
     pub(crate) exp: u64,
     #[n(6)]
@@ -246,7 +254,7 @@ pub struct CwtClaimsSet<'a> {
     #[b(8)]
     cnf: Cnf<'a>,
     #[cbor(b(9), with = "minicbor::bytes")]
-    pub(crate) scope: &'a [u8],
+    pub scope: &'a [u8],
 }
 
 /// A single CWT Claims Set Confirmation value.

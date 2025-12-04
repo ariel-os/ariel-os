@@ -3,6 +3,7 @@ name = "ariel-os-rp"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
 
 [lints]
@@ -21,6 +22,7 @@ embassy-rp = { workspace = true, default-features = false, features = [
   # "unstable-traits",
 ] }
 embedded-hal-async = { workspace = true }
+embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
@@ -65,6 +67,9 @@ i2c = ["ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
 spi = ["dep:embassy-embedded-hal", "ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables storage support.
 storage = []

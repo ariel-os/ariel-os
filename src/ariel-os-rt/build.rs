@@ -1,6 +1,10 @@
 use std::env;
 use std::path::PathBuf;
 
+// 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
+#[allow(dead_code, reason = "only used when the feature is enabled")]
+const NRF91_MODEM_IPC_KB: u64 = 32;
+
 fn main() {
     if !context("ariel-os") {
         // Platform-independent tooling.
@@ -10,8 +14,9 @@ fn main() {
     // Put the linker scripts somewhere the linker can find them
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
-    if let Some(context) = context_any(&["cortex-m", "riscv", "xtensa"]) {
+    if let Some(context) = context_any(&["esp32c3", "cortex-m", "riscv", "xtensa"]) {
         let insert_somewhere = match context {
+            "esp32c3" => "INSERT AFTER .rwdata_dummy;",
             "cortex-m" => "INSERT BEFORE .data;",
             "riscv" => "INSERT BEFORE .trap;",
             _ => "",
@@ -19,7 +24,7 @@ fn main() {
 
         let region = match context {
             "cortex-m" => "RAM",
-            "riscv" | "xtensa" => "RWDATA",
+            "riscv" | "xtensa" | "esp32c3" => "RWDATA",
             _ => unreachable!(),
         };
 
@@ -75,13 +80,21 @@ fn write_memoryx() {
     } else if context("nrf5340-net") {
         (64, 256)
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
-        (256, 1024)
+        let ram = 256;
+        let flash = 1024;
+        if cfg!(feature = "nrf91-modem") {
+            (ram - NRF91_MODEM_IPC_KB, flash)
+        } else {
+            (ram, flash)
+        }
     } else {
         panic!("please set the MCU laze context");
     };
 
     let (pagesize, ram_base, flash_base) = if context("nrf5340-net") {
         (2048, 0x2100_0000, 0x0100_0000)
+    } else if cfg!(feature = "nrf91-modem") {
+        (4096, 0x2000_0000 + NRF91_MODEM_IPC_KB * 1024, 0)
     } else {
         (4096, 0x2000_0000, 0)
     };
@@ -94,6 +107,13 @@ fn write_memoryx() {
                 .pagesize(pagesize)
                 .from_env(),
         );
+
+    #[cfg(feature = "nrf91-modem")]
+    let memory = memory.add_section(MemorySection::new(
+        "MODEM",
+        0x2000_0000,
+        NRF91_MODEM_IPC_KB * 1024,
+    ));
 
     memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
 }

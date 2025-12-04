@@ -1,5 +1,11 @@
 //! Synchronous channel implementation for sending data between threads.
 
+#![expect(unsafe_code)]
+#![expect(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
+
 use core::cell::UnsafeCell;
 use core::marker::PhantomData;
 use core::mem::MaybeUninit;

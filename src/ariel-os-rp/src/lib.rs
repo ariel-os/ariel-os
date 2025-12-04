@@ -1,7 +1,7 @@
 //! Items specific to the Raspberry Pi RP MCUs.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -41,6 +41,9 @@ pub mod identity {
 
 #[cfg(feature = "spi")]
 pub mod spi;
+
+#[cfg(feature = "uart")]
+pub mod uart;
 
 #[cfg(feature = "storage")]
 #[doc(hidden)]

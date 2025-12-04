@@ -1,0 +1,33 @@
+# {{ chip_info.name }}
+
+## Chip Info
+
+- **Ariel OS Name:** `{{ chip_info.technical_name }}`
+
+## Support Matrix
+
+|Functionality|Support Status|
+|---|:---:|
+{%- for functionality in chip_info.functionalities %}
+|{{ functionality.title }}|<span title="{{ functionality.description }}">{{ functionality.icon }}</span>{%- if functionality.comments %}{%- for comment in functionality.comments %}[^{{ comment|slugify }}]{%- endfor %}{%- endif %}|
+{%- endfor %}
+
+<p>Legend:</p>
+
+<dl>
+  {%- for support_key in support_keys %}
+  <div>
+    <dt>{{ support_key.icon }}</dt><dd>{{ support_key.description }}</dd>
+  </div>
+  {%- endfor %}
+</dl>
+<style>
+dt, dd {
+  display: inline;
+}
+</style>
+{% for functionality in chip_info.functionalities %}
+  {%- for comment in functionality.comments %}
+[^{{ comment|slugify }}]: {{ comment|capitalize_first }}.
+  {%- endfor %}
+{%- endfor %}

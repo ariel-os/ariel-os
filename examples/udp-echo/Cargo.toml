@@ -1,12 +1,12 @@
 [package]
 name = "udp-echo"
-license.workspace = true
 edition.workspace = true
+license.workspace = true
 publish = false
-
-[lints]
-workspace = true
 
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["udp"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
+
+[lints]
+workspace = true

@@ -17,12 +17,14 @@ A default flavor compatible with the MCU is automatically selected by default in
 Another flavor can be manually selected, replacing the default one, by [selecting its laze module][laze-modules-book].
 Not all flavors are available on all MCUs however, and the laze configuration will only allow selecting one the compatible ones.
 
+> [!NOTE]
 > The `executor-interrupt` might offer a slight performance advantage.
 
 <!-- TODO: When to use each of them? -->
 
 ## Using Multiple Executors
 
+> [!NOTE]
 > Using multiple executors is possible but currently undocumented.
 
 Running multiple executors allows running them with different priorities.

@@ -1,20 +1,16 @@
 //! This module provides an opinionated integration of `embassy`.
 
 #![no_std]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
+#![cfg_attr(nightly, feature(doc_cfg))]
+#![allow(unsafe_code)]
 
-pub mod gpio;
-
-pub use ariel_os_hal as hal;
+pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
 use ariel_os_embassy_common::executor_thread;
 
 #[cfg(feature = "debug-uart")]
 pub mod debug_uart;
-
-#[cfg(feature = "i2c")]
-pub mod i2c;
 
 #[cfg(feature = "spi")]
 pub mod spi;
@@ -40,7 +36,7 @@ use linkme::distributed_slice;
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{EMBASSY_TASKS, asynch, delegate, gpio, hal};
+    pub use crate::{EMBASSY_TASKS, asynch, delegate};
 
     pub mod cell {
         //! Shareable containers.
@@ -51,15 +47,33 @@ pub mod api {
     #[cfg(feature = "time")]
     pub mod time {
         //! Provides time-related facilities.
+        //!
+        //! **Note:** Even though some types from this module might be re-exports from third-party
+        //! crates (e.g., `embassy-time`), they are intended to be used "in a self-contained
+        //! way"—for instance, to sleep asynchronously:
+        //!
+        //! ```
+        //! # use ariel_os_embassy::api::time::{Duration, Timer};
+        //! # async fn example() {
+        //! Timer::after(Duration::from_secs(1)).await;
+        //! // or, equivalent but terser:
+        //! Timer::after_secs(1).await;
+        //! # }
+        //! ```
+        //!
+        //! Items from this module should *not* be passed as arguments to functions that expect
+        //! types from these third-party crates.
+        //! If such specific types are needed, please use those from `ariel_os::reexports` instead.
+
         // NOTE: we may want to re-export more items in the future, but not re-export the whole
         // crate.
-        pub use embassy_time::{Delay, Duration, Instant, TICK_HZ, Timer};
+        pub use embassy_time::{
+            Delay, Duration, Instant, TICK_HZ, TimeoutError, Timer, with_timeout,
+        };
     }
 
     #[cfg(feature = "ble")]
     pub use crate::ble;
-    #[cfg(feature = "i2c")]
-    pub use crate::i2c;
     #[cfg(feature = "net")]
     pub use crate::net;
     #[cfg(feature = "spi")]
@@ -138,6 +152,12 @@ pub(crate) fn init() {
     debug!("ariel-os-embassy::init(): using interrupt mode executor");
     let p = hal::init();
 
+    #[cfg(any(context = "nrf", context = "stm32"))]
+    {
+        use crate::hal::interrupt::{InterruptExt, Priority};
+        hal::SWI.set_priority(Priority::P1);
+    }
+
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
         hal::EXECUTOR.start(hal::SWI);
@@ -192,6 +212,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     debug!("ariel-os-embassy::init_task()");
 
+    #[cfg(board_init)]
+    ariel_os_boards::init(&mut peripherals);
+
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
 
@@ -200,6 +223,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "spi")]
     hal::spi::init(&mut peripherals);
+
+    #[cfg(feature = "uart")]
+    hal::uart::init(&mut peripherals);
 
     #[cfg(feature = "hwrng")]
     hal::hwrng::construct_rng(&mut peripherals);
@@ -233,6 +259,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(all(feature = "ble", not(context = "rp")))]
     hal::ble::driver(ble_peripherals, spawner, ble_config);
 
+    #[cfg(feature = "nrf91-modem")]
+    {
+        hal::modem::driver().await;
+    }
+
     #[cfg(feature = "usb")]
     let mut usb_builder = {
         use static_cell::ConstStaticCell;
@@ -259,7 +290,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "usb-ethernet")]
     let device = {
-        use ariel_os_embassy_common::identity::DeviceId;
+        use ariel_os_embassy_common::identity::DeviceId as _;
         use embassy_usb::class::cdc_ncm::{
             CdcNcmClass, State as CdcNcmState, embassy_net::State as NetState,
         };

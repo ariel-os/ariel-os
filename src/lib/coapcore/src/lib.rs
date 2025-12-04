@@ -55,10 +55,11 @@
 //! stack. There are plans for removing this limitation by integrating deeper with libOSCORE.
 #![doc = document_features::document_features!(feature_label = r#"<span class="stab portability"><code>{feature}</code></span>"#)]
 #![no_std]
-#![cfg_attr(feature = "_nightly_docs", feature(doc_auto_cfg))]
+#![cfg_attr(feature = "_nightly_docs", feature(doc_cfg))]
 #![deny(missing_docs)]
 #![allow(clippy::too_many_lines)]
 #![allow(rust_2018_idioms)]
+#![expect(clippy::unused_trait_names)]
 
 mod iana;
 
@@ -82,4 +83,4 @@ mod seccontext;
 pub use seccontext::*;
 
 mod error;
-pub use error::CredentialError;
+pub use error::{CredentialError, CredentialErrorDetail as CredentialErrorKind};

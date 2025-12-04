@@ -1,20 +1,14 @@
 #![no_main]
 #![no_std]
 
-#[path = "../../../examples/blinky/src/pins.rs"]
-mod pins;
-
 use ariel_os::gpio::{Level, Output};
+use ariel_os_boards::pins;
 
 #[ariel_os::task(autostart, peripherals)]
 async fn coap_run(peripherals: pins::LedPeripherals) {
     use coap_handler_implementations::{HandlerBuilder, new_dispatcher};
 
-    let led = Output::new(peripherals.led, Level::Low);
-
-    // The micro:bit uses an LED matrix; pull the column line low; see blinky example
-    #[cfg(context = "bbc-microbit-v2")]
-    let _led_col1 = Output::new(peripherals.led_col1, Level::Low);
+    let led = Output::new(peripherals.led0, Level::Low);
 
     let handler = new_dispatcher()
         // We offer a single resource: /led, which CBOR true or false can be PUT into

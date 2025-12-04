@@ -1,0 +1,8 @@
+boards:
+  bbc-microbit-v2:
+    chip: nrf52833
+    buttons:
+      button0:
+        pin: P0_14
+      button1:
+        pin: P0_23

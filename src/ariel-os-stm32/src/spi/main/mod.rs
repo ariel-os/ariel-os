@@ -1,5 +1,7 @@
 //! Provides support for the SPI communication bus in main mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
     spi::{BitOrder, Mode, main::Kilohertz},
@@ -22,11 +24,11 @@ const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(24);
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
 #[cfg(context = "stm32f411re")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(25);
-#[cfg(context = "stm32h755zi")]
+#[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(150);
 #[cfg(context = "stm32l475vg")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(40);
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(32);
 // TODO: verify, datasheet says "Baud rate prescaler up to kernel frequency/2 or bypass from RCC in
 // master mode", core freq is 160MHz
@@ -163,7 +165,7 @@ define_spi_drivers!(
    SPI4 => SPI4,
    SPI5 => SPI5,
 );
-#[cfg(context = "stm32h755zi")]
+#[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
@@ -178,7 +180,7 @@ define_spi_drivers!(
    SPI2 => SPI2,
    SPI3 => SPI3,
 );
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 define_spi_drivers!(
    SPI1 => SPI1,
    // FIXME: the other two SPI peripherals share the same interrupt

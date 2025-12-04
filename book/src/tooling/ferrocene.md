@@ -1,8 +1,10 @@
 # [Ferrocene]
 
+> [!NOTE]
 > Ferrocene is the open-source qualified Rust compiler toolchain for safety- and mission-critical. Qualified for automotive, industrial and medical development.
 
-Note: Ferrocene requires a (paid) license to use.
+> [!NOTE]
+> Ferrocene requires a (paid) license to use.
 
 Ferrocene uses [`criticalup`][criticalup], its variant of `rustup`, to manage installing its toolchain and components. Once installed, wrapping regular Rust commands like `cargo` and `rustc` with `criticalup run` enables using the qualified tooling.
 

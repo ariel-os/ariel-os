@@ -4,6 +4,8 @@
 //!
 //! This implementation allows to be initialized without backing storage.
 
+#![expect(unsafe_code)]
+
 use core::mem::MaybeUninit;
 use rbi::RingBufferIndex;
 

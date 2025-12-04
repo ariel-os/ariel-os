@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use ariel_os_threads::{THREAD_FNS, start_threading};
 
 /// # Safety

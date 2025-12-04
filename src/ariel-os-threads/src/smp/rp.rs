@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use crate::arch::{Arch as _, Cpu};
 
 use cortex_m::peripheral::SCB;

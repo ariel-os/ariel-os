@@ -1,6 +1,6 @@
 pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
     #[cfg(context = "rp2040")]
-    let hwrng = {
+    let mut hwrng = {
         let _ = peripherals; // Mark used
 
         // NOTE(datasheet): The RP2040 RNG "does not meet the requirements of randomness for
@@ -9,7 +9,7 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
     };
 
     #[cfg(context = "rp235xa")]
-    let hwrng = {
+    let mut hwrng = {
         embassy_rp::bind_interrupts!(struct Irqs {
             TRNG_IRQ => embassy_rp::trng::InterruptHandler<embassy_rp::peripherals::TRNG>;
         });
@@ -25,5 +25,5 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
         embassy_rp::trng::Trng::new(trng, Irqs, config)
     };
 
-    ariel_os_random::construct_rng(hwrng);
+    ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut hwrng));
 }

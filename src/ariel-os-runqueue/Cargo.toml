@@ -1,12 +1,10 @@
 [package]
 name = "ariel-os-runqueue"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 description = "Ariel OS runqueue implementation"
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
 defmt = { workspace = true, optional = true }
@@ -21,3 +19,6 @@ hax-lib = { git = "https://github.com/hacspec/hax", rev = "cc29a3f8c0eee80a1682b
 defmt = ["dep:defmt"]
 
 _test = []
+
+[lints]
+workspace = true

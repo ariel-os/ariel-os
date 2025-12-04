@@ -1,13 +1,14 @@
 [package]
 name = "ariel-os-macros"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
+license.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lints]
-workspace = true
+[lib]
+proc-macro = true
 
 [dependencies]
 proc-macro-crate = "3.1.0"
@@ -16,26 +17,30 @@ quote = "1.0.35"
 syn = { version = "2.0.47", features = ["full"] }
 
 [dev-dependencies]
-heapless = { workspace = true }
 ariel-os = { workspace = true, features = [
-  "threading",
-  "no-boards",
-  "usb-ethernet",
+  "dhcpv4",
+  "ipv4",
   "network-config-override",
+  "no-boards",
+  "threading",
+  "usb-ethernet",
 ] }
-trybuild = "=1.0.110"
-
-[lib]
-proc-macro = true
+heapless = { workspace = true }
+trybuild = "=1.0.111"
 
 [features]
 # These features could be codegened
 max-sample-min-count-2 = []
 max-sample-min-count-3 = []
 max-sample-min-count-4 = []
+max-sample-min-count-5 = []
 max-sample-min-count-6 = []
 max-sample-min-count-7 = []
+max-sample-min-count-8 = []
 max-sample-min-count-9 = []
 max-sample-min-count-12 = []
 
 _test = []
+
+[lints]
+workspace = true

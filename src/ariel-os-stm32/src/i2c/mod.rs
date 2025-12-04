@@ -22,11 +22,11 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             take_all_i2c_peripherals!(I2C1);
         } else if #[cfg(any(context = "stm32f401re", context = "stm32f411re"))] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
-        } else if #[cfg(context = "stm32h755zi")] {
+        } else if #[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3, I2C4);
         } else if #[cfg(context = "stm32l475vg")]{
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
-        } else if #[cfg(context = "stm32u083mc")] {
+        } else if #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3, I2C4);
         } else if #[cfg(context = "stm32u585ai")] {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3, I2C4);

@@ -3,6 +3,7 @@ name = "ariel-os-esp"
 version = "0.2.0"
 license.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 repository.workspace = true
 
 [lints]
@@ -16,6 +17,7 @@ embassy-executor = { workspace = true, default-features = false }
 embassy-time = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
+embedded-io-async = { workspace = true, optional = true }
 esp-alloc = { workspace = true, default-features = false, optional = true }
 esp-hal = { workspace = true, default-features = false, features = [
   "optfield",
@@ -72,6 +74,16 @@ esp-wifi = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-wifi-sys = { workspace = true, optional = true, features = ["esp32c6"] }
 
+[target.'cfg(context = "esp32s2")'.dependencies]
+esp-hal = { workspace = true, features = ["esp32s2"] }
+esp-hal-embassy = { workspace = true, default-features = false, features = [
+  "esp32s2",
+] }
+esp-wifi = { workspace = true, default-features = false, features = [
+  "esp32s2",
+], optional = true }
+esp-wifi-sys = { workspace = true, optional = true, features = ["esp32s2"] }
+
 [target.'cfg(context = "esp32s3")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-hal-embassy = { workspace = true, default-features = false, features = [
@@ -94,6 +106,9 @@ i2c = ["dep:fugit", "ariel-os-embassy-common/i2c"]
 
 ## Enables SPI support.
 spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
 ## Enables threading support.
 threading = [

@@ -6,6 +6,8 @@
 //!
 //! [`SameExecutorCell`] checks for the correct executor *at runtime*.
 
+#![expect(unsafe_code)]
+
 use embassy_executor::Spawner;
 
 // SAFETY:

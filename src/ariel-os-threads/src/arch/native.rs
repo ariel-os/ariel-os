@@ -1,3 +1,5 @@
+#![expect(unsafe_code)]
+
 use std::cell::Cell;
 
 use std::sync::atomic::{AtomicU32, Ordering};

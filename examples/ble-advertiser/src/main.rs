@@ -16,7 +16,8 @@ use ariel_os::{
 #[ariel_os::task(autostart)]
 async fn run_advertisement() {
     info!("starting ble stack");
-    let mut stack = ariel_os::ble::ble_stack().await.build();
+    let stack = ariel_os::ble::ble_stack().await;
+    let mut host = stack.build();
 
     let mut adv_data = [0; 31];
 
@@ -31,14 +32,14 @@ async fn run_advertisement() {
 
     info!("Starting advertising");
 
-    let _ = join(stack.runner.run(), async {
+    let _ = join(host.runner.run(), async {
         let params = AdvertisementParameters {
             interval_min: Duration::from_millis(100),
             interval_max: Duration::from_millis(100),
             ..Default::default()
         };
 
-        let _advertiser = stack
+        let _advertiser = host
             .peripheral
             .advertise(
                 &params,

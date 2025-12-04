@@ -95,9 +95,9 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // Side SPI of Arduino v3 connector
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 pub type SensorSpi = spi::main::SPI1;
-#[cfg(context = "stm32u083mc")]
+#[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 ariel_os::hal::define_peripherals!(Peripherals {
     spi_sck: PA5,
     spi_miso: PA6,

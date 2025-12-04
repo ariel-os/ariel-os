@@ -1,0 +1,3 @@
+boards:
+  native:
+    chip: native-chip

@@ -22,6 +22,7 @@ subdirs:
   - minimal
   - power
   - random
+  - sensors-debug
   - storage
   - tcp-echo
   - testing
@@ -30,6 +31,7 @@ subdirs:
   - threading-channel
   - threading-event
   - threading-multicore
+  - threading-timers
   - udp-echo
   - usb-keyboard
   - usb-serial

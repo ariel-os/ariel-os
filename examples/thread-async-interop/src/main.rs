@@ -4,8 +4,9 @@
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal};
 
 use ariel_os::{
-    asynch::{blocker, spawner},
+    asynch::spawner,
     debug::{ExitCode, exit, log::*},
+    thread::block_on,
     time::{Instant, Timer},
 };
 
@@ -36,7 +37,7 @@ fn main() {
     for _ in 0..10 {
         // With `block_on()`, async functions can be called from a thread.
         // This way, async primitives like `Signal` can be used.
-        let counter = blocker::block_on(SIGNAL.wait());
+        let counter = block_on(SIGNAL.wait());
 
         // Get time since boot
         let now = Instant::now().as_millis();

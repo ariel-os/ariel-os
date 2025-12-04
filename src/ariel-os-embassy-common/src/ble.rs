@@ -27,8 +27,6 @@ pub fn get_ble_host_resources() -> &'static mut BleHostResources {
 }
 
 /// Configuration for the BLE stack.
-///
-/// You can customize it using the `ble-config-override` feature.
 pub struct Config {
     /// The address of the BLE device.
     pub address: trouble_host::Address,

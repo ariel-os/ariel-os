@@ -1,5 +1,6 @@
 //! Provides an executor that should run inside a thread.
 #![deny(missing_docs)]
+#![expect(unsafe_code)]
 
 // This is based on the upstream embassy cortex-m interrupt executor.
 

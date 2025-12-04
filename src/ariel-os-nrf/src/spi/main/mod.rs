@@ -1,5 +1,7 @@
 //! Provides support for the SPI communication bus in main mode.
 
+#![expect(unsafe_code)]
+
 use ariel_os_embassy_common::{
     impl_async_spibus_for_driver_enum,
     spi::{BitOrder, Mode},
@@ -235,11 +237,13 @@ define_spi_drivers!(
 #[cfg(context = "nrf5340")]
 define_spi_drivers!(
     SERIAL2 => SERIAL2,
-    SERIAL3 => SERIAL3,
+    // Used by UART
+    // SERIAL3 => SERIAL3,
 );
 // FIXME: arbitrary selected peripherals
 #[cfg(context = "nrf91")]
 define_spi_drivers!(
     SERIAL2 => SERIAL2,
-    SERIAL3 => SERIAL3,
+    // Used by UART
+    // SERIAL3 => SERIAL3,
 );

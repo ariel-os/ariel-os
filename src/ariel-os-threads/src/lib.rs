@@ -28,9 +28,15 @@
 // invariants
 #![allow(clippy::indexing_slicing)]
 #![expect(clippy::cast_possible_truncation)]
+#![expect(unsafe_code)]
+#![expect(
+    clippy::undocumented_unsafe_blocks,
+    reason = "should be addressed eventually"
+)]
 
 mod arch;
 mod autostart_thread;
+mod blocker;
 mod ensure_once;
 mod thread;
 mod threadlist;
@@ -57,6 +63,7 @@ pub mod events {
 }
 
 pub use ariel_os_runqueue::{RunqueueId, ThreadId};
+pub use blocker::block_on;
 pub use thread_flags as flags;
 
 #[cfg(feature = "core-affinity")]

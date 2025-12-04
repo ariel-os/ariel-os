@@ -7,3 +7,7 @@ apps:
     selects:
       - network
       - random
+    conflicts:
+      - ram-small
+      # not enough ram
+      - context::esp32s2

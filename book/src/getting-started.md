@@ -3,6 +3,8 @@
 This guide is intended to get you started in about 5 minutes.
 It explains how to compile and run the `hello-word` example to verify your setup, and how to bootstrap a new application.
 
+<!-- If you modify these instructions, you should update .github/workflows/build-templates.yml to reflect that. -->
+
 ## Installing the build prerequisites
 
 1. Install the needed build dependencies.
@@ -12,7 +14,37 @@ It explains how to compile and run the `hello-word` example to verify your setup
    <!-- gcc and curl are only required for espup, but it doesn't hurt to install those here. -->
 
     ```sh
-    apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl
+    apt install git ninja-build pkg-config libudev-dev clang gcc-arm-none-eabi gcc-riscv64-unknown-elf gcc curl make
+    ```
+
+    **Arch Linux**
+
+   <!-- lib32-glibc is needed to build for Xtensa -->
+
+    ```sh
+    pacman -S git ninja pkgconf clang arm-none-eabi-gcc arm-none-eabi-newlib gcc curl make lib32-glibc
+    ```
+
+    For RISC-V chips, the compiler can be installed via the `riscv32-gnu-toolchain-elf-bin` AUR package.
+
+    First, make sure to install the `fakeroot` and `debugedit` packages (part of the `base-devel` metapackage):
+
+    ```sh
+    pacman -S fakeroot debugedit
+    ```
+
+    `riscv32-gnu-toolchain-elf-bin` can be installed with an AUR helper, such as [yay](https://github.com/Jguer/yay):
+
+    ```sh
+    yay -S riscv32-gnu-toolchain-elf-bin
+    ```
+
+    Or manually:
+
+    ```sh
+    git clone https://aur.archlinux.org/riscv32-gnu-toolchain-elf-bin.git
+    cd riscv32-gnu-toolchain-elf-bin
+    makepkg -si
     ```
 
     **macOS (Apple Silicon)**
@@ -67,6 +99,7 @@ The following assumes you have your target board connected to your host computer
 
 Find the Ariel OS name of your supported board in the [support matrix](./hardware-functionality-support.html).
 
+> [!NOTE]
 > The following assumes the Nordic nRF52840-DK, whose Ariel OS name is `nrf52840dk`.
 > Replace that name with your board's.
 
@@ -94,6 +127,7 @@ laze -C examples/hello-world build -b nrf52840dk flash-erase-all
 
 ![Terminal screencast of compiling and flashing the hello-world example](./hello-world_render.svg)
 
+> [!TIP]
 > If you do not plan on working on Ariel OS *itself*, this repository is not needed anymore and can be deleted.
 
 ## Starting an application project from a template repository
@@ -125,6 +159,7 @@ To check your setup, the default application can be compiled and run as follows:
 laze build -b nrf52840dk run
 ```
 
+> [!IMPORTANT]
 > The board name needs to be replaced with your board's.
 
 See the [Build System page](./build-system.md) to learn more about laze and how to work with out-of-tree applications.

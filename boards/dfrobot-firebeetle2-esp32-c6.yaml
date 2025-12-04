@@ -1,0 +1,12 @@
+boards:
+  dfrobot-firebeetle2-esp32-c6:
+    chip: esp32c6fx4
+    leds:
+      led0:
+        pin: GPIO15
+    buttons:
+      button0:
+        pin: GPIO9
+        aliases:
+          - D9
+          - BOOT
