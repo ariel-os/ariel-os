@@ -4,8 +4,8 @@ use ariel_os_debug_log::debug;
 use ariel_os_sensors::{
     Category, Label, MeasurementUnit, Sensor,
     sensor::{
-        Mode as SensorMode, ReadingChannel, ReadingChannels, ReadingError, ReadingWaiter, Sample,
-        Samples, SetModeError, State, TriggerMeasurementError,
+        Mode as SensorMode, ReadingChannel, ReadingChannels, ReadingError, ReadingResult,
+        ReadingWaiter, Sample, Samples, SetModeError, State, TriggerMeasurementError,
     },
     signal::Signal as ReadingSignal,
 };
@@ -54,7 +54,7 @@ pub struct Stts22h<I2C> {
     i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2C>>,
     address: AtomicU8,
     signaling: Signal<CriticalSectionRawMutex, ()>,
-    reading_signal: ReadingSignal<Result<Samples, ReadingError>>,
+    reading_signal: ReadingSignal<ReadingResult<Samples>>,
 }
 
 impl<I2C: I2c + Send> Stts22h<I2C> {
@@ -134,7 +134,7 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
         }
     }
 
-    async fn measure(&'static self) -> Result<Samples, ReadingError> {
+    async fn measure(&'static self) -> ReadingResult<Samples> {
         let mut i2c = self.i2c.get().await.lock().await;
         let address = self.address.load(Ordering::Acquire);
 
