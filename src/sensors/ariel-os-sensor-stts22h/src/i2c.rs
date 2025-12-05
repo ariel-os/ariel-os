@@ -184,14 +184,19 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
 
 impl<I2C: Send> Sensor for Stts22h<I2C> {
     fn trigger_measurement(&self) -> Result<(), TriggerMeasurementError> {
-        if self.state.get() != State::Enabled {
-            return Err(TriggerMeasurementError::NonEnabled);
+        match self.state.get() {
+            State::Measuring => {
+                self.reading.clear();
+            }
+            State::Enabled => {
+                self.state.set(State::Measuring);
+            }
+            State::Uninitialized | State::Disabled | State::Sleeping => {
+                return Err(TriggerMeasurementError::NonEnabled);
+            }
         }
 
-        self.reading.clear();
         self.signaling.signal(());
-
-        self.state.set(State::Measuring);
 
         Ok(())
     }
