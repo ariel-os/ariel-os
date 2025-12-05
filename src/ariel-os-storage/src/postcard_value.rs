@@ -46,12 +46,12 @@ impl<'d, T: Serialize + Deserialize<'d>> Value<'d> for PostcardValue<T> {
         Ok(used.len())
     }
 
-    fn deserialize_from(buffer: &'d [u8]) -> Result<Self, SerializationError> {
+    fn deserialize_from(buffer: &'d [u8]) -> Result<(Self, usize), SerializationError> {
         let value = from_bytes(buffer).map_err(|e| match e {
             postcard::Error::DeserializeUnexpectedEnd => SerializationError::InvalidData,
             _ => SerializationError::Custom(0),
         })?;
 
-        Ok(Self { value })
+        Ok((Self { value }, buffer.len()))
     }
 }
