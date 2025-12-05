@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-C6](../chips/esp32c6.md)
 - **Chip Ariel OS Name:** `esp32c6`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en)

@@ -7,6 +7,8 @@
 - **Chip:** [nRF9151](../chips/nrf9151.md)
 - **Chip Ariel OS Name:** `nrf9151`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250622211955/https://www.nordicsemi.com/Products/Development-hardware/nRF9151-DK)

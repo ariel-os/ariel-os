@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-C6Fx4](../chips/esp32c6fx4.md)
 - **Chip Ariel OS Name:** `esp32c6fx4`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250710082029/https://wiki.dfrobot.com/SKU_DFR1075_FireBeetle_2_Board_ESP32_C6)

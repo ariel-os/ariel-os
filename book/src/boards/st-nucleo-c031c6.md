@@ -7,6 +7,8 @@
 - **Chip:** [STM32C031C6](../chips/stm32c031c6.md)
 - **Chip Ariel OS Name:** `stm32c031c6`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html)

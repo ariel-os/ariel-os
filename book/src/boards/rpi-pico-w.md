@@ -7,6 +7,8 @@
 - **Chip:** [RP2040](../chips/rp2040.md)
 - **Chip Ariel OS Name:** `rp2040`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/)

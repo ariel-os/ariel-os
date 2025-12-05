@@ -538,6 +538,7 @@ struct BoardSupport {
     technical_name: String,
     name: String,
     tier: String,
+    builders: Option<Vec<String>>,
     functionalities: Vec<FunctionalitySupport>,
 }
 
@@ -704,6 +705,7 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport
                     technical_name: board_technical_name.to_owned(),
                     name: board_name.to_owned(),
                     tier: board_info.tier.to_owned(),
+                    builders: board_info.builders.clone(),
                     functionalities: functionalities.map(|f| f.unwrap()).collect(),
                 })
             } else {

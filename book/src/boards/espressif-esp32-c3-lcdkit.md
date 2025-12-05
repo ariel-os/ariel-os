@@ -7,6 +7,8 @@
 - **Chip:** [ESP32-C3](../chips/esp32c3.md)
 - **Chip Ariel OS Name:** `esp32c3`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en)

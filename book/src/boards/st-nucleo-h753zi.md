@@ -7,6 +7,8 @@
 - **Chip:** [STM32H753ZI](../chips/stm32h753zi.md)
 - **Chip Ariel OS Name:** `stm32h753zi`
 
+
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20240625050043/https://www.st.com/en/evaluation-tools/nucleo-h753zi.html)

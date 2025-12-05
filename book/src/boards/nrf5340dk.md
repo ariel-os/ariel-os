@@ -7,6 +7,13 @@
 - **Chip:** [nRF5340](../chips/nrf5340.md)
 - **Chip Ariel OS Name:** `nrf5340`
 
+
+## Laze Builders
+
+Supported laze builders for that board (`laze build -b <builder_name>`):
+- `nrf5340dk`
+- `nrf5340dk-net`
+
 ### References
 
 - [Manufacturer link](https://web.archive.org/web/20250115224621/https://www.nordicsemi.com/Products/Development-hardware/nrf5340-dk)
