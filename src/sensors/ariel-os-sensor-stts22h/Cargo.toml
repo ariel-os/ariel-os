@@ -18,13 +18,13 @@ embedded-hal-async = { workspace = true }
 portable-atomic = { workspace = true }
 
 [dev-dependencies]
-critical-section = { workspace = true, features = ["std"] } # FIXME
+critical-section = { workspace = true, features = ["std"] }
 embassy-executor = { workspace = true, features = [
   "arch-std",
   "executor-thread",
-] } # FIXME
+] }
 embassy-futures = { workspace = true }
-embassy-time = { workspace = true, features = ["std"] } # FIXME
+embassy-time = { workspace = true, features = ["std"] }
 
 [features]
 _test = []
