@@ -146,7 +146,7 @@ fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.8.0", default-features = false }
 ld-memory = { version = "0.2.9" }
 log = { version = "0.4.20", default-features = false }
-once_cell = { version = "=1.19.0", default-features = false, features = [
+once_cell = { version = "=1.21.3", default-features = false, features = [
   "critical-section",
 ] }
 paste = { version = "1.0" }
