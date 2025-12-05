@@ -1,6 +1,5 @@
 //! Driver for the sensor used over I2C.
 
-use ariel_os_debug_log::debug;
 use ariel_os_sensors::{
     Category, Label, MeasurementUnit, Sensor,
     sensor::{
@@ -89,7 +88,6 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
             let _ = self.i2c.init(Mutex::new(i2c_device));
 
             self.state.set(State::Enabled);
-            debug!("{} enabled", PART_NUMBER);
         }
     }
 
