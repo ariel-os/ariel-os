@@ -54,7 +54,7 @@ pub struct Stts22h<I2C> {
     i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2C>>,
     address: AtomicU8,
     signaling: Signal<CriticalSectionRawMutex, ()>,
-    reading_signal: ReadingSignal<ReadingResult<Samples>>,
+    reading: ReadingSignal<ReadingResult<Samples>>,
 }
 
 impl<I2C: I2c + Send> Stts22h<I2C> {
@@ -68,7 +68,7 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
             i2c: OnceLock::new(),
             address: AtomicU8::new(I2cAddress::AddrVdd as u8),
             signaling: Signal::new(),
-            reading_signal: ReadingSignal::new(),
+            reading: ReadingSignal::new(),
         }
     }
 
@@ -125,10 +125,10 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
 
             match self.measure().await {
                 Ok(samples) => {
-                    self.reading_signal.signal(Ok(samples));
+                    self.reading.signal(Ok(samples));
                 }
                 Err(err) => {
-                    self.reading_signal.signal(Err(err));
+                    self.reading.signal(Err(err));
                 }
             }
         }
@@ -188,7 +188,7 @@ impl<I2C: Send> Sensor for Stts22h<I2C> {
             return Err(TriggerMeasurementError::NonEnabled);
         }
 
-        self.reading_signal.clear();
+        self.reading.clear();
         self.signaling.signal(());
 
         self.state.set(State::Measuring);
@@ -201,7 +201,7 @@ impl<I2C: Send> Sensor for Stts22h<I2C> {
             State::Measuring => {
                 self.state.set(State::Enabled);
 
-                ReadingWaiter::new(self.reading_signal.wait())
+                ReadingWaiter::new(self.reading.wait())
             }
             State::Uninitialized | State::Disabled | State::Sleeping => {
                 return ReadingWaiter::new_err(ReadingError::NonEnabled);
