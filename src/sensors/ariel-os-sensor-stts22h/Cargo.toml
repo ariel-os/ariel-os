@@ -4,7 +4,7 @@ name = "ariel-os-sensor-stts22h"
 version = "0.1.0"
 edition.workspace = true
 # This crate's MSRV is decoupled from Ariel OS's.
-rust-version = "1.85"
+rust-version = "1.90"
 repository.workspace = true
 license.workspace = true
 
