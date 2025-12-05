@@ -257,10 +257,6 @@ criteria = "safe-to-deploy"
 version = "0.4.41"
 criteria = "safe-to-deploy"
 
-[[exemptions.ciborium-io]]
-version = "0.2.2"
-criteria = "safe-to-deploy"
-
 [[exemptions.clang-sys]]
 version = "1.8.1"
 criteria = "safe-to-deploy"
@@ -269,20 +265,12 @@ criteria = "safe-to-deploy"
 version = "0.3.5"
 criteria = "safe-to-deploy"
 
-[[exemptions.coap-handler]]
-version = "0.2.0"
-criteria = "safe-to-deploy"
-
-[[exemptions.coap-handler-implementations]]
-version = "0.5.3"
-criteria = "safe-to-deploy"
-
 [[exemptions.coap-message]]
 version = "0.3.6"
 criteria = "safe-to-deploy"
 
 [[exemptions.coap-message-demos]]
-version = "0.4.0"
+version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.coap-message-implementations]]
@@ -305,16 +293,8 @@ criteria = "safe-to-deploy"
 version = "0.1.0-alpha.4"
 criteria = "safe-to-deploy"
 
-[[exemptions.coap-scroll-ring-server]]
-version = "0.2.0"
-criteria = "safe-to-deploy"
-
 [[exemptions.coapcore]]
 version = "0.1.0"
-criteria = "safe-to-deploy"
-
-[[exemptions.cobs]]
-version = "0.3.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.const-default]]
@@ -573,10 +553,6 @@ criteria = "safe-to-deploy"
 version = "1.0.0"
 criteria = "safe-to-deploy"
 
-[[exemptions.embedded-io]]
-version = "0.6.1"
-criteria = "safe-to-deploy"
-
 [[exemptions.embedded-io-async]]
 version = "0.6.1"
 criteria = "safe-to-deploy"
@@ -817,6 +793,10 @@ criteria = "safe-to-deploy"
 version = "0.8.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.heapless]]
+version = "0.9.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.hermit-abi]]
 version = "0.5.1"
 criteria = "safe-to-deploy"
@@ -914,11 +894,11 @@ version = "0.19.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.minicbor]]
-version = "0.24.4"
+version = "0.26.5"
 criteria = "safe-to-deploy"
 
 [[exemptions.minicbor]]
-version = "0.26.5"
+version = "2.1.3"
 criteria = "safe-to-deploy"
 
 [[exemptions.minicbor-adapters]]
@@ -926,11 +906,11 @@ version = "0.0.4"
 criteria = "safe-to-deploy"
 
 [[exemptions.minicbor-derive]]
-version = "0.15.3"
+version = "0.16.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.minicbor-derive]]
-version = "0.16.2"
+version = "0.18.3"
 criteria = "safe-to-deploy"
 
 [[exemptions.minijinja]]
@@ -1079,10 +1059,6 @@ criteria = "safe-to-deploy"
 
 [[exemptions.portable_atomic_enum_macros]]
 version = "0.2.1"
-criteria = "safe-to-deploy"
-
-[[exemptions.postcard]]
-version = "1.1.3"
 criteria = "safe-to-deploy"
 
 [[exemptions.postcard-derive]]
@@ -1309,10 +1285,6 @@ criteria = "safe-to-deploy"
 version = "0.1.0"
 criteria = "safe-to-deploy"
 
-[[exemptions.try-lock]]
-version = "0.2.5@git:45c39685b56a4dba1b71bdbbbe5f731c3c77dc50"
-criteria = "safe-to-deploy"
-
 [[exemptions.typenum]]
 version = "1.18.0"
 criteria = "safe-to-deploy"
@@ -1355,10 +1327,6 @@ criteria = "safe-to-deploy"
 
 [[exemptions.volatile-register]]
 version = "0.2.2"
-criteria = "safe-to-deploy"
-
-[[exemptions.windowed-infinity]]
-version = "0.1.8"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx]]
