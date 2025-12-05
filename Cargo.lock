@@ -1612,7 +1612,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 2.0.106",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -4566,11 +4566,11 @@ dependencies = [
 
 [[package]]
 name = "proc-macro-crate"
-version = "3.3.0"
+version = "3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edce586971a4dfaa28950c6f18ed55e0406c1ab88bbce2c6f6293a7aaba73d35"
+checksum = "219cb19e96be00ab2e37d6e299658a0cfa83e52429179969b0f0121b4ac46983"
 dependencies = [
- "toml_edit",
+ "toml_edit 0.23.4",
 ]
 
 [[package]]
@@ -5675,7 +5675,7 @@ dependencies = [
  "serde",
  "serde_spanned 0.6.8",
  "toml_datetime 0.6.9",
- "toml_edit",
+ "toml_edit 0.22.26",
 ]
 
 [[package]]
@@ -5722,6 +5722,18 @@ dependencies = [
  "serde_spanned 0.6.8",
  "toml_datetime 0.6.9",
  "toml_write",
+ "winnow 0.7.10",
+]
+
+[[package]]
+name = "toml_edit"
+version = "0.23.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7211ff1b8f0d3adae1663b7da9ffe396eabe1ca25f0b0bee42b0da29a9ddce93"
+dependencies = [
+ "indexmap 2.9.0",
+ "toml_datetime 0.7.0",
+ "toml_parser",
  "winnow 0.7.10",
 ]
 
