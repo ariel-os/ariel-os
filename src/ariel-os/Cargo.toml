@@ -208,6 +208,7 @@ no-boards = ["ariel-os-boards/no-boards", "executor-none"]
 # These are selected by laze
 debug-uart = ["ariel-os-debug/uart", "ariel-os-embassy/debug-uart"]
 rtt-target = ["ariel-os-debug/rtt-target"]
+defmt-rtt = ["ariel-os-debug/defmt-rtt"]
 esp-println = ["ariel-os-debug/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
 
