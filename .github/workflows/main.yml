@@ -116,7 +116,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --features "
                 ble,
@@ -167,7 +166,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --target=riscv32imac-unknown-none-elf
             --features "
@@ -187,7 +185,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --features "
                 ble,
@@ -207,7 +204,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --features "
                 ble-central,
@@ -227,7 +223,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --features "
                 embassy-nrf/nrf9160-s,
@@ -247,7 +242,6 @@ jobs:
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
-            --verbose
             --locked
             --features "
                 embassy-stm32/stm32wb55rg,
