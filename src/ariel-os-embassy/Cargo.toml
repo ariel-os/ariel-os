@@ -61,6 +61,8 @@ embassy-executor = { workspace = true, default-features = false, features = [
 embassy-nrf = { workspace = true }
 embedded-io-async = { workspace = true }
 
+[target.'cfg(context = "esp")'.dependencies]
+esp-hal = { workspace = true, default-features = false }
 # Required for debug-over-uart.
 [target.'cfg(context = "stm32")'.dependencies]
 embassy-stm32 = { workspace = true }
