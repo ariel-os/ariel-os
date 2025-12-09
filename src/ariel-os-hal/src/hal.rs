@@ -28,6 +28,8 @@ pub mod define_peripherals;
 
 // these macros need explicit export from crate root in order to re-export them.
 pub use crate::define_peripherals;
+pub use crate::define_uart;
+pub use crate::define_uarts;
 pub use crate::group_peripherals;
 
 pub use define_peripherals::*;
