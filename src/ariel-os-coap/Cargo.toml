@@ -7,8 +7,11 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-boards = { workspace = true, optional = true }
+ariel-os-buildinfo = { workspace = true, optional = true }
 ariel-os-debug = { workspace = true }
 ariel-os-embassy = { workspace = true }
+ariel-os-hal = { path = "../ariel-os-hal", optional = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-random = { workspace = true, features = ["csprng"], optional = true }
 ariel-os-storage = { workspace = true, optional = true }
@@ -31,7 +34,9 @@ embedded-nal-async = { version = "0.8", optional = true }
 embedded-nal-coap = { workspace = true }
 lakers = { version = "0.8.0", default-features = false }
 lakers-crypto-rustcrypto = "0.8.0"
+once_cell = { workspace = true }
 static_cell = { workspace = true }
+slipmux = { version = "0.4.0", optional = true, default-features = false }
 
 # Used for constructing credentials
 cbor-macro = "0.1.0"
@@ -44,6 +49,10 @@ hexlit = "0.5.5"
 
 # For the udp_nal
 embedded-io-async = { workspace = true }
+
+# Only for slipmux
+embedded-nal-minimal-coapserver = { version = "0.5.0", optional = true }
+embedded-nal = { version = "0.9.0", optional = true }
 
 [build-dependencies]
 # "blessed" by Cargo basing its build script API on it <https://blog.rust-lang.org/inside-rust/2024/12/13/this-development-cycle-in-cargo-1.84.html#build-script-api>
@@ -74,6 +83,20 @@ coap-transport-udp = [
   "dep:embassy-net",
   "dep:embedded-nal-async",
   "ariel-os-embassy/net",
+]
+_coap-transport-slipmux = [
+  "dep:embedded-nal-minimal-coapserver",
+  "dep:embedded-nal",
+  "dep:slipmux",
+]
+coap-transport-slipmux-usb = [
+  "dep:ariel-os-buildinfo",
+  "_coap-transport-slipmux",
+]
+coap-transport-slipmux-uart = [
+  "_coap-transport-slipmux",
+  "ariel-os-boards",
+  "ariel-os-hal/uart",
 ]
 
 # Plain feature forwards and selected by laze to fill up the default features on demand.

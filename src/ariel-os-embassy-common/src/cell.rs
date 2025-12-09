@@ -17,6 +17,10 @@ use embassy_executor::Spawner;
 // While `SameExecutorCell::get()` allows passing any `Spawner` object, those are `!Send`,
 // thus they are guaranteed to be for the current Executor.
 unsafe impl<T> Send for SameExecutorCell<T> {}
+// SAFETY:
+//
+// Just as for Send
+unsafe impl<T> Sync for SameExecutorCell<T> {}
 
 /// A cell that allows sending of non-Send types *if they stay on the same executor*.
 ///
