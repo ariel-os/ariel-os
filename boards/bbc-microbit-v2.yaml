@@ -6,3 +6,14 @@ boards:
         pin: P0_14
       button1:
         pin: P0_23
+    uarts:
+      UART_INT:
+        # According to https://tech.microbit.org/hardware/schematic/, which
+        # explains that pins are labeled from the host point of view. In the
+        # schematics of the 2.0 and 2.2 versions, the opposite is shown and
+        # claimed.
+        rx_pin: P1_08 # UART_INT_TX
+        tx_pin: P0_06 # UART_INT_RX
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [UARTE0, UARTE1]
+        host_facing: true
