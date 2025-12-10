@@ -3,7 +3,7 @@
 Ariel OS makes use of the laze build system to run cargo with the
 correct parameters for a specific board and application.
 
-laze provides a `laze build -b <board>` command, which in Ariel OS, internally uses `cargo build`.
+laze provides a `laze build -b <builder>` command, which in Ariel OS, internally uses `cargo build`.
 
 laze commands are by default applied to the application(s) within the directory laze is run.
 For example, when run in `examples/hello-world`, `laze build -b nrf52840dk`
@@ -15,7 +15,7 @@ laze allows to override global variables using e.g., `-DFOO=BAR`.
 ## laze tasks
 
 For tasks like flashing and debugging, Ariel OS uses laze *tasks*.
-laze tasks currently have the syntax `laze build -b <board> [other options] <task-name>`.
+laze tasks currently have the syntax `laze build -b <builder> [other options] <task-name>`.
 For example, to run the hello-world example from the `ariel-os` directory, the command would be:
 
     laze -C examples/hello-world build -b nrf52840dk run
@@ -51,13 +51,24 @@ To enable or disable laze modules for an out-of-tree application, see [below](#e
 
 ## laze contexts
 
-The laze configuration defines a laze context for each MCU, MCU family, and board.
+The laze configuration defines a laze context for each MCU, MCU family, and laze builder.
 These can be found in the [support matrix](./hardware-functionality-support.html), where they are called “Ariel OS name”.
 
 Out-of-tree applications can be restricted to specific laze contexts, see [below](#restricting-an-application-to-specific-mcusboards).
 
 In addition, laze passes the names of all contexts related to the selected builder as rustc `--cfg context=$CONTEXT` flags.
-This makes it possible to use the `#[cfg]` attribute to introduce feature-gates based on the MCU, MCU family, or board, when required.
+This makes it possible to use the `#[cfg]` attribute to introduce feature-gates based on the MCU, MCU family, or laze builder, when required.
+
+## laze builders
+
+laze *builders* are top-level [laze contexts](#laze-contexts) that can be passed on the command line to select which piece of hardware to compile for, using the following:
+
+```sh
+laze build -b <builder>
+```
+
+In simple cases, e.g., boards with only one single-core MCU, laze builders directly correspond to boards.
+However a board—and even a chip—can also have multiple laze builders, e.g., when a board comprises multiple MCUs, or when an MCU contains multiple cores with separate flash memories.
 
 ## Out-of-tree applications
 
@@ -114,7 +125,7 @@ This enables [support for multithreading, but disables multicore usage](./multit
 
 ### Restricting an application to specific MCUs/boards
 
-Finally, an application may be restricted to specific MCUs, MCU families, or boards by explicitly specifying [laze contexts](#laze-contexts) the application is allowed to be compiled for:
+Finally, an application may be restricted to specific MCUs, MCU families, or laze builders by explicitly specifying [laze contexts](#laze-contexts) the application is allowed to be compiled for:
 
 ```yaml
 apps:
