@@ -47,7 +47,7 @@ impl<'d, T: Serialize + Deserialize<'d>> Value<'d> for PostcardValue<T> {
     }
 
     /// # Note
-    /// This will assume that the entire buffer is used for deserialization and thus discard it
+    /// This will assume that the entire buffer is used for deserialization and thus discard it.
     fn deserialize_from(buffer: &'d [u8]) -> Result<(Self, usize), SerializationError> {
         let value = from_bytes(buffer).map_err(|e| match e {
             postcard::Error::DeserializeUnexpectedEnd => SerializationError::InvalidData,
