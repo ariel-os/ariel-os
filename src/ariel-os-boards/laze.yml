@@ -3,6 +3,16 @@
 builders:
 - name: ai-c3
   parent: esp32-c3-mini-1
+- name: arduino-uno-q
+  parent: stm32u585ai
+  provides:
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_VBUS_DETECTION=false
+    - CONFIG_SWI=USART2
 - name: bbc-microbit-v1
   parent: nrf51822-xxaa
   provides:

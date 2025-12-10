@@ -1044,3 +1044,11 @@ boards:
       user_usb: supported
       wifi: not_available
       ethernet_over_usb: supported
+
+  arduino-uno-q:
+    name: Arduino UNO Q
+    url: https://web.archive.org/web/20251012041424/https://docs.arduino.cc/hardware/uno-q/
+    chip: stm32u585ai
+    tier: "3"
+    support:
+      user_usb: supported

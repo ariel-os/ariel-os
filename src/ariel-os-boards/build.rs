@@ -2,6 +2,7 @@
 
 pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"ai-c3\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"arduino-uno-q\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v1\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v2\"))");
     println!(
