@@ -6,8 +6,9 @@ pub async fn init() {
     init_stts22h().await;
 }
 
-pub static STTS22H_I2C: ariel_os_sensor_stts22h::i2c::Stts22h<ariel_os::i2c::controller::I2cDevice> =
-    const { ariel_os_sensor_stts22h::i2c::Stts22h::new(Some("indoor")) };
+pub static STTS22H_I2C: ariel_os_sensor_stts22h::i2c::Stts22h<
+    ariel_os::i2c::controller::I2cDevice,
+> = const { ariel_os_sensor_stts22h::i2c::Stts22h::new(Some("indoor")) };
 #[ariel_os::reexports::linkme::distributed_slice(ariel_os::sensors::SENSOR_REFS)]
 #[linkme(crate = ariel_os::reexports::linkme)]
 static STTS22H_I2C_REF: &'static dyn ariel_os::sensors::Sensor = &STTS22H_I2C;
