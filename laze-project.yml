@@ -1741,6 +1741,8 @@ modules:
         build: false
     env:
       global:
+        FEATURES:
+          - ariel-os/embedded-test
         RUSTFLAGS:
           - -Clink-arg=-Tembedded-test.x
 

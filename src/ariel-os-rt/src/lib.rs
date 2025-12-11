@@ -191,3 +191,10 @@ fn startup() -> ! {
         loop {}
     }
 }
+
+#[cfg(feature = "embedded-test")]
+#[ariel_os_macros::thread(autostart, stacksize = 16384)]
+fn embedded_test_thread() {
+    // TODO: make stack size configurable
+    unsafe { embedded_test::export::__embedded_test_entry() }
+}

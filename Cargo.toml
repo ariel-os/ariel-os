@@ -94,7 +94,7 @@ embedded-io-async = { version = "0.6.1", default-features = false }
 embedded-nal-coap = "0.1.0-alpha.4"
 embedded-storage = { version = "0.3.1" }
 embedded-storage-async = { version = "0.4.1" }
-embedded-test = { version = "0.6.1", default-features = false, features = [
+embedded-test = { version = "0.7.0", default-features = false, features = [
   "ariel-os",
 ] }
 
