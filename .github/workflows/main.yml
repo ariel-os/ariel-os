@@ -118,6 +118,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --features "
                 ble,
                 coap,
@@ -170,6 +171,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --target=riscv32imac-unknown-none-elf
             --features "
                 esp-hal-embassy/esp32c6,
@@ -190,6 +192,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --features "
                 ble,
                 ble-cyw43,
@@ -210,6 +213,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --features "
                 ble-central,
                 ble-peripheral,
@@ -230,6 +234,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --features "
                 embassy-nrf/nrf9160-s,
                 external-interrupts,
@@ -250,6 +255,7 @@ jobs:
           args: |
             --verbose
             --locked
+            --tests
             --features "
                 embassy-stm32/stm32wb55rg,
                 external-interrupts,
@@ -268,6 +274,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             -p coapcore
             --
             --deny warnings

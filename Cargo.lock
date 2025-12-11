@@ -981,7 +981,7 @@ dependencies = [
  "bs58",
  "chrono",
  "data-encoding",
- "half 2.6.0",
+ "half",
  "nom",
  "num-bigint",
  "num-rational",
@@ -1109,12 +1109,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ciborium-io"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05afea1e0a06c9be33d539b876f1ce3692f4afea2cb41f740e7743225ed1c757"
-
-[[package]]
 name = "cipher"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1203,9 +1197,9 @@ dependencies = [
 
 [[package]]
 name = "coap-handler"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8600ae8e54c9be6e0c5273fad0503e12f827742e4e3fea5a521412478d603b72"
+checksum = "503c04616163d1b4912e3e780d60d1defbe483e62e953dd9ebe74a3644ab4b96"
 dependencies = [
  "coap-message",
  "coap-numbers",
@@ -1213,23 +1207,22 @@ dependencies = [
 
 [[package]]
 name = "coap-handler-implementations"
-version = "0.5.3"
+version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f1999f9d308e6d5d3bfa857e471cc58ecbbf7732f06b3b8acf25127142f73ea"
+checksum = "be376890958ba8ccf700300361ee426bc1a1539714690e4ab5128c50400d578c"
 dependencies = [
- "ciborium-io",
  "coap-handler",
  "coap-message",
  "coap-message-utils",
  "coap-numbers",
  "crc",
  "document-features",
- "embedded-io 0.4.0",
- "minicbor 0.19.1",
- "minicbor 0.24.4",
- "minicbor 0.26.5",
- "serde",
- "serde_cbor",
+ "embedded-io 0.7.1",
+ "embedded-io-adapters",
+ "extra-embedded-io-adapters",
+ "minicbor 2.1.3",
+ "minicbor-adapters 0.0.8",
+ "tee-embedded-io",
  "windowed-infinity",
 ]
 
@@ -1244,9 +1237,9 @@ dependencies = [
 
 [[package]]
 name = "coap-message-demos"
-version = "0.4.0"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c49342f485367852eb9d5acb6545d0107b5565752c70a9600cf7e58f00482c9a"
+checksum = "4dbad3642208c8cdf19d5a9492a99d489b0eb2e14d98dcb299bab6c9443ac22f"
 dependencies = [
  "coap-handler",
  "coap-handler-implementations",
@@ -1254,8 +1247,9 @@ dependencies = [
  "coap-message-utils",
  "coap-numbers",
  "coap-request",
- "heapless 0.7.17",
- "serde",
+ "heapless 0.9.1",
+ "minicbor 2.1.3",
+ "minicbor-adapters 0.0.8",
 ]
 
 [[package]]
@@ -1312,12 +1306,11 @@ dependencies = [
 
 [[package]]
 name = "coap-scroll-ring-server"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "54221724caa364079527fcd8be89bc401f25921f0927e6574c934a8ecb9778a0"
+checksum = "a6e000edb22bfca8a5b0cecc76c8a8deb5474888b78ff3bda22d71f35e89c1ef"
 dependencies = [
  "coap-handler",
- "coap-handler-implementations",
  "coap-message",
  "coap-message-utils",
  "coap-numbers",
@@ -1345,7 +1338,7 @@ dependencies = [
  "liboscore",
  "log",
  "minicbor 0.26.5",
- "minicbor-adapters",
+ "minicbor-adapters 0.0.4",
  "p256",
  "rand_core 0.9.3",
 ]
@@ -1628,7 +1621,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 2.0.106",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -2193,17 +2186,26 @@ dependencies = [
 
 [[package]]
 name = "embedded-io"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef1a6892d9eef45c8fa6b9e0086428a2cca8491aca8f787c534a3d6d0bcb3ced"
-
-[[package]]
-name = "embedded-io"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 dependencies = [
  "defmt 0.3.100",
+]
+
+[[package]]
+name = "embedded-io"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
+
+[[package]]
+name = "embedded-io-adapters"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c900a1c087f1f7d17cdc84a1290df91521cd90933efa76d68e568385d889f2f4"
+dependencies = [
+ "embedded-io 0.7.1",
 ]
 
 [[package]]
@@ -2791,6 +2793,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "extra-embedded-io-adapters"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41b7942b8008547a00ed47550218a6d56314c9984b8ab969db62ecb87fbc13ff"
+dependencies = [
+ "crc",
+ "digest",
+ "embedded-io 0.7.1",
+]
+
+[[package]]
 name = "eyre"
 version = "0.6.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2847,7 +2860,7 @@ checksum = "707070ccf8c4173548210893a0186e29c266901b71ed20cd9e2ca0193dfe95c3"
 dependencies = [
  "az",
  "bytemuck",
- "half 2.6.0",
+ "half",
  "typenum",
 ]
 
@@ -3086,12 +3099,6 @@ dependencies = [
 
 [[package]]
 name = "half"
-version = "1.8.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b43ede17f21864e81be2fa654110bf1e793774238d86ef8555c37e6519c0403"
-
-[[package]]
-name = "half"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "459196ed295495a68f7d7fe1d84f6c4b7ff0e21fe3017b2f283c6fac3ad803c9"
@@ -3219,6 +3226,16 @@ dependencies = [
  "hash32 0.3.1",
  "portable-atomic",
  "serde",
+ "stable_deref_trait",
+]
+
+[[package]]
+name = "heapless"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1edcd5a338e64688fbdcb7531a846cfd3476a54784dcb918a0844682bc7ada5"
+dependencies = [
+ "hash32 0.3.1",
  "stable_deref_trait",
 ]
 
@@ -3849,20 +3866,20 @@ checksum = "d7005aaf257a59ff4de471a9d5538ec868a21586534fff7f85dd97d4043a6139"
 
 [[package]]
 name = "minicbor"
-version = "0.24.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29be4f60e41fde478b36998b88821946aafac540e53591e76db53921a0cc225b"
-dependencies = [
- "minicbor-derive 0.15.3",
-]
-
-[[package]]
-name = "minicbor"
 version = "0.26.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a309f581ade7597820083bc275075c4c6986e57e53f8d26f88507cfefc8c987"
 dependencies = [
  "minicbor-derive 0.16.2",
+]
+
+[[package]]
+name = "minicbor"
+version = "2.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9a1119e42fbacc2bb65d860de6eb7c930562bc71d42dca026d06b0228231f77"
+dependencies = [
+ "minicbor-derive 0.18.3",
 ]
 
 [[package]]
@@ -3877,10 +3894,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "minicbor-derive"
-version = "0.15.3"
+name = "minicbor-adapters"
+version = "0.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd2209fff77f705b00c737016a48e73733d7fbccb8b007194db148f03561fb70"
+checksum = "d3658ff955d05287ab2d54356081d34ecfbd0c02c3b319f8561d95cb79d43021"
+dependencies = [
+ "cboritem",
+ "embedded-io 0.7.1",
+ "heapless 0.9.1",
+ "minicbor 2.1.3",
+]
+
+[[package]]
+name = "minicbor-derive"
+version = "0.16.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a9882ef5c56df184b8ffc107fc6c61e33ee3a654b021961d790a78571bb9d67a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3889,9 +3918,9 @@ dependencies = [
 
 [[package]]
 name = "minicbor-derive"
-version = "0.16.2"
+version = "0.18.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a9882ef5c56df184b8ffc107fc6c61e33ee3a654b021961d790a78571bb9d67a"
+checksum = "50fcf6ee04e942da7d65066bf427fe7bdd229256998809eeecee25db6dc9aac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4833,7 +4862,7 @@ dependencies = [
 [[package]]
 name = "riot-coap-handler-demos"
 version = "0.2.0"
-source = "git+https://gitlab.com/etonomy/riot-module-examples?rev=9fd24a2608ad5dbaec33fc0c2aec8c5b3539dd0d#9fd24a2608ad5dbaec33fc0c2aec8c5b3539dd0d"
+source = "git+https://gitlab.com/etonomy/riot-module-examples?rev=934940b60df9177d60e9bd9b062546a20d48182d#934940b60df9177d60e9bd9b062546a20d48182d"
 dependencies = [
  "coap-handler",
  "coap-handler-implementations",
@@ -4844,11 +4873,9 @@ dependencies = [
  "embedded-graphics",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
- "heapless 0.7.17",
- "minicbor 0.24.4",
- "serde",
- "serde_bytes",
- "serde_cbor",
+ "heapless 0.9.1",
+ "minicbor 2.1.3",
+ "minicbor-adapters 0.0.8",
  "switch-hal",
  "try-lock-portable-atomic",
 ]
@@ -5109,25 +5136,6 @@ checksum = "5b81787e655bd59cecadc91f7b6b8651330b2be6c33246039a65e5cd6f4e0828"
 dependencies = [
  "heapless 0.8.0",
  "ryu",
- "serde",
-]
-
-[[package]]
-name = "serde_bytes"
-version = "0.10.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "defbb8a83d7f34cc8380751eeb892b825944222888aff18996ea7901f24aec88"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "serde_cbor"
-version = "0.11.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bef2ebfde456fb76bbcf9f59315333decc4fda0b2b44b420243c11e0f5ec1f5"
-dependencies = [
- "half 1.8.3",
  "serde",
 ]
 
@@ -5478,6 +5486,15 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "embedded-io-async",
+]
+
+[[package]]
+name = "tee-embedded-io"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c4040e9295b6bc2865a3e0c07c98ab4a2261a6321d5eab16466ccce984f540c3"
+dependencies = [
+ "embedded-io 0.7.1",
 ]
 
 [[package]]
@@ -6102,19 +6119,11 @@ dependencies = [
 
 [[package]]
 name = "windowed-infinity"
-version = "0.1.8"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b0ecf5dbfe6eecaae159df1cbf0945c9194c2b0512fbab6a3513c8257d7ccec"
+checksum = "b6aad0911b4b6516712a138831af937bfef95015f649c9877d8ba84707a72ec4"
 dependencies = [
- "ciborium-io",
- "crc",
- "digest",
- "embedded-io 0.4.0",
- "minicbor 0.19.1",
- "minicbor 0.24.4",
- "minicbor 0.26.5",
- "serde",
- "serde_cbor",
+ "embedded-io 0.7.1",
 ]
 
 [[package]]
