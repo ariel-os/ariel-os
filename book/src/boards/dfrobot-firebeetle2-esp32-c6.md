@@ -21,9 +21,8 @@
 |SPI Main Mode|<span title="supported">✅</span>|
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
+|User USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^no-generic-usb-peripheral]|
 |Wi-Fi|<span title="supported">✅</span>|
-|Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
