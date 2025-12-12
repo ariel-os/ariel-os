@@ -1,7 +1,7 @@
 use ariel_os::hal::{peripherals, spi};
 
 #[cfg(context = "esp")]
-pub type SensorSpi = spi::main::SPI2;
+pub type SensorSpi<'a> = spi::main::SPI2<'a>;
 #[cfg(context = "esp")]
 ariel_os::hal::define_peripherals!(Peripherals {
     spi_sck: GPIO0,

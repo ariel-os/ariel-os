@@ -23,6 +23,8 @@ embedded-alloc = { version = "0.6.0", default-features = false, features = [
 
 [target.'cfg(context = "esp")'.dependencies]
 esp-alloc = { workspace = true, default-features = false }
+esp-hal = { workspace = true, default-features = false }
+esp-metadata-generated = { workspace = true }
 
 [target.'cfg(context = "ariel-os")'.dev-dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["alloc"] }
