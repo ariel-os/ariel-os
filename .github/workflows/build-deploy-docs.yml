@@ -101,17 +101,16 @@ jobs:
             --no-deps \
             -p embedded-hal@1.0.0 \
             -p embedded-hal-async \
-            -p embedded-io-async
+            -p embedded-io-async@0.6.1
           cargo doc \
             --no-deps \
             -p embedded-hal@1.0.0 \
             -p embedded-hal-async \
-            -p embedded-io-async
+            -p embedded-io-async@0.6.1
           RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly' cargo doc \
               --target=riscv32imac-unknown-none-elf \
               --no-deps \
               --features "
-                  esp-hal-embassy/esp32c6,
                   esp-hal/esp32c6,
                   external-interrupts,
                   i2c,
