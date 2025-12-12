@@ -79,14 +79,19 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
 
     let (integer_part, decimal_part) = if channel_scaling < 0 {
         // Fixed point arithmetic
-        let int_part = value as i32 / 10_i32.pow(-channel_scaling as u32);
+        let int_part = value as i32 / 10_i32.pow(u32::from((-channel_scaling).cast_unsigned()));
         (
             int_part,
-            value.unsigned_abs() - int_part.unsigned_abs() * 10_u32.pow(-channel_scaling as u32),
+            value.unsigned_abs()
+                - int_part.unsigned_abs()
+                    * 10_u32.pow(u32::from((-channel_scaling).cast_unsigned())),
         )
     } else {
         // Just multiply
-        (value as i32 * 10_i32.pow(channel_scaling as u32), 0)
+        (
+            value as i32 * 10_i32.pow(u32::from(channel_scaling.cast_unsigned())),
+            0,
+        )
     };
 
     if integer_part >= 1000 {
@@ -103,8 +108,7 @@ fn print_temp_to_lcd(lcd: &mut Lcd, sample: Sample, reading_channel: ReadingChan
         lcd.write_digit(Digit::Minus, 0).unwrap();
     }
 
-    let decimal_part = decimal_part as u32;
-    let integer_part = integer_part.abs() as u32;
+    let integer_part = integer_part.unsigned_abs();
 
     // hundreds digit
     let h = integer_part / 100;
