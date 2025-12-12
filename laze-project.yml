@@ -378,7 +378,6 @@ contexts:
       - ?debug-console
       - ?esp-println
     provides:
-      - has_executor_single_thread_support
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
@@ -1096,7 +1095,10 @@ modules:
     help: use probe-rs as runner
     selects:
       - ?debug-console
-      - ?rtt-target
+      - defmt:
+          - defmt-rtt
+      - log:
+          - rtt-target
     provides_unique:
       - embedded-test-runner
 
@@ -1587,23 +1589,6 @@ modules:
         FEATURES:
           - ariel-os/executor-thread
 
-  - name: executor-single-thread
-    help: use Embassy executor within single "thread mode" thread
-    selects:
-      - has_executor_single_thread_support
-    provides_unique:
-      - executor
-    conflicts:
-      - sw/threading
-    env:
-      global:
-        FEATURES:
-          - ariel-os/executor-single-thread
-
-  - name: has_executor_single_thread_support
-    selects:
-      - doc-only
-
   # Enabled for MCU families that provide a dedicated software interrupt (SWI),
   # and thus do not require to sacrifice another, arbitrarily-chosen peripheral
   # interrupt.
@@ -1625,7 +1610,6 @@ modules:
       # Unless otherwise selected (by application, context, on cli, or by other
       # dependencies), the interrupt executor is preferred.
       - ?executor-interrupt
-      - ?executor-single-thread
       - ?executor-thread
 
   - name: single-core
@@ -1662,6 +1646,14 @@ modules:
       global:
         FEATURES:
           - ariel-os/infini-core
+  - name: defmt-rtt
+    help: use defmt-rtt in ariel-os-debug
+    provides_unique:
+      - ariel-os-debug-backend
+    env:
+      global:
+        FEATURES:
+          - ariel-os/defmt-rtt
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
