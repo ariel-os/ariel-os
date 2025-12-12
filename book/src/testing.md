@@ -8,7 +8,7 @@ Please refer to the [`embedded-test` documentation][embedded-test-docs] for
 more info.
 
 The build system of Ariel OS integrates the `embedded-test`-based testing so that
-once set up, tests can be run by issuing `laze build -b <board> test`.
+once set up, tests can be run by issuing `laze build -b <builder> test`.
 `embedded-tests` can be used for any target that has `probe-rs` support (which currently means all targets).
 Both async and non-async code can be tested.
 
@@ -123,7 +123,7 @@ more information.
 To run a test, execute from within the crate's directory:
 
 ```shell
-laze build -b <board> test
+laze build -b <builder> test
 ```
 
 [embedded-test-docs]: https://docs.rs/embedded-test/latest/embedded_test/

@@ -12,7 +12,7 @@ It is also recommended to use the the `Even Better TOML` exentsion to have TOML 
 
 ## Configuration for developing Ariel OS apps
 
-This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one board, avoiding the linter to be confused about double declarations.
+This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding the linter to be confused about double declarations.
 
 You will need to have a nightly version of Rust installed, you can install the latest one using:
 
@@ -29,9 +29,9 @@ laze build -D CARGO_TOOLCHAIN=+nightly install-toolchain
 To generate/update your vscode configuration in `.vscode/settings.json`, run in the root of your project:
 
 ```sh
-laze build -b <board> vscode-config
+laze build -b <builder> vscode-config
 ```
 
-With `<board>` being the laze identifier of a board your application will run on (e.g. `nrf52840dk`).
-
 If you get an error about the JSON file being malformated, you may have comments or trailing commas in your configuration, try removing them in `.vscode/settings.json`.
+
+[laze-builders-book]: ./build-system.md#laze-builders
