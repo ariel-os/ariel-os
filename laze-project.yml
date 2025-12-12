@@ -1438,8 +1438,7 @@ modules:
       by coap-client and/or coap-server as per the needs of other modules and
       the application.
     selects:
-      - random
-      - network
+      - coap-transport
       # A NoSec version (coap-server-config-unprotected) could be made to be
       # buildable without a C compiler, but right now it's easier to just make
       # the C compiler a prerequisite.
@@ -1456,6 +1455,55 @@ modules:
           - ariel-os/coap
         executor_stacksize_required:
           - "32768"
+
+  - name: coap-transport-udp
+    help: The transport of CoAP that uses the CoAP-over-UDP transport on the network stack.
+    # On the long run, this should not be unique, but currently it is.
+    provides_unique: [coap-transport]
+    selects:
+      - network
+      - random
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-transport-udp
+
+  - name: coap-transport-slipmux
+    help: The transport of CoAP that uses the slipmux (CoAP multiplexed in SLIP) over some UART.
+    provides_unique: [coap-transport]
+    selects:
+      - coap-transport-slipmux-backend
+
+  - name: coap-transport-slipmux-usb
+    help: |
+      The slipmux CoAP transport goes over a single USB serial device created for this purpose.
+
+      As it is currently implemented, this uses up the complete USB device.
+
+      Note that for devices that are USB capable, creating a USB Ethernet interface is generally preferred.
+      Typical reasons to do this are:
+
+      * interaction with hosts where users or applications are authorized to interact with serial ports but not set even a link-local network,
+      * drop-in replacing devices that had a dedicated USB serial chip, and
+      * testing.
+    provides_unique: [coap-transport-slipmux-backend]
+    selects:
+      - usb
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-transport-slipmux-usb
+
+  - name: coap-transport-slipmux-uart
+    help: |
+      The slipmux CoAP transport goes over the board's designated host-side UART.
+    provides_unique: [coap-transport-slipmux-backend]
+    selects:
+      - has_host_facing_uart
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-transport-slipmux-uart
 
   - name: coap-server
     help: Support for applications to set up CoAP server handlers.
@@ -1481,6 +1529,7 @@ modules:
     selects:
       - coap
       - sw/storage
+      - random
     provides_unique:
       - coap-server-config
     env:
@@ -1515,6 +1564,7 @@ modules:
       This configuration may change over time, in lockstep with the examples' setup.
     selects:
       - coap
+      - random
     provides_unique: [coap-server-config]
     env:
       global:
