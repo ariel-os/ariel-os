@@ -1,18 +1,18 @@
-# Espressif ESP32-C3-LCDkit
+# ST NUCLEO-WBA55CG
 
 ## laze Builders
 
 For more information on laze builders, check out [this page](../build-system.md).
-### `espressif-esp32-c3-lcdkit`
+### `st-nucleo-wba55`
 
-- **Tier:** 1
-- **Chip:** [ESP32-C3](../chips/esp32c3.md)
-- **Chip Ariel OS Name:** `esp32c3`
+- **Tier:** 3
+- **Chip:** [STM32WBA55CG](../chips/stm32wba55cg.md)
+- **Chip Ariel OS Name:** `stm32wba55cg`
 
 To target this laze builder, run the following command in the root of your ArielOS app:
 
 ```bash
-laze build -b espressif-esp32-c3-lcdkit
+laze build -b st-nucleo-wba55
 ```
 
 #### Support Matrix
@@ -21,16 +21,16 @@ laze build -b espressif-esp32-c3-lcdkit
 |---|:---:|
 |GPIO|<span title="supported">✅</span>|
 |Debug Output|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="supported">✅</span>|
-|SPI Main Mode|<span title="supported">✅</span>|
-|UART|<span title="supported">✅</span>|
+|I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|UART|<span title="needs testing">🚦</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
-|Wi-Fi|<span title="supported">✅</span>|
+|User USB|<span title="not available on this piece of hardware">–</span>|
+|Wi-Fi|<span title="not available on this piece of hardware">–</span>|
 |Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
-|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^removing-items-not-supported]|
 
 <p>Legend:</p>
 
@@ -59,9 +59,8 @@ dt, dd {
 
 ## References
 
-- [Manufacturer link](https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en)
+- [Manufacturer link](https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wba55cg.html)
 
 
   
-[^no-generic-usb-peripheral]: No generic USB peripheral.
-[^requires-partitioning-support]: Requires partitioning support.
+[^removing-items-not-supported]: Removing items not supported.

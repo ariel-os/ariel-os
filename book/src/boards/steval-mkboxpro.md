@@ -1,17 +1,21 @@
 # STEVAL-MKBOXPRO
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `st-steval-mkboxpro`
 
 - **Tier:** 2
-- **Ariel OS Name:** `st-steval-mkboxpro`
 - **Chip:** [STM32U585AI](../chips/stm32u585ai.md)
 - **Chip Ariel OS Name:** `stm32u585ai`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html)
+```bash
+laze build -b st-steval-mkboxpro
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,6 +57,12 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html)
+
+
+  
 [^usb-does-not-enumerate]: USB does not enumerate.
 [^see-also-https-github-com-embassy-rs-embassy-issues-2376]: See also: https://github.com/embassy-rs/embassy/issues/2376.
 [^workaround-in-https-github-com-ariel-os-ariel-os-pull-1126]: Workaround in: https://github.com/ariel-os/ariel-os/pull/1126.

@@ -1,17 +1,21 @@
 # ST B-L475E-IOT01A
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `st-b-l475e-iot01a`
 
 - **Tier:** 2
-- **Ariel OS Name:** `st-b-l475e-iot01a`
 - **Chip:** [STM32L475VG](../chips/stm32l475vg.md)
 - **Chip Ariel OS Name:** `stm32l475vg`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html)
+```bash
+laze build -b st-b-l475e-iot01a
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,6 +57,12 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html)
+
+
+  
 [^an-external-wi-fi-module-is-present-on-the-board]: An external Wi-Fi module is present on the board.
 [^usb-does-not-enumerate]: USB does not enumerate.
 [^see-also-https-github-com-embassy-rs-embassy-issues-2376]: See also: https://github.com/embassy-rs/embassy/issues/2376.

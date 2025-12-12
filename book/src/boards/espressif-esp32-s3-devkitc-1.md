@@ -1,17 +1,21 @@
 # Espressif ESP32-S3-DevKitC-1
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `espressif-esp32-s3-devkitc-1`
 
 - **Tier:** 1
-- **Ariel OS Name:** `espressif-esp32-s3-devkitc-1`
 - **Chip:** [ESP32-S3](../chips/esp32s3.md)
 - **Chip Ariel OS Name:** `esp32s3`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en)
+```bash
+laze build -b espressif-esp32-s3-devkitc-1
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,4 +57,10 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en)
+
+
+  
 [^requires-partitioning-support]: Requires partitioning support.

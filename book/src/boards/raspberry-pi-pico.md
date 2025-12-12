@@ -1,17 +1,21 @@
-# Raspberry Pi Pico 2 W
+# Raspberry Pi Pico
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `rpi-pico`
 
 - **Tier:** 1
-- **Ariel OS Name:** `rpi-pico2-w`
-- **Chip:** [RP235xa](../chips/rp235xa.md)
-- **Chip Ariel OS Name:** `rp235xa`
+- **Chip:** [RP2040](../chips/rp2040.md)
+- **Chip Ariel OS Name:** `rp2040`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/)
+```bash
+laze build -b rpi-pico
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -19,11 +23,11 @@
 |Debug Output|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="supported">✅</span>|
-|UART|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^uart-loopback-test-only-works-once-after-a-power-cycle][^see-also-https-github-com-ariel-os-ariel-os-pull-1368-issuecomment-3406073140]|
+|UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
-|Wi-Fi|<span title="supported">✅</span>|
-|Bluetooth Low Energy|<span title="supported">✅</span>|
+|Wi-Fi|<span title="not available on this piece of hardware">–</span>|
+|Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Ethernet over USB|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
@@ -53,5 +57,9 @@ dt, dd {
 }
 </style>
 
-[^uart-loopback-test-only-works-once-after-a-power-cycle]: Uart-loopback test only works once after a power cycle.
-[^see-also-https-github-com-ariel-os-ariel-os-pull-1368-issuecomment-3406073140]: See also: https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140.
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/)
+
+
+  

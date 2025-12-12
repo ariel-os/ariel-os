@@ -1,17 +1,21 @@
-# Raspberry Pi Pico
+# nRF9160-DK
 
-## Board Info
+## laze Builders
 
-- **Tier:** 1
-- **Ariel OS Name:** `rpi-pico`
-- **Chip:** [RP2040](../chips/rp2040.md)
-- **Chip Ariel OS Name:** `rp2040`
+For more information on laze builders, check out [this page](../build-system.md).
+### `nrf9160dk-nrf9160`
 
-### References
+- **Tier:** 2
+- **Chip:** [nRF9160](../chips/nrf9160.md)
+- **Chip Ariel OS Name:** `nrf9160`
 
-- [Manufacturer link](https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/)
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-## Support Matrix
+```bash
+laze build -b nrf9160dk-nrf9160
+```
+
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -21,11 +25,11 @@
 |SPI Main Mode|<span title="supported">✅</span>|
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="supported">✅</span>|
+|User USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
-|Ethernet over USB|<span title="supported">✅</span>|
-|Hardware Random Number Generator|<span title="supported">✅</span>|
+|Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
+|Hardware Random Number Generator|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^only-available-through-the-cryptocell]|
 |Persistent Storage|<span title="supported">✅</span>|
 
 <p>Legend:</p>
@@ -52,3 +56,11 @@ dt, dd {
   display: inline;
 }
 </style>
+
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk)
+
+
+  
+[^only-available-through-the-cryptocell]: Only available through the CryptoCell.

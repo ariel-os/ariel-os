@@ -1,17 +1,21 @@
 # ST NUCLEO-H755ZI-Q
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `st-nucleo-h755zi-q`
 
 - **Tier:** 1
-- **Ariel OS Name:** `st-nucleo-h755zi-q`
 - **Chip:** [STM32H755ZI](../chips/stm32h755zi.md)
 - **Chip Ariel OS Name:** `stm32h755zi`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html)
+```bash
+laze build -b st-nucleo-h755zi-q
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,6 +57,12 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html)
+
+
+  
 [^usb-does-not-enumerate]: USB does not enumerate.
 [^see-also-https-github-com-embassy-rs-embassy-issues-2376]: See also: https://github.com/embassy-rs/embassy/issues/2376.
 [^workaround-in-https-github-com-ariel-os-ariel-os-pull-1126]: Workaround in: https://github.com/ariel-os/ariel-os/pull/1126.

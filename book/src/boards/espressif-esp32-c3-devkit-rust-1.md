@@ -1,17 +1,21 @@
 # Espressif ESP32-C3-DevKit-RUST-1
 
-## Board Info
+## laze Builders
+
+For more information on laze builders, check out [this page](../build-system.md).
+### `espressif-esp32-c3-devkit-rust-1`
 
 - **Tier:** 3
-- **Ariel OS Name:** `espressif-esp32-c3-devkit-rust-1`
 - **Chip:** [ESP32-C3](../chips/esp32c3.md)
 - **Chip Ariel OS Name:** `esp32c3`
 
-### References
+To target this laze builder, run the following command in the root of your ArielOS app:
 
-- [Manufacturer link](http://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2)
+```bash
+laze build -b espressif-esp32-c3-devkit-rust-1
+```
 
-## Support Matrix
+#### Support Matrix
 
 |Functionality|Support Status|
 |---|:---:|
@@ -53,5 +57,11 @@ dt, dd {
 }
 </style>
 
+## References
+
+- [Manufacturer link](http://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2)
+
+
+  
 [^no-generic-usb-peripheral]: No generic USB peripheral.
 [^requires-partitioning-support]: Requires partitioning support.

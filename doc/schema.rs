@@ -8,7 +8,8 @@ pub struct Matrix {
     pub support_keys: Vec<SupportKeyInfo>,
     pub functionalities: Vec<FunctionalityInfo>,
     pub chips: HashMap<String, ChipInfo>,
-    pub boards: HashMap<String, BoardInfo>,
+    pub builders: HashMap<String, BuilderInfo>,
+    pub boards: Vec<BoardInfo>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -39,13 +40,19 @@ pub struct ChipInfo {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct BuilderInfo {
+    pub chip: String,
+    pub tier: String,
+    pub support: HashMap<String, SupportInfo>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct BoardInfo {
     pub name: String,
     pub description: Option<String>,
     pub url: String,
-    pub chip: String,
-    pub tier: String,
-    pub support: HashMap<String, SupportInfo>,
+    pub builders: Vec<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
