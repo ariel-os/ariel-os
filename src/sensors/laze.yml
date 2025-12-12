@@ -1,2 +1,3 @@
 subdirs:
+  - ariel-os-sensor-lsm6dsv16x
   - ariel-os-sensor-stts22h
