@@ -1,0 +1,4 @@
+apps:
+  - name: thermometer
+    context:
+      - stm32u083c-dk

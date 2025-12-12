@@ -5363,6 +5363,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "stm32-lcd-driver"
+version = "0.1.0"
+source = "git+https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git?rev=24482c9d80793e97c4fe457a99102650c2152f41#24482c9d80793e97c4fe457a99102650c2152f41"
+dependencies = [
+ "critical-section",
+ "embassy-stm32",
+ "embassy-time",
+ "stm32-metapac",
+]
+
+[[package]]
 name = "stm32-metapac"
 version = "16.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5565,6 +5576,19 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "embedded-test",
+]
+
+[[package]]
+name = "thermometer"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-sensor-stts22h",
+ "ariel-os-sensors",
+ "embassy-sync 0.6.2",
+ "once_cell",
+ "stm32-lcd-driver",
 ]
 
 [[package]]
