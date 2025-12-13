@@ -96,7 +96,7 @@ macro_rules! define_spi_drivers {
                         static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
                     }
 
-                    let mut spi_config = esp_hal::spi::master::Config::default()
+                    let spi_config = esp_hal::spi::master::Config::default()
                         .with_frequency(config.frequency.into())
                         .with_mode(crate::spi::from_mode(config.mode))
                         .with_read_bit_order(crate::spi::from_bit_order(config.bit_order))
