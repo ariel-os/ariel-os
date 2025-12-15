@@ -171,6 +171,15 @@ fn convert_error(err: embassy_stm32::usart::ConfigError) -> ConfigError {
     }
 }
 
+fn from_config(config: &Config) -> embassy_stm32::usart::Config {
+    let mut uart_config = embassy_stm32::usart::Config::default();
+    uart_config.baudrate = Baudrate::from(config.baudrate).into();
+    uart_config.data_bits = from_databits(config.data_bits);
+    uart_config.stop_bits = from_stopbits(config.stop_bits);
+    uart_config.parity = from_parity(config.parity);
+    uart_config
+}
+
 macro_rules! define_uart_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
         $(
@@ -207,11 +216,7 @@ macro_rules! define_uart_drivers {
                     config: Config,
                 ) -> Result<Uart<'d>, ConfigError> {
 
-                    let mut uart_config = embassy_stm32::usart::Config::default();
-                    uart_config.baudrate = Baudrate::from(config.baudrate).into();
-                    uart_config.data_bits = from_databits(config.data_bits).into();
-                    uart_config.stop_bits = from_stopbits(config.stop_bits).into();
-                    uart_config.parity = from_parity(config.parity).into();
+                    let uart_config = from_config(&config);
                     bind_interrupts!(struct Irqs {
                         $interrupt => BufferedInterruptHandler<peripherals::$peripheral>;
                     });
