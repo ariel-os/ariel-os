@@ -24,7 +24,7 @@ pub use ariel_os_embassy_common::spi::main::*;
 /// SPI-specific hardware capabilities or through a generic software timeout.
 // TODO: do we actually need a CriticalSectionRawMutex here?
 pub type SpiDevice<'a> =
-    InnerSpiDevice<'a, CriticalSectionRawMutex, hal::spi::main::Spi<'a>, gpio::Output<'a>>;
+    InnerSpiDevice<'a, CriticalSectionRawMutex, hal::spi::main::Spi<'a>, gpio::Output>;
 
 /// Returns the highest SPI frequency available on the MCU that fits into the requested
 /// range.

@@ -86,20 +86,20 @@ pub mod input {
 
     pub trait InputPin {}
 
-    pub fn new<'a, T: InputPin>(
-        _pin: impl IntoPeripheral<'a, T>,
+    pub fn new<T: InputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool,
-    ) -> Result<Input<'a>, ariel_os_embassy_common::gpio::input::Error> {
+    ) -> Result<Input<'static>, ariel_os_embassy_common::gpio::input::Error> {
         unimplemented!();
     }
 
     #[cfg(feature = "external-interrupts")]
-    pub fn new_int_enabled<'a, T: InputPin>(
-        _pin: impl IntoPeripheral<'a, T>,
+    pub fn new_int_enabled<T: InputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool,
-    ) -> Result<IntEnabledInput<'a>, ariel_os_embassy_common::gpio::input::Error> {
+    ) -> Result<IntEnabledInput<'static>, ariel_os_embassy_common::gpio::input::Error> {
         unimplemented!();
     }
 
@@ -125,12 +125,12 @@ pub mod output {
 
     pub trait OutputPin {}
 
-    pub fn new<'a, T: OutputPin>(
-        _pin: impl IntoPeripheral<'a, T>,
+    pub fn new<T: OutputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _initial_level: ariel_os_embassy_common::gpio::Level,
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
-    ) -> Output<'a> {
+    ) -> Output<'static> {
         unimplemented!();
     }
 

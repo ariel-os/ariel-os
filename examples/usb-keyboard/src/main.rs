@@ -106,9 +106,9 @@ mod buttons {
 
     pub const KEY_COUNT: usize = 4;
 
-    pub struct Buttons<'a>([Input<'a>; KEY_COUNT]);
+    pub struct Buttons([Input; KEY_COUNT]);
 
-    impl<'a> Buttons<'a> {
+    impl Buttons {
         pub fn new(button_peripherals: crate::pins::Buttons) -> Self {
             Self([
                 Input::new(button_peripherals.btn1, PULL),
@@ -118,7 +118,7 @@ mod buttons {
             ])
         }
 
-        pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut Input<'a>> {
+        pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut Input> {
             self.0.iter_mut()
         }
     }
