@@ -1,0 +1,20 @@
+[package]
+name = "ariel-os-gnss-time-extension"
+# Versioned separately from the rest of Ariel OS.
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+# This crate's MSRV is decoupled from Ariel OS's.
+rust-version = "1.85"
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os-debug = { path = "../ariel-os-debug" }
+ariel-os-sensors = { path = "../ariel-os-sensors" }
+time = { workspace = true, features = ["macros"] }
+defmt = { workspace = true, optional = true }
+[features]
+defmt = ["dep:defmt", "ariel-os-sensors/defmt"]
