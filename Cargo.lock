@@ -2021,7 +2021,7 @@ dependencies = [
 [[package]]
 name = "embassy-hal-internal"
 version = "0.3.0"
-source = "git+https://github.com/kaspar030/embassy?rev=0feffeb3c90748112a64c6570a39e1251311accb#0feffeb3c90748112a64c6570a39e1251311accb"
+source = "git+https://github.com/ariel-os/embassy?rev=0feffeb3c90748112a64c6570a39e1251311accb#0feffeb3c90748112a64c6570a39e1251311accb"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -2032,7 +2032,7 @@ dependencies = [
 [[package]]
 name = "embassy-net"
 version = "0.7.1"
-source = "git+https://github.com/kaspar030/embassy?rev=f88320aea64cf24026dd95ce3405ac23253b1117#f88320aea64cf24026dd95ce3405ac23253b1117"
+source = "git+https://github.com/ariel-os/embassy?rev=f88320aea64cf24026dd95ce3405ac23253b1117#f88320aea64cf24026dd95ce3405ac23253b1117"
 dependencies = [
  "defmt 1.0.1",
  "document-features",
@@ -2069,7 +2069,7 @@ dependencies = [
 [[package]]
 name = "embassy-nrf"
 version = "0.8.0"
-source = "git+https://github.com/ariel-os/embassy?rev=3940a79a29ae#3940a79a29ae578a35625cae949bea473abf21d1"
+source = "git+https://github.com/ariel-os/embassy?rev=3940a79a29ae578a35625cae949bea473abf21d1#3940a79a29ae578a35625cae949bea473abf21d1"
 dependencies = [
  "bitflags 2.9.1",
  "cfg-if",
@@ -2102,7 +2102,7 @@ dependencies = [
 [[package]]
 name = "embassy-rp"
 version = "0.8.0"
-source = "git+https://github.com/kaspar030/embassy?rev=0314802282e112a47b4ccb303c0e7f09cf33df53#0314802282e112a47b4ccb303c0e7f09cf33df53"
+source = "git+https://github.com/ariel-os/embassy?rev=0314802282e112a47b4ccb303c0e7f09cf33df53#0314802282e112a47b4ccb303c0e7f09cf33df53"
 dependencies = [
  "atomic-polyfill",
  "cfg-if",
@@ -2187,7 +2187,7 @@ dependencies = [
 [[package]]
 name = "embassy-stm32"
 version = "0.4.0"
-source = "git+https://github.com/kaspar030/embassy?rev=1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c#1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c"
+source = "git+https://github.com/ariel-os/embassy?rev=1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c#1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c"
 dependencies = [
  "aligned",
  "bit_field",
