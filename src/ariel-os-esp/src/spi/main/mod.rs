@@ -74,21 +74,21 @@ macro_rules! define_spi_drivers {
     ($( $peripheral:ident ),* $(,)?) => {
         $(
             /// Peripheral-specific SPI driver.
-            pub struct $peripheral<'a> {
-                spim: YieldingAsync<BlockingAsync<InnerSpi<'a, esp_hal::Blocking>>>,
+            pub struct $peripheral {
+                spim: YieldingAsync<BlockingAsync<InnerSpi<'static, esp_hal::Blocking>>>,
             }
 
-            impl<'a> $peripheral<'a> {
+            impl $peripheral {
                 /// Returns a driver implementing [`embedded_hal_async::spi::SpiBus`] for this SPI
                 /// peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new(
-                    sck_pin: impl PeripheralOutput<'a>,
-                    miso_pin: impl PeripheralInput<'a>,
-                    mosi_pin: impl PeripheralOutput<'a>,
+                    sck_pin: impl PeripheralOutput<'static>,
+                    miso_pin: impl PeripheralInput<'static>,
+                    mosi_pin: impl PeripheralOutput<'static>,
                     config: Config,
-                ) -> Spi<'a> {
+                ) -> Spi {
                     // Make this struct a compile-time-enforced singleton: having multiple statics
                     // defined with the same name would result in a compile-time error.
                     paste::paste! {
@@ -123,14 +123,14 @@ macro_rules! define_spi_drivers {
         )*
 
         /// Peripheral-agnostic driver.
-        pub enum Spi<'a> {
+        pub enum Spi {
             $(
                 #[doc = concat!(stringify!($peripheral), " peripheral.")]
-                $peripheral($peripheral<'a>)
+                $peripheral($peripheral)
             ),*
         }
 
-        impl<'a> embedded_hal_async::spi::ErrorType for Spi<'a> {
+        impl embedded_hal_async::spi::ErrorType for Spi {
             type Error = esp_hal::spi::Error;
         }
 
