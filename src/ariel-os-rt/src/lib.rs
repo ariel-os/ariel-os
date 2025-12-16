@@ -183,20 +183,18 @@ fn startup() -> ! {
         }
     }
 
-    #[cfg(feature = "executor-single-thread")]
-    {
-        unsafe extern "Rust" {
-            fn __ariel_os_embassy_init() -> !;
-        }
-        debug!("ariel_os_rt::startup() launching single thread executor");
-        unsafe { __ariel_os_embassy_init() };
-    }
-
-    #[cfg(not(any(feature = "threading", feature = "executor-single-thread")))]
+    #[cfg(not(feature = "threading"))]
     {
         #[cfg(test)]
         test_main();
         #[allow(clippy::empty_loop)]
         loop {}
     }
+}
+
+#[cfg(feature = "embedded-test")]
+#[ariel_os_macros::thread(autostart, stacksize = 16384)]
+fn embedded_test_thread() {
+    // TODO: make stack size configurable
+    unsafe { embedded_test::export::__embedded_test_entry() }
 }

@@ -16,8 +16,7 @@ use ariel_os::{
 #[ariel_os::task(autostart)]
 async fn run_advertisement() {
     info!("starting ble stack");
-    let stack = ariel_os::ble::ble_stack().await;
-    let mut host = stack.build();
+    let mut stack = ariel_os::ble::ble_stack().await.build();
 
     let mut adv_data = [0; 31];
 

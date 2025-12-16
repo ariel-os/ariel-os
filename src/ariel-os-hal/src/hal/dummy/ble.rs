@@ -3,6 +3,7 @@ use bt_hci::{
     controller::{ControllerCmdAsync, ControllerCmdSync},
 };
 use embassy_executor::Spawner;
+use trouble_host::{Stack, prelude::DefaultPacketPool};
 
 pub struct Peripherals {}
 
@@ -12,7 +13,7 @@ impl Peripherals {
     }
 }
 
-pub async fn ble_stack() -> &'static trouble_host::Stack<'static, DummyController> {
+pub async fn ble_stack() -> &'static Stack<'static, DummyController, DefaultPacketPool> {
     async { unimplemented!() }.await
 }
 

@@ -13,8 +13,10 @@ cfg-if.workspace = true
 linkme.workspace = true
 ariel-os-alloc = { workspace = true, optional = true }
 ariel-os-debug.workspace = true
+ariel-os-macros = { path = "../ariel-os-macros", optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
+embedded-test = { workspace = true, optional = true }
 
 [build-dependencies]
 ld-memory = { workspace = true, features = ["build-rs"], optional = true }
@@ -49,7 +51,7 @@ alloc = ["dep:ariel-os-alloc"]
 threading = ["dep:ariel-os-threads"]
 
 debug-console = ["ariel-os-debug/debug-console"]
-executor-single-thread = []
+embedded-test = ["dep:ariel-os-macros", "dep:embedded-test"]
 executor-interrupt = []
 panic-printing = []
 _panic-handler = []

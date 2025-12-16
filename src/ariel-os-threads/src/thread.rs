@@ -27,6 +27,9 @@ pub struct Thread {
     #[cfg(feature = "core-affinity")]
     pub core_affinity: crate::CoreAffinity,
 
+    /// Possibly set deadline.
+    pub deadline: Option<u64>,
+
     /// Lowest stack address.
     pub stack_lowest: usize,
     /// Highest stack address.
@@ -54,6 +57,8 @@ pub enum ThreadState {
     ChannelRxBlocked(usize),
     /// Waiting to send on a [`crate::sync::Channel`], i.e. waiting for the receiver.
     ChannelTxBlocked(usize),
+    /// Waiting for a [`super::wait_queue::WaitQueue`].
+    WaitQueueBlocked,
 }
 
 impl Thread {
@@ -67,6 +72,7 @@ impl Thread {
             tid: ThreadId::new(0),
             #[cfg(feature = "core-affinity")]
             core_affinity: crate::CoreAffinity::no_affinity(),
+            deadline: None,
             stack_highest: 0,
             stack_lowest: 0,
         }
@@ -99,6 +105,6 @@ mod tests {
         // `ThreadData` is arch-specific, and is replaced with a dummy value in tests; its size is
         // non-zero otherwise.
         assert_eq!(size_of::<ThreadData>(), 0);
-        assert_eq!(size_of::<Thread>(), size_of::<ThreadData>() + 40);
+        assert_eq!(size_of::<Thread>(), size_of::<ThreadData>() + 56);
     }
 }

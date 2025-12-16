@@ -7,7 +7,6 @@ use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError
 use esp_hal::{
     Async,
     gpio::interconnect::{PeripheralInput, PeripheralOutput},
-    peripheral::Peripheral,
     peripherals,
     uart::Uart as EspUart,
 };
@@ -196,8 +195,8 @@ macro_rules! define_uart_drivers {
                 /// [`ConfigError::ConfigurationNotSupported`].
                 #[expect(clippy::new_ret_no_self)]
                 pub fn new(
-                    rx_pin: impl Peripheral<P: PeripheralInput> + 'd,
-                    tx_pin: impl Peripheral<P: PeripheralOutput> + 'd,
+                    rx_pin: impl PeripheralInput<'d> ,
+                    tx_pin: impl PeripheralOutput<'d> ,
                     _rx_buf: &'d mut [u8],
                     _tx_buf: &'d mut [u8],
                     config: Config,
@@ -237,7 +236,7 @@ macro_rules! define_uart_drivers {
         }
 
         impl embedded_io_async::ErrorType for Uart<'_> {
-            type Error = esp_hal::uart::Error;
+            type Error = esp_hal::uart::IoError;
         }
 
         impl_async_uart_for_driver_enum!(Uart, $( $peripheral ),*);

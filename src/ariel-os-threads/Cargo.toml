@@ -19,6 +19,8 @@ paste.workspace = true
 ariel-os-debug.workspace = true
 ariel-os-runqueue.workspace = true
 ariel-os-utils.workspace = true
+embassy-time.workspace = true
+embassy-time-driver.workspace = true
 portable-atomic.workspace = true
 static_cell.workspace = true
 

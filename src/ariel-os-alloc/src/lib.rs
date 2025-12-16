@@ -80,12 +80,33 @@ mod alloc {
     unsafe fn init_esp_alloc() {
         use ariel_os_debug::log::debug;
 
+        const RECLAIMED_SIZE: usize = const {
+            let range = esp_metadata_generated::memory_range!("DRAM2_UNINIT");
+            range.end - range.start
+        };
+
+        const EXTRA_HEAP_SIZE: usize = const {
+            if RECLAIMED_SIZE < CONFIG_HEAPSIZE {
+                CONFIG_HEAPSIZE - RECLAIMED_SIZE
+            } else {
+                0
+            }
+        };
+
         debug!(
-            "ariel-os-alloc: initializing heap with {} bytes",
-            CONFIG_HEAPSIZE
+            "ariel-os-alloc: initializing heap with {} bytes from DRAM2_UNINIT",
+            RECLAIMED_SIZE
         );
 
-        esp_alloc::heap_allocator!(CONFIG_HEAPSIZE);
+        esp_alloc::heap_allocator!(#[esp_hal::ram(reclaimed)] size: RECLAIMED_SIZE);
+
+        if EXTRA_HEAP_SIZE > 0 {
+            debug!(
+                "ariel-os-alloc: initializing extra heap with {} bytes",
+                EXTRA_HEAP_SIZE
+            );
+            esp_alloc::heap_allocator!(size: EXTRA_HEAP_SIZE);
+        }
     }
 
     /// Initializes **no** heap.
