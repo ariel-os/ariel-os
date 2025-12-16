@@ -469,7 +469,9 @@ contexts:
     selects:
       - xtensa
     provides:
-      - has_multi_core_support
+      # TODO: re-enable as soon as upstream peripheral drivers become `Send`
+      # in combination with multi-core.
+      # - has_multi_core_support
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
