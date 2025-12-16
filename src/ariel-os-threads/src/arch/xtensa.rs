@@ -1,6 +1,10 @@
 #![expect(unsafe_code)]
 
-use esp_hal::{interrupt, peripherals::Interrupt, trapframe::TrapFrame};
+use esp_hal::{
+    interrupt::{self, software::SoftwareInterrupt},
+    peripherals::Interrupt,
+    trapframe::TrapFrame,
+};
 
 use crate::{Arch, SCHEDULER, cleanup};
 
@@ -15,10 +19,9 @@ impl Arch for Cpu {
 
     fn schedule() {
         #[cfg(not(feature = "multi-core"))]
-        {
-            let system = esp_hal::peripherals::SYSTEM::regs();
-            let reg = system.cpu_intr_from_cpu(0);
-            reg.write(|w| w.cpu_intr().set_bit());
+        // SAFETY: `steal().raise()` is safe on an initialized software interrupt
+        unsafe {
+            SoftwareInterrupt::<0>::steal().raise()
         }
         #[cfg(feature = "multi-core")]
         crate::smp::schedule_on_core(crate::core_id())
@@ -80,11 +83,9 @@ const fn default_trap_frame() -> TrapFrame {
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
-    {
-        let system = esp_hal::peripherals::SYSTEM::regs();
-        let reg = system.cpu_intr_from_cpu(0);
-        reg.write(|w| w.cpu_intr().clear_bit());
-    }
+    // clear FROM_CPU_INTR0
+    // SAFETY: `steal().reset()` is safe on an initialized software interrupt
+    unsafe { SoftwareInterrupt::<0>::steal().reset() }
 
     unsafe { sched(trap_frame) }
 }
@@ -97,9 +98,8 @@ extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
 extern "C" fn FROM_CPU_INTR1(trap_frame: &mut TrapFrame) {
     unsafe {
         // clear FROM_CPU_INTR1
-        esp_hal::peripherals::SYSTEM::regs()
-            .cpu_intr_from_cpu(1)
-            .modify(|_, w| w.cpu_intr().clear_bit());
+        // SAFETY: `steal().reset()` is safe on an initialized software interrupt
+        unsafe { SoftwareInterrupt::<1>::steal().reset() }
 
         sched(trap_frame)
     }

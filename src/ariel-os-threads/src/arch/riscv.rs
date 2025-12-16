@@ -2,12 +2,8 @@
 
 use ariel_os_debug::log::{debug, trace};
 use core::arch::global_asm;
-#[cfg(context = "esp32c6")]
-use esp_hal::peripherals::INTPRI as SYSTEM;
-#[cfg(context = "esp32c3")]
-use esp_hal::peripherals::SYSTEM;
 use esp_hal::{
-    interrupt::{self, Priority},
+    interrupt::{self, Priority, software::SoftwareInterrupt},
     peripherals::Interrupt,
     riscv,
     system::Cpu as EspHalCpu,
@@ -61,11 +57,8 @@ impl Arch for Cpu {
 
     /// Triggers software interrupt for the context switch.
     fn schedule() {
-        unsafe {
-            (&*SYSTEM::PTR)
-                .cpu_intr_from_cpu(0)
-                .modify(|_, w| w.cpu_intr().set_bit());
-        }
+        // SAFETY: `steal().raise()` is safe on an initialized software interrupt
+        unsafe { SoftwareInterrupt::<0>::steal().raise() }
     }
 
     fn setup_stack(thread: &mut Thread, stack: &mut [u8], func: fn(), arg: Option<usize>) {
@@ -388,12 +381,9 @@ unsafe extern "C" fn sched() -> u64 {
     let mstatus_st = esp_hal::riscv::register::mstatus::read();
     let mstatus = mstatus_st.bits();
 
-    unsafe {
-        // clear FROM_CPU_INTR0
-        (&*SYSTEM::PTR)
-            .cpu_intr_from_cpu(0)
-            .modify(|_, w| w.cpu_intr().clear_bit());
-    }
+    // clear FROM_CPU_INTR0
+    // SAFETY: `steal().reset()` is safe on an initialized software interrupt
+    unsafe { SoftwareInterrupt::<0>::steal().reset() }
 
     let (current_high_regs, next_high_regs) = loop {
         if let Some(res) = SCHEDULER.with_mut(|mut scheduler| {

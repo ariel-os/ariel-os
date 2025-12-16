@@ -1,7 +1,7 @@
 #![expect(unsafe_code)]
 
 use esp_hal::{
-    interrupt,
+    interrupt::{self, software::SoftwareInterrupt},
     peripherals::{CPU_CTRL, Interrupt},
     system::{Cpu, CpuControl, Stack},
 };
@@ -65,8 +65,15 @@ impl Multicore for Chip {
             // have the most recent runqueue state.
             id ^= 1;
         }
-        ptr.cpu_intr_from_cpu(id.into())
-            .write(|w| w.cpu_intr().set_bit());
+
+        // SAFETY: `steal().raise()` is safe on an initialized software interrupt
+        unsafe {
+            match id {
+                0 => SoftwareInterrupt::<0>::steal().reset(),
+                1 => SoftwareInterrupt::<1>::steal().reset(),
+                _ => unreachable!(),
+            }
+        }
     }
 }
 
