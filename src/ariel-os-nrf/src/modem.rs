@@ -30,7 +30,9 @@ unsafe extern "C" {
     static _MODEM_length: u8;
 }
 
-static SETUP_RESULT: OnceLock<Mutex<CriticalSectionRawMutex, Option<nrf_modem::dect::DectPhy>>> =
+// FIXME: Now that we only have readiness and not a DECT option, everything touching this could be
+// way easier.
+static SETUP_RESULT: OnceLock<Mutex<CriticalSectionRawMutex, Option<()>>> =
     OnceLock::new();
 
 // Workaround used in the nrf mdk: file system_nrf91.c , function SystemInit(), after `#if !defined(NRF_SKIP_UICR_HFXO_WORKAROUND)`
@@ -140,12 +142,10 @@ pub async fn driver() {
     // FIXME: make configurable
     #[cfg(feature = "executor-interrupt")]
     let result =
-        nrf_modem::dect::DectPhy::init_with_custom_layout(memory_layout, crate::SWI.number() as u8)
-            .await
+        nrf_modem::init_with_custom_layout_core(memory_layout, crate::SWI.number() as u8)
             .unwrap();
     #[cfg(not(feature = "executor-interrupt"))]
-    let result = nrf_modem::dect::DectPhy::init_with_custom_layout(memory_layout)
-        .await
+    let result = nrf_modem::init_with_custom_layout_core(memory_layout)
         .unwrap();
 
     SETUP_RESULT
@@ -154,7 +154,7 @@ pub async fn driver() {
         .expect("Driver initialized only once");
 }
 
-pub async fn take_modem() -> nrf_modem::dect::DectPhy {
+pub async fn take_modem() {
     SETUP_RESULT
         .get()
         .await
