@@ -1,12 +1,13 @@
 // FIXME: This does not populate coap_client; probably it even could (but only with weird IP
 // address semantics).
 
-use ariel_os_debug::log::{Debug2Format, Hex, debug, info, warn};
+use ariel_os_debug::log::{Hex, debug, warn};
 use embassy_sync::once_lock::OnceLock;
-use static_cell::{ConstStaticCell, StaticCell};
 
 #[cfg(false)]
 mod usb_serial {
+    use static_cell::StaticCell;
+
     use super::*;
 
     use ariel_os_embassy::{reexports::embassy_usb, usb::UsbDriver};
@@ -63,7 +64,7 @@ mod usb_serial {
         let mut buf = [0; MAX_FULL_SPEED_PACKET_SIZE as usize];
         loop {
             rx.wait_connection().await;
-            info!("Connected");
+            debug!("Connected");
             let mut decoder = slipmux::Decoder::new();
             let mut handler = DebugHandler;
             loop {
@@ -73,7 +74,7 @@ mod usb_serial {
                     let _ = decoder.decode(byte, &mut handler);
                 }
             }
-            info!("Disconnected");
+            debug!("Disconnected");
         }
     }
 
@@ -95,10 +96,9 @@ mod usb_serial {
 }
 
 mod over_uart {
-    use super::*;
+    use static_cell::ConstStaticCell;
 
-    use ariel_os_embassy::hal::peripherals;
-    use ariel_os_hal::{define_peripherals, uart};
+    use super::*;
 
     type UartAssignment = ariel_os_boards::pins::HOST_FACING_UART;
 
@@ -130,16 +130,14 @@ mod over_uart {
         use ariel_os_hal::uart::Assignment;
         let (tx, rx) = peripherals.into_pins();
 
-        let mut uart = <UartAssignment as Assignment>::Device::new(rx, tx, rx_buf, tx_buf, config)
-            .expect("Invalid UART configuration");
-
-        uart
+        <UartAssignment as Assignment>::Device::new(rx, tx, rx_buf, tx_buf, config)
+            .expect("Invalid UART configuration")
     }
 }
 
 pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) -> ! {
     use embedded_io_async::{Read, Write};
-    use slipmux::{DecodeStatus, Decoder};
+    use slipmux::DecodeStatus;
 
     // For the time being we play the simple game, where we just have a server, and can afford to
     // read until something has arrived, then write out what has been written, and continue.
@@ -174,7 +172,7 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
 
         // Ignoring the return value; handling everything inside the decoder.
         match decoder.decode(byte, &mut slipmux) {
-            Err(e) => {
+            Err(_) => {
                 warn!("Decoding error; trying at the next byte.");
                 //BR consume = 1;
                 //BR break;
@@ -188,7 +186,7 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
                 let text = core::str::from_utf8(buffer);
                 warn!(
                     "Peer sent diagnostic data. This will no be forwarded; content was {:?}{}",
-                    text.map_err(|e| &buffer),
+                    text.map_err(|_| &buffer),
                     if slipmux.data().is_err() { "..." } else { "" },
                 );
                 //BR break;
