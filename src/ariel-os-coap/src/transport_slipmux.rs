@@ -151,16 +151,7 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
     let mut uart = over_uart::take().await;
 
     let mut decoder = slipmux::Decoder::new();
-    // Small -- just enough so we can show some bytes for diagnostics. (We can do larger if
-    // ReferencedLatestFrame learns to use a single buffer).
-    let mut diag_buf = [0; 8];
-    // Could do less, but don't want to do the math right now.
-    let mut coap_buf = [0; 1200];
-    // No point in having anything while we don't forward.
-    // (Or should we have a few bytes just so we can respond with ICMP No Sorry?)
-    let mut packet_buf = [0; 0];
-    let mut slipmux =
-        slipmux::ReferencedLatestFrame::new(&mut diag_buf, &mut coap_buf, &mut packet_buf);
+    let mut slipmux = SingleFrameDecoder::default();
     loop {
         // FIXME: This is an ugly reading mechanism, made just slightly more tolerable by
         // decoder.decode() taking things bytewise anyway.
@@ -193,14 +184,12 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
             }
             Ok(DecodeStatus::FrameCompleteDiagnostic) => {
                 // Use up to the cursor, and silently ignore overflows.
-                let buffer = slipmux
-                    .diagnostic_buffer
-                    .get(0..slipmux.index)
-                    .unwrap_or(slipmux.diagnostic_buffer);
+                let (Ok(buffer) | Err(buffer)) = slipmux.data();
                 let text = core::str::from_utf8(buffer);
                 warn!(
-                    "Peer sent diagnostic data. This will no be forwarded; content was {:?}",
-                    text.map_err(|e| &buffer)
+                    "Peer sent diagnostic data. This will no be forwarded; content was {:?}{}",
+                    text.map_err(|e| &buffer),
+                    if slipmux.data().is_err() { "..." } else { "" },
                 );
                 //BR break;
             }
@@ -219,14 +208,23 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
         //BR uart.consume(consume);
 
         if coap_ready {
+            if slipmux.data().is_err() {
+                warn!("Ignoring overly long CoAP request.");
+                // FIXME: Respond accordingly (Request Entity Too Large and size1)
+                continue;
+            };
+            // Reaching into raw value rather than through accessor because we need it mutable for
+            // the pseudostack.
+            let buffer = &mut slipmux.buffer;
             // Compensate for checksum -- FIXME: where should this best be done?
-            slipmux.index -= 2;
+            let Some(actual_length) = buffer.len().checked_sub(2) else {
+                warn!("Ignoring overly short CoAP request.");
+                continue;
+            };
+            buffer.truncate(actual_length);
 
-            debug!(
-                "Sending into CoAP stack: {}",
-                Hex(&slipmux.configuration_buffer[..slipmux.index])
-            );
-            let mut pseudostack = PseudoStack(&mut slipmux);
+            debug!("Sending into CoAP stack: {}", Hex(&buffer));
+            let mut pseudostack = PseudoStack(buffer);
             embedded_nal_minimal_coapserver::poll(
                 &mut pseudostack,
                 &mut PseudoSocket,
@@ -234,20 +232,16 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
             )
             .unwrap(); // No `let Ok(()) = `, because there's the unavoidable nb::Error case.
 
-            debug!(
-                "Taking out of CoAP stack: {}",
-                Hex(&slipmux.configuration_buffer[..slipmux.index])
-            );
+            debug!("Taking out of CoAP stack: {}", Hex(&buffer));
 
             assert!(
-                slipmux.index != 0,
+                buffer.len() != 0,
                 "minimal handler should have sent a response"
             );
-            let message = &slipmux.configuration_buffer[..slipmux.index];
             // FIXME: Try whether larger or smaller makes any difference.
             let mut outbuf = [0; 16];
             let mut encoder =
-                slipmux::ChunkedEncoder::new(slipmux::FrameType::Configuration, message);
+                slipmux::ChunkedEncoder::new(slipmux::FrameType::Configuration, &buffer);
             loop {
                 let size = encoder.encode_chunk(&mut outbuf);
                 if size == 0 {
@@ -259,46 +253,92 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
     }
 }
 
+struct SingleFrameDecoder {
+    // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
+    buffer: heapless::Vec<u8, 1280>,
+    overflow: bool,
+}
+
+impl SingleFrameDecoder {
+    /// Returns the decoded data if complete.
+    ///
+    /// # Errors
+    ///
+    /// If the buffer overflew, it returns the initial decoded bytes.
+    fn data(&self) -> Result<&[u8], &[u8]> {
+        if self.overflow {
+            Err(&self.buffer)
+        } else {
+            Ok(&self.buffer)
+        }
+    }
+}
+
+impl Default for SingleFrameDecoder {
+    fn default() -> Self {
+        SingleFrameDecoder {
+            buffer: Default::default(),
+            overflow: false,
+        }
+    }
+}
+
+impl slipmux::FrameHandler for SingleFrameDecoder {
+    fn begin_frame(&mut self, _: slipmux::FrameType) {
+        self.buffer.clear();
+        self.overflow = false;
+    }
+    fn write_byte(&mut self, byte: u8) {
+        if self.buffer.push(byte).is_err() {
+            self.overflow = true;
+        }
+    }
+    fn end_frame(&mut self, _: Option<slipmux::Error>) {}
+}
+
 /// The CoAP items in slipmux behave 1:1 like in CoAP-over-UDP. Emulating an embedded-nal stack to
 /// exchange them so we can funnel the traffic into a CoAP server.
 ///
 /// As CoAP is currently not async and we don't send messages on our own, this now goes into the
 /// simpler embedded-nal rather than embedded-nal-async.
-struct PseudoStack<'buf, 'a>(&'a mut slipmux::ReferencedLatestFrame<'buf>);
+struct PseudoStack<'a>(&'a mut heapless::Vec<u8, 1280>);
 
 struct PseudoSocket;
 
-use core::convert::Infallible;
+#[derive(Debug)]
+struct DoesNotFit;
+
 use core::net::SocketAddr;
 
-impl embedded_nal::UdpClientStack for PseudoStack<'_, '_> {
+impl embedded_nal::UdpClientStack for PseudoStack<'_> {
     type UdpSocket = PseudoSocket;
-    type Error = Infallible;
-    fn socket(&mut self) -> Result<PseudoSocket, Infallible> {
+    type Error = DoesNotFit;
+    fn socket(&mut self) -> Result<PseudoSocket, DoesNotFit> {
         panic!("Unused");
     }
-    fn connect(&mut self, _: &mut PseudoSocket, _: SocketAddr) -> Result<(), Infallible> {
+    fn connect(&mut self, _: &mut PseudoSocket, _: SocketAddr) -> Result<(), DoesNotFit> {
         panic!("Unused");
     }
     fn send(
         &mut self,
         _: &mut PseudoSocket,
         _: &[u8],
-    ) -> Result<(), embedded_nal::nb::Error<Infallible>> {
+    ) -> Result<(), embedded_nal::nb::Error<DoesNotFit>> {
         panic!("Unused");
     }
     fn receive(
         &mut self,
         _: &mut PseudoSocket,
         outbuf: &mut [u8],
-    ) -> Result<(usize, SocketAddr), embedded_nal::nb::Error<Infallible>> {
-        // FIXME size error handling
-        let len = self.0.index;
+    ) -> Result<(usize, SocketAddr), embedded_nal::nb::Error<DoesNotFit>> {
+        let len = self.0.len();
+        let outslice = outbuf.get_mut(0..len).ok_or(DoesNotFit)?;
+        outslice.copy_from_slice(self.0);
+
         // Mostly a precaution against sending the request back if ever the minimal CoAP server
         // should *not* send a single response.
-        self.0.index = 0;
-        let data = &self.0.configuration_buffer[0..len];
-        outbuf[0..len].copy_from_slice(data);
+        self.0.truncate(0);
+
         Ok((
             len,
             SocketAddr::V6(core::net::SocketAddrV6::new(
@@ -309,12 +349,12 @@ impl embedded_nal::UdpClientStack for PseudoStack<'_, '_> {
             )),
         ))
     }
-    fn close(&mut self, _: PseudoSocket) -> Result<(), Infallible> {
+    fn close(&mut self, _: PseudoSocket) -> Result<(), DoesNotFit> {
         panic!("Unused");
     }
 }
 
-impl embedded_nal::UdpFullStack for PseudoStack<'_, '_> {
+impl embedded_nal::UdpFullStack for PseudoStack<'_> {
     fn bind(&mut self, _: &mut PseudoSocket, _: u16) -> Result<(), Self::Error> {
         panic!("Unused")
     }
@@ -324,13 +364,12 @@ impl embedded_nal::UdpFullStack for PseudoStack<'_, '_> {
         _: SocketAddr,
         data: &[u8],
     ) -> Result<(), embedded_nal::nb::Error<Self::Error>> {
-        // FIXME size handling
-
         // FIXME: Abusing the configuration buffer seems like a convenient thing to do, given we're
         // in full control of .0 for the duration of processing the request -- anything more
         // elegant?
-        self.0.configuration_buffer[0..data.len()].copy_from_slice(data);
-        self.0.index = data.len();
+
+        self.0.clear();
+        self.0.extend_from_slice(data).map_err(|_| DoesNotFit)?;
         Ok(())
     }
 }
