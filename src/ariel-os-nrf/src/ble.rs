@@ -158,6 +158,7 @@ pub struct Peripherals {
     pub rtc0: Peri<'static, peripherals::RTC0>,
     pub timer0: Peri<'static, peripherals::TIMER0>,
     pub timer1: Peri<'static, peripherals::TIMER1>,
+    pub temp: Peri<'static, peripherals::TEMP>,
     pub ppi_ch0: Peri<'static, peripherals::PPI_CH0>,
     pub ppi_ch1: Peri<'static, peripherals::PPI_CH1>,
     pub ppi_ch2: Peri<'static, peripherals::PPI_CH2>,
@@ -186,6 +187,7 @@ impl Peripherals {
             rtc0: peripherals.RTC0.take().unwrap(),
             timer0: peripherals.TIMER0.take().unwrap(),
             timer1: peripherals.TIMER1.take().unwrap(),
+            temp: peripherals.TEMP.take().unwrap(),
             ppi_ch0: peripherals.PPI_CH0.take().unwrap(),
             ppi_ch1: peripherals.PPI_CH1.take().unwrap(),
             ppi_ch2: peripherals.PPI_CH2.take().unwrap(),
@@ -207,8 +209,9 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
     let mpsl_p =
         mpsl::Peripherals::new(p.rtc0, p.timer0, p.temp, p.ppi_ch19, p.ppi_ch30, p.ppi_ch31);
     #[cfg(context = "nrf53")]
-    let mpsl_p =
-        mpsl::Peripherals::new(p.rtc0, p.timer0, p.timer1, p.ppi_ch0, p.ppi_ch1, p.ppi_ch2);
+    let mpsl_p = mpsl::Peripherals::new(
+        p.rtc0, p.timer0, p.timer1, p.temp, p.ppi_ch0, p.ppi_ch1, p.ppi_ch2,
+    );
     #[allow(clippy::cast_possible_truncation)]
     let lfclk_cfg = mpsl::raw::mpsl_clock_lfclk_cfg_t {
         source: mpsl::raw::MPSL_CLOCK_LF_SRC_RC as u8,
