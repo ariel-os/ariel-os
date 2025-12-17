@@ -11,6 +11,7 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "time",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-sensor-lsm6dsv16x = { path = "../../src/sensors/ariel-os-sensor-lsm6dsv16x" }
 ariel-os-sensor-stts22h = { path = "../../src/sensors/ariel-os-sensor-stts22h" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
 embassy-sync = { workspace = true }
