@@ -1,4 +1,7 @@
 //! Provides a [`Sensor`] trait abstracting over implementation details of a sensor driver.
+
+mod channels_samples_zip;
+
 use core::{
     future::Future,
     pin::Pin,
@@ -6,6 +9,7 @@ use core::{
 };
 
 use crate::{Category, Label, MeasurementUnit, signal};
+use channels_samples_zip::ChannelsSamplesZip;
 
 pub use crate::{
     Reading,
