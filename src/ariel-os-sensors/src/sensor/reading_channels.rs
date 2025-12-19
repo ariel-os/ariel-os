@@ -123,6 +123,7 @@ impl ReadingChannels {
     ///
     /// For a given sensor driver, the number and order of items match the one of
     /// [`Samples`].
+    #[must_use]
     pub fn iter(
         &self,
     ) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
@@ -154,6 +155,7 @@ impl ReadingChannels {
     }
 
     /// Returns the first [`ReadingChannel`].
+    #[must_use]
     pub fn first(&self) -> ReadingChannel {
         if let Some(sample) = self.iter().next() {
             sample
