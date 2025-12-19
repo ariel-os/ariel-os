@@ -23,7 +23,7 @@ static_cell = { workspace = true }
 [features]
 defmt = ["dep:defmt"]
 
-# These features could be codegened
+# Each feature enables the previous one, in a cascading fashion.
 max-sample-min-count-2 = ["ariel-os-macros/max-sample-min-count-2"]
 max-sample-min-count-3 = [
   "ariel-os-macros/max-sample-min-count-3",

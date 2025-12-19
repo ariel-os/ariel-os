@@ -36,27 +36,31 @@
 //!
 //! After triggering a measurement with [`Sensor::trigger_measurement()`], a reading can be
 //! obtained using [`Sensor::wait_for_reading()`].
-//! It is additionally necessary to use [`Sensor::reading_channels()`] to make sense of the obtained
-//! reading:
-//!
-//! - [`Sensor::wait_for_reading()`] returns a [`Samples`](sensor::Samples), a data "tuple"
-//!   containing values returned by the sensor driver.
-//! - [`Sensor::reading_channels()`] returns a [`ReadingChannels`](sensor::ReadingChannels) which
-//!   indicates which physical quantity each [`Sample`] from that tuple corresponds
-//!   to, using a [`Label`].
-//!   For instance, this allows to disambiguate the values provided by a temperature & humidity
-//!   sensor.
+//! [`Sensor::wait_for_reading()`] returns a [`Samples`], a data "tuple" containing values returned
+//! by the sensor driver along with their associated [`ReadingChannel`]s, which identify which
+//! physical quantity the samples are about.
+//! For instance, [`ReadingChannel`]s allow to disambiguate the samples provided by a temperature
+//! & humidity sensor.
 //!
 //! To avoid handling floats, [`Sample`]s returned by [`Sensor::wait_for_reading()`]
-//! are integers, and a fixed scaling value is provided in
-//! [`ReadingChannel`](sensor::ReadingChannel), for each [`Sample`] returned.
-//! See [`Sample`] for more details.
+//! are integers, and a fixed scaling value is [provided in
+//! `ReadingChannel`][ReadingChannel::scaling] for each [`Sample`]
+//! returned.
+//!
+//! Additionally, [`Sensor::reading_channels()`] returns a [`ReadingChannels`], which lists the
+//! [`ReadingChannel`]s a sensor driver returns, in the same order as [`Samples`].
+//! For instance, this can be used to pre-render a table of readings, without having to trigger
+//! measurements.
 //!
 //! # For implementors
 //!
 //! Sensor drivers must implement the [`Sensor`] trait.
 //!
 //! [`Sample`]: ariel_os_sensors::sensor::Sample
+//! [`Samples`]: ariel_os_sensors::sensor::Samples
+//! [`ReadingChannel`]: ariel_os_sensors::sensor::ReadingChannel
+//! [ReadingChannel::scaling]: ariel_os_sensors::sensor::ReadingChannel::scaling()
+//! [`ReadingChannels`]: ariel_os_sensors::sensor::ReadingChannels
 
 pub use ariel_os_sensors::*;
 #[doc(inline)]
