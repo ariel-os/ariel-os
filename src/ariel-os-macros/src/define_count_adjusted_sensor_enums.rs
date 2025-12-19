@@ -13,11 +13,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
     let count = get_allocation_size();
 
-    let samples_variants = (1..=count).map(|i| {
-        let variant = variant_name(i);
-        quote! { #variant([Sample; #i]) }
-    });
-
     // Starting at 2 as the first one is not feature-gated and manually written.
     let reading_channels_from_impls = (2..=count).map(|i| {
         let variant = variant_name(i);
@@ -36,29 +31,12 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         quote! { #variant([ReadingChannel; #i]) }
     });
 
-    let samples_iter = (1..=count).map(|i| {
-        let variant = variant_name(i);
-        quote! { InnerSamples::#variant(samples) => samples.iter().copied() }
-    });
     let reading_channels_iter = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! { InnerReadingChannels::#variant(ref channels) => channels.iter().copied() }
     });
 
     let expanded = quote! {
-        #[derive(Debug, Copy, Clone)]
-        enum InnerSamples {
-            #(#samples_variants),*
-        }
-
-        impl InnerSamples {
-            fn iter(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator + '_ {
-                match self {
-                    #(#samples_iter),*
-                }
-            }
-        }
-
         /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
         ///
         /// # Note

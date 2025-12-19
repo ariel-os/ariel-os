@@ -11,6 +11,7 @@ use core::{
 
 use crate::{Category, Label, MeasurementUnit, signal};
 use channels_samples_zip::ChannelsSamplesZip;
+use samples::InnerSamples;
 
 pub use crate::{
     Reading,

@@ -1,4 +1,4 @@
-use super::{ChannelsSamplesZip, InnerSamples, Reading, ReadingChannel, Sample, Sensor};
+use super::{ChannelsSamplesZip, Reading, ReadingChannel, Sample, Sensor};
 
 /// Provides access to the sensor driver instance.
 /// For driver implementors only.
@@ -284,5 +284,62 @@ impl Reading for Samples {
     ) -> impl ExactSizeIterator<Item = (ReadingChannel, Sample)> + core::iter::FusedIterator {
         let reading_channels = self.sensor.reading_channels();
         ChannelsSamplesZip::new(reading_channels, self.samples)
+    }
+}
+
+#[derive(Debug, Copy, Clone)]
+pub enum InnerSamples {
+    V1([Sample; 1]),
+    #[cfg(feature = "max-sample-min-count-2")]
+    V2([Sample; 2]),
+    #[cfg(feature = "max-sample-min-count-3")]
+    V3([Sample; 3]),
+    #[cfg(feature = "max-sample-min-count-4")]
+    V4([Sample; 4]),
+    #[cfg(feature = "max-sample-min-count-5")]
+    V5([Sample; 5]),
+    #[cfg(feature = "max-sample-min-count-6")]
+    V6([Sample; 6]),
+    #[cfg(feature = "max-sample-min-count-7")]
+    V7([Sample; 7]),
+    #[cfg(feature = "max-sample-min-count-8")]
+    V8([Sample; 8]),
+    #[cfg(feature = "max-sample-min-count-9")]
+    V9([Sample; 9]),
+    #[cfg(feature = "max-sample-min-count-10")]
+    V10([Sample; 10]),
+    #[cfg(feature = "max-sample-min-count-11")]
+    V11([Sample; 11]),
+    #[cfg(feature = "max-sample-min-count-12")]
+    V12([Sample; 12]),
+}
+
+impl InnerSamples {
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = Sample> + core::iter::FusedIterator + '_ {
+        match self {
+            InnerSamples::V1(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-2")]
+            InnerSamples::V2(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-3")]
+            InnerSamples::V3(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-4")]
+            InnerSamples::V4(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-5")]
+            InnerSamples::V5(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-6")]
+            InnerSamples::V6(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-7")]
+            InnerSamples::V7(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-8")]
+            InnerSamples::V8(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-9")]
+            InnerSamples::V9(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-10")]
+            InnerSamples::V10(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-11")]
+            InnerSamples::V11(samples) => samples.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-12")]
+            InnerSamples::V12(samples) => samples.iter().copied(),
+        }
     }
 }
