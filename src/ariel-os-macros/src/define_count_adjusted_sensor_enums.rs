@@ -18,34 +18,7 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         quote! { #variant([ReadingChannel; #i]) }
     });
 
-    let reading_channels_iter = (1..=count).map(|i| {
-        let variant = variant_name(i);
-        quote! { InnerReadingChannels::#variant(ref channels) => channels.iter().copied() }
-    });
-
     let expanded = quote! {
-        impl ReadingChannels {
-            /// Returns an iterator over the underlying [`ReadingChannel`] items.
-            ///
-            /// For a given sensor driver, the number and order of items match the one of
-            /// [`Samples`].
-            pub fn iter(&self) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
-                match self.channels {
-                    #(#reading_channels_iter),*
-                }
-            }
-
-            /// Returns the first [`ReadingChannel`].
-            pub fn first(&self) -> ReadingChannel {
-                if let Some(sample) = self.iter().next() {
-                    sample
-                } else {
-                    // NOTE(no-panic): there is always at least one sample.
-                    unreachable!();
-                }
-            }
-        }
-
         #[derive(Debug, Copy, Clone)]
         enum InnerReadingChannels {
             #(#reading_channels_variants),*

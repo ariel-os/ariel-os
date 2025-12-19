@@ -117,3 +117,49 @@ impl From<[ReadingChannel; 12]> for ReadingChannels {
         }
     }
 }
+
+impl ReadingChannels {
+    /// Returns an iterator over the underlying [`ReadingChannel`] items.
+    ///
+    /// For a given sensor driver, the number and order of items match the one of
+    /// [`Samples`].
+    pub fn iter(
+        &self,
+    ) -> impl ExactSizeIterator<Item = ReadingChannel> + core::iter::FusedIterator + '_ {
+        match self.channels {
+            InnerReadingChannels::V1(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-2")]
+            InnerReadingChannels::V2(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-3")]
+            InnerReadingChannels::V3(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-4")]
+            InnerReadingChannels::V4(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-5")]
+            InnerReadingChannels::V5(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-6")]
+            InnerReadingChannels::V6(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-7")]
+            InnerReadingChannels::V7(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-8")]
+            InnerReadingChannels::V8(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-9")]
+            InnerReadingChannels::V9(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-10")]
+            InnerReadingChannels::V10(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-11")]
+            InnerReadingChannels::V11(ref channels) => channels.iter().copied(),
+            #[cfg(feature = "max-sample-min-count-12")]
+            InnerReadingChannels::V12(ref channels) => channels.iter().copied(),
+        }
+    }
+
+    /// Returns the first [`ReadingChannel`].
+    pub fn first(&self) -> ReadingChannel {
+        if let Some(sample) = self.iter().next() {
+            sample
+        } else {
+            // NOTE(no-panic): there is always at least one sample.
+            unreachable!();
+        }
+    }
+}
