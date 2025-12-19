@@ -1,6 +1,7 @@
 # Multithreading
 
 Ariel OS supports multithreading on the Cortex-M, RISC-V, and Xtensa architectures, and is compatible with async executors.
+Multithreading is also [supported on native][native-multithreading-book].
 
 **Important:**
 When an application requires multithreading, it must enable it by [selecting the `sw/threading` laze module][laze-modules-book], which enables the `threading` Cargo feature.
@@ -61,3 +62,4 @@ See the [`threading-multicore` example][threading-multicore-example-repo] for a 
 [sched-prio-levels-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/thread/constant.SCHED_PRIO_LEVELS.html
 [laze-modules-book]: ./build-system.md#laze-modules
 [threading-multicore-example-repo]: https://github.com/ariel-os/ariel-os/tree/main/examples/threading-multicore
+[native-multithreading-book]: ./native-target.md#multithreading-behavior

@@ -88,6 +88,7 @@
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
 - [Persistent Storage](./storage.md)
+- [Native Target](./native-target.md)
 - [Testing](./testing.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
