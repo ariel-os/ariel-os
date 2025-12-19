@@ -13,19 +13,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 
     let count = get_allocation_size();
 
-    // Starting at 2 as the first one is not feature-gated and manually written.
-    let reading_channels_from_impls = (2..=count).map(|i| {
-        let variant = variant_name(i);
-        let feature_name = feature_name(i);
-        quote! {
-            #[cfg(feature = #feature_name)]
-            impl From<[ReadingChannel; #i]> for ReadingChannels {
-                fn from(value: [ReadingChannel; #i]) -> Self {
-                    Self { channels: InnerReadingChannels::#variant(value) }
-                }
-            }
-        }
-    });
     let reading_channels_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! { #variant([ReadingChannel; #i]) }
@@ -37,8 +24,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     });
 
     let expanded = quote! {
-        #(#reading_channels_from_impls)*
-
         impl ReadingChannels {
             /// Returns an iterator over the underlying [`ReadingChannel`] items.
             ///
@@ -73,10 +58,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
 mod define_count_adjusted_enum {
     pub fn variant_name(index: usize) -> syn::Ident {
         quote::format_ident!("V{index}")
-    }
-
-    pub fn feature_name(index: usize) -> String {
-        format!("max-sample-min-count-{index}")
     }
 
     #[allow(unused_variables, reason = "overridden by feature selection")]
