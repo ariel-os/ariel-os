@@ -26,8 +26,8 @@ mod private {
 /// automatically adjusted.
 #[derive(Copy, Clone)]
 pub struct Samples {
-    pub(super) samples: InnerSamples,
-    pub(super) sensor: &'static dyn Sensor,
+    samples: InnerSamples,
+    sensor: &'static dyn Sensor,
 }
 
 impl core::fmt::Debug for Samples {
