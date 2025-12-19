@@ -152,7 +152,7 @@ once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }
 paste = { version = "1.0" }
-pin-project = "1.1.10"
+pin-project-lite = "0.2.16"
 rand = { version = "0.9.2", default-features = false }
 rand_core = { version = "0.9.3", default-features = false }
 rtt-target = { version = "0.6.0" }
