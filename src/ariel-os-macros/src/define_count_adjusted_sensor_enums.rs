@@ -4,7 +4,6 @@
 /// One single type must be defined so that it can be used in the Future returned by sensor
 /// drivers, which must be the same for every sensor driver so it can be part of the `Sensor`
 /// trait.
-#[expect(clippy::too_many_lines)]
 #[proc_macro]
 pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     use quote::quote;
@@ -17,22 +16,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     let samples_variants = (1..=count).map(|i| {
         let variant = variant_name(i);
         quote! { #variant([Sample; #i]) }
-    });
-    // Starting at 2 as the first one is not feature-gated and manually written.
-    let samples_new_funcs = (2..=count).map(|i| {
-        let variant = variant_name(i);
-        let func_name = from_variant_func_name(i);
-        let feature_name = feature_name(i);
-        quote! {
-            #[doc = concat!("Creates a new [`Samples`] containing ", #i, " samples.")]
-            #[cfg(feature = #feature_name)]
-            pub fn #func_name(sensor: &'static dyn Sensor, samples: [Sample; #i]) -> Self {
-                Self {
-                    samples: InnerSamples::#variant(samples),
-                    sensor,
-                }
-            }
-        }
     });
     let samples_first_sample = (1..=count).map(|i| {
         let variant = variant_name(i);
@@ -77,18 +60,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     });
 
     let expanded = quote! {
-        impl Samples {
-            /// Creates a new [`Samples`] containing 1 sample.
-            pub fn from_1(sensor: &'static dyn Sensor, samples: [Sample; 1]) -> Self {
-                Self {
-                    samples: InnerSamples::V1(samples),
-                    sensor,
-                }
-            }
-
-            #(#samples_new_funcs)*
-        }
-
         impl Reading for Samples {
             fn sample(&self) -> (ReadingChannel, Sample) {
                 match self.samples {
@@ -172,10 +143,6 @@ mod define_count_adjusted_enum {
 
     pub fn feature_name(index: usize) -> String {
         format!("max-sample-min-count-{index}")
-    }
-
-    pub fn from_variant_func_name(index: usize) -> syn::Ident {
-        quote::format_ident!("from_{index}")
     }
 
     #[allow(unused_variables, reason = "overridden by feature selection")]
