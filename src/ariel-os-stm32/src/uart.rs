@@ -5,7 +5,7 @@
 use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError};
 use embassy_stm32::{
     Peripheral, bind_interrupts, peripherals,
-    usart::{BufferedInterruptHandler, BufferedUart, RxPin, TxPin},
+    usart::{BufferedInterruptHandler, BufferedUart, CtsPin, RtsPin, RxPin, TxPin},
 };
 
 /// UART interface configuration.
@@ -171,6 +171,15 @@ fn convert_error(err: embassy_stm32::usart::ConfigError) -> ConfigError {
     }
 }
 
+fn from_config(config: &Config) -> embassy_stm32::usart::Config {
+    let mut uart_config = embassy_stm32::usart::Config::default();
+    uart_config.baudrate = Baudrate::from(config.baudrate).into();
+    uart_config.data_bits = from_databits(config.data_bits);
+    uart_config.stop_bits = from_stopbits(config.stop_bits);
+    uart_config.parity = from_parity(config.parity);
+    uart_config
+}
+
 macro_rules! define_uart_drivers {
     ($( $interrupt:ident => $peripheral:ident ),* $(,)?) => {
         $(
@@ -207,14 +216,7 @@ macro_rules! define_uart_drivers {
                     config: Config,
                 ) -> Result<Uart<'d>, ConfigError> {
 
-                    let mut uart_config = embassy_stm32::usart::Config::default();
-                    uart_config.baudrate = Baudrate::from(config.baudrate).into();
-                    uart_config.data_bits = from_databits(config.data_bits).into();
-                    uart_config.stop_bits = from_stopbits(config.stop_bits).into();
-                    uart_config.parity = from_parity(config.parity).into();
-                    bind_interrupts!(struct Irqs {
-                        $interrupt => BufferedInterruptHandler<peripherals::$peripheral>;
-                    });
+                    let uart_config = from_config(&config);
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -226,6 +228,49 @@ macro_rules! define_uart_drivers {
                         Irqs,
                         rx_pin,
                         tx_pin,
+                        tx_buf,
+                        rx_buf,
+                        uart_config,
+                    ).map_err(convert_error)?;
+
+                    Ok(Uart::$peripheral(Self { uart }))
+                }
+
+                /// Returns a driver with hardware flow control (RTS/CTS) implementing embedded-io
+                /// traits for this Uart peripheral.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`ConfigError::BaudrateNotSupported`] when the baud rate cannot be
+                /// applied to the peripheral.
+                /// Returns [`ConfigError::DataParityNotSupported`] when the combination of data
+                /// bits and parity cannot be applied to the peripheral.
+                /// Returns [`ConfigError::ConfigurationNotSupported`] when the requested configuration
+                /// cannot be applied to the peripheral.
+                pub fn new_with_rtscts(
+                    rx_pin: impl Peripheral<P: RxPin<peripherals::$peripheral>> + 'd,
+                    tx_pin: impl Peripheral<P: TxPin<peripherals::$peripheral>> + 'd,
+                    rts_pin: impl Peripheral<P: RtsPin<peripherals::$peripheral>> + 'd,
+                    cts_pin: impl Peripheral<P: CtsPin<peripherals::$peripheral>> + 'd,
+                    rx_buf: &'d mut [u8],
+                    tx_buf: &'d mut [u8],
+                    config: Config,
+                ) -> Result<Uart<'d>, ConfigError> {
+
+                    let uart_config = from_config(&config);
+
+                    // FIXME(safety): enforce that the init code indeed has run
+                    // SAFETY: this struct being a singleton prevents us from stealing the
+                    // peripheral multiple times.
+                    let uart_peripheral = unsafe { peripherals::$peripheral::steal() };
+
+                    let uart = BufferedUart::new_with_rtscts(
+                        uart_peripheral,
+                        Irqs,
+                        rx_pin,
+                        tx_pin,
+                        rts_pin,
+                        cts_pin,
                         tx_buf,
                         rx_buf,
                         uart_config,
@@ -249,6 +294,10 @@ macro_rules! define_uart_drivers {
         }
 
         impl_async_uart_for_driver_enum!(Uart, $( $peripheral ),*);
+
+        bind_interrupts!(struct Irqs {
+            $($interrupt => BufferedInterruptHandler<peripherals::$peripheral>;)*
+        });
     }
 }
 
