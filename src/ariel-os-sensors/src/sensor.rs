@@ -21,8 +21,6 @@ pub use crate::{
 pub use reading_channels::ReadingChannels;
 pub use samples::{Samples, SensorAccess};
 
-ariel_os_macros::define_count_adjusted_sensor_enums!();
-
 /// This trait must be implemented by sensor drivers.
 ///
 /// See [the module level documentation](crate) for more.

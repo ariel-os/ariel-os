@@ -559,7 +559,6 @@ dependencies = [
 name = "ariel-os-sensors"
 version = "0.1.0"
 dependencies = [
- "ariel-os-macros",
  "critical-section",
  "defmt 1.0.1",
  "embassy-futures",

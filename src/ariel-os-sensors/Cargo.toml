@@ -10,7 +10,6 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-ariel-os-macros = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-sync = { workspace = true }
 pin-project = { workspace = true }
@@ -24,47 +23,17 @@ static_cell = { workspace = true }
 defmt = ["dep:defmt"]
 
 # These features could be codegened
-max-sample-min-count-2 = ["ariel-os-macros/max-sample-min-count-2"]
-max-sample-min-count-3 = [
-  "ariel-os-macros/max-sample-min-count-3",
-  "max-sample-min-count-2",
-]
-max-sample-min-count-4 = [
-  "ariel-os-macros/max-sample-min-count-4",
-  "max-sample-min-count-3",
-]
-max-sample-min-count-5 = [
-  "ariel-os-macros/max-sample-min-count-5",
-  "max-sample-min-count-4",
-]
-max-sample-min-count-6 = [
-  "ariel-os-macros/max-sample-min-count-6",
-  "max-sample-min-count-5",
-]
-max-sample-min-count-7 = [
-  "ariel-os-macros/max-sample-min-count-7",
-  "max-sample-min-count-6",
-]
-max-sample-min-count-8 = [
-  "ariel-os-macros/max-sample-min-count-8",
-  "max-sample-min-count-7",
-]
-max-sample-min-count-9 = [
-  "ariel-os-macros/max-sample-min-count-9",
-  "max-sample-min-count-8",
-]
-max-sample-min-count-10 = [
-  "ariel-os-macros/max-sample-min-count-10",
-  "max-sample-min-count-9",
-]
-max-sample-min-count-11 = [
-  "ariel-os-macros/max-sample-min-count-11",
-  "max-sample-min-count-10",
-]
-max-sample-min-count-12 = [
-  "ariel-os-macros/max-sample-min-count-12",
-  "max-sample-min-count-11",
-]
+max-sample-min-count-2 = []
+max-sample-min-count-3 = ["max-sample-min-count-2"]
+max-sample-min-count-4 = ["max-sample-min-count-3"]
+max-sample-min-count-5 = ["max-sample-min-count-4"]
+max-sample-min-count-6 = ["max-sample-min-count-5"]
+max-sample-min-count-7 = ["max-sample-min-count-6"]
+max-sample-min-count-8 = ["max-sample-min-count-7"]
+max-sample-min-count-9 = ["max-sample-min-count-8"]
+max-sample-min-count-10 = ["max-sample-min-count-9"]
+max-sample-min-count-11 = ["max-sample-min-count-10"]
+max-sample-min-count-12 = ["max-sample-min-count-11"]
 
 _test = []
 
