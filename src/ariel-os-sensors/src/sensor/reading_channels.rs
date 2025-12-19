@@ -1,4 +1,4 @@
-use super::{InnerReadingChannels, ReadingChannel};
+use super::ReadingChannel;
 
 /// Metadata required to interpret samples returned by [`Sensor::wait_for_reading()`].
 ///
@@ -8,7 +8,7 @@ use super::{InnerReadingChannels, ReadingChannel};
 /// stored is automatically adjusted.
 #[derive(Debug, Copy, Clone)]
 pub struct ReadingChannels {
-    pub(super) channels: InnerReadingChannels,
+    channels: InnerReadingChannels,
 }
 
 impl From<[ReadingChannel; 1]> for ReadingChannels {
@@ -164,4 +164,31 @@ impl ReadingChannels {
             unreachable!();
         }
     }
+}
+
+#[derive(Debug, Copy, Clone)]
+enum InnerReadingChannels {
+    V1([ReadingChannel; 1]),
+    #[cfg(feature = "max-sample-min-count-2")]
+    V2([ReadingChannel; 2]),
+    #[cfg(feature = "max-sample-min-count-3")]
+    V3([ReadingChannel; 3]),
+    #[cfg(feature = "max-sample-min-count-4")]
+    V4([ReadingChannel; 4]),
+    #[cfg(feature = "max-sample-min-count-5")]
+    V5([ReadingChannel; 5]),
+    #[cfg(feature = "max-sample-min-count-6")]
+    V6([ReadingChannel; 6]),
+    #[cfg(feature = "max-sample-min-count-7")]
+    V7([ReadingChannel; 7]),
+    #[cfg(feature = "max-sample-min-count-8")]
+    V8([ReadingChannel; 8]),
+    #[cfg(feature = "max-sample-min-count-9")]
+    V9([ReadingChannel; 9]),
+    #[cfg(feature = "max-sample-min-count-10")]
+    V10([ReadingChannel; 10]),
+    #[cfg(feature = "max-sample-min-count-11")]
+    V11([ReadingChannel; 11]),
+    #[cfg(feature = "max-sample-min-count-12")]
+    V12([ReadingChannel; 12]),
 }
