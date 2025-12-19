@@ -1,4 +1,4 @@
-use super::{InnerSamples, Reading, Sample, Sensor};
+use super::{ChannelsSamplesZip, InnerSamples, Reading, ReadingChannel, Sample, Sensor};
 
 /// Provides access to the sensor driver instance.
 /// For driver implementors only.
@@ -157,11 +157,131 @@ impl Samples {
 impl Reading for Samples {
     fn sample(&self) -> (ReadingChannel, Sample) {
         match self.samples {
-            #(#samples_first_sample),*
+            InnerSamples::V1(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-2")]
+            InnerSamples::V2(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-3")]
+            InnerSamples::V3(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-4")]
+            InnerSamples::V4(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-5")]
+            InnerSamples::V5(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-6")]
+            InnerSamples::V6(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-7")]
+            InnerSamples::V7(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-8")]
+            InnerSamples::V8(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-9")]
+            InnerSamples::V9(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-10")]
+            InnerSamples::V10(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-11")]
+            InnerSamples::V11(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
+            #[cfg(feature = "max-sample-min-count-12")]
+            InnerSamples::V12(samples) => {
+                if let Some(sample) = samples.first() {
+                    let reading_channel = self.sensor.reading_channels().first();
+                    (reading_channel, *sample)
+                } else {
+                    // NOTE(no-panic): there is always at least one sample
+                    unreachable!();
+                }
+            }
         }
     }
 
-    fn samples(&self) -> impl ExactSizeIterator<Item = (ReadingChannel, Sample)> + core::iter::FusedIterator {
+    fn samples(
+        &self,
+    ) -> impl ExactSizeIterator<Item = (ReadingChannel, Sample)> + core::iter::FusedIterator {
         let reading_channels = self.sensor.reading_channels();
         ChannelsSamplesZip::new(reading_channels, self.samples)
     }

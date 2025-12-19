@@ -17,20 +17,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
         let variant = variant_name(i);
         quote! { #variant([Sample; #i]) }
     });
-    let samples_first_sample = (1..=count).map(|i| {
-        let variant = variant_name(i);
-        quote! {
-            InnerSamples::#variant(samples) => {
-                if let Some(sample) = samples.first() {
-                    let reading_channel = self.sensor.reading_channels().first();
-                    (reading_channel, *sample)
-                } else {
-                    // NOTE(no-panic): there is always at least one sample
-                    unreachable!();
-                }
-            }
-        }
-    });
 
     // Starting at 2 as the first one is not feature-gated and manually written.
     let reading_channels_from_impls = (2..=count).map(|i| {
