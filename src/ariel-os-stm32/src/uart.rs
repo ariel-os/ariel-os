@@ -5,7 +5,7 @@
 use ariel_os_embassy_common::{impl_async_uart_for_driver_enum, uart::ConfigError};
 use embassy_stm32::{
     Peripheral, bind_interrupts, peripherals,
-    usart::{BufferedInterruptHandler, BufferedUart, RxPin, TxPin},
+    usart::{BufferedInterruptHandler, BufferedUart, CtsPin, RtsPin, RxPin, TxPin},
 };
 
 /// UART interface configuration.
@@ -228,6 +228,49 @@ macro_rules! define_uart_drivers {
                         Irqs,
                         rx_pin,
                         tx_pin,
+                        tx_buf,
+                        rx_buf,
+                        uart_config,
+                    ).map_err(convert_error)?;
+
+                    Ok(Uart::$peripheral(Self { uart }))
+                }
+
+                /// Returns a driver with hardware flow control (RTS/CTS) implementing embedded-io
+                /// traits for this Uart peripheral.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`ConfigError::BaudrateNotSupported`] when the baud rate cannot be
+                /// applied to the peripheral.
+                /// Returns [`ConfigError::DataParityNotSupported`] when the combination of data
+                /// bits and parity cannot be applied to the peripheral.
+                /// Returns [`ConfigError::ConfigurationNotSupported`] when the requested configuration
+                /// cannot be applied to the peripheral.
+                pub fn new_with_rtscts(
+                    rx_pin: impl Peripheral<P: RxPin<peripherals::$peripheral>> + 'd,
+                    tx_pin: impl Peripheral<P: TxPin<peripherals::$peripheral>> + 'd,
+                    rts_pin: impl Peripheral<P: RtsPin<peripherals::$peripheral>> + 'd,
+                    cts_pin: impl Peripheral<P: CtsPin<peripherals::$peripheral>> + 'd,
+                    rx_buf: &'d mut [u8],
+                    tx_buf: &'d mut [u8],
+                    config: Config,
+                ) -> Result<Uart<'d>, ConfigError> {
+
+                    let uart_config = from_config(&config);
+
+                    // FIXME(safety): enforce that the init code indeed has run
+                    // SAFETY: this struct being a singleton prevents us from stealing the
+                    // peripheral multiple times.
+                    let uart_peripheral = unsafe { peripherals::$peripheral::steal() };
+
+                    let uart = BufferedUart::new_with_rtscts(
+                        uart_peripheral,
+                        Irqs,
+                        rx_pin,
+                        tx_pin,
+                        rts_pin,
+                        cts_pin,
                         tx_buf,
                         rx_buf,
                         uart_config,
