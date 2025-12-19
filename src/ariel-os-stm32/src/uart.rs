@@ -217,9 +217,6 @@ macro_rules! define_uart_drivers {
                 ) -> Result<Uart<'d>, ConfigError> {
 
                     let uart_config = from_config(&config);
-                    bind_interrupts!(struct Irqs {
-                        $interrupt => BufferedInterruptHandler<peripherals::$peripheral>;
-                    });
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the
@@ -254,6 +251,10 @@ macro_rules! define_uart_drivers {
         }
 
         impl_async_uart_for_driver_enum!(Uart, $( $peripheral ),*);
+
+        bind_interrupts!(struct Irqs {
+            $($interrupt => BufferedInterruptHandler<peripherals::$peripheral>;)*
+        });
     }
 }
 
