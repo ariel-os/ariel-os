@@ -122,11 +122,12 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
-      - name: Get git tree hash
+      - name: Get partial tree hash
         id: get-tree-hash
         run: |
-            git rev-parse HEAD^{tree} > .tree-hash
-            echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
+            tree_hash='${{ hashFiles('**', '!book', '!supply-chain') }}'
+            echo "tree_hash=${tree_hash}" # For debugging
+            echo "hash=${tree_hash}" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         id: result-cache
