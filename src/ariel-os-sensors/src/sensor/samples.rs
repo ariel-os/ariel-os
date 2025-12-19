@@ -1,4 +1,4 @@
-use super::{InnerSamples, Sample, Sensor};
+use super::{InnerSamples, Reading, Sample, Sensor};
 
 /// Provides access to the sensor driver instance.
 /// For driver implementors only.
@@ -151,5 +151,18 @@ impl Samples {
             samples: InnerSamples::V12(samples),
             sensor,
         }
+    }
+}
+
+impl Reading for Samples {
+    fn sample(&self) -> (ReadingChannel, Sample) {
+        match self.samples {
+            #(#samples_first_sample),*
+        }
+    }
+
+    fn samples(&self) -> impl ExactSizeIterator<Item = (ReadingChannel, Sample)> + core::iter::FusedIterator {
+        let reading_channels = self.sensor.reading_channels();
+        ChannelsSamplesZip::new(reading_channels, self.samples)
     }
 }

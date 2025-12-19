@@ -60,19 +60,6 @@ pub fn define_count_adjusted_sensor_enums(_item: TokenStream) -> TokenStream {
     });
 
     let expanded = quote! {
-        impl Reading for Samples {
-            fn sample(&self) -> (ReadingChannel, Sample) {
-                match self.samples {
-                    #(#samples_first_sample),*
-                }
-            }
-
-            fn samples(&self) -> impl ExactSizeIterator<Item = (ReadingChannel, Sample)> + core::iter::FusedIterator {
-                let reading_channels = self.sensor.reading_channels();
-                ChannelsSamplesZip::new(reading_channels, self.samples)
-            }
-        }
-
         #[derive(Debug, Copy, Clone)]
         enum InnerSamples {
             #(#samples_variants),*
