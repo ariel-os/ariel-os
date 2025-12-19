@@ -1,6 +1,7 @@
 //! Provides a [`Sensor`] trait abstracting over implementation details of a sensor driver.
 
 mod channels_samples_zip;
+mod samples;
 
 use core::{
     future::Future,
@@ -15,6 +16,7 @@ pub use crate::{
     Reading,
     sample::{Sample, SampleError, SampleMetadata},
 };
+pub use samples::{Samples, SensorAccess};
 
 ariel_os_macros::define_count_adjusted_sensor_enums!();
 
