@@ -254,6 +254,7 @@ dependencies = [
  "ariel-os-utils",
  "const-str",
  "critical-section",
+ "defmt-rtt",
  "embassy-sync 0.6.2",
  "esp-println",
  "featurecomb",
@@ -1715,6 +1716,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "defmt-rtt"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93d5a25c99d89c40f5676bec8cefe0614f17f0f40e916f98e345dae941807f9e"
+dependencies = [
+ "critical-section",
+ "defmt 1.0.1",
+]
+
+[[package]]
 name = "delegate"
 version = "0.13.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2504,7 +2515,6 @@ source = "git+https://github.com/ariel-os/esp-hal?rev=aa8d1995fc06eb5e6d04a2022e
 dependencies = [
  "critical-section",
  "document-features",
- "embassy-executor",
  "embassy-sync 0.6.2",
  "embassy-time",
  "embassy-time-driver",
