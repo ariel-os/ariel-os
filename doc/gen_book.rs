@@ -8,6 +8,7 @@ argh = { version = "0.1.12" }
 miette = { version = "7.2.0", features = ["fancy"] }
 minijinja = { version = "2.0.3" }
 serde = { version = "1.0.0", features = ["derive"] }
+serde_json = { version = "1.0" }
 serde_yaml = { version = "0.9.34" } # TODO: use a maintained crate instead
 slug = { version = "0.1" }
 thiserror = { version = "1.0.61" }
@@ -85,6 +86,9 @@ struct SubCommandMatrix {
     #[argh(option)]
     /// path of the support matrix html template
     template_path: PathBuf,
+    #[argh(option)]
+    /// path of the laze info JSON file
+    laze_info_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -102,7 +106,8 @@ impl SubCommandMatrix {
             }
         })?;
 
-        let mut board_info = gen_board_functionalities(&matrix)?;
+        let laze_info = parse_laze_info_json(&self.laze_info_path)?;
+        let mut board_info = gen_board_functionalities(&matrix, &laze_info)?;
 
         // TODO: read the order from the YAML file instead?
         board_info.sort_unstable_by_key(|b| b.name.to_lowercase());
@@ -325,6 +330,9 @@ struct SubCommandSummary {
     #[argh(option)]
     /// path of the template summary
     template_path: PathBuf,
+    #[argh(option)]
+    /// path of the laze info JSON file
+    laze_info_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -342,7 +350,8 @@ impl SubCommandSummary {
             }
         })?;
 
-        let mut board_info = gen_board_functionalities(&matrix)?;
+        let laze_info = parse_laze_info_json(&self.laze_info_path)?;
+        let mut board_info = gen_board_functionalities(&matrix, &laze_info)?;
         board_info.sort_unstable_by_key(|b| b.name.to_lowercase());
 
         let mut env = Environment::new();
@@ -392,6 +401,9 @@ struct SubCommandBoardPages {
     #[argh(option)]
     /// path of the template summary
     template_path: PathBuf,
+    #[argh(option)]
+    /// path of the laze info JSON file
+    laze_info_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -409,7 +421,8 @@ impl SubCommandBoardPages {
             }
         })?;
 
-        let board_info = gen_board_functionalities(&matrix)?;
+        let laze_info = parse_laze_info_json(&self.laze_info_path)?;
+        let board_info = gen_board_functionalities(&matrix, &laze_info)?;
 
         for board in &board_info {
             let mut env = Environment::new();
@@ -466,6 +479,9 @@ struct SubCommandChipPages {
     #[argh(option)]
     /// path of the template summary
     template_path: PathBuf,
+    #[argh(option)]
+    /// path of the laze info JSON file
+    laze_info_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -557,6 +573,26 @@ struct FunctionalitySupport {
     // TODO: add the PR link
 }
 
+fn parse_laze_info_json(laze_info_path: &PathBuf) -> miette::Result<LazeInfo> {
+    let contents = std::fs::read(&laze_info_path).map_err(|source| Error::LazeInfoFile {
+        path: laze_info_path.clone(),
+        source,
+    })?;
+
+    let laze_info = serde_json::from_slice::<LazeInfo>(&contents).map_err(|source| {
+        let src = String::from_utf8(contents).expect("failed to build String from JSON bytes");
+        let err_span = miette::SourceOffset::from_location(&src, source.line(), source.column());
+        Error::ParsingJson {
+            path: laze_info_path.clone(),
+            src,
+            err_span,
+            source,
+        }
+    })?;
+
+    Ok(laze_info)
+}
+
 fn main() -> miette::Result<()> {
     let args: Args = argh::from_env();
 
@@ -567,7 +603,7 @@ fn main() -> miette::Result<()> {
 
     let matrix = serde_yaml::from_str(&input_file).map_err(|source| {
         let err_span = miette::SourceSpan::from(source.location().unwrap().index());
-        Error::Parsing {
+        Error::ParsingYaml {
             path: args.input_path().into(),
             src: input_file,
             err_span,
@@ -619,67 +655,67 @@ fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
     }
 }
 
-fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport>, Error> {
+#[derive(serde::Deserialize)]
+struct LazeModule {
+    deps: Option<Vec<String>>,
+}
+
+#[derive(serde::Deserialize)]
+struct LazeApp {
+    modules: HashMap<String, LazeModule>,
+}
+
+#[derive(serde::Deserialize)]
+struct LazeInfo {
+    builds: HashMap<String, HashMap<String, LazeApp>>,
+}
+
+fn gen_board_functionalities(
+    matrix: &schema::Matrix,
+    laze_info: &LazeInfo,
+) -> Result<Vec<BoardSupport>, Error> {
     let boards = matrix
         .boards
         .iter()
         .map(|(board_technical_name, board_info)| {
-            let board_name = &board_info.name;
-            let chip = &board_info.chip;
-
             // Implement chip info inheritance
-            let chip_info = matrix.chips.get(chip).ok_or(vec![Error::InvalidChipName {
-                found: chip.to_owned(),
-                board: board_name.to_owned(),
-            }])?;
+            let chip_info =
+                matrix
+                    .chips
+                    .get(&board_info.chip)
+                    .ok_or(vec![Error::InvalidChipName {
+                        found: board_info.chip.to_owned(),
+                        board: board_info.name.to_owned(),
+                    }])?;
 
             let functionalities = matrix.functionalities.iter().map(|functionality_info| {
-                let name = &functionality_info.name;
-
-                let (support_info, support_key) =
-                    if let Some(support_info) = board_info.support.get(name) {
-                        let status = support_info.status();
-                        (
-                            support_info,
-                            matrix
-                                .support_keys
-                                .iter()
-                                .find(|s| s.name == status)
-                                .ok_or(Error::InvalidSupportKeyNameBoard {
-                                    found: status.to_owned(),
-                                    functionality: name.to_owned(),
-                                    board: board_name.to_owned(),
-                                })?,
-                        )
-                    } else {
-                        let support_info =
-                            chip_info
-                                .support
-                                .get(name)
-                                .ok_or(Error::MissingSupportInfo {
-                                    board: board_name.to_owned(),
-                                    chip: board_info.chip.to_owned(),
-                                    functionality: functionality_info.title.to_owned(),
-                                })?;
-                        let status = support_info.status();
-                        (
-                            support_info,
-                            matrix
-                                .support_keys
-                                .iter()
-                                .find(|s| s.name == status)
-                                .ok_or(Error::InvalidSupportKeyNameChip {
-                                    found: status.to_owned(),
-                                    functionality: name.to_owned(),
-                                    chip: chip_info.name.to_owned(),
-                                })?,
-                        )
-                    };
-
-                let comments = match support_info {
-                    schema::SupportInfo::StatusOnly(_) => None,
-                    schema::SupportInfo::Details { comments, .. } => comments.clone(),
+                let support_key = if laze_info.builds[board_technical_name].values().any(|app| {
+                    app.modules
+                        .contains_key(&functionality_info.support_criteria)
+                }) {
+                    matrix
+                        .support_keys
+                        .iter()
+                        .find(|s| s.name == "supported")
+                        // TODO: return error
+                        .unwrap()
+                } else {
+                    matrix
+                        .support_keys
+                        .iter()
+                        .find(|s| s.name == "not_currently_supported")
+                        // TODO: return error
+                        .unwrap()
                 };
+
+                let comments = board_info
+                    .support
+                    .get(&functionality_info.name)
+                    .or_else(|| chip_info.support.get(&functionality_info.name))
+                    .and_then(|s| match s {
+                        schema::SupportInfo::StatusOnly(_) => None,
+                        schema::SupportInfo::Details { comments, .. } => comments.clone(),
+                    });
 
                 Ok(FunctionalitySupport {
                     title: functionality_info.title.to_owned(),
@@ -688,6 +724,7 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport
                     comments,
                 })
             });
+
             let board_doc_page = ["boards/", board_technical_name, ".html"].concat();
             let chip_doc_page = ["chips/", &board_info.chip, ".html"].concat();
             let errors = functionalities
@@ -702,7 +739,7 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardSupport
                     board_doc: board_doc_page,
                     chip_doc: chip_doc_page,
                     technical_name: board_technical_name.to_owned(),
-                    name: board_name.to_owned(),
+                    name: board_info.name.to_owned(),
                     tier: board_info.tier.to_owned(),
                     functionalities: functionalities.map(|f| f.unwrap()).collect(),
                 })
@@ -834,14 +871,25 @@ enum Error {
     InputFile { path: PathBuf, source: io::Error },
     #[error("could not find summary template file `{path}`")]
     SummaryTemplateFile { path: PathBuf, source: io::Error },
+    #[error("could not find laze info file `{path}`")]
+    LazeInfoFile { path: PathBuf, source: io::Error },
     #[error("could not parse YAML file `{path}`")]
-    Parsing {
+    ParsingYaml {
         path: PathBuf,
         #[source_code]
         src: String,
         #[label = "Syntax error"]
         err_span: miette::SourceSpan,
         source: serde_yaml::Error,
+    },
+    #[error("could not parse JSON file `{path}`")]
+    ParsingJson {
+        path: PathBuf,
+        #[source_code]
+        src: String,
+        #[label = "{source}"]
+        err_span: miette::SourceOffset,
+        source: serde_json::Error,
     },
     #[error("validation issues")]
     ValidationIssues {

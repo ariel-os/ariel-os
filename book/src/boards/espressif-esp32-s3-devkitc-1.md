@@ -17,11 +17,11 @@
 |---|:---:|
 |GPIO|<span title="supported">✅</span>|
 |Debug Output|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="needs testing">🚦</span>|
-|SPI Main Mode|<span title="needs testing">🚦</span>|
+|I2C Controller Mode|<span title="supported">✅</span>|
+|SPI Main Mode|<span title="supported">✅</span>|
 |UART|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
-|User USB|<span title="supported">✅</span>|
+|User USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^usb-does-not-enumerate][^see-also-https-github-com-ariel-os-ariel-os-issues-903]|
 |Wi-Fi|<span title="supported">✅</span>|
 |Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
