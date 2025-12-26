@@ -38,6 +38,10 @@ cortex-m = { workspace = true, optional = true }
 tinyrlibc = { workspace = true, optional = true }
 nrf-modem = { workspace = true, features = ["modem-log"], optional = true }
 
+embassy-net-driver-channel = { workspace = true, optional = true }
+embassy-net = { workspace = true, optional = true }
+heapless = { version = "0.8.0", optional = true }
+
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
 
@@ -113,6 +117,15 @@ ble-central = ["ble", "nrf-sdc/central"]
 
 ## Enables modem support.
 nrf91-modem = ["dep:cortex-m", "dep:nrf-modem", "dep:tinyrlibc"]
+
+## Enables ltem networking support for nrf91 SiP.
+ltem-nrf-modem = [
+  "dep:embassy-net",
+  "dep:embassy-net-driver-channel",
+  "dep:heapless",
+  "nrf91-modem",
+  "nrf-modem/embassy-net",
+]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-nrf/defmt", "nrf-sdc?/defmt", "nrf-modem?/defmt"]

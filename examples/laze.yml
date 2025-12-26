@@ -24,6 +24,7 @@ subdirs:
   - random
   - sensors-debug
   - storage
+  - tcp-client
   - tcp-echo
   - testing
   - thermometer
