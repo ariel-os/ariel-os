@@ -160,7 +160,7 @@ rtt-target = { version = "0.6.0" }
 rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.1.1", default-features = false }
-trouble-host = "0.1"
+trouble-host = "0.5"
 bt-hci = { version = "0.2.0" }
 nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691ec6850b05a0382cef395846b67e02" }
 
