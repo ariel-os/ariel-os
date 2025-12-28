@@ -63,7 +63,7 @@ impl embedded_io_async::Error for Error {
             }
             Self::AddressFamilyUnavailable => embedded_io_async::ErrorKind::AddrNotAvailable,
             // These should not happen b/c our sockets are typestated.
-            Self::SendError(udp::SendError::SocketNotBound) |
+            Self::SendError(udp::SendError::SocketNotBound | udp::SendError::PacketTooLarge) |
                 Self::BindError(udp::BindError::InvalidState) |
             // This should not happen b/c in embedded_nal_async this is not expressed through an
             // error.
