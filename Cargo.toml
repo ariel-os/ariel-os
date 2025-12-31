@@ -85,7 +85,7 @@ embassy-stm32 = { version = "0.2", default-features = false }
 embassy-sync = { version = "0.6.1", default-features = false }
 embassy-time = { version = "0.4.0", default-features = false }
 embassy-time-queue-utils = { version = "0.1.0", default-features = false }
-embassy-usb = { version = "0.4.0", default-features = false }
+embassy-usb = { version = "0.5.0", default-features = false }
 
 embedded-hal = { version = "1.0.0", default-features = false }
 embedded-hal-async = { version = "1.0.0", default-features = false }
