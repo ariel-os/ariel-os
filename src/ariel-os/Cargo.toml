@@ -1,9 +1,9 @@
 [package]
 name = "ariel-os"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+license.workspace = true
 
 [package.metadata.release]
 # We're using this crate to mangle our workspace level `CHANGELOG.md`.
@@ -17,12 +17,7 @@ pre-release-replacements = [
   { file = "../../CHANGELOG.md", search = "<!-- next-url -->", replace = "<!-- next-url -->\n[Unreleased]: https://github.com/ariel-os/ariel-os/compare/{{tag_name}}...HEAD", exactly = 1 },
 ]
 
-[lints]
-workspace = true
-
 [dependencies]
-document-features = { workspace = true }
-linkme = { workspace = true }
 ariel-os-bench = { workspace = true, optional = true }
 ariel-os-boards = { path = "../ariel-os-boards" }
 ariel-os-buildinfo = { workspace = true }
@@ -40,6 +35,8 @@ ariel-os-sensors-registry = { workspace = true, optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
+document-features = { workspace = true }
+linkme = { workspace = true }
 static_cell = { workspace = true }
 
 [features]
@@ -55,8 +52,8 @@ storage = ["dep:ariel-os-storage", "ariel-os-embassy/storage"]
 # Enables threading support, see the [`macro@thread`] attribute macro.
 threading = [
   "dep:ariel-os-threads",
-  "ariel-os-rt/threading",
   "ariel-os-embassy/threading",
+  "ariel-os-rt/threading",
 ]
 ## Enables the internal executor's timer queue, required for timer support.
 time = ["ariel-os-embassy/time"]
@@ -91,7 +88,7 @@ multicast = ["ariel-os-embassy/multicast"]
 coap = ["dep:ariel-os-coap", "random"]
 ## Enables applications to set up CoAP server handlers.
 ## See [`coap::coap_run()`].
-coap-server = ["coap", "ariel-os-coap/coap-server"]
+coap-server = ["ariel-os-coap/coap-server", "coap"]
 # Plain forwarded features that are not documented as features but just as laze
 # modules, because while those here work without any extra help from laze, most
 # later ones will likely need some build system help.
@@ -134,13 +131,13 @@ override-usb-config = ["ariel-os-embassy/override-usb-config"]
 
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).
-core-affinity = ["multi-core", "ariel-os-threads?/core-affinity"]
+core-affinity = ["ariel-os-threads?/core-affinity", "multi-core"]
 # Exactly one of the features below must be enabled at once.
 # Selection of these should be done through laze configuration.
 # Enables one single core, even if the hardware provides multiple cores.
-single-core = ["ariel-os-threads?/single-core", "ariel-os-rt/single-core"]
+single-core = ["ariel-os-rt/single-core", "ariel-os-threads?/single-core"]
 # Enables support for SMP.
-multi-core = ["ariel-os-threads?/multi-core", "ariel-os-rt/multi-core"]
+multi-core = ["ariel-os-rt/multi-core", "ariel-os-threads?/multi-core"]
 # Enables support for infinite cores.
 infini-core = ["ariel-os-threads?/infini-core"]
 
@@ -163,9 +160,9 @@ ble = ["ariel-os-embassy/ble"]
 # Selects BLE (with the CYW43 chip).
 ble-cyw43 = ["ariel-os-embassy/ble-cyw43"]
 # Enables BLE to act as a peripheral. Can be used in conjunction with `ble-central`.
-ble-peripheral = ["ble", "ariel-os-embassy/ble-peripheral"]
+ble-peripheral = ["ariel-os-embassy/ble-peripheral", "ble"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
-ble-central = ["ble", "ariel-os-embassy/ble-central"]
+ble-central = ["ariel-os-embassy/ble-central", "ble"]
 
 # ## Enables support for the nRF91xx SiP modem.
 nrf91-modem = ["ariel-os-embassy/nrf91-modem", "ariel-os-rt/nrf91-modem"]
@@ -191,12 +188,12 @@ timer-generic-queue-128 = ["ariel-os-embassy/timer-generic-queue-128"]
 debug-console = ["ariel-os-rt/debug-console"]
 # Enables logging support through `defmt`, see [`debug::log`].
 defmt = [
+  "ariel-os-bench?/defmt",
   "ariel-os-coap?/defmt",
   "ariel-os-debug/defmt",
   "ariel-os-embassy/defmt",
   "ariel-os-sensors?/defmt",
   "ariel-os-threads?/defmt",
-  "ariel-os-bench?/defmt",
 ]
 # Enables logging support through `log`, see [`debug::log`].
 log = ["ariel-os-debug/log", "ariel-os-embassy/log"]
@@ -235,10 +232,13 @@ idle-threads = ["ariel-os-threads/idle-threads"]
 
 # features needed for `cargo test`
 _test = [
+  "ariel-os-rt/_test",
+  "external-interrupts",
   "i2c",
   "no-boards",
   "spi",
-  "external-interrupts",
   "uart",
-  "ariel-os-rt/_test",
 ]
+
+[lints]
+workspace = true
