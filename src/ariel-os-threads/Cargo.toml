@@ -3,24 +3,21 @@ name = "ariel-os-threads"
 version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
-license.workspace = true
 description = "generic embedded scheduler & IPC"
-include = ["src/**/*", "README.md"]
 repository.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
+include = ["src/**/*", "README.md"]
 
 [dependencies]
-cfg-if.workspace = true
-critical-section.workspace = true
+ariel-os-debug = { workspace = true }
+ariel-os-runqueue = { workspace = true }
+ariel-os-utils = { workspace = true }
+cfg-if = { workspace = true }
+critical-section = { workspace = true }
 linkme = { workspace = true }
-paste.workspace = true
-ariel-os-debug.workspace = true
-ariel-os-runqueue.workspace = true
-ariel-os-utils.workspace = true
-portable-atomic.workspace = true
-static_cell.workspace = true
+paste = { workspace = true }
+portable-atomic = { workspace = true }
+static_cell = { workspace = true }
 
 defmt = { workspace = true, optional = true }
 
@@ -46,9 +43,9 @@ static_cell = { workspace = true, optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 # cortex-m specifics
-cortex-m.workspace = true
-cortex-m-rt.workspace = true
-cortex-m-semihosting.workspace = true
+cortex-m = { workspace = true }
+cortex-m-rt = { workspace = true }
+cortex-m-semihosting = { workspace = true }
 panic-semihosting = { version = "0.6.0", features = ["exit"] }
 
 [target.'cfg(context = "native")'.dependencies]
@@ -56,17 +53,17 @@ atomic-wait = { version = "1.1.0" }
 critical-section = { workspace = true, features = ["restore-state-bool"] }
 
 [target.'cfg(context = "rp")'.dependencies]
-static_cell = { workspace = true, optional = true }
-rp-pac = { workspace = true, optional = true }
 embassy-rp = { workspace = true, optional = true }
+rp-pac = { workspace = true, optional = true }
+static_cell = { workspace = true, optional = true }
 
 [features]
 defmt = ["dep:defmt", "ariel-os-runqueue/defmt"]
 single-core = []
 multi-core = [
-  "dep:static_cell",
-  "dep:rp-pac",
   "dep:embassy-rp",
+  "dep:rp-pac",
+  "dep:static_cell",
   "embassy-rp/fifo-handler",
   "idle-threads",
 ]
@@ -75,3 +72,6 @@ core-affinity = ["multi-core"]
 idle-threads = []
 
 _test = ["single-core"]
+
+[lints]
+workspace = true
