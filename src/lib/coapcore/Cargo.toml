@@ -1,17 +1,12 @@
 [package]
 name = "coapcore"
 version = "0.1.0"
-license.workspace = true
 edition.workspace = true
-
+description = "A CoAP stack for embedded devices with built-in OSCORE/EDHOC support"
+repository.workspace = true
+license.workspace = true
 keywords = ["coap", "iot", "edhoc", "oscore"]
 categories = ["no-std"]
-repository.workspace = true
-
-description = "A CoAP stack for embedded devices with built-in OSCORE/EDHOC support"
-
-[lints]
-workspace = true
 
 [dependencies]
 # public
@@ -28,20 +23,20 @@ coap-numbers = "0.2.3"
 lakers-crypto-rustcrypto = "0.8.0"
 liboscore = { version = "0.2.4", default-features = false }
 
+defmt = { workspace = true, optional = true }
+defmt-or-log = { version = "0.2.2", default-features = false }
+heapless = "0.8.0"
+log = { version = "0.4", optional = true }
 minicbor = { version = "0.26.0", features = ["derive"] }
 minicbor-adapters = "0.0.4"
-heapless = "0.8.0"
-defmt-or-log = { version = "0.2.2", default-features = false }
-defmt = { workspace = true, optional = true }
-log = { version = "0.4", optional = true }
 
 document-features = "0.2.10"
 
 # They're only used when ACE tokens are set up, but they're the same as those
 # used in libOSCORE's and Lakers' backends, so no harm in having them as
 # dependencies.
-ccm = { version = "0.5.0", default-features = false }
 aes = { version = "0.8.4", default-features = false }
+ccm = { version = "0.5.0", default-features = false }
 
 p256 = { version = "0.13.2", features = ["ecdsa"], default-features = false }
 
@@ -51,12 +46,12 @@ p256 = { version = "0.13.2", features = ["ecdsa"], default-features = false }
 ## Sends the output of the crate's log statements to the `defmt` ecosystem.
 #`defmt` is not a link because we can't build docs with --all-features, see also
 # https://github.com/t-moe/defmt-or-log/issues/4
-defmt = ["defmt-or-log/defmt", "dep:defmt", "lakers/defmt"]
+defmt = ["dep:defmt", "defmt-or-log/defmt", "lakers/defmt"]
 
 ## Sends the output of the crate's log statements to the `log` ecosystem.
 # `log` is not a link because we can't build docs with --all-features, see also
 # https://github.com/t-moe/defmt-or-log/issues/4
-log = ["defmt-or-log/log", "dep:log"]
+log = ["dep:log", "defmt-or-log/log"]
 
 ## Selects the libOSCORE default features.
 ##
@@ -82,3 +77,6 @@ _test = []
 [package.metadata.docs.rs]
 # all non-conflicting features
 features = ["_nightly_docs"]
+
+[lints]
+workspace = true
