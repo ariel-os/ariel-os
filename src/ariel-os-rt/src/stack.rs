@@ -31,6 +31,12 @@ const STACK_PAINT_COLOR: u8 = 0xCC;
 /// In the current implementation, and assuming the stack data follows a uniform distribution, this
 /// is unlikely to result in an underestimation of more than one byte.
 ///
+/// # Note
+///
+/// On [native][native-book], the stack *modeled by this type* is currently empty, so its usage and
+/// free space will both be reported as zero.
+///
+/// [native-book]: https://ariel-os.github.io/ariel-os/dev/docs/book/native-target.html
 // # Note
 //
 // The machinery for stack painting has a couple of assumptions:
