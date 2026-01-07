@@ -169,6 +169,8 @@ nrf-sdc = { git = "https://github.com/ariel-os/nrf-sdc.git", rev = "8ce4780b691e
 nrf-modem = { version = "0.7.3" }
 tinyrlibc = "0.5.0"
 time = { version = "0.3", default-features = false }
+futures = { version = "0.3", default-features = false }
+
 [workspace.lints.rust]
 # rustc lints are documented here: https://doc.rust-lang.org/rustc/lints/listing/index.html
 private_interfaces = "deny"
