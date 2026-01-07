@@ -30,6 +30,7 @@ members = [
   "src/lib/ringbuffer",
   "src/sensors/ariel-os-sensor-lis2du12",
   "src/sensors/ariel-os-sensor-lps22df",
+  "src/sensors/ariel-os-sensor-nrf91-gnss",
   "src/sensors/ariel-os-sensor-stts22h",
   "tests/benchmarks/bench_sched_flags",
   "tests/benchmarks/bench_sched_yield",
@@ -153,6 +154,7 @@ ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 # Built-in sensor drivers.
 ariel-os-sensor-lis2du12 = { path = "src/sensors/ariel-os-sensor-lis2du12" }
 ariel-os-sensor-lps22df = { path = "src/sensors/ariel-os-sensor-lps22df" }
+ariel-os-sensor-nrf91-gnss = { path = "src/sensors/ariel-os-sensor-nrf91-gnss" }
 ariel-os-sensor-stts22h = { path = "src/sensors/ariel-os-sensor-stts22h" }
 
 const-str = "1.0.0"
@@ -183,7 +185,9 @@ trouble-host = { version = "0.5.0" }
 #nrf-sdc = { version = "0.4.0" }
 nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
 
+futures = { version = "0.3", default-features = false }
 nrf-modem = { version = "0.10.1" }
+time = { version = "0.3.47", default-features = false }
 tinyrlibc = "0.5.0"
 
 [workspace.lints.rust]
