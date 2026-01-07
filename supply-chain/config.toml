@@ -429,6 +429,10 @@ criteria = "safe-to-deploy"
 version = "0.7.10"
 criteria = "safe-to-deploy"
 
+[[exemptions.deranged]]
+version = "0.5.3"
+criteria = "safe-to-deploy"
+
 [[exemptions.digest]]
 version = "0.10.7"
 criteria = "safe-to-deploy"
@@ -957,6 +961,10 @@ criteria = "safe-to-deploy"
 version = "2.9.2"
 criteria = "safe-to-deploy"
 
+[[exemptions.num-conv]]
+version = "0.1.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.num_enum]]
 version = "0.7.3"
 criteria = "safe-to-deploy"
@@ -1059,6 +1067,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.postcard-derive]]
 version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.powerfmt]]
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.ppv-lite86]]
@@ -1267,6 +1279,18 @@ criteria = "safe-to-deploy"
 
 [[exemptions.term]]
 version = "1.0.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.time]]
+version = "0.3.43"
+criteria = "safe-to-deploy"
+
+[[exemptions.time-core]]
+version = "0.1.6"
+criteria = "safe-to-deploy"
+
+[[exemptions.time-macros]]
+version = "0.2.24"
 criteria = "safe-to-deploy"
 
 [[exemptions.tinyrlibc]]
