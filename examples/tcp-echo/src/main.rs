@@ -1,8 +1,9 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{debug::log::*, net, reexports::embassy_net, time::Duration};
+use ariel_os::{debug::log::*, net, reexports::embassy_net};
 use embassy_net::tcp::TcpSocket;
+use embassy_time::Duration;
 use embedded_io_async::Write;
 
 // Setting this to a small value would make packet handling slow and choppy, but would not cause
