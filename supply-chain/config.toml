@@ -469,6 +469,10 @@ criteria = "safe-to-deploy"
 version = "0.6.0@git:3d9f77ee05cdb18f1cd676233bcda9b6f7be3369"
 criteria = "safe-to-deploy"
 
+[[exemptions.embassy-net]]
+version = "0.7.1@git:f88320aea64cf24026dd95ce3405ac23253b1117"
+criteria = "safe-to-deploy"
+
 [[exemptions.embassy-net-driver]]
 version = "0.2.0"
 criteria = "safe-to-deploy"
@@ -497,8 +501,16 @@ criteria = "safe-to-deploy"
 version = "0.6.2"
 criteria = "safe-to-deploy"
 
+[[exemptions.embassy-sync]]
+version = "0.7.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.embassy-time]]
 version = "0.4.0@git:f9b4c8132b07ef696668005846ee2240a8f57573"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-time]]
+version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-time-driver]]
