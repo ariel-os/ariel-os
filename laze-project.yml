@@ -473,7 +473,6 @@ contexts:
       # in combination with multi-core.
       # - has_multi_core_support
       - sw/benchmark
-    provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: xtensa-esp32s3-none-elf
       PROBE_RS_CHIP: esp32s3
