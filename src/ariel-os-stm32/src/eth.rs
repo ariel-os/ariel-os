@@ -1,5 +1,4 @@
-use embassy_stm32::eth::Ethernet;
-use embassy_stm32::eth::generic_smi::GenericSMI;
+use embassy_stm32::eth::{Ethernet, GenericPhy};
 use embassy_stm32::peripherals::ETH;
 use embassy_stm32::{bind_interrupts, eth};
 use static_cell::StaticCell;
@@ -8,7 +7,7 @@ bind_interrupts!(struct Irqs {
     ETH => eth::InterruptHandler;
 });
 
-pub type NetworkDevice = Ethernet<'static, ETH, GenericSMI>;
+pub type NetworkDevice = Ethernet<'static, ETH, GenericPhy>;
 
 pub fn device(peripherals: &mut crate::OptionalPeripherals) -> NetworkDevice {
     static PKTS: StaticCell<eth::PacketQueue<4, 4>> = StaticCell::new();
@@ -28,7 +27,7 @@ pub fn device(peripherals: &mut crate::OptionalPeripherals) -> NetworkDevice {
         peripherals.PG13.take().unwrap(),
         peripherals.PB13.take().unwrap(),
         peripherals.PG11.take().unwrap(),
-        eth::generic_smi::GenericSMI::new(0),
+        GenericPhy::new(0),
         mac_addr,
     )
 }

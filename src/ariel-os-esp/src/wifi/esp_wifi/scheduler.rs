@@ -10,7 +10,7 @@ use core::{
     sync::atomic::{AtomicPtr, Ordering},
 };
 
-use ariel_os_debug::log::{debug, trace, warn};
+use ariel_os_debug::log::{debug, trace};
 use ariel_os_threads::{
     CoreAffinity, CoreId, RunqueueId, THREAD_COUNT, ThreadId, create_raw, current_tid,
     get_priority, set_priority, yield_same,
@@ -24,6 +24,7 @@ static THREAD_SEMAPHORES: [AtomicPtr<()>; THREAD_COUNT] =
 pub(crate) struct ArielScheduler {}
 
 fn thread_id_to_ptr(thread_id: ThreadId) -> ThreadPtr {
+    // SAFETY: `thread_id` is guaranteed to be in the range `0..THREAD_COUNT`.
     unsafe { NonNull::new_unchecked((usize::from(thread_id) + 1) as *mut ()) }
 }
 
