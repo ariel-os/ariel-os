@@ -111,6 +111,7 @@ jobs:
               --target=riscv32imac-unknown-none-elf \
               --no-deps \
               --features "
+                  esp-bootloader-esp-idf/esp32c6,
                   esp-hal/esp32c6,
                   external-interrupts,
                   i2c,

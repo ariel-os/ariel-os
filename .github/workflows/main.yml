@@ -178,6 +178,7 @@ jobs:
                 external-interrupts,
                 i2c,
                 spi,
+                time,
                 uart,
                 "
             -p ariel-os-esp

@@ -4,7 +4,7 @@ use esp_hal::{
     Blocking,
     interrupt::{InterruptHandler, Priority},
     time::Duration,
-    timer::{OneShotTimer, any::Degrade},
+    timer::{OneShotTimer, any::Degrade as _},
 };
 use esp_sync::NonReentrantMutex;
 
@@ -55,6 +55,10 @@ impl TimeDriver {
         Self { timer }
     }
 
+    /// Set the next timer wakeup.
+    ///
+    /// # Panics
+    /// - panics if the underlying timer's `schedule()` fails with an unexpected error
     pub(crate) fn arm_next_wakeup(&mut self, next_wakeup: u64) {
         let sleep_duration = next_wakeup.saturating_sub(now());
 
@@ -65,10 +69,9 @@ impl TimeDriver {
 
         loop {
             match self.timer.schedule(Duration::from_micros(timeout)) {
-                Ok(_) => break,
+                Ok(()) => break,
                 Err(esp_hal::timer::Error::InvalidTimeout) if timeout != 0 => {
                     timeout /= 2;
-                    continue;
                 }
                 Err(e) => panic!("Failed to schedule timer: {:?}", e),
             }
@@ -170,6 +173,6 @@ impl embassy_time_driver::Driver for TimerQueue {
                     }
                 });
             }
-        })
+        });
     }
 }

@@ -67,13 +67,11 @@ const L2CAP_TXQ: u8 = 3;
 // Size of the RX buffer (number of packets), minimum is 1, SoftDevice default is 2 (SDC_DEFAULT_RX_PACKET_COUNT).
 const L2CAP_RXQ: u8 = 2;
 
-// Takes the handle of the global BLE stack.
-//
-// Must only be called on the system executor that runs the stack.
-//
-// # Panics
-//
-// Panics when called from the wrong executor.
+/// Returns the system ble stack.
+///
+/// # Panics
+/// - panics if the stack was already taken
+/// - panics when not called from the main executor
 pub async fn ble_stack() -> &'static mut BleStack {
     STACKREF
         .get()

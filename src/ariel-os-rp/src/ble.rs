@@ -19,6 +19,11 @@ pub(crate) static STACKREF: OnceLock<
     Mutex<CriticalSectionRawMutex, Option<&'static mut SameExecutorCell<BleStack>>>,
 > = OnceLock::new();
 
+/// Returns the system ble stack.
+///
+/// # Panics
+/// - panics if the stack was already taken
+/// - panics when not called from the main executor
 pub async fn ble_stack() -> &'static mut BleStack {
     STACKREF
         .get()

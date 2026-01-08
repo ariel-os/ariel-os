@@ -179,6 +179,11 @@ fn init() {
         .run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
+/// Main Ariel OS async system setup function
+///
+/// # Panics
+///
+/// This function unwraps any errors. Those should only occur on compile-time configuration errors.
 #[embassy_executor::task]
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     // SAFETY: this is executed in a non-public task using only Embassy executors.
