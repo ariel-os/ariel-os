@@ -1,14 +1,24 @@
 /// Categories a sensor driver can be part of.
 ///
-/// A sensor driver can be part of multiple categories.
+/// A sensor driver may be part of multiple categories.
 ///
 /// # For sensor driver implementors
 ///
-/// Many mechanical sensor devices (e.g., accelerometers) include a temperature sensor as
-/// temperature may slightly affect the measurement results.
+/// Many MEMS sensor devices (e.g., accelerometers) include a temperature sensing element in
+/// addition to their main sensing element, as temperature may slightly affect the measurement
+/// results.
+/// Sensor *drivers* are not under the obligation of exposing such temperature readings, even if
+/// they are exposed by the sensor device.
+/// They may however still be fetched by the sensor driver internally, especially to dynamically
+/// compute the accuracy of the main reading returned by the sensor driver.
 /// If temperature readings are not exposed by the sensor driver, the sensor driver must not be
 /// considered part of a category that includes temperature ([`Category::Temperature`] or
-/// [`Category::AccelerometerTemperature`] in the case of an accelerometer).
+/// [`Category::AccelerometerTemperature`] in the case of an accelerometer), even if the sensor
+/// *device* does expose them.
+///
+/// Sensor drivers may be part of multiple categories and should then list all of them: e.g., being
+/// part of the [`Category::AccelerometerTemperature`] does *not* imply also being part of the
+/// [`Category::Accelerometer`] category, and the sensor should list both of them.
 ///
 /// Missing variants can be added when required.
 /// Please open an issue to discuss it.
