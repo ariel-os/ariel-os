@@ -16,7 +16,7 @@ use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 use portable_atomic::{AtomicI16, AtomicU8, Ordering};
 
-use crate::{PART_NUMBER, Register};
+use crate::{PART_NUMBER, Register, i32_from_i24_be_bytes};
 
 /// I2C address of the sensor device.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
@@ -162,7 +162,7 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
             .map_err(|_| ReadingError::SensorAccess)?;
 
         let pressure = i32::from(self.pressure_offset.load(Ordering::Acquire))
-            + i32::from_be_bytes([0, buf[2], buf[1], buf[0]]) / crate::PRESSURE_SENSITIVITY;
+            + i32_from_i24_be_bytes([buf[2], buf[1], buf[0]]) / crate::PRESSURE_SENSITIVITY;
         let temperature = i32::from(i16::from_be_bytes([buf[4], buf[3]]));
 
         let pressure_accuracy = crate::pressure_accuracy(pressure);

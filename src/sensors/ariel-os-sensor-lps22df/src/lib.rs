@@ -58,3 +58,22 @@ fn temp_accuracy(_temp: i32) -> SampleMetadata {
         scaling: -2,
     }
 }
+
+fn i32_from_i24_be_bytes(bytes: [u8; 3]) -> i32 {
+    // Branch-less sign extension from <https://stackoverflow.com/a/42536138>.
+    const M: i32 = 1 << (24 - 1);
+    (i32::from_be_bytes([0, bytes[0], bytes[1], bytes[2]]) ^ M).wrapping_sub(M)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_i32_from_i24_be_bytes() {
+        assert_eq!(i32_from_i24_be_bytes([0x00, 0x00, 0x01]), 1);
+        assert_eq!(i32_from_i24_be_bytes([0x7f, 0xff, 0xff]), 0x7f_ff_ff);
+        assert_eq!(i32_from_i24_be_bytes([0x80, 0x00, 0x00]), !0x80_00_00 + 1);
+        assert_eq!(i32_from_i24_be_bytes([0xff, 0xff, 0xff]), -1);
+    }
+}
