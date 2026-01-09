@@ -7,6 +7,7 @@ publish = false
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embassy-time = "0.5.0"
 embedded-io-async = "0.6.1"
 
 [lints]

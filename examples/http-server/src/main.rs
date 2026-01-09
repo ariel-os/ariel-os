@@ -4,7 +4,7 @@
 
 mod routes;
 
-use ariel_os::{asynch::Spawner, cell::StaticCell, net, time::Duration};
+use ariel_os::{asynch::Spawner, cell::StaticCell, net};
 
 ariel_os::hal::group_peripherals!(Peripherals {
     #[cfg(feature = "button-reading")]
@@ -13,6 +13,7 @@ ariel_os::hal::group_peripherals!(Peripherals {
 
 #[cfg(feature = "button-reading")]
 use embassy_sync::once_lock::OnceLock;
+use embassy_time::Duration;
 use picoserve::AppBuilder;
 
 const HTTP_PORT: u16 = 80;

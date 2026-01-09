@@ -16,6 +16,12 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 version = "0.2.1"
 
+[[audits.embassy-time-driver]]
+who = "ROMemories <152802150+ROMemories@users.noreply.github.com>"
+criteria = "safe-to-deploy"
+delta = "0.2.0 -> 0.2.1"
+notes = "A very minor update: only an extra tick setting is added, a few methods inlined, and the Cargo.lock is now distributed."
+
 [[audits.embedded-io]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"

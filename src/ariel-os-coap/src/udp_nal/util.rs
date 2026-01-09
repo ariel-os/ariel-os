@@ -61,6 +61,7 @@ impl embedded_io_async::Error for Error {
             Self::SendError(udp::SendError::NoRoute) | Self::BindError(udp::BindError::NoRoute) => {
                 embedded_io_async::ErrorKind::AddrNotAvailable
             }
+            Self::SendError(udp::SendError::PacketTooLarge) => embedded_io_async::ErrorKind::OutOfMemory,
             Self::AddressFamilyUnavailable => embedded_io_async::ErrorKind::AddrNotAvailable,
             // These should not happen b/c our sockets are typestated.
             Self::SendError(udp::SendError::SocketNotBound) |
