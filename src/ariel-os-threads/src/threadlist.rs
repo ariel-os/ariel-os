@@ -1,6 +1,6 @@
 use critical_section::CriticalSection;
 
-use crate::{RunqueueId, SCHEDULER, ThreadId, ThreadState, thread::Thread};
+use crate::{RunqueueId, SCHEDULER, Scheduler, ThreadId, ThreadState, thread::Thread};
 
 /// Manages blocked [`super::Thread`]s for a resource, and triggering the scheduler when needed.
 #[derive(Debug, Default)]
@@ -65,6 +65,42 @@ impl ThreadList {
             self.head = scheduler.thread_blocklist[usize::from(head)].take();
             let old_state = scheduler.set_state(head, ThreadState::Running);
             Some((head, old_state))
+        })
+    }
+
+    fn remove_inner(&mut self, scheduler: &mut Scheduler, thread_id: ThreadId) -> bool {
+        ariel_os_debug::log::trace!("remove_current() {:?}", thread_id);
+        if let Some(head) = self.head {
+            if head == thread_id {
+                self.head = scheduler.thread_blocklist[usize::from(head)].take();
+                scheduler.set_state(head, ThreadState::Running);
+                return true;
+            }
+            let mut cur = head;
+            while let Some(next) = scheduler.thread_blocklist[usize::from(cur)] {
+                if next == thread_id {
+                    scheduler.thread_blocklist[usize::from(cur)] =
+                        scheduler.thread_blocklist[usize::from(next)].take();
+                    scheduler.set_state(next, ThreadState::Running);
+                    return true;
+                }
+                cur = next;
+            }
+        }
+        false
+    }
+
+    /// Removes the current thread from this [`ThreadList`].
+    ///
+    /// ## Panics
+    /// Panics if this is called outside of a thread context.
+    pub(crate) fn remove_current(&mut self, cs: CriticalSection<'_>) -> bool {
+        SCHEDULER.with_mut_cs(cs, |mut scheduler| {
+            let thread_id = scheduler
+                .current_tid()
+                .expect("Function should be called inside a thread context.");
+
+            self.remove_inner(&mut scheduler, thread_id)
         })
     }
 

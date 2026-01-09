@@ -6,9 +6,9 @@ use crate::peripherals;
 pub type UsbDriver = Driver<'static>;
 
 pub struct Peripherals {
-    usb: peripherals::USB0,
-    usbdp: peripherals::GPIO20,
-    usbdm: peripherals::GPIO19,
+    usb: peripherals::USB0<'static>,
+    usbdp: peripherals::GPIO20<'static>,
+    usbdm: peripherals::GPIO19<'static>,
 }
 
 impl Peripherals {

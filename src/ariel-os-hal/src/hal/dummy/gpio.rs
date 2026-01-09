@@ -80,14 +80,14 @@ macro_rules! define_input_like {
 }
 
 pub mod input {
-    use crate::hal::peripheral::Peripheral;
+    use crate::hal::peripheral::IntoPeripheral;
 
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
     pub trait InputPin {}
 
-    pub fn new(
-        _pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new<T: InputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool,
     ) -> Result<Input<'static>, ariel_os_embassy_common::gpio::input::Error> {
@@ -95,8 +95,8 @@ pub mod input {
     }
 
     #[cfg(feature = "external-interrupts")]
-    pub fn new_int_enabled(
-        _pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new_int_enabled<T: InputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool,
     ) -> Result<IntEnabledInput<'static>, ariel_os_embassy_common::gpio::input::Error> {
@@ -118,15 +118,15 @@ pub mod input {
 pub mod output {
     use embedded_hal::digital::StatefulOutputPin;
 
-    use crate::hal::peripheral::Peripheral;
+    use crate::hal::peripheral::IntoPeripheral;
 
     pub const DRIVE_STRENGTH_CONFIGURABLE: bool = false;
     pub const SPEED_CONFIGURABLE: bool = false;
 
     pub trait OutputPin {}
 
-    pub fn new(
-        _pin: impl Peripheral<P: OutputPin> + 'static,
+    pub fn new<T: OutputPin>(
+        _pin: impl IntoPeripheral<'static, T>,
         _initial_level: ariel_os_embassy_common::gpio::Level,
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,

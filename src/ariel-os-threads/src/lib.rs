@@ -37,9 +37,11 @@
 mod arch;
 mod autostart_thread;
 mod blocker;
+mod core_affinity;
 mod ensure_once;
 mod thread;
 mod threadlist;
+mod timeout;
 
 #[cfg(feature = "multi-core")]
 mod smp;
@@ -64,10 +66,10 @@ pub mod events {
 
 pub use ariel_os_runqueue::{RunqueueId, ThreadId};
 pub use blocker::block_on;
+pub use core_affinity::CoreAffinity;
 pub use thread_flags as flags;
+pub use timeout::{sleep, sleep_until};
 
-#[cfg(feature = "core-affinity")]
-pub use smp::CoreAffinity;
 #[cfg(feature = "multi-core")]
 pub use smp::isr_stack_core1_get_limits;
 
@@ -83,15 +85,6 @@ use thread::{Thread, ThreadState};
 use smp::{Multicore, schedule_on_core};
 #[cfg(any(feature = "multi-core", feature = "idle-threads"))]
 use static_cell::ConstStaticCell;
-
-/// Dummy type that is needed because [`CoreAffinity`] is part of the general API.
-///
-/// To configure core affinities for threads, the `core-affinity` feature must be enabled.
-#[cfg(not(feature = "core-affinity"))]
-pub struct CoreAffinity {
-    // Phantom field to ensure that `CoreAffinity` can never be constructed by a user.
-    _phantom: core::marker::PhantomData<()>,
-}
 
 /// The number of possible priority levels.
 pub const SCHED_PRIO_LEVELS: usize = THREAD_COUNT;
@@ -533,6 +526,22 @@ impl From<CoreId> for usize {
     }
 }
 
+impl CoreId {
+    /// Creates a new [`CoreId`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if `value` >= [`CORE_COUNT`](crate::CORE_COUNT).
+    #[must_use]
+    pub fn new(value: u8) -> Self {
+        assert!(
+            (value as usize) < CORE_COUNT,
+            "Invalid CoreId {value}: only core ids 0..{CORE_COUNT} available.",
+        );
+        Self(value)
+    }
+}
+
 /// Starts threading.
 ///
 /// Supposed to be started early on by OS startup code.
@@ -781,7 +790,6 @@ pub fn yield_same() {
 }
 
 /// Suspends/ pauses the current thread's execution.
-#[doc(alias = "sleep")]
 pub fn park() {
     SCHEDULER.with_mut(|mut scheduler| {
         let Some(tid) = scheduler.current_tid() else {

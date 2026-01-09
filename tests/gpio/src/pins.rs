@@ -18,8 +18,8 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 #[cfg(context = "nrf5340")]
 ariel_os::hal::define_peripherals!(Peripherals {
-    pin_0: P0_00,
-    pin_1: P0_01,
+    pin_0: P0_02,
+    pin_1: P0_03,
     pin_2: P0_04,
     pin_3: P0_05,
 });

@@ -4,6 +4,7 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![allow(unsafe_code)]
 
+pub use ariel_os_embassy_common::cell;
 pub use ariel_os_hal::hal;
 
 #[cfg(feature = "executor-thread")]
@@ -121,7 +122,6 @@ cfg_if::cfg_if! {
 pub use net::NetworkStack;
 
 pub mod asynch;
-pub mod cell;
 pub mod delegate;
 
 #[cfg(feature = "executor-thread")]
@@ -136,15 +136,9 @@ pub static EMBASSY_TASKS: [Task] = [..];
 #[cfg(not(any(
     feature = "executor-interrupt",
     feature = "executor-none",
-    feature = "executor-single-thread",
     feature = "executor-thread"
 )))]
-compile_error!(
-    r#"must select one of "executor-interrupt", "executor-single-thread", "executor-thread", "executor-none"!"#
-);
-
-#[cfg(all(feature = "threading", feature = "executor-single-thread"))]
-compile_error!(r#""executor-single-thread" and "threading" are mutually exclusive!"#);
+compile_error!(r#"must select one of "executor-interrupt", "executor-thread", "executor-none"!"#);
 
 #[cfg(feature = "executor-interrupt")]
 #[distributed_slice(ariel_os_rt::INIT_FUNCS)]
@@ -168,22 +162,6 @@ pub(crate) fn init() {
     EXECUTOR.run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
-// SAFETY: the symbol name is unique enough to avoid accidental collisions and the function
-// signature matches the one expected in `ariel-os-rt`.
-#[cfg(feature = "executor-single-thread")]
-#[unsafe(export_name = "__ariel_os_embassy_init")]
-fn init() -> ! {
-    use static_cell::StaticCell;
-
-    debug!("ariel-os-embassy::init(): using single thread executor");
-    let p = hal::init();
-
-    static EXECUTOR: StaticCell<hal::Executor> = StaticCell::new();
-    EXECUTOR
-        .init_with(|| hal::Executor::new())
-        .run(|spawner| spawner.must_spawn(init_task(p)))
-}
-
 #[cfg(feature = "executor-thread")]
 #[ariel_os_macros::thread(autostart, no_wait, stacksize = executor_thread::STACKSIZE, priority = executor_thread::PRIORITY)]
 fn init() {
@@ -201,9 +179,15 @@ fn init() {
         .run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
+/// Main Ariel OS async system setup function
+///
+/// # Panics
+///
+/// This function unwraps any errors. Those should only occur on compile-time configuration errors.
 #[embassy_executor::task]
 async fn init_task(mut peripherals: hal::OptionalPeripherals) {
-    let spawner = asynch::Spawner::for_current_executor().await;
+    // SAFETY: this is executed in a non-public task using only Embassy executors.
+    let spawner = unsafe { asynch::Spawner::for_current_executor().await };
     asynch::set_spawner(spawner.make_send());
 
     #[cfg(feature = "debug-uart")]
@@ -392,7 +376,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         spawner.spawn(net::net_task(runner)).unwrap();
 
         if crate::net::STACK
-            .init(SameExecutorCell::new(stack, spawner))
+            .init(embassy_sync::blocking_mutex::Mutex::new(
+                SameExecutorCell::new(stack, spawner),
+            ))
             .is_err()
         {
             unreachable!();

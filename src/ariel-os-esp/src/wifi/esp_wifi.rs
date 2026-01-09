@@ -1,36 +1,33 @@
+mod scheduler;
+mod wait_queue;
+
 use ariel_os_debug::log::{debug, info};
+use core::ffi::c_void;
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
-use esp_wifi::{
-    EspWifiController,
-    config::PowerSaveMode,
-    wifi::{
-        ClientConfiguration, Configuration, WifiController, WifiDevice, WifiEvent, WifiStaDevice,
-        WifiState,
-    },
+use esp_radio::wifi::{
+    Config, ModeConfig, WifiController, WifiDevice, WifiEvent, WifiStationState, sta::StationConfig,
 };
-use once_cell::sync::OnceCell;
+use esp_radio_rtos_driver::{
+    queue::CompatQueue, register_queue_implementation, register_scheduler_implementation,
+    register_semaphore_implementation, register_timer_implementation,
+    register_wait_queue_implementation, semaphore::CompatSemaphore, timer::CompatTimer,
+};
 
-pub type NetworkDevice = WifiDevice<'static, WifiStaDevice>;
+use scheduler::ArielScheduler;
+use wait_queue::ArielWaitQueue;
 
-// Ideally, all Wi-Fi initialization would happen here.
-// Unfortunately that's complicated, so we're using WIFI_INIT to pass the
-// `EspWifiInitialization` from `crate::init()`.
-// Using a `once_cell::OnceCell` here for critical-section support, just to be
-// sure.
-pub static WIFI_INIT: OnceCell<EspWifiController<'_>> = OnceCell::new();
+pub type NetworkDevice = WifiDevice<'static>;
 
 pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {
+    let config = Config::default();
     let wifi = peripherals.WIFI.take().unwrap();
-    let init = WIFI_INIT.get().unwrap();
-    let (device, mut controller) =
-        esp_wifi::wifi::new_with_mode(init, wifi, WifiStaDevice).unwrap();
 
-    controller.set_power_saving(PowerSaveMode::None).unwrap();
+    let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
 
     spawner.spawn(connection(controller)).ok();
 
-    device
+    interfaces.station
 }
 
 #[embassy_executor::task]
@@ -41,22 +38,24 @@ async fn connection(mut controller: WifiController<'static>) {
     debug!("Device capabilities: {:?}", controller.capabilities());
 
     loop {
-        match esp_wifi::wifi::wifi_state() {
-            WifiState::StaConnected => {
+        match esp_radio::wifi::station_state() {
+            WifiStationState::Connected => {
                 // wait until we're no longer connected
-                controller.wait_for_event(WifiEvent::StaDisconnected).await;
+                controller
+                    .wait_for_event(WifiEvent::StationDisconnected)
+                    .await;
                 Timer::after(Duration::from_secs(5)).await
             }
             _ => {}
         }
         if !matches!(controller.is_started(), Ok(true)) {
             debug!("Configuring Wi-Fi");
-            let client_config = Configuration::Client(ClientConfiguration {
-                ssid: crate::wifi::WIFI_NETWORK.try_into().unwrap(),
-                password: crate::wifi::WIFI_PASSWORD.try_into().unwrap(),
-                ..Default::default()
-            });
-            controller.set_configuration(&client_config).unwrap();
+            let client_config = ModeConfig::Station(
+                StationConfig::default()
+                    .with_ssid(crate::wifi::WIFI_NETWORK.try_into().unwrap())
+                    .with_password(crate::wifi::WIFI_PASSWORD.try_into().unwrap()),
+            );
+            controller.set_config(&client_config).unwrap();
             debug!("Starting Wi-Fi");
             controller.start_async().await.unwrap();
             debug!("Wi-Fi started!");
@@ -72,3 +71,9 @@ async fn connection(mut controller: WifiController<'static>) {
         }
     }
 }
+
+register_scheduler_implementation!(static SCHEDULER: ArielScheduler = ArielScheduler{});
+register_wait_queue_implementation!(ArielWaitQueue);
+register_semaphore_implementation!(CompatSemaphore);
+register_timer_implementation!(CompatTimer);
+register_queue_implementation!(CompatQueue);

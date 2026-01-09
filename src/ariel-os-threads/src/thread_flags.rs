@@ -98,7 +98,7 @@ pub fn get() -> ThreadFlags {
 
 impl Scheduler {
     // thread flags implementation
-    fn flag_set(&mut self, thread_id: ThreadId, mask: ThreadFlags) {
+    pub(crate) fn flag_set(&mut self, thread_id: ThreadId, mask: ThreadFlags) {
         let thread = self.get_unchecked_mut(thread_id);
         thread.flags |= mask;
         match thread.state {

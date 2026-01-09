@@ -4,7 +4,7 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_rp::{
-        Peripheral,
+        Peri,
         gpio::{Level, Pull},
     };
 
@@ -23,8 +23,8 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = true;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new<P: InputPin>(
+        pin: Peri<'static, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
     ) -> Result<Input<'static>, core::convert::Infallible> {
@@ -38,8 +38,8 @@ pub mod input {
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new_int_enabled<P: InputPin>(
+        pin: Peri<'static, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
     ) -> Result<IntEnabledInput<'static>, InterruptError> {
@@ -59,7 +59,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_rp::{Peripheral, gpio::Level};
+    use embassy_rp::{Peri, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_rp::gpio::{Output, Pin as OutputPin};
@@ -70,8 +70,8 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = true;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+    pub fn new<P: OutputPin>(
+        pin: Peri<'static, P>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         speed: super::Speed,

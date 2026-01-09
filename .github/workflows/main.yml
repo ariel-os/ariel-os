@@ -173,11 +173,12 @@ jobs:
             --locked
             --target=riscv32imac-unknown-none-elf
             --features "
-                esp-hal-embassy/esp32c6,
                 esp-hal/esp32c6,
+                esp-bootloader-esp-idf/esp32c6,
                 external-interrupts,
                 i2c,
                 spi,
+                time,
                 uart,
                 "
             -p ariel-os-esp
@@ -332,8 +333,8 @@ jobs:
                 --no-deps \
                 --target=riscv32imac-unknown-none-elf \
                 --features "
-                    esp-hal-embassy/esp32c6,
                     esp-hal/esp32c6,
+                    esp-bootloader-esp-idf/esp32c6,
                     external-interrupts,
                     i2c,
                     spi,

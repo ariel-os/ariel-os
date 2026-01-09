@@ -7,7 +7,6 @@ use esp_hal::{
     Async,
     gpio::interconnect::PeripheralOutput,
     i2c::master::{BusTimeout, I2c as EspI2c},
-    peripheral::Peripheral,
     peripherals,
 };
 
@@ -77,11 +76,11 @@ impl Frequency {
 
 ariel_os_embassy_common::impl_i2c_from_frequency!();
 
-impl From<Frequency> for fugit::HertzU32 {
+impl From<Frequency> for esp_hal::time::Rate {
     fn from(freq: Frequency) -> Self {
         match freq {
-            Frequency::_100k => fugit::Rate::<u32, 1, 1>::kHz(100),
-            Frequency::_400k => fugit::Rate::<u32, 1, 1>::kHz(400),
+            Frequency::_100k => esp_hal::time::Rate::from_khz(100),
+            Frequency::_400k => esp_hal::time::Rate::from_khz(400),
         }
     }
 }
@@ -99,9 +98,9 @@ macro_rules! define_i2c_drivers {
                 /// I2C peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
-                pub fn new<SDA: PeripheralOutput, SCL: PeripheralOutput>(
-                    sda_pin: impl Peripheral<P = SDA> + 'static,
-                    scl_pin: impl Peripheral<P = SCL> + 'static,
+                pub fn new(
+                    sda_pin: impl PeripheralOutput<'static>,
+                    scl_pin: impl PeripheralOutput<'static>,
                     config: Config,
                 ) -> I2c {
                     // Make this struct a compile-time-enforced singleton: having multiple statics
@@ -111,16 +110,16 @@ macro_rules! define_i2c_drivers {
                         static [<PREVENT_MULTIPLE_ $peripheral>]: () = ();
                     }
 
-                    let mut twim_config = esp_hal::i2c::master::Config::default();
-                    twim_config.frequency = config.frequency.into();
-                    #[cfg(any(context = "esp32c3", context = "esp32c6", context = "esp32s3"))]
-                    let disabled_timeout = BusTimeout::Disabled;
-                    // TODO: use `BusTimeout::Disabled` on s2 after esp-hal bump to 1.0.0
-                    #[cfg(any(context = "esp32", context = "esp32s2"))]
-                    // Use the maximum value as timeout cannot be disabled.
-                    let disabled_timeout = BusTimeout::Maximum;
-                    // Disable timeout as we implement it at a higher level.
-                    twim_config.timeout = disabled_timeout;
+                    let twim_config = esp_hal::i2c::master::Config::default()
+                        .with_frequency(config.frequency.into())
+                        // disable timeout as we handle that at a higher level.
+                        .with_timeout(
+                            #[cfg(any(context = "esp32c3", context = "esp32c6", context = "esp32s2", context = "esp32s3"))]
+                            BusTimeout::Disabled,
+                            // Use the maximum value as timeout cannot be disabled.
+                            #[cfg(context = "esp32")]
+                            BusTimeout::Maximum
+                            );
 
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: this struct being a singleton prevents us from stealing the

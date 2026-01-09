@@ -33,8 +33,18 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 static_cell = { workspace = true }
 
+[target.'cfg(use_stm32_single_bank)'.dependencies]
+embassy-stm32 = { workspace = true, default-features = false, features = [
+  "single-bank",
+] }
+
+[target.'cfg(use_stm32_dual_bank)'.dependencies]
+embassy-stm32 = { workspace = true, default-features = false, features = [
+  "dual-bank",
+] }
+
 [build-dependencies]
-stm32-metapac = { version = "16.0.0", default-features = false, features = [
+stm32-metapac = { version = "18.0.0", default-features = false, features = [
   "metadata",
 ] }
 

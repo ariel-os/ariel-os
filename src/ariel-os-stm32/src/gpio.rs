@@ -4,12 +4,12 @@ pub mod input {
     //! Input-specific types.
 
     use embassy_stm32::{
-        Peripheral,
+        Peri,
         gpio::{Level, Pull},
     };
 
     #[doc(hidden)]
-    pub use embassy_stm32::gpio::{Input, Pin as InputPin};
+    pub use embassy_stm32::gpio::{AnyPin, Input, Pin as InputPin};
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
@@ -19,8 +19,8 @@ pub mod input {
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
     #[doc(hidden)]
-    pub fn new(
-        pin: impl Peripheral<P: InputPin> + 'static,
+    pub fn new<T: InputPin>(
+        pin: Peri<'static, T>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by this hardware
     ) -> Result<Input<'static>, ariel_os_embassy_common::gpio::input::Error> {
@@ -30,15 +30,14 @@ pub mod input {
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub fn new_int_enabled<P: Peripheral<P = T> + 'static, T: InputPin>(
-        pin: P,
+    pub fn new_int_enabled<T: InputPin>(
+        pin: Peri<'static, T>,
         pull: ariel_os_embassy_common::gpio::Pull,
         _schmitt_trigger: bool, // Not supported by this hardware
     ) -> Result<IntEnabledInput<'static>, ariel_os_embassy_common::gpio::input::Error> {
         let pull = from_pull(pull);
-        let mut pin = pin.into_ref();
-        let ch = crate::extint_registry::EXTINT_REGISTRY.get_interrupt_channel_for_pin(&mut pin)?;
-        let pin = pin.into_ref().map_into();
+        let ch = crate::extint_registry::EXTINT_REGISTRY.get_interrupt_channel_for_pin(&pin)?;
+        let pin: Peri<'_, AnyPin> = pin.into();
         Ok(IntEnabledInput::new(pin, ch, pull))
     }
 
@@ -49,7 +48,7 @@ pub mod input {
 pub mod output {
     //! Output-specific types.
 
-    use embassy_stm32::{Peripheral, gpio::Level};
+    use embassy_stm32::{Peri, gpio::Level};
 
     #[doc(hidden)]
     pub use embassy_stm32::gpio::{Output, Pin as OutputPin};
@@ -61,7 +60,7 @@ pub mod output {
 
     #[doc(hidden)]
     pub fn new(
-        pin: impl Peripheral<P: OutputPin> + 'static,
+        pin: Peri<'static, impl OutputPin>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         _drive_strength: super::DriveStrength, // Not supported by hardware
         speed: super::Speed,

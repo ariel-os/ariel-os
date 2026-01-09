@@ -33,6 +33,7 @@ subdirs:
   - threading-event
   - threading-multicore
   - threading-timers
+  - threading-waitqueue
   - udp-echo
   - usb-keyboard
   - usb-serial
