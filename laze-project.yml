@@ -576,6 +576,7 @@ contexts:
       PROBE_RS_CHIP: STM32F767ZITx
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+        - --cfg use_stm32_single_bank
 
   - name: stm32h755zi
     parent: stm32
