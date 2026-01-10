@@ -1,0 +1,4 @@
+apps:
+  - name: stack-painting
+    selects:
+      - embedded-test-only
