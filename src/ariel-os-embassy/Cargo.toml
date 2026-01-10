@@ -131,6 +131,13 @@ wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
 
+ltem-nrf-modem = [
+  "ariel-os-hal/ltem-nrf-modem",
+  "embassy-net/medium-ip",
+  "net",
+  "nrf91-modem",
+]
+
 ble = [
   "dep:trouble-host",
   "ariel-os-embassy-common/ble",
