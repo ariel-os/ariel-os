@@ -1,18 +1,15 @@
 [package]
 name = "ariel-os-hal"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
 ariel-os-embassy-common = { workspace = true }
 
-cfg-if.workspace = true
-const_panic.workspace = true
+cfg-if = { workspace = true }
+const_panic = { workspace = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-sync = { workspace = true, optional = true }
@@ -99,7 +96,7 @@ ble = [
   "ariel-os-embassy-common/ble",
   "ariel-os-nrf/ble",
 ]
-ble-cyw43 = ["ble", "ariel-os-rp/ble-cyw43"]
+ble-cyw43 = ["ariel-os-rp/ble-cyw43", "ble"]
 ble-peripheral = ["ariel-os-nrf/ble-peripheral", "ariel-os-rp/ble-peripheral"]
 ble-central = ["ariel-os-nrf/ble-central", "ariel-os-rp/ble-central"]
 
@@ -147,8 +144,11 @@ defmt = [
   "ariel-os-nrf/defmt",
   "ariel-os-rp/defmt",
   "ariel-os-stm32/defmt",
-  "embedded-hal/defmt-03",
   "embedded-hal-async/defmt-03",
+  "embedded-hal/defmt-03",
   "embedded-io?/defmt-03",
 ]
 log = ["ariel-os-esp/log"]
+
+[lints]
+workspace = true

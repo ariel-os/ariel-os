@@ -1,25 +1,25 @@
 [package]
 name = "ariel-os-storage"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 description = "Ariel OS storage API"
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
-cfg-if = { workspace = true }
-embassy-sync = { workspace = true }
-once_cell = { workspace = true }
 ariel-os-debug = { workspace = true }
 ariel-os-hal = { workspace = true, features = ["storage"] }
 arrayvec = { version = "0.7.4", default-features = false }
+cfg-if = { workspace = true }
+embassy-sync = { workspace = true }
 embedded-storage-async = { workspace = true }
+once_cell = { workspace = true }
 postcard = { version = "1.0.8", features = ["postcard-derive"] }
 sequential-storage = { version = ">=4.0.1, <4.0.2", features = ["arrayvec"] }
 serde = { workspace = true, default-features = false }
 
 [target.'cfg(context = "rp")'.dependencies]
 embassy-time = { workspace = true, default-features = false }
+
+[lints]
+workspace = true

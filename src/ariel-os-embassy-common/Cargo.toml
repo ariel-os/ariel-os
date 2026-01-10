@@ -1,25 +1,22 @@
 [package]
 name = "ariel-os-embassy-common"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
 ariel-os-buildinfo = { workspace = true }
 ariel-os-utils = { workspace = true }
+const-sha1 = { version = "0.3.0", default-features = false }
 defmt = { workspace = true, optional = true }
-fugit = { workspace = true, optional = true }
 embassy-time = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
-const-sha1 = { version = "0.3.0", default-features = false }
-trouble-host = { workspace = true, optional = true }
+fugit = { workspace = true, optional = true }
 static_cell = { workspace = true, optional = true }
+trouble-host = { workspace = true, optional = true }
 
 [features]
 ## Enables GPIO interrupt support.
@@ -38,6 +35,9 @@ defmt = ["dep:defmt", "fugit?/defmt"]
 
 executor-thread = []
 
-_test = ["i2c", "spi", "external-interrupts", "uart"]
+_test = ["external-interrupts", "i2c", "spi", "uart"]
 
 ble = ["dep:static_cell", "dep:trouble-host"]
+
+[lints]
+workspace = true

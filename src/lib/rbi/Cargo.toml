@@ -1,18 +1,16 @@
 [package]
 name = "rbi"
 version = "0.1.1"
-license.workspace = true
 edition.workspace = true
-
-keywords = ["api", "no_std"]
-homepage = "https://github.com/ariel-os/ariel-os"
-
 description = "A FIFO index queue that can be used for implementing a ring buffer."
-
-[lints]
-workspace = true
+homepage = "https://github.com/ariel-os/ariel-os"
+license.workspace = true
+keywords = ["api", "no_std"]
 
 [dependencies]
 
 [features]
 _test = []
+
+[lints]
+workspace = true

@@ -1,21 +1,18 @@
 [package]
 name = "ariel-os-embassy"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
-const_panic.workspace = true
-critical-section.workspace = true
-linkme.workspace = true
-portable-atomic.workspace = true
+cfg-if = { workspace = true }
+const_panic = { workspace = true }
+critical-section = { workspace = true }
+linkme = { workspace = true }
+portable-atomic = { workspace = true }
 rand_core = { workspace = true, optional = true }
-static_cell.workspace = true
-cfg-if.workspace = true
+static_cell = { workspace = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true }
@@ -32,23 +29,23 @@ embassy-usb = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 
-ariel-os-buildinfo = { workspace = true }
-ariel-os-embassy-common = { workspace = true }
 ariel-os-boards = { workspace = true }
+ariel-os-buildinfo = { workspace = true }
+ariel-os-debug = { workspace = true }
+ariel-os-embassy-common = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
-ariel-os-threads = { path = "../ariel-os-threads", optional = true }
-ariel-os-debug = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
-ariel-os-rt = { path = "../ariel-os-rt" }
 ariel-os-random = { path = "../ariel-os-random", optional = true }
+ariel-os-rt = { path = "../ariel-os-rt" }
 ariel-os-storage = { workspace = true, optional = true }
+ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
 
 heapless = "0.8.0"
 once_cell = { workspace = true }
-usbd-hid = { version = "0.8.2", optional = true }
 trouble-host = { workspace = true, optional = true }
+usbd-hid = { version = "0.8.2", optional = true }
 
 # ISA-specific
 [target.'cfg(context = "cortex-m")'.dependencies]
@@ -96,7 +93,7 @@ usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
 
 # embassy-net requires embassy-time and support for timeouts in the executor
 net = ["dep:embassy-net", "time"]
-usb-ethernet = ["usb", "net"]
+usb-ethernet = ["net", "usb"]
 
 random = ["dep:ariel-os-random", "dep:rand_core"]
 ## Use a hardware RNG to seed into the ariel-os-random system-wide RNG
@@ -129,7 +126,7 @@ wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 
 eth = []
-eth-stm32 = ["ariel-os-hal/eth-stm32", "net", "eth"]
+eth-stm32 = ["ariel-os-hal/eth-stm32", "eth", "net"]
 
 ble = [
   "dep:trouble-host",
@@ -140,9 +137,9 @@ ble = [
   "hwrng",
   "random",
 ]
-ble-cyw43 = ["ble", "ariel-os-hal/ble-cyw43"]
-ble-peripheral = ["ble", "ariel-os-hal/ble-peripheral"]
-ble-central = ["ble", "ariel-os-hal/ble-central"]
+ble-cyw43 = ["ariel-os-hal/ble-cyw43", "ble"]
+ble-peripheral = ["ariel-os-hal/ble-peripheral", "ble"]
+ble-central = ["ariel-os-hal/ble-central", "ble"]
 
 nrf91-modem = ["ariel-os-hal/nrf91-modem"]
 
@@ -175,22 +172,25 @@ executor-single-thread = [
   "ariel-os-rt/executor-single-thread",
 ]
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
-executor-thread = ["threading", "ariel-os-embassy-common/executor-thread"]
+executor-thread = ["ariel-os-embassy-common/executor-thread", "threading"]
 executor-none = []
 
 defmt = [
+  "ariel-os-embassy-common/defmt",
+  "ariel-os-hal/defmt",
   "embassy-net?/defmt",
   "embassy-time?/defmt",
   "embassy-usb?/defmt",
-  "embedded-hal/defmt-03",
   "embedded-hal-async/defmt-03",
-  "embedded-io/defmt-03",
+  "embedded-hal/defmt-03",
   "embedded-io-async/defmt-03",
-  "ariel-os-hal/defmt",
-  "ariel-os-embassy-common/defmt",
+  "embedded-io/defmt-03",
   "trouble-host?/defmt",
   "usbd-hid?/defmt",
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["dhcpv4", "executor-none", "i2c", "spi", "time", "external-interrupts"]
+_test = ["dhcpv4", "executor-none", "external-interrupts", "i2c", "spi", "time"]
+
+[lints]
+workspace = true

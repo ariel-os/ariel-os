@@ -1,20 +1,17 @@
 [package]
 name = "ariel-os-rt"
 version = "0.2.0"
-license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-
-[lints]
-workspace = true
+license.workspace = true
 
 [dependencies]
-cfg-if.workspace = true
-linkme.workspace = true
 ariel-os-alloc = { workspace = true, optional = true }
-ariel-os-debug.workspace = true
+ariel-os-debug = { workspace = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
+cfg-if = { workspace = true }
+linkme = { workspace = true }
 
 [build-dependencies]
 ld-memory = { workspace = true, features = ["build-rs"], optional = true }
@@ -60,3 +57,6 @@ nrf91-modem = []
 
 # features needed for `cargo test`
 _test = []
+
+[lints]
+workspace = true
