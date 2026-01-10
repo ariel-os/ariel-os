@@ -254,6 +254,7 @@ dependencies = [
  "ariel-os-utils",
  "const-str",
  "critical-section",
+ "defmt-rtt",
  "embassy-sync 0.6.2",
  "esp-println",
  "featurecomb",
@@ -1711,6 +1712,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "10d60334b3b2e7c9d91ef8150abfb6fa4c1c39ebbcf4a81c2e346aad939fee3e"
 dependencies = [
  "thiserror",
+]
+
+[[package]]
+name = "defmt-rtt"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93d5a25c99d89c40f5676bec8cefe0614f17f0f40e916f98e345dae941807f9e"
+dependencies = [
+ "critical-section",
+ "defmt 1.0.1",
 ]
 
 [[package]]

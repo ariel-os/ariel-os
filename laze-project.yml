@@ -1096,7 +1096,10 @@ modules:
     help: use probe-rs as runner
     selects:
       - ?debug-console
-      - ?rtt-target
+      - defmt:
+          - defmt-rtt
+      - log:
+          - rtt-target
     provides_unique:
       - embedded-test-runner
 
@@ -1678,6 +1681,14 @@ modules:
       global:
         FEATURES:
           - ariel-os/infini-core
+  - name: defmt-rtt
+    help: use defmt-rtt in ariel-os-debug
+    provides_unique:
+      - ariel-os-debug-backend
+    env:
+      global:
+        FEATURES:
+          - ariel-os/defmt-rtt
 
   - name: rtt-target
     help: use rtt-target in ariel-os-debug
