@@ -1881,8 +1881,9 @@ dependencies = [
 
 [[package]]
 name = "embassy-net"
-version = "0.6.0"
-source = "git+https://github.com/ariel-os/embassy?rev=3d9f77ee05cdb18f1cd676233bcda9b6f7be3369#3d9f77ee05cdb18f1cd676233bcda9b6f7be3369"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "940c4b9fe5c1375b09a0c6722c0100d6b2ed46a717a34f632f26e8d7327c4383"
 dependencies = [
  "defmt 0.3.100",
  "document-features",
