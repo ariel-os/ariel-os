@@ -7,7 +7,7 @@ publish = false
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-embedded-io-async = { workspace = true }
+embedded-io-async = "0.7.0"
 
 [lints]
 workspace = true

@@ -67,6 +67,8 @@ allow-git = [
   "https://github.com/chrysn-pull-requests/minicbor",
   # for the thermometer example
   "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver",
+  # For the `http-server` example.
+  "https://github.com/sammhicks/picoserve",
 ]
 
 [sources.allow-org]

@@ -8,8 +8,10 @@ publish = false
 ariel-os = { path = "../../src/ariel-os" }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embassy-sync = { workspace = true }
-picoserve = { version = "0.14.1", default-features = false, features = [
+# TODO: use the released version when it supports `embassy-net` v0.8.
+picoserve = { git = "https://github.com/sammhicks/picoserve", default-features = false, features = [
   "embassy",
+  "json",
 ] }
 serde = { workspace = true, optional = true }
 
