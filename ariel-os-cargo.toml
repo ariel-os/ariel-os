@@ -25,8 +25,8 @@ cyw43 = { git = "https://github.com/ariel-os/embassy", rev = "603583d9" }
 embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "0feffeb3c90748112a64c6570a39e1251311accb" }
 # branch = "embassy-nrf-v0.8.0+ariel-os"
 embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "3940a79a29ae578a35625cae949bea473abf21d1" }
-# branch = "embassy-net-v0.7.1+ariel-os"
-embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "f88320aea64cf24026dd95ce3405ac23253b1117" }
+# branch = "embassy-net-v0.8.0+ariel-os"
+embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "3b185bf1b3852867e4b932456600621f86f78bce" }
 # branch = "embassy-rp-v0.8.0+ariel-os"
 embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "0314802282e112a47b4ccb303c0e7f09cf33df53" }
 # branch = "embassy-stm32-v0.4.0+ariel-os"
