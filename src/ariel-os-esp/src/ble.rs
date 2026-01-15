@@ -1,13 +1,22 @@
 use bt_hci::controller::ExternalController;
+use core::ffi::c_void;
 use embassy_executor::Spawner;
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock,
 };
 use esp_radio::ble::controller::BleConnector;
+use esp_radio_rtos_driver::{
+    queue::CompatQueue, register_queue_implementation, register_scheduler_implementation,
+    register_semaphore_implementation, register_timer_implementation,
+    register_wait_queue_implementation, semaphore::CompatSemaphore, timer::CompatTimer,
+};
 use static_cell::StaticCell;
 use trouble_host::prelude::DefaultPacketPool;
 
 use ariel_os_embassy_common::cell::SameExecutorCell;
+
+use crate::scheduler::ArielScheduler;
+use crate::wait_queue::ArielWaitQueue;
 
 /// Number of command slots for the Bluetooth driver.
 pub const SLOTS: usize = 10;
@@ -58,3 +67,9 @@ pub async fn ble_stack() -> &'static mut BleStack {
         .await
         .expect("Stack needs to be taken from main executor")
 }
+
+register_scheduler_implementation!(static SCHEDULER: ArielScheduler = ArielScheduler{});
+register_wait_queue_implementation!(ArielWaitQueue);
+register_semaphore_implementation!(CompatSemaphore);
+register_timer_implementation!(CompatTimer);
+register_queue_implementation!(CompatQueue);
