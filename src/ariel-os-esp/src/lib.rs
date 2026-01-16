@@ -4,12 +4,21 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
-#[cfg(feature = "wifi")]
+#[cfg(any(feature = "ble-esp", feature = "wifi"))]
 extern crate alloc;
+
+#[cfg(any(feature = "ble-esp", feature = "wifi"))]
+mod scheduler;
+#[cfg(any(feature = "ble-esp", feature = "wifi"))]
+mod wait_queue;
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
 pub mod gpio;
+
+#[cfg(feature = "ble-esp")]
+#[doc(hidden)]
+pub mod ble;
 
 #[cfg(feature = "hwrng")]
 #[doc(hidden)]

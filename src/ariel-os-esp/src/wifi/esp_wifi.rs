@@ -1,6 +1,3 @@
-mod scheduler;
-mod wait_queue;
-
 use ariel_os_debug::log::{debug, info};
 use core::ffi::c_void;
 use embassy_executor::Spawner;
@@ -14,8 +11,8 @@ use esp_radio_rtos_driver::{
     register_wait_queue_implementation, semaphore::CompatSemaphore, timer::CompatTimer,
 };
 
-use scheduler::ArielScheduler;
-use wait_queue::ArielWaitQueue;
+use crate::scheduler::ArielScheduler;
+use crate::wait_queue::ArielWaitQueue;
 
 pub type NetworkDevice = WifiDevice<'static>;
 
