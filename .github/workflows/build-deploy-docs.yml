@@ -66,6 +66,7 @@ jobs:
           RUSTDOCFLAGS='--cfg nightly' cargo doc \
               --no-deps \
               -p ariel-os \
+              -p ariel-os-sensors-gnss-time-ext \
               -p coapcore \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
