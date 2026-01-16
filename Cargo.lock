@@ -485,13 +485,13 @@ dependencies = [
  "ariel-os-utils",
  "bt-hci",
  "cfg-if",
- "cyw43",
+ "cyw43 0.5.0",
  "cyw43-pio",
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
  "embassy-net-driver-channel",
- "embassy-rp",
+ "embassy-rp 0.8.0",
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
@@ -512,7 +512,7 @@ dependencies = [
  "cfg-if",
  "cortex-m",
  "cortex-m-rt",
- "embassy-rp",
+ "embassy-rp 0.8.0",
  "embedded-test",
  "esp-hal",
  "ld-memory",
@@ -659,7 +659,7 @@ dependencies = [
  "cortex-m-semihosting",
  "critical-section",
  "defmt 1.0.1",
- "embassy-rp",
+ "embassy-rp 0.8.0",
  "embassy-time",
  "embassy-time-driver",
  "esp-hal",
@@ -1632,13 +1632,31 @@ dependencies = [
 ]
 
 [[package]]
-name = "cyw43-pio"
-version = "0.8.0"
+name = "cyw43"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86bd7dea4d32a73557be29bfadaaa916e758115ed8b42cfca4fda0a111f07644"
+checksum = "bff28275bda1b427b4cc6fb23c22505fef8ace0ccfadc9bffe3fdd6120ff1513"
 dependencies = [
- "cyw43",
- "embassy-rp",
+ "cortex-m",
+ "cortex-m-rt",
+ "embassy-futures",
+ "embassy-net-driver-channel",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embedded-hal 1.0.0",
+ "futures",
+ "heapless 0.8.0",
+ "num_enum 0.5.11",
+]
+
+[[package]]
+name = "cyw43-pio"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1504988186aca75ebe6f0b8450c309baf342bc73b988844983ad6ba97291efe"
+dependencies = [
+ "cyw43 0.6.0",
+ "embassy-rp 0.9.0",
  "fixed",
 ]
 
@@ -2100,6 +2118,42 @@ dependencies = [
  "rand_core 0.6.4",
  "rand_core 0.9.3",
  "rp-binary-info",
+ "rp-pac",
+ "rp2040-boot2",
+ "sha2-const-stable",
+ "smart-leds",
+]
+
+[[package]]
+name = "embassy-rp"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af8d5ac11a8bc209d359ad98bb10a10f786471dd474790f3a4f991c77ae94f6f"
+dependencies = [
+ "cfg-if",
+ "cortex-m",
+ "cortex-m-rt",
+ "critical-section",
+ "document-features",
+ "embassy-embedded-hal",
+ "embassy-futures",
+ "embassy-hal-internal",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embassy-usb-driver",
+ "embedded-hal 0.2.7",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "embedded-hal-nb",
+ "embedded-io 0.6.1",
+ "embedded-io-async 0.6.1",
+ "embedded-storage",
+ "embedded-storage-async",
+ "fixed",
+ "nb 1.1.0",
+ "pio",
+ "rand_core 0.6.4",
+ "rand_core 0.9.3",
  "rp-pac",
  "rp2040-boot2",
  "sha2-const-stable",
