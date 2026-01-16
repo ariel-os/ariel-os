@@ -2,7 +2,7 @@ use alloc::boxed::Box;
 use core::ptr::NonNull;
 
 use ariel_os_threads::sync::WaitQueue;
-use esp_radio_rtos_driver::wait_queue::{WaitQueueImplementation, WaitQueuePtr};
+use esp_radio_rtos_driver::wait_queue::{WaitQueueHandle, WaitQueueImplementation, WaitQueuePtr};
 
 pub(crate) struct ArielWaitQueue {
     inner: WaitQueue,
