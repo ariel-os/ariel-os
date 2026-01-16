@@ -150,3 +150,5 @@ defmt = [
   "embedded-io?/defmt-03",
 ]
 log = ["ariel-os-esp/log"]
+
+rcc-config-override = ["ariel-os-stm32/rcc-config-override"]

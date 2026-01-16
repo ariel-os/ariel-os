@@ -97,7 +97,16 @@ pub fn init() -> OptionalPeripherals {
 }
 
 fn board_config(config: &mut Config) {
-    config.rcc = rcc_config();
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "rcc-config-override")] {
+            unsafe extern "Rust" {
+                fn __ariel_os_rcc_config() -> embassy_stm32::rcc::Config;
+            }
+            config.rcc = unsafe { __ariel_os_rcc_config() };
+        } else {
+            config.rcc = rcc_config();
+        }
+    }
 }
 
 // TODO: find better place for this
