@@ -17,6 +17,7 @@ through [laze modules][laze-modules-book].
 - `usb-ethernet`: Selects Ethernet-over-USB.
 - `wifi-cyw43`: Selects Wi-Fi using the CYW43 chip along an RP2040 or RP235x MCU (e.g., on the Raspberry Pi Pico W or Pico 2 W).
 - `wifi-esp`: Selects Wi-Fi on an ESP32 MCU.
+- `ltem-nrf-modem`: Selects LTE-M for nrf91 series MCUs.
 
 ## Network Credentials
 
@@ -26,9 +27,14 @@ For Wi-Fi, the network credentials have to be supplied via environment variables
 CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 ```
 
+For cellular networking (LTE-M), currently the SIM card is expected to have no pin and an automatically configured APN.
+
 ## Using the Networking Link on the Device
 
 ### Network Configuration
+
+> [!NOTE]
+> IPV4 and IPV6 configurations are ignored when using `ltem-nrf-modem`
 
 #### IPv4
 
