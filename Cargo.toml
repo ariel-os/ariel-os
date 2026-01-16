@@ -143,7 +143,7 @@ ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
-const-str = "0.7.0"
+const-str = "1.0.0"
 const_panic = { version = "0.2.8", default-features = false }
 defmt = { version = "1.0.0" }
 defmt-rtt = { version = "1.1.0" }
