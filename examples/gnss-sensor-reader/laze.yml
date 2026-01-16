@@ -1,0 +1,4 @@
+apps:
+  - name: gnss-sensor-reader
+    selects:
+      - nrf91-modem
