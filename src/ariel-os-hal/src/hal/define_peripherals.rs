@@ -131,6 +131,94 @@ macro_rules! group_peripherals {
     }
 }
 
+/// This macro defines a `uarts` module that gives access to UARTs by various accessors (currently:
+/// through accessor types, which can be used as peripherals in autostart tasks).
+///
+/// This is a comma-separated list of items that
+///
+/// While usable for applications just as well (to set up custom UARTs), it is most useful in board
+/// descriptions, because in addition to the individual exposed UARTs, it can also provide extra
+/// functionalities that take all UARTs into account.
+#[macro_export]
+macro_rules! define_uarts {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_uart!{ $($args)+ }
+        )*
+
+        $crate::_define_host_facing_uarts!{
+            // Note that this does *not* create an outer separator; instead, the inner macro
+            // creates a trailing comma for each item.
+            $(
+                $crate::_uart_get_host_facing_names!{ $($args)+ }
+            ),*
+        }
+    }
+}
+
+/// FIXME
+#[macro_export]
+macro_rules! define_uart {
+    ( name: $name:ident, device: $device:ident, tx: $tx:ident, rx: $rx:ident, host_facing: $_host_facing:literal ) => {
+        // Rather than define_peripherals!'ing here, we define our type manually, because we also
+        // have to carry the device type, and that's not coming through TakePeripherals.
+
+        #[allow(non_snake_case)]
+        pub struct $name {
+            tx: $crate::hal::peripheral::Peri<'static, peripherals::$tx>,
+            rx: $crate::hal::peripheral::Peri<'static, peripherals::$rx>,
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                $name {
+                    tx: self.$tx.take().unwrap(),
+                    rx: self.$rx.take().unwrap(),
+                }
+            }
+        }
+
+        impl $crate::uart::Assignment for $name {
+            type Device<'a> = $crate::hal::uart::$device<'a>;
+            type Tx = $crate::hal::peripheral::Peri<'static, peripherals::$tx>;
+            type Rx = $crate::hal::peripheral::Peri<'static, peripherals::$rx>;
+
+            fn into_pins(self) -> (Self::Tx, Self::Rx) {
+                (self.tx, self.rx)
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! _uart_get_host_facing_names {
+    ( name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true ) => {
+        $name
+    };
+    ( name: $_name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: false ) => {};
+}
+
+#[macro_export]
+macro_rules! _define_host_facing_uarts {
+    () => {};
+    ( $name:ty ) => {
+        pub type HOST_FACING_UART = $name;
+    };
+    ( $name:ty, $name2:ty $(, $($_:ty),+)? ) => {
+        pub type HOST_FACING_UART = $name;
+        // FIXME: This can only be accessed by application that have some prior knowledge of
+        // multiple UARTs being available, and, more importantly, has negotiated between its
+        // components which one takes which. Once any future mechanism enables that negotiation,
+        // these types will need to be advertised to this mechanism.
+        pub type HOST_FACING_UART_2 = $name;
+    };
+    ( $name:ty, $name2:ty $(, $($_:ty),+)? ) => {
+        compile_error!(
+            "Larger numbers of host facing UARTs can be supported by expanding the `_define_host_facing_uarts` macro of ariel-os-hal to more cases."
+            );
+    };
+}
+
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;
