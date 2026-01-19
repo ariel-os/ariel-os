@@ -1987,7 +1987,7 @@ dependencies = [
 [[package]]
 name = "embassy-hal-internal"
 version = "0.3.0"
-source = "git+https://github.com/ariel-os/embassy?rev=0feffeb3c90748112a64c6570a39e1251311accb#0feffeb3c90748112a64c6570a39e1251311accb"
+source = "git+https://github.com/ariel-os/embassy?rev=b292e1e2eaf54804c95e8cdc8bbcb11e03452538#b292e1e2eaf54804c95e8cdc8bbcb11e03452538"
 dependencies = [
  "cortex-m",
  "critical-section",

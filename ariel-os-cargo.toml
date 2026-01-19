@@ -21,8 +21,8 @@ opt-level = 3
 # includes bt-hci 0.6.0 update
 cyw43 = { git = "https://github.com/ariel-os/embassy", rev = "603583d9" }
 
-# branch = "embassy-hal-internal-v0.3.0+ariel-os"
-embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "0feffeb3c90748112a64c6570a39e1251311accb" }
+# branch = "embassy-hal-internal-v0.4.0+ariel-os"
+embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "b292e1e2eaf54804c95e8cdc8bbcb11e03452538" }
 # branch = "embassy-nrf-v0.8.0+ariel-os"
 embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "3940a79a29ae578a35625cae949bea473abf21d1" }
 # branch = "embassy-net-v0.7.1+ariel-os"
