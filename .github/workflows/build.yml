@@ -209,7 +209,8 @@ jobs:
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
           # rust-src: Used for -Zbuild-std.
           # rustfmt: Used by bindgen for liboscore
-          components: rust-src, rustfmt
+          # llvm-tools: Used by nrf-modem
+          components: rust-src, rustfmt, llvm-tools
 
       - name: Install stable toolchain
         if: steps.should-skip.outputs.result != 'true'
@@ -219,7 +220,8 @@ jobs:
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
           # rust-src: Used for -Zbuild-std.
           # rustfmt: Used by bindgen for liboscore
-          components: rust-src, rustfmt
+          # llvm-objcopy: Used by nrf-modem
+          components: rust-src, rustfmt, llvm-tools
 
       - name: Install Rust for Xtensa
         if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1')
