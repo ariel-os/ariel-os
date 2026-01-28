@@ -159,7 +159,7 @@ contexts:
 
       gdb:
         cmd:
-          - arm-none-eabi-gdb -ex "target extended-remote localhost:1337" ${out} $@
+          - ${GDB_EXEC} -ex "target extended-remote localhost:1337" ${out} $@
         build: false
         ignore_ctrl_c: true
 
@@ -393,6 +393,7 @@ contexts:
       RUSTC_TARGET: xtensa-esp32-none-elf
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32_NONE_ELF
       CC: xtensa-esp32-elf-gcc
+      GDB_EXEC: xtensa-esp32-elf-gdb
 
   - name: esp-wroom-32
     parent: esp32
@@ -449,6 +450,7 @@ contexts:
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32S2_NONE_ELF
       CC: xtensa-esp32s2-elf-gcc
       esp_wifi_heapsize_required: $(64*1024)
+      GDB_EXEC: xtensa-esp32s2-elf-gdb
 
   - name: esp32s2fx2
     parent: esp32s2
@@ -477,6 +479,7 @@ contexts:
       PROBE_RS_PROTOCOL: jtag
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32S3_NONE_ELF
       CC: xtensa-esp32s3-elf-gcc
+      GDB_EXEC: xtensa-esp32s3-elf-gdb
 
   - name: esp32s3fx8
     parent: esp32s3
@@ -507,6 +510,7 @@ contexts:
         - -Clink-arg=-Wl,-znostart-stop-gc
       CARGO_TARGET_PREFIX: CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU
       CARGO_RUNNER: '"sh -c"'
+      GDB_EXEC: gdb
 
   - name: stm32
     help: STM32 support (based on embassy-stm32)
@@ -758,6 +762,7 @@ modules:
           - -Clink-arg=-Tdevice.x
           - -Clink-arg=-Tisr_stack.x
           - --cfg context=\"cortex-m\"
+        GDB_EXEC: arm-none-eabi-gdb
 
   - name: cortex-m0
     selects:
@@ -874,6 +879,7 @@ modules:
           - -Clink-arg=-Tisr_stack.x
           - -Clink-arg=-Tlinkme-region-alias.x
           - -Clink-arg=-Tlinkme.x
+        GDB_EXEC: riscv32-elf-gdb
 
   - name: rp-link-arg
     help: helper module that ensures link-rp.x is added behind cortex-m ld scripts
