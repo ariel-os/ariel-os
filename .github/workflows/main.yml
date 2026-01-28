@@ -307,6 +307,7 @@ jobs:
             RUSTDOCFLAGS='-D warnings' cargo doc \
                 --no-deps \
                 -p ariel-os \
+                -p ariel-os-gnss-time-extension \
                 -p coapcore \
                 --features "
                     ariel-os-sensors/max-sample-min-count-12,
