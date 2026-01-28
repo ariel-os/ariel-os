@@ -26,6 +26,17 @@ dt, dd {
   display: inline;
 }
 </style>
+
+{% if board_matrix_html|length > 1 +%}
+
+## Boards
+
+Boards using this chip.
+
+{{ board_matrix_html }}
+{% endif %}
+
+
 {% for functionality in chip_info.functionalities %}
   {%- for comment in functionality.comments %}
 [^{{ comment|slugify }}]: {{ comment|capitalize_first }}.

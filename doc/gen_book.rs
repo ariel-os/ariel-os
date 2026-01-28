@@ -451,7 +451,10 @@ struct SubCommandChipPages {
     check: bool,
     #[argh(option)]
     /// path of the template summary
-    template_path: PathBuf,
+    chip_template_path: PathBuf,
+    #[argh(option)]
+    /// path of the support matrix html template
+    matrix_template_path: PathBuf,
     #[argh(positional)]
     /// path of the input YAML file
     input_path: PathBuf,
@@ -462,16 +465,74 @@ struct SubCommandChipPages {
 
 impl SubCommandChipPages {
     fn run(self, matrix: &schema::Matrix) -> miette::Result<()> {
-        let chip_page_template = fs::read_to_string(&self.template_path).map_err(|source| {
+        let matrix_template = fs::read_to_string(&self.matrix_template_path).map_err(|source| {
             Error::SummaryTemplateFile {
-                path: self.template_path.clone(),
+                path: self.matrix_template_path.clone(),
                 source,
             }
         })?;
+        let chip_page_template =
+            fs::read_to_string(&self.chip_template_path).map_err(|source| {
+                Error::SummaryTemplateFile {
+                    path: self.chip_template_path.clone(),
+                    source,
+                }
+            })?;
 
         let chip_info = gen_chip_functionalities(&matrix)?;
+        let mut board_info = gen_board_functionalities(&matrix)?;
+
+        // sort by tier
+        for board in board_info.iter_mut() {
+            board
+                .builders
+                .sort_unstable_by_key(|builder| builder.tier.clone());
+        }
+        board_info.sort_unstable_by_key(|board| {
+            (
+                board
+                    .builders
+                    .iter()
+                    .min_by_key(|builder| builder.tier.clone())
+                    .unwrap()
+                    .tier
+                    .clone(),
+                board.name.to_lowercase(),
+            )
+        });
 
         for chip in &chip_info {
+            let board_matrix_html = {
+                let current_boards: Vec<BoardInfo> = board_info
+                    .iter()
+                    .filter_map(|b| {
+                        let builders: Vec<LazeBuilder> = b
+                            .builders
+                            .iter()
+                            .filter(|builder| builder.chip_technical_name == chip.technical_name)
+                            .cloned()
+                            .collect();
+                        if builders.len() > 0 {
+                            Some(BoardInfo {
+                                builders,
+                                ..b.clone()
+                            })
+                        } else {
+                            None
+                        }
+                    })
+                    .collect();
+                if current_boards.len() == 0 {
+                    "".to_string()
+                } else {
+                    let mut env = Environment::new();
+                    env.add_template("matrix", &matrix_template).unwrap();
+                    let tmpl = env.get_template("matrix").unwrap();
+                    tmpl.render(context!(matrix => matrix, boards => current_boards))
+                        .unwrap()
+                }
+            };
+
             let mut env = Environment::new();
             add_custom_filters(&mut env);
             env.add_template("chip_page", &chip_page_template).unwrap();
@@ -480,6 +541,7 @@ impl SubCommandChipPages {
                 .render(context!(
                     chip_info => chip,
                     support_keys => matrix.support_keys,
+                    board_matrix_html => board_matrix_html,
                 ))
                 .unwrap();
 
@@ -514,7 +576,7 @@ impl SubCommandChipPages {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 struct BoardInfo {
     url: String,
     board_doc: String,
@@ -529,7 +591,7 @@ struct ChipInfo {
     functionalities: Vec<FunctionalitySupport>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 struct LazeBuilder {
     chip: String,
     chip_technical_name: String,
@@ -539,7 +601,7 @@ struct LazeBuilder {
     functionalities: Vec<FunctionalitySupport>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 struct FunctionalitySupport {
     title: String,
     icon: String,

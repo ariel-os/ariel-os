@@ -1872,7 +1872,7 @@ builders:
           - doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --template-path book/templates/board-page.md.tmpl
           - doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl
           - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix.html --template-path book/templates/support-matrix.html.tmpl
-          - doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --template-path book/templates/chip-page.md.tmpl
+          - doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --chip-template-path book/templates/chip-page.md.tmpl --matrix-template-path book/templates/support-matrix.html.tmpl
           - doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl
 
       fmt:
