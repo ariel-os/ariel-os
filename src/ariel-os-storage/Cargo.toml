@@ -21,5 +21,8 @@ serde = { workspace = true, default-features = false }
 [target.'cfg(context = "rp")'.dependencies]
 embassy-time = { workspace = true, default-features = false }
 
+[features]
+backend-linked = []
+
 [lints]
 workspace = true

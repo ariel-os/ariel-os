@@ -37,6 +37,7 @@ const MARKER_VALUE: u8 = 0;
 /// This function is also the place to configure a platform dependent `OFFSET`,
 /// which configures an offset between the linker flash address map and the
 /// flash driver address map.
+#[cfg(feature = "backend-linked")]
 fn flash_range_from_linker() -> Range<u32> {
     #[cfg(all(context = "nrf", not(context = "nrf5340-net")))]
     const OFFSET: usize = 0x0;
@@ -66,10 +67,24 @@ fn flash_range_from_linker() -> Range<u32> {
 
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_debug::log::info;
-    let flash_range = flash_range_from_linker();
-    info!("storage: using flash range {:?}", &flash_range);
 
     let flash = flash_init(p);
+
+    let flash_range = {
+        cfg_if::cfg_if! {
+            if #[cfg(feature = "backend-linked")] {
+                flash_range_from_linker()
+            } else if #[cfg(context = "ariel-os")] {
+                compile_error!("No back-end for storage was selected; this is a bug in the laze configuration.")
+            } else {
+                // Don't prevent docs from building
+                0..0
+            }
+        }
+    };
+
+    info!("storage: using flash range {:?}", &flash_range);
+
     let _ = STORAGE.init(Mutex::new(Storage::new(flash, flash_range)));
 }
 

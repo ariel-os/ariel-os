@@ -47,8 +47,11 @@ default = ["ariel-os-rt/_panic-handler"]
 alloc = ["ariel-os-rt/alloc"]
 ## Enables GPIO interrupt support.
 external-interrupts = ["ariel-os-embassy/external-interrupts"]
+
 # Enables storage support.
 storage = ["dep:ariel-os-storage", "ariel-os-embassy/storage"]
+storage-backend-linked = ["ariel-os-storage/backend-linked"]
+
 # Enables threading support, see the [`macro@thread`] attribute macro.
 threading = [
   "dep:ariel-os-threads",
