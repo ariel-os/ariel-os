@@ -5,14 +5,12 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![expect(unsafe_code)]
+#![cfg_attr(feature = "backend-linked", expect(unsafe_code))]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
 mod postcard_value;
 mod storage;
-
-use core::ops::Range;
 
 use ariel_os_hal::hal::{
     OptionalPeripherals,
@@ -31,14 +29,14 @@ static STORAGE: OnceLock<Mutex<CriticalSectionRawMutex, Storage<Flash>>> = OnceL
 const MARKER_KEY: &str = "ARIEL_INIT_MARK";
 const MARKER_VALUE: u8 = 0;
 
-/// Gets a [`Range`] from the linker that can be used for a global [`Storage`].
+/// Gets a [`Range`][core::ops::Range] from the linker that can be used for a global [`Storage`].
 ///
 /// This expects two symbols `__storage_start` and `__storage_end`.
 /// This function is also the place to configure a platform dependent `OFFSET`,
 /// which configures an offset between the linker flash address map and the
 /// flash driver address map.
 #[cfg(feature = "backend-linked")]
-fn flash_range_from_linker() -> Range<u32> {
+fn flash_range_from_linker() -> core::ops::Range<u32> {
     #[cfg(all(context = "nrf", not(context = "nrf5340-net")))]
     const OFFSET: usize = 0x0;
     #[cfg(context = "nrf5340-net")]
