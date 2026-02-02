@@ -23,6 +23,7 @@ embassy-time = { workspace = true, default-features = false }
 
 [features]
 backend-linked = []
+backend-native = []
 
 [lints]
 workspace = true

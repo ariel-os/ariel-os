@@ -66,12 +66,17 @@ fn flash_range_from_linker() -> core::ops::Range<u32> {
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_debug::log::info;
 
-    let flash = flash_init(p);
+    #[allow(unused_mut, reason = "needed only in some cfg() variants")]
+    let mut flash = flash_init(p);
 
     let flash_range = {
         cfg_if::cfg_if! {
             if #[cfg(feature = "backend-linked")] {
                 flash_range_from_linker()
+            } else if #[cfg(context = "native")] {
+                0..flash.size()
+                    .try_into()
+                    .expect("flash APIs don't support files beyond 4GiB")
             } else if #[cfg(context = "ariel-os")] {
                 compile_error!("No back-end for storage was selected; this is a bug in the laze configuration.")
             } else {

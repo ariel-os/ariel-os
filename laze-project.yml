@@ -494,6 +494,7 @@ contexts:
     provides:
       - has_device_identity
       - has_hwrng
+      - has_storage_support
       - sw/benchmark
     provides_unique:
       - c-function-abort
@@ -1263,6 +1264,16 @@ modules:
       global:
         FEATURES:
           - ariel-os/storage
+
+  - name: storage-backend-native
+    provides_unique:
+      - storage-backend
+    context:
+      - native
+    env:
+      global:
+        FEATURES:
+          - ariel-os/storage-backend-native
 
   - name: storage-backend-linked
     help:
