@@ -3064,6 +3064,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "arrayvec",
+ "defmt 1.0.1",
  "heapless 0.8.0",
  "serde",
 ]
