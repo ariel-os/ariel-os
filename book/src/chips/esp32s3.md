@@ -11,7 +11,7 @@
 |Debug Output|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="needs testing">🚦</span>|
+|I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="needs testing">🚦</span>|
 |UART|<span title="supported">✅</span>|
 |User USB|<span title="supported">✅</span>|
@@ -88,7 +88,7 @@ Boards using this chip.
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
-		  <td class="support-cell" title="needs testing">🚦</td>
+		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="needs testing">🚦</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
@@ -109,7 +109,7 @@ Boards using this chip.
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
-		  <td class="support-cell" title="needs testing">🚦</td>
+		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="needs testing">🚦</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="not available on this piece of hardware">–</td>

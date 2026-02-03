@@ -374,7 +374,7 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: needs_testing
       uart: supported
       logging: supported
@@ -383,9 +383,7 @@ chips:
         comments:
           - requires partitioning support
       user_usb:
-        status: not_currently_supported
-        comments:
-          - "[USB does not enumerate](https://github.com/ariel-os/ariel-os/issues/903)"
+        status: supported
       ethernet_over_usb: not_currently_supported
       wifi: supported
       ble: not_available
@@ -398,7 +396,7 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: needs_testing
       uart: supported
       logging: supported
@@ -407,9 +405,7 @@ chips:
         comments:
           - requires partitioning support
       user_usb:
-        status: not_currently_supported
-        comments:
-          - "[USB does not enumerate](https://github.com/ariel-os/ariel-os/issues/903)"
+        status: supported
       ethernet_over_usb: not_currently_supported
       wifi: supported
       ble: not_available
@@ -431,9 +427,7 @@ chips:
         comments:
           - requires partitioning support
       user_usb:
-        status: not_currently_supported
-        comments:
-          - "[USB does not enumerate](https://github.com/ariel-os/ariel-os/issues/903)"
+        status: supported
       ethernet_over_usb: not_currently_supported
       wifi: supported
       ble: not_available
@@ -446,7 +440,7 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: needs_testing
       uart: supported
       logging: supported
@@ -455,9 +449,7 @@ chips:
         comments:
           - requires partitioning support
       user_usb:
-        status: not_currently_supported
-        comments:
-          - "[USB does not enumerate](https://github.com/ariel-os/ariel-os/issues/903)"
+        status: supported
       ethernet_over_usb: not_currently_supported
       wifi: supported
       ble: not_available
@@ -469,7 +461,7 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: needs_testing
       uart: supported
       logging: supported
@@ -489,7 +481,7 @@ chips:
       gpio: supported
       debug_output: supported
       hwrng: supported
-      i2c_controller: needs_testing
+      i2c_controller: supported
       spi_main: needs_testing
       uart: supported
       logging: supported

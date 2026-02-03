@@ -26,7 +26,7 @@ laze build -b heltec-wifi-lora-32-v3
 |Debug Output|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
-|I2C Controller Mode|<span title="needs testing">🚦</span>|
+|I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="needs testing">🚦</span>|
 |UART|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>|
