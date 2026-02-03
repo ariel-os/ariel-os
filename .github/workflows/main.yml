@@ -117,6 +117,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --features "
                 ariel-os-sensors/max-sample-min-count-12,
                 ble,
@@ -171,6 +172,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --target=riscv32imac-unknown-none-elf
             --features "
                 esp-hal/esp32c6,
@@ -191,6 +193,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --features "
                 ble,
                 ble-cyw43,
@@ -210,6 +213,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --features "
                 ble-central,
                 ble-peripheral,
@@ -229,6 +233,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --features "
                 embassy-nrf/nrf9160-s,
                 external-interrupts,
@@ -248,6 +253,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             --features "
                 embassy-stm32/stm32wb55rg,
                 external-interrupts,
@@ -266,6 +272,7 @@ jobs:
         with:
           args: |
             --locked
+            --tests
             -p coapcore
             --
             --deny warnings
