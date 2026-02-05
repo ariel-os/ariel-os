@@ -50,6 +50,7 @@ cfg_if::cfg_if! {
     #[cfg(context = "st-nucleo-h755zi-q")] { include!("st-nucleo-h755zi-q.rs"); } else if
     #[cfg(context = "st-nucleo-wb55")] { include!("st-nucleo-wb55.rs"); } else if
     #[cfg(context = "st-nucleo-wba55")] { include!("st-nucleo-wba55.rs"); } else if
+    #[cfg(context = "st-nucleo-wba65ri")] { include!("st-nucleo-wba65ri.rs"); } else if
     #[cfg(context = "st-steval-mkboxpro")] { include!("st-steval-mkboxpro.rs"); } else if
     #[cfg(context = "stm32u083c-dk")] { include!("stm32u083c-dk.rs"); } else {}
 }

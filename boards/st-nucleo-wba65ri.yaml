@@ -1,0 +1,36 @@
+boards:
+  st-nucleo-wba65ri:
+    chip: stm32wba65ri
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: USART1
+    leds:
+      led0:
+        pin: PD8
+        aliases:
+          - LD1
+        color: blue
+      led1:
+        pin: PC4
+        aliases:
+          - LD2
+        color: green
+      led2:
+        pin: PB8
+        aliases:
+          - LD3
+        color: red
+    buttons:
+      button0:
+        pin: PC13
+        aliases:
+          - B1
+      button1:
+        pin: PC5
+        aliases:
+          - B2
+      button2:
+        pin: PB4
+        aliases:
+          - B3

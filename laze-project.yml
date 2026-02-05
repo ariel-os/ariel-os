@@ -684,6 +684,19 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
 
+  - name: stm32wba65ri
+    parent: stm32
+    selects:
+      - cortex-m33f
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32WBA65RI
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsis-hs\"
+
   - name: stm32wle5jc
     parent: stm32
     selects:
