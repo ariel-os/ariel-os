@@ -9,10 +9,11 @@
 ///
 /// - The name of the driver the constant provides configuration for.
 ///
-/// | Driver    | Expected type                      | Cargo feature to enable   |
-/// | --------- | ---------------------------------- | ------------------------- |
-/// | `network` | `embassy_net::Config`              | `network-config-override` |
-/// | `usb`     | `embassy_usb::Config`              | `override-usb-config`     |
+/// | Functionality | Expected type                      | Cargo feature to enable                         |
+/// | ------------- | ---------------------------------- | ----------------------------------------------- |
+/// | `network`     | `embassy_net::Config`              | `network-config-override`                       |
+/// | `rcc`         | `embassy_stm32::rcc::Config`       | Enable the `rcc-config-override` Cargo feature. |
+/// | `usb`         | `embassy_usb::Config`              | `override-usb-config`                           |
 ///
 /// # Note
 ///
