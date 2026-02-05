@@ -1977,6 +1977,23 @@ builders:
             "
             -p ariel-os-esp $@
 
+      doc-nrf:
+        build: false
+        export:
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="nrf52840"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            --features "
+            embassy-nrf/nrf52840,
+            external-interrupts,
+            i2c,
+            spi,
+            uart,
+            "
+            -p ariel-os-nrf $@
+
   - name: bbc-microbit
     parent: bbc-microbit-base
     env:
