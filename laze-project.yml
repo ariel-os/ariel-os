@@ -1951,8 +1951,7 @@ builders:
                 usb,
                 usb-hid,
                 coapcore/_nightly_docs
-                "
-            $@
+                " $@
 
       doc-esp:
         build: false
