@@ -73,6 +73,16 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 version = "0.1.0"
 
+[[audits.time-core]]
+who = "Nils Ponsard <nils.ponsard@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.1.4 -> 0.1.7"
+
+[[audits.time-macros]]
+who = "Nils Ponsard <nils.ponsard@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.2.22 -> 0.2.25"
+
 [[audits.try-lock-portable-atomic]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
