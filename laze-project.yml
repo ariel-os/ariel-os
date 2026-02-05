@@ -1868,6 +1868,12 @@ builders:
       - name: LINK
         description: "HOST LINK (no-op)"
         cmd: "true"
+    env:
+      RUSTDOCFLAGS:
+        - -D warnings
+        - --cfg nightly
+        - -Z unstable-options
+        - --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0'
 
     tasks:
       install-toolchain:
@@ -1899,6 +1905,52 @@ builders:
         build: false
         cmd:
           - cargo fmt --all -- --config format_generated_files=false
+
+      doc:
+        build: false
+        export:
+          - RUSTDOCFLAGS
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p embedded-hal@1.0.0
+            -p embedded-hal-async
+            -p embedded-io-async@0.6.1
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os
+            -p coapcore
+            --features "
+            ariel-os-sensors/max-sample-min-count-12,
+            bench,
+            coap,
+            core-affinity,
+            csprng,
+            defmt,
+            dns,
+            executor-thread,
+            external-interrupts,
+            hwrng,
+            i2c,
+            mdns,
+            multicast,
+            net,
+            no-boards,
+            random,
+            ariel-os-coap/doc,
+            sensors,
+            spi,
+            storage,
+            tcp,
+            threading,
+            uart,
+            udp,
+            usb,
+            usb-hid,
+            coapcore/_nightly_docs
+            " $@
 
   - name: bbc-microbit
     parent: bbc-microbit-base
