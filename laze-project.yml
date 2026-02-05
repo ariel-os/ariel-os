@@ -1988,12 +1988,12 @@ builders:
             cargo doc
             --no-deps
             --features "
-            embassy-nrf/nrf52840,
-            external-interrupts,
-            i2c,
-            spi,
-            uart,
-            "
+                embassy-nrf/nrf52840,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                "
             -p ariel-os-nrf $@
 
       doc-rp:
