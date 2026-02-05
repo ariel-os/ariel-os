@@ -1279,7 +1279,7 @@ modules:
     help:
       Laze-only module that enables storage.x.
 
-      This is needed for all the boards where storage is memoyr mapped and
+      This is needed for all the boards where storage is memory mapped and
       visible to the linker, which is currently all except native.
     provides_unique:
       - storage-backend
