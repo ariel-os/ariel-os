@@ -1952,6 +1952,31 @@ builders:
             coapcore/_nightly_docs
             " $@
 
+      doc-esp:
+        build: false
+        export:
+          - CARGO_BUILD_TARGET: riscv32imac-unknown-none-elf
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="esp32c6"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p embedded-hal@1.0.0
+            -p embedded-hal-async
+            -p embedded-io-async@0.6.1
+          - >-
+            cargo doc
+            --no-deps
+            --features "
+            esp-hal/esp32c6,
+            esp-bootloader-esp-idf/esp32c6,
+            external-interrupts,
+            i2c,
+            spi,
+            uart,
+            "
+            -p ariel-os-esp $@
+
   - name: bbc-microbit
     parent: bbc-microbit-base
     env:
