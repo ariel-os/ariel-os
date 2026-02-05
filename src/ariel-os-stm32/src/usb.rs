@@ -15,43 +15,73 @@ bind_interrupts!(struct Irqs {
     USB_LP_CAN1_RX0 => usb::InterruptHandler<peripherals::USB>;
     #[cfg(capability = "hw/stm32-usb-lp-can-rx0")]
     USB_LP_CAN_RX0 => usb::InterruptHandler<peripherals::USB>;
+    #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+    USB_OTG_HS => usb::InterruptHandler<peripherals::USB_OTG_HS>;
     #[cfg(capability = "hw/stm32-usb-ucpd1-2")]
     USB_UCPD1_2 => usb::InterruptHandler<peripherals::USB>;
 });
 
-#[cfg(not(capability = "hw/stm32-usb-synopsis"))]
+#[cfg(not(any(
+    capability = "hw/stm32-usb-synopsis",
+    capability = "hw/stm32-usb-synopsis-hs"
+)))]
 type UsbPeripheral = peripherals::USB;
 #[cfg(capability = "hw/stm32-usb-synopsis")]
 type UsbPeripheral = peripherals::USB_OTG_FS;
+#[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+type UsbPeripheral = peripherals::USB_OTG_HS;
 
 pub type UsbDriver = Driver<'static, UsbPeripheral>;
 
 pub struct Peripherals {
     usb: Peri<'static, UsbPeripheral>,
+    #[cfg(not(capability = "hw/stm32-usb-synopsis-hs"))]
     dp: Peri<'static, peripherals::PA12>,
+    #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+    dp: Peri<'static, peripherals::PD6>,
+    #[cfg(not(capability = "hw/stm32-usb-synopsis-hs"))]
     dm: Peri<'static, peripherals::PA11>,
+    #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+    dm: Peri<'static, peripherals::PD7>,
 }
 
 impl Peripherals {
     #[must_use]
     pub fn new(peripherals: &mut crate::OptionalPeripherals) -> Self {
         Self {
-            #[cfg(not(capability = "hw/stm32-usb-synopsis"))]
+            #[cfg(not(any(
+                capability = "hw/stm32-usb-synopsis",
+                capability = "hw/stm32-usb-synopsis-hs"
+            )))]
             usb: peripherals.USB.take().unwrap(),
             #[cfg(capability = "hw/stm32-usb-synopsis")]
             usb: peripherals.USB_OTG_FS.take().unwrap(),
+            #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+            usb: peripherals.USB_OTG_HS.take().unwrap(),
+            #[cfg(not(capability = "hw/stm32-usb-synopsis-hs"))]
             dp: peripherals.PA12.take().unwrap(),
+            #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+            dp: peripherals.PD6.take().unwrap(),
+            #[cfg(not(capability = "hw/stm32-usb-synopsis-hs"))]
             dm: peripherals.PA11.take().unwrap(),
+            #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+            dm: peripherals.PD7.take().unwrap(),
         }
     }
 }
 
-#[cfg(not(capability = "hw/stm32-usb-synopsis"))]
+#[cfg(not(any(
+    capability = "hw/stm32-usb-synopsis",
+    capability = "hw/stm32-usb-synopsis-hs"
+)))]
 pub fn driver(peripherals: Peripherals) -> UsbDriver {
     Driver::new(peripherals.usb, Irqs, peripherals.dp, peripherals.dm)
 }
 
-#[cfg(capability = "hw/stm32-usb-synopsis")]
+#[cfg(any(
+    capability = "hw/stm32-usb-synopsis",
+    capability = "hw/stm32-usb-synopsis-hs"
+))]
 pub fn driver(peripherals: Peripherals) -> UsbDriver {
     use static_cell::ConstStaticCell;
 
@@ -77,7 +107,11 @@ pub fn driver(peripherals: Peripherals) -> UsbDriver {
     {
         use embassy_stm32::interrupt::{InterruptExt, Priority};
         crate::SWI.set_priority(Priority::P1);
+
+        #[cfg(capability = "hw/stm32-usb-synopsis")]
         embassy_stm32::interrupt::OTG_FS.set_priority(Priority::P0);
+        #[cfg(capability = "hw/stm32-usb-synopsis-hs")]
+        embassy_stm32::interrupt::USB_OTG_HS.set_priority(Priority::P0);
     }
 
     Driver::new_fs(
