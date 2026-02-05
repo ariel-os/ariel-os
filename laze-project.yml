@@ -2020,14 +2020,14 @@ builders:
           - >-
             cargo doc
             --no-deps
+            -p ariel-os-stm32
             --features "
                 embassy-stm32/stm32wb55rg,
                 external-interrupts,
                 i2c,
                 spi,
                 uart,
-                "
-            -p ariel-os-stm32 $@
+                " $@
 
   - name: bbc-microbit
     parent: bbc-microbit-base
