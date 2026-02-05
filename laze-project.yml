@@ -1968,6 +1968,7 @@ builders:
           - >-
             cargo doc
             --no-deps
+            -p ariel-os-esp
             --features "
                 esp-hal/esp32c6,
                 esp-bootloader-esp-idf/esp32c6,
@@ -1975,8 +1976,7 @@ builders:
                 i2c,
                 spi,
                 uart,
-                "
-            -p ariel-os-esp $@
+                " $@
 
       doc-nrf:
         build: false
