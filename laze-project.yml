@@ -1994,6 +1994,23 @@ builders:
             "
             -p ariel-os-nrf $@
 
+      doc-rp:
+        build: false
+        export:
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="rp" --cfg context="rp2040"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            --features "
+            embassy-rp/rp2040,
+            external-interrupts,
+            i2c,
+            spi,
+            uart,
+            "
+            -p ariel-os-rp $@
+
   - name: bbc-microbit
     parent: bbc-microbit-base
     env:
