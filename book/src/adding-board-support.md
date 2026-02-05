@@ -85,6 +85,11 @@ sbd-gen generate-ariel boards -o src/ariel-os-boards --mode update
 - In `doc/support_matrix.yml`:
   - Add an entry under `chips`, with the laze context and supported features.
   - Update the generated support pages from the book using `laze build update-book`.
+- In `peripherals.md` of the Ariel OS HAL crate for the MCU family:
+  - Add the peripherals taken from `OptionalPeripherals` for each feature/MCU combination you added.
+  
+    This is a stop-gap measure until we find means to declare the provided peripherals and requirements of drivers in a machine readable way, and can generate assignments at build time.
+  - If adding a driver to an already supported MCU, check if the code you added uses a peripheral already used in another feature/driver.
 
 MCU-specific items inside Ariel OS crates are gated behind
 `#[cfg(context = $CONTEXT)]` attributes, where `$CONTEXT` is the [MCU's `laze
