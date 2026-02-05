@@ -2011,6 +2011,23 @@ builders:
             "
             -p ariel-os-rp $@
 
+      doc-stm32:
+        build: false
+        export:
+          - RUSTDOCFLAGS: --cfg context="stm32wb55rg"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            --features "
+            embassy-stm32/stm32wb55rg,
+            external-interrupts,
+            i2c,
+            spi,
+            uart,
+            "
+            -p ariel-os-stm32 $@
+
   - name: bbc-microbit
     parent: bbc-microbit-base
     env:
