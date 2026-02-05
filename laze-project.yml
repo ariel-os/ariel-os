@@ -1900,6 +1900,172 @@ builders:
         cmd:
           - cargo fmt --all -- --config format_generated_files=false
 
+
+      clippy-all:
+        build: false
+        cmd:
+          - :clippy-host
+          - :clippy-coapcore
+          - :clippy-esp32
+          - :clippy-nrf52
+          - :clippy-nrf91
+          - :clippy-rp
+          - :clippy-stm32
+
+      clippy-run:
+        build: false
+
+        cmd:
+          - >-
+            cargo clippy
+            --locked
+            $CLIPPY_TARGET
+            --features "$CLIPPY_FEATURES"
+            $CLIPPY_PACKAGES
+            --
+            --deny warnings
+
+      clippy-esp32:
+        build: false
+        export:
+          - RUSTFLAGS: '--cfg context="esp32c6" --cfg getrandom_backend="custom"'
+          - CLIPPY_TARGET: --target=riscv32imac-unknown-none-elf
+          - CLIPPY_FEATURES: >-
+              esp-hal/esp32c6
+              esp-bootloader-esp-idf/esp32c6
+              external-interrupts
+              i2c
+              spi
+              time
+              uart
+          - CLIPPY_PACKAGES: -p ariel-os-esp
+        cmd:
+          - :clippy-run $@
+
+      clippy-host:
+        build: false
+        cmd:
+          - :clippy-run $@
+        export:
+          - CLIPPY_FEATURES: >-
+              ariel-os-sensors/max-sample-min-count-12
+              ble
+              coap
+              coap-transport-udp
+              csprng
+              defmt
+              dns
+              external-interrupts
+              hwrng
+              i2c
+              mdns
+              multicast
+              net
+              no-boards
+              sensors
+              spi
+              storage
+              tcp
+              uart
+              udp
+              usb
+              usb-ethernet
+          - CLIPPY_PACKAGES: >-
+              -p ariel-os
+              -p ariel-os-alloc
+              -p ariel-os-boards
+              -p ariel-os-coap
+              -p ariel-os-debug
+              -p ariel-os-debug-log
+              -p ariel-os-embassy
+              -p ariel-os-embassy-common
+              -p ariel-os-hal
+              -p ariel-os-identity
+              -p ariel-os-macros
+              -p ariel-os-native
+              -p ariel-os-power
+              -p ariel-os-random
+              -p ariel-os-rt
+              -p ariel-os-sensors
+              -p ariel-os-sensors-registry
+              -p ariel-os-sensors-utils
+              -p ariel-os-storage
+              -p ariel-os-threads
+              -p ariel-os-utils
+
+      clippy-rp:
+        cmd:
+          - :clippy-run $@
+        build: false
+        export:
+          - RUSTFLAGS: --cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040" --cfg getrandom_backend="custom"
+          - CLIPPY_TARGET: --target=thumbv7em-none-eabihf
+          - CLIPPY_FEATURES: >-
+              ble
+              ble-cyw43
+              embassy-rp/rp2040
+              external-interrupts
+              i2c
+              spi
+              uart
+          - CLIPPY_PACKAGES: -p ariel-os-rp
+
+      clippy-nrf52:
+        cmd:
+          - :clippy-run $@
+        build: false
+        export:
+          - RUSTFLAGS: --cfg context="nrf52840" --cfg context="nrf52" --cfg getrandom_backend="custom"
+          - CLIPPY_TARGET: --target=thumbv7em-none-eabihf
+          - CLIPPY_FEATURES: >-
+                ble-central
+                ble-peripheral
+                embassy-nrf/nrf52840
+                external-interrupts
+                i2c
+                spi
+                uart
+          - CLIPPY_PACKAGES: -p ariel-os-nrf
+
+      clippy-nrf91:
+        cmd:
+          - :clippy-run $@
+        build: false
+        export:
+          - RUSTFLAGS: --cfg context="nrf9160" --cfg context="nrf91" --cfg getrandom_backend="custom"
+          - CLIPPY_TARGET: --target=thumbv8m.main-none-eabihf
+          - CLIPPY_FEATURES: >-
+                embassy-nrf/nrf9160-s
+                external-interrupts
+                i2c
+                spi
+                uart
+                nrf91-modem
+          - CLIPPY_PACKAGES: -p ariel-os-nrf
+
+      clippy-stm32:
+        cmd:
+          - :clippy-run $@
+        build: false
+        export:
+          - RUSTFLAGS: --cfg context="stm32wb55rg" --cfg getrandom_backend="custom"
+          - CLIPPY_TARGET: --target=thumbv8m.main-none-eabihf
+          - CLIPPY_FEATURES: >-
+                embassy-stm32/stm32wb55rg
+                external-interrupts
+                i2c
+                spi
+                uart
+          - CLIPPY_PACKAGES: -p ariel-os-stm32
+
+      clippy-coapcore:
+        cmd:
+          - :clippy-run $@
+        build: false
+        export:
+          - CLIPPY_PACKAGES: -p coapcore
+
+
   - name: bbc-microbit
     parent: bbc-microbit-base
     env:
