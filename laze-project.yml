@@ -2003,14 +2003,14 @@ builders:
           - >-
             cargo doc
             --no-deps
+            -p ariel-os-rp
             --features "
                 embassy-rp/rp2040,
                 external-interrupts,
                 i2c,
                 spi,
                 uart,
-                "
-            -p ariel-os-rp $@
+                " $@
 
       doc-stm32:
         build: false
