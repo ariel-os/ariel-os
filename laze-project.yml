@@ -2005,12 +2005,12 @@ builders:
             cargo doc
             --no-deps
             --features "
-            embassy-rp/rp2040,
-            external-interrupts,
-            i2c,
-            spi,
-            uart,
-            "
+                embassy-rp/rp2040,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                "
             -p ariel-os-rp $@
 
       doc-stm32:
