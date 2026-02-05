@@ -1970,13 +1970,13 @@ builders:
             cargo doc
             --no-deps
             --features "
-            esp-hal/esp32c6,
-            esp-bootloader-esp-idf/esp32c6,
-            external-interrupts,
-            i2c,
-            spi,
-            uart,
-            "
+                esp-hal/esp32c6,
+                esp-bootloader-esp-idf/esp32c6,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                "
             -p ariel-os-esp $@
 
       doc-nrf:
