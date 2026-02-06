@@ -549,6 +549,15 @@ contexts:
       executor_stacksize_required_default: "512"
       PROBE_RS_CHIP: STM32F042K6
 
+  - name: stm32f303cb
+    parent: stm32
+    selects:
+      - cortex-m4f
+    env:
+      PROBE_RS_CHIP: STM32F303CB
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-usb-lp-can-rx0\"
+
   - name: stm32f401re
     parent: stm32
     selects:

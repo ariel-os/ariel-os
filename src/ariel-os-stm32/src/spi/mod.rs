@@ -36,6 +36,8 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     cfg_if::cfg_if! {
         if #[cfg(context = "stm32c031c6")] {
             take_all_spi_peripherals!(Peripherals, SPI1);
+        } else if #[cfg(context = "stm32f303cb")] {
+            take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
         } else if #[cfg(context = "stm32f401re")] {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
         } else if #[cfg(context = "stm32f411re")] {

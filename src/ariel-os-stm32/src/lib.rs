@@ -168,6 +168,25 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.mux.clk48sel = mux::Clk48sel::HSI48;
     }
 
+    #[cfg(context = "stm32f303cb")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(8000000),
+            mode: HseMode::Oscillator,
+        });
+        rcc.pll = Some(Pll {
+            src: PllSource::HSE,
+            prediv: PllPreDiv::DIV1,
+            mul: PllMul::MUL9,
+        });
+        rcc.ahb_pre = AHBPrescaler::DIV1;
+        rcc.apb1_pre = APBPrescaler::DIV4;
+        rcc.apb2_pre = APBPrescaler::DIV2;
+        rcc.sys = Sysclk::PLL1_P; // 72 MHz (8 / 1 * 9)
+    }
+
     #[cfg(context = "st-nucleo-f401re")]
     {
         use embassy_stm32::rcc::*;
