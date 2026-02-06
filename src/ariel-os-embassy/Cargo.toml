@@ -42,6 +42,7 @@ ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
 
+const-str = { workspace = true, optional = true }
 heapless = "0.8.0"
 once_cell = { workspace = true }
 trouble-host = { workspace = true, optional = true }
@@ -123,12 +124,23 @@ storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
 
 debug-uart = []
 
+# Enables SIM card configuration.
+sim-card = ["dep:const-str", "ariel-os-embassy-common/sim-card"]
+
 wifi = []
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "eth", "net"]
+
+ltem-nrf-modem = [
+  "ariel-os-hal/ltem-nrf-modem",
+  "embassy-net/medium-ip",
+  "net",
+  "nrf91-modem",
+  "sim-card",
+]
 
 ble = [
   "dep:trouble-host",

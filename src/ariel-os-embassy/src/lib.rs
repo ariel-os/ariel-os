@@ -31,6 +31,9 @@ mod wifi;
 #[cfg(feature = "eth")]
 mod eth;
 
+#[cfg(feature = "sim-card")]
+mod sim_card;
+
 use ariel_os_debug::log::debug;
 
 use linkme::distributed_slice;
@@ -113,6 +116,8 @@ cfg_if::cfg_if! {
         use eth::NetworkDevice;
     } else if #[cfg(feature = "tuntap")] {
         use crate::hal::tuntap::NetworkDevice;
+    } else if #[cfg(feature= "ltem-nrf-modem")] {
+        use crate::hal::ltem::NetworkDevice;
     } else if #[cfg(context = "ariel-os")] {
         compile_error!("no backend for net is active");
     } else {
@@ -338,6 +343,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "tuntap")]
     let device = crate::hal::tuntap::create();
+    #[cfg(feature = "ltem-nrf-modem")]
+    let (device, control) = hal::ltem::init(spawner).await;
+
+    #[cfg(feature = "sim-card")]
+    let sim_card_config = sim_card::config();
 
     #[cfg(feature = "net")]
     {
@@ -360,13 +370,17 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             feature = "wifi-esp",
             feature = "eth",
             feature = "tuntap",
+            feature = "ltem-nrf-modem",
         )))]
         // The creation of `device` is not organized in such a way that they could be put in a
         // cfg-if without larger refactoring; relying on unused variable lints to keep the
         // condition list up to date.
         let device: NetworkDevice = net::new_dummy();
 
+        #[cfg(not(feature = "ltem-nrf-modem"))]
         let config = net::config();
+        #[cfg(feature = "ltem-nrf-modem")]
+        let config = embassy_net::Config::default();
 
         let seed = net::unique_seed();
         debug!("Network stack seed: {:#x}", seed);
@@ -388,6 +402,14 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             .is_err()
         {
             unreachable!();
+        }
+
+        // update the network stack with the device's configuration
+        #[cfg(feature = "ltem-nrf-modem")]
+        {
+            spawner
+                .spawn(hal::ltem::control_task(control, sim_card_config, stack))
+                .unwrap();
         }
     }
 

@@ -19,6 +19,9 @@ pub mod i2c;
 #[cfg(feature = "ble")]
 pub mod ble;
 
+#[cfg(feature = "sim-card")]
+pub mod sim_card;
+
 pub mod identity;
 
 #[cfg(feature = "spi")]
