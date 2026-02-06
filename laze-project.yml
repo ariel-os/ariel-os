@@ -177,7 +177,7 @@ contexts:
 
       size:
         cmd:
-          - llvm-size ${out} $@
+          - rust-size ${out} $@
 
       objdump:
         cmd:
