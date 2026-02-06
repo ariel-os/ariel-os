@@ -9,10 +9,11 @@
 ///
 /// - The name of the driver the constant provides configuration for.
 ///
-/// | Driver    | Expected type                      | Cargo feature to enable   |
-/// | --------- | ---------------------------------- | ------------------------- |
-/// | `network` | `embassy_net::Config`              | `network-config-override` |
-/// | `usb`     | `embassy_usb::Config`              | `override-usb-config`     |
+/// | Functionality | Expected type                      | Cargo feature to enable                         |
+/// | ------------- | ---------------------------------- | ----------------------------------------------- |
+/// | `network`     | `embassy_net::Config`              | `network-config-override`                       |
+/// | `rcc`         | `embassy_stm32::rcc::Config`       | Enable the `rcc-config-override` Cargo feature. |
+/// | `usb`         | `embassy_usb::Config`              | `override-usb-config`                           |
 ///
 /// # Note
 ///
@@ -62,6 +63,10 @@ pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
             format_ident!("__ariel_os_network_config"),
             quote! {#ariel_os_crate::reexports::embassy_net::Config},
         ),
+        Some(ConfigKind::Rcc) => (
+            format_ident!("__ariel_os_rcc_config"),
+            quote! {embassy_stm32::rcc::Config},
+        ),
         Some(ConfigKind::Usb) => (
             format_ident!("__ariel_os_usb_config"),
             quote! {#ariel_os_crate::reexports::embassy_usb::Config<'static>},
@@ -102,6 +107,7 @@ mod config_macro {
         pub fn parse(&mut self, meta: &syn::meta::ParseNestedMeta<'_>) -> syn::Result<()> {
             let variants = [
                 (ConfigKind::Network.as_name(), ConfigKind::Network),
+                (ConfigKind::Rcc.as_name(), ConfigKind::Rcc),
                 (ConfigKind::Usb.as_name(), ConfigKind::Usb),
             ];
 
@@ -140,6 +146,7 @@ mod config_macro {
     #[derive(Debug, Clone, Copy)]
     pub enum ConfigKind {
         Network,
+        Rcc,
         Usb,
     }
 
@@ -147,6 +154,7 @@ mod config_macro {
         pub fn as_name(self) -> &'static str {
             match self {
                 Self::Network => "network",
+                Self::Rcc => "rcc",
                 Self::Usb => "usb",
             }
         }

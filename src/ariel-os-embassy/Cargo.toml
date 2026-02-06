@@ -168,6 +168,7 @@ network-config-ipv4-static = ["network-config-override"]
 network-config-ipv6-static = ["network-config-override"]
 network-config-override = []
 override-usb-config = []
+rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
 executor-thread = ["ariel-os-embassy-common/executor-thread", "threading"]
