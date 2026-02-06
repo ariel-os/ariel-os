@@ -91,6 +91,24 @@ You can quickly format the code in the ariel-os repository using this command:
 laze build fmt
 ```
 
+## Applications (Tests and Examples)
+
+All our applications (currently, that is tests and examples)
+must be safe against damage on any board, including externally defined boards.
+They may alter the state of the system (eg. write to on-board memory),
+but must only drive GPIO pins based on board descriptions
+(or, until those are comprehensive enough, hard-coded knowledge of that board).
+
+They may expect that some configuration of pin headers in a board is im place,
+and should point to those expectations in a warning if the tests fail in a way that might be caused by the absence of such configuration.
+for example, they may require that a jumper bridge is inserted between two pins to test some loopback behavior.
+When using such pins, they nonetheless have to ensure safety against damage, eg. by
+
+- using pins of a header with a fixed pin-out (eg. using the I2C pins of a mikroBUS connector)
+- using only safe driving modes (pull-up/-down resistors),
+- using run-time indication (eg. reading a connected I2C EEPROM that confirms that some particular shield is connected), or
+- obtaining explicit user confirmation.
+
 ## Dependencies
 
 If the same dependency is used in multiples crates within the workspace, that dependency SHOULD be specified in the *workspace*'s `Cargo.toml` file and workspace crates should import them from there.
