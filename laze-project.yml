@@ -1255,6 +1255,15 @@ modules:
         FEATURES:
           - ariel-os/ipv6
 
+  - name: network-config-override
+    provides_unique:
+      - network-config-ipv4
+      - network-config-ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-override
+
   - name: sw/storage
     selects:
       - has_storage_support

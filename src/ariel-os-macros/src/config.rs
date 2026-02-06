@@ -9,10 +9,10 @@
 ///
 /// - The name of the driver the constant provides configuration for.
 ///
-/// | Driver    | Expected type                      | Cargo feature to enable   |
-/// | --------- | ---------------------------------- | ------------------------- |
-/// | `network` | `embassy_net::Config`              | `network-config-override` |
-/// | `usb`     | `embassy_usb::Config`              | `override-usb-config`     |
+/// | Driver    | Expected type                      | How to enable                                         |
+/// | --------- | ---------------------------------- | ----------------------------------------------------- |
+/// | `network` | `embassy_net::Config`              | See the [book section][network-config-override-book]. |
+/// | `usb`     | `embassy_usb::Config`              | Enable the `override-usb-config` Cargo feature.       |
 ///
 /// # Note
 ///
@@ -41,6 +41,8 @@
 ///
 /// The `ariel-os` crate (or `ariel-os-embassy`, for use in crates which `ariel-os` depends on)
 /// must be a dependency of the crate where this macro is used, otherwise this macro panics.
+///
+/// [network-config-override-book]: https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html#custom-configuration-provider
 #[proc_macro_attribute]
 pub fn config(args: TokenStream, item: TokenStream) -> TokenStream {
     #[allow(clippy::wildcard_imports)]
