@@ -5,6 +5,8 @@
 #[cfg(feature = "hwrng")]
 pub mod hwrng;
 
+pub mod storage;
+
 pub mod identity;
 pub mod peripherals {}
 

@@ -1,3 +1,7 @@
 target/
 build/
 .gdb_history
+
+# Produced by native tests and examples that use storage
+/tests/*/flash.bin
+/examples/*/flash.bin

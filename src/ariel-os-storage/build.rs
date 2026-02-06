@@ -1,8 +1,19 @@
-use std::{env, path::PathBuf};
-
-const KIBIBYTES: u32 = 1024;
-
 fn main() {
+    #[cfg(feature = "backend-linked")]
+    emit_storage_x();
+}
+
+/// Produces and includes a `storage.x` file into the linker scripts.
+///
+/// # Panics
+///
+/// … if anything goes wrong.
+#[cfg(feature = "backend-linked")]
+fn emit_storage_x() {
+    use std::{env, path::PathBuf};
+
+    const KIBIBYTES: u32 = 1024;
+
     // NOTE(hal): values of `flash_page_size` from the datasheets, confirmed by HAL's constants.
     // Important: only homogeneous flash organizations are currently supported.
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
@@ -45,6 +56,7 @@ fn main() {
     println!("cargo:rustc-link-search={}", out.display());
 }
 
+#[cfg(feature = "backend-linked")]
 /// Returns whether any of the current `cfg` contexts is one of the given contexts.
 fn is_in_current_contexts(contexts: &[&str]) -> bool {
     let Ok(context_var) = std::env::var("CARGO_CFG_CONTEXT") else {
