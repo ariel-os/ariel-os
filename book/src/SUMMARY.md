@@ -65,6 +65,7 @@
   - [RP235xA](./chips/rp235xa.md)
   - [STM32C031C6](./chips/stm32c031c6.md)
   - [STM32F042K6](./chips/stm32f042k6.md)
+  - [STM32F303CB](./chips/stm32f303cb.md)
   - [STM32F401RE](./chips/stm32f401re.md)
   - [STM32F411RE](./chips/stm32f411re.md)
   - [STM32H753ZI](./chips/stm32h753zi.md)

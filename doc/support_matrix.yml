@@ -534,6 +534,26 @@ chips:
       wifi: not_available
       ble: not_available
 
+  stm32f303cb:
+    name: STM32F303CB
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_output: needs_testing
+      ethernet_over_usb: needs_testing
+      hwrng: not_available
+      i2c_controller: supported
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage:
+        status: needs_testing # TODO: set to supported_with_caveats after testing
+        comments:
+          - removing items not supported
+      wifi: not_available
+      ble: not_available
+      user_usb: supported
+
   stm32f401re:
     name: STM32F401RE
     manufacturer: STMicroelectronics
