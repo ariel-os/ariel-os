@@ -36,7 +36,7 @@ laze build -b espressif-esp32-s3-devkitc-1
 |Wi-Fi|<span title="supported">✅</span>|
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
-|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Persistent Storage|<span title="supported">✅</span>[^creates-a-partition-with-type-data-and-subtype-undefined-in-the-partition-table-https-docs-espressif-com-projects-esp-idf-en-stable-esp32-api-guides-partition-tables-html]|
 
 #### Additional Notes
 
@@ -81,4 +81,4 @@ dt, dd {
 
 
   
-[^requires-partitioning-support]: Requires partitioning support.
+[^creates-a-partition-with-type-data-and-subtype-undefined-in-the-partition-table-https-docs-espressif-com-projects-esp-idf-en-stable-esp32-api-guides-partition-tables-html]: Creates a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html).
