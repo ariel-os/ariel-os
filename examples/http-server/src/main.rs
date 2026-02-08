@@ -49,6 +49,41 @@ async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRou
     .await
 }
 
+#[cfg(feature = "dhcp-server")]
+#[ariel_os::task]
+async fn dhcp_server_task() {
+    use core::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
+    use edge_dhcp::io::{self, DEFAULT_SERVER_PORT};
+    use edge_dhcp::server::{Server, ServerOptions};
+    use edge_nal::UdpBind;
+    use edge_nal_embassy::{Udp, UdpBuffers};
+
+    let mut buf = [0; 1500];
+    let udp_socket_buffers = UdpBuffers::<1, 1472, 1472, 2>::new();
+    let ip = Ipv4Addr::new(10, 42, 0, 1);
+    let mut gw_buf = [Ipv4Addr::UNSPECIFIED];
+
+    let stack = net::network_stack().await.unwrap();
+    let udp = Udp::new(stack, &udp_socket_buffers);
+
+    let mut socket = udp
+        .bind(SocketAddr::V4(SocketAddrV4::new(
+            Ipv4Addr::UNSPECIFIED,
+            DEFAULT_SERVER_PORT,
+        )))
+        .await
+        .unwrap();
+
+    io::server::run(
+        &mut Server::<_, 64>::new_with_et(ip), // Will give IP addresses in the range 10.42.0.50 - 10.42.0.200, subnet 255.255.255.0
+        &ServerOptions::new(ip, Some(&mut gw_buf)),
+        &mut socket,
+        &mut buf,
+    )
+    .await
+    .unwrap();
+}
+
 #[ariel_os::spawner(autostart, peripherals)]
 fn main(spawner: Spawner, peripherals: Peripherals) {
     #[cfg(feature = "button-reading")]
@@ -63,6 +98,11 @@ fn main(spawner: Spawner, peripherals: Peripherals) {
     let _ = peripherals;
 
     let app = APP.init_with(|| routes::AppBuilder.build_app());
+
+    #[cfg(feature = "dhcp-server")]
+    {
+        spawner.spawn(dhcp_server_task()).unwrap();
+    }
 
     for task_id in 0..WEB_TASK_POOL_SIZE {
         spawner.spawn(web_task(task_id, app)).unwrap();
