@@ -5,13 +5,14 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![expect(unsafe_code)]
+#![cfg_attr(not(context = "esp"), expect(unsafe_code))]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
 mod postcard_value;
 mod storage;
 
+#[cfg(not(context = "esp"))]
 use core::ops::Range;
 
 use ariel_os_hal::hal::{
@@ -37,6 +38,7 @@ const MARKER_VALUE: u8 = 0;
 /// This function is also the place to configure a platform dependent `OFFSET`,
 /// which configures an offset between the linker flash address map and the
 /// flash driver address map.
+#[cfg(not(context = "esp"))]
 fn flash_range_from_linker() -> Range<u32> {
     #[cfg(all(context = "nrf", not(context = "nrf5340-net")))]
     const OFFSET: usize = 0x0;
@@ -66,8 +68,18 @@ fn flash_range_from_linker() -> Range<u32> {
 
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_debug::log::info;
-    let flash_range = flash_range_from_linker();
-    info!("storage: using flash range {:?}", &flash_range);
+
+    cfg_if::cfg_if! {
+        if #[cfg(context = "esp")] {
+            let flash_range = ariel_os_hal::hal::storage::flash_range_from_partition_table(p);
+        } else {
+            let flash_range = flash_range_from_linker();
+        }
+    }
+    info!(
+        "storage: using flash range {:x}..{:x}",
+        flash_range.start, flash_range.end
+    );
 
     let flash = flash_init(p);
     let _ = STORAGE.init(Mutex::new(Storage::new(flash, flash_range)));
