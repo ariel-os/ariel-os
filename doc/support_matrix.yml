@@ -382,9 +382,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      user_usb:
-        status: supported
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_available
 
@@ -404,9 +403,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      user_usb:
-        status: supported
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_available
 
@@ -426,9 +424,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      user_usb:
-        status: supported
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_available
 
@@ -448,9 +445,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      user_usb:
-        status: supported
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_available
 
@@ -469,7 +465,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_currently_supported
 
@@ -489,8 +486,8 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
-      user_usb: needs_testing # This should be moved to a board when one is added.
-      ethernet_over_usb: not_currently_supported
+      user_usb: supported
+      ethernet_over_usb: supported
       wifi: supported
       ble: not_currently_supported
 
@@ -927,13 +924,13 @@ builders:
     chip: esp32s3
     tier: "1"
     support:
-      user_usb: supported
 
   heltec-wifi-lora-32-v3:
     chip: esp32s3
     tier: "3"
     support:
       user_usb: not_available
+      ethernet_over_usb: not_available
 
   seeedstudio-xiao-esp32c6:
     chip: esp32c6fx4
