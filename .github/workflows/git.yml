@@ -21,9 +21,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
       # If there are squash/fixup commits, the user will a) be aware of that
       # and b) that's checked separately -- so we autosquash first. (If that
       # doesn't work, *that* is an error of its own anyway).
       - name: Rebase to avoid fixups/squashes from obscuring actual errors
         run: git rebase ${{ github.base_ref }} --autosquash --keep-base
+
       - uses: crate-ci/committed@master
