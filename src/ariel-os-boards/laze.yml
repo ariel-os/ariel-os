@@ -251,6 +251,15 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART2
+- name: st-nucleo-wba65ri
+  parent: stm32wba65ri
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART1
 - name: st-steval-mkboxpro
   parent: stm32u585ai
   provides:

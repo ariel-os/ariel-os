@@ -741,6 +741,23 @@ chips:
       user_usb: not_available
       ethernet_over_usb: not_available
 
+  stm32wba65ri:
+    name: STM32WBA65RI
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      uart: not_currently_supported
+      logging: supported
+      storage: not_currently_supported
+      wifi: not_available
+      ble: not_currently_supported
+      user_usb: needs_testing
+      ethernet_over_usb: needs_testing
+
   stm32wle5jc:
     name: STM32WLE5JC
     manufacturer: STMicroelectronics
@@ -1022,6 +1039,11 @@ builders:
     tier: "3"
     support:
 
+  st-nucleo-wba65ri:
+    chip: stm32wba65ri
+    tier: "3"
+    support:
+
   st-steval-mkboxpro:
     chip: stm32u585ai
     tier: "2"
@@ -1212,6 +1234,11 @@ boards:
     url: https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wba55cg.html
     builders:
       - st-nucleo-wba55
+
+  - name: ST NUCLEO-WBA65RI
+    url: https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html
+    builders:
+      - st-nucleo-wba65ri
 
   - name: ST STEVAL-MKBOXPRO
     url: https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html
