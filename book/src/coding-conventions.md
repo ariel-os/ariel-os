@@ -99,7 +99,7 @@ They may alter the state of the system (eg. write to on-board memory),
 but must only drive GPIO pins based on board descriptions
 (or, until those are comprehensive enough, hard-coded knowledge of that board).
 
-They may expect that some configuration of pin headers in a board is im place,
+They may expect that some configuration of pin headers in a board is in place,
 and should point to those expectations in a warning if the tests fail in a way that might be caused by the absence of such configuration.
 for example, they may require that a jumper bridge is inserted between two pins to test some loopback behavior.
 When using such pins, they nonetheless have to ensure safety against damage, eg. by
