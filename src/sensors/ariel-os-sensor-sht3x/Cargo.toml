@@ -25,11 +25,15 @@ embassy-executor = { workspace = true, features = [
   "arch-std",
   "executor-thread",
 ] }
-embassy-futures = { workspace = true }
+embassy-futures = { workspace = true, optional = true }
 embassy-time = { workspace = true, features = ["std"] }
 
 [features]
 _test = []
+
+# Feature that enables one-shot measurements without requiring
+# the sensor to run in a separate task
+no_runner = ["dep:embassy-futures"]
 
 [lints]
 workspace = true
