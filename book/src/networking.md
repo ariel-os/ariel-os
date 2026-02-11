@@ -17,8 +17,11 @@ through [laze modules][laze-modules-book].
 - `usb-ethernet`: Selects Ethernet-over-USB.
 - `wifi-cyw43`: Selects Wi-Fi using the CYW43 chip along an RP2040 or RP235x MCU (e.g., on the Raspberry Pi Pico W or Pico 2 W).
 - `wifi-esp`: Selects Wi-Fi on an ESP32 MCU.
+- `ltem-nrf-modem`: Selects LTE-M for nrf91 series MCUs.
 
 ## Network Credentials
+
+### Wi-Fi
 
 For Wi-Fi, the network credentials have to be supplied via environment variables:
 
@@ -26,9 +29,27 @@ For Wi-Fi, the network credentials have to be supplied via environment variables
 CONFIG_WIFI_NETWORK=<ssid> CONFIG_WIFI_PASSWORD=<pwd> laze build ...
 ```
 
+### Cellular Networking
+
+> [!WARNING]
+> This module is still experimental and only supports the nrf91 series of microcontrollers.
+
+If you need to configure how you authenticate to the network, you can set these environment variables:
+
+- `CONFIG_CELLULAR_PDN_APN`: The access point name to connect to.
+- `CONFIG_CELLULAR_PDN_AUTHENTICATION_PROTOCOL`: The protocol used to authenticate, can be `NONE`, `PAP`, `CHAP`.
+- `CONFIG_CELLULAR_PDN_USERNAME`: The username used to authenticate to the network, if this environment variable is set you also need to set `CONFIG_CELLULAR_PDN_PASSWORD`.
+- `CONFIG_CELLULAR_PDN_PASSWORD`: The password use to authenticate to the network.
+- `CONFIG_SIM_PIN`: The code to unlock the SIM.
+
+If some environment variables are not configured, the default provided by the modem and SIM will be used.
+
 ## Using the Networking Link on the Device
 
 ### Network Configuration
+
+> [!NOTE]
+> IPV4 and IPV6 configurations are ignored when using `ltem-nrf-modem` and instead set by the modem.
 
 #### IPv4
 
