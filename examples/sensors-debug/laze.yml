@@ -5,9 +5,7 @@ apps:
       - esp
       - heltec-wifi-lora-32-v3
       - nordic-thingy-91-x-nrf9151
-      - nrf52840
-      - nrf5340-app
-      - nrf9160
+      - nrf5340dk-app
       - rp2040
       - rp235xa
       - st-b-l475e-iot01a
