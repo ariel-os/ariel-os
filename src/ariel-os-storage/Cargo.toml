@@ -15,7 +15,7 @@ embassy-sync = { workspace = true }
 embedded-storage-async = { workspace = true }
 once_cell = { workspace = true }
 postcard = { version = "1.0.8", features = ["postcard-derive"] }
-sequential-storage = { version = "6.0.1", features = ["arrayvec"] }
+sequential-storage = { version = "7.0.0", features = ["arrayvec"] }
 serde = { workspace = true, default-features = false }
 
 [target.'cfg(context = "rp")'.dependencies]
