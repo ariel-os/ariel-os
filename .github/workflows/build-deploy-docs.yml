@@ -177,11 +177,14 @@ jobs:
 
       - name: Move older docs
         run: |
+          ls .
           for dir in ./_older_docs/tags/*/;
           do
+            echo $dir
             dir=${dir%*/}; # Remove trailing slash
             tag=${dir##*/}; # Extract the release tag
-            mkdir ../_site/$tag; # Create the directory for the versionned docs
+            echo $tag
+            mkdir ./_site/$tag; # Create the directory for the versionned docs
             mv $dir/api ../_site/$tag/api; # Move the rustdoc API documentation
             mv $dir/book ../_site/$tag/docs; # Move the book
           done;
