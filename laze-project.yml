@@ -379,6 +379,7 @@ contexts:
       - ?esp-println
     provides:
       - has_hwrng
+      - has_storage_support
     env:
       esp_wifi_heapsize_required: $(72*1024)
       RUSTFLAGS:
@@ -1026,7 +1027,8 @@ modules:
           - ariel-os/defmt
         RUSTFLAGS:
           - -Clink-arg=-Tdefmt.x
-        ESPFLASH_LOG_FORMAT: "--log-format defmt"
+        ESPFLASH_ARGS:
+          - --log-format defmt
         CARGO_ENV:
           - DEFMT_LOG=info,${LOG}
 
@@ -1296,6 +1298,8 @@ modules:
           - ariel-os/network-config-override
 
   - name: sw/storage
+    conflicts:
+      - esp # ESP32 uses a partition table instead of the linker script
     selects:
       - has_storage_support
     env:
@@ -1304,6 +1308,16 @@ modules:
           - ariel-os/storage
         RUSTFLAGS:
           - -Clink-arg=-Tstorage.x
+
+  - name: sw/storage
+    context:
+      - esp
+    selects:
+      - has_storage_support
+    env:
+      global:
+        FEATURES:
+          - ariel-os/storage
 
   - name: has_storage_support
     selects:
@@ -1784,7 +1798,10 @@ modules:
       - ariel-os-debug-backend
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+        CARGO_RUNNER_CMD: 'espflash flash'
+        ESPFLASH_ARGS:
+          - --monitor
+        CARGO_RUNNER: '"${CARGO_RUNNER_CMD} ${ESPFLASH_ARGS}"'
         FEATURES:
           - ariel-os/esp-println
 

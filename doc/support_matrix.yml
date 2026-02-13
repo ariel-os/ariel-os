@@ -281,9 +281,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       wifi:
         status: supported
       ble: not_currently_supported
@@ -306,9 +306,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       wifi:
         status: supported
       ble: not_currently_supported
@@ -330,9 +330,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       wifi:
         status: supported
       ble: not_currently_supported
@@ -355,9 +355,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       wifi:
         status: supported
       ble: not_currently_supported
@@ -379,9 +379,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       user_usb:
         status: supported
       ethernet_over_usb: not_currently_supported
@@ -401,9 +401,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       user_usb:
         status: supported
       ethernet_over_usb: not_currently_supported
@@ -423,9 +423,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       user_usb:
         status: supported
       ethernet_over_usb: not_currently_supported
@@ -445,9 +445,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       user_usb:
         status: supported
       ethernet_over_usb: not_currently_supported
@@ -466,9 +466,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       ethernet_over_usb: not_currently_supported
       wifi: supported
       ble: not_currently_supported
@@ -486,9 +486,9 @@ chips:
       uart: supported
       logging: supported
       storage:
-        status: not_currently_supported
+        status: supported
         comments:
-          - requires partitioning support
+          - requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html)
       user_usb: needs_testing # This should be moved to a board when one is added.
       ethernet_over_usb: not_currently_supported
       wifi: supported
