@@ -38,6 +38,7 @@ members = [
   "tests/random-getrandom",
   "tests/spi-loopback",
   "tests/spi-main",
+  "tests/stack-painting",
   "tests/threading-dynamic-prios",
   "tests/threading-fpu",
   "tests/threading-lock",
