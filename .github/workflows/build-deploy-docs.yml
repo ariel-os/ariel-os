@@ -178,7 +178,7 @@ jobs:
       - name: Move older docs
         run: |
           ls .
-          for dir in ./_older_docs/tags/*/;
+          for dir in ./_older-docs/tags/*/;
           do
             echo $dir
             dir=${dir%*/}; # Remove trailing slash
