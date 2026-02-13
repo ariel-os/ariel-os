@@ -2,6 +2,7 @@
 
 #![no_std]
 #![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(feature = "rcc-config-override", expect(unsafe_code))]
 #![deny(missing_docs)]
 
 pub mod gpio;
@@ -97,10 +98,20 @@ pub fn init() -> OptionalPeripherals {
 }
 
 fn board_config(config: &mut Config) {
-    config.rcc = rcc_config();
+    cfg_if::cfg_if! {
+        if #[cfg(feature = "rcc-config-override")] {
+            unsafe extern "Rust" {
+                fn __ariel_os_rcc_config() -> embassy_stm32::rcc::Config;
+            }
+            config.rcc = unsafe { __ariel_os_rcc_config() };
+        } else {
+            config.rcc = rcc_config();
+        }
+    }
 }
 
 // TODO: find better place for this
+#[cfg_attr(feature = "rcc-config-override", expect(dead_code))]
 fn rcc_config() -> embassy_stm32::rcc::Config {
     #[allow(unused_mut, reason = "conditional compilation")]
     let mut rcc = embassy_stm32::rcc::Config::default();

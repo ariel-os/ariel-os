@@ -126,6 +126,8 @@ usb-hid = ["ariel-os-embassy/usb-hid"]
 #! configuration is taken into account.
 # Enables custom network configuration.
 network-config-override = ["ariel-os-embassy/network-config-override"]
+## Enables custom RCC configuration (currently only available on STM32).
+rcc-config-override = ["ariel-os-embassy/rcc-config-override"]
 ## Enables custom USB configuration.
 override-usb-config = ["ariel-os-embassy/override-usb-config"]
 
