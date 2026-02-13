@@ -5,14 +5,12 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![expect(unsafe_code)]
+#![cfg_attr(feature = "backend-linked", expect(unsafe_code))]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
 mod postcard_value;
 mod storage;
-
-use core::ops::Range;
 
 use ariel_os_hal::hal::{
     OptionalPeripherals,
@@ -31,13 +29,14 @@ static STORAGE: OnceLock<Mutex<CriticalSectionRawMutex, Storage<Flash>>> = OnceL
 const MARKER_KEY: &str = "ARIEL_INIT_MARK";
 const MARKER_VALUE: u8 = 0;
 
-/// Gets a [`Range`] from the linker that can be used for a global [`Storage`].
+/// Gets a [`Range`][core::ops::Range] from the linker that can be used for a global [`Storage`].
 ///
 /// This expects two symbols `__storage_start` and `__storage_end`.
 /// This function is also the place to configure a platform dependent `OFFSET`,
 /// which configures an offset between the linker flash address map and the
 /// flash driver address map.
-fn flash_range_from_linker() -> Range<u32> {
+#[cfg(feature = "backend-linked")]
+fn flash_range_from_linker() -> core::ops::Range<u32> {
     #[cfg(all(context = "nrf", not(context = "nrf5340-net")))]
     const OFFSET: usize = 0x0;
     #[cfg(context = "nrf5340-net")]
@@ -66,10 +65,29 @@ fn flash_range_from_linker() -> Range<u32> {
 
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_debug::log::info;
-    let flash_range = flash_range_from_linker();
+
+    #[allow(unused_mut, reason = "needed only in some cfg() variants")]
+    let mut flash = flash_init(p);
+
+    let flash_range = {
+        cfg_if::cfg_if! {
+            if #[cfg(feature = "backend-linked")] {
+                flash_range_from_linker()
+            } else if #[cfg(context = "native")] {
+                0..flash.size()
+                    .try_into()
+                    .expect("flash APIs don't support files beyond 4GiB")
+            } else if #[cfg(context = "ariel-os")] {
+                compile_error!("No back-end for storage was selected; this is a bug in the laze configuration.")
+            } else {
+                // Don't prevent docs from building
+                0..0
+            }
+        }
+    };
+
     info!("storage: using flash range {:?}", &flash_range);
 
-    let flash = flash_init(p);
     let _ = STORAGE.init(Mutex::new(Storage::new(flash, flash_range)));
 }
 
@@ -92,7 +110,7 @@ pub async fn init(p: &mut OptionalPeripherals) {
     embassy_time::block_for(embassy_time::Duration::from_millis(10));
 
     // Use a marker to ensure that this storage is initialized.
-    if Ok(Some(MARKER_VALUE)) != get::<u8>(MARKER_KEY).await {
+    if !matches!(get::<u8>(MARKER_KEY).await, Ok(Some(MARKER_VALUE))) {
         ariel_os_debug::log::info!("storage: initializing");
         erase_all().await.unwrap();
     }

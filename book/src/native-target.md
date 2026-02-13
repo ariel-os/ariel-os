@@ -67,6 +67,19 @@ Setting up a suitable interface depends on your platform and preferred configura
 
 At the time of writing, the tap implementation is limited to Linux.
 
+## Storage
+
+When the `storage` [laze module] is selected,
+the native target opens a file at `flash.bin`
+that represents the flash content byte for byte.
+That file name can be changed by setting it as the `ARIEL_NATIVE_FLASH_FILE` environment variable.
+If the file is not present,
+it is created with a default size of 16KiB.
+To simulate a different flash size,
+provide a file (e.g. with 0x00 bytes) of a more suitable size.
+
+Write and erase sizes are currently fixed (to 1 and 256 byte, respectively).
+Mechanisms to influence those may be provided in the future as use cases arise.
 
 [native-builder-support]: ./boards/native.html
 [laze-builders-book]: ./build-system.md#laze-builders

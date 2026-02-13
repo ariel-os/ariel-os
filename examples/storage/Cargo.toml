@@ -8,6 +8,14 @@ publish = false
 ariel-os = { path = "../../src/ariel-os", features = ["storage"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 arrayvec = { version = "0.7.4", default-features = false, features = ["serde"] }
+
+# Explicitly depending on defmt (on all platforms) because this example has an
+# own struct on which it derives Format. Rather than introducing an extra
+# feature for it (which would then need to be set whenever laze selects a defmt
+# based output), pulling this in just for derives does not hinder compilation
+# on native, and has no run-time effects when not used.
+defmt = "1"
+
 heapless = { workspace = true, features = ["defmt-03", "serde"] }
 serde = { workspace = true, default-features = false, features = ["derive"] }
 

@@ -424,6 +424,7 @@ dependencies = [
  "embassy-net-tuntap",
  "embassy-time",
  "embedded-hal-async",
+ "embedded-storage-async",
  "getrandom 0.2.16",
  "rand 0.9.2",
  "sha2",
@@ -3064,6 +3065,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "arrayvec",
+ "defmt 1.0.1",
  "heapless 0.8.0",
  "serde",
 ]

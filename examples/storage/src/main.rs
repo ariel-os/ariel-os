@@ -3,7 +3,7 @@
 
 use ariel_os::debug::{
     ExitCode, exit,
-    log::{Hex, defmt, info},
+    log::{Hex, info},
 };
 
 // Imports for using [`ariel_os::storage`]
