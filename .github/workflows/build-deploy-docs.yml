@@ -171,7 +171,7 @@ jobs:
       - name: Checkout older docs and book
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          repository: ariel-s/docs
+          repository: ariel-os/docs
           ref: main
           path: ./_older-docs
 
