@@ -169,6 +169,7 @@ jobs:
           mv book ../_site/dev/docs
 
       - name: Checkout older docs and book
+        if: github.event_name != 'pull_request'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: ariel-os/docs
@@ -176,6 +177,7 @@ jobs:
           path: ./_older-docs
 
       - name: Move older docs
+        if: github.event_name != 'pull_request'
         run: |
           ls .
           for dir in ./_older-docs/tags/*/;
