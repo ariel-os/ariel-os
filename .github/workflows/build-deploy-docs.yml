@@ -184,7 +184,7 @@ jobs:
             dir=${dir%*/}; # Remove trailing slash
             tag=${dir##*/}; # Extract the release tag
             echo $tag
-            mkdir ./_site/$tag/docs; # Create the directory for the versionned docs
+            mkdir -p ./_site/$tag/docs; # Create the directory for the versionned docs
             mv $dir/api ./_site/$tag/docs/api; # Move the rustdoc API documentation
             mv $dir/book ./_site/$tag/docs/book; # Move the book
           done;
