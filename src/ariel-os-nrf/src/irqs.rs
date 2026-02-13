@@ -5,8 +5,10 @@
 use embassy_nrf::bind_interrupts;
 
 bind_interrupts!(pub(crate) struct Irqs {
-    #[cfg(feature = "hwrng")]
+    #[cfg(all(feature = "hwrng", any(context = "nrf51", context = "nrf52", context = "nrf5340-net")))]
     RNG => embassy_nrf::rng::InterruptHandler<embassy_nrf::peripherals::RNG>;
+    #[cfg(all(feature = "hwrng", any(context = "nrf91", context = "nrf5340-app")))]
+    CRYPTOCELL => embassy_nrf::cryptocell_rng::InterruptHandler<embassy_nrf::peripherals::CC_RNG>;
 
     #[cfg(feature = "usb")]
     USBD => embassy_nrf::usb::InterruptHandler<embassy_nrf::peripherals::USBD>;
