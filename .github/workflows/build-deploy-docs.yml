@@ -168,6 +168,25 @@ jobs:
           mdbook build
           mv book ../_site/dev/docs
 
+      - name: Checkout older docs and book
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          repository: ariel-s/docs
+          ref: main
+          path: ./_older-docs
+
+      - name: Move older docs
+        run: |
+          for dir in ./_older_docs/tags/*/;
+          do
+            dir=${dir%*/}; # Remove trailing slash
+            tag=${dir##*/}; # Extract the release tag
+            mkdir ../_site/$tag; # Create the directory for the versionned docs
+            mv $dir/api ../_site/$tag/api; # Move the rustdoc API documentation
+            mv $dir/book ../_site/$tag/docs; # Move the book
+          done;
+
+
       - name: Hash docs tree
         run: find ./_site -type f | xargs sha256sum | sha256sum > ./_hash && mv ./_hash ./_site/
 
