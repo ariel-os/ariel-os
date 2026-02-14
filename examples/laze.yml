@@ -12,6 +12,7 @@ subdirs:
   - coap-client
   - coap-server
   - device-metadata
+  - gnss-sensor-reader
   - gpio
   - hello-world
   - hello-world-threading
