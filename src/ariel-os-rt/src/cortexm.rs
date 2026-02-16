@@ -218,6 +218,10 @@ pub fn init() {
     }
 }
 
+pub fn sleep_now() {
+    cortex_m::asm::wfe();
+}
+
 /// Returns a `Stack` handle for the currently active thread.
 pub(crate) fn stack() -> crate::stack::Stack {
     #[cfg(feature = "threading")]
