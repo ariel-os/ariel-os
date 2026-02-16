@@ -74,7 +74,7 @@ spi = [
   "ariel-os-stm32/spi",
 ]
 
-time = ["ariel-os-esp/time", "ariel-os-stm32/time"]
+time = ["ariel-os-esp/time", "ariel-os-nrf/time", "ariel-os-stm32/time"]
 
 uart = [
   "ariel-os-embassy-common/uart",
