@@ -277,6 +277,7 @@ jobs:
           args: |
             --locked
             -p ariel-os-sensor-lis2du12
+            -p ariel-os-sensor-lis2mdl
             -p ariel-os-sensor-lps22df
             -p ariel-os-sensor-stts22h
             --

@@ -6,6 +6,9 @@ pub async fn init() {
     lis2du12::init().await;
 
     #[cfg(any(context = "st-steval-mkboxpro"))]
+    lis2mdl::init().await;
+
+    #[cfg(any(context = "st-steval-mkboxpro"))]
     lps22df::init().await;
 
     #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
@@ -48,6 +51,38 @@ mod lis2du12 {
 #[allow(unused, reason = "should be directly accessible without going through the registry")]
 #[cfg(any(context = "st-steval-mkboxpro"))]
 pub use lis2du12::LIS2DU12_I2C;
+
+#[cfg(any(context = "st-steval-mkboxpro"))]
+mod lis2mdl {
+    use ariel_os::i2c::controller::I2cDevice;
+
+    pub static LIS2MDL_I2C: ariel_os_sensor_lis2mdl::i2c::Lis2mdl<I2cDevice> =
+        const { ariel_os_sensor_lis2mdl::i2c::Lis2mdl::new(Some("onboard")) };
+    #[ariel_os::reexports::linkme::distributed_slice(ariel_os::sensors::SENSOR_REFS)]
+    #[linkme(crate = ariel_os::reexports::linkme)]
+    static LIS2MDL_I2C_REF: &'static dyn ariel_os::sensors::Sensor = &LIS2MDL_I2C;
+
+    #[ariel_os::task(autostart)]
+    pub async fn lis2mdl_i2c_runner() {
+        LIS2MDL_I2C.run().await
+    }
+
+    pub(super) async fn init() {
+        let config = ariel_os_sensor_lis2mdl::i2c::Config::default();
+
+        LIS2MDL_I2C
+            .init(
+                ariel_os_sensor_lis2mdl::i2c::Peripherals {},
+                I2cDevice::new(crate::i2c_bus::I2C_BUS.get().unwrap()),
+                config,
+            )
+            .await;
+    }
+}
+
+#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[cfg(any(context = "st-steval-mkboxpro"))]
+pub use lis2mdl::LIS2MDL_I2C;
 
 #[cfg(any(context = "st-steval-mkboxpro"))]
 mod lps22df {
