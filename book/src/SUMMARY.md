@@ -94,6 +94,7 @@
 - [Persistent Storage](./storage.md)
 - [Native Target](./native-target.md)
 - [Testing](./testing.md)
+- [Optimizing Resource Usage](./optimizing-resource-usage.md)
 - [Tooling](./tooling/index.md)
   - [CoAP](./tooling/coap.md)
   - [Ferrocene](./tooling/ferrocene.md)
