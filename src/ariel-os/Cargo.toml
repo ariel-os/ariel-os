@@ -163,10 +163,12 @@ tuntap = ["ariel-os-embassy/tuntap"]
 ble = ["ariel-os-embassy/ble"]
 # Selects BLE (with the CYW43 chip).
 ble-cyw43 = ["ariel-os-embassy/ble-cyw43"]
-# Enables BLE to act as a peripheral. Can be used in conjunction with `ble-central`.
-ble-peripheral = ["ariel-os-embassy/ble-peripheral", "ble"]
+# Selects BLE (on ESP chips).
+ble-esp = ["ariel-os-embassy/ble-esp"]
 # Enables BLE to act as a central. Can be used in conjunction with `ble-peripheral`.
 ble-central = ["ariel-os-embassy/ble-central", "ble"]
+# Enables BLE to act as a peripheral. Can be used in conjunction with `ble-central`.
+ble-peripheral = ["ariel-os-embassy/ble-peripheral", "ble"]
 
 # ## Enables support for the nRF91xx SiP modem.
 nrf91-modem = ["ariel-os-embassy/nrf91-modem", "ariel-os-rt/nrf91-modem"]

@@ -43,6 +43,7 @@ builders:
 - name: espressif-esp32-c6-devkitc-1
   parent: esp32-c6-wroom-1
   provides:
+  - has_ble_esp
   - has_buttons
 - name: espressif-esp32-devkitc
   parent: esp-wroom-32
