@@ -7,6 +7,11 @@ publish = false
 [dependencies]
 ariel-os = { path = "../../src/ariel-os" }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
+edge-dhcp = { version = "0.6", optional = true }
+edge-nal = { version = "0.5", optional = true }
+edge-nal-embassy = { version = "0.6", default-features = false, features = [
+  "udp",
+], optional = true }
 embassy-sync = { workspace = true }
 picoserve = { version = "0.14.1", default-features = false, features = [
   "embassy",
@@ -15,6 +20,7 @@ serde = { workspace = true, optional = true }
 
 [features]
 button-reading = ["dep:serde"]
+dhcp-server = ["dep:edge-dhcp", "dep:edge-nal", "dep:edge-nal-embassy"]
 
 [lints]
 workspace = true
