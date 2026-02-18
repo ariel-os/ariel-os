@@ -70,6 +70,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-h755zi-q\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-wb55\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-wba55\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-wba65ri\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-steval-mkboxpro\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"stm32u083c-dk\"))");
 }

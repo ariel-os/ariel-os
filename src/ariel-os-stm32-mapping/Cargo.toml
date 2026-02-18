@@ -4159,6 +4159,60 @@ embassy-stm32 = { workspace = true, features = ["stm32wba55ue"] }
 [target.'cfg(context = "stm32wba55ug")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55ug"] }
 
+[target.'cfg(context = "stm32wba62cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62cg"] }
+
+[target.'cfg(context = "stm32wba62ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62ci"] }
+
+[target.'cfg(context = "stm32wba62mg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62mg"] }
+
+[target.'cfg(context = "stm32wba62mi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62mi"] }
+
+[target.'cfg(context = "stm32wba62pg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62pg"] }
+
+[target.'cfg(context = "stm32wba62pi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba62pi"] }
+
+[target.'cfg(context = "stm32wba63cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba63cg"] }
+
+[target.'cfg(context = "stm32wba63ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba63ci"] }
+
+[target.'cfg(context = "stm32wba64cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba64cg"] }
+
+[target.'cfg(context = "stm32wba64ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba64ci"] }
+
+[target.'cfg(context = "stm32wba65cg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65cg"] }
+
+[target.'cfg(context = "stm32wba65ci")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65ci"] }
+
+[target.'cfg(context = "stm32wba65mg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65mg"] }
+
+[target.'cfg(context = "stm32wba65mi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65mi"] }
+
+[target.'cfg(context = "stm32wba65pg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65pg"] }
+
+[target.'cfg(context = "stm32wba65pi")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65pi"] }
+
+[target.'cfg(context = "stm32wba65rg")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65rg"] }
+
+[target.'cfg(context = "stm32wba65ri")'.dependencies]
+embassy-stm32 = { workspace = true, features = ["stm32wba65ri"] }
+
 [target.'cfg(context = "stm32wl54cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wl54cc-cm4"] }
 
