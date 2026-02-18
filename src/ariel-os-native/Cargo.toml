@@ -20,6 +20,7 @@ embassy-time = { workspace = true, default-features = false, features = [
   "std",
 ] }
 embedded-hal-async = { workspace = true }
+embedded-storage-async = { workspace = true }
 getrandom = { version = "0.2", optional = true }
 rand = { workspace = true, default-features = false, optional = true, features = [
   "os_rng",

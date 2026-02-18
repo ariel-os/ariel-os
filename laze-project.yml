@@ -503,6 +503,7 @@ contexts:
     provides:
       - has_device_identity
       - has_hwrng
+      - has_storage_support
       - sw/benchmark
     provides_unique:
       - c-function-abort
@@ -1298,12 +1299,40 @@ modules:
   - name: sw/storage
     selects:
       - has_storage_support
+      - storage-backend
     env:
       global:
         FEATURES:
           - ariel-os/storage
+
+  - name: storage-backend-native
+    provides_unique:
+      - storage-backend
+    context:
+      - native
+    env:
+      global:
+        FEATURES:
+          - ariel-os/storage-backend-native
+
+  - name: storage-backend-linked
+    help:
+      Laze-only module that enables storage.x.
+
+      This is needed for all the boards where storage is memory mapped and
+      visible to the linker, which is currently all except native.
+    provides_unique:
+      - storage-backend
+    # FIXME: There is probably an implicit context dependency on "we can
+    # even pull in custom .x files"; currently that's not an issue because
+    # storage-backend-native is selected first on the one target where we
+    # can't have storage.x.
+    env:
+      global:
         RUSTFLAGS:
           - -Clink-arg=-Tstorage.x
+        FEATURES:
+          - ariel-os/storage-backend-linked
 
   - name: has_storage_support
     selects:
