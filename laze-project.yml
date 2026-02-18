@@ -1908,6 +1908,12 @@ builders:
       - name: LINK
         description: "HOST LINK (no-op)"
         cmd: "true"
+    env:
+      RUSTDOCFLAGS:
+        - -D warnings
+        - --cfg nightly
+        - -Z unstable-options
+        - --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0'
 
     tasks:
       install-toolchain:
@@ -1939,6 +1945,129 @@ builders:
         build: false
         cmd:
           - cargo fmt --all -- --config format_generated_files=false
+
+      doc:
+        build: false
+        export:
+          - RUSTDOCFLAGS
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p embedded-hal@1.0.0
+            -p embedded-hal-async
+            -p embedded-io-async@0.6.1
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os
+            -p coapcore
+            --features "
+                ariel-os-sensors/max-sample-min-count-12,
+                bench,
+                ble,
+                coap,
+                core-affinity,
+                csprng,
+                defmt,
+                dns,
+                executor-thread,
+                external-interrupts,
+                hwrng,
+                i2c,
+                mdns,
+                multicast,
+                net,
+                no-boards,
+                random,
+                ariel-os-coap/doc,
+                sensors,
+                spi,
+                storage,
+                tcp,
+                threading,
+                uart,
+                udp,
+                usb,
+                usb-hid,
+                coapcore/_nightly_docs
+                " $@
+
+      doc-esp:
+        build: false
+        export:
+          - CARGO_BUILD_TARGET: riscv32imac-unknown-none-elf
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="esp32c6"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p embedded-hal@1.0.0
+            -p embedded-hal-async
+            -p embedded-io-async@0.6.1
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os-esp
+            --features "
+                esp-hal/esp32c6,
+                esp-bootloader-esp-idf/esp32c6,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                " $@
+
+      doc-nrf:
+        build: false
+        export:
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="nrf52840"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os-nrf
+            --features "
+                embassy-nrf/nrf52840,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                " $@
+
+      doc-rp:
+        build: false
+        export:
+          - RUSTDOCFLAGS: ${RUSTDOCFLAGS} --cfg context="rp" --cfg context="rp2040"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os-rp
+            --features "
+                embassy-rp/rp2040,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                " $@
+
+      doc-stm32:
+        build: false
+        export:
+          - RUSTDOCFLAGS: --cfg context="stm32wb55rg"
+        cmd:
+          - >-
+            cargo doc
+            --no-deps
+            -p ariel-os-stm32
+            --features "
+                embassy-stm32/stm32wb55rg,
+                external-interrupts,
+                i2c,
+                spi,
+                uart,
+                " $@
 
   - name: bbc-microbit
     parent: bbc-microbit-base
