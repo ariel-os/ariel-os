@@ -149,6 +149,7 @@ jobs:
             -p ariel-os-debug-log
             -p ariel-os-embassy
             -p ariel-os-embassy-common
+            -p ariel-os-sensors-gnss-time-ext
             -p ariel-os-hal
             -p ariel-os-identity
             -p ariel-os-macros
@@ -307,6 +308,7 @@ jobs:
             RUSTDOCFLAGS='-D warnings' cargo doc \
                 --no-deps \
                 -p ariel-os \
+                -p ariel-os-sensors-gnss-time-ext \
                 -p coapcore \
                 --features "
                     ariel-os-sensors/max-sample-min-count-12,
