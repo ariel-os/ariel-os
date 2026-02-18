@@ -149,5 +149,7 @@ wifi-esp = [
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
 
+_test = ["esp-hal/esp32c6", "external-interrupts", "i2c", "spi"]
+
 [lints]
 workspace = true

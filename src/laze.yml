@@ -5,6 +5,7 @@ subdirs:
   - ariel-os-debug-log
   - ariel-os-embassy
   - ariel-os-embassy-common
+  - ariel-os-esp
   - ariel-os-identity
   - ariel-os-macros
   - ariel-os-nrf
