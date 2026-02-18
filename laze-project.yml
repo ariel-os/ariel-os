@@ -1928,6 +1928,7 @@ builders:
       update-book:
         build: false
         cmd:
+          - rm -f "${relroot}/book/src/boards/*" "${relroot}/book/src/chips/*"
           - doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl
           - doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --template-path book/templates/board-page.md.tmpl
           - doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl
