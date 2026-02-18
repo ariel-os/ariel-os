@@ -18,6 +18,7 @@ subdirs:
   - http-client
   - http-server
   - i2c-scanner
+  - led-matrix
   - log
   - minimal
   - power

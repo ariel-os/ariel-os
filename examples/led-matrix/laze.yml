@@ -1,0 +1,5 @@
+apps:
+  - name: led-matrix
+    context:
+      # list of contexts that have an entry in `pins.rs`
+      - bbc-microbit-v2
