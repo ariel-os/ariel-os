@@ -113,7 +113,7 @@ hwrng = [
 ]
 
 storage = [
-  #"ariel-os-esp/storage",
+  "ariel-os-esp/storage",
   "ariel-os-nrf/storage",
   "ariel-os-rp/storage",
   "ariel-os-stm32/storage",
