@@ -34,7 +34,10 @@ jobs:
       # doesn't work, *that* is an error of its own anyway).
       - name: Rebase to avoid fixups/squashes from obscuring actual errors
         run: |
+          # Workaround-For: https://github.com/actions/checkout/issues/416
+          git fetch origin "${GITHUB_BASE_REF}"
+          git branch baseref origin/"${GITHUB_BASE_REF}"
           git config --global user.name "Committer of temporary autosquashes"
-          git rebase origin/"${GITHUB_BASE_REF}" --autosquash --keep-base
+          git rebase baseref --autosquash --keep-base
 
       - uses: crate-ci/committed@master
