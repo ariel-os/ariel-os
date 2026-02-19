@@ -103,7 +103,7 @@ Practically, this comes in two stages:
 
 1. Driven pins must only be selected based on the board (and not, for example, on the MCU family).
 
-   This means that it is safe to run any application on any bare board (with no extra wiring / shields).
+   This means that it is safe to run any application on any bare board (if no extra wiring / shields were added).
 
 2. User accessible general-purpose pins must only used be used with some confirmation,
    either from automated testing or from manual input.
