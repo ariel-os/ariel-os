@@ -108,7 +108,7 @@ Practically, this comes in two stages:
 2. User-accessible general-purpose pins must only be used with some confirmation,
    either from automated testing or from manual input.
 
-   This means that it is safe to run any application on any bare board even if there are daughterboards
+   This means that it is safe to run any application on any board even if there are daughterboards
    (e.g., shields, wings, capes, clicks, or grove modules)
    connected.
 
