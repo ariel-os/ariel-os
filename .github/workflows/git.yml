@@ -22,5 +22,27 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
+          # Setting it to ${{ github.event.pull_request.commits }} would not be
+          # helpful, we need the history of main to find what --keep-base
+          # means. (And relying on `HEAD^{${{ …commits }}}` would not be
+          # precise because it may not be linear, and the actual base commit is
+          # not in GitHub's environment).
           fetch-depth: 0
+
+      # If there are squash/fixup commits, the user will a) be aware of that
+      # and b) that's checked separately -- so we autosquash first. (If that
+      # doesn't work, *that* is an error of its own anyway).
+      - name: Rebase to avoid fixups/squashes from obscuring actual errors
+        run: |
+          # Workaround-For: https://github.com/actions/checkout/issues/416
+          git fetch origin "${GITHUB_BASE_REF}"
+          git branch baseref origin/"${GITHUB_BASE_REF}"
+
+          git config --global user.name "Committer of temporary autosquashes"
+          git rebase baseref --autosquash --keep-base
+
       - uses: crate-ci/committed@master
+        with:
+          # Overriding because committed would otherwise assume the structure
+          # in which the checkout leaves the pull request.
+          commits: baseref..HEAD
