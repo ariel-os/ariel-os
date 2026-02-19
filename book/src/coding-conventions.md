@@ -99,15 +99,35 @@ They may alter the state of the system (eg. write to on-board memory),
 but must only drive GPIO pins based on board descriptions
 (or, until those are comprehensive enough, hard-coded knowledge of that board).
 
-They may expect that some configuration of pin headers in a board is im place,
-and should point to those expectations in a warning if the tests fail in a way that might be caused by the absence of such configuration.
-for example, they may require that a jumper bridge is inserted between two pins to test some loopback behavior.
-When using such pins, they nonetheless have to ensure safety against damage, eg. by
+Practically, this comes in two stages:
 
-- using pins of a header with a fixed pin-out (eg. using the I2C pins of a mikroBUS connector)
-- using only safe driving modes (pull-up/-down resistors),
-- using run-time indication (eg. reading a connected I2C EEPROM that confirms that some particular shield is connected), or
-- obtaining explicit user confirmation.
+1. Driven pins must only be selected based on the board (and not, for example, on the MCU family).
+
+   This means that it is safe to run any application on any bare board (with no extra wiring / shields).
+
+2. User accessible general-purpose pins must only used be used with some confirmation,
+   either from automated testing or from manual input.
+
+   This means that it is safe to run any applycation on any bare board even if there are daughterboards
+   (eg. shields, wings, capes, clicks, grove modules)
+   are connected.
+
+    > [!WARNING]
+    > This requirement has been recently introduced,
+    > and may not be upheld by all applications yet.
+
+    There is no sharp definition of a general purpose pin.
+    Some clear cases are the digital pins of an Arduino style shield (clearly general-purpose)
+    and the I2C pins of a mikroBUS click (which are safe to drive in an I2C mode without extra checks).
+
+Applications in group 2 usually require some external components,
+sometimes just jumpers across some indicated pins,
+for example in peripheral loopback tests.
+Some means by which the application can adhere to this are:
+
+- using run-time indication (eg. reading a connected I2C EEPROM that confirms that some particular shield is connected),
+- using only low-strength driving modes (through internal pull-up/pull-down resistors), or
+- obtaining explicit user confirmation (e.g. by selecting a per-application module).
 
 ## Dependencies
 
