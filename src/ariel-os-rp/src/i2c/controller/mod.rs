@@ -9,7 +9,7 @@ use embassy_rp::{
     peripherals,
 };
 
-const KHZ_TO_HZ: u32 = 1000;
+const KHZ_TO_HZ: u32 = 1_000;
 
 /// I2C bus configuration.
 // We do not provide configuration for internal pull-ups as the RP2040 datasheet mentions in

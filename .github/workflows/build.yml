@@ -76,7 +76,7 @@ jobs:
               const buildLabel = buildLabels[0];
               if (!buildLabel) { throw 'A build label must be attached'; }
               console.log(`The build label is ${buildLabel}`);
-              return buildLabel;
+              return 'ci-build:small';
             }
             // This can happen because the API is paginated.
             throw 'Did not find the PR; maybe it has more than 30 commits?';
