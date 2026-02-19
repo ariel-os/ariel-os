@@ -37,6 +37,7 @@ jobs:
           # Workaround-For: https://github.com/actions/checkout/issues/416
           git fetch origin "${GITHUB_BASE_REF}"
           git branch baseref origin/"${GITHUB_BASE_REF}"
+
           git config --global user.name "Committer of temporary autosquashes"
           git rebase baseref --autosquash --keep-base
 
