@@ -41,3 +41,7 @@ jobs:
           git rebase baseref --autosquash --keep-base
 
       - uses: crate-ci/committed@master
+        with:
+          # Overriding because committed would otherwise assume the structure
+          # in which the checkout leaves the pull request.
+          commits: baseref..HEAD
