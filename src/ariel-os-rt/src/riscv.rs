@@ -10,7 +10,7 @@ fn main() -> ! {
 pub fn init() {}
 
 #[allow(dead_code, reason = "conditional compilation")]
-pub fn sleep_now() {
+pub fn wfi() {
     // SAFETY: executing WFI is safe.
     unsafe {
         core::arch::asm!("wfi");
