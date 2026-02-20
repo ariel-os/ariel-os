@@ -218,7 +218,7 @@ pub fn init() {
     }
 }
 
-pub fn sleep_now() {
+pub fn wfi() {
     cortex_m::asm::wfi();
 }
 

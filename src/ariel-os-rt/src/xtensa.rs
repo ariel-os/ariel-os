@@ -10,7 +10,7 @@ fn main() -> ! {
 pub fn init() {}
 
 #[allow(dead_code, reason = "conditional compilation")]
-pub fn sleep_now() {
+pub fn wfi() {
     // SAFETY: executing `waiti 0` is safe.
     unsafe {
         core::arch::asm!("waiti 0");
