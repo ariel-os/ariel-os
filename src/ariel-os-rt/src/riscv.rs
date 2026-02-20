@@ -9,6 +9,14 @@ fn main() -> ! {
 
 pub fn init() {}
 
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn wfi() {
+    // SAFETY: executing WFI is safe.
+    unsafe {
+        core::arch::asm!("wfi");
+    }
+}
+
 /// Returns the current `SP` register value.
 pub(crate) fn sp() -> usize {
     let sp: usize;

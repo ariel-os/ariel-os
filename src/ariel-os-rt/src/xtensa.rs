@@ -9,6 +9,14 @@ fn main() -> ! {
 
 pub fn init() {}
 
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn wfi() {
+    // SAFETY: executing `waiti 0` is safe.
+    unsafe {
+        core::arch::asm!("waiti 0");
+    }
+}
+
 /// Returns the current stack pointer register value
 pub(crate) fn sp() -> usize {
     let sp: usize;
