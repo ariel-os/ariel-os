@@ -119,6 +119,7 @@ jobs:
             --locked
             --features "
                 ariel-os-sensors/max-sample-min-count-12,
+                ariel-os-embassy/cellular-networking,
                 ble,
                 coap,
                 coap-transport-udp,
@@ -231,11 +232,22 @@ jobs:
             --locked
             --features "
                 embassy-nrf/nrf9160-s,
+                embassy-net/dns,
+                embassy-net/medium-ethernet,
+                embassy-net/medium-ip,
+                embassy-net/multicast,
+                embassy-net/proto-ipv4,
+                embassy-net/proto-ipv6,
+                embassy-net/tcp,
+                embassy-net/udp,
                 external-interrupts,
                 i2c,
+                ipv4,
+                ipv6,
+                ltem-nrf-modem,
+                nrf91-modem,
                 spi,
                 uart,
-                nrf91-modem
                 "
             -p ariel-os-nrf
             --target=thumbv8m.main-none-eabihf

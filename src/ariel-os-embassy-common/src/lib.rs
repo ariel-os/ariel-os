@@ -19,6 +19,9 @@ pub mod i2c;
 #[cfg(feature = "ble")]
 pub mod ble;
 
+#[cfg(feature = "cellular-networking")]
+pub mod cellular_networking;
+
 pub mod identity;
 
 #[cfg(feature = "spi")]
