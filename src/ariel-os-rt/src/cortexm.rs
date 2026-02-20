@@ -219,7 +219,7 @@ pub fn init() {
 }
 
 pub fn sleep_now() {
-    cortex_m::asm::wfe();
+    cortex_m::asm::wfi();
 }
 
 /// Returns a `Stack` handle for the currently active thread.
