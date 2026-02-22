@@ -8,6 +8,7 @@ license.workspace = true
 
 [dependencies]
 ariel-os-boards = { workspace = true, optional = true }
+ariel-os-buildinfo = { workspace = true, optional = true }
 ariel-os-embassy = { workspace = true }
 ariel-os-hal = { workspace = true, optional = true }
 ariel-os-log = { workspace = true }
@@ -47,7 +48,6 @@ heapless = { workspace = true, features = ["serde"] }
 # FIXME: Should go out eventually
 hexlit = "0.5.5"
 
-# For the udp_nal
 embedded-io-async = { workspace = true }
 
 [build-dependencies]
@@ -89,6 +89,10 @@ coap-transport-slipmux-uart = [
   "_coap-transport-slipmux",
   "ariel-os-boards",
   "ariel-os-hal/uart",
+]
+coap-transport-slipmux-usb = [
+  "dep:ariel-os-buildinfo",
+  "_coap-transport-slipmux",
 ]
 
 # Plain feature forwards and selected by laze to fill up the default features on demand.
