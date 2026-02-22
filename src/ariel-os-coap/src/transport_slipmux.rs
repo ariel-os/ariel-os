@@ -4,6 +4,114 @@
 use ariel_os_debug::log::{Hex, debug, warn};
 use embassy_sync::signal::Signal;
 
+#[cfg(feature = "coap-transport-slipmux-usb")]
+mod usb_serial {
+    use static_cell::StaticCell;
+
+    use super::*;
+
+    use ariel_os_embassy::reexports::embassy_usb;
+    use embassy_usb::{class::cdc_acm, driver::EndpointError};
+
+    const MAX_FULL_SPEED_PACKET_SIZE: u8 = 64;
+
+    #[ariel_os_macros::config(usb)]
+    const USB_CONFIG: embassy_usb::Config<'_> = {
+        let mut config = embassy_usb::Config::new(0x1209, 0x0009);
+        config.manufacturer = Some(ariel_os_buildinfo::OS_NAME);
+        config.product = Some("Generic Slipmux board");
+        // FIXME pull from device identity
+        //config.serial_number = Some("12345678");
+        config.max_power = 100;
+        config.max_packet_size_0 = MAX_FULL_SPEED_PACKET_SIZE;
+
+        // Required for Windows support.
+        config.composite_with_iads = true;
+        config.device_class = 0xEF;
+        config.device_sub_class = 0x02;
+        config.device_protocol = 0x01;
+        config
+    };
+
+    #[ariel_os_macros::task(autostart, usb_builder_hook)]
+    async fn usb_main() {
+        static STATE: StaticCell<cdc_acm::State<'_>> = StaticCell::new();
+
+        let class = USB_BUILDER_HOOK
+            .with(|builder| {
+                cdc_acm::CdcAcmClass::new(
+                    builder,
+                    STATE.init_with(cdc_acm::State::new),
+                    MAX_FULL_SPEED_PACKET_SIZE.into(),
+                )
+            })
+            .await;
+
+        static SLIPMUX_AND_BUFFER: static_cell::StaticCell<(
+            SingleFrameDecoder,
+            [u8; MAX_FULL_SPEED_PACKET_SIZE as usize],
+        )> = static_cell::StaticCell::new();
+        let slipmux_and_buffer = SLIPMUX_AND_BUFFER.init_with(|| (Default::default(), [0; _]));
+        let mut slipmux = &mut slipmux_and_buffer.0;
+        let buf = &mut slipmux_and_buffer.1;
+
+        // We don't really need the control channels: USB Serial is back-pressuring anyway.
+        let (tx, rx) = class.split();
+        let rx = rx.into_buffered(buf);
+        let mut as_io = CdcAcmAsIo { tx, rx };
+
+        loop {
+            as_io.rx.wait_connection().await;
+            debug!("Connected");
+
+            let Err((_e, returned_slipmux)) = serve_slipmux(&mut as_io, slipmux).await;
+            // FIXME: Could there be any *other* errors but disconnect errors that need to be
+            // handled differently (i.e., that needs another action than just doing wait_connection
+            // again)?
+
+            slipmux = returned_slipmux;
+
+            debug!("Disconnected");
+        }
+    }
+
+    use embassy_usb::driver::Driver;
+
+    struct CdcAcmAsIo<'d, D: Driver<'d>> {
+        tx: cdc_acm::Sender<'d, D>,
+        rx: cdc_acm::BufferedReceiver<'d, D>,
+    }
+
+    impl<'d, D: Driver<'d>> embedded_io_async::ErrorType for CdcAcmAsIo<'d, D> {
+        type Error = EndpointError;
+    }
+    impl<'d, D: Driver<'d>> embedded_io_async::Read for CdcAcmAsIo<'d, D> {
+        async fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
+            self.rx.read(buf).await
+        }
+    }
+    impl<'d, D: Driver<'d>> embedded_io_async::Write for CdcAcmAsIo<'d, D> {
+        async fn write(&mut self, mut buf: &[u8]) -> Result<usize, Self::Error> {
+            let orig_len = buf.len();
+            let max = self.tx.max_packet_size() as usize;
+            while !buf.is_empty() {
+                let to_write = buf.len().min(max);
+                self.tx.write_packet(&buf[..to_write]).await?;
+                buf = &buf[to_write..];
+                if to_write == 64 && buf.len() == 0 {
+                    // FIXME:
+                    // * Determine where this requirement comes from (IIRC it was somewhere in
+                    //   CdcAcmClass but I don't find it any more)
+                    // * Can we uphold this with less write_all'ish behavior?
+                    self.tx.write_packet(&[]).await?;
+                }
+            }
+            Ok(orig_len)
+        }
+    }
+}
+
+#[cfg(feature = "coap-transport-slipmux-uart")]
 mod over_uart {
     use static_cell::ConstStaticCell;
 

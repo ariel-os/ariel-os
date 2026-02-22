@@ -1527,6 +1527,26 @@ modules:
     selects:
       - coap-transport-slipmux-backend
 
+  - name: coap-transport-slipmux-usb
+    help: |
+      The slipmux CoAP transport goes over a single USB serial device created for this purpose.
+
+      As it is currently implemented, this uses up the complete USB device.
+
+      Note that for devices that are USB capable, creating a USB Ethernet interface is generally preferred.
+      Typical reasons to do this are:
+
+      * interaction with hosts where users or applications are authorized to interact with serial ports but not set even a link-local network,
+      * drop-in replacing devices that had a dedicated USB serial chip, and
+      * testing.
+    provides_unique: [coap-transport-slipmux-backend]
+    selects:
+      - usb
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-transport-slipmux-usb
+
   - name: coap-transport-slipmux-uart
     help: |
       The slipmux CoAP transport goes over the board's designated host-side UART.
