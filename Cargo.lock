@@ -150,6 +150,7 @@ name = "ariel-os-coap"
 version = "0.5.0"
 dependencies = [
  "ariel-os-boards",
+ "ariel-os-buildinfo",
  "ariel-os-embassy",
  "ariel-os-hal",
  "ariel-os-log",
