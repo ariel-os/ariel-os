@@ -24,10 +24,18 @@ mod over_uart {
         use ariel_os_hal::uart::Assignment;
         let (tx, rx) = peripherals.into_pins();
 
-        let uart = <UartAssignment as Assignment>::Device::new(rx, tx, rx_buf, tx_buf, config)
+        let mut uart = <UartAssignment as Assignment>::Device::new(rx, tx, rx_buf, tx_buf, config)
             .expect("Invalid UART configuration");
 
-        serve_slipmux(uart).await
+        static SLIPMUX: static_cell::StaticCell<SingleFrameDecoder> =
+            static_cell::StaticCell::new();
+        let mut slipmux = SLIPMUX.init_with(Default::default);
+
+        loop {
+            let Err((_e, returned_slipmux)) = serve_slipmux(&mut uart, slipmux).await;
+            slipmux = returned_slipmux;
+            warn!("UART error, restarting Slipmux engine.");
+        }
     }
 }
 
@@ -64,12 +72,28 @@ static COAP2SLIPMUX: Signal<
 /// signaling peer just like the CoAP stack.
 ///
 /// This is auto-started by whichever module provides the slipmux back-end from that module's
-/// autostart task, and…
+/// autostart task. To recover well from errors, this does not allocate the static `slipmux` itself;
+/// the calling task is asked to create that, eg. using:
 ///
-/// # Panics
+/// ```
+/// static SLIPMUX: static_cell::StaticCell<SingleFrameDecoder> = static_cell::StaticCell::new();
+/// let mut slipmux = SLIPMUX.init_with(Default::default);
+/// ```
 ///
-/// … if called more than once.
-async fn serve_slipmux(mut uart: impl embedded_io_async::Read + embedded_io_async::Write) -> ! {
+/// # Errors
+///
+/// Along with the actual error, this also returns the passed-in slipmux. This is necessary because
+/// this function may temporarily move out that buffer (e.g. to have it handled by CoAP): It can't
+/// practically return with an error until it has gotten that item back. That is not a practical
+/// inconvenience: UART errors only occur when reading from or writing to the UART, and for that to
+/// happen, this function needs the buffer anyway.
+async fn serve_slipmux<U>(
+    uart: &mut U,
+    mut slipmux: &'static mut SingleFrameDecoder,
+) -> Result<core::convert::Infallible, (U::Error, &'static mut SingleFrameDecoder)>
+where
+    U: embedded_io_async::Read + embedded_io_async::Write,
+{
     use slipmux::DecodeStatus;
 
     // For the time being we play the simple game, where we just have a server, and can afford to
@@ -78,8 +102,7 @@ async fn serve_slipmux(mut uart: impl embedded_io_async::Read + embedded_io_asyn
     // This will not be sustainable with the next generation coap-handler, and then we may need to
     // split the UARTs.
 
-    static SLIPMUX: static_cell::StaticCell<SingleFrameDecoder> = static_cell::StaticCell::new();
-    let mut slipmux = SLIPMUX.init_with(Default::default);
+    *slipmux = Default::default();
 
     let mut decoder = slipmux::Decoder::new();
     loop {
