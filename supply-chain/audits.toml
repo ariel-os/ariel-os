@@ -68,6 +68,11 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "0.4.8 -> 0.4.11"
 
+[[audits.slipmux]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+version = "0.4.0"
+
 [[audits.tee-embedded-io]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
