@@ -184,7 +184,7 @@ macro_rules! define_uart {
         // Rather than define_peripherals!'ing here, we define our type manually, because we also
         // have to carry the device type, and that's not coming through TakePeripherals.
 
-        #[allow(non_snake_case)]
+        #[allow(nonstandard_style)]
         pub struct $name {
             tx: $crate::hal::peripheral::Peri<'static, peripherals::$tx>,
             rx: $crate::hal::peripheral::Peri<'static, peripherals::$rx>,
