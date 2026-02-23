@@ -9,7 +9,7 @@ on:
   merge_group:
   schedule:
     # run every morning at 3:17am
-    - cron: '17 3 * * *'
+    - cron: "17 3 * * *"
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-build
@@ -83,7 +83,12 @@ jobs:
 
   build:
     needs: check-labels
-    runs-on: ubuntu-24.04
+    # Repository variable so we can quickly switch between self-hosted and GitHub runners.
+    # - "self-hosted-ubuntu": self hosted runners
+    # - "ubuntu-24.04": GitHub hosted runners
+    # Sometimes the variable is unavailable, we use a default.
+    runs-on: ${{ case(vars.build_runner == '', 'self-hosted-ubuntu', vars.build_runner) }}
+
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
 
@@ -97,14 +102,35 @@ jobs:
       # newest standard library. It may also need to be aligned with the clang
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
+      CACHE_THING_LOCATION: /cache/cache-thing
+      RUSTC_WRAPPER: sccache
+      CARGO_NET_GIT_FETCH_WITH_CLI: true
+      SCCACHE_DIR: /cache/sccache
+      SCCACHE_CACHE_SIZE: 128G
 
     strategy:
       fail-fast: true
       matrix:
-        partition: ["1/20", "2/20", "3/20", "4/20", "5/20", "6/20", "7/20", "8/20", "9/20", "10/20", "11/20", "12/20", "13/20", "14/20", "15/20", "16/20", "17/20", "18/20", "19/20", "20/20"]
+        partition:
+          [
+            "1/10",
+            "2/10",
+            "3/10",
+            "4/10",
+            "5/10",
+            "6/10",
+            "7/10",
+            "8/10",
+            "9/10",
+            "10/10",
+          ]
 
     steps:
+      - name: reset git-cache update barrier
+        run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
+
       - name: Free up space
+        if: runner.environment != 'self-hosted'
         run: |
           sudo rm -rf \
             /opt/ghc \
@@ -121,6 +147,11 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          # we need to access all the commits to know when the file was last modified
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
 
       - name: Get tree hashes
         id: get-tree-hashes
@@ -156,6 +187,19 @@ jobs:
           result="result=${{ steps.partial-result-cache.outputs.cache-hit == 'true'  || steps.git-result-cache.outputs.cache-hit == 'true' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
+
+      # Allows us to clean up even if build fails
+      - name: Cache with post-job cleanup
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        uses: gacts/run-and-post-run@v1
+        with:
+          run: |
+            export  RUST_LOG=trace
+            cache-thing pull -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --suffix "${{ matrix.partition }}" --fallback-key nightly || true
+
+          post: |
+            export  RUST_LOG=trace
+            cache-thing clean --prefix global --suffix "${{ matrix.partition }}" || true
 
       - name: "limit build unless nightly build"
         if: github.event_name != 'schedule' && steps.should-skip.outputs.result != 'true'
@@ -202,7 +246,7 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       - name: Install nightly toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
@@ -212,7 +256,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install stable toolchain
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@1.91.1
         with:
@@ -222,7 +266,7 @@ jobs:
           components: rust-src, rustfmt
 
       - name: Install Rust for Xtensa
-        if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1')
+        if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1') && runner.environment != 'self-hosted'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@main
         with:
@@ -232,19 +276,19 @@ jobs:
           export: false
 
       - name: rust cache
-        if: steps.should-skip.outputs.result != 'true'
         uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           key: "${{ matrix.partition }}"
 
       - name: Install laze
         uses: taiki-e/install-action@870266878ed54ea9ceb25502c53e42aa939585a6 # v2
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         with:
           tool: laze@0.1
 
       - name: "installing prerequisites"
-        if: steps.should-skip.outputs.result != 'true'
+        if: steps.should-skip.outputs.result != 'true' && runner.environment != 'self-hosted'
         run: sudo apt-get install ninja-build gcc-arm-none-eabi gcc-riscv64-unknown-elf
 
       - name: "Show installed versions"
@@ -266,6 +310,21 @@ jobs:
           sha256sum /usr/lib/llvm-*/lib/clang/*/include/stdint.h
           true
 
+      # Allows to reuse more cache
+      - name: Touch file time to commits time
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        # https://stackoverflow.com/questions/21735435/git-clone-changes-file-modification-time
+        run: |
+            git ls-tree -r --name-only HEAD | while read filename; do
+              unixtime=$(git log -1 --format="%at" -- "${filename}")
+              touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
+              touch -t ${touchtime} "${filename}"
+            done
+      - name: "start sccache daemon"
+        if: steps.should-skip.outputs.result != 'true' && runner.environment == 'self-hosted'
+        # work around https://github.com/ninja-build/ninja/issues/2052
+        run: sccache --start-server || true
+
       - name: "ariel-os compilation test (default toolchain)"
         if: steps.should-skip.outputs.result != 'true'
         run: |
@@ -280,12 +339,16 @@ jobs:
         run: |
           mv build build.tmp && rm -rf build.tmp &
 
-      # nightly build, nightly toolchain
+      # nightly build, nightly toolchain, no cache for this one
       # (disabling xtensa here as it gets built by the default toolchain build above)
       - name: "ariel-os compilation test (nightly toolchain)"
         if: github.event_name == 'schedule' && steps.should-skip.outputs.result != 'true'
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
+
+      - name: show sccache stats
+        if: runner.environment == 'self-hosted'
+        run: sccache --show-stats
 
   build-success:
     if: ${{ always() }}
