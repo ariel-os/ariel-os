@@ -17,24 +17,14 @@
 #[featurecomb::comb]
 mod _featurecomb {}
 
-#[cfg(feature = "defmt")]
-pub mod defmt {
-    //! Selected [`defmt`] items.
+/// These re-exports can be used to satisfy the requirements of the `info!` and similar macros,
+/// either by deriving [`Format`] on your own data structures, or by falling back to [`Debug2Format`]
+/// or [`Display2Format`] to show third party data structures that do not have [`Format`] derived.
+pub use defmt::{Debug2Format, Display2Format, Format};
 
-    // This module is hidden in the docs, but would still be imported by a wildcard import of this
-    // crate's items.
-    #[doc(hidden)]
-    pub mod hidden {
-        // Required so the macros can access it.
-        #[doc(hidden)]
-        pub use defmt;
-    }
-
-    pub use defmt::{Debug2Format, Display2Format, Format};
-
-    // These are required "internally" by `defmt`.
-    pub use defmt::{Formatter, Str, export, unreachable};
-}
+/// This pub reexport is needed in addition to [`Format`] above because the generated
+/// implementation needs to have access to a `defmt` module.
+pub use defmt;
 
 #[cfg(feature = "defmt")]
 pub use defmt::{Debug2Format, Display2Format};
@@ -85,7 +75,7 @@ mod log_macros {
     #[macro_export]
     macro_rules! trace {
         ($($arg:tt)*) => {{
-            use $crate::defmt::hidden::defmt;
+            use $crate::defmt;
             if true {
                 defmt::trace!($($arg)*);
             } else {
@@ -98,7 +88,7 @@ mod log_macros {
     #[macro_export]
     macro_rules! debug {
         ($($arg:tt)*) => {{
-            use $crate::defmt::hidden::defmt;
+            use $crate::defmt;
             if true {
                 defmt::debug!($($arg)*);
             } else {
@@ -111,7 +101,7 @@ mod log_macros {
     #[macro_export]
     macro_rules! info {
         ($($arg:tt)*) => {{
-            use $crate::defmt::hidden::defmt;
+            use $crate::defmt;
             if true {
                 defmt::info!($($arg)*);
             } else {
@@ -124,7 +114,7 @@ mod log_macros {
     #[macro_export]
     macro_rules! warn {
         ($($arg:tt)*) => {{
-            use $crate::defmt::hidden::defmt;
+            use $crate::defmt;
             if true {
                 defmt::warn!($($arg)*);
             } else {
@@ -137,7 +127,7 @@ mod log_macros {
     #[macro_export]
     macro_rules! error {
         ($($arg:tt)*) => {{
-            use $crate::defmt::hidden::defmt;
+            use $crate::defmt;
             if true {
                 defmt::error!($($arg)*);
             } else {
