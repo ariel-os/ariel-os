@@ -114,6 +114,8 @@ cfg_if::cfg_if! {
         use ethernet::NetworkDevice;
     } else if #[cfg(feature = "tuntap")] {
         use crate::hal::tuntap::NetworkDevice;
+    } else if #[cfg(feature= "ltem-nrf-modem")] {
+        use crate::hal::ltem::NetworkDevice;
     } else if #[cfg(context = "ariel-os")] {
         compile_error!("no backend for net is active");
     } else {
@@ -341,6 +343,8 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "tuntap")]
     let device = crate::hal::tuntap::create();
+    #[cfg(feature = "ltem-nrf-modem")]
+    let (device, control) = hal::ltem::init(spawner).await;
 
     #[cfg(feature = "net")]
     {
@@ -363,6 +367,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             feature = "wifi-esp",
             feature = "ethernet",
             feature = "tuntap",
+            feature = "ltem-nrf-modem",
         )))]
         // The creation of `device` is not organized in such a way that they could be put in a
         // cfg-if without larger refactoring; relying on unused variable lints to keep the
@@ -391,6 +396,25 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             .is_err()
         {
             unreachable!();
+        }
+
+        #[cfg(feature = "cellular-networking")]
+        {
+            let cellular_networking_config = cellular_networking::config();
+            let sim_pin = cellular_networking::pin();
+
+            // update the network stack with the device's configuration
+            #[cfg(feature = "ltem-nrf-modem")]
+            {
+                spawner
+                    .spawn(hal::ltem::control_task(
+                        control,
+                        cellular_networking_config,
+                        sim_pin,
+                        stack,
+                    ))
+                    .unwrap();
+            }
         }
     }
 

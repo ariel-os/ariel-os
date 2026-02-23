@@ -1228,6 +1228,8 @@ modules:
   - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
+      # The cellular modem provides it's own network configuration.
+      - ?ltem-nrf-modem
       - ?network-config-ipv4-dhcp
       - ?network-config-ipv4-static
       - network-config-ipv4
@@ -1281,6 +1283,8 @@ modules:
   - name: network-config-ipv6-default
     help: use default network configuration method
     selects:
+      # The cellular modem provides it's own network configuration.
+      - ?ltem-nrf-modem
       - ?network-config-ipv6-static
       - network-config-ipv6
 
@@ -1334,6 +1338,18 @@ modules:
       global:
         FEATURES:
           - ariel-os/threading
+
+  - name: ltem-nrf-modem
+    selects:
+      - nrf91-modem
+    provides_unique:
+      - network_device
+      - network-config-ipv6
+      - network-config-ipv4
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ltem-nrf-modem
 
   - name: wifi-cyw43
     selects:

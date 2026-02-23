@@ -446,10 +446,14 @@ dependencies = [
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
+ "embassy-futures",
+ "embassy-net",
+ "embassy-net-driver-channel 0.3.2",
  "embassy-nrf",
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
+ "heapless 0.8.0",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -4230,7 +4234,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a793df0d7afeac54f95b471d3af7f0d4fb975699f972341a4b76988d49cdf0c"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.5",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -4451,9 +4455,9 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
 name = "nrf-modem"
-version = "0.10.1"
+version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d35a7f0d855e9c79900047ccd03bab927c3135581e8f4afa4b28ff007269a1c"
+checksum = "f4726c9f304d5e28867cd13e37c1d9c37496ee3959e2d1e2e6283401c3943c5e"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4461,10 +4465,14 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.0.1",
+ "embassy-futures",
+ "embassy-net-driver-channel 0.3.2",
  "embassy-sync 0.7.2",
+ "embassy-time",
  "embedded-io-async 0.7.0",
  "futures",
  "grounded",
+ "heapless 0.8.0",
  "linked_list_allocator",
  "nrf9120-pac",
  "nrf9160-pac",
@@ -6307,9 +6315,9 @@ checksum = "8b36ee98fd31ec7426d599183e8fe26932a8dc1fb76ddb6214d05493377d34ca"
 
 [[package]]
 name = "tinyrlibc"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d07d242693682e46801cb0186c583858bce022f698401b3f04bbd729c9a87e7"
+checksum = "9af8adde15cc59c61328c5d709b41b8464522a733033584d33def687b26bd009"
 dependencies = [
  "cc",
  "portable-atomic",
@@ -6775,7 +6783,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]

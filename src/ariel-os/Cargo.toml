@@ -160,6 +160,8 @@ wifi-esp = ["ariel-os-embassy/wifi-esp"]
 ethernet-stm32 = ["ariel-os-embassy/ethernet-stm32"]
 # Selects the network backend that goes through tun/tap (native only).
 tuntap = ["ariel-os-embassy/tuntap"]
+# Selects LTE-M on nRF SiPs (currently only available on nRF91 SiPs).
+ltem-nrf-modem = ["ariel-os-embassy/ltem-nrf-modem", "nrf91-modem"]
 
 # ## Bluetooth support
 ble = ["ariel-os-embassy/ble"]
