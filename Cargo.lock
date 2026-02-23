@@ -208,8 +208,11 @@ dependencies = [
 name = "ariel-os-coap"
 version = "0.3.0"
 dependencies = [
+ "ariel-os-boards",
+ "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy",
+ "ariel-os-hal",
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-storage",
@@ -226,15 +229,19 @@ dependencies = [
  "embassy-net",
  "embassy-sync 0.7.2",
  "embedded-io-async 0.6.1",
+ "embedded-nal",
  "embedded-nal-async",
  "embedded-nal-coap",
+ "embedded-nal-minimal-coapserver",
  "heapless 0.8.0",
  "hexlit",
  "lakers",
  "lakers-crypto-rustcrypto",
  "minicbor",
+ "once_cell",
  "serde",
  "serde_yaml",
+ "slipmux",
  "static_cell",
 ]
 
@@ -2460,6 +2467,22 @@ dependencies = [
  "embedded-nal-async",
  "heapless 0.9.1",
  "rand_core 0.9.3",
+]
+
+[[package]]
+name = "embedded-nal-minimal-coapserver"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93b7e44d01f417eb6c38a8cd14cf2fd929104f58f6db84841d850fa72d78fa78"
+dependencies = [
+ "coap-handler",
+ "coap-message",
+ "coap-message-implementations",
+ "coap-numbers",
+ "embedded-nal",
+ "heapless 0.8.0",
+ "num-derive",
+ "num-traits",
 ]
 
 [[package]]
@@ -5556,6 +5579,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "serial-line-ip"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08a0b86bcdab6b15029ff7e37ae8acdadbf5d48e070ec5a067aa5c31e306f958"
+
+[[package]]
 name = "sha1"
 version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5620,6 +5649,15 @@ name = "slab"
 version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a2ae44ef20feb57a68b23d846850f861394c2e02dc425a50098ae8c90267589"
+
+[[package]]
+name = "slipmux"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "42c4f847abb1018cc9aa469625bdc7e699058f28d15e116d242ff35b88b23272"
+dependencies = [
+ "serial-line-ip",
+]
 
 [[package]]
 name = "smallvec"

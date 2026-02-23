@@ -43,3 +43,20 @@ boards:
         active: low
         aliases:
           - Button 4
+    uarts:
+      VCOM0:
+        tx_pin: P0_27
+        rx_pin: P0_26
+        rts_pin: P0_14
+        cts_pin: P0_15
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [SERIAL3]
+        host_facing: true
+      VCOM1:
+        tx_pin: P0_29
+        rx_pin: P0_28
+        rts_pin: P0_16
+        cts_pin: P0_17
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [SERIAL3]
+        host_facing: true

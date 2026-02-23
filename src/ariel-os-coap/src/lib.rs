@@ -18,6 +18,9 @@ mod stored;
 #[cfg(feature = "coap-transport-udp")]
 mod transport_udp;
 
+#[cfg(feature = "_coap-transport-slipmux")]
+mod transport_slipmux;
+
 use ariel_os_embassy::cell::SameExecutorCell;
 #[cfg(feature = "coap-server")]
 use coap_handler_implementations::ReportingHandlerBuilder as _;
@@ -156,6 +159,8 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
     cfg_if::cfg_if! {
         if #[cfg(feature = "coap-transport-udp")] {
             transport_udp::coap_run_udp(handler).await
+        } else if #[cfg(feature = "_coap-transport-slipmux")] {
+            transport_slipmux::coap_run_slipmux(handler).await
         } else if #[cfg(feature = "doc")] {
             loop {}
         } else {
