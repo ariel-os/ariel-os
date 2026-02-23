@@ -144,6 +144,7 @@ macro_rules! group_peripherals {
 /// While usable for applications just as well (to set up custom UARTs), it is most useful in board
 /// descriptions, because in addition to the individual exposed UARTs, it can also provide extra
 /// functionalities that take all UARTs into account.
+#[cfg(feature = "uart")]
 #[macro_export]
 macro_rules! define_uarts {
     ( $( { $($args:tt)+ } ),* $(,)? ) => {
@@ -161,6 +162,12 @@ macro_rules! define_uarts {
     }
 }
 
+#[cfg(not(feature = "uart"))]
+#[macro_export]
+macro_rules! define_uarts {
+    ( $($_:tt)+ ) => {};
+}
+
 /// Creates a struct of the given `name`, containing everything needed to set up a UART.
 ///
 /// It holds the TX and RX pins, and can be taken through the same mechanism as those defined using
@@ -170,6 +177,7 @@ macro_rules! define_uarts {
 /// The struct also implement [`ariel_os::uart::Assignment`], and by that carries a type with the
 /// (not trait-backed) promise that it is something that can be initialized through the
 /// [`ariel_os::uart`] APIs.
+#[cfg(feature = "uart")]
 #[macro_export]
 macro_rules! define_uart {
     ( name: $name:ident, device: $device:ident, tx: $tx:ident, rx: $rx:ident, host_facing: $_host_facing:literal ) => {
@@ -201,6 +209,12 @@ macro_rules! define_uart {
             }
         }
     };
+}
+
+#[cfg(not(feature = "uart"))]
+#[macro_export]
+macro_rules! define_uart {
+    ( $($_:tt)+ ) => {};
 }
 
 #[macro_export]
