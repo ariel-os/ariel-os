@@ -161,9 +161,11 @@ macro_rules! define_uarts {
     }
 }
 
-/// Creates a struct of the given `name` that holds the TX and RX pins, and can be taken through
-/// the same mechanism as those defined using [`ariel_os::hal::define_peripherals!`] (that is, by
-/// using [`ariel_os::task(autostart, peripherals)`] or the underlying `TakePeripherals` trait).
+/// Creates a struct of the given `name`, containing everything needed to set up a UART.
+///
+/// It holds the TX and RX pins, and can be taken through the same mechanism as those defined using
+/// [`ariel_os::hal::define_peripherals!`] (that is, by using [`ariel_os::task(autostart,
+/// peripherals)`] or the underlying `TakePeripherals` trait).
 ///
 /// The struct also implement [`ariel_os::uart::Assignment`], and by that carries a type with the
 /// (not trait-backed) promise that it is something that can be initialized through the
