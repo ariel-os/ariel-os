@@ -71,18 +71,18 @@ pub async fn driver() {
 
     let ipc_start = configure_modem_non_secure();
 
+    // Set the base address for the IPC shared memory, use default sizes.
+    let memory_layout = MemoryLayout {
+        base_address: ipc_start,
+        ..Default::default()
+    };
+
     let system_mode = SystemMode {
         lte_support: true,
         lte_psm_support: true,
         nbiot_support: false,
         gnss_support: true,
         preference: ConnectionPreference::None,
-    };
-
-    // Set the base address for the IPC shared memory, use default sizes.
-    let memory_layout = MemoryLayout {
-        base_address: ipc_start,
-        ..Default::default()
     };
 
     #[cfg(feature = "executor-interrupt")]
