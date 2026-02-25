@@ -456,6 +456,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-nrf91-gnss"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-sensors",
+ "ariel-os-sensors-gnss-time-ext",
+ "ariel-os-sensors-utils",
+ "defmt 1.0.1",
+ "embassy-sync 0.7.2",
+ "futures",
+ "libm",
+ "nrf-modem",
+ "portable-atomic",
+ "time",
+]
+
+[[package]]
 name = "ariel-os-power"
 version = "0.3.0"
 dependencies = [
@@ -580,6 +597,15 @@ dependencies = [
  "embassy-futures",
  "embassy-sync 0.7.2",
  "pin-project-lite",
+ "static_cell",
+]
+
+[[package]]
+name = "ariel-os-sensors-gnss-time-ext"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-sensors",
+ "defmt 1.0.1",
  "static_cell",
 ]
 
@@ -1875,6 +1901,15 @@ checksum = "e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb"
 dependencies = [
  "const-oid",
  "zeroize",
+]
+
+[[package]]
+name = "deranged"
+version = "0.5.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cc3dc5ad92c2e2d1c193bbbbdf2ea477cb81331de4f3103f267ca18368b988c4"
+dependencies = [
+ "powerfmt",
 ]
 
 [[package]]
@@ -3386,6 +3421,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8d1add55171497b4705a648c6b583acafb01d58050a51727785f0b2c8e0a2b2"
 
 [[package]]
+name = "gnss-sensor-reader"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-nrf91-gnss",
+ "ariel-os-sensors-gnss-time-ext",
+ "linkme",
+]
+
+[[package]]
 name = "gpio"
 version = "0.0.0"
 dependencies = [
@@ -4102,6 +4148,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "libm"
+version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9fbbcab51052fe104eb5e5d351cf728d30a5be1fe14d9be8a3b097481fb97de"
+
+[[package]]
 name = "liboscore"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4444,6 +4496,12 @@ dependencies = [
  "num-integer",
  "num-traits",
 ]
+
+[[package]]
+name = "num-conv"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
 
 [[package]]
 name = "num-derive"
@@ -4910,6 +4968,12 @@ checksum = "e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585"
 dependencies = [
  "zerovec",
 ]
+
+[[package]]
+name = "powerfmt"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
 name = "ppv-lite86"
@@ -6092,6 +6156,35 @@ dependencies = [
  "ariel-os-boards",
  "embassy-executor",
  "portable-atomic",
+]
+
+[[package]]
+name = "time"
+version = "0.3.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9e442fc33d7fdb45aa9bfeb312c095964abdf596f7567261062b2a7107aaabd"
+dependencies = [
+ "deranged",
+ "num-conv",
+ "powerfmt",
+ "time-core",
+ "time-macros",
+]
+
+[[package]]
+name = "time-core"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b36ee98fd31ec7426d599183e8fe26932a8dc1fb76ddb6214d05493377d34ca"
+
+[[package]]
+name = "time-macros"
+version = "0.2.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "71e552d1249bf61ac2a52db88179fd0673def1e1ad8243a00d9ec9ed71fee3dd"
+dependencies = [
+ "num-conv",
+ "time-core",
 ]
 
 [[package]]

@@ -1,0 +1,16 @@
+[package]
+name = "gnss-sensor-reader"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["sensors", "time"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-sensors-gnss-time-ext = { workspace = true, features = ["defmt"] }
+ariel-os-nrf91-gnss = { path = "../../src/sensors/ariel-os-nrf91-gnss", features = [
+  "defmt",
+] }
+linkme = { workspace = true }
+
+[lints]
+workspace = true

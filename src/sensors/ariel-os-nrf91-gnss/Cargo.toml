@@ -1,0 +1,33 @@
+[package]
+name = "ariel-os-nrf91-gnss"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os-debug = { workspace = true }
+ariel-os-sensors-gnss-time-ext = { workspace = true }
+ariel-os-sensors = { workspace = true, features = ["max-sample-min-count-8"] }
+ariel-os-sensors-utils = { workspace = true }
+embassy-sync = { workspace = true }
+portable-atomic = { workspace = true }
+futures = { workspace = true, default-features = false }
+defmt = { workspace = true, optional = true }
+time = { workspace = true, features = ["macros"] }
+nrf-modem = { workspace = true, features = ["modem-log"] }
+libm = "0.2.15"
+
+[target.'cfg(context = "nrf9151")'.dependencies]
+nrf-modem = { workspace = true, features = ["nrf9151"] }
+
+[target.'cfg(context = "nrf9160")'.dependencies]
+nrf-modem = { workspace = true, features = ["nrf9160"] }
+
+
+[features]
+defmt = ["dep:defmt", "ariel-os-sensors/defmt", "nrf-modem/defmt"]

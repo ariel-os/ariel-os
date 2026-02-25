@@ -66,6 +66,7 @@ jobs:
           RUSTDOCFLAGS='--cfg nightly -Z unstable-options --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0 ' cargo doc \
               --no-deps \
               -p ariel-os \
+              -p ariel-os-sensors-gnss-time-ext \
               -p coapcore \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
