@@ -2,3 +2,4 @@ subdirs:
   - ariel-os-sensor-lis2du12
   - ariel-os-sensor-lps22df
   - ariel-os-sensor-stts22h
+  - ariel-os-sensor-sht3x

@@ -14,6 +14,7 @@ ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensor-lis2du12 = { path = "../../src/sensors/ariel-os-sensor-lis2du12" }
 ariel-os-sensor-lps22df = { path = "../../src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-stts22h = { path = "../../src/sensors/ariel-os-sensor-stts22h" }
+ariel-os-sensor-sht3x = { path = "../../src/sensors/ariel-os-sensor-sht3x" }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
 embassy-sync = { workspace = true }
 once_cell = { workspace = true }
