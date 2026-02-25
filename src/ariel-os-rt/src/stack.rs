@@ -1,4 +1,4 @@
-//! Stack usage helpers.
+//! Provides stack usage helpers.
 
 #![expect(unsafe_code)]
 #![expect(
@@ -22,7 +22,7 @@ const STACK_PAINT_IGNORE: usize = 0;
 #[cfg(context = "xtensa")]
 const STACK_PAINT_IGNORE: usize = 16;
 
-/// Struct representing the currently active stack.
+/// Represents the currently active stack.
 ///
 /// # Stack painting
 ///
@@ -40,6 +40,12 @@ const STACK_PAINT_IGNORE: usize = 16;
 /// In the current implementation, and assuming the stack data follows a uniform distribution, this
 /// is unlikely to result in an underestimation of more than one byte.
 ///
+/// # Note
+///
+/// On [native][native-book], the stack *modeled by this type* is currently empty, so its usage and
+/// free space will both be reported as zero.
+///
+/// [native-book]: https://ariel-os.github.io/ariel-os/dev/docs/book/native-target.html
 // # Note
 //
 // The machinery for stack painting has a couple of assumptions:
@@ -70,12 +76,12 @@ pub struct Stack {
 }
 
 impl Stack {
-    /// Gets a handle for the currently active stack.
+    /// Returns a handle for the currently active stack.
     ///
     /// # Panics
     ///
     /// Panics when the world is on fire (e.g., when the limits returned by
-    /// the architecture dependent code don't make sense).
+    /// the architecture-dependent code don't make sense).
     #[must_use]
     pub fn get() -> Self {
         let sp = sp();
@@ -188,12 +194,14 @@ impl Stack {
     }
 
     /// Returns this [`Stack`]'s `lowest` address.
+    #[doc(hidden)]
     #[must_use]
     pub fn highest(&self) -> usize {
         self.highest
     }
 
     /// Returns this [`Stack`]'s `highest` address.
+    #[doc(hidden)]
     #[must_use]
     pub fn lowest(&self) -> usize {
         self.lowest
