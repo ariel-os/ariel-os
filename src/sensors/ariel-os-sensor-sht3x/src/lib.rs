@@ -13,7 +13,7 @@ pub mod i2c;
 
 use ariel_os_sensors::sensor::SampleMetadata;
 
-use crc::{Crc, CRC_8_NRSC_5};
+use crc::{CRC_8_NRSC_5, Crc};
 
 #[expect(dead_code)]
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -117,7 +117,6 @@ enum Command {
     WriteLowAlertClear = 0x6100,
 }
 
-
 // STATUS register bits
 /// Set to 1 if the checksum of the last write failed.
 pub const CHECKSUM_STATUS: u16 = 1 << 0;
@@ -140,7 +139,6 @@ pub const HEATER_STATUS: u16 = 1 << 13;
 /// Set to 1 if an alert is pending.
 pub const ALERT_PENDING: u16 = 1 << 15;
 
-
 // Maximal wait times before acquisition when powered with 2.4 < V < 5.5
 // See Table 4 of the Datasheet.
 /// Maximal wait time in ms for a High Repeatbility measurement when powered with 2.4 < V < 5.5.
@@ -154,8 +152,6 @@ const MEDIUM_REPEAT_DELAY: u64 = 6;
 /// Maximal wait time in ms for a Low Repeatbility measurement when powered with 2.4 < V < 5.5.
 #[allow(dead_code)]
 const LOW_REPEAT_DELAY: u64 = 4;
-
-
 
 // FIXME: Take into account exact sensor model
 // This assumes a SHT31
@@ -177,7 +173,6 @@ fn t_accuracy(temp: i32) -> SampleMetadata {
         scaling: -2,
     }
 }
-
 
 // This assumes a SHT31
 fn h_accuracy(humi: i32) -> SampleMetadata {
