@@ -13,7 +13,9 @@ use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, once_lock::OnceLock, signal::Signal,
 };
 use embassy_time::Timer;
-use embedded_hal_async::i2c::{I2c, NoAcknowledgeSource::Data, ErrorKind as I2CErrorKind, Error as _};
+use embedded_hal_async::i2c::{
+    Error as _, ErrorKind as I2CErrorKind, I2c, NoAcknowledgeSource::Data,
+};
 use portable_atomic::{AtomicU8, Ordering};
 
 #[cfg(feature = "no_runner")]
@@ -37,7 +39,6 @@ pub struct Config {
     pub address: I2cAddress,
     // TODO: Support other acquisition modes
 }
-
 
 ariel_os_hal::define_peripherals!(
     /// Peripherals required by the sensor driver.
@@ -98,7 +99,7 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         i2c_device
             .write(
                 address as u8,
-                &(crate::Command::SoftReset as u16).to_be_bytes()
+                &(crate::Command::SoftReset as u16).to_be_bytes(),
             )
             .await
             .map_err(|_| ())?;
@@ -117,19 +118,24 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         let address = self.address.load(Ordering::Acquire);
 
         // Turn on the heater
-        i2c.write(address, &(crate::Command::HeaterEnable as u16).to_be_bytes())
-            .await
-            .map_err(|_| ())?;
+        i2c.write(
+            address,
+            &(crate::Command::HeaterEnable as u16).to_be_bytes(),
+        )
+        .await
+        .map_err(|_| ())?;
 
         Timer::after_millis(1).await;
 
         // Read the status register + CRC
         let mut buf = [0u8; 3];
-        let i = i2c.write_read(
+        let i = i2c
+            .write_read(
                 address,
                 &(crate::Command::ReadStatusReg as u16).to_be_bytes(),
-                &mut buf
-            ).await;
+                &mut buf,
+            )
+            .await;
         i.map_err(|_| ())?;
         let reg_buf = [buf[0], buf[1]];
 
@@ -140,8 +146,7 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
 
         if reg & crate::HEATER_STATUS == 0 {
             Err(())
-        }
-        else {
+        } else {
             Ok(())
         }
     }
@@ -159,11 +164,12 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         // Read the status register including CRC;
         let mut buf = [0u8; 3];
         i2c.write_read(
-                address,
-                &(crate::Command::ReadStatusReg as u16).to_be_bytes(),
-                &mut buf
-            ).await
-            .map_err(|_| ())?;
+            address,
+            &(crate::Command::ReadStatusReg as u16).to_be_bytes(),
+            &mut buf,
+        )
+        .await
+        .map_err(|_| ())?;
 
         let reg_buf = [buf[0], buf[1]];
 
@@ -187,20 +193,24 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         let address = self.address.load(Ordering::Acquire);
 
         // Turn off the heater
-        i2c.write(address, &(crate::Command::HeaterDisable as u16).to_be_bytes())
-            .await
-            .map_err(|_| ())?;
+        i2c.write(
+            address,
+            &(crate::Command::HeaterDisable as u16).to_be_bytes(),
+        )
+        .await
+        .map_err(|_| ())?;
 
         Timer::after_millis(1).await;
 
         // Read the status register
         let mut buf = [0u8; 3];
         i2c.write_read(
-                address,
-                &(crate::Command::ReadStatusReg as u16).to_be_bytes(),
-                &mut buf
-            ).await
-            .map_err(|_| ())?;
+            address,
+            &(crate::Command::ReadStatusReg as u16).to_be_bytes(),
+            &mut buf,
+        )
+        .await
+        .map_err(|_| ())?;
 
         let reg_buf = [buf[0], buf[1]];
 
@@ -212,8 +222,7 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         // Check bit 13
         if reg & crate::HEATER_STATUS != 0 {
             Err(())
-        }
-        else {
+        } else {
             Ok(())
         }
     }
@@ -246,9 +255,12 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         let address = self.address.load(Ordering::Acquire);
 
         // Trigger a one-shot measurement.
-        i2c.write(address, &(crate::Command::SingleShotDisabledMedium as u16).to_be_bytes())
-            .await
-            .map_err(|_| ReadingError::SensorAccess)?;
+        i2c.write(
+            address,
+            &(crate::Command::SingleShotDisabledMedium as u16).to_be_bytes(),
+        )
+        .await
+        .map_err(|_| ReadingError::SensorAccess)?;
         // TODO: Support other measurement options
 
         // Wait for the measurement.
@@ -259,7 +271,7 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         loop {
             match i2c.read(address, &mut buf).await {
                 // Busy
-                Err(e) if e.kind() == I2CErrorKind::NoAcknowledge(Data) => { }
+                Err(e) if e.kind() == I2CErrorKind::NoAcknowledge(Data) => {}
                 Err(_) => {
                     return Err(ReadingError::SensorAccess);
                 }
@@ -274,13 +286,13 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         let temp_buf = [buf[0], buf[1]];
         if !crate::check_crc(temp_buf, buf[2]) {
             // FIXME: Use a better error type
-            return Err(ReadingError::SensorAccess)
+            return Err(ReadingError::SensorAccess);
         }
 
         let humi_buf = [buf[3], buf[4]];
         if !crate::check_crc(humi_buf, buf[5]) {
             // FIXME: Use a better error type
-            return Err(ReadingError::SensorAccess)
+            return Err(ReadingError::SensorAccess);
         }
 
         // FIXME: Find a way to not use floats
@@ -334,9 +346,7 @@ impl<I2C: Send> Sensor for Sht3x<I2C> {
 
                 ReadingWaiter::new(self.reading.wait())
             }
-            State::Enabled => {
-                ReadingWaiter::new_err(ReadingError::NotMeasuring)
-            }
+            State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
             State::Uninitialized | State::Disabled | State::Sleeping => {
                 ReadingWaiter::new_err(ReadingError::NonEnabled)
             }
@@ -348,14 +358,10 @@ impl<I2C: Send> Sensor for Sht3x<I2C> {
         match self.state.get() {
             State::Measuring => {
                 self.state.set(State::Enabled);
-                self.reading.signal(
-                    block_on(self.measure())
-                );
+                self.reading.signal(block_on(self.measure()));
                 ReadingWaiter::new(self.reading.wait())
             }
-            State::Enabled => {
-                ReadingWaiter::new_err(ReadingError::NotMeasuring)
-            }
+            State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
             State::Uninitialized | State::Disabled | State::Sleeping => {
                 ReadingWaiter::new_err(ReadingError::NonEnabled)
             }
@@ -382,10 +388,7 @@ impl<I2C: Send> Sensor for Sht3x<I2C> {
 
     fn reading_channels(&self) -> ReadingChannels {
         ReadingChannels::from([
-            ReadingChannel::new(
-                Label::Temperature,
-                -2,
-                MeasurementUnit::Celsius),
+            ReadingChannel::new(Label::Temperature, -2, MeasurementUnit::Celsius),
             ReadingChannel::new(
                 Label::RelativeHumidity,
                 -2,
@@ -447,7 +450,7 @@ mod tests {
         ) -> Result<(), Self::Error> {
             match operations {
                 [Operation::Write(wbuf)] => match u16::from_be_bytes([wbuf[0], wbuf[1]]) {
-                    command if command == SoftReset as u16 => {},
+                    command if command == SoftReset as u16 => {}
                     command if command == SingleShotDisabledMedium as u16 => {
                         self.reading_status = true;
                     }
@@ -457,7 +460,7 @@ mod tests {
                     true => {
                         // Provide different samples for consecutive readings.
                         let samples: (u16, u16) = match self.reading_count {
-                            0 => (2500, 6390), // T: -3832, RH: 975
+                            0 => (2500, 6390),  // T: -3832, RH: 975
                             1 => (1800, 60000), // T: -4019, RH: 9155
                             _ => panic!("too many readings"),
                         };
@@ -496,10 +499,8 @@ mod tests {
                 SHT3X.trigger_measurement().unwrap();
 
                 let reading = SHT3X.wait_for_reading().await.unwrap();
-                let [
-                    (t_channel, t_sample),
-                    (rh_channel, rh_sample),
-                ] = reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
+                let [(t_channel, t_sample), (rh_channel, rh_sample)] =
+                    reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
                 else {
                     unreachable!()
                 };
@@ -531,10 +532,8 @@ mod tests {
                 SHT3X.trigger_measurement().unwrap();
 
                 let reading = SHT3X.wait_for_reading().await.unwrap();
-                let [
-                    (_t_channel, t_sample),
-                    (_rh_channel, rh_sample),
-                ] = reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
+                let [(_t_channel, t_sample), (_rh_channel, rh_sample)] =
+                    reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
                 else {
                     unreachable!()
                 };
@@ -598,10 +597,8 @@ mod tests {
                 SHT3X.trigger_measurement().unwrap();
 
                 let reading = SHT3X.wait_for_reading().await.unwrap();
-                let [
-                    (_t_channel, t_sample),
-                    (_rh_channel, rh_sample),
-                ] = reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
+                let [(_t_channel, t_sample), (_rh_channel, rh_sample)] =
+                    reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
                 else {
                     unreachable!()
                 };
@@ -626,11 +623,9 @@ mod tests {
             embassy_futures::select::select(SHT3X.run(), async {
                 SHT3X.trigger_measurement().unwrap();
 
-                let join = embassy_futures::join::join(
-                    SHT3X.wait_for_reading(),
-                    SHT3X.wait_for_reading(),
-                )
-                .await;
+                let join =
+                    embassy_futures::join::join(SHT3X.wait_for_reading(), SHT3X.wait_for_reading())
+                        .await;
                 // Exactly one of them must be `Ok` and the other `Err`.
                 assert!(matches!(
                     join,
@@ -679,10 +674,8 @@ mod tests {
                 SHT3X.trigger_measurement().unwrap();
 
                 let reading = SHT3X.wait_for_reading().await.unwrap();
-                let [
-                    (_t_channel, t_sample),
-                    (_rh_channel, rh_sample),
-                ] = reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
+                let [(_t_channel, t_sample), (_rh_channel, rh_sample)] =
+                    reading.samples().collect::<Vec<(ReadingChannel, Sample)>>()[0..2]
                 else {
                     unreachable!()
                 };
