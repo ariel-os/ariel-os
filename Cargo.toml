@@ -88,7 +88,7 @@ embassy-usb = { version = "0.5.1", default-features = false }
 
 embedded-hal = { version = "1.0.0", default-features = false }
 embedded-hal-async = { version = "1.0.0", default-features = false }
-embedded-io = { version = "0.6.1", default-features = false }
+embedded-io = { version = "0.7.0", default-features = false }
 embedded-io-async = { version = "0.6.1", default-features = false }
 embedded-nal-coap = "=0.1.0-alpha.5"
 embedded-storage = { version = "0.3.1" }
