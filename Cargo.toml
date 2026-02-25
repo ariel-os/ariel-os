@@ -169,7 +169,7 @@ trouble-host = { version = "0.5.0" }
 
 # nrf-sdc 0.4.0 has not been released, yet. need it for bt-hci 0.6 bump
 #nrf-sdc = { version = "0.4.0" }
-nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "43df6b8b0affeacd9cb4094a3ab4f81576554887" }
 
 nrf-modem = { version = "0.7.3" }
 tinyrlibc = "0.5.0"
