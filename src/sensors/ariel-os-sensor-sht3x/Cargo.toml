@@ -10,12 +10,14 @@ license.workspace = true
 
 [dependencies]
 ariel-os-hal = { workspace = true, features = ["i2c"] }
-ariel-os-sensors = { workspace = true, features = ["max-sample-min-count-2"]}
-ariel-os-sensors-utils = { workspace = true}
+ariel-os-sensors = { workspace = true, features = ["max-sample-min-count-2"] }
+ariel-os-sensors-utils = { workspace = true }
 embassy-sync = { workspace = true }
 embassy-time = { workspace = true }
 embedded-hal-async = { workspace = true }
 portable-atomic = { workspace = true }
+
+embassy-futures = { workspace = true, optional = true }
 
 crc = { version = "3.4.0" }
 
@@ -25,7 +27,7 @@ embassy-executor = { workspace = true, features = [
   "arch-std",
   "executor-thread",
 ] }
-embassy-futures = { workspace = true, optional = true }
+embassy-futures = { workspace = true }
 embassy-time = { workspace = true, features = ["std"] }
 
 [features]
