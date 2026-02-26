@@ -11,6 +11,9 @@ on:
     # run every morning at 3:17am
     - cron: '17 3 * * *'
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-build
   cancel-in-progress: true
@@ -30,6 +33,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 2
+          persist-credentials: false
 
       # Get the second parent of the merge commit created by the `checkout`
       # action.
@@ -45,7 +49,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           result-encoding: string
-          script: |
+          script: | # zizmor: ignore[template-injection] input is always a commit SHA
             const commitId = "${{ steps.get-commit-id.outputs.commit_id }}";
             console.log(`Commit ID: ${commitId}`);
             const { data: { items } } = await github.rest.search.issuesAndPullRequests({
@@ -121,6 +125,8 @@ jobs:
 
       - name: Check out repository code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Get tree hashes
         id: get-tree-hashes
@@ -165,7 +171,7 @@ jobs:
 
             echo "$hal_contexts" | tr ',' '\n' | grep -v "^context::${1}$" | paste -sd ','
           }
-          case '${{ needs.check-labels.outputs.label }}' in
+          case "${LABEL}" in
             'ci-build:esp')
               echo "NEEDS_XTENSA_TOOLCHAIN=1" >> "$GITHUB_ENV"
               echo "LAZE_DISABLE=$(allow_context esp)" >> "$GITHUB_ENV"
@@ -196,6 +202,8 @@ jobs:
               exit 1
               ;;
           esac
+        env:
+          LABEL: ${{ needs.check-labels.outputs.label }}
 
       - id: get_toolchain
         if: steps.should-skip.outputs.result != 'true'
@@ -203,7 +211,7 @@ jobs:
 
       - name: Install nightly toolchain
         if: steps.should-skip.outputs.result != 'true'
-        uses: dtolnay/rust-toolchain@master
+        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
@@ -214,7 +222,7 @@ jobs:
       - name: Install stable toolchain
         if: steps.should-skip.outputs.result != 'true'
         # configure MSRV here:
-        uses: dtolnay/rust-toolchain@1.91.1
+        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
         with:
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
           # rust-src: Used for -Zbuild-std.
@@ -224,7 +232,7 @@ jobs:
       - name: Install Rust for Xtensa
         if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1')
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
-        uses: esp-rs/xtensa-toolchain@main
+        uses: esp-rs/xtensa-toolchain@ec6d36527049a7f4fb2cb0c1a644668c1bb8a2a4 # main
         with:
           version: "1.91.1.0"
           buildtargets: esp32,esp32s2,esp32s3
@@ -294,12 +302,14 @@ jobs:
     needs: [build, check-labels]
     steps:
       - run: |
-          result="${{ needs.build.result }}"
+          result="${BUILD_RESULT}"
           if [[ $result == "success" || $result == "skipped" ]]; then
             exit 0
           else
             exit 1
           fi
+        env:
+          BUILD_RESULT: ${{ needs.build.result }}
 
       - name: Report nightly failure
         if: failure() && github.event_name == 'schedule' && github.repository == 'ariel-os/ariel-os'

@@ -5,7 +5,7 @@ permissions:
   pull-requests: write
 
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: ["Deploy docs"]
     types:
       - completed
@@ -13,7 +13,7 @@ on:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    if: >
+    if: >-
       ${{ github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' }}
     steps:
@@ -40,7 +40,9 @@ jobs:
 
       - name: Deploy PR preview
         run: |
-          surge ./_site ${{ github.repository_owner }}-docs-preview-pr${{ steps.pr.outputs.pr }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+          surge ./_site ${{ github.repository_owner }}-docs-preview-pr${PR_NUMBER}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.pr }}
 
       - name: Comment URL
         uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2

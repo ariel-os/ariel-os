@@ -1,7 +1,9 @@
 name: Matrix bot
 on:
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
     types: [opened, ready_for_review, closed]
+
+permissions: {}
 
 jobs:
   new-pr:
