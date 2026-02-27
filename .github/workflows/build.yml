@@ -272,7 +272,11 @@ jobs:
           echo "LAZE_BUILDERS=${LAZE_BUILDERS}"
           echo "LAZE_DISABLE=${LAZE_DISABLE}"
           laze build -mg info-boards | uniq
+          # Build the udp-echo example with IPV6 enabled
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' CONFIG_NET_IPV6_STATIC_ADDRESS='1::1' CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS='1::1' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --apps udp-echo -s ipv6
+          CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --apps udp-echo -s network-config-ipv4-static
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
+
 
       # cleanup previous build artifacts. do in background (no need to wait).
       - name: "cleanup stable build artifacts"
