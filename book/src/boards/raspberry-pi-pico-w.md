@@ -35,6 +35,9 @@ laze build -b rpi-pico-w
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
+#### Additional notes
+
+Test prose for the Raspberry Pi Pico W builder.
 
 <p>Legend:</p>
 

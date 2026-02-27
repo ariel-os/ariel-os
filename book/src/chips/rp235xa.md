@@ -164,5 +164,4 @@ dt, dd {
 
 
 
-
 [^uart-loopback-test-only-works-once-after-a-power-cycle-https-github-com-ariel-os-ariel-os-pull-1368-issuecomment-3406073140]: [uart-loopback test only works once after a power cycle](https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140).

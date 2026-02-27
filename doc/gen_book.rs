@@ -528,8 +528,10 @@ impl SubCommandChipPages {
                     let mut env = Environment::new();
                     env.add_template("matrix", &matrix_template).unwrap();
                     let tmpl = env.get_template("matrix").unwrap();
-                    tmpl.render(context!(matrix => matrix, boards => current_boards, url_prefix => "../" ))
-                        .unwrap()
+                    tmpl.render(
+                        context!(matrix => matrix, boards => current_boards, url_prefix => "../" ),
+                    )
+                    .unwrap()
                 }
             };
 
@@ -589,6 +591,7 @@ struct ChipInfo {
     technical_name: String,
     name: String,
     functionalities: Vec<FunctionalitySupport>,
+    prose: Option<String>,
 }
 
 #[derive(Debug, Serialize, Clone)]
@@ -599,6 +602,7 @@ struct LazeBuilder {
     tier: String,
     technical_name: String,
     functionalities: Vec<FunctionalitySupport>,
+    prose: Option<String>,
 }
 
 #[derive(Debug, Serialize, Clone)]
@@ -762,6 +766,7 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardInfo>, 
                             tier: builder_info.tier.to_owned(),
                             technical_name: builder_technical_name.to_owned(),
                             functionalities: functionalities.map(|f| f.unwrap()).collect(),
+                            prose: builder_info.prose.clone(),
                         })
                     } else {
                         Err(errors)
@@ -851,6 +856,7 @@ fn gen_chip_functionalities(matrix: &schema::Matrix) -> Result<Vec<ChipInfo>, Er
                 technical_name: chip_technical_name.to_owned(),
                 name: chip_info.name.to_owned(),
                 functionalities: functionalities.map(|f| f.unwrap()).collect(),
+                prose: chip_info.prose.clone(),
             })
         } else {
             Err(errors)

@@ -49,6 +49,5 @@ dt, dd {
 
 
 
-
 [^no-generic-usb-peripheral]: No generic USB peripheral.
 [^requires-partitioning-support]: Requires partitioning support.

@@ -164,5 +164,4 @@ dt, dd {
 
 
 
-
 [^pins-need-to-be-assigned-to-the-network-core-from-the-application-core]: Pins need to be assigned to the network core from the application core.

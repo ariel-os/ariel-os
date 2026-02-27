@@ -36,6 +36,7 @@ pub struct ChipInfo {
     pub manufacturer: String,
     pub description: Option<String>,
     pub support: HashMap<String, SupportInfo>,
+    pub prose: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -44,6 +45,7 @@ pub struct BuilderInfo {
     pub chip: String,
     pub tier: String,
     pub support: HashMap<String, SupportInfo>,
+    pub prose: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

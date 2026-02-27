@@ -157,6 +157,7 @@ chips:
       storage: supported
       wifi: not_available
       ble: supported
+    prose: Test prose for the nRF52840 chip.
 
   nrf5340-app:
     name: nRF5340 application core
@@ -921,6 +922,7 @@ builders:
       wifi: supported
       ble: supported
       ethernet_over_usb: supported
+    prose: Test prose for the Raspberry Pi Pico W builder.
 
   rpi-pico2:
     chip: rp235xa

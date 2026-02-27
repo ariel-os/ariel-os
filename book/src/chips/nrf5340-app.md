@@ -164,5 +164,4 @@ dt, dd {
 
 
 
-
 [^no-standalone-rng-in-the-application-core-only-in-the-cryptocell-which-is-not-currently-supported]: No standalone RNG in the application core, only in the CryptoCell which is not currently supported.
