@@ -171,8 +171,7 @@ impl embassy_net::driver::RxToken for DummyDriver {
     }
 }
 
-#[allow(dead_code, reason = "conditional compilation")]
-#[cfg(not(feature = "network-config-override"))]
+#[cfg(all(not(feature = "network-config-override"), context = "ariel-os"))]
 fn ariel_os_network_config() -> embassy_net::Config {
     let mut config = embassy_net::Config::default();
 
