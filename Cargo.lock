@@ -281,6 +281,7 @@ dependencies = [
  "ariel-os-threads",
  "ariel-os-utils",
  "cfg-if",
+ "const-str",
  "const_panic",
  "critical-section",
  "embassy-embedded-hal",
@@ -442,10 +443,13 @@ dependencies = [
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
+ "embassy-net",
+ "embassy-net-driver-channel",
  "embassy-nrf",
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
+ "heapless 0.8.0",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -4320,9 +4324,9 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
 name = "nrf-modem"
-version = "0.7.3"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33f1a7a9bd2319d97302333fc41b70251321b15ea19fb0d0563f3033fdc3fde1"
+checksum = "332119e260ae4f4a411ac875d649a3595230457651aab6065c29afd3a0d9d3e0"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4330,10 +4334,14 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.0.1",
- "embassy-sync 0.6.2",
- "embedded-io-async 0.6.1",
+ "embassy-futures",
+ "embassy-net-driver-channel",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embedded-io-async 0.7.0",
  "futures",
  "grounded",
+ "heapless 0.8.0",
  "linked_list_allocator",
  "nrf9120-pac",
  "nrf9160-pac",
@@ -6096,9 +6104,9 @@ dependencies = [
 
 [[package]]
 name = "tinyrlibc"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d07d242693682e46801cb0186c583858bce022f698401b3f04bbd729c9a87e7"
+checksum = "9af8adde15cc59c61328c5d709b41b8464522a733033584d33def687b26bd009"
 dependencies = [
  "cc",
  "portable-atomic",

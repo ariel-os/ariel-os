@@ -1014,6 +1014,10 @@ criteria = "safe-to-deploy"
 version = "0.7.3"
 criteria = "safe-to-deploy"
 
+[[exemptions.nrf-modem]]
+version = "0.10.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.nrf-mpsl]]
 version = "0.3.0@git:e64ad081a6948b3439d1e811da36d39a5785dbda"
 criteria = "safe-to-deploy"

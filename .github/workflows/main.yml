@@ -223,20 +223,33 @@ jobs:
             --target=thumbv7em-none-eabi
             --
             --deny warnings
-      - run: echo 'RUSTFLAGS=--cfg context="nrf9160" --cfg context="nrf91" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
+      - run: echo 'RUSTFLAGS=--cfg context="nrf9160" --cfg context="nrf91" --cfg context="nrf" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF91
         uses: clechasseur/rs-clippy-check@286fd9545eb133adad54b4af34bcb642e266ddd1 # v5
         with:
           args: |
             --locked
             --features "
-                embassy-nrf/nrf9160-s,
+                dns,
                 external-interrupts,
+                executor-none,
                 i2c,
+                ipv4,
+                ipv6,
+                ipv4,
+                ipv6,
+                ltem-nrf-modem,
+                multicast,
+                nrf91-modem,
                 spi,
+                tcp,
                 uart,
-                nrf91-modem
+                udp,
                 "
+            -p ariel-os
+            -p ariel-os-embassy
+            -p ariel-os-embassy-common
+            -p ariel-os-hal
             -p ariel-os-nrf
             --target=thumbv8m.main-none-eabihf
             --

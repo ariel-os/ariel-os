@@ -35,6 +35,10 @@ pub mod identity;
 #[doc(hidden)]
 pub mod modem;
 
+#[cfg(feature = "ltem-nrf-modem")]
+#[doc(hidden)]
+pub mod ltem;
+
 #[cfg(feature = "spi")]
 pub mod spi;
 

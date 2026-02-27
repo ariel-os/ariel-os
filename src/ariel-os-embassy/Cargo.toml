@@ -42,6 +42,7 @@ ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
 
+const-str = { workspace = true, optional = true }
 heapless = "0.9.1"
 once_cell = { workspace = true }
 trouble-host = { workspace = true, optional = true }
@@ -102,9 +103,9 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 hwrng = ["ariel-os-hal/hwrng"]
 
 ## Enables support for IPv4.
-ipv4 = ["embassy-net?/proto-ipv4"]
+ipv4 = ["ariel-os-hal/ipv4", "embassy-net?/proto-ipv4"]
 ## Enables support for IPv6.
-ipv6 = ["embassy-net?/proto-ipv6"]
+ipv6 = ["ariel-os-hal/ipv6", "embassy-net?/proto-ipv6"]
 ## Enables support for DHCPv4.
 dhcpv4 = ["embassy-net?/dhcpv4"]
 ## Enables support for TCP.
@@ -123,12 +124,26 @@ storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
 
 debug-uart = []
 
+# Enables cellular networking configuration.
+cellular-networking = [
+  "dep:const-str",
+  "ariel-os-embassy-common/cellular-networking",
+]
+
 wifi = []
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 
 eth = []
 eth-stm32 = ["ariel-os-hal/eth-stm32", "eth", "net"]
+
+ltem-nrf-modem = [
+  "ariel-os-hal/ltem-nrf-modem",
+  "cellular-networking",
+  "embassy-net/medium-ip",
+  "net",
+  "nrf91-modem",
+]
 
 ble = [
   "dep:trouble-host",

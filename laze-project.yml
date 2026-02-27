@@ -1317,6 +1317,17 @@ modules:
         FEATURES:
           - ariel-os/threading
 
+  - name: ltem-nrf-modem
+    selects:
+      - nrf91-modem
+    provides_unique:
+      - network_device
+      - network-config-ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ltem-nrf-modem
+
   - name: wifi-cyw43
     selects:
       - has_wifi_cyw43

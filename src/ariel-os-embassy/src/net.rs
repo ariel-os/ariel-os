@@ -82,7 +82,10 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
     cfg_if::cfg_if! {
-        if #[cfg(feature = "network-config-override")] {
+        if #[cfg(feature = "ltem-nrf-modem")] {
+            // The modem provides its own configuration
+            embassy_net::Config::default()
+        } else if #[cfg(feature = "network-config-override")] {
             unsafe extern "Rust" {
                 fn __ariel_os_network_config() -> embassy_net::Config;
             }

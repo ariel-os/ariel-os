@@ -35,6 +35,10 @@ static_cell = { workspace = true }
 tinyrlibc = { workspace = true, optional = true }
 trouble-host = { workspace = true, optional = true }
 
+embassy-net = { workspace = true, optional = true }
+embassy-net-driver-channel = { workspace = true, optional = true }
+heapless = { version = "0.8.0", optional = true }
+
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
 
@@ -110,6 +114,21 @@ ble-central = ["ble", "nrf-sdc/central"]
 
 ## Enables modem support.
 nrf91-modem = ["dep:cortex-m", "dep:nrf-modem", "dep:tinyrlibc"]
+
+## Enables LTE-M networking support on nRF SiPs.
+ltem-nrf-modem = [
+  "dep:embassy-net",
+  "dep:embassy-net-driver-channel",
+  "dep:heapless",
+  "ariel-os-embassy-common/cellular-networking",
+  "nrf-modem/embassy-net",
+  "nrf91-modem",
+]
+
+# ipv4 support, only affects the LTE-M networking support.
+ipv4 = []
+# ipv6 support, only affects the LTE-M networking support.
+ipv6 = []
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-nrf/defmt", "nrf-modem?/defmt", "nrf-sdc?/defmt"]
