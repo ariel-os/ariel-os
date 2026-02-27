@@ -77,6 +77,8 @@ functionalities:
     support_criteria: example-storage
     description:
 
+note_snippets:
+
 # Encodes support status for each chip.
 chips:
   native-chip:
