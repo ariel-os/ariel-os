@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-sht3x
+    selects:
+      - host-test-only
