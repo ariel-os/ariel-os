@@ -164,8 +164,8 @@ timer-generic-queue-64 = ["embassy-time?/generic-queue-64"]
 ## Generic Queue with 128 timers
 timer-generic-queue-128 = ["embassy-time?/generic-queue-128"]
 
-network-config-ipv4-static = ["network-config-override"]
-network-config-ipv6-static = ["network-config-override"]
+network-config-ipv4-static = []
+network-config-ipv6-static = []
 network-config-override = []
 override-usb-config = []
 rcc-config-override = ["ariel-os-hal/rcc-config-override"]
