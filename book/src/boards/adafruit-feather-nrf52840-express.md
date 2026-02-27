@@ -38,6 +38,10 @@ laze build -b adafruit-feather-nrf52840-express
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
 
+#### Additional Notes
+
+This is a prose snippet that can be reused.
+
 <p>Legend:</p>
 
 <dl>

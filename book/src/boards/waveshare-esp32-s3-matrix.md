@@ -38,6 +38,10 @@ laze build -b waveshare-esp32-s3-matrix
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
+#### Additional Notes
+
+This is a prose snippet that can be reused.
+
 <p>Legend:</p>
 
 <dl>
