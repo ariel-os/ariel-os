@@ -44,6 +44,7 @@ cfg_if::cfg_if! {
             use crate::stack::Stack;
 
             pub fn init() {}
+            pub fn wfi() {}
             pub fn sp() -> usize { 0 }
             pub fn stack() -> Stack { Stack::default() }
         }
@@ -187,8 +188,10 @@ fn startup() -> ! {
     {
         #[cfg(test)]
         test_main();
-        #[allow(clippy::empty_loop)]
-        loop {}
+
+        loop {
+            arch::wfi();
+        }
     }
 }
 
