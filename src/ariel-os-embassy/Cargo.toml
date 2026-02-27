@@ -140,8 +140,9 @@ ble = [
   "random",
 ]
 ble-cyw43 = ["ariel-os-hal/ble-cyw43", "ble"]
-ble-peripheral = ["ariel-os-hal/ble-peripheral", "ble"]
+ble-esp = ["ariel-os-hal/ble-esp", "ble"]
 ble-central = ["ariel-os-hal/ble-central", "ble"]
+ble-peripheral = ["ariel-os-hal/ble-peripheral", "ble"]
 
 nrf91-modem = ["ariel-os-hal/nrf91-modem"]
 

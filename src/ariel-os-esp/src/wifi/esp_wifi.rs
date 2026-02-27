@@ -1,7 +1,3 @@
-mod scheduler;
-mod semaphore;
-mod wait_queue;
-
 use ariel_os_debug::log::{debug, info};
 use core::ffi::c_void;
 use embassy_executor::Spawner;
@@ -9,14 +5,8 @@ use embassy_time::{Duration, Timer};
 use esp_radio::wifi::{
     Config, ModeConfig, WifiController, WifiDevice, WifiEvent, WifiStationState, sta::StationConfig,
 };
-use esp_radio_rtos_driver::{
-    queue::CompatQueue, register_queue_implementation, register_scheduler_implementation,
-    register_semaphore_implementation, register_timer_implementation,
-    register_wait_queue_implementation, timer::CompatTimer,
-};
 
-use scheduler::ArielScheduler;
-use wait_queue::ArielWaitQueue;
+use crate::semaphore;
 
 pub type NetworkDevice = WifiDevice<'static>;
 
@@ -72,9 +62,3 @@ async fn connection(mut controller: WifiController<'static>) {
         }
     }
 }
-
-register_scheduler_implementation!(static SCHEDULER: ArielScheduler = ArielScheduler{});
-register_wait_queue_implementation!(ArielWaitQueue);
-register_semaphore_implementation!(semaphore::CompatSemaphore);
-register_timer_implementation!(CompatTimer);
-register_queue_implementation!(CompatQueue);

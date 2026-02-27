@@ -389,6 +389,8 @@ contexts:
     parent: esp
     selects:
       - xtensa
+    provides:
+      - has_ble_esp
     env:
       RUSTC_TARGET: xtensa-esp32-none-elf
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32_NONE_ELF
@@ -408,6 +410,7 @@ contexts:
     selects:
       - riscv
     provides:
+      - has_ble_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -424,6 +427,7 @@ contexts:
     selects:
       - riscv
     provides:
+      - has_ble_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -473,6 +477,7 @@ contexts:
     selects:
       - xtensa
     provides:
+      - has_ble_esp
       # TODO: re-enable as soon as upstream peripheral drivers become `Send`
       # in combination with multi-core.
       # - has_multi_core_support
@@ -1626,6 +1631,27 @@ modules:
     selects:
       - doc-only
 
+  - name: ble-esp
+    selects:
+      - alloc
+      - has_ble_esp
+      - hwrng
+    provides:
+      - has_ble
+    env:
+      global:
+        # esp-wifi needs a lot of ISR stack.
+        isr_stacksize_required: "32768"
+        # esp-wifi needs 72KiB
+        heapsize_required:
+          - $(72*1024)
+        FEATURES:
+          - ariel-os/ble-esp
+
+  - name: has_ble_esp
+    selects:
+      - doc-only
+
   - name: wifi-esp
     selects:
       - alloc
@@ -1962,6 +1988,7 @@ builders:
 
     disables:
       - periph_rtt
+
 apps:
   # define a dummy host application so the host tasks work
   - name: host
