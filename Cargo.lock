@@ -584,6 +584,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensors-gnss-time-ext"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-sensors",
+ "defmt 1.0.1",
+ "static_cell",
+]
+
+[[package]]
 name = "ariel-os-sensors-registry"
 version = "0.1.0"
 dependencies = [
