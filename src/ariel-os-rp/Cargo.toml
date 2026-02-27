@@ -18,7 +18,6 @@ embassy-net-driver-channel = { workspace = true, optional = true }
 embassy-rp = { workspace = true, default-features = false, features = [
   "optfield",
   "rt",
-  "time-driver",
   "unstable-pac",
   # "unstable-traits",
 ] }
@@ -60,10 +59,12 @@ external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
 hwrng = ["dep:ariel-os-random"]
 
 ## Enables I2C support.
-i2c = ["ariel-os-embassy-common/i2c"]
+i2c = ["ariel-os-embassy-common/i2c", "time"]
 
 ## Enables SPI support.
 spi = ["dep:embassy-embedded-hal", "ariel-os-embassy-common/spi"]
+
+time = ["embassy-rp/time-driver"]
 
 ## Enables UART support.
 uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
