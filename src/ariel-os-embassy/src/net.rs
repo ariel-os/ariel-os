@@ -89,7 +89,7 @@ pub(crate) fn config() -> embassy_net::Config {
             unsafe { __ariel_os_network_config() }
         } else if #[cfg(context = "ariel-os")] {
             ariel_os_network_config()
-        } else if #[cfg(not(context = "ariel-os"))] {
+        } else {
             // For platform-independent tooling.
             embassy_net::Config::default()
         }
