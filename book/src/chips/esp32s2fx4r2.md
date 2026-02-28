@@ -19,7 +19,7 @@
 |Wi-Fi|<span title="supported">✅</span>|
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
-|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Persistent Storage|<span title="supported">✅</span>[^requires-a-partition-with-type-data-and-subtype-undefined-in-the-partition-table-https-docs-espressif-com-projects-esp-idf-en-stable-esp32-api-guides-partition-tables-html]|
 
 <p>Legend:</p>
 
@@ -50,4 +50,4 @@ dt, dd {
 
 
 
-[^requires-partitioning-support]: Requires partitioning support.
+[^requires-a-partition-with-type-data-and-subtype-undefined-in-the-partition-table-https-docs-espressif-com-projects-esp-idf-en-stable-esp32-api-guides-partition-tables-html]: Requires a partition with type `data` and subtype `undefined` in the [Partition Table](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/partition-tables.html).

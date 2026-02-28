@@ -2,3 +2,15 @@ apps:
   - name: example-storage
     selects:
       - sw/storage
+      - ?esp-partition-table
+
+modules:
+  - name: esp-partition-table
+    context:
+      - esp
+    env:
+      global:
+        executor_stacksize_required:
+          - "16384"
+        ESPFLASH_ARGS:
+          - --partition-table partitions.csv
