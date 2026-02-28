@@ -20,3 +20,13 @@ modules:
       global:
         FEATURES:
           - button-reading
+
+  - name: use-usb-ethernet
+    selects:
+      - usb-ethernet
+      - network-config-ipv4-static
+    env:
+      global:
+        network_max_concurrent_sockets: "5"
+        FEATURES:
+          - dhcp-server

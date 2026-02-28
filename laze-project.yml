@@ -52,6 +52,7 @@ contexts:
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
           CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
+          CONFIG_NETWORK_MAX_CONCURRENT_SOCKETS=${CONFIG_NETWORK_MAX_CONCURRENT_SOCKETS}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       QEMU_SYSTEM_ARM: >-
@@ -76,6 +77,9 @@ contexts:
         - ${isr_stacksize_required_default}
       CONFIG_EXECUTOR_STACKSIZE: $(max (0, ${executor_stacksize_required}))
       CONFIG_ISR_STACKSIZE: $(max (0, ${isr_stacksize_required}))
+
+      # Network config
+      CONFIG_NETWORK_MAX_CONCURRENT_SOCKETS: $(max (4, ${network_max_concurrent_sockets}))
 
     var_options:
       # this turns ${FEATURES} from a list to "--features=feature1,feature2"
