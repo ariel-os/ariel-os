@@ -287,6 +287,19 @@ jobs:
         run: |
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }} --select nightly --disable xtensa
 
+      # Upload the binary used by the binary-size workflow to keep track of
+      # binary size in the PR.
+      # The condition below assures that we are only uploading the binary once.
+      # The `blinky` for nrf52840dk example was chosen arbitrarily (because
+      # it is present in the 1/20 partition, and is part of the ci-build:small example set).
+      # In the future, we'll want to check multiple binaries with multiple builders.
+      - name: Upload example binary for size workflow
+        if: github.event_name != 'schedule' && matrix.partition == '1/20'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: example
+          path: build/bin/nrf52840dk/blinky/blinky.elf
+
   build-success:
     if: ${{ always() }}
     runs-on: ubuntu-latest
