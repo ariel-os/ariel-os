@@ -288,7 +288,7 @@ dependencies = [
  "embassy-futures",
  "embassy-hal-internal",
  "embassy-net",
- "embassy-nrf",
+ "embassy-nrf 0.9.0",
  "embassy-stm32",
  "embassy-sync 0.7.2",
  "embassy-time",
@@ -442,7 +442,7 @@ dependencies = [
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
- "embassy-nrf",
+ "embassy-nrf 0.9.0",
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
@@ -2086,7 +2086,36 @@ dependencies = [
 [[package]]
 name = "embassy-nrf"
 version = "0.8.0"
-source = "git+https://github.com/ariel-os/embassy?rev=3940a79a29ae578a35625cae949bea473abf21d1#3940a79a29ae578a35625cae949bea473abf21d1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a8d63429d74ab5786cde7c9dc9a0338ea162a4da95e204ac5345c5ae36831fdb"
+dependencies = [
+ "bitflags 2.9.1",
+ "cfg-if",
+ "cortex-m",
+ "cortex-m-rt",
+ "critical-section",
+ "document-features",
+ "embassy-embedded-hal",
+ "embassy-hal-internal",
+ "embassy-sync 0.7.2",
+ "embassy-usb-driver",
+ "embedded-hal 0.2.7",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "embedded-io 0.6.1",
+ "embedded-io-async 0.6.1",
+ "embedded-storage",
+ "embedded-storage-async",
+ "fixed",
+ "nrf-pac 0.1.0",
+ "rand_core 0.6.4",
+ "rand_core 0.9.3",
+]
+
+[[package]]
+name = "embassy-nrf"
+version = "0.9.0"
+source = "git+https://github.com/nponsard/embassy-ariel?rev=b05028962a13f3dca32487ddb505dd3a6c300601#b05028962a13f3dca32487ddb505dd3a6c300601"
 dependencies = [
  "bitflags 2.9.1",
  "cfg-if",
@@ -2096,6 +2125,7 @@ dependencies = [
  "defmt 1.0.1",
  "document-features",
  "embassy-embedded-hal",
+ "embassy-futures",
  "embassy-hal-internal",
  "embassy-sync 0.7.2",
  "embassy-time",
@@ -2110,7 +2140,7 @@ dependencies = [
  "embedded-storage",
  "embedded-storage-async",
  "fixed",
- "nrf-pac",
+ "nrf-pac 0.2.0",
  "optfield",
  "rand_core 0.6.4",
  "rand_core 0.9.3",
@@ -4348,7 +4378,7 @@ source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da
 dependencies = [
  "cortex-m",
  "defmt 1.0.1",
- "embassy-nrf",
+ "embassy-nrf 0.8.0",
  "embassy-sync 0.7.2",
  "embedded-io 0.6.1",
  "embedded-storage",
@@ -4376,6 +4406,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "nrf-pac"
+version = "0.2.0"
+source = "git+https://github.com/embassy-rs/nrf-pac.git?rev=074935b9b24ab302fe812f91725937f57cd082cf#074935b9b24ab302fe812f91725937f57cd082cf"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+]
+
+[[package]]
 name = "nrf-sdc"
 version = "0.4.0"
 source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
@@ -4384,7 +4423,7 @@ dependencies = [
  "critical-section",
  "defmt 1.0.1",
  "embassy-hal-internal",
- "embassy-nrf",
+ "embassy-nrf 0.8.0",
  "embassy-sync 0.7.2",
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
