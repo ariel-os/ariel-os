@@ -91,6 +91,44 @@ You can quickly format the code in the ariel-os repository using this command:
 laze build fmt
 ```
 
+## Applications (Tests and Examples)
+
+All our applications (currently, that is tests and examples)
+must be safe against damage on any board, including externally defined boards.
+They may alter the state of the system (e.g., write to onboard memory),
+but must only drive GPIO pins based on board descriptions
+(or, until those are comprehensive enough, hard-coded knowledge of that board).
+
+Practically, this comes in two stages:
+
+1. Driven pins must only be selected based on the board (and not, for example, on the MCU family).
+
+   This means that it is safe to run any application on any bare board (if no extra wiring / shields were added).
+
+2. User-accessible general-purpose pins must only be used with some confirmation,
+   either from automated testing or from manual input.
+
+   This means that it is safe to run any application on any board even if there are daughterboards
+   (e.g., shields, wings, capes, clicks, or grove modules)
+   connected.
+
+    > [!WARNING]
+    > This requirement has been recently introduced,
+    > and may not be upheld by all applications yet.
+
+    There is no sharp definition of a general-purpose pin.
+    Some clear cases are the digital pins of an Arduino-style shield (clearly general-purpose)
+    and the I2C pins of a mikroBUS click (which are safe to drive in an I2C mode without extra checks).
+
+Applications in group 2 usually require some external components,
+sometimes just jumpers across some indicated pins,
+for example in peripheral loopback tests.
+Some means by which the application can adhere to this are:
+
+- using runtime indication (e.g., reading a connected I2C EEPROM that confirms that some particular shield is connected),
+- using only low-strength driving modes (through internal pull-up/pull-down resistors), or
+- obtaining explicit user confirmation (e.g., by selecting a per-application module).
+
 ## Dependencies
 
 If the same dependency is used in multiples crates within the workspace, that dependency SHOULD be specified in the *workspace*'s `Cargo.toml` file and workspace crates should import them from there.
