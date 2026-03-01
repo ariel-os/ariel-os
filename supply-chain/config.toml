@@ -231,7 +231,7 @@ version = "0.1.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.buffered-io]]
-version = "0.5.4"
+version = "0.6.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.bytemuck]]
@@ -326,6 +326,10 @@ criteria = "safe-to-deploy"
 version = "0.9.6"
 criteria = "safe-to-deploy"
 
+[[exemptions.const-oid]]
+version = "0.10.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.const-sha1]]
 version = "0.3.0"
 criteria = "safe-to-deploy"
@@ -388,6 +392,14 @@ criteria = "safe-to-deploy"
 
 [[exemptions.ctr]]
 version = "0.9.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.curve25519-dalek]]
+version = "4.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.curve25519-dalek-derive]]
+version = "0.1.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.cyw43]]
@@ -466,6 +478,18 @@ criteria = "safe-to-deploy"
 version = "0.13.3"
 criteria = "safe-to-deploy"
 
+[[exemptions.der]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.der_derive]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.deranged]]
+version = "0.5.8"
+criteria = "safe-to-deploy"
+
 [[exemptions.digest]]
 version = "0.10.7"
 criteria = "safe-to-deploy"
@@ -476,6 +500,14 @@ criteria = "safe-to-deploy"
 
 [[exemptions.ecdsa]]
 version = "0.16.9"
+criteria = "safe-to-deploy"
+
+[[exemptions.ed25519]]
+version = "2.2.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.ed25519-dalek]]
+version = "2.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.elliptic-curve]]
@@ -507,7 +539,7 @@ version = "0.3.0@git:0feffeb3c90748112a64c6570a39e1251311accb"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net]]
-version = "0.7.1@git:f88320aea64cf24026dd95ce3405ac23253b1117"
+version = "0.8.0@git:3b185bf1b3852867e4b932456600621f86f78bce"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net-driver]]
@@ -606,6 +638,10 @@ criteria = "safe-to-deploy"
 version = "0.8.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.embedded-nal-async]]
+version = "0.9.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.embedded-nal-coap]]
 version = "0.1.0-alpha.5"
 criteria = "safe-to-deploy"
@@ -631,7 +667,7 @@ version = "0.7.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embedded-tls]]
-version = "0.17.0"
+version = "0.18.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.ena]]
@@ -958,10 +994,6 @@ criteria = "safe-to-deploy"
 version = "0.2.9"
 criteria = "safe-to-deploy"
 
-[[exemptions.lhash]]
-version = "1.1.0"
-criteria = "safe-to-deploy"
-
 [[exemptions.libloading]]
 version = "0.8.7"
 criteria = "safe-to-deploy"
@@ -1070,6 +1102,10 @@ criteria = "safe-to-deploy"
 version = "0.13.2"
 criteria = "safe-to-deploy"
 
+[[exemptions.p384]]
+version = "0.13.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.panic-semihosting]]
 version = "0.6.0"
 criteria = "safe-to-deploy"
@@ -1099,11 +1135,19 @@ version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.picoserve]]
-version = "0.14.1"
+version = "0.18.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.picoserve_derive]]
-version = "0.1.3"
+version = "0.1.4"
+criteria = "safe-to-deploy"
+
+[[exemptions.pin-project]]
+version = "1.1.10"
+criteria = "safe-to-deploy"
+
+[[exemptions.pin-project-internal]]
+version = "1.1.10"
 criteria = "safe-to-deploy"
 
 [[exemptions.pio]]
@@ -1120,6 +1164,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.pio-proc]]
 version = "0.3.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.pkcs8]]
+version = "0.10.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.polling]]
@@ -1191,7 +1239,7 @@ version = "0.5.12"
 criteria = "safe-to-deploy"
 
 [[exemptions.reqwless]]
-version = "0.13.0"
+version = "0.14.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.rfc6979]]
@@ -1330,6 +1378,10 @@ criteria = "safe-to-deploy"
 version = "0.2.5"
 criteria = "safe-to-deploy"
 
+[[exemptions.spki]]
+version = "0.7.3"
+criteria = "safe-to-deploy"
+
 [[exemptions.ssmarshal]]
 version = "1.0.0"
 criteria = "safe-to-deploy"
@@ -1364,6 +1416,14 @@ criteria = "safe-to-deploy"
 
 [[exemptions.term]]
 version = "1.0.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.time]]
+version = "0.3.45"
+criteria = "safe-to-deploy"
+
+[[exemptions.time-core]]
+version = "0.1.7"
 criteria = "safe-to-deploy"
 
 [[exemptions.tinyrlibc]]

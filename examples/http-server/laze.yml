@@ -3,7 +3,7 @@ apps:
     env:
       global:
         executor_stacksize_required:
-          - "16384"
+          - "32768"
     selects:
       - network
       - ?button-reading

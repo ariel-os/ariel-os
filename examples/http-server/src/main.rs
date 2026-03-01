@@ -17,10 +17,11 @@ use picoserve::AppBuilder;
 
 const HTTP_PORT: u16 = 80;
 const WEB_TASK_POOL_SIZE: usize = 2;
-const SERVER_CONFIG: picoserve::Config<Duration> = picoserve::Config::new(picoserve::Timeouts {
-    start_read_request: Some(Duration::from_secs(5)),
-    read_request: Some(Duration::from_secs(1)),
-    write: Some(Duration::from_secs(1)),
+const SERVER_CONFIG: picoserve::Config = picoserve::Config::new(picoserve::Timeouts {
+    start_read_request: Duration::from_secs(5),
+    persistent_start_read_request: Duration::from_secs(5),
+    read_request: Duration::from_secs(1),
+    write: Duration::from_secs(1),
 });
 
 static APP: StaticCell<picoserve::Router<routes::AppRouter>> = StaticCell::new();
@@ -36,17 +37,19 @@ async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRou
     let mut tcp_tx_buffer = [0; 1024];
     let mut http_buffer = [0; 2048];
 
-    picoserve::listen_and_serve(
-        task_id,
-        app,
-        &SERVER_CONFIG,
-        stack,
-        HTTP_PORT,
-        &mut tcp_rx_buffer,
-        &mut tcp_tx_buffer,
-        &mut http_buffer,
-    )
-    .await
+    loop {
+        let server = picoserve::Server::new(app, &SERVER_CONFIG, &mut http_buffer);
+
+        let _ = server
+            .listen_and_serve(
+                task_id,
+                stack,
+                HTTP_PORT,
+                &mut tcp_rx_buffer,
+                &mut tcp_tx_buffer,
+            )
+            .await;
+    }
 }
 
 #[ariel_os::spawner(autostart, peripherals)]
