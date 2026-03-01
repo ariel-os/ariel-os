@@ -110,6 +110,7 @@ ble-central = ["ble", "nrf-sdc/central"]
 
 ## Enables modem support.
 nrf91-modem = ["dep:cortex-m", "dep:nrf-modem", "dep:tinyrlibc"]
+radiocore-firmware-dect = ["nrf-modem?/dect"]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-nrf/defmt", "nrf-modem?/defmt", "nrf-sdc?/defmt"]

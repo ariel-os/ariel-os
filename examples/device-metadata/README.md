@@ -6,11 +6,19 @@ This application prints all device information that the application knows
 about the device and the running program
 at startup to the debug console.
 
+On some boards where there is additional identifying hardware,
+that hardware is queried too:
+For example, on nRF91 boards, it queries the serial number of the on-chip modem.
+
 ## How to run
 
 In this directory, run
 
     laze build -b nrf52840dk run
+
+When running on nRF91 devices that are flashed with the DECT firmware,
+make sure to pass `-s nrf-radiocore-firmware-dect` to laze --
+otherwise, modem initialization will fail long before its serial number can be queried.
 
 ## Example output
 

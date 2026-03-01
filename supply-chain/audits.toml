@@ -80,6 +80,12 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "0.0.4 -> 0.0.8"
 
+[[audits.nrfxlib-sys]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "2.9.2 -> 3.0.3+3.0.2"
+notes = "Review extends to the source of nrfxlib-sys only. The library ships also proprietary C components, which were not (and, due to being closed source, can not) be reviewed."
+
 [[audits.rand_pcg]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
