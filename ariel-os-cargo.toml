@@ -33,7 +33,8 @@ embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "0314802282e11
 embassy-stm32 = { git = "https://github.com/ariel-os/embassy", rev = "1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c" }
 # branch = "embassy-time-v0.5.0+ariel-os"
 embassy-time = { git = "https://github.com/ariel-os/embassy", rev = "32919cd38e4a5ad5fc21dfb339abd45a74bd1dc9" }
-
+# branch = "embassy-usb-synopsys-otg-v0.3.1+ariel-os
+embassy-usb-synopsys-otg = { git = "https://github.com/ariel-os/embassy", rev = "478df29985c8e0d0ff2e915440c8ca15e36f4403" }
 # ariel-os esp-hal fork, using branch = "esp-hal-v1.0.0+20251203+ariel-os"
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "531c629afdd80ea464682ce7f4db8baed97967a6" }
 esp-bootloader-esp-idf = { git = "https://github.com/ariel-os/esp-hal", rev = "531c629afdd80ea464682ce7f4db8baed97967a6" }
