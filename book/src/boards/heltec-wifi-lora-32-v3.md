@@ -30,7 +30,7 @@ laze build -b heltec-wifi-lora-32-v3
 |SPI Main Mode|<span title="needs testing">🚦</span>|
 |UART|<span title="supported">✅</span>|
 |User USB|<span title="not available on this piece of hardware">–</span>|
-|Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="supported">✅</span>|
 |Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
