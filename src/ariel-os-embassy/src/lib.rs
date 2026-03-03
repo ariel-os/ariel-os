@@ -102,18 +102,23 @@ pub mod reexports {
 }
 
 #[cfg(feature = "net")]
-cfg_if::cfg_if! {
-    if #[cfg(feature = "usb-ethernet")] {
+cfg_select! {
+    feature = "usb-ethernet" => {
         use usb::ethernet::NetworkDevice;
-    } else if #[cfg(feature = "wifi")] {
+    }
+    feature = "wifi" => {
         use wifi::NetworkDevice;
-    } else if #[cfg(feature = "eth")] {
+    }
+    feature = "eth" => {
         use eth::NetworkDevice;
-    } else if #[cfg(feature = "tuntap")] {
+    }
+    feature = "tuntap" => {
         use crate::hal::tuntap::NetworkDevice;
-    } else if #[cfg(context = "ariel-os")] {
+    }
+    context = "ariel-os" => {
         compile_error!("no backend for net is active");
-    } else {
+    }
+    _ => {
         use net::DummyDriver as NetworkDevice;
     }
 }
