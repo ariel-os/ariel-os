@@ -260,6 +260,7 @@ dependencies = [
  "ariel-os-identity",
  "ariel-os-log",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-random",
  "ariel-os-rt",
  "ariel-os-storage",
@@ -460,6 +461,7 @@ name = "ariel-os-power"
 version = "0.4.0"
 dependencies = [
  "cortex-m",
+ "defmt 1.0.1",
  "esp-hal",
 ]
 
