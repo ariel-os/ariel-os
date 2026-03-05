@@ -461,7 +461,9 @@ dependencies = [
  "cfg-if",
  "cortex-m",
  "defmt 1.0.1",
+ "embassy-nrf",
  "esp-hal",
+ "portable-atomic",
 ]
 
 [[package]]

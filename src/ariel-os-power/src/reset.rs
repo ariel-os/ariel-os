@@ -1,3 +1,9 @@
+#[cfg(context = "nrf")]
+use portable_atomic::{AtomicU8, Ordering};
+
+#[cfg(context = "nrf")]
+static RESET_REASON: AtomicU8 = AtomicU8::new(ResetReason::PowerOnReset as u8);
+
 /// Indicates why the microcontroller has reset.
 ///
 /// # Note
@@ -38,6 +44,120 @@ pub enum ResetReason {
     /// The reset has been triggered by a source for which there is no other suitable variant, but
     /// the microcontroller does allow to distinguish it from a power-on reset.
     Other,
+}
+
+#[cfg(context = "nrf")]
+impl ResetReason {
+    #[must_use]
+    fn as_u8(self) -> u8 {
+        match self {
+            Self::PowerOnReset => 0,
+            Self::ResetPin => 1,
+            Self::SoftwareReset => 2,
+            Self::StandbyWakeup => 3,
+            Self::PowerFailure => 4,
+            Self::WatchdogReset => 5,
+            Self::Other => 6,
+        }
+    }
+
+    fn try_from_u8(int: u8) -> Result<Self, ()> {
+        match int {
+            0 => Ok(Self::PowerOnReset),
+            1 => Ok(Self::ResetPin),
+            2 => Ok(Self::SoftwareReset),
+            3 => Ok(Self::StandbyWakeup),
+            4 => Ok(Self::PowerFailure),
+            5 => Ok(Self::WatchdogReset),
+            6 => Ok(Self::Other),
+            _ => Err(()),
+        }
+    }
+}
+
+pub(crate) fn save_reset_reason() {
+    cfg_if::cfg_if! {
+        if #[cfg(context = "nrf")] {
+            // NOTE: this avoids forgetting to update this when adding support for other families.
+            #[cfg(not(any(
+                context = "nrf51",
+                context = "nrf52",
+                context = "nrf53",
+                context = "nrf91",
+            )))]
+            compile_error!("unsupported nRF MCU");
+
+            let resetreas;
+
+            cfg_if::cfg_if! {
+                if #[cfg(context = "nrf53")] {
+                    resetreas = embassy_nrf::pac::RESET.resetreas().read();
+                } else {
+                    resetreas = embassy_nrf::pac::POWER.resetreas().read();
+                }
+            }
+
+            let mut reset_reason = ResetReason::default();
+
+            #[cfg(not(any(context = "nrf51", context = "nrf91")))]
+            if resetreas.nfc() {
+                reset_reason = ResetReason::Other;
+            }
+
+            #[cfg(not(context = "nrf53"))]
+            if resetreas.dog() {
+                reset_reason = ResetReason::WatchdogReset;
+            }
+
+            // TODO: it is unclear whether each watchdog timer should be attributed to one of the
+            // cores specifically.
+            #[cfg(context = "nrf53")]
+            if resetreas.dog0() || resetreas.dog1() {
+                reset_reason = ResetReason::WatchdogReset;
+            }
+
+            #[cfg(not(context = "nrf91"))]
+            if resetreas.lpcomp() {
+                reset_reason = ResetReason::Other;
+            }
+
+            if resetreas.resetpin() {
+                reset_reason = ResetReason::ResetPin;
+            } else if resetreas.sreq() {
+                reset_reason = ResetReason::SoftwareReset;
+            } else if resetreas.off() {
+                reset_reason = ResetReason::StandbyWakeup;
+            } else if resetreas.lockup() | resetreas.dif() {
+                reset_reason = ResetReason::Other;
+            };
+
+            RESET_REASON.store(reset_reason.as_u8(), Ordering::Release);
+
+            cfg_if::cfg_if! {
+                if #[cfg(context = "nrf53")] {
+                    let clear_value = embassy_nrf::pac::reset::regs::Resetreas(u32::MAX);
+                    embassy_nrf::pac::RESET.resetreas().write_value(clear_value);
+                } else {
+                    let clear_value = embassy_nrf::pac::power::regs::Resetreas(u32::MAX);
+                    embassy_nrf::pac::POWER.resetreas().write_value(clear_value);
+                }
+            }
+
+        }
+    }
+}
+
+/// Returns the reason why the microcontroller has reset.
+#[cfg(context = "nrf")]
+#[must_use]
+pub fn reset_reason() -> ResetReason {
+    cfg_if::cfg_if! {
+        if #[cfg(any(context = "nrf"))] {
+            ResetReason::try_from_u8(RESET_REASON.load(Ordering::Acquire)).unwrap()
+        } else {
+            compile_error!("obtaining the reseat reason is not yet supported on this MCU family");
+        }
+    }
 }
 
 /// Reboots the MCU.
