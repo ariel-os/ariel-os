@@ -517,6 +517,7 @@ dependencies = [
  "ld-memory",
  "linkme",
  "portable-atomic",
+ "riscv",
 ]
 
 [[package]]
