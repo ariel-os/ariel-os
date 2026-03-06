@@ -11,10 +11,7 @@ pub fn init() {}
 
 #[allow(dead_code, reason = "conditional compilation")]
 pub fn wfi() {
-    // SAFETY: executing WFI is safe.
-    unsafe {
-        core::arch::asm!("wfi");
-    }
+    riscv::asm::wfi();
 }
 
 /// Returns the current `SP` register value.
