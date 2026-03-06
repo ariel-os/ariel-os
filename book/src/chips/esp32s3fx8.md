@@ -17,7 +17,7 @@
 |User USB|<span title="needs testing">🚦</span>|
 |Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Wi-Fi|<span title="supported">✅</span>|
-|Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
