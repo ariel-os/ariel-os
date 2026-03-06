@@ -166,7 +166,7 @@ impl Stack {
     ///
     /// Only panics if its internal sanity check fails, which would
     /// point to a bug.
-    pub fn repaint(&self) {
+    pub fn repaint(&mut self) {
         let sp = crate::arch::sp() - STACK_PAINT_IGNORE;
         if self.is_empty() {
             return;

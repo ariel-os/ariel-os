@@ -122,7 +122,7 @@ mod isr_stack {
     }
 
     pub fn init() {
-        let stack = crate::stack::Stack::get();
+        let mut stack = crate::stack::Stack::get();
         crate::debug!("ariel-os-rt: ISR stacksize: {}", stack.size());
 
         // initial stack paint
