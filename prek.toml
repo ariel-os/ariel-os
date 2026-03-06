@@ -1,0 +1,83 @@
+# List of global excludes is copied from .gitattributes
+exclude = { glob = [
+  "book/src/SUMMARY.md",
+  "book/src/boards/*.md",
+  "book/src/chips/*.md",
+  "book/src/support_matrix.html",
+  "src/ariel-os-boards/laze.yml",
+  "src/ariel-os-boards/build.rs",
+  "src/ariel-os-boards/src/*.rs",
+] }
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "taplo", name = "taplo", language = "rust", entry = "taplo fmt", types = [
+    "toml",
+  ] },
+  { id = "cargo fmt", name = "cargo fmt", language = "system", entry = "cargo fmt", args = [
+    "--check",
+    "--all",
+    "--",
+    "--config",
+    "format_generated_files=false",
+  ], types = [
+    "rust",
+  ], pass_filenames = false },
+  { id = "yamllint", name = "yamllint", language = "system", entry = "yamllint", args = [
+    "--strict",
+  ], types = [
+    "yaml",
+  ] },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "gen_book", name = "gen_book", language = "system", entry = "laze build update-book", pass_filenames = false, verbose = false, files = { glob = [
+    "doc/support_matrix.yml",
+    "book/templates/*",
+  ] } },
+  { id = "sbd-gen", name = "sbd-gen", language = "rust", entry = "sbd-gen", args = [
+    "generate-ariel",
+    "boards",
+    "-o",
+    "src/ariel-os-boards",
+    "--mode",
+    "update",
+  ], files = "^boards/", pass_filenames = false },
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.14.14"
+hooks = [
+  { id = "ruff-format", priority = 0 },
+  { id = "ruff-check", args = [
+    "--fix",
+    "--exit-non-zero-on-fix",
+  ], types_or = [
+    "python",
+    "pyi",
+  ], require_serial = true, priority = 1 },
+]
+
+
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "end-of-file-fixer", args = [
+    "--fix",
+  ] },
+  { id = "trailing-whitespace" },
+  { id = "check-case-conflict" },
+  { id = "mixed-line-ending", args = [
+    "--fix=lf",
+  ] },
+  { id = "no-commit-to-branch", args = [
+    "--branch",
+    "main",
+    "--pattern",
+    "v\\d+\\.\\d+.\\d+",
+  ] },
+]
