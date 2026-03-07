@@ -9,6 +9,16 @@ fn main() -> ! {
 
 pub fn init() {}
 
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn wfi() {
+    // The options are similar to those used for wfi on RISC-V and Cortex-M:
+    // the instruction does not modify memory or the stack, and does preserve flags.
+    // SAFETY: executing `waiti 0` is sound.
+    unsafe {
+        core::arch::asm!("waiti 0", options(nomem, nostack, preserves_flags));
+    }
+}
+
 /// Returns the current stack pointer register value
 pub(crate) fn sp() -> usize {
     let sp: usize;

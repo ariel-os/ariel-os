@@ -40,6 +40,9 @@ portable-atomic = { workspace = true }
 [target.'cfg(context = "nrf")'.dependencies]
 cortex-m = { workspace = true, features = ["critical-section-single-core"] }
 
+[target.'cfg(context = "riscv")'.dependencies]
+riscv = { workspace = true }
+
 [target.'cfg(context = "stm32")'.dependencies]
 cortex-m = { workspace = true, features = ["critical-section-single-core"] }
 
