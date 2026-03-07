@@ -26,7 +26,7 @@ ariel-os = { workspace = true, features = [
   "usb-ethernet",
 ] }
 heapless = { workspace = true }
-trybuild = "=1.0.111"
+trybuild = "=1.0.116"
 
 [features]
 _test = []
