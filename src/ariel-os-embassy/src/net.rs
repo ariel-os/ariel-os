@@ -52,12 +52,13 @@ pub async fn network_stack() -> Option<NetworkStack> {
 #[allow(dead_code, reason = "conditional compilation")]
 #[must_use]
 pub(crate) fn unique_seed() -> u64 {
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "random")] {
+    cfg_select! {
+        feature = "random" => {
             // Even when some using entropy to ensure uniqueness of the seed, the RNG does not need
             // to be cryptographically secure.
             return rand_core::RngCore::next_u64(&mut ariel_os_random::fast_rng());
-        } else if #[cfg(capability = "hw/device-identity")] {
+        }
+        capability = "hw/device-identity" => {
             if let Ok(eui48) = ariel_os_identity::interface_eui48(0) {
                 // Construct the seed by zero-extending the obtained EUI-48 identifier.
                 let mut seed = [0; 8];
@@ -81,15 +82,14 @@ pub(crate) async fn net_task(mut runner: Runner<'static, NetworkDevice>) -> ! {
 
 #[allow(dead_code, reason = "false positive during builds outside of laze")]
 pub(crate) fn config() -> embassy_net::Config {
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "network-config-override")] {
+    cfg_select! {
+        feature = "network-config-override" => {
             unsafe extern "Rust" {
                 fn __ariel_os_network_config() -> embassy_net::Config;
             }
             unsafe { __ariel_os_network_config() }
-        } else {
-            ariel_os_network_config()
         }
+        _ => ariel_os_network_config(),
     }
 }
 
@@ -173,8 +173,8 @@ fn ariel_os_network_config() -> embassy_net::Config {
     #[allow(unused_mut, reason = "conditional compilation")]
     let mut config = embassy_net::Config::default();
 
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "network-config-ipv4-static")] {
+    cfg_select! {
+        feature = "network-config-ipv4-static" => {
             use ariel_os_utils::{ipv4_addr_from_env_or, u8_from_env_or};
 
             let ipaddr = ipv4_addr_from_env_or!(
@@ -210,7 +210,8 @@ fn ariel_os_network_config() -> embassy_net::Config {
                 dns_servers: Default::default(),
                 gateway: Some(gw_addr),
             });
-        } else if #[cfg(feature = "dhcpv4")] {
+        }
+        feature = "dhcpv4" => {
             config.ipv4 = embassy_net::ConfigV4::Dhcp(embassy_net::DhcpConfig::default());
         }
     }
