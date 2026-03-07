@@ -13,8 +13,13 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "time",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
+
+# Needed with embedded-tls 0.18.0, which reqwless 0.14.0 depends on.
+# The `heapless feature` was default in der `0.8.0-rc2` but is not in `0.8.0`.
+der = { version = "0.8", default-features = false, features = ["heapless"] }
+
 rand_core = { workspace = true }
-reqwless = { version = "0.13.0", default-features = true, features = [
+reqwless = { version = "0.14.0", default-features = true, features = [
   "embedded-tls",
 ] }
 
