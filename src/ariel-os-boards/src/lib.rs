@@ -45,6 +45,7 @@ cfg_if::cfg_if! {
     "st-b-l475e-iot01a")] { include!("st-b-l475e-iot01a.rs"); } else if #[cfg(context =
     "st-nucleo-c031c6")] { include!("st-nucleo-c031c6.rs"); } else if #[cfg(context =
     "st-nucleo-f042k6")] { include!("st-nucleo-f042k6.rs"); } else if #[cfg(context =
+    "st-nucleo-f072rb")] { include!("st-nucleo-f072rb.rs"); } else if #[cfg(context =
     "st-nucleo-f303re")] { include!("st-nucleo-f303re.rs"); } else if #[cfg(context =
     "st-nucleo-f401re")] { include!("st-nucleo-f401re.rs"); } else if #[cfg(context =
     "st-nucleo-f411re")] { include!("st-nucleo-f411re.rs"); } else if #[cfg(context =

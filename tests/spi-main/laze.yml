@@ -11,6 +11,7 @@ apps:
       - rp235xa
       - st-b-l475e-iot01a
       - st-nucleo-c031c6
+      - st-nucleo-f072rb
       - st-nucleo-f303re
       - st-nucleo-f411re
       - st-nucleo-h755zi-q

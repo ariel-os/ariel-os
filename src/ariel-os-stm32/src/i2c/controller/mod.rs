@@ -222,6 +222,11 @@ define_i2c_drivers!(
 define_i2c_drivers!(
    I2C1 => I2C1,
 );
+#[cfg(context = "stm32f072rb")]
+define_i2c_drivers!(
+   I2C1 => I2C1,
+   I2C2 => I2C2,
+);
 #[cfg(context = "stm32f303cb")]
 define_i2c_drivers!(
    I2C1_EV + I2C1_ER => I2C1,

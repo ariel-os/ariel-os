@@ -39,6 +39,7 @@ Here is the list of supported chips in Ariel OS.
   
 - [STM32C031C6](./stm32c031c6.md)
 - [STM32F042K6](./stm32f042k6.md)
+- [STM32F072RB](./stm32f072rb.md)
 - [STM32F303CB](./stm32f303cb.md)
 - [STM32F303RE](./stm32f303re.md)
 - [STM32F401RE](./stm32f401re.md)

@@ -374,6 +374,16 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         });
     }
 
+    #[cfg(context = "stm32f072rb")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hsi48 = Some(Hsi48Config {
+            sync_from_usb: true,
+        }); // needed for USB
+        rcc.sys = Sysclk::HSI48;
+    }
+
     #[cfg(context = "seeedstudio-lora-e5-mini")]
     {
         use embassy_stm32::rcc::*;

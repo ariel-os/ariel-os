@@ -5,6 +5,8 @@ apps:
       - sw/threading
       - "context::stm32c031c6":
           - too-little-memory
+      - "context::stm32f072rb":
+          - too-little-memory
       - "context::native":
           - not-supported
     conflicts:

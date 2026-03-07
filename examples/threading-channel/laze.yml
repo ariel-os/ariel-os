@@ -6,3 +6,4 @@ apps:
       # This example uses five threads with the default stack size of 2KiB,
       # which is too much for the smallest MCUs.
       - ram-tiny
+      - context::stm32f072rb
