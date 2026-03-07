@@ -22,7 +22,8 @@ jobs:
   check-labels:
     runs-on: ubuntu-24.04
     outputs:
-      label: ${{ steps.get-pr-labels.outputs.result }}
+      label: ${{ fromJSON(steps.get-pr-labels.outputs.result).buildLabel }}
+      runnerLabel: ${{ fromJSON(steps.get-pr-labels.outputs.result).runnerLabel }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -47,8 +48,9 @@ jobs:
       - name: "Get PR build labels through the commit hash of the pull request"
         id: get-pr-labels
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          BUILD_RUNNER: ${{ vars.BUILD_RUNNER }}
         with:
-          result-encoding: string
           script: | # zizmor: ignore[template-injection] input is always a commit SHA
             const commitId = "${{ steps.get-commit-id.outputs.commit_id }}";
             console.log(`Commit ID: ${commitId}`);
@@ -73,6 +75,18 @@ jobs:
                 continue;
               }
               const prLabels = pr.labels.map((label) => label.name);
+
+              const SELF_HOSTED_RUNNER_LABEL = "self-hosted-ubuntu";
+              const GITHUB_HOSTED_RUNNER_LABEL = "ubuntu-24.04";
+
+              // Read the environment variable, if none use the self-hosted default.
+              let runnerLabel = process.env.BUILD_RUNNER || SELF_HOSTED_RUNNER_LABEL;
+
+              // Override the previous value if we have the corresponding PR label.
+              if (prLabels.includes("ci-host:github")) {
+                runnerLabel = GITHUB_HOSTED_RUNNER_LABEL;
+              }
+
               console.log(`The labels of PR #${prNumber} are ${prLabels}`);
               const VALID_LABELS = ['ci-build:esp', 'ci-build:full', 'ci-build:native', 'ci-build:nrf', 'ci-build:rp', 'ci-build:skip', 'ci-build:small', 'ci-build:stm32'];
               const buildLabels = prLabels.filter((label) => VALID_LABELS.includes(label));
@@ -80,18 +94,19 @@ jobs:
               const buildLabel = buildLabels[0];
               if (!buildLabel) { throw 'A build label must be attached'; }
               console.log(`The build label is ${buildLabel}`);
-              return buildLabel;
+              console.log(`The runner label selected for the build is ${runnerLabel}`);
+              return { buildLabel, runnerLabel };
             }
             // This can happen because the API is paginated.
             throw 'Did not find the PR; maybe it has more than 30 commits?';
 
   build:
     needs: check-labels
-    # Repository variable so we can quickly switch between self-hosted and GitHub runners.
-    # - "self-hosted-ubuntu": self hosted runners
-    # - "ubuntu-24.04": GitHub hosted runners
-    # Sometimes the variable is unavailable, we use a default.
-    runs-on: ${{ case(vars.build_runner == '', 'self-hosted-ubuntu', vars.build_runner) }}
+
+    # runs-on is determined by the check-labels job, by default it's running on self-hosted runners
+    # ("self-hosted-ubuntu") but can be overriden by the BUILD_RUNNER repository variable and the
+    # ci-host:github label (sets the runner to "ubuntu-24.04").
+    runs-on: ${{ needs.check-labels.outputs.runnerLabel }}
 
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
@@ -106,32 +121,39 @@ jobs:
       # newest standard library. It may also need to be aligned with the clang
       # version which Xtensa provides.
       CLANG_PATH: /usr/bin/clang-18
-      CACHE_THING_LOCATION: /cache/cache-thing
-      RUSTC_WRAPPER: sccache
-      CARGO_NET_GIT_FETCH_WITH_CLI: true
-      SCCACHE_DIR: /cache/sccache
-      SCCACHE_CACHE_SIZE: 128G
 
     strategy:
       fail-fast: true
       matrix:
         partition:
           [
-            "1/10",
-            "2/10",
-            "3/10",
-            "4/10",
-            "5/10",
-            "6/10",
-            "7/10",
-            "8/10",
-            "9/10",
-            "10/10",
+            "1/12",
+            "2/12",
+            "3/12",
+            "4/12",
+            "5/12",
+            "6/12",
+            "7/12",
+            "8/12",
+            "9/12",
+            "10/12",
+            "11/12",
+            "12/12",
           ]
 
     steps:
       - name: reset git-cache update barrier
+        if: runner.environment == 'self-hosted'
         run: pkill -f -SIGUSR1 /usr/local/bin/git-cache-daemon | true
+
+      - name: Set up self-hosted runner environment
+        if: runner.environment == 'self-hosted'
+        run: |
+          echo "RUSTC_WRAPPER=sccache" >> "$GITHUB_ENV"
+          echo "CACHE_THING_LOCATION=/cache/cache-thing" >> "$GITHUB_ENV"
+          echo "CARGO_NET_GIT_FETCH_WITH_CLI=true" >> "$GITHUB_ENV"
+          echo "SCCACHE_DIR=/cache/sccache" >> "$GITHUB_ENV"
+          echo "SCCACHE_CACHE_SIZE=128G" >> "$GITHUB_ENV"
 
       - name: Free up space
         if: runner.environment != 'self-hosted'
@@ -156,7 +178,6 @@ jobs:
           # we need to access all the commits to know when the file was last modified
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-
 
       - name: Get tree hashes
         id: get-tree-hashes
