@@ -161,7 +161,7 @@ jobs:
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
 
       - name: Install mdbook
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: mdbook@0.5.0-alpha.1
 

@@ -34,7 +34,7 @@ jobs:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
 
       - name: Install laze
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: laze@0.1
 
@@ -98,7 +98,7 @@ jobs:
         uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2
 
       - name: Install cargo-deny
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: cargo-deny
 
@@ -442,7 +442,7 @@ jobs:
           persist-credentials: false
 
       - name: Install taplo
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: taplo
           fallback: none
@@ -460,7 +460,7 @@ jobs:
           persist-credentials: false
 
       - name: Install cargo-manifest-check
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: cargo-manifest-check@0.3
 
@@ -515,7 +515,7 @@ jobs:
           ./doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl --check
 
       - name: Install mdbook
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: mdbook@0.5
 
@@ -540,7 +540,7 @@ jobs:
           persist-credentials: false
 
       - name: Install sbd-gen
-        uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
+        uses: taiki-e/install-action@5faf876256ccfc7ba64a4f87314c3457cc374b98 # v2
         with:
           tool: sbd-gen@0.1.9
 
