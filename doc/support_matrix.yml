@@ -286,7 +286,7 @@ chips:
           - requires partitioning support
       wifi:
         status: supported
-      ble: not_currently_supported
+      ble: supported
       user_usb:
         status: not_available
         comments:
@@ -311,7 +311,7 @@ chips:
           - requires partitioning support
       wifi:
         status: supported
-      ble: not_currently_supported
+      ble: supported
       user_usb:
         status: not_available
         comments:
@@ -335,7 +335,7 @@ chips:
           - requires partitioning support
       wifi:
         status: supported
-      ble: not_currently_supported
+      ble: supported
       user_usb:
         status: not_available
         comments:
@@ -360,7 +360,7 @@ chips:
           - requires partitioning support
       wifi:
         status: supported
-      ble: not_currently_supported
+      ble: supported
       user_usb:
         status: not_available
         comments:
@@ -468,7 +468,7 @@ chips:
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
-      ble: not_currently_supported
+      ble: supported
 
   # Currently identical to esp32s3.
   esp32s3fx8:
@@ -489,7 +489,7 @@ chips:
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
-      ble: not_currently_supported
+      ble: supported
 
   stm32c031c6:
     name: STM32C031C6
