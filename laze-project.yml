@@ -159,7 +159,9 @@ contexts:
 
       gdb:
         cmd:
-          - arm-none-eabi-gdb -ex "target extended-remote localhost:1337" ${out} $@
+          # On debian, install gdb-multiarch and do
+          # alias gdb=gdb-multiarch
+          - gdb -ex "target extended-remote localhost:1337" ${out} $@
         build: false
         ignore_ctrl_c: true
 
