@@ -282,6 +282,7 @@ contexts:
       - cortex-m33f
     provides:
       - has_storage_support
+      - has_hwrng
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
 
@@ -311,6 +312,7 @@ contexts:
     provides:
       - has_nrf91_modem
       - has_storage_support
+      - has_hwrng
     env:
       PROBE_RS_CHIP: nRF9160_xxAA
 
@@ -319,6 +321,7 @@ contexts:
     provides:
       - has_nrf91_modem
       - has_storage_support
+      - has_hwrng
     env:
       # FIXME: probe-rs does not support the nRF9151_xxAA yet, because there is
       # no CMSIS-Pack available
