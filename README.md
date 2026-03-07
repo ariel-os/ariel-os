@@ -81,6 +81,12 @@ Thanks to all the people who already contributed!
   <img src="https://contrib.rocks/image?repo=ariel-os/ariel-os" alt="All contributors" />
 </a>
 
+## Reference
+
+To cite Ariel OS in an academic context, please use the below reference:
+
+E. Frank, K. Schleiser, R. Fouquet, K. Zandberg, C. Amsüss, and E. Baccelli. "[Ariel OS: An Embedded Rust Operating System for Networked Sensors & Multi-Core Microcontrollers](https://arxiv.org/pdf/2504.19662)." *In Proceedings of the 21st International Conference on Distributed Computing in Smart Systems and the Internet of Things (DCOSS-IoT)*, pp. 241-245. IEEE, 2025.
+
 [matrix-badge]: https://img.shields.io/badge/chat-Matrix-brightgreen.svg
 [matrix-link]: https://matrix.to/#/#ariel-os:matrix.org
 [book-badge]: https://img.shields.io/badge/Book-%F0%9F%93%94-blue
