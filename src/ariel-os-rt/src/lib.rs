@@ -1,6 +1,8 @@
+//! Provides runtime helpers.
+
 #![cfg_attr(not(any(test, context = "native")), no_std)]
 #![cfg_attr(test, no_main)]
-//
+#![deny(missing_docs)]
 #![allow(incomplete_features)]
 #![allow(unsafe_code)]
 #![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
@@ -120,7 +122,7 @@ mod isr_stack {
     }
 
     pub fn init() {
-        let stack = crate::stack::Stack::get();
+        let mut stack = crate::stack::Stack::get();
         crate::debug!("ariel-os-rt: ISR stacksize: {}", stack.size());
 
         // initial stack paint
