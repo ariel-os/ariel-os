@@ -48,7 +48,7 @@ Multiple resources are available to learn Ariel OS:
 
 ## Minimum Supported Rust Version (MSRV) and Policy
 
-Ariel OS compiles with stable Rust version 1.93 and up.
+Ariel OS compiles with stable Rust version 1.94 and up.
 The MSRV can be increased in patch version updates.
 
 ## Security

@@ -268,7 +268,7 @@ jobs:
         # configure MSRV here:
         uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
         with:
-          toolchain: 1.93.1
+          toolchain: 1.94
           targets: riscv32imc-unknown-none-elf,riscv32imac-unknown-none-elf,thumbv6m-none-eabi,thumbv7m-none-eabi,thumbv7em-none-eabi,thumbv7em-none-eabihf,thumbv8m.main-none-eabi,thumbv8m.main-none-eabihf
           # rust-src: Used for -Zbuild-std.
           # rustfmt: Used by bindgen for liboscore
@@ -280,7 +280,7 @@ jobs:
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
         uses: esp-rs/xtensa-toolchain@ec6d36527049a7f4fb2cb0c1a644668c1bb8a2a4 # main
         with:
-          version: "1.93.0.0"
+          version: "1.94.0.0"
           buildtargets: esp32,esp32s2,esp32s3
           override: false
           export: false
