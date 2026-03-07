@@ -354,6 +354,7 @@ dependencies = [
  "esp-radio",
  "esp-radio-rtos-driver",
  "esp-rom-sys",
+ "esp-storage",
  "esp-sync",
  "fugit",
  "paste",
@@ -2828,6 +2829,20 @@ dependencies = [
  "cfg-if",
  "document-features",
  "esp-metadata-generated",
+]
+
+[[package]]
+name = "esp-storage"
+version = "0.8.1"
+source = "git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6#531c629afdd80ea464682ce7f4db8baed97967a6"
+dependencies = [
+ "document-features",
+ "embedded-storage",
+ "esp-hal",
+ "esp-hal-procmacros",
+ "esp-metadata-generated",
+ "esp-rom-sys",
+ "esp-sync",
 ]
 
 [[package]]
