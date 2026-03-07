@@ -73,6 +73,10 @@ functionalities:
     support_criteria: example-storage
     description:
 
+prose_snippets:
+  - name: test
+    content: This is a prose snippet that can be reused.
+
 # Encodes support status for each chip.
 chips:
   native-chip:
