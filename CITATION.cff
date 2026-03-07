@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: Ariel OS — a library operating system for secure, memory-safe, low-power Internet of Things, written in Rust
+url: https://ariel-os.org/
+authors:
+  - name: "The Ariel OS contributors"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Frank
+      given-names: Elena
+    - family-names: Schleiser
+      given-names: Kaspar
+    - family-names: Fouquet
+      given-names: Romain
+    - family-names: Zandberg
+      given-names: Koen
+    - family-names: Amsüss
+      given-names: Christian
+    - family-names: Baccelli
+      given-names: Emmanuel
+  title: "Ariel OS: An Embedded Rust Operating System for Networked Sensors & Multi-Core Microcontrollers"
+  url: "https://ariel-os.org/pdfs/Ariel_OS_An_Embedded_Rust_Operating_System_for_Networked_Sensors_and_Multi-Core_Microcontrollers.pdf"
+  journal: IEEE International Conference on Distributed Computing in Smart Systems and the Internet of Things
+  publisher:
+    name: IEEE
+  month: 6
+  year: 2025
+  issue: 21
+  pages: 241-245
+  doi: 10.1109/DCOSS-IoT65416.2025.00040
+  abstract: >-
+    Large swaths of low-level system software building blocks originally
+    implemented in C/C++ are currently being swapped for equivalent rewrites in
+    Rust, a relatively more secure and dependable programming language. So far,
+    however, no embedded OS in Rust supports multicore preemptive scheduling on
+    microcontrollers. In this paper, we thus fill this gap with a new operating
+    system: Ariel OS. We describe its design, we provide the source code of its
+    implementation, and we perform micro-benchmarks on the main 32-bit
+    microcontroller architectures: ARM Cortex-M, RISC-V and Espressif Xtensa.
+    We show how our scheduler takes advantage of several cores, while incurring
+    only small overhead on single-core hardware. As such, Ariel OS provides a
+    convenient embedded software platform for small networked devices, for both
+    research and industry practitioners.
