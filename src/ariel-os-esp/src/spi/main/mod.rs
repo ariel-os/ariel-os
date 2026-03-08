@@ -26,6 +26,12 @@ use esp_hal::{
     context = "esp32s3"
 ))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(80);
+// NOTE(hal): values from the datasheets.
+#[cfg(context = "esp32c2")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(40);
+// NOTE(hal): values from the datasheets.
+#[cfg(context = "esp32h2")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(48);
 
 /// SPI bus configuration.
 #[derive(Clone)]
@@ -42,7 +48,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            frequency: Frequency::F(Kilohertz::MHz(80)),
+            frequency: Frequency::F(MAX_FREQUENCY),
             mode: Mode::Mode0,
             bit_order: BitOrder::default(),
         }
@@ -146,6 +152,8 @@ macro_rules! define_spi_drivers {
 // SPI0 and SPI1 exist but are not general-purpose SPI peripherals.
 #[cfg(context = "esp32")]
 define_spi_drivers!(SPI2, SPI3);
+#[cfg(context = "esp32c2")]
+define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c3")]
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c6")]

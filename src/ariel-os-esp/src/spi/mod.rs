@@ -28,9 +28,13 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         if #[cfg(context = "esp32")] {
             let _ = peripherals.SPI2.take().unwrap();
             let _ = peripherals.SPI3.take().unwrap();
+        } else if #[cfg(context = "esp32c2")] {
+            let _ = peripherals.SPI2.take().unwrap();
         } else if #[cfg(context = "esp32c3")] {
             let _ = peripherals.SPI2.take().unwrap();
         } else if #[cfg(context = "esp32c6")] {
+            let _ = peripherals.SPI2.take().unwrap();
+        } else if #[cfg(context = "esp32h2")] {
             let _ = peripherals.SPI2.take().unwrap();
         } else if #[cfg(context = "esp32s2")] {
             let _ = peripherals.SPI2.take().unwrap();

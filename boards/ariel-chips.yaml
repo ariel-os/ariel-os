@@ -8,16 +8,19 @@ ariel:
     - esp-wroom-32
     - esp32-c3-mini-1
     - esp32-c6-wroom-1
+    - esp32-h2-mini-1
     - esp32-s3-wroom-1
     - esp32-s2-solo-2
     - esp32c6
     - esp32c6fx4
+    - esp32h2
     - esp32s2
     - esp32s2fx2
     - esp32s2fx4
     - esp32s2fx4r2
     - esp32s3
     - esp32s3fx8
+    - esp8684-wroom-02c
     - native-chip
     - nrf51822-xxaa
     - nrf52

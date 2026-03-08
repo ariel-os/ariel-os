@@ -269,6 +269,49 @@ chips:
       wifi: not_available
       ble: not_available
 
+  esp32:
+    name: ESP32
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi: supported
+      ble: supported
+      user_usb:
+        status: not_available
+      ethernet_over_usb: not_available
+
+  esp32c2:
+    name: ESP32-C2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      ble: supported
+      user_usb:
+        status: not_available
+      ethernet_over_usb: not_available
+
   esp32c3:
     name: ESP32-C3
     manufacturer: Espressif
@@ -361,6 +404,29 @@ chips:
       wifi:
         status: supported
       ble: not_currently_supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+
+  esp32h2:
+    name: ESP32-H2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi: not_available
+      ble: supported
       user_usb:
         status: not_available
         comments:
@@ -960,6 +1026,16 @@ builders:
     tier: "2"
     support:
 
+  espressif-esp32-devkitc:
+    chip: esp32
+    tier: "3"
+    support:
+
+  espressif-esp32-ethernet-kit:
+    chip: esp32
+    tier: "3"
+    support:
+
   espressif-esp32-c3-devkit-rust-1:
     chip: esp32c3
     tier: "3"
@@ -975,6 +1051,11 @@ builders:
     tier: "1"
     support:
 
+  espressif-esp32-h2-devkitm-1:
+    chip: esp32h2
+    tier: "2"
+    support:
+
   espressif-esp32-s2-devkitc-1:
     chip: esp32s2
     tier: "3"
@@ -983,6 +1064,11 @@ builders:
   espressif-esp32-s3-devkitc-1:
     chip: esp32s3
     tier: "1"
+    support:
+
+  espressif-esp8684-devkitc-02:
+    chip: esp32c2
+    tier: "3"
     support:
 
   heltec-wifi-lora-32-v3:

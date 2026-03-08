@@ -16,19 +16,23 @@ cfg_if::cfg_if! {
     #[cfg(context = "espressif-esp32-c6-devkitc-1")] {
     include!("espressif-esp32-c6-devkitc-1.rs"); } else if #[cfg(context =
     "espressif-esp32-devkitc")] { include!("espressif-esp32-devkitc.rs"); } else if
-    #[cfg(context = "espressif-esp32-s2-devkitc-1")] {
+    #[cfg(context = "espressif-esp32-ethernet-kit")] {
+    include!("espressif-esp32-ethernet-kit.rs"); } else if #[cfg(context =
+    "espressif-esp32-h2-devkitm-1")] { include!("espressif-esp32-h2-devkitm-1.rs"); }
+    else if #[cfg(context = "espressif-esp32-s2-devkitc-1")] {
     include!("espressif-esp32-s2-devkitc-1.rs"); } else if #[cfg(context =
     "espressif-esp32-s3-devkitc-1")] { include!("espressif-esp32-s3-devkitc-1.rs"); }
-    else if #[cfg(context = "heltec-wifi-lora-32-v3")] {
-    include!("heltec-wifi-lora-32-v3.rs"); } else if #[cfg(context = "native")] {
-    include!("native.rs"); } else if #[cfg(context = "nordic-thingy-91-x-nrf9151")] {
-    include!("nordic-thingy-91-x-nrf9151.rs"); } else if #[cfg(context =
-    "nordic-thingy-91-x-nrf5340-app")] { include!("nordic-thingy-91-x-nrf5340-app.rs"); }
-    else if #[cfg(context = "nordic-thingy-91-x-nrf5340-net")] {
-    include!("nordic-thingy-91-x-nrf5340-net.rs"); } else if #[cfg(context =
-    "nrf52840-mdk")] { include!("nrf52840-mdk.rs"); } else if #[cfg(context =
-    "nrf52840dk")] { include!("nrf52840dk.rs"); } else if #[cfg(context = "nrf52dk")] {
-    include!("nrf52dk.rs"); } else if #[cfg(context = "nrf5340dk-app")] {
+    else if #[cfg(context = "espressif-esp8684-devkitc-02")] {
+    include!("espressif-esp8684-devkitc-02.rs"); } else if #[cfg(context =
+    "heltec-wifi-lora-32-v3")] { include!("heltec-wifi-lora-32-v3.rs"); } else if
+    #[cfg(context = "native")] { include!("native.rs"); } else if #[cfg(context =
+    "nordic-thingy-91-x-nrf9151")] { include!("nordic-thingy-91-x-nrf9151.rs"); } else if
+    #[cfg(context = "nordic-thingy-91-x-nrf5340-app")] {
+    include!("nordic-thingy-91-x-nrf5340-app.rs"); } else if #[cfg(context =
+    "nordic-thingy-91-x-nrf5340-net")] { include!("nordic-thingy-91-x-nrf5340-net.rs"); }
+    else if #[cfg(context = "nrf52840-mdk")] { include!("nrf52840-mdk.rs"); } else if
+    #[cfg(context = "nrf52840dk")] { include!("nrf52840dk.rs"); } else if #[cfg(context =
+    "nrf52dk")] { include!("nrf52dk.rs"); } else if #[cfg(context = "nrf5340dk-app")] {
     include!("nrf5340dk-app.rs"); } else if #[cfg(context = "nrf5340dk-net")] {
     include!("nrf5340dk-net.rs"); } else if #[cfg(context = "nrf9151-dk")] {
     include!("nrf9151-dk.rs"); } else if #[cfg(context = "nrf9160dk-nrf9160")] {

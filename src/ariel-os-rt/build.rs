@@ -14,9 +14,9 @@ fn main() {
     // Put the linker scripts somewhere the linker can find them
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
-    if let Some(context) = context_any(&["esp32c3", "cortex-m", "riscv"]) {
+    if let Some(context) = context_any(&["esp32c2", "esp32c3", "cortex-m", "riscv"]) {
         let insert_somewhere = match context {
-            "esp32c3" => "INSERT AFTER .rwdata_dummy;",
+            "esp32c2" | "esp32c3" => "INSERT AFTER .rwdata_dummy;",
             "cortex-m" => "INSERT BEFORE .data;",
             "riscv" => "INSERT BEFORE .trap;",
             _ => "",
@@ -24,7 +24,7 @@ fn main() {
 
         let region = match context {
             "cortex-m" => "RAM",
-            "riscv" | "esp32c3" => "RWDATA",
+            "riscv" | "esp32c2" | "esp32c3" => "RWDATA",
             _ => unreachable!(),
         };
 
@@ -36,9 +36,9 @@ fn main() {
     }
 
     if context("riscv") {
-        let region_alias = if context("esp32c3") {
+        let region_alias = if context("esp32c2") || context("esp32c3") {
             "REGION_ALIAS(FLASH, DROM)"
-        } else if context("esp32c6") {
+        } else if context("esp32c6") || context("esp32h2") {
             "REGION_ALIAS(FLASH, ROM)"
         } else {
             panic!("unexpected riscv platform");

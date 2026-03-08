@@ -8,10 +8,13 @@ Here is the list of supported chips in Ariel OS.
 
 ## Espressif
   
+- [ESP32](./esp32.md)
+- [ESP32-C2](./esp32c2.md)
 - [ESP32-C3](./esp32c3.md)
 - [ESP32-C3Fx4](./esp32c3fx4.md)
 - [ESP32-C6](./esp32c6.md)
 - [ESP32-C6Fx4](./esp32c6fx4.md)
+- [ESP32-H2](./esp32h2.md)
 - [ESP32-S2](./esp32s2.md)
 - [ESP32-S2Fx2](./esp32s2fx2.md)
 - [ESP32-S2Fx4](./esp32s2fx4.md)

@@ -391,6 +391,7 @@ contexts:
       - xtensa
     provides:
       - has_ble_esp
+      - has_wifi_esp
     env:
       RUSTC_TARGET: xtensa-esp32-none-elf
       CARGO_TARGET_PREFIX: CARGO_TARGET_XTENSA_ESP32_NONE_ELF
@@ -402,6 +403,24 @@ contexts:
   - name: esp-wroom-32
     parent: esp32
 
+  - name: esp32c2
+    parent: esp
+    selects:
+      - riscv
+    provides:
+      - has_ble_esp
+      - has_wifi_esp
+      - sw/benchmark
+    provides_unique: [c-function-abort]
+    env:
+      RUSTC_TARGET: riscv32imc-unknown-none-elf
+      PROBE_RS_CHIP: esp32c2
+      PROBE_RS_PROTOCOL: jtag
+      CARGO_TARGET_PREFIX: CARGO_TARGET_RISCV32IMC_UNKNOWN_NONE_ELF
+
+  - name: esp8684-wroom-02c
+    parent: esp32c2
+
   - name: esp32-c3-mini-1
     parent: esp32c3fx4
 
@@ -411,6 +430,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_wifi_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -428,6 +448,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_wifi_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -442,11 +463,29 @@ contexts:
   - name: esp32-c6-wroom-1
     parent: esp32c6
 
+  - name: esp32h2
+    parent: esp
+    selects:
+      - riscv
+    provides:
+      - has_ble_esp
+      - sw/benchmark
+    provides_unique: [c-function-abort]
+    env:
+      RUSTC_TARGET: riscv32imac-unknown-none-elf
+      PROBE_RS_CHIP: esp32h2
+      PROBE_RS_PROTOCOL: jtag
+      CARGO_TARGET_PREFIX: CARGO_TARGET_RISCV32IMAC_UNKNOWN_NONE_ELF
+
+  - name: esp32-h2-mini-1
+    parent: esp32h2
+
   - name: esp32s2
     parent: esp
     selects:
       - xtensa
     provides:
+      - has_wifi_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -478,6 +517,7 @@ contexts:
       - xtensa
     provides:
       - has_ble_esp
+      - has_wifi_esp
       # TODO: re-enable as soon as upstream peripheral drivers become `Send`
       # in combination with multi-core.
       # - has_multi_core_support
@@ -1665,10 +1705,9 @@ modules:
   - name: wifi-esp
     selects:
       - alloc
+      - has_wifi_esp
       - multi-core:
           - core-affinity
-    context:
-      - esp
     provides_unique:
       - network_device
     env:
@@ -1681,6 +1720,10 @@ modules:
           - ${esp_wifi_heapsize_required}
         FEATURES:
           - ariel-os/wifi-esp
+
+  - name: has_wifi_esp
+    selects:
+      - doc-only
 
   - name: tuntap
     help: Provides a network device by connecting to a tap interface at `tap0`

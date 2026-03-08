@@ -1,0 +1,7 @@
+boards:
+  espressif-esp8684-devkitc-02:
+    chip: esp8684-wroom-02c
+    buttons:
+      button0:
+        pin: GPIO9
+        active: low
