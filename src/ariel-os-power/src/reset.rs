@@ -37,6 +37,9 @@ pub enum ResetReason {
     /// The reset has been triggered through a wake-up event which woke up the microcontroller from a
     /// low-power standby state.
     StandbyWakeup,
+    /// The reset has been triggered by entering an RF field (e.g., an NFC/RFID field) able to
+    /// power the microcontroller.
+    Field,
     /// The reset has been triggered by hardware following a power failure, e.g., a brownout.
     PowerFailure,
     /// The reset has been triggered by the watchdog.
@@ -55,9 +58,10 @@ impl ResetReason {
             Self::ResetPin => 1,
             Self::SoftwareReset => 2,
             Self::StandbyWakeup => 3,
-            Self::PowerFailure => 4,
-            Self::WatchdogReset => 5,
-            Self::Other => 6,
+            Self::Field => 4,
+            Self::PowerFailure => 5,
+            Self::WatchdogReset => 6,
+            Self::Other => 7,
         }
     }
 
@@ -67,9 +71,10 @@ impl ResetReason {
             1 => Ok(Self::ResetPin),
             2 => Ok(Self::SoftwareReset),
             3 => Ok(Self::StandbyWakeup),
-            4 => Ok(Self::PowerFailure),
-            5 => Ok(Self::WatchdogReset),
-            6 => Ok(Self::Other),
+            4 => Ok(Self::Field),
+            5 => Ok(Self::PowerFailure),
+            6 => Ok(Self::WatchdogReset),
+            7 => Ok(Self::Other),
             _ => Err(()),
         }
     }
@@ -101,7 +106,7 @@ pub(crate) fn save_reset_reason() {
 
             #[cfg(not(any(context = "nrf51", context = "nrf91")))]
             if resetreas.nfc() {
-                reset_reason = ResetReason::Other;
+                reset_reason = ResetReason::Field;
             }
 
             #[cfg(not(context = "nrf53"))]
