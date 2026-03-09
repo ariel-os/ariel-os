@@ -73,16 +73,24 @@ jobs:
           path: .tree-hash
           key: build-cache-success-${{ steps.get-tree-hash.outputs.hash }}-${{ matrix.node }}
 
+      - name: If we should clear the cache
+        id: clear-cahce
+        run: |
+          day=$(date +'%u')
+          # Clear the cache on Sundays and when manually selected.
+          if [ "$day" = "7" ] || [ "${{ inputs.clear_cache }}" = "true" ];
+          then
+            echo "result=true" >> $GITHUB_OUTPUT
+          else
+            echo "result=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Whether to skip next steps
         id: should-skip
         run: |
-          result="result=${{ steps.result-cache.outputs.cache-hit == 'true' }}"
+          result="result=${{ steps.result-cache.outputs.cache-hit == 'true' && steps.clear-cahce.outputs.result != 'true' }}"
           echo "${result}"
           echo "${result}" >> $GITHUB_OUTPUT
-      - name: Get day of week
-        if: steps.should-skip.outputs.result != 'true'
-        id: day
-        run: echo "day=$(date +'%u')" >> $GITHUB_OUTPUT
 
       - name: Set nightly fallback key
         run: echo "FALLBACK_KEY=nightly" >> "$GITHUB_ENV"
@@ -90,7 +98,7 @@ jobs:
       # Instead of deleting the existing cache, we just don't use it and replace it after the build
       # succeeds, this avoids being left with no cache when the cache build fails.
       - name: Don't use cache on Sunday
-        if: steps.should-skip.outputs.result != 'true' && ( steps.day.outputs.day == '7' || inputs.clear_cache )
+        if: steps.clear-cahce.outputs.result == 'true'
         run: echo "FALLBACK_KEY=none" >> "$GITHUB_ENV"
 
       # Allows to reuse more cache
