@@ -91,9 +91,8 @@ The following steps must be followed when preparing a new release of `ariel-os`:
 
 1. Update the changelog using [changelog-harvester][changelog-harvester-cratesio] and the following command (see its documentation for details):
    ```sh
-   changelog-harvester --with-token --forge-owner 'ariel-os' --forge-repo 'ariel-os' --labels 'changelog:highlight,changelog:breaking,changelog:fixed,changelog:added,changelog:changed,changelog:new-hardware,changelog:sensor,changelog:skip' --old '<previous-version>' --new '<new-version>' < ../token.txt
+   changelog-harvester --with-token --forge-owner 'ariel-os' --forge-repo 'ariel-os' --labels 'changelog:highlight,changelog:breaking,changelog:fixed,changelog:added,changelog:changed,changelog:new-hardware,changelog:sensor,changelog:skip' --old '<previous-version>' --new '<new-version>' < ../token.txt | sed -e 's|^// changelog:highlight|### Release Highlights\n|' -e 's|^// changelog:breaking|### Breaking Changes\n|' -e 's|^// changelog:fixed|### Fixed\n|' -e 's|^// changelog:added|### Added\n|' -e 's|^// changelog:changed|### Changed\n|' -e 's|^// changelog:new-hardware|### New Supported Hardware\n|' -e 's|^// changelog:sensor|### New Sensor Drivers\n|'
    ```
-
    `<previous-version>` and `<new-version>` must be replaced with references (or commit IDs) to the previous and new versions respectively (the new version's reference may be `upstream/main` assuming `upstream` is the name of the remote associated to the `ariel-os/ariel-os` repository).
    An authentication token must also be provided (through the `token.txt` file in the command above), see the documentation for details.
 
