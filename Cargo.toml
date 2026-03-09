@@ -30,6 +30,7 @@ members = [
   "src/lib/ringbuffer",
   "src/sensors/ariel-os-sensor-lis2du12",
   "src/sensors/ariel-os-sensor-lps22df",
+  "src/sensors/ariel-os-sensor-sth3x",
   "src/sensors/ariel-os-sensor-stts22h",
   "tests/benchmarks/bench_sched_flags",
   "tests/benchmarks/bench_sched_yield",
