@@ -174,8 +174,8 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
 /// This is currently only available from the thread that hosts the network stack, and panics
 /// otherwise. This restriction will be lifted in the future (by generalization in
 /// [`embedded_nal_coap`] to allow different mutexes).
-// This deprecation will get us rid of having embedded_nal_coap as a public dependency, replacing
-// it with coap_request.
+// This deprecation serves to eventually free this up to have a single argument representing the
+// origin.
 #[deprecated(note = "use `request_to_udp_unprotected` directly")]
 pub async fn coap_client()
 -> &'static embedded_nal_coap::CoAPRuntimeClient<'static, CONCURRENT_REQUESTS> {
@@ -208,9 +208,17 @@ pub async fn coap_client()
 /// This is currently only available from the thread that hosts the network stack, and panics
 /// otherwise. This restriction will be lifted in the future (by generalization in
 /// [`embedded_nal_coap`] to allow different mutexes).
+///
+/// # Future development
+///
+/// On the long run, this function should return `impl coap_request::Stack`. It does currently not
+/// do that, as we lack the expression options to describe that the returned type has some
+/// additional constraints (most usefully, that its `::RequestMessage` implemnts
+/// `MutableWritableMessage`, and for coapcore we'd also like to know that the type is even a
+/// concrete implementation of it).
 pub async fn request_to_udp_unprotected(
     address: core::net::SocketAddr,
-) -> impl coap_request::Stack {
+) -> embedded_nal_coap::RequestingCoAPClient<'static, CONCURRENT_REQUESTS> {
     #[expect(deprecated, reason = "code will be moved in here when item is removed")]
     coap_client().await.to(address)
 }
