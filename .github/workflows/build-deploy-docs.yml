@@ -155,10 +155,10 @@ jobs:
               -p ariel-os-stm32
           echo "<meta http-equiv=\"refresh\" content=\"0; url=ariel_os\">" > target/doc/index.html
           mkdir -p ./_site/dev/docs/api
-          cp -r target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
-          cp -r target/doc/* ./_site/dev/docs/api
-          cp -r target/riscv32imac-unknown-none-elf/doc/src/ariel_os_esp ./_site/dev/docs/api/src
-          cp -r target/riscv32imac-unknown-none-elf/doc/static.files/* ./_site/dev/docs/api/static.files
+          mv target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
+          mv target/doc/* ./_site/dev/docs/api
+          mv target/riscv32imac-unknown-none-elf/doc/src/ariel_os_esp ./_site/dev/docs/api/src
+          mv target/riscv32imac-unknown-none-elf/doc/static.files/* ./_site/dev/docs/api/static.files
           # hack ariel-os-esp source files in the source files sidebar
           sed -i 's/\["ariel_os",\["",\[\],\["lib.rs","sensors.rs"\]\]\]/["ariel_os",["",[],["lib.rs","sensors.rs"]]],["ariel_os_esp",["",[["i2c",[["controller",[],["mod.rs"]]],["mod.rs"]],["spi",[["main",[],["mod.rs"]]],["mod.rs"]]],["gpio.rs","lib.rs","time_driver.rs","uart.rs"]]]/g' ./_site/dev/docs/api/src-files.js
           # hack ariel-os-esp in the sidebar
