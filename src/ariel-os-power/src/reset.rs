@@ -58,11 +58,12 @@ impl ResetReason {
             Self::PowerOnReset => 0,
             Self::ResetPin => 1,
             Self::SoftwareReset => 2,
-            Self::StandbyWakeup => 3,
-            Self::Field => 4,
-            Self::PowerFailure => 5,
-            Self::WatchdogReset => 6,
-            Self::Other => 7,
+            Self::ExternalInterrupt => 3,
+            Self::Rtc => 4,
+            Self::Field => 5,
+            Self::PowerFailure => 6,
+            Self::WatchdogReset => 7,
+            Self::Other => 8,
         }
     }
 
@@ -71,11 +72,12 @@ impl ResetReason {
             0 => Ok(Self::PowerOnReset),
             1 => Ok(Self::ResetPin),
             2 => Ok(Self::SoftwareReset),
-            3 => Ok(Self::StandbyWakeup),
-            4 => Ok(Self::Field),
-            5 => Ok(Self::PowerFailure),
-            6 => Ok(Self::WatchdogReset),
-            7 => Ok(Self::Other),
+            3 => Ok(Self::ExternalInterrupt),
+            4 => Ok(Self::Rtc),
+            5 => Ok(Self::Field),
+            6 => Ok(Self::PowerFailure),
+            7 => Ok(Self::WatchdogReset),
+            8 => Ok(Self::Other),
             _ => Err(()),
         }
     }
