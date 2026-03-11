@@ -41,6 +41,8 @@ pub enum ResetReason {
     /// The reset has been triggered by entering an RF field (e.g., an NFC/RFID field) able to
     /// power the microcontroller.
     Field,
+    /// The reset has been triggered by a tamper-detection mechanism.
+    Tamper,
     /// The reset has been triggered by hardware following a power failure, e.g., a brownout.
     PowerFailure,
     /// The reset has been triggered by the watchdog.
