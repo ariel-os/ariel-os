@@ -169,7 +169,7 @@ jobs:
         with:
           # Not checking fragments because lychee is bad at finding them when they exist. Especially "range" fragment like some/url#123-127 tbf.
           # Also not checking verbatims because all of those errors are link that are written by scripts.
-          args: --root-dir _site/dev/docs/api --require-https --no-progress --offline
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --offline _site/dev/docs/api
           fail: false
 
       - name: Keep only the summary table for the comment
