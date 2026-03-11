@@ -155,10 +155,33 @@ jobs:
               -p ariel-os-stm32
           echo "<meta http-equiv=\"refresh\" content=\"0; url=ariel_os\">" > target/doc/index.html
           mkdir -p ./_site/dev/docs/api
-          mv target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
-          mv target/doc/* ./_site/dev/docs/api
+          cp -r target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
+          cp -r target/doc/* ./_site/dev/docs/api
+          cp -r target/riscv32imac-unknown-none-elf/doc/src/ariel_os_esp ./_site/dev/docs/api/src
+          cp -r target/riscv32imac-unknown-none-elf/doc/static.files/* ./_site/dev/docs/api/static.files
+          # hack ariel-os-esp source files in the source files sidebar
+          sed -i 's/\["ariel_os",\["",\[\],\["lib.rs","sensors.rs"\]\]\]/["ariel_os",["",[],["lib.rs","sensors.rs"]]],["ariel_os_esp",["",[["i2c",[["controller",[],["mod.rs"]]],["mod.rs"]],["spi",[["main",[],["mod.rs"]]],["mod.rs"]]],["gpio.rs","lib.rs","time_driver.rs","uart.rs"]]]/g' ./_site/dev/docs/api/src-files.js
           # hack ariel-os-esp in the sidebar
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
+
+      - name: Check the API docs links
+        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2
+        with:
+          # Not checking fragments because lychee is bad at finding them when they exist. Especially "range" fragment like some/url#123-127 tbf.
+          # Also not checking verbatims because all of those errors are link that are written by scripts.
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --offline
+          fail: false
+
+      - name: Keep only the summary table for the comment
+        run: |
+          # Only keep the # Summary and the below table
+          # using sed arcanes I read about on SO
+          # sed '/^##\s/,/$EOF/{d}' lychee/out.md >> summary-content.md
+
+      - name: Comment Summary on PR
+        uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2
+        with:
+          path: summary-comment.md
 
       - name: Install mdbook
         uses: taiki-e/install-action@d6e286fa45544157a02d45a43742857ebbc25d12 # v2
