@@ -34,9 +34,10 @@ pub enum ResetReason {
     /// Using [`reboot()`] however does not guarantee that this variant will be returned, as this
     /// depends on the microcontroller's ability to distinguish this.
     SoftwareReset,
-    /// The reset has been triggered through a wake-up event which woke up the microcontroller from a
-    /// low-power standby state.
-    StandbyWakeup,
+    /// The reset has been triggered by an external-interrupt wake-up event.
+    ExternalInterrupt,
+    /// The reset has been triggered by a real-time clock (RTC) wake-up event.
+    Rtc,
     /// The reset has been triggered by entering an RF field (e.g., an NFC/RFID field) able to
     /// power the microcontroller.
     Field,
