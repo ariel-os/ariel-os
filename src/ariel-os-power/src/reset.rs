@@ -134,7 +134,7 @@ pub(crate) fn save_reset_reason() {
             } else if resetreas.sreq() {
                 reset_reason = ResetReason::SoftwareReset;
             } else if resetreas.off() {
-                reset_reason = ResetReason::StandbyWakeup;
+                reset_reason = ResetReason::ExternalInterrupt;
             } else if resetreas.lockup() | resetreas.dif() {
                 reset_reason = ResetReason::Other;
             };
