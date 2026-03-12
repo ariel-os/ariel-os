@@ -6,7 +6,6 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
-cfg-if = { workspace = true }
 const_panic = { workspace = true }
 critical-section = { workspace = true }
 linkme = { workspace = true }
