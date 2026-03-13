@@ -3,5 +3,7 @@ apps:
     selects:
       - sw/threading
       - sw/benchmark
+      - "context::stm32f072rb":
+          - too-little-memory
     conflicts:
       - ram-tiny
