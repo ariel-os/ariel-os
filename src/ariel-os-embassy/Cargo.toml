@@ -89,8 +89,8 @@ uart = ["ariel-os-embassy-common/uart", "ariel-os-hal/uart"]
 usb = ["dep:embassy-usb", "ariel-os-hal/usb"]
 usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
 
-# embassy-net requires embassy-time and support for timeouts in the executor
-net = ["dep:embassy-net", "time"]
+# `embassy-net` requires a time driver, which HALs provide.
+net = ["dep:embassy-net", "ariel-os-hal/time"]
 usb-ethernet = ["net", "usb"]
 ## Selects the network backend that goes through tun/tap (native only)
 tuntap = ["net"]
