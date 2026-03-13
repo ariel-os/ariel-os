@@ -1,0 +1,10 @@
+boards:
+  nice-nano-v2:
+    chip: nrf52840
+    flags:
+      - has_usb_device_port
+    leds:
+      led0:
+        color: blue
+        pin: P0_15
+        active: high
