@@ -208,7 +208,7 @@ chips:
           - only available through the CryptoCell
       i2c_controller: supported
       spi_main: supported
-      uart: needs_testing
+      uart: supported
       logging: supported
       storage: supported
       wifi: not_available
