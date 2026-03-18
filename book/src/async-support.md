@@ -43,13 +43,17 @@ Minor variations across them are omitted for clarity.
 Additionally, no stability guarantees are currently provided regarding the memory layout.
 
 > [!TIP]
-> `readelf --sections <path-to-elf>` can be used to obtain the exact locations of sections.
+> If needed, the following command can be used to obtain the exact locations of sections:
+>
+> ```sh
+> readelf --sections <path-to-elf>
+> ```
 
 - Ariel OS favors placing the ISR stack (`.isr_stack`) as close as possible to the beginning of the RAM.
   On most architectures, it can be placed at the very beginning.
 - Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
-- The thread stacks, if [multithreading][multithreading-book] is enabled, are currently declared as individual `static`s, they are therefore likely not contiguously allocated in the `.bss` section.
-- Depending on the architecture the uninitialized section is either called `.uninit` or `.noinit`.
+- The thread stacks, if [multithreading][multithreading-book] is enabled, are currently allocated as individual `static`s, anywhere in the `.bss` section.
+- Depending on the architecture, the uninitialized section is either called `.uninit` or `.noinit`.
 - The heap, if enabled, takes the remaining space.
   `heapsize_required` allows link-time checking that there is enough space for the heap.
 
