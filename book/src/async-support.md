@@ -38,15 +38,15 @@ Running multiple executors allows running them with different priorities.
 
 ## Memory Layout
 
-<!-- These diagrams can be rendered with Svgbob https://github.com/ivanceras/svgbob -->
-
-> [!NOTE]
-> This section only documents the current implementation.
-> No stability guarantees are currently provided regarding the memory layout.
+This section is intended to give a relatively high-level overview of the memory layout used by Ariel OS across processor architectures and MCU families.
+Minor variations across them are omitted for clarity.
+Additionally, no stability guarantees are currently provided regarding the memory layout.
 
 > [!TIP]
 > `readelf --sections <path-to-elf>` can be used to obtain the exact locations of sections.
 
+- Ariel OS favors placing the ISR stack (`.isr_stack`) as close as possible to the beginning of the RAM.
+  On most architectures, it can be placed at the very beginning.
 - Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
 - The thread stacks, if [multithreading][multithreading-book] is enabled, are currently declared as individual `static`s, they are therefore likely not contiguously allocated in the `.bss` section.
 - Depending on the architecture the uninitialized section is either called `.uninit` or `.noinit`.
@@ -73,9 +73,13 @@ The diagrams are based on the following resources:
     - Xtensa ESP32: https://github.com/esp-rs/esp-hal/blob/d9815b205115b3403d798c28f1bfee4c9eea8fd1/xtensa-lx-rt/xtensa.in.x#L55
 -->
 
+<!-- These diagrams can be rendered with Svgbob https://github.com/ivanceras/svgbob -->
+
 <figure>
 <pre>
            .-------------. - beginning of RAM
+           |      ⋮      |
+           +-------------+ -
            |             |
          | |             | ^
 Addresses| | .isr_stack  | | ≥ isr_stacksize_required + executor_stacksize_required
@@ -121,6 +125,9 @@ Addresses| | .isr_stack  | | ≥ isr_stacksize_required + executor_stacksize_req
 <figure>
 <pre>
            .-------------. - beginning of RAM
+           |      ⋮      |
+           +-------------+ -
+           |             |
            |             |
          | |             | ^
 Addresses| | .isr_stack  | | ≥ "isr_stacksize_required"
