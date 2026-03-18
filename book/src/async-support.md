@@ -49,8 +49,9 @@ Additionally, no stability guarantees are currently provided regarding the memor
 > readelf --sections <path-to-elf>
 > ```
 
-- Ariel OS favors placing the ISR stack (`.isr_stack`) as close as possible to the beginning of the RAM.
-  On most architectures, it can be placed at the very beginning.
+- Ariel OS places the ISR stack (`.isr_stack`) before the `.data` section and at the very beginning of the RAM on architectures and MCUs that allow it.
+  This provides a form of stack overflow protection, as write attempts would then collide with the boundary of the physical RAM and trigger a fault, instead of overwriting `static` data.
+  See the [`flip-link` crate][flip-link-readme] for an explanation of the technique.
 - Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
 - The thread stacks, if [multithreading][multithreading-book] is enabled, are currently allocated as individual `static`s, anywhere in the `.bss` section.
 - Depending on the architecture, the uninitialized section is either called `.uninit` or `.noinit`.
@@ -191,3 +192,4 @@ Addresses| | .isr_stack  | | ≥ "isr_stacksize_required"
 [interrupt-executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.InterruptExecutor.html
 [executor-rustdoc]: https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.Executor.html
 [asynch-thread-executor-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/asynch/thread_executor/index.html
+[flip-link-readme]: https://github.com/knurling-rs/flip-link/blob/199347bebde115e690393dd1f5016f2703083df9/README.md
