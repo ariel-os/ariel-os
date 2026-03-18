@@ -40,8 +40,12 @@ Running multiple executors allows running them with different priorities.
 
 <!-- These diagrams can be rendered with Svgbob https://github.com/ivanceras/svgbob -->
 
+> [!NOTE]
 > This section only documents the current implementation.
 > No stability guarantees are currently provided regarding the memory layout.
+
+> [!TIP]
+> `readelf --sections <path-to-elf>` can be used to obtain the exact locations of sections.
 
 - Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
 - The thread stacks, if [multithreading][multithreading-book] is enabled, are currently declared as individual `static`s, they are therefore likely not contiguously allocated in the `.bss` section.
