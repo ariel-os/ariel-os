@@ -43,6 +43,7 @@ Running multiple executors allows running them with different priorities.
 > This section only documents the current implementation.
 > No stability guarantees are currently provided regarding the memory layout.
 
+- Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
 - The thread stacks, if [multithreading][multithreading-book] is enabled, are currently declared as individual `static`s, they are therefore likely not contiguously allocated in the `.bss` section.
 - Depending on the architecture the uninitialized section is either called `.uninit` or `.noinit`.
 - The heap, if enabled, takes the remaining space.
@@ -59,9 +60,13 @@ Addresses| | .isr_stack  | | ≥ isr_stacksize_required + executor_stacksize_req
            +-------------+ -
            |             |
            |             |
-           |    .data    |
-           |             |
            |             |    .- - .-------------.
+           |             |    |    |      ⋮      |
+           |    .data    |    |    +-------------+
+           |             |    |    |    Async    |
+           |             |    |    |    tasks    |
+           |             |    |    |      ...    |
+           |             |    |    +-------------+
            +-------------+ - -'    |      ⋮      |
            |             |         +-------------+
            |             |         |   [Thread   |
@@ -100,7 +105,13 @@ Addresses| | .isr_stack  | | ≥ "isr_stacksize_required"
            +-------------+ -
            |             |
            |             |
-           |    .data    |    .- - .-------------.
+           |             |    .- - .-------------.
+           |             |    |    |      ⋮      |
+           |             |    |    +-------------+
+           |    .data    |    |    |    Async    |
+           |             |    |    |    tasks    |
+           |             |    |    |      ...    |
+           |             |    |    +-------------+
            |             |    |    |      ⋮      |
            |             |    |    +-------------+ -
            +-------------+ - -'    |   Executor  | ^
