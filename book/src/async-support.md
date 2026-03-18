@@ -56,6 +56,9 @@ Running multiple executors allows running them with different priorities.
 <!--
 The diagrams are based on the following resources:
 
+- Location of the `.isr_stack` section (inserted by Ariel OS):
+    - `build.rs`: https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-rt/build.rs#L17-L34
+    - `isr_stack.ld.in`: https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-rt/isr_stack.ld.in#L1-L12
 - Location of the `.data` section
     - Cortex-M: https://github.com/rust-embedded/cortex-m/blob/84e5c011068f01b7716684d20f45841cdfe3f285/cortex-m-rt/link.x.in#L126
     - RISC-V ESP32: https://github.com/rust-embedded/riscv/blob/187453b7904f997c4aa679d5bcf135f16c8853f8/riscv-rt/link.x.in#L129
