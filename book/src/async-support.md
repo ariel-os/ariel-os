@@ -49,6 +49,23 @@ Running multiple executors allows running them with different priorities.
 - The heap, if enabled, takes the remaining space.
   `heapsize_required` allows link-time checking that there is enough space for the heap.
 
+<!--
+The diagrams are based on the following resources:
+
+- Location of the `.data` section
+    - Cortex-M: https://github.com/rust-embedded/cortex-m/blob/84e5c011068f01b7716684d20f45841cdfe3f285/cortex-m-rt/link.x.in#L126
+    - RISC-V ESP32: https://github.com/rust-embedded/riscv/blob/187453b7904f997c4aa679d5bcf135f16c8853f8/riscv-rt/link.x.in#L129
+    - Xtensa ESP32: https://github.com/esp-rs/esp-hal/blob/d9815b205115b3403d798c28f1bfee4c9eea8fd1/xtensa-lx-rt/xtensa.in.x#L36
+- Location of the `.bss` section
+    - Cortex-M: https://github.com/rust-embedded/cortex-m/blob/84e5c011068f01b7716684d20f45841cdfe3f285/cortex-m-rt/link.x.in#L161
+    - RISC-V ESP32: https://github.com/rust-embedded/riscv/blob/187453b7904f997c4aa679d5bcf135f16c8853f8/riscv-rt/link.x.in#L150
+    - Xtensa ESP32: https://github.com/esp-rs/esp-hal/blob/d9815b205115b3403d798c28f1bfee4c9eea8fd1/xtensa-lx-rt/xtensa.in.x#L47
+- Location and name of the `.uninit`/`.noinit` section
+    - Cortex-M: https://github.com/rust-embedded/cortex-m/blob/84e5c011068f01b7716684d20f45841cdfe3f285/cortex-m-rt/link.x.in#L175
+    - RISC-V ESP32: https://github.com/rust-embedded/riscv/blob/187453b7904f997c4aa679d5bcf135f16c8853f8/riscv-rt/link.x.in#L168
+    - Xtensa ESP32: https://github.com/esp-rs/esp-hal/blob/d9815b205115b3403d798c28f1bfee4c9eea8fd1/xtensa-lx-rt/xtensa.in.x#L55
+-->
+
 <figure>
 <pre>
            .-------------. - beginning of RAM
