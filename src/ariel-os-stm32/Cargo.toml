@@ -27,6 +27,7 @@ embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
 portable-atomic = { workspace = true }
+rand_core = { workspace = true, optional = true }
 static_cell = { workspace = true }
 
 [target.'cfg(use_stm32_single_bank)'.dependencies]
@@ -79,7 +80,14 @@ storage = ["dep:embassy-embedded-hal"]
 usb = []
 
 eth = []
-eth-stm32 = ["dep:embassy-embedded-hal", "eth"]
+# The `hwrng` Cargo feature is enabled through the laze module of the same name.
+eth-stm32 = [
+  "dep:ariel-os-random",
+  "dep:embassy-embedded-hal",
+  "dep:rand_core",
+  "ariel-os-random?/csprng",
+  "eth",
+]
 
 ## Enables defmt support.
 defmt = ["dep:defmt", "embassy-stm32/defmt"]

@@ -7,12 +7,14 @@ bind_interrupts!(struct Irqs {
     ETH => eth::InterruptHandler;
 });
 
+type MacAddress = [u8; 6];
+
 pub type NetworkDevice = Ethernet<'static, ETH, GenericPhy>;
 
 pub fn device(peripherals: &mut crate::OptionalPeripherals) -> NetworkDevice {
     static PKTS: StaticCell<eth::PacketQueue<4, 4>> = StaticCell::new();
 
-    let mac_addr = [0xCA, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC];
+    let mac_addr = generate_random_aai_mac_addr();
 
     Ethernet::new(
         PKTS.init(eth::PacketQueue::<4, 4>::new()),
@@ -30,4 +32,17 @@ pub fn device(peripherals: &mut crate::OptionalPeripherals) -> NetworkDevice {
         GenericPhy::new(0),
         mac_addr,
     )
+}
+
+fn generate_random_aai_mac_addr() -> MacAddress {
+    use rand_core::RngCore as _;
+
+    let mut eui48 = [0u8; _];
+    ariel_os_random::crypto_rng().fill_bytes(&mut eui48);
+
+    // Enforce the `?2-??-??-??-??-??` pattern of an AAI (Administratively Assigned Identifier).
+    eui48[0] &= 0xf0;
+    eui48[0] |= 0x02;
+
+    eui48
 }

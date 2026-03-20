@@ -1353,6 +1353,7 @@ modules:
   - name: eth-stm32
     selects:
       - has_eth_stm32
+      - hwrng
       - network
     provides_unique:
       - network_device
