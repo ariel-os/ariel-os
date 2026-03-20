@@ -99,6 +99,11 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "0.0.4 -> 0.0.8"
 
+[[audits.nrf-modem]]
+who = "Nils Ponsard <nils.ponsard@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.10.1 -> 0.10.2"
+
 [[audits.nrfxlib-sys]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
@@ -131,6 +136,12 @@ delta = "0.4.8 -> 0.4.11"
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 version = "0.1.0"
+
+[[audits.tinyrlibc]]
+who = "Nils Ponsard <nils.ponsard@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.5.0 -> 0.5.1"
+notes = "Documentation changes, no functional changes."
 
 [[audits.try-lock-portable-atomic]]
 who = "chrysn <chrysn@fsfe.org>"
