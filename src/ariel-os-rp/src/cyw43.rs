@@ -52,7 +52,7 @@ pub async fn join(mut control: cyw43::Control<'static>) {
 }
 
 #[embassy_executor::task]
-async fn wifi_cyw43_task(runner: Runner<'static, Output<'static>, CywSpi>) -> ! {
+async fn wifi_cyw43_task(runner: Runner<'static, cyw43::SpiBus>) -> ! {
     runner.run().await
 }
 
@@ -118,7 +118,7 @@ pub async fn device<'a, 'b: 'a>(
     //     .await;
 
     // this needs to be spawned here (before using `control`)
-    spawner.spawn(wifi_cyw43_task(runner)).unwrap();
+    spawner.spawn(wifi_cyw43_task(runner).unwrap());
 
     control.init(clm).await;
 

@@ -32,7 +32,7 @@ fn main() {
     info!("main(): starting");
 
     // Here we spawn our task.
-    spawner().spawn(async_task()).unwrap();
+    spawner().spawn(async_task().unwrap());
 
     for _ in 0..10 {
         // With `block_on()`, async functions can be called from a thread.
