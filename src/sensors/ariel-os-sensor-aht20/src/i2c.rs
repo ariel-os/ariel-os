@@ -46,6 +46,7 @@ impl<I2C: I2c + Send> Aht20<I2C> {
             state: AtomicState::new(State::Uninitialized),
             label,
             i2c: OnceLock::new(),
+            #[cfg(not(feature = "no_runner"))]
             signaling: Signal::new(),
             reading: ReadingSignal::new(),
         }
@@ -74,6 +75,8 @@ impl<I2C: I2c + Send> Aht20<I2C> {
                 }
 
                 if buf[0] & crate::CALIBRATION_STATUS != 0 {
+                    #[cfg(feature = "debug")]
+                    ariel_os_debug::log::info!("Sensor is Calibrated");
                     break;
                 }
 
@@ -181,12 +184,12 @@ impl<I2C: I2c + Send> Aht20<I2C> {
         .await
         .map_err(|_| ReadingError::SensorAccess)?;
         // Wait for at least 80 ms, see Section 5.4.3 of the Datasheet
-        Timer::after_millis(160).await;
+        Timer::after_millis(80).await;
         #[cfg(feature = "debug")]
         ariel_os_debug::log::info!("Looping over status bit");
         let mut buf = [0u8];
         loop {
-            match i2c.write_read(I2C_ADDRESS, &[crate::Command::ReadStatusReg as u8], &mut buf).await {
+            match i2c.read(I2C_ADDRESS, &mut buf).await {
                 // Busy
                 Err(e) if e.kind() == I2CErrorKind::NoAcknowledge(Data) => {}
                 Err(_) => {
@@ -242,7 +245,7 @@ impl<I2C: I2c + Send> Aht20<I2C> {
     }
 }
 
-impl<I2C: Send> Sensor for Aht20<I2C> {
+impl<I2C: I2c + Send> Sensor for Aht20<I2C> {
     fn trigger_measurement(&self) -> Result<(), TriggerMeasurementError> {
         self.reading.clear();
 
