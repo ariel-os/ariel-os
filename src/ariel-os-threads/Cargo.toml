@@ -12,7 +12,6 @@ include = ["src/**/*", "README.md"]
 ariel-os-debug = { workspace = true }
 ariel-os-runqueue = { workspace = true }
 ariel-os-utils = { workspace = true }
-cfg-if = { workspace = true }
 critical-section = { workspace = true }
 embassy-time = { workspace = true }
 embassy-time-driver = { workspace = true }

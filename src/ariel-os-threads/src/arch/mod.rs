@@ -40,20 +40,24 @@ pub trait Arch {
     fn set_stopped(_thread_id: crate::ThreadId) {}
 }
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "cortex-m")] {
+cfg_select! {
+    context = "cortex-m" => {
         mod cortex_m;
         pub use cortex_m::Cpu;
-    } else if #[cfg(context = "riscv")] {
+    }
+    context = "riscv" => {
         mod riscv;
         pub use riscv::Cpu;
-    } else if #[cfg(context = "xtensa")] {
+    }
+    context = "xtensa" => {
         mod xtensa;
         pub use xtensa::Cpu;
-    } else if #[cfg(context = "native")] {
+    }
+    context = "native" => {
         mod native;
         pub use native::Cpu;
-    } else {
+    }
+    _ => {
         pub struct Cpu;
         impl Arch for Cpu {
             type ThreadData = ();
