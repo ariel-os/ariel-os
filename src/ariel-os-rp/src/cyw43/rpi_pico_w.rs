@@ -9,7 +9,7 @@ bind_interrupts!(pub struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<CYW43_PIO>;
 });
 
-pub type CywSpi = PioSpi<'static, CYW43_PIO, 0, CYW43_DMA_CH>;
+pub type CywSpi = PioSpi<'static, CYW43_PIO, 0>;
 
 pub struct Cyw43Periphs {
     pub pwr: Peri<'static, peripherals::PIN_23>,
