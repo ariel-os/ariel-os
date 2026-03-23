@@ -29,7 +29,9 @@ static_cell = { workspace = true, optional = true }
 cyw43 = { version = "0.7.0", features = ["firmware-logs"], optional = true }
 
 # https://github.com/KizzyCode/cyw43-firmware-rust/pull/1
-cyw43-firmware = { git = "https://github.com/KizzyCode/cyw43-firmware-rust/", rev = "06bb42531c0445043b3005745afcdce9de8730f4", optional = true }
+cyw43-firmware = { git = "https://github.com/KizzyCode/cyw43-firmware-rust/", rev = "06bb42531c0445043b3005745afcdce9de8730f4", features = [
+  "nvram",
+], optional = true }
 cyw43-pio = { version = "0.10.0", optional = true }
 
 # BLE dependencies
