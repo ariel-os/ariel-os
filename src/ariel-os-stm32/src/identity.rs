@@ -1,7 +1,7 @@
-pub struct DeviceId(&'static [u8; 12]);
+pub struct DeviceId([u8; 12]);
 
 impl ariel_os_embassy_common::identity::DeviceId for DeviceId {
-    type Bytes = &'static [u8; 12];
+    type Bytes = [u8; 12];
 
     #[allow(
         refining_impl_trait_reachable,

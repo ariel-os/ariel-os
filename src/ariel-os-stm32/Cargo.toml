@@ -15,7 +15,7 @@ cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
-  "arch-cortex-m",
+  "platform-cortex-m",
 ] }
 embassy-stm32 = { workspace = true, default-features = false, features = [
   "memory-x",
@@ -40,7 +40,7 @@ embassy-stm32 = { workspace = true, default-features = false, features = [
 ] }
 
 [build-dependencies]
-stm32-metapac = { version = "18.0.0", default-features = false, features = [
+stm32-metapac = { version = "21.0.0", default-features = false, features = [
   "metadata",
 ] }
 
