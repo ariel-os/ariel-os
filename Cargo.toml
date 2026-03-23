@@ -154,6 +154,9 @@ ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 ariel-os-sensor-lis2du12 = { path = "src/sensors/ariel-os-sensor-lis2du12" }
 ariel-os-sensor-lps22df = { path = "src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-stts22h = { path = "src/sensors/ariel-os-sensor-stts22h" }
+ariel-os-sensor-aht20 = { path = "src/sensors/ariel-os-sensor-aht20" }
+
+
 
 const-str = "1.0.0"
 const_panic = { version = "0.2.8", default-features = false }

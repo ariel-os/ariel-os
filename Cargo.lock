@@ -533,6 +533,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensor-aht20"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-debug",
+ "ariel-os-hal",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "crc",
+ "critical-section",
+ "embassy-executor",
+ "embassy-futures",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embedded-hal-async",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-sensor-lis2du12"
 version = "0.1.0"
 dependencies = [
@@ -1596,9 +1614,9 @@ dependencies = [
 
 [[package]]
 name = "crc"
-version = "3.3.0"
+version = "3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9710d3b3739c2e349eb44fe848ad0b7c8cb1e42bd87ee49371df2f7acaf3e675"
+checksum = "5eb8a2a1cd12ab0d987a5d5e825195d372001a4094a0376319d5a0ad71c1ba0d"
 dependencies = [
  "crc-catalog",
 ]
@@ -4227,7 +4245,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a793df0d7afeac54f95b471d3af7f0d4fb975699f972341a4b76988d49cdf0c"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.5",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -5630,6 +5648,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-sensor-aht20",
  "ariel-os-sensor-lis2du12",
  "ariel-os-sensor-lps22df",
  "ariel-os-sensor-stts22h",
@@ -6772,7 +6791,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
