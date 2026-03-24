@@ -96,9 +96,9 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: PB8,
 });
 
-#[cfg(any(context = "st-nucleo-f303re"))]
+#[cfg(any(context = "st-nucleo-f072rb", context = "st-nucleo-f303re"))]
 pub type SensorI2c = i2c::controller::I2C1;
-#[cfg(any(context = "st-nucleo-f303re"))]
+#[cfg(any(context = "st-nucleo-f072rb", context = "st-nucleo-f303re"))]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: PB9,
     i2c_scl: PB8,

@@ -531,6 +531,26 @@ chips:
       wifi: not_available
       ble: not_available
 
+  stm32f072rb:
+    name: STM32F072RB
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_output: supported
+      hwrng: not_available
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: supported
+        comments:
+          - removing items not supported
+      user_usb: supported
+      ethernet_over_usb: needs_testing
+      wifi: not_available
+      ble: not_available
+
   stm32f303cb:
     name: STM32F303CB
     manufacturer: STMicroelectronics
@@ -1067,6 +1087,13 @@ builders:
     tier: "3"
     support:
 
+  st-nucleo-f072rb:
+    chip: stm32f072rb
+    tier: "2"
+    support:
+      user_usb: not_available
+      ethernet_over_usb: not_available
+
   st-nucleo-f303re:
     chip: stm32f303re
     tier: "2"
@@ -1314,6 +1341,11 @@ boards:
     url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f042k6.html
     builders:
       - st-nucleo-f042k6
+
+  - name: ST NUCLEO-F072RB
+    url: https://www.st.com/en/evaluation-tools/nucleo-f072rb.html
+    builders:
+      - st-nucleo-f072rb
 
   - name: ST NUCLEO-F303RE
     url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f303re.html

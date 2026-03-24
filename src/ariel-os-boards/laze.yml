@@ -194,6 +194,15 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART2
+- name: st-nucleo-f072rb
+  parent: stm32f072rb
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
 - name: st-nucleo-f303re
   parent: stm32f303re
   provides:

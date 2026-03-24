@@ -92,6 +92,15 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // Side UART of Arduino v3 connector
+#[cfg(context = "st-nucleo-f072rb")]
+pub type TestUart<'a> = uart::USART1<'a>;
+#[cfg(context = "st-nucleo-f072rb")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PA10,
+    uart_tx: PA9,
+});
+
+// Side UART of Arduino v3 connector
 #[cfg(context = "st-nucleo-f303re")]
 pub type TestUart<'a> = uart::USART1<'a>;
 #[cfg(context = "st-nucleo-f303re")]

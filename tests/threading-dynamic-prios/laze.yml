@@ -3,5 +3,7 @@ apps:
     selects:
       - single-core
       - sw/threading
+      - "context::stm32f072rb":
+          - too-little-memory
     conflicts:
       - ram-tiny

@@ -4,6 +4,8 @@ apps:
       - sw/threading
       - "context::stm32c031c6":
           - too-little-memory
+      - "context::stm32f072rb":
+          - too-little-memory
     conflicts:
       # This example uses five threads with the default stack size of 2KiB,
       # which is too much for the smallest MCUs.
