@@ -11,7 +11,7 @@ pub async fn init() {
     #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
     stts22h::init().await;
 
-    #[cfg(any(context = "espressif-esp32-s3-devkitc-1"))]
+    #[cfg(any(context = "unihiker-k10"))]
     aht20::init().await;
 }
 
@@ -129,7 +129,7 @@ mod stts22h {
 pub use stts22h::STTS22H_I2C;
 
 
-#[cfg(context = "espressif-esp32-s3-devkitc-1")]
+#[cfg(context = "unihiker-k10")]
 mod aht20 {
     use ariel_os::i2c::controller::I2cDevice;
 
@@ -155,5 +155,5 @@ mod aht20 {
 }
 
 #[allow(unused, reason = "should be directly accessible without going through the registry")]
-#[cfg(context = "espressif-esp32-s3-devkitc-1")]
+#[cfg(context = "unihiker-k10")]
 pub use aht20::AHT20_I2C;
