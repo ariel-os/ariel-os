@@ -114,8 +114,6 @@ ariel_os::hal::define_peripherals!(Peripherals {
 
 #[cfg(context = "espressif-esp32-s3-devkitc-1")]
 pub type SensorI2c = i2c::controller::I2C1;
-
-
 #[cfg(context = "espressif-esp32-s3-devkitc-1")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: GPIO47,

@@ -30,7 +30,7 @@ enum Command {
     /// This command has unclear side effects on the CRC
     /// when used after a measurement has been triggered.
     /// Issuing a general Read command and reading a single byte
-    /// has the same effect and thus should be prefered.
+    /// has the same effect and thus should be preferred.
     ReadStatusReg = 0x71,
 }
 
@@ -85,7 +85,7 @@ fn t_accuracy(temp: i32) -> SampleMetadata {
     }
     // Otherwise we are outstide of the scope of work of the sensor
     else {
-        unreachable!("We are outisde of the working conditions of this sensor");
+        unreachable!("We are outside of the working conditions of this sensor");
     }
 }
 
@@ -111,7 +111,7 @@ fn h_accuracy(humi: i32) -> SampleMetadata {
 
 /// Calculate the CRC of a 5 byte value.
 /// The algorithm is described in section 5.4.4
-/// The important informations are:
+/// The important information are:
 /// - the polynomial: X^8 + X^5 + X^4 + 1,
 /// - and the initial value: 0xFF,
 ///
