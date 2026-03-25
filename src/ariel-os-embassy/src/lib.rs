@@ -396,6 +396,15 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         hal::cyw43::join(control).await;
     };
 
+    #[cfg(any(context = "ulanzi-tc001"))]
+    {
+        let buzzer_pin = peripherals.GPIO15.take().unwrap();
+        let _buzz = ariel_os_hal::gpio::Output::new(
+            buzzer_pin,
+            ariel_os_hal::gpio::Level::Low
+        );
+    }
+
     // mark used
     let _ = peripherals;
 
