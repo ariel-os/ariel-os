@@ -34,7 +34,6 @@ pub struct Aht20<I2C> {
     state: AtomicState,
     label: Option<&'static str>,
     i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2C>>,
-    #[cfg(not(feature = "no_runner"))]
     signaling: Signal<CriticalSectionRawMutex, ()>,
     reading: ReadingSignal<ReadingResult<Samples>>,
 }
@@ -47,7 +46,6 @@ impl<I2C: I2c + Send> Aht20<I2C> {
             state: AtomicState::new(State::Uninitialized),
             label,
             i2c: OnceLock::new(),
-            #[cfg(not(feature = "no_runner"))]
             signaling: Signal::new(),
             reading: ReadingSignal::new(),
         }
@@ -146,7 +144,6 @@ impl<I2C: I2c + Send> Aht20<I2C> {
     /// # Note
     ///
     /// [`Aht20::init()`] needs to be called and `await`ed before calling this method.
-    #[cfg(not(feature = "no_runner"))]
     pub async fn run(&'static self) -> ! {
         loop {
             self.signaling.wait().await;
@@ -247,33 +244,16 @@ impl<I2C: I2c + Send> Sensor for Aht20<I2C> {
             }
         }
 
-        #[cfg(not(feature = "no_runner"))]
         self.signaling.signal(());
 
         Ok(())
     }
 
-    #[cfg(not(feature = "no_runner"))]
     fn wait_for_reading(&'static self) -> ReadingWaiter {
         match self.state.get() {
             State::Measuring => {
                 self.state.set(State::Enabled);
 
-                ReadingWaiter::new(self.reading.wait())
-            }
-            State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
-            State::Uninitialized | State::Disabled | State::Sleeping => {
-                ReadingWaiter::new_err(ReadingError::NonEnabled)
-            }
-        }
-    }
-
-    #[cfg(feature = "no_runner")]
-    fn wait_for_reading(&'static self) -> ReadingWaiter {
-        match self.state.get() {
-            State::Measuring => {
-                self.state.set(State::Enabled);
-                self.reading.signal(block_on(self.measure()));
                 ReadingWaiter::new(self.reading.wait())
             }
             State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
