@@ -28,6 +28,7 @@ members = [
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
+  "src/sensors/ariel-os-sensor-aht20",
   "src/sensors/ariel-os-sensor-lis2du12",
   "src/sensors/ariel-os-sensor-lps22df",
   "src/sensors/ariel-os-sensor-stts22h",
