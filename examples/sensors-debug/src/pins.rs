@@ -112,7 +112,6 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: PB8,
 });
 
-
 #[cfg(context = "ulanzi-tc001")]
 pub type SensorI2c = i2c::controller::I2C1;
 #[cfg(context = "esp")]
