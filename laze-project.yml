@@ -1228,7 +1228,7 @@ modules:
   - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
-      # The cellular modem provides it's own network configuration.
+      # The cellular modem provides its own network configuration.
       - ?ltem-nrf-modem
       - ?network-config-ipv4-dhcp
       - ?network-config-ipv4-static
@@ -1283,7 +1283,7 @@ modules:
   - name: network-config-ipv6-default
     help: use default network configuration method
     selects:
-      # The cellular modem provides it's own network configuration.
+      # The cellular modem provides its own network configuration.
       - ?ltem-nrf-modem
       - ?network-config-ipv6-static
       - network-config-ipv6
