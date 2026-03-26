@@ -1222,14 +1222,12 @@ modules:
 
   - name: network
     selects:
-      - ?ipv4
       - network_device
+      - ?ipv4
 
   - name: network-config-ipv4-default
     help: use default network configuration method
     selects:
-      # The cellular modem provides its own network configuration.
-      - ?ltem-nrf-modem
       - ?network-config-ipv4-dhcp
       - ?network-config-ipv4-static
       - network-config-ipv4
@@ -1274,6 +1272,7 @@ modules:
 
   - name: ipv4
     selects:
+      - network
       - network-config-ipv4-default
     env:
       global:
@@ -1283,8 +1282,6 @@ modules:
   - name: network-config-ipv6-default
     help: use default network configuration method
     selects:
-      # The cellular modem provides its own network configuration.
-      - ?ltem-nrf-modem
       - ?network-config-ipv6-static
       - network-config-ipv6
 
@@ -1302,6 +1299,7 @@ modules:
 
   - name: ipv6
     selects:
+      - network
       - network-config-ipv6-default
     env:
       global:
