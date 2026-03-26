@@ -18,9 +18,6 @@ use embedded_hal_async::i2c::{
 };
 use portable_atomic::{AtomicU8, Ordering};
 
-#[cfg(feature = "no_runner")]
-use embassy_futures::block_on;
-
 /// I2C address of the sensor device.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 pub enum I2cAddress {
@@ -51,8 +48,6 @@ pub struct Sht3x<I2C> {
     label: Option<&'static str>,
     i2c: OnceLock<Mutex<CriticalSectionRawMutex, I2C>>,
     address: AtomicU8,
-
-    #[cfg(not(feature = "no_runner"))]
     signaling: Signal<CriticalSectionRawMutex, ()>,
     reading: ReadingSignal<ReadingResult<Samples>>,
 }
@@ -235,7 +230,6 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
     /// # Note
     ///
     /// [`Sht3x::init()`] needs to be called and `await`ed before calling this method.
-    #[cfg(not(feature = "no_runner"))]
     pub async fn run(&'static self) -> ! {
         loop {
             self.signaling.wait().await;
@@ -295,7 +289,6 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
             return Err(ReadingError::SensorAccess);
         }
 
-        // FIXME: Find a way to not use floats
         let temp_raw = u16::from_be_bytes(temp_buf);
         let temp_float = f32::from(temp_raw) * 175.0 / 65535.0 - 45.0;
         #[allow(clippy::cast_possible_truncation)]
@@ -332,33 +325,16 @@ impl<I2C: Send> Sensor for Sht3x<I2C> {
             }
         }
 
-        #[cfg(not(feature = "no_runner"))]
         self.signaling.signal(());
 
         Ok(())
     }
 
-    #[cfg(not(feature = "no_runner"))]
     fn wait_for_reading(&'static self) -> ReadingWaiter {
         match self.state.get() {
             State::Measuring => {
                 self.state.set(State::Enabled);
 
-                ReadingWaiter::new(self.reading.wait())
-            }
-            State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
-            State::Uninitialized | State::Disabled | State::Sleeping => {
-                ReadingWaiter::new_err(ReadingError::NonEnabled)
-            }
-        }
-    }
-
-    #[cfg(feature = "no_runner")]
-    fn wait_for_reading(&'static self) -> ReadingWaiter {
-        match self.state.get() {
-            State::Measuring => {
-                self.state.set(State::Enabled);
-                self.reading.signal(block_on(self.measure()));
                 ReadingWaiter::new(self.reading.wait())
             }
             State::Enabled => ReadingWaiter::new_err(ReadingError::NotMeasuring),
