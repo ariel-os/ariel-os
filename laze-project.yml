@@ -1228,8 +1228,8 @@ modules:
 
   - name: network
     selects:
-      - ?ipv4
       - network_device
+      - ?ipv4
 
   - name: network-config-ipv4-default
     help: use default network configuration method
@@ -1278,6 +1278,7 @@ modules:
 
   - name: ipv4
     selects:
+      - network
       - network-config-ipv4-default
     env:
       global:
@@ -1304,6 +1305,7 @@ modules:
 
   - name: ipv6
     selects:
+      - network
       - network-config-ipv6-default
     env:
       global:
