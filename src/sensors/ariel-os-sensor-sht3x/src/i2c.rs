@@ -290,14 +290,12 @@ impl<I2C: I2c + Send> Sht3x<I2C> {
         }
 
         let temp_raw = u16::from_be_bytes(temp_buf);
-        let temp_float = f32::from(temp_raw) * 175.0 / 65535.0 - 45.0;
-        #[allow(clippy::cast_possible_truncation)]
-        let temp = (100.0 * temp_float) as i32;
+        // T = St/(2^16 - 1) * 175 - 45 in Celsius. See section 4.13
+        let temp = ((i32::from(temp_raw) * 100 * 175) / 65535) - 4500;
 
         let humi_raw = u16::from_be_bytes(humi_buf);
-        let humi_float = f32::from(humi_raw) * 100.0 / 65535.0;
-        #[allow(clippy::cast_possible_truncation)]
-        let humi = (100.0 * humi_float) as i32;
+        // H = Sh/(2^16 - 1) * 100 . See section 4.13
+        let humi = (i32::from(humi_raw) * 100 * 100) / 65535;
 
         let t_accuracy = crate::t_accuracy(temp);
         let sample_temp = Sample::new(temp, t_accuracy);
@@ -436,8 +434,8 @@ mod tests {
                     true => {
                         // Provide different samples for consecutive readings.
                         let samples: (u16, u16) = match self.reading_count {
-                            0 => (2500, 6390),  // T: -3832, RH: 975
-                            1 => (1800, 60000), // T: -4019, RH: 9155
+                            0 => (2500, 6390),  // T: -3833, RH: 975
+                            1 => (1800, 60000), // T: -4020, RH: 9155
                             _ => panic!("too many readings"),
                         };
                         // Temperature
@@ -482,7 +480,7 @@ mod tests {
                 };
 
                 assert_eq!(t_channel.label(), Label::Temperature);
-                assert_eq!(t_sample.value(), Ok(-3832));
+                assert_eq!(t_sample.value(), Ok(-3833));
 
                 assert_eq!(rh_channel.label(), Label::RelativeHumidity);
                 assert_eq!(rh_sample.value(), Ok(975));
@@ -513,7 +511,7 @@ mod tests {
                 else {
                     unreachable!()
                 };
-                assert_eq!(t_sample.value(), Ok(-4019));
+                assert_eq!(t_sample.value(), Ok(-4020));
                 assert_eq!(
                     t_sample.metadata(),
                     SampleMetadata::SymmetricalError {
@@ -580,7 +578,7 @@ mod tests {
                 };
 
                 // Should return the second reading.
-                assert_eq!(t_sample.value(), Ok(-4019));
+                assert_eq!(t_sample.value(), Ok(-4020));
                 assert_eq!(rh_sample.value(), Ok(9155));
             })
             .await
@@ -657,7 +655,7 @@ mod tests {
                 };
 
                 // Should return the second reading.
-                assert_eq!(t_sample.value(), Ok(-4019));
+                assert_eq!(t_sample.value(), Ok(-4020));
                 assert_eq!(rh_sample.value(), Ok(9155));
             })
             .await
