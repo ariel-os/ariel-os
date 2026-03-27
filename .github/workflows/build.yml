@@ -111,6 +111,9 @@ jobs:
     # Ignore the PR labels in nightly builds.
     if: ${{ github.event_name == 'schedule' || needs.check-labels.outputs.label != 'ci-build:skip' }}
 
+    permissions:
+      pull-requests: write
+
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # clang-sys and thus bindgen is sensitive to multiple installed versions
@@ -354,6 +357,28 @@ jobs:
           echo "LAZE_DISABLE=${LAZE_DISABLE}"
           laze build -mg info-boards | uniq
           CONFIG_WIFI_NETWORK='test' CONFIG_WIFI_PASSWORD='password' laze build -DCARGO_ARGS+='--locked' --global --partition hash:${{ matrix.partition }}
+
+      - name: Get size of example binary
+        if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule' && matrix.partition == '1/12'
+        id: size
+        run: |
+          sudo apt install llvm
+          {
+            echo 'binsize<<EOF'
+            llvm-size -x build/bin/nrf52840dk/cargo/thumbv7em-none-eabihf/release/blinky
+            echo 'EOF'
+          } | tee -a "$GITHUB_OUTPUT"
+
+      - name: Comment binary size info on PR
+        if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule' && matrix.partition == '1/12'
+        uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2
+        with:
+          message: |
+            <!-- binary size -->
+            Binary size of the `blinky` example on the nRF52840-DK:
+            ```
+            ${{ steps.size.outputs.binsize }}
+            ```
 
       # cleanup previous build artifacts. do in background (no need to wait).
       - name: "cleanup stable build artifacts"
