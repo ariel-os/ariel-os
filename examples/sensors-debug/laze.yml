@@ -18,3 +18,15 @@ apps:
       - st-nucleo-wb55
       - st-steval-mkboxpro
       - stm32u083c-dk
+    selects:
+      - ?nrf91-modem-sensor
+
+
+modules:
+  - name: nrf91-modem-sensor
+    selects:
+      - nrf91-modem
+    env:
+      global:
+        FEATURES:
+          - nrf-modem
