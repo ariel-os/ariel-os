@@ -276,6 +276,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-random",
  "ariel-os-rt",
  "ariel-os-storage",
@@ -462,7 +463,13 @@ version = "0.4.0"
 dependencies = [
  "cfg-if",
  "cortex-m",
+ "critical-section",
+ "defmt 1.0.1",
+ "embassy-nrf",
+ "embassy-rp",
+ "embassy-stm32",
  "esp-hal",
+ "portable-atomic",
 ]
 
 [[package]]
