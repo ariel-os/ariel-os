@@ -36,6 +36,7 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
 ariel-os-macros = { path = "../ariel-os-macros" }
+ariel-os-power = { workspace = true }
 ariel-os-random = { path = "../ariel-os-random", optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
 ariel-os-storage = { workspace = true, optional = true }
@@ -177,6 +178,7 @@ executor-none = []
 defmt = [
   "ariel-os-embassy-common/defmt",
   "ariel-os-hal/defmt",
+  "ariel-os-power/defmt",
   "embassy-net?/defmt",
   "embassy-time?/defmt",
   "embassy-usb?/defmt",
