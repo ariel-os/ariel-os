@@ -12,24 +12,13 @@ ariel_os::hal::define_peripherals!(Peripherals {
 pub type SensorI2c = i2c::controller::TWISPI0;
 #[cfg(any(context = "nrf5340-app", context = "nrf91"))]
 pub type SensorI2c = i2c::controller::SERIAL0;
-#[cfg(all(
-    context = "nrf",
-    not(any(
-        context = "bbc-microbit-v2",
-        context = "nordic-thingy-91-x-nrf9151",
-        context = "nrf5340-app"
-    ))
-))]
-ariel_os::hal::define_peripherals!(Peripherals {
-    i2c_sda: P0_00,
-    i2c_scl: P0_01,
-});
+
 #[cfg(context = "bbc-microbit-v2")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: P0_16,
     i2c_scl: P0_08,
 });
-#[cfg(context = "nrf5340-app")]
+#[cfg(context = "nrf5340dk-app")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: P0_20,
     i2c_scl: P0_22,
