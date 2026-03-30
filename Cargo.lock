@@ -5612,6 +5612,7 @@ dependencies = [
  "ariel-os-sensor-lps22df",
  "ariel-os-sensor-stts22h",
  "ariel-os-sensors",
+ "ariel-os-sensors-gnss-time-ext",
  "embassy-sync 0.7.2",
  "once_cell",
 ]

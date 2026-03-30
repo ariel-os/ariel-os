@@ -15,8 +15,15 @@ ariel-os-sensor-lis2du12 = { workspace = true }
 ariel-os-sensor-lps22df = { workspace = true }
 ariel-os-sensor-stts22h = { workspace = true }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
+ariel-os-sensors-gnss-time-ext = { workspace = true, features = [
+  "defmt",
+], optional = true }
 embassy-sync = { workspace = true }
 once_cell = { workspace = true }
+
+[features]
+# Enable this feature when a GNSS driver is in use to print the time.
+gnss = ["dep:ariel-os-sensors-gnss-time-ext"]
 
 [lints]
 workspace = true
