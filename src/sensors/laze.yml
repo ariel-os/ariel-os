@@ -1,4 +1,5 @@
 subdirs:
   - ariel-os-sensor-lis2du12
+  - ariel-os-sensor-lis2mdl
   - ariel-os-sensor-lps22df
   - ariel-os-sensor-stts22h
