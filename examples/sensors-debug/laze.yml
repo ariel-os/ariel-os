@@ -2,7 +2,6 @@ apps:
   - name: sensors-debug
     context:
       - bbc-microbit-v2
-      - esp
       - heltec-wifi-lora-32-v3
       - nordic-thingy-91-x-nrf9151
       - nrf52840
@@ -18,3 +17,4 @@ apps:
       - st-nucleo-wb55
       - st-steval-mkboxpro
       - stm32u083c-dk
+      - ulanzi-tc001
