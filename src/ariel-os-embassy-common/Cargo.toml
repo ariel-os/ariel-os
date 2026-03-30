@@ -40,5 +40,7 @@ _test = ["external-interrupts", "i2c", "spi", "uart"]
 
 ble = ["dep:static_cell", "dep:trouble-host"]
 
+cellular-networking = []
+
 [lints]
 workspace = true
