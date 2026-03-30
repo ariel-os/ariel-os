@@ -5,6 +5,8 @@ mod i2c_bus;
 mod pins;
 mod sensors;
 
+#[cfg(feature = "gnss")]
+use ariel_os::sensors::sensor::Samples;
 use ariel_os::{
     debug::log::{debug, error, info},
     sensors::{
@@ -13,6 +15,8 @@ use ariel_os::{
     },
     time::Timer,
 };
+#[cfg(feature = "gnss")]
+use ariel_os_sensors_gnss_time_ext::{GnssTimeExt as _, GnssTimeExtError};
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::Peripherals) {
@@ -37,6 +41,10 @@ async fn main(peripherals: pins::Peripherals) {
                 Ok(samples) => {
                     for (reading_channel, sample) in samples.samples() {
                         print_sample(sensor, sample, reading_channel);
+                    }
+                    #[cfg(feature = "gnss")]
+                    if sensor.categories().contains(&Category::Gnss) {
+                        print_gnss_time(sensor, &samples);
                     }
                 }
                 Err(err) => {
@@ -154,6 +162,39 @@ fn print_sample(sensor: &dyn Sensor, sample: Sample, reading_channel: ReadingCha
         SampleMetadata::ChannelTemporarilyUnavailable | SampleMetadata::ChannelDisabled => {
             // Printing is already handled above.
             unreachable!();
+        }
+    }
+}
+
+#[cfg(feature = "gnss")]
+fn print_gnss_time(sensor: &dyn Sensor, samples: &Samples) {
+    use ariel_os::sensors::Category;
+    let display_name = sensor.display_name().unwrap_or("unknown");
+    let label = sensor.label().unwrap_or("no label");
+    match samples.time_of_fix_timestamp_nanos() {
+        Ok(t) => {
+            info!(
+                "{} ({}): GNSS time in nanoseconds: {}",
+                display_name, label, t
+            );
+        }
+        Err(GnssTimeExtError::InvalidSensor) => {
+            error!(
+                "{} ({}): Trying to read time on an incompatible sensor !",
+                display_name, label,
+            );
+        }
+        Err(GnssTimeExtError::Reading(SampleError::TemporarilyUnavailable)) => {
+            info!(
+                "{} ({}): GNSS sensor couldn't determine current time.",
+                display_name, label,
+            );
+        }
+        Err(GnssTimeExtError::Reading(e)) => {
+            error!(
+                "{} ({}): Error reading one of the time channel: {:?}",
+                display_name, label, e
+            );
         }
     }
 }

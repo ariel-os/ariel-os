@@ -105,6 +105,11 @@ criteria = "safe-to-deploy"
 delta = "2.9.2 -> 3.0.3+3.0.2"
 notes = "Review extends to the source of nrfxlib-sys only. The library ships also proprietary C components, which were not (and, due to being closed source, can not) be reviewed."
 
+[[audits.num-conv]]
+who = "Nils Ponsard <nils.ponsard@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "0.2.0 -> 0.2.1"
+
 [[audits.pretty-hex]]
 who = "ROMemories <152802150+ROMemories@users.noreply.github.com>"
 criteria = "safe-to-deploy"

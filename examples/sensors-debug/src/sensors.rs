@@ -10,6 +10,9 @@ pub async fn init() {
 
     #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
     stts22h::init().await;
+
+    #[cfg(context = "nrf91")]
+    nrf91::init().await;
 }
 
 #[cfg(any(context = "st-steval-mkboxpro"))]
@@ -45,7 +48,10 @@ mod lis2du12 {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro"))]
 pub use lis2du12::LIS2DU12_I2C;
 
@@ -82,7 +88,10 @@ mod lps22df {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro"))]
 pub use lps22df::LPS22DF_I2C;
 
@@ -121,6 +130,33 @@ mod stts22h {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
 pub use stts22h::STTS22H_I2C;
+
+#[cfg(context = "nrf91")]
+mod nrf91 {
+    use ariel_os_sensor_nrf91_gnss::{
+        Nrf91Gnss,
+        config::{Config, GnssOperationMode},
+    };
+
+    pub static NRF91_GNSS: Nrf91Gnss = const { Nrf91Gnss::new(Some("Gnss")) };
+
+    #[ariel_os::reexports::linkme::distributed_slice(ariel_os::sensors::SENSOR_REFS)]
+    #[linkme(crate = ariel_os::reexports::linkme)]
+    static NRF91_GNSS_REF: &'static dyn ariel_os::sensors::Sensor = &NRF91_GNSS;
+    pub(super) async fn init() {
+        NRF91_GNSS
+            .init(Config::new(GnssOperationMode::Continuous, true))
+            .await;
+    }
+
+    #[ariel_os::task(autostart)]
+    pub async fn nrf91_gnss_runner() {
+        NRF91_GNSS.run().await
+    }
+}
