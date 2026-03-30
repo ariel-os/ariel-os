@@ -48,7 +48,7 @@ usbd-hid = { version = "0.10.0", optional = true }
 # ISA-specific
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [
-  "arch-cortex-m",
+  "platform-cortex-m",
 ] }
 
 # Required for debug-over-uart.
