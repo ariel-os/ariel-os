@@ -23,6 +23,11 @@ async fn tcp_echo() {
     let mut rx_buffer = [0; 256];
     let mut tx_buffer = [0; 256];
 
+    #[cfg(feature = "ipv6")]
+    info!("ipv6 enabled");
+    #[cfg(feature = "ipv4")]
+    info!("ipv4 enabled");
+
     info!("waiting for interface to come up...");
     stack.wait_config_up().await;
 
@@ -32,7 +37,11 @@ async fn tcp_echo() {
 
         info!("Connecting...");
         // Connect to https://tcpbin.com/ without using DNS
+        #[cfg(all(feature = "ipv4", not(feature = "ipv6")))]
         let host_addr = embassy_net::Ipv4Address::from_str("45.79.112.203").unwrap();
+        #[cfg(feature = "ipv6")]
+        let host_addr =
+            embassy_net::Ipv6Address::from_str("2600:3c01::f03c:91ff:feab:f98b").unwrap();
         if let Err(e) = socket.connect((host_addr, 4242)).await {
             warn!("connect error: {:?}", e);
             Timer::after_secs(10).await;
