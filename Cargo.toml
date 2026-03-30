@@ -28,6 +28,7 @@ members = [
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
+  "src/sensors/ariel-os-sensor-aht20",
   "src/sensors/ariel-os-sensor-lis2du12",
   "src/sensors/ariel-os-sensor-lps22df",
   "src/sensors/ariel-os-sensor-stts22h",
@@ -150,6 +151,7 @@ ariel-os-threads = { path = "src/ariel-os-threads" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.
+ariel-os-sensor-aht20 = { path = "src/sensors/ariel-os-sensor-aht20" }
 ariel-os-sensor-lis2du12 = { path = "src/sensors/ariel-os-sensor-lis2du12" }
 ariel-os-sensor-lps22df = { path = "src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-stts22h = { path = "src/sensors/ariel-os-sensor-stts22h" }

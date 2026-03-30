@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-aht20
+    selects:
+      - host-test-only

@@ -1,12 +1,12 @@
 use ariel_os::hal::{i2c, peripherals};
 
-#[cfg(context = "esp")]
-pub type SensorI2c = i2c::controller::I2C0;
-#[cfg(context = "esp")]
-ariel_os::hal::define_peripherals!(Peripherals {
-    i2c_sda: GPIO2,
-    i2c_scl: GPIO0,
-});
+// #[cfg(context = "esp")]
+// pub type SensorI2c = i2c::controller::I2C0;
+// #[cfg(context = "esp")]
+// ariel_os::hal::define_peripherals!(Peripherals {
+//     i2c_sda: GPIO2,
+//     i2c_scl: GPIO0,
+// });
 
 #[cfg(any(context = "nrf52833", context = "nrf52840"))]
 pub type SensorI2c = i2c::controller::TWISPI0;
@@ -110,4 +110,12 @@ pub type SensorI2c = i2c::controller::I2C1;
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: PB9,
     i2c_scl: PB8,
+});
+
+#[cfg(any(context = "unihiker-k10"))]
+pub type SensorI2c = i2c::controller::I2C1;
+#[cfg(any(context = "unihiker-k10"))]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_sda: GPIO47,
+    i2c_scl: GPIO48,
 });
