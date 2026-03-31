@@ -49,7 +49,7 @@ Additionally, no stability guarantees are currently provided regarding the memor
 > readelf --sections <path-to-elf>
 > ```
 
-- Ariel OS places the ISR stack (`.isr_stack`) before the `.data` section and at the very beginning of the RAM on architectures and MCUs that allow it.
+- Ariel OS places the ISR stack, `.isr_stack` (`.stack` on Xtensa), before the `.data` section and at the very beginning of the RAM on architectures and MCUs that allow it.
   This provides a form of stack overflow protection, as write attempts would then collide with the boundary of the physical RAM and trigger a fault, instead of overwriting `static` data.
   See the [`flip-link` crate][flip-link-readme] for an explanation of the technique.
 - Async tasks are allocated statically, as individual `static`s, anywhere in the `.bss` section.
@@ -65,6 +65,9 @@ The diagrams are based on the following resources:
 - Location of the `.isr_stack` section (inserted by Ariel OS):
     - `build.rs`: https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-rt/build.rs#L17-L34
     - `isr_stack.ld.in`: https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-rt/isr_stack.ld.in#L1-L12
+- Location of the `.stack` section (defined upstream):
+    - https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-rt/isr_stack_xtensa.ld.in#L2-L3
+    - https://github.com/esp-rs/esp-hal/blob/909db474ae7df254bb0e51cc5ba94c13411813d4/esp-hal/ld/sections/stack.x#L3
 - Location of the ISR stack of the second SMP core:
     - https://github.com/ariel-os/ariel-os/blob/2002a036f49848e9c049b735ed0053bce23b6172/src/ariel-os-threads/src/lib.rs#L565-L567
 - Location of the `.data` section
