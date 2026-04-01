@@ -83,7 +83,7 @@ The table below presents those supported in Ariel OS and which hardware and hos
 
 | Logging transport                        | Supported               | laze module                  | Required hardware                                                                         | Required host tool              |
 | ---------------------------------------- | :---------------------: | ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------- |
-| Debug channel                            | Available on all chips  | `logging-over-debug-channel` | Debug probe attached to the debug interface                                               | Debug channel-enabled host tool |
+| [Debug channel][debug-channel-book]      | Available on all chips  | `logging-over-debug-channel` | Debug probe attached to the debug interface                                               | Debug channel-enabled host tool |
 | [USB CDC-ACM][usb-cdc-acm-glossary-book] | On ESP32 MCUs only      | `logging-over-usb`           | USB cable attached to the user USB port                                                   | Serial monitor                  |
 | [UART][uart-glossary-book]               | On ESP32 MCUs only      | `logging-over-uart`          | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board) | Serial monitor                  |
 
@@ -94,9 +94,8 @@ The table below presents those supported in Ariel OS and which hardware and hos
 > When a separate serial monitor is needed, [`defmt-print`][defmt-print-cratesio] can be used as `defmt`-enabled serial monitor.
 > If this is not possible, `defmt` should be disabled and [`log`](#log) used instead as logging facade.
 
-<!-- TODO: link to "debug interface" when the page exists -->
 > [!TIP]
-> When a logging transport other than the debug channel is enabled, logging can still be used when the debug channel is disabled either in software (by disabling the `logging-over-debug-channel` laze module) or in hardware when the debug interface itself is disabled.
+> When a logging transport other than the [debug channel][debug-channel-book] is enabled, logging can still be used when the debug channel is disabled either in software (by disabling the `logging-over-debug-channel` laze module) or in hardware when the debug interface itself is disabled.
 > This means that logging can still be used in production, even if the debug interface has been disabled.
 >
 > If this is unwanted, logging can be disabled altogether by disabling the [`logging`](#logging) laze module.
@@ -123,3 +122,4 @@ Currently, the firmware automatically switches at runtime between using USB CDC
 [defmt-print-cratesio]: https://crates.io/crates/defmt-print
 [debug-console-debug-console-book]: ./debug-console.md#debug-console
 [espflah-cratesio]: https://crates.io/crates/espflash
+[debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
