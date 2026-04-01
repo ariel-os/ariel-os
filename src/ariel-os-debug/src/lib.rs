@@ -198,7 +198,45 @@ pub mod backend {
     }
 }
 
-#[cfg(all(feature = "debug-console", feature = "std"))]
+#[cfg(all(feature = "debug-console", feature = "custom-log-handler"))]
+#[doc(hidden)]
+pub mod backend {
+    use embassy_sync::once_lock::OnceLock;
+
+    /// A function pointer that receives debug output as formatting arguments.
+    pub type LogHandler = fn(core::fmt::Arguments<'_>);
+
+    static LOG_HANDLER: OnceLock<LogHandler> = OnceLock::new();
+
+    /// Installs the debug log handler.
+    ///
+    /// Returns `Err(handler)` if a handler has already been installed.
+    pub fn install_log_handler(handler: LogHandler) -> Result<(), LogHandler> {
+        LOG_HANDLER.init(handler)
+    }
+
+    pub fn init() {
+        #[cfg(feature = "log")]
+        crate::logger::init();
+    }
+
+    #[doc(hidden)]
+    pub fn _print(args: core::fmt::Arguments<'_>) {
+        if let Some(log_handler) = LOG_HANDLER.try_get() {
+            log_handler(args);
+        }
+    }
+
+    #[macro_export]
+    macro_rules! println {
+        ($($arg:tt)*) => {{
+            #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
+            $crate::backend::_print(format_args!("{}\n", format_args!($($arg)*)));
+        }};
+    }
+}
+
+#[cfg(all(feature = "debug-console", feature = "std", not(feature = "custom-log-handler")))]
 mod backend {
     pub use std::println;
 
