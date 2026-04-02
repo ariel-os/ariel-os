@@ -24,7 +24,6 @@ contexts:
       - ?critical-section
       - ?hw/device-identity
       - ?lto
-      - ?semihosting
 
       # Selecting default toolchain here. try xtensa, stable, nightly.
       - ?xtensa
@@ -1160,6 +1159,7 @@ modules:
     help: use probe-rs as runner
     selects:
       - ?debug-console
+      - ?semihosting
       - defmt:
           - defmt-rtt
       - log:
@@ -1202,6 +1202,8 @@ modules:
           - probe-rs reset --chip ${PROBE_RS_CHIP} $@
 
   - name: openocd
+    selects:
+      - ?semihosting
     tasks:
       flash:
         cmd:
