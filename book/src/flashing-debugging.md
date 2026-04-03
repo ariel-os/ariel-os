@@ -24,6 +24,10 @@ probe-rs supports both SWD and JTAG, and allows to flash firmware, to reboot int
 When multiple host tools are available for a board, Ariel OS attempts to make the best choice, based on functionality and flashing performance.
 However, to specifically choose probe-rs as the host tool, the `probe-rs` [laze module][laze-modules-book] can be selected.
 
+> [!NOTE]
+> probe-rs is currently focused on *debug protocols* only.
+> It does not support other serial protocols used for [flashing through bootloaders](#flashing-through-bootloaders).
+
 <!-- NOTE: We refer to flashing a *board*, not just a microcontroller, as the flash memory may be outside the microcontroller. -->
 ## Flashing a Board
 
