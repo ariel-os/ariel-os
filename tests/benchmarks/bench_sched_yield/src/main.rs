@@ -1,7 +1,7 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{debug::println, thread};
+use ariel_os::{debug::log::println, thread};
 
 #[ariel_os::thread(autostart)]
 fn thread0() {
