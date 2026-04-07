@@ -13,6 +13,9 @@ pub async fn init() {
 
     #[cfg(context = "nrf91")]
     nrf91::init().await;
+
+    #[cfg(any(context = "unihiker-k10"))]
+    ltr303als01::init().await;
 }
 
 #[cfg(any(context = "st-steval-mkboxpro"))]
@@ -148,3 +151,33 @@ mod nrf91 {
         NRF91_GNSS.run().await;
     }
 }
+
+#[cfg(any(context = "unihiker-k10"))]
+mod ltr303als01 {
+    use ariel_os::i2c::controller::I2cDevice;
+
+    pub static LTR303ALS01_I2C: ariel_os_sensor_ltr303als::i2c::Ltr303Als01<I2cDevice<'_>> =
+        const { ariel_os_sensor_ltr303als::i2c::Ltr303Als01::new(Some("onboard")) };
+    #[ariel_os::reexports::linkme::distributed_slice(ariel_os::sensors::SENSOR_REFS)]
+    #[linkme(crate = ariel_os::reexports::linkme)]
+    static LTR303ALS01_I2C_REF: &'static dyn ariel_os::sensors::Sensor = &LTR303ALS01_I2C;
+    #[ariel_os::task(autostart)]
+    pub async fn ltr303als01_i2c_runner() {
+        LTR303ALS01_I2C.run().await;
+    }
+
+    pub(super) async fn init() {
+        let mut config = ariel_os_sensor_ltr303als::i2c::Config::default();
+
+    LTR303ALS01_I2C.init(
+            ariel_os_sensor_ltr303als::i2c::Peripherals {},
+            I2cDevice::new(crate::i2c_bus::I2C_BUS.get().unwrap()),
+            config
+        )
+        .await;
+    }
+}
+
+#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[cfg(any(context = "unihiker-k10"))]
+pub use ltr303als01::LTR303ALS01_I2C;
