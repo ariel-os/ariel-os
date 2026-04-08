@@ -18,9 +18,6 @@ use embedded_hal_async::i2c::{
     Error as _, ErrorKind as I2CErrorKind, I2c, NoAcknowledgeSource::Data,
 };
 
-#[cfg(feature = "no_runner")]
-use embassy_futures::block_on;
-
 // The I2C address is fixed
 const I2C_ADDRESS: u8 = 0x38;
 
