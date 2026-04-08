@@ -155,7 +155,7 @@ impl<I2C: I2c + Send> Aht20<I2C> {
     ///
     /// # Errors
     /// - When the I2C connection fails.
-    /// - When the CRC of either the temperature or the relative humidity are incorrect.
+    /// - When the received CRC is incorrect.
     ///
     async fn measure(&'static self) -> ReadingResult<Samples> {
         let mut i2c = self.i2c.get().await.lock().await;
@@ -189,7 +189,6 @@ impl<I2C: I2c + Send> Aht20<I2C> {
                     }
                 }
             }
-            // TODO: configuration
             #[cfg(not(test))]
             Timer::after_millis(5).await;
         }
