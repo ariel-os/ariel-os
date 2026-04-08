@@ -25,7 +25,7 @@ const I2C_ADRESS: u8 = 0x29;
 use crate::{AlsGain, AlsIntegrationTimeMs, AlsMeasurementRateMs, MeasuredAlsDataGain, Register, AlsPersist};
 use crate::PART_NUMBER;
 
-/// Configuration of the sensor
+/// Configuration of the sensor.
 #[derive(Debug, Clone, Copy)]
 pub struct Config {
     /// Gain used for the measurements. Impact the range of possible measurements.
@@ -38,7 +38,7 @@ pub struct Config {
     pub upper_threshold: u16,
     /// Upper threshold used to trip the interrupt pin.
     pub lower_threshold: u16,
-    /// Enables the interrupt functionnality
+    /// Enables the interrupt functionnality.
     pub interrupt_enable: bool,
     /// Reverses the level that will observe on the interrupt line
     /// in case of a sensor driver interrupt.
@@ -91,7 +91,7 @@ impl<I2C: I2c + Send> Ltr303Als01<I2C> {
         }
     }
 
-    /// Initialize the driver based on the given configuration
+    /// Initialize the driver based on the given configuration.
     pub async fn init(
         &'static self,
         _peripherals: Peripherals,
@@ -190,7 +190,7 @@ impl<I2C: I2c + Send> Ltr303Als01<I2C> {
         debug!("[LTR-303ALS-01] Initilization successful");
     }
 
-    /// Sets the configuration used by the sensor to the one provided by the user
+    /// Sets the configuration used by the sensor to the one provided by the user.
     ///
     /// # Errors
     ///
@@ -283,7 +283,7 @@ impl<I2C: I2c + Send> Ltr303Als01<I2C> {
         }
     }
 
-    /// Triggers a one-shot measurement and asynchronously return the readings when available
+    /// Triggers a one-shot measurement and asynchronously return the readings when available.
     ///
     /// # Errors
     ///
