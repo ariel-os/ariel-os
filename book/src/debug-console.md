@@ -8,6 +8,65 @@ The [`ariel_os::debug::println!()`][println-macro-rustdoc] macro is used to prin
 When the debug console is enabled, panic messages are automatically printed to it.
 If this is unwanted, the `panic-printing` [laze module][laze-modules-book] can be disabled.
 
+## Debug Output Backends
+
+The debug console backend determines where `ariel_os::debug::println!()`
+output, panic messages, and `log` output are sent.
+This is a separate choice from selecting the logging facade (`defmt` or `log`).
+
+In typical Ariel OS builds, the backend is usually selected by laze as part of
+the target and runner setup, and can be overridden through laze modules when
+needed.
+Only one backend can be selected at a time.
+
+| Backend                           | What it does                                                                                                                                     | How to select it                                                                                                                                                 |
+|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| RTT (`defmt-rtt` / `rtt-target`)  | Sends output over RTT. Use `defmt-rtt` with the `defmt` facade, and `rtt-target` with the `log` facade for human-readable debug console output.  | `defmt-rtt` is selected automatically when using `defmt` with `probe-rs`. `rtt-target` can be selected explicitly when you want RTT output for the `log` facade. |
+| `debug-uart`                      | Sends human-readable output over the board's configured debug UART. This is a good choice when you want logs on a serial console.                | Select the `debug-uart` laze module (only for the `log` facade).                                                                                                 |
+| `esp-println`                     | Uses `esp-println` on ESP targets. This integrates well with `espflash monitor`; with `defmt`, it also supports `defmt-espflash`.                | Selected automatically for ESP targets.                                                                                                                          |
+| `custom-log-handler`              | Calls an application-provided function for every `println!()` call and every `log` record. Until a handler is installed, it is a no-op.          | Select the `custom-log-handler` laze module.                                                                                                                     |
+| `std`                             | Sends output to the host standard output stream using `std::println!()`. This is the backend used by native builds.                              | Selected automatically for native builds.                                                                                                                        |
+
+### Using `custom-log-handler`
+
+`custom-log-handler` is intended for `println!()` output and for the `log`
+facade.
+Because the handler receives `core::fmt::Arguments<'_>`, it should format or
+forward the arguments immediately rather than storing them for later.
+
+Select the `debug-console` and `custom-log-handler` laze modules, and
+optionally `log` if you want `log` records to use the same backend.
+Then install the handler early during startup.
+The handler can only be installed once and cannot be removed.
+
+```rust
+use ariel_os::debug::{self, log::info};
+use core::fmt::Arguments;
+use std::fs::OpenOptions;
+use std::io::Write;
+
+fn my_log_handler(args: Arguments<'_>) {
+    // Do whatever you want with the line, such as writing it to a file or sending it to your server
+    if let Ok(mut file) = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("debug.log")
+    {
+        let _ = file.write_fmt(format_args!("{args}"));
+    }
+}
+
+#[ariel_os::task(autostart)]
+async fn main() {
+    let _ = debug::install_log_handler(my_log_handler);
+
+    debug::println!("Hello from println!");
+    info!("Hello from log!");
+}
+```
+
+Before `install_log_handler()` is called, this backend drops all output.
+
 ## Debug Logging
 
 Ariel OS supports debug logging on all platforms and it is enabled by default with the `debug-logging-facade` [laze module][laze-modules-book].

@@ -376,7 +376,7 @@ contexts:
     parent: ariel-os
     selects:
       - ?debug-console
-      - ?esp-println
+      - ?esp-debug-backend-default
     provides:
       - has_hwrng
     env:
@@ -1848,6 +1848,24 @@ modules:
         CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
         FEATURES:
           - ariel-os/esp-println
+
+  - name: esp-debug-backend-default
+    help: default debug backend selection for esp targets
+    context:
+      - esp
+    selects:
+      - esp-println
+
+  - name: custom-log-handler
+    help: use a custom log handler in ariel-os-debug
+    disables:
+      - esp-debug-backend-default
+    provides_unique:
+      - ariel-os-debug-backend
+    env:
+      global:
+        FEATURES:
+          - ariel-os/custom-log-handler
 
   - name: semihosting
     help: enable semihosting in ariel-os-debug

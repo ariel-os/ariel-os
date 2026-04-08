@@ -222,6 +222,7 @@ rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-debug/defmt-rtt"]
 esp-println = ["ariel-os-debug/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
+custom-log-handler = ["ariel-os-debug/custom-log-handler"]
 
 net = ["ariel-os-embassy/net"]
 
