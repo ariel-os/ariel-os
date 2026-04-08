@@ -118,6 +118,19 @@ pub mod log {
 #[cfg(feature = "log")]
 pub use log::{Debug2Format, Display2Format};
 
+#[cfg(not(any(feature = "log", feature = "defmt")))]
+#[doc(hidden)]
+mod dummy {
+    use core::fmt::{Debug, Display};
+    /// Dummy struct needed to run clippy on crates that don't select a logging facade.
+    pub struct Debug2Format<T: Debug>(pub T);
+
+    /// Dummy struct needed to run clippy on crates that don't select a logging facade.
+    pub struct Display2Format<T: Display>(pub T);
+}
+#[cfg(not(any(feature = "log", feature = "defmt")))]
+pub use dummy::{Debug2Format, Display2Format};
+
 // NOTE: log macros are defined within private modules so that `doc_cfg` does not produce
 // "feature flairs" on them.
 // The macros are still exported even though they are defined "within" private modules.
