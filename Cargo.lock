@@ -2597,9 +2597,9 @@ dependencies = [
 
 [[package]]
 name = "embedded-nal-coap"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d3a62b6f33c568ccdf95270354e050f4794233fbbaf0d358217cd82bdef45a6b"
+checksum = "5fffd086bf7f0179bc1088f83b26b80b37bd28c71f9309a0a20beb7eb930b2a7"
 dependencies = [
  "coap-handler",
  "coap-message",
@@ -2608,7 +2608,7 @@ dependencies = [
  "coap-request",
  "embassy-futures",
  "embassy-sync 0.7.2",
- "embedded-nal-async 0.8.0",
+ "embedded-nal-async 0.9.0",
  "heapless 0.9.1",
  "rand_core 0.9.3",
 ]
