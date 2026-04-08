@@ -167,14 +167,13 @@ mod ltr303als01 {
     }
 
     pub(super) async fn init() {
-        let mut config = ariel_os_sensor_ltr303als::i2c::Config::default();
-
-    LTR303ALS01_I2C.init(
-            ariel_os_sensor_ltr303als::i2c::Peripherals {},
-            I2cDevice::new(crate::i2c_bus::I2C_BUS.get().unwrap()),
-            config
-        )
-        .await;
+        let config = ariel_os_sensor_ltr303als::i2c::Config::default();
+        LTR303ALS01_I2C.init(
+                ariel_os_sensor_ltr303als::i2c::Peripherals {},
+                I2cDevice::new(crate::i2c_bus::I2C_BUS.get().unwrap()),
+                config
+            )
+            .await;
     }
 }
 
