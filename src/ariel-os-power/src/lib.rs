@@ -4,17 +4,28 @@
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![deny(missing_docs)]
 
-mod reset;
+pub mod reset;
 
-pub use reset::*;
-
-/// Initializes power management.
+/// Reboots the MCU.
 ///
-/// *Important*: this needs to be called as early as possible in the boot sequence.
-/// In particular, on microcontrollers whose reset reason needs to be cleared manually on each
-/// reset, this needs to be called before anything else has the change to clear it.
-/// This function may clear these bits.
-#[doc(hidden)]
-pub fn init() {
-    reset::save_reset_reason();
+/// This function initiates a software reset of the microcontroller and never returns.
+pub fn reboot() -> ! {
+    cfg_select! {
+        context = "cortex-m" => {
+            cortex_m::peripheral::SCB::sys_reset()
+        }
+        context = "esp" => {
+            esp_hal::system::software_reset()
+        }
+        context = "native" => {
+            std::process::exit(0)
+        }
+        context = "ariel-os" => {
+            compile_error!("reboot is not yet implemented for this platform")
+        }
+        _ => {
+            #[expect(clippy::empty_loop, reason = "for platform-independent tooling only")]
+            loop {}
+        }
+    }
 }

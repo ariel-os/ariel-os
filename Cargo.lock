@@ -461,6 +461,7 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.4.0"
 dependencies = [
+ "ariel-os-hal",
  "cortex-m",
  "defmt 1.0.1",
  "embassy-nrf",
