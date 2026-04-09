@@ -21,6 +21,12 @@ pub mod gpio;
 #[doc(hidden)]
 pub mod peripheral;
 
+pub mod power {
+    //! Provides facilities related to the MCU reset.
+
+    pub mod reset;
+}
+
 #[doc(hidden)]
 #[cfg(feature = "ble")]
 pub mod ble;
