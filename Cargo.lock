@@ -372,6 +372,7 @@ dependencies = [
  "bt-hci",
  "cfg-if",
  "const_panic",
+ "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
  "embassy-hal-internal",
