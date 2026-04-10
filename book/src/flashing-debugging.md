@@ -1,43 +1,43 @@
 # Flashing & Debugging
 
-Ariel OS makes it easy to flash and debug applications, by unifying the different existing flashing mechanisms and debug protocols and selecting the most suitable one, based on the target board and development and production requirements.
+Ariel OS makes it easy to flash and debug applications, by unifying the different existing flashing mechanisms and debug interface protocols and selecting the most suitable one, based on the target board and development and production requirements.
 
 > [!NOTE]
 > The terms "debug", "debugging", and "debugger" tend to refer to a wide array of overlapping concepts.
 > In the following, we define and use phrases that use narrower meanings, with the hope to make these clearer.
 
-## Debug Protocols, Interfaces, and Probes
+## Debug Interface Protocols, Debug Interfaces, and Probes
 
-*Debug protocols* allow reading and writing from and to system memory and processor registers, setting breakpoints, and stepping through the program execution, among other things.
-The two debug protocols supported by Ariel OS tooling are [JTAG][jtag-wikipedia] and [Serial Wire Debug (SWD)][swd-arm-spec]:
+*Debug interface protocols* allow reading and writing from and to system memory and processor registers, setting breakpoints, and stepping through the program execution, among other things.
+The two debug interface protocols supported by Ariel OS tooling are [JTAG][jtag-wikipedia] and [Serial Wire Debug (SWD)][swd-arm-spec]:
 SWD is a variant of JTAG with a reduced pin count but, being an Arm technology, it is only found on Arm-based microcontrollers, while JTAG is vendor-agnostic.
-Besides being a debug protocol, JTAG is actually more generic and, in particular, also enables boundary scans (automatically checking the traces of a PCB by taking direct control of the chip pins present on the board), which were originally its primary purpose.
+Besides being a debug interface protocol, JTAG is actually more generic and, in particular, also enables boundary scans (automatically checking the traces of a PCB by taking direct control of the chip pins present on the board), which were originally its primary purpose.
 
-Debug protocols interact with the microcontroller through a *debug interface*, which may be a physical interface or an interface internal to the microcontroller, connected to the processor and/or the microcontroller buses.
+Debug interface protocols interact with the microcontroller through a *debug interface*, which may be a physical interface or an interface internal to the microcontroller, connected to the processor and/or the microcontroller buses.
 
-As host computers do not have support for these debug protocols, a debug probe is necessary.
-*Debug probes* are USB devices that allow using these debug protocols, either with standard (e.g., [CMSIS-DAP][cmsis-dap]) or vendor-specific USB classes.
+As host computers do not have support for these debug interface protocols, a debug probe is necessary.
+*Debug probes* are USB devices that allow using these debug interface protocols, either with standard (e.g., [CMSIS-DAP][cmsis-dap]) or vendor-specific USB classes.
 In some cases, debug probes can also be built into the microcontrollers themselves, behind a USB interface.
 
 Ariel OS currently uses [probe-rs][probe-rs-tool-probe-rs-docs] to interact with debug probes.
-probe-rs supports both SWD and JTAG, and allows to flash firmware, to reboot into it, and to fetch the debug output from the running application over the debug protocol.
+probe-rs supports both SWD and JTAG, and allows to flash firmware, to reboot into it, and to fetch the debug output from the running application over the debug interface protocol.
 When multiple host tools are available for a board, Ariel OS attempts to make the best choice, based on functionality and flashing performance.
 However, to specifically choose probe-rs as the host tool, the `probe-rs` [laze module][laze-modules-book] can be selected.
 
 > [!NOTE]
-> probe-rs is currently focused on *debug protocols* only.
+> probe-rs is currently focused on *debug interface protocols* only.
 > It does not support other serial protocols used for [flashing through bootloaders](#flashing-through-bootloaders).
 
 <!-- NOTE: We refer to flashing a *board*, not just a microcontroller, as the flash memory may be outside the microcontroller. -->
 ## Flashing a Board
 
-In general, there are two ways of writing the firmware to the flash memory (or memories) where the processor(s) execute(s) from---i.e., to flash the board: either by using a debug protocol, or by booting into a bootloader available on the board and then using one of its supported methods.
+In general, there are two ways of writing the firmware to the flash memory (or memories) where the processor(s) execute(s) from---i.e., to flash the board: either by using a debug interface protocol, or by booting into a bootloader available on the board and then using one of its supported methods.
 
-### Flashing Trough Debug Protocols
+### Flashing Trough Debug Interface Protocols
 
-As debug protocols allow arbitrarily writing to system memory, they allow downloading the firmware into the flash memory, at the necessary location.
+As debug interface protocols allow arbitrarily writing to system memory, they allow downloading the firmware into the flash memory, at the necessary location.
 When the debug interface is available (e.g., during development), this is generally the preferred option when SWD is available.
-After flashing has completed, debug protocols allow rebooting the microcontroller into the newly-flashed firmware.
+After flashing has completed, debug interface protocols allow rebooting the microcontroller into the newly-flashed firmware.
 Alternatively, debug probes also often feature a wire that allows asserting the reset signal of the microcontroller, thus triggering a hardware reset.
 
 Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following table:
@@ -50,13 +50,13 @@ Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following tab
 | `reset`           | Reboots the target.                                                                                            |
 
 > [!TIP]
-> Debug protocols also allow writing the firmware to RAM (inside of flash) and rebooting from there, which could be useful during development as flash endurance is limited.
+> Debug interface protocols also allow writing the firmware to RAM (inside of flash) and rebooting from there, which could be useful during development as flash endurance is limited.
 > However, as microcontrollers have much less RAM than flash, this is not often applicable, and not currently supported by Ariel OS.
 
 > [!TIP]
-> As debug protocols offer more functionality than bootloaders, and are usually easier to use in an automated fashion, they are generally preferred as the flashing method.
+> As debug interface protocols offer more functionality than bootloaders, and are usually easier to use in an automated fashion, they are generally preferred as the flashing method.
 > However, sometimes they simply cannot be used, e.g., because the debug interface has been disabled in hardware or is not physically accessible.
-> Additionally, in some cases, flashing through the bootloader may be faster than using the debug protocol, in which case it may be preferable to use the faster method.
+> Additionally, in some cases, flashing through the bootloader may be faster than using the debug interface protocol, in which case it may be preferable to use the faster method.
 
 ### Flashing Through Bootloaders
 
