@@ -95,8 +95,8 @@ Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following tab
 <!-- TODO: rename support functionality "Logging" to "Debug Logging" -->
 <!-- TODO: mark "Debug Output" as not available on native -->
 <!-- TODO: possibly link to the relevant section of Debug Console; but must be consistent with the definition/behavior of `ariel_os::debug::println!()` -->
-Debug protocols as introduced above also allow providing an additional piece of functionality: a debug output.
-Two main techniques exist to implement such debug output over debug protocols: [semihosting][arm-semihosting-docs], and [Real Time Transfer (RTT)][segger-rtt-wiki].
+Debug interface protocols as introduced above also allow providing an additional piece of functionality: a debug output.
+Two main techniques exist to implement such debug output over debug interface protocols: [semihosting][arm-semihosting-docs], and [Real Time Transfer (RTT)][segger-rtt-wiki].
 Even though originally vendor-specific technologies, they have been extended to other architectures and vendors (e.g., [semihosting on RISC-V][riscv-semihosting-spec]), and can be used on every microcontroller currently supported by Ariel OS.
 
 <!-- TODO
@@ -142,11 +142,11 @@ That module also provides a [`println!()` macro][debug-log-println-macro-rustdoc
 Debug logging can use multiple transports; the table below presents those supported in Ariel OS and which hardware and host tool are required:
 
 <!-- TODO: clarify *exactly* under which conditions each of these get enabled -->
-| Debug logging transport | Description                                                         | Supported                    | How to enable                                                                    | Required hardware                                                                                                               | Required host tool             |
-| ----------------------- | ------------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Debug output            | Prints debug logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-protocols-interfaces-and-probes) attached to the [debug interface](#debug-protocols-interfaces-and-probes) | Debug output-enabled host tool |
-| USB CDC-ACM             | Prints debug logs through [USB CDC-ACM][usb-cdc-acm-glossary-book]. | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32          | USB cable attached to the user USB port                                                                                           | Serial monitor                 |
-| UART                    | Prints debug logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32          | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                         | Serial monitor                 |
+| Debug logging transport | Description                                                         | Supported                    | How to enable                                                                    | Required hardware                                                                                                                                               | Required host tool             |
+| ----------------------- | ------------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Debug output            | Prints debug logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-interface-protocols-debug-interfaces-and-probes) attached to the [debug interface](#debug-interface-protocols-debug-interfaces-and-probes) | Debug output-enabled host tool |
+| USB CDC-ACM             | Prints debug logs through [USB CDC-ACM][usb-cdc-acm-glossary-book]. | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB cable attached to the user USB port                                                                                                                         | Serial monitor                 |
+| UART                    | Prints debug logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                                                       | Serial monitor                 |
 
 <!-- TODO: document the to-be-introduced laze modules:
 - `debug-logging-over-debug-output`
@@ -170,7 +170,7 @@ Debug logging can use multiple transports; the table below presents those suppor
 
 <!-- TODO: verify this is true -->
 > [!TIP]
-> When a debug logging transport other than the debug output is enabled, debug logging can still be used when the debug output is disabled either in software (by disabling the [debug console][debug-console-debug-console-book]) or in hardware when the [debug interface](#debug-protocols-interfaces-and-probes) itself is disabled.
+> When a debug logging transport other than the debug output is enabled, debug logging can still be used when the debug output is disabled either in software (by disabling the [debug console][debug-console-debug-console-book]) or in hardware when the [debug interface](#debug-interface-protocols-debug-interfaces-and-probes) itself is disabled.
 > This means that debug logging can still be used in production, even if the debug interface has been disabled.
 >
 > If this is unwanted, debug logging can be disabled altogether by disabling the [`debug-logging-facade`][debug-logging-book] laze module.
