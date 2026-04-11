@@ -9,10 +9,25 @@ pub mod hwrng;
 
 pub mod identity;
 pub mod peripherals {
-    use std::sync::LazyLock;
-    pub static GPIO_OUT_STREAM: LazyLock<&'static str> = LazyLock::new(|| "GPIO0_OUT");
+    use std::sync::{Arc, LazyLock, mpsc};
 
-    use crate::gpio::output::OutputPin;
+    //. Asynchronous stream of emulated hardware events
+    pub struct OutStream<T> {
+        /// The emulated board manager inside the user's application should listen on this for incomind messages and handle them
+        pub recv: Arc<Mutex<mpsc::Receiver<T>>,
+        /// The native board will push events to the manager using this
+        send: mpsc::Sender<T>,
+    }
+
+    pub static GPIO_OUT_STREAM: LazyLock<OutStream<gpio::output::PinState>> = LazyLock::new(|| {
+        let (send, recv) = mpsc::channel();
+        OutStream {
+            recv: Arc::new(Mutex::new(recv)),
+            send,
+        }
+    });
+
+    use crate::gpio::{self, output::OutputPin};
     pub struct GPIO0;
 
     impl OutputPin for GPIO0 {
