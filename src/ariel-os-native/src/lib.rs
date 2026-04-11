@@ -21,13 +21,13 @@ pub mod peripherals {
 
 #[allow(non_snake_case)]
 pub struct OptionalPeripherals {
-    pub GPIO0: Option<ariel_os_dummy::peripheral::Peri<'static, peripherals::GPIO0>>,
+    pub GPIO0: Option<crate::peripheral::Peri<'static, peripherals::GPIO0>>,
 }
 
 #[must_use]
 pub fn init() -> OptionalPeripherals {
     OptionalPeripherals {
-        GPIO0: Some(ariel_os_dummy::peripheral::Peri::empty()),
+        GPIO0: Some(crate::peripheral::Peri::empty()),
     }
 }
 

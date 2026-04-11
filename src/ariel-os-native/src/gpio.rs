@@ -6,6 +6,12 @@ pub mod output {
     pub use ariel_os_dummy::gpio::output::OutputPin;
     use embedded_hal::digital::StatefulOutputPin;
 
+    #[derive(Debug, PartialEq)]
+    pub enum PinState {
+        High,
+        Low,
+    }
+
     pub const DRIVE_STRENGTH_CONFIGURABLE: bool = false;
     pub const SPEED_CONFIGURABLE: bool = false;
 
