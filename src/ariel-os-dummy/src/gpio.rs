@@ -131,7 +131,7 @@ pub mod output {
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
     ) -> Output<'static> {
-        Output { _marker: Default::default() }
+        unimplemented!();
     }
 
     pub struct Output<'d> {
@@ -144,11 +144,11 @@ pub mod output {
 
     impl embedded_hal::digital::OutputPin for Output<'_> {
         fn set_low(&mut self) -> Result<(), Self::Error> {
-            Ok(())
+            unimplemented!();
         }
 
         fn set_high(&mut self) -> Result<(), Self::Error> {
-            Ok(())
+            unimplemented!();
         }
     }
 
@@ -158,7 +158,7 @@ pub mod output {
         }
 
         fn is_set_low(&mut self) -> Result<bool, Self::Error> {
-            Ok(true)
+            unimplemented!();
         }
     }
 }
@@ -172,7 +172,7 @@ pub enum DriveStrength {
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
     fn from(_drive_strength: ariel_os_embassy_common::gpio::DriveStrength<Self>) -> Self {
-        Self::Hidden
+        unimplemented!();
     }
 }
 
@@ -185,6 +185,6 @@ pub enum Speed {
 
 impl ariel_os_embassy_common::gpio::FromSpeed for Speed {
     fn from(_speed: ariel_os_embassy_common::gpio::Speed<Self>) -> Self {
-        Self::Hidden
+        unimplemented!();
     }
 }
