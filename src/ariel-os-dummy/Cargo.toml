@@ -1,0 +1,19 @@
+[package]
+name = "ariel-os-dummy"
+version = "0.4.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os-embassy-common = { workspace = true }
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+
+# Required for platform-independent tooling
+[target.'cfg(not(any(context = "esp", context = "nrf", context = "rp", context = "stm32")))'.dependencies]
+embassy-executor = { workspace = true }

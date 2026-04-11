@@ -266,6 +266,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-dummy"
+version = "0.4.0"
+dependencies = [
+ "ariel-os-embassy-common",
+ "embassy-executor",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+]
+
+[[package]]
 name = "ariel-os-embassy"
 version = "0.4.0"
 dependencies = [
@@ -365,6 +375,7 @@ dependencies = [
 name = "ariel-os-hal"
 version = "0.4.0"
 dependencies = [
+ "ariel-os-dummy",
  "ariel-os-embassy-common",
  "ariel-os-esp",
  "ariel-os-native",
@@ -416,6 +427,7 @@ version = "0.4.0"
 dependencies = [
  "ariel-os-buildinfo",
  "ariel-os-debug",
+ "ariel-os-dummy",
  "ariel-os-embassy-common",
  "ariel-os-random",
  "cfg-if",

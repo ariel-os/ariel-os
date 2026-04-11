@@ -6,6 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-dummy = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 
 cfg-if = { workspace = true }

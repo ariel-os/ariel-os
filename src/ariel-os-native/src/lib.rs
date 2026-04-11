@@ -6,14 +6,22 @@
 pub mod hwrng;
 
 pub mod identity;
-pub mod peripherals {}
+pub mod peripherals {
+    pub struct GPIO0;
+}
 
-pub struct OptionalPeripherals {}
+pub struct OptionalPeripherals {
+    pub GPIO0: Option<ariel_os_dummy::peripheral::Peri<'static, peripherals::GPIO0>>,
+}
 
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    OptionalPeripherals {}
+    OptionalPeripherals {
+        GPIO0: None,
+    }
 }
+
+pub use ariel_os_dummy::{gpio, peripheral, IntoPeripheral};
 
 pub struct SWI {}
 

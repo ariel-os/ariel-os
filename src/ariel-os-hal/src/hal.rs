@@ -34,9 +34,9 @@ pub use define_peripherals::*;
 
 cfg_if::cfg_if! {
     if #[cfg(context = "native")] {
-        mod dummy;
+        //mod dummy;
         pub use ariel_os_native::*;
-        pub use dummy::{gpio, peripheral, peripheral::IntoPeripheral};
+        //pub use dummy::{gpio, peripheral, peripheral::IntoPeripheral};
     } else if #[cfg(context = "nrf")] {
         pub use ariel_os_nrf::*;
     } else if #[cfg(context = "rp")] {
@@ -48,7 +48,7 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "ariel-os")] {
         compile_error!("this MCU family is not supported");
     } else {
-        mod dummy;
+        pub use ariel_os_dummy as dummy;
         pub use dummy::*;
     }
 }

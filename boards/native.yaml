@@ -2,3 +2,6 @@ version: 0.3.0
 targets:
   native:
     chip: native-chip
+    leds:
+      led0:
+        pin: GPIO0
