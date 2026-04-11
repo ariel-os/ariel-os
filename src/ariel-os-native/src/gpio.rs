@@ -13,8 +13,11 @@ impl<T> crate::IntoPeripheral<'_, T> for Peri<'static, T> {
 }
 
 pub mod output {
-    pub use ariel_os_dummy::gpio::output::OutputPin;
     use embedded_hal::digital::StatefulOutputPin;
+
+    pub trait OutputPin {
+        const PIN_NUMBER: u8;
+    }
 
     #[derive(Debug, PartialEq)]
     pub enum PinState {

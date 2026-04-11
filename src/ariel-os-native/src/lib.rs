@@ -12,10 +12,11 @@ pub mod peripherals {
     use std::sync::LazyLock;
     pub static GPIO_OUT_STREAM: LazyLock<&'static str> = LazyLock::new(|| "GPIO0_OUT");
 
-    use ariel_os_dummy::gpio::output::OutputPin;
+    use crate::gpio::output::OutputPin;
     pub struct GPIO0;
 
     impl OutputPin for GPIO0 {
+        const PIN_NUMBER: u8 = 0;
     }
 }
 
