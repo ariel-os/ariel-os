@@ -131,7 +131,7 @@ pub mod output {
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
     ) -> Output<'static> {
-        unimplemented!();
+        Output { _marker: Default::default() }
     }
 
     pub struct Output<'d> {
@@ -172,7 +172,7 @@ pub enum DriveStrength {
 
 impl ariel_os_embassy_common::gpio::FromDriveStrength for DriveStrength {
     fn from(_drive_strength: ariel_os_embassy_common::gpio::DriveStrength<Self>) -> Self {
-        unimplemented!();
+        Self::Hidden
     }
 }
 
@@ -185,6 +185,6 @@ pub enum Speed {
 
 impl ariel_os_embassy_common::gpio::FromSpeed for Speed {
     fn from(_speed: ariel_os_embassy_common::gpio::Speed<Self>) -> Self {
-        unimplemented!();
+        Self::Hidden
     }
 }

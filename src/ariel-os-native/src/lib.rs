@@ -7,7 +7,11 @@ pub mod hwrng;
 
 pub mod identity;
 pub mod peripherals {
+    use ariel_os_dummy::gpio::output::OutputPin;
     pub struct GPIO0;
+
+    impl OutputPin for GPIO0 {
+    }
 }
 
 pub struct OptionalPeripherals {
@@ -17,7 +21,7 @@ pub struct OptionalPeripherals {
 #[must_use]
 pub fn init() -> OptionalPeripherals {
     OptionalPeripherals {
-        GPIO0: None,
+        GPIO0: Some(ariel_os_dummy::peripheral::Peri::empty()),
     }
 }
 
