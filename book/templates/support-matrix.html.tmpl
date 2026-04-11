@@ -1,38 +1,38 @@
 <!-- This table is auto-generated. Do not edit manually. -->
-<table class="support-matrix">
-  <thead>
-    <tr>
-      <th colspan="3">Board</th>
-      <th colspan="{{ matrix.functionalities|length }}">Functionality</th>
-    </tr>
-    <tr>
-      <th>Manufacturer Name</th>
-      <th><a href="{{ url_prefix }}build-system.html#laze-builders">laze builders</a></th>
-      <th>Tier</th>
-      {%- for functionality in matrix.functionalities %}
-      <th>{{ functionality.title }}</th>
-      {%- endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    {%- for board in boards %}
-	<tbody class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+  <table class="support-matrix">
+    <thead>
       <tr>
-	    <td rowspan="{{ board.builders|length + 1 }}"><a href="{{ url_prefix }}{{ board.board_doc }}">{{ board.name }}</a></td>
-	  </tr>
-      {%- for builder in board.builders %}
-	  <tr>
-	    <td><code>{{ builder.technical_name }}</code></td>
-		<td style="text-align: center;">{{ builder.tier }}</td>
-		{%- for functionality in builder.functionalities %}
-		  <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
-		{%- endfor %}
+        <th colspan="3">Board</th>
+        <th colspan="{{ matrix.functionalities|length }}">Functionality</th>
       </tr>
-	  {%- endfor %}
-	  </tbody>
-    {%- endfor %}
-  </tbody>
-</table>
+      <tr>
+        <th>Manufacturer Name</th>
+        <th><a href="{{ url_prefix }}build-system.html#laze-builders">laze builders</a></th>
+        <th>Tier</th>
+        {%- for functionality in matrix.functionalities %}
+        <th>{{ functionality.title }}</th>
+        {%- endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {%- for board in boards %}
+    <tbody class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+        <tr>
+        <td rowspan="{{ board.builders|length + 1 }}"><a href="{{ url_prefix }}{{ board.board_doc }}">{{ board.name }}</a></td>
+      </tr>
+        {%- for builder in board.builders %}
+      <tr>
+        <td><code>{{ builder.technical_name }}</code></td>
+      <td style="text-align: center;">{{ builder.tier }}</td>
+      {%- for functionality in builder.functionalities %}
+        <td class="support-cell" title="{{ functionality.description }}">{{ functionality.icon }}</td>
+      {%- endfor %}
+        </tr>
+      {%- endfor %}
+      </tbody>
+      {%- endfor %}
+    </tbody>
+  </table>
 <style>
 @media (min-width: 1920px) {
   .support-matrix {
