@@ -144,11 +144,11 @@ pub mod output {
 
     impl embedded_hal::digital::OutputPin for Output<'_> {
         fn set_low(&mut self) -> Result<(), Self::Error> {
-            unimplemented!();
+            Ok(())
         }
 
         fn set_high(&mut self) -> Result<(), Self::Error> {
-            unimplemented!();
+            Ok(())
         }
     }
 
@@ -158,7 +158,7 @@ pub mod output {
         }
 
         fn is_set_low(&mut self) -> Result<bool, Self::Error> {
-            unimplemented!();
+            Ok(true)
         }
     }
 }
