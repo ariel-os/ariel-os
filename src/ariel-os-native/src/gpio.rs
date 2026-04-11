@@ -21,11 +21,15 @@ pub mod output {
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
     ) -> Output<'static> {
-        Output { _marker: Default::default() }
+        Output {
+            _marker: Default::default(),
+            pin_number: 0,
+        }
     }
 
     pub struct Output<'d> {
         _marker: core::marker::PhantomData<&'d ()>,
+        pin_number: u8,
     }
 
     impl embedded_hal::digital::ErrorType for Output<'_> {
