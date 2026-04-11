@@ -7,6 +7,9 @@ pub mod hwrng;
 
 pub mod identity;
 pub mod peripherals {
+    use std::sync::LazyLock;
+    pub static GPIO_OUT_STREAM: LazyLock<&'static str> = LazyLock::new(|| "GPIO0_OUT");
+
     use ariel_os_dummy::gpio::output::OutputPin;
     pub struct GPIO0;
 
