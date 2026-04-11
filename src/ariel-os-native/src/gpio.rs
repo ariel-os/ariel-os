@@ -16,7 +16,7 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = false;
 
     pub fn new<T: OutputPin>(
-        _pin: impl super::IntoPeripheral<'static, T>,
+        pin: Peri<'static, T>,
         _initial_level: ariel_os_embassy_common::gpio::Level,
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
