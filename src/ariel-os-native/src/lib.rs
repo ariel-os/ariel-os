@@ -2,6 +2,8 @@
 
 #![cfg_attr(nightly, feature(doc_cfg))]
 
+pub mod gpio;
+
 #[cfg(feature = "hwrng")]
 pub mod hwrng;
 
@@ -17,6 +19,7 @@ pub mod peripherals {
     }
 }
 
+#[allow(non_snake_case)]
 pub struct OptionalPeripherals {
     pub GPIO0: Option<ariel_os_dummy::peripheral::Peri<'static, peripherals::GPIO0>>,
 }
@@ -28,7 +31,7 @@ pub fn init() -> OptionalPeripherals {
     }
 }
 
-pub use ariel_os_dummy::{gpio, peripheral, IntoPeripheral};
+pub use ariel_os_dummy::{peripheral, IntoPeripheral};
 
 pub struct SWI {}
 

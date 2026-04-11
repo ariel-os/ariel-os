@@ -20,6 +20,7 @@ embassy-net-tuntap = "0.1.0"
 embassy-time = { workspace = true, default-features = false, features = [
   "std",
 ] }
+embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 getrandom = { version = "0.2", optional = true }
 rand = { workspace = true, default-features = false, optional = true, features = [

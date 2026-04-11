@@ -34,9 +34,7 @@ pub use define_peripherals::*;
 
 cfg_if::cfg_if! {
     if #[cfg(context = "native")] {
-        //mod dummy;
         pub use ariel_os_native::*;
-        //pub use dummy::{gpio, peripheral, peripheral::IntoPeripheral};
     } else if #[cfg(context = "nrf")] {
         pub use ariel_os_nrf::*;
     } else if #[cfg(context = "rp")] {
