@@ -31,7 +31,13 @@ pub fn init() -> OptionalPeripherals {
     }
 }
 
-pub use ariel_os_dummy::{peripheral, IntoPeripheral};
+pub use ariel_os_dummy::peripheral;
+
+pub trait IntoPeripheral<'a, P> {//: private::Sealed {
+    /// Converts this peripheral instance into the type required by the HAL.
+    #[must_use]
+    fn into_hal_peripheral(self) -> crate::peripheral::Peri<'static, P>;
+}
 
 pub struct SWI {}
 

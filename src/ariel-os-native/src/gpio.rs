@@ -1,6 +1,16 @@
-use ariel_os_dummy::IntoPeripheral;
 
 pub use ariel_os_dummy::gpio::input;
+pub use ariel_os_dummy::peripheral::Peri;
+
+pub struct Pin(u8);
+
+//impl private::Sealed for Peripheral {}
+
+impl<T> crate::IntoPeripheral<'_, T> for Peri<'static, T> {
+    fn into_hal_peripheral(self) -> Self {
+        self
+    }
+}
 
 pub mod output {
     pub use ariel_os_dummy::gpio::output::OutputPin;
@@ -16,7 +26,8 @@ pub mod output {
     pub const SPEED_CONFIGURABLE: bool = false;
 
     pub fn new<T: OutputPin>(
-        pin: Peri<'static, T>,
+        pin: //impl crate::IntoPeripheral<'static, T>,
+        super::Peri<'static, T>,
         _initial_level: ariel_os_embassy_common::gpio::Level,
         _drive_strength: super::DriveStrength,
         _speed: super::Speed,
