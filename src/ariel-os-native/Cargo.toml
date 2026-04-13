@@ -10,6 +10,7 @@ license.workspace = true
 ariel-os-buildinfo = { workspace = true }
 ariel-os-debug = { workspace = true, features = ["std"] }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-dummy = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
@@ -19,6 +20,7 @@ embassy-net-tuntap = "0.1.0"
 embassy-time = { workspace = true, default-features = false, features = [
   "std",
 ] }
+embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 getrandom = { version = "0.2", optional = true }
 rand = { workspace = true, default-features = false, optional = true, features = [

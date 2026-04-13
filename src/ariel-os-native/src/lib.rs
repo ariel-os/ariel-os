@@ -2,17 +2,49 @@
 
 #![cfg_attr(nightly, feature(doc_cfg))]
 
+pub mod gpio;
+
 #[cfg(feature = "hwrng")]
 pub mod hwrng;
 
 pub mod identity;
-pub mod peripherals {}
+pub mod peripherals {
+    use std::sync::{Arc, Mutex, mpsc};
 
-pub struct OptionalPeripherals {}
+    //. Asynchronous stream of emulated hardware events
+    pub struct OutStream<T> {
+        /// The emulated board manager inside the user's application should listen on this for incomind messages and handle them
+        pub recv: Arc<Mutex<mpsc::Receiver<T>>>,
+        /// The native board will push events to the manager using this
+        pub(crate) sender: mpsc::Sender<T>,
+    }
+
+    use crate::gpio::output::OutputPin;
+    pub struct GPIO0;
+
+    impl OutputPin for GPIO0 {
+        const PIN_NUMBER: usize = 0;
+    }
+}
+
+#[allow(non_snake_case)]
+pub struct OptionalPeripherals {
+    pub GPIO0: Option<crate::peripheral::Peri<'static, peripherals::GPIO0>>,
+}
 
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    OptionalPeripherals {}
+    OptionalPeripherals {
+        GPIO0: Some(crate::peripheral::Peri::empty()),
+    }
+}
+
+pub use ariel_os_dummy::peripheral;
+
+pub trait IntoPeripheral<'a, P> {//: private::Sealed {
+    /// Converts this peripheral instance into the type required by the HAL.
+    #[must_use]
+    fn into_hal_peripheral(self) -> crate::peripheral::Peri<'static, P>;
 }
 
 pub struct SWI {}
