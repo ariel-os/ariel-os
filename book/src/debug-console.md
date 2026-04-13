@@ -21,6 +21,14 @@ The laze configuration automatically enables semihosting on the target when the 
 When the flashing tool does not, support for semihosting can still be enabled in the firmware by selecting the `semihosting` [laze module][laze-modules-book].
 This is needed to later be able to attach a semihosting-enabled host tool to the target.
 
+> [!NOTE]
+> When semihosting is enabled on the target and no host tool supporting semihosting (or a debugger) is connected, calling [`ariel_os::debug::exit()`][debug-exit-fn-rustdoc] may result in a panic.
+> For example on ESP using `espflash` you would get:
+>
+> ```
+> [ERROR] panicked at 'Unhandled interrupt on ProCpu' (esp_hal src/interrupt/mod.rs:90)
+> ```
+
 ## Logging
 
 Ariel OS supports logging on all platforms and it is enabled by default with the `logging-facade` [laze module][laze-modules-book].
