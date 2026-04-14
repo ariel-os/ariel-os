@@ -59,6 +59,11 @@ impl<I2C: I2c + Send> Aht20<I2C> {
             if Self::reset(self, &mut i2c_device).await.is_err() {
                 return;
             }
+            // The Datasheet says that the sensor takes at most 20ms to enter idle state
+            // after initial power-on or software reset
+            #[cfg(not(test))]
+            Timer::after_millis(20).await;
+
             // Check for calibration status
             loop {
                 // The read the status byte to check
