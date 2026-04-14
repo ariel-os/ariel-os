@@ -56,7 +56,7 @@ impl<I2C: I2c + Send> Aht20<I2C> {
             Timer::after_millis(20).await;
 
             // soft reset the sensor
-            if Self::reset(&self, i2c_device).await.is_err() {
+            if Self::reset(self, &mut i2c_device).await.is_err() {
                 return;
             }
             // Check for calibration status
@@ -108,7 +108,7 @@ impl<I2C: I2c + Send> Aht20<I2C> {
     ///
     /// # Errors
     /// - When the I2C connection fails.
-    async fn reset(&'static self, mut i2c_device: I2C) -> Result<(), ()> {
+    async fn reset(&'static self, i2c_device: &mut I2C) -> Result<(), ()> {
         i2c_device.write(I2C_ADDRESS, &[crate::Command::SoftReset as u8])
             .await
             .map_err(|_| ())
