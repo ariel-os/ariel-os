@@ -35,7 +35,7 @@ enum Command {
     ReadStatusReg = 0x71,
 }
 
-// STATUS register bits, see Table 10 of the
+// STATUS register bits, see Table 10 of the datasheet
 /// Set to 1 if the sensor is calibrated.
 const CALIBRATION_STATUS: u8 = 1 << 3;
 
@@ -50,10 +50,10 @@ const MEASUREMENT_ARG_0: u8 = 0x33;
 const MEASUREMENT_ARG_1: u8 = 0x00;
 
 /// Magic argument to be sent with the [`Command::Initialize`].
-/// Described in Section 5.4 of v1.0 of the Datasheet.
+/// Described in Section 5.4 of v1.0 of the datasheet.
 const INITIALIZE_ARG_0: u8 = 0x08;
 /// Magic argument to be sent with the [`Command::Initialize`].
-/// Described in Section 5.4 of v1.0 of the Datasheet.
+/// Described in Section 5.4 of v1.0 of the datasheet.
 const INITIALIZE_ARG_1: u8 = 0x00;
 
 const PART_NUMBER: &str = "AHT20";
