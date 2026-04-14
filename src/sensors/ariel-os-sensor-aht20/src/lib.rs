@@ -1,8 +1,8 @@
-//! Driver for the Sensiron SHT3X series of humidity and temperature sensors.
+//! Driver for the ASAIR AHT20 temperature and humidity sensor.
 //!
 //! Compatible with [`ariel_os_sensors::Sensor`].
 //!
-//! [Datasheet]: https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf
+//! [ASAIR AHT20]: https://files.seeedstudio.com/wiki/Grove-AHT20_I2C_Industrial_Grade_Temperature_and_Humidity_Sensor/AHT20-datasheet-2020-4-16.pdf
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
 
