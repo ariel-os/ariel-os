@@ -15,18 +15,19 @@ use crc::{CRC_8_NRSC_5, Crc};
 #[derive(Copy, Clone, PartialEq, Eq)]
 /// Commands that can be sent to the sensor. Described in Table 9 and in section 5.4.
 enum Command {
-    /// Initialize the sensor
+    /// Initializes the sensor
     /// In particular this set the calibration bit.
+    /// This requires the [`INITIALIZE_ARG_0`] and [`INITIALIZE_ARG_1`] arguments.
     Initialize = 0xBE,
 
-    /// Soft reset the sensor.
+    /// Soft resets the sensor.
     SoftReset = 0xBA,
 
-    /// Trigger a measurement.
-    /// This requires hardcoded arguments.
+    /// Triggers a measurement.
+    /// This requires the [`MEASUREMENT_ARG_0`] and [`MEASUREMENT_ARG_1`] arguments.
     TriggerMeasurement = 0xAC,
 
-    /// Read the status byte.
+    /// Reads the status byte.
     /// This command has unclear side effects on the CRC
     /// when used after a measurement has been triggered.
     /// Issuing a general Read command and reading a single byte
