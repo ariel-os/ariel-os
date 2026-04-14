@@ -37,24 +37,24 @@ enum Command {
 
 // STATUS register bits, see Table 10 of the
 /// Set to 1 if the sensor is calibrated.
-pub const CALIBRATION_STATUS: u8 = 1 << 3;
+const CALIBRATION_STATUS: u8 = 1 << 3;
 
 /// Set to 1 if the sensor is busy.
-pub const BUSY_BIT: u8 = 1 << 7;
+const BUSY_BIT: u8 = 1 << 7;
 
 /// Magic argument to be sent with the [`Command::TriggerMeasurement`].
 /// Described in Section 5.3.
-pub const MEASUREMENT_ARG_0: u8 = 0x33;
+const MEASUREMENT_ARG_0: u8 = 0x33;
 /// Magic argument to be sent with the [`Command::TriggerMeasurement`].
 /// Described in Section 5.3.
-pub const MEASUREMENT_ARG_1: u8 = 0x00;
+const MEASUREMENT_ARG_1: u8 = 0x00;
 
 /// Magic argument to be sent with the [`Command::Initialize`].
 /// Described in Section 5.4 of v1.0 of the Datasheet.
-pub const INITIALIZE_ARG_0: u8 = 0x08;
+const INITIALIZE_ARG_0: u8 = 0x08;
 /// Magic argument to be sent with the [`Command::Initialize`].
 /// Described in Section 5.4 of v1.0 of the Datasheet.
-pub const INITIALIZE_ARG_1: u8 = 0x00;
+const INITIALIZE_ARG_1: u8 = 0x00;
 
 const PART_NUMBER: &str = "AHT20";
 
