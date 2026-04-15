@@ -2007,6 +2007,7 @@ builders:
           - doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix.html --template-path book/templates/support-matrix.html.tmpl
           - doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --chip-template-path book/templates/chip-page.md.tmpl --matrix-template-path book/templates/support-matrix.html.tmpl
           - doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl
+          - mdbook build book
 
       fmt:
         build: false
