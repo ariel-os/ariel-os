@@ -54,6 +54,7 @@ dt, dd {
 Boards using this chip.
 
 <!-- This table is auto-generated. Do not edit manually. -->
+<div class="support-matrix-container">
 <table class="support-matrix">
   <thead>
     <tr>
@@ -148,7 +149,32 @@ Boards using this chip.
 	  </tbody>
   </tbody>
 </table>
+</div>
 <style>
+.support-matrix-container {
+  overflow: auto;
+  max-height: 60vh;
+}
+.support-matrix thead {
+  z-index: 3;
+  position: relative;
+}
+/* Makes the row with column names sticky */
+.support-matrix thead tr:last-child {
+  position: sticky;
+  top: 0;
+  background-color: var(--table-header-bg);
+}
+.support-matrix th:first-child {
+  background-color: inherit;
+}
+/* Makes the first column sticky */
+.support-matrix thead tr:last-child th:first-child,
+.support-matrix tbody tr:first-child td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
 @media (min-width: 1920px) {
   .support-matrix {
     position: relative;
