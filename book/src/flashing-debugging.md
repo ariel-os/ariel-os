@@ -72,7 +72,7 @@ Depending on the microcontroller family and on the bootloader, the most common o
     - [USB Device Firmware Upgrade (DFU)][usb-dfu-spec]
     - [DfuSe][dfuse-dfu-util] (non-standard ST protocol, based on USB DFU)
     - USB MSC (mass storage) with [UF2][uf2-repo], where the device appears as a mass storage device and expects a UF2 file to be copied to it
-- UART
+- [UART][uart-glossary-book]
 - SPI
 - I2C
 
@@ -131,11 +131,11 @@ That module also provides a [`println!()` macro][log-println-macro-rustdoc], tha
 Logging can use multiple transports; the table below presents those supported in Ariel OS and which hardware and host tool are required:
 
 <!-- TODO: clarify *exactly* under which conditions each of these get enabled -->
-| Logging transport | Description                                                   | Supported                    | How to enable                                                                    | Required hardware                                                                                                               | Required host tool             |
-| ----------------- | ------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Debug output      | Prints logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-interfaces-protocols-and-probes) attached to the [debug interface](#debug-interfaces-protocols-and-probes) | Debug output-enabled host tool |
-| USB CDC-ACM       | Prints logs through [USB CDC-ACM][usb-cdc-acm-glossary-book]. | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB cable attached to the user USB port                                                                                         | Serial monitor                 |
-| UART              | Prints logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                       | Serial monitor                 |
+| Logging transport                        | Description                                                   | Supported                    | How to enable                                                                    | Required hardware                                                                                                               | Required host tool             |
+| ---------------------------------------- | ------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Debug output                             | Prints logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-interfaces-protocols-and-probes) attached to the [debug interface](#debug-interfaces-protocols-and-probes) | Debug output-enabled host tool |
+| [USB CDC-ACM][usb-cdc-acm-glossary-book] | Prints logs through USB CDC-ACM.                              | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB cable attached to the user USB port                                                                                         | Serial monitor                 |
+| [UART][uart-glossary-book]               | Prints logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                       | Serial monitor                 |
 
 <!-- TODO: document the to-be-introduced laze modules:
 - `logging-over-debug-output`
@@ -184,11 +184,12 @@ In particular, [`ariel_os::debug::exit()`][debug-console-exit-book] is currently
 [laze-modules-book]: ./build-system.md#laze-modules
 [laze-tasks-book]: ./build-system.md#laze-tasks
 [probe-rs-tool-probe-rs-docs]: https://probe.rs/docs/tools/probe-rs/
-[usb-cdc-acm-glossary-book]: ./glossary.md
+[usb-cdc-acm-glossary-book]: ./glossary.md#usb-cdc-acm
 [usb-dfu-spec]: https://www.usb.org/sites/default/files/DFU_1.1.pdf
 [dfu-util-homepage]: https://dfu-util.sourceforge.net/
 [dfuse-dfu-util]: https://dfu-util.sourceforge.net/dfuse.html
 [uf2-repo]: https://github.com/Microsoft/uf2
+[uart-glossary-book]: ./glossary.md#uart
 [arm-semihosting-docs]: https://developer.arm.com/documentation/dui0471/m/what-is-semihosting-/what-is-semihosting-
 [arm-semihosting-sys-write0-docs]: https://developer.arm.com/documentation/dui0471/m/what-is-semihosting-/sys-write0--0x04-
 [riscv-semihosting-spec]: https://docs.riscv.org/reference/platform-software/semihosting/_attachments/riscv-semihosting.pdf
