@@ -1,23 +1,23 @@
 use ariel_os::hal::{i2c, peripherals};
 
-#[cfg(context = "esp")]
+#[cfg(context = "heltec-wifi-lora-32-v3")]
 pub type SensorI2c = i2c::controller::I2C0;
-#[cfg(context = "esp")]
+#[cfg(context = "heltec-wifi-lora-32-v3")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: GPIO2,
     i2c_scl: GPIO0,
 });
 
-#[cfg(any(context = "nrf52833", context = "nrf52840"))]
+#[cfg(any(context = "bbc-microbit-v2", context = "nrf52840dk"))]
 pub type SensorI2c = i2c::controller::TWISPI0;
-#[cfg(any(context = "nrf5340-app", context = "nrf91"))]
+#[cfg(any(context = "nrf5340dk-app", context = "nrf91"))]
 pub type SensorI2c = i2c::controller::SERIAL0;
 #[cfg(all(
     context = "nrf",
     not(any(
         context = "bbc-microbit-v2",
         context = "nordic-thingy-91-x-nrf9151",
-        context = "nrf5340-app"
+        context = "nrf5340dk-app"
     ))
 ))]
 ariel_os::hal::define_peripherals!(Peripherals {
@@ -29,7 +29,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: P0_16,
     i2c_scl: P0_08,
 });
-#[cfg(context = "nrf5340-app")]
+#[cfg(context = "nrf5340dk-app")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: P0_20,
     i2c_scl: P0_22,
@@ -40,9 +40,9 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: P0_08,
 });
 
-#[cfg(context = "rp")]
+#[cfg(context = "rpi-pico")]
 pub type SensorI2c = i2c::controller::I2C0;
-#[cfg(context = "rp")]
+#[cfg(context = "rpi-pico")]
 ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: PIN_12,
     i2c_scl: PIN_13,

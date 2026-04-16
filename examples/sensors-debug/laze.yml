@@ -1,21 +1,20 @@
 apps:
   - name: sensors-debug
     context:
-      - bbc-microbit-v2
-      - esp
-      - heltec-wifi-lora-32-v3
+      - bbc-microbit-v2 # No sensors currently supported, for build tests only
+      - heltec-wifi-lora-32-v3 # No sensors currently supported, for build tests only
       - nordic-thingy-91-x-nrf9151
-      - nrf52840
-      - nrf5340-app
-      - nrf9160
-      - rp2040
-      - rp235xa
-      - st-b-l475e-iot01a
-      - st-nucleo-c031c6
-      - st-nucleo-f042k6
-      - st-nucleo-f411re
-      - st-nucleo-h755zi-q
-      - st-nucleo-wb55
+      - nrf52840dk # No sensors currently supported, for build tests only
+      - nrf5340dk-app # No sensors currently supported, for build tests only
+      - nrf9151-dk
+      - nrf9160dk-nrf9160
+      - rpi-pico # No sensors currently supported, for build tests only
+      - st-b-l475e-iot01a # No sensors currently supported, for build tests only
+      - st-nucleo-c031c6 # No sensors currently supported, for build tests only
+      - st-nucleo-f042k6 # No sensors currently supported, for build tests only
+      - st-nucleo-f411re # No sensors currently supported, for build tests only
+      - st-nucleo-h755zi-q # No sensors currently supported, for build tests only
+      - st-nucleo-wb55 # No sensors currently supported, for build tests only
       - st-steval-mkboxpro
       - stm32u083c-dk
     selects:
