@@ -92,13 +92,9 @@ Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following tab
 
 ## Debug Output Transports
 
-<!-- TODO: mark "Debug Output" as not available on native -->
-<!-- TODO: possibly link to the relevant section of Debug Console; but must be consistent with the definition/behavior of `ariel_os::debug::println!()` -->
 Debug interface protocols as introduced above also allow providing an additional piece of functionality: a debug output.
 Two main techniques exist to implement such debug output over debug interface protocols: [semihosting][arm-semihosting-docs], and [Real Time Transfer (RTT)][segger-rtt-wiki].
 Even though originally vendor-specific technologies, they have been extended to other architectures and vendors (e.g., [semihosting on RISC-V][riscv-semihosting-spec]), and can be used on every microcontroller currently supported by Ariel OS.
-
-The *debug output* provides an implementation for a `println!()` macro.
 
 ### Semihosting
 
