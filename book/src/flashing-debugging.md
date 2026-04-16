@@ -6,7 +6,7 @@ Ariel OS makes it easy to flash and debug applications, by unifying the differe
 > The terms "debug", "debugging", and "debugger" tend to refer to a wide array of overlapping concepts.
 > In the following, we define and use phrases that use narrower meanings, with the hope to make these clearer.
 
-## Debug Interface Protocols, Debug Interfaces, and Probes
+## Debug Interfaces, Protocols, and Probes
 
 *Debug interface protocols* allow reading and writing from and to system memory and processor registers, setting breakpoints, and stepping through the program execution, among other things.
 The two debug interface protocols supported by Ariel OS tooling are [JTAG][jtag-wikipedia] and [Serial Wire Debug (SWD)][swd-arm-spec]:
@@ -135,11 +135,11 @@ That module also provides a [`println!()` macro][log-println-macro-rustdoc], tha
 Logging can use multiple transports; the table below presents those supported in Ariel OS and which hardware and host tool are required:
 
 <!-- TODO: clarify *exactly* under which conditions each of these get enabled -->
-| Logging transport | Description                                                   | Supported                    | How to enable                                                                    | Required hardware                                                                                                                                               | Required host tool             |
-| ----------------- | ------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Debug output      | Prints logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-interface-protocols-debug-interfaces-and-probes) attached to the [debug interface](#debug-interface-protocols-debug-interfaces-and-probes) | Debug output-enabled host tool |
-| USB CDC-ACM       | Prints logs through [USB CDC-ACM][usb-cdc-acm-glossary-book]. | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB cable attached to the user USB port                                                                                                                         | Serial monitor                 |
-| UART              | Prints logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                                                       | Serial monitor                 |
+| Logging transport | Description                                                   | Supported                    | How to enable                                                                    | Required hardware                                                                                                               | Required host tool             |
+| ----------------- | ------------------------------------------------------------- | :--------------------------: | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Debug output      | Prints logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the [`debug-console`][debug-console-debug-console-book] laze module | [Debug probe](#debug-interfaces-protocols-and-probes) attached to the [debug interface](#debug-interfaces-protocols-and-probes) | Debug output-enabled host tool |
+| USB CDC-ACM       | Prints logs through [USB CDC-ACM][usb-cdc-acm-glossary-book]. | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB cable attached to the user USB port                                                                                         | Serial monitor                 |
+| UART              | Prints logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `esp-println` laze module, enabled by default on ESP32            | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                       | Serial monitor                 |
 
 <!-- TODO: document the to-be-introduced laze modules:
 - `logging-over-debug-output`
@@ -163,7 +163,7 @@ Logging can use multiple transports; the table below presents those supported in
 
 <!-- TODO: verify this is true -->
 > [!TIP]
-> When a logging transport other than the debug output is enabled, logging can still be used when the debug output is disabled either in software (by disabling the [debug console][debug-console-debug-console-book]) or in hardware when the [debug interface](#debug-interface-protocols-debug-interfaces-and-probes) itself is disabled.
+> When a logging transport other than the debug output is enabled, logging can still be used when the debug output is disabled either in software (by disabling the [debug console][debug-console-debug-console-book]) or in hardware when the [debug interface](#debug-interfaces-protocols-and-probes) itself is disabled.
 > This means that logging can still be used in production, even if the debug interface has been disabled.
 >
 > If this is unwanted, logging can be disabled altogether by disabling the [`logging-facade`][logging-book] laze module.
