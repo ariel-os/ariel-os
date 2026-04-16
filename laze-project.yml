@@ -54,13 +54,6 @@ contexts:
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
-      QEMU_SYSTEM_ARM: >-
-        qemu-system-arm
-        -machine ${QEMU_MACHINE}
-        -nographic
-        -serial mon:stdio
-        -semihosting-config enable=on,target=native
-        -kernel
       PROBE_RS_PROTOCOL: swd
       CARGO_PRESHELL: []
 
