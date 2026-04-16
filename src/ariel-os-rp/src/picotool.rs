@@ -1,12 +1,5 @@
 #![expect(unsafe_code)]
 
-use embassy_rp::block::ImageDef;
-// Safety:
-// This is where tooling expects this.
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
-
 // Program metadata for `picotool info`
 // Safety:
 // `.bl_entry` is where picotool expects this.

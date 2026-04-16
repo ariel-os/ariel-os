@@ -49,6 +49,7 @@ embassy-rp = { workspace = true, default-features = false, features = [
 [target.'cfg(context = "rp235xa")'.dependencies]
 embassy-rp = { workspace = true, default-features = false, features = [
   "binary-info",
+  "imagedef-secure-exe",
   "rp235xa",
 ] }
 
