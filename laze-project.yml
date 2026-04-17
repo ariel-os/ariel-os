@@ -22,6 +22,8 @@ contexts:
     selects:
       - executor-default
       - ?critical-section
+      # Optional as we want to be able to disable it in applications.
+      - ?logging
       - ?hw/device-identity
       - ?lto
 
@@ -357,9 +359,7 @@ contexts:
   - name: esp
     parent: ariel-os
     selects:
-      - ?debug-console
       - ?espflash
-      - ?esp-println
     provides:
       - has_hwrng
     env:
@@ -498,6 +498,7 @@ contexts:
     parent: ariel-os
     selects:
       - infini-core
+      - logging-over-stdout
       - ?debug-console
     provides:
       - has_device_identity
@@ -955,16 +956,6 @@ modules:
           - CC="${CC}"
           - CFLAGS="${CFLAGS}"
 
-  - name: debug-console
-    context: ariel-os
-    selects:
-      - ?logging-facade-default
-      - ?panic-printing
-    env:
-      global:
-        FEATURES:
-          - ariel-os/debug-console
-
   - name: emit-stack-sizes
     conflicts:
       - stable
@@ -1017,45 +1008,6 @@ modules:
         CARGO_TOOLCHAIN: +nightly-2026-01-20
         RUSTFLAGS:
           - --cfg nightly
-
-  # This module should be hard-selected when an application *requires* logging.
-  - name: logging-facade-default
-    selects:
-      - ?defmt
-      - ?log
-      - logging-facade
-
-  - name: defmt
-    help: Use the `defmt` crate as the logging facade
-    provides_unique:
-      - logging-facade
-    env:
-      global:
-        FEATURES:
-          - ariel-os/defmt
-        RUSTFLAGS:
-          - -Clink-arg=-Tdefmt.x
-        ESPFLASH_LOG_FORMAT: "--log-format defmt"
-        CARGO_ENV:
-          - DEFMT_LOG=info,${LOG}
-
-  - name: log
-    help: Use the `log` crate as the logging facade
-    provides_unique:
-      - logging-facade
-    env:
-      global:
-        FEATURES:
-          - ariel-os/log
-        CARGO_ENV:
-          - LOG_LEVEL=${LOG}
-
-  - name: panic-printing
-    context: ariel-os
-    env:
-      global:
-        FEATURES:
-          - ariel-os/panic-printing
 
   - name: lto
     context: ariel-os
@@ -1151,12 +1103,6 @@ modules:
     help: use probe-rs as runner
     selects:
       - ?debug-console
-      - ?semihosting
-      - defmt:
-          - defmt-rtt
-      - log:
-          - ?rtt-target
-          - ?debug-uart
     provides_unique:
       - embedded-test-runner
       - flashing-tool
@@ -1802,37 +1748,169 @@ modules:
         FEATURES:
           - ariel-os/infini-core
 
+  - name: debug-console
+    help: enable support for the debug console
+    context: ariel-os
+    selects:
+      # Mandatory.
+      - logging-over-debug-channel
+      # Optional for now, at least until multiple logging transports can be used
+      # at the same time: allows using semihosting while a logging transport
+      # other than `logging-over-debug-channel` is used.
+      - ?semihosting
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-console
+
+  - name: logging
+    help: enables logging functionality
+    selects:
+      # Mandatory; the logging transport must be selected before the facade.
+      - logging-transport-default
+      # Mandatory.
+      - logging-facade-default
+      # Optional as we want to be able to disable it in applications.
+      - ?panic-printing
+
+  # Ordered by priority.
+  # Currently the logging transports are mutually exclusive.
+  - name: logging-transport-default
+    help: 'private: use `logging` instead'
+    selects:
+      - ?logging-over-stdout
+      - ?logging-over-debug-channel
+      - ?logging-over-usb
+      - ?logging-over-uart
+      - logging-transport
+
+  - name: logging-over-debug-channel
+    help: use the debug channel as logging transport
+    selects:
+      - probe-rs:
+          - ?debug-channel-rtt
+      # It would technically be possible to also support semihosting as debug
+      # channel transport, even though it is extremely slow.
+      - ?no-debug-channel-transport
+      - no-debug-channel-transport:
+          - debug-channel-transport-required
+    provides_unique:
+      - logging-transport
+
+  # Disabled by modules that provide a `debug-channel-transport`.
+  - name: no-debug-channel-transport
+    help: private
+
+  - name: debug-channel-rtt
+    help: use RTT as debug channel transport
+    selects:
+      # These conditional selects act as "late dependencies": the gated modules
+      # would be selected *later* in the resolution process if the gating
+      # modules get selected further down the line.
+      - defmt:
+          - defmt-rtt
+      - log:
+          - rtt-target
+    disables:
+      - no-debug-channel-transport
+    provides_unique:
+      # Debug channel transports are mutually exclusive.
+      - debug-channel-transport
+
+  # Enables `defmt-rtt` in `ariel-os-debug` and `ariel-os-log`.
   - name: defmt-rtt
-    help: use defmt-rtt in ariel-os-debug
+    help: private
     provides_unique:
       - ariel-os-debug-backend
+      - rtt-implementation
     env:
       global:
         FEATURES:
           - ariel-os/defmt-rtt
 
+  # Enables `rtt-target` in `ariel-os-debug`.
   - name: rtt-target
-    help: use rtt-target in ariel-os-debug
+    help: private
     provides_unique:
       - ariel-os-debug-backend
+      - rtt-implementation
     env:
       global:
         FEATURES:
           - ariel-os/rtt-target
 
-  - name: debug-uart
-    help: use UART in ariel-os-debug
+  - name: logging-over-stdout
+    help: use native's stdout as logging transport
+    context:
+      - native-chip
+    provides_unique:
+      - logging-transport
+
+  - name: logging-over-usb
+    help: use USB CDC-ACM as logging transport
     selects:
+      - context::esp:
+          - esp-println
+    provides_unique:
+      - logging-transport
+
+  - name: logging-over-uart
+    help: use UART as logging transport
+    selects:
+      - context::esp:
+          - esp-println
       - log # We could later support defmt as well
     provides_unique:
       - ariel-os-debug-backend
+      - logging-transport
     env:
       global:
         FEATURES:
           - ariel-os/debug-uart
 
+  - name: logging-facade-default
+    help: 'private: use `logging` instead'
+    selects:
+      - ?defmt
+      - ?log
+      - logging-facade
+
+  - name: defmt
+    help: Use the `defmt` crate as the logging facade
+    provides_unique:
+      - logging-facade
+    env:
+      global:
+        FEATURES:
+          - ariel-os/defmt
+        RUSTFLAGS:
+          - -Clink-arg=-Tdefmt.x
+        ESPFLASH_LOG_FORMAT: "--log-format defmt"
+        CARGO_ENV:
+          - DEFMT_LOG=info,${LOG}
+
+  - name: log
+    help: Use the `log` crate as the logging facade
+    provides_unique:
+      - logging-facade
+    env:
+      global:
+        FEATURES:
+          - ariel-os/log
+        CARGO_ENV:
+          - LOG_LEVEL=${LOG}
+
+  - name: panic-printing
+    help: print panics, on the logging output
+    context: ariel-os
+    env:
+      global:
+        FEATURES:
+          - ariel-os/panic-printing
+
+  # Enables `esp-println` in `ariel-os-log`.
   - name: esp-println
-    help: use esp-println in ariel-os-debug
+    help: private
     context:
       - esp
     provides_unique:
@@ -1843,7 +1921,7 @@ modules:
           - ariel-os/esp-println
 
   - name: semihosting
-    help: enable semihosting in ariel-os-debug
+    help: enable semihosting functionality
     env:
       global:
         FEATURES:

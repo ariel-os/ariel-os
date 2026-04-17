@@ -1,6 +1,6 @@
 # Logging
 
-Ariel OS supports logging on all platforms and it is enabled by default with the `logging-facade` [laze module][laze-modules-book].
+Ariel OS supports logging on all platforms and it is enabled by default with the `logging` [laze module][laze-modules-book].
 Logging offers a set of macros that print on the debug console with helpful logging formatting.
 
 ## Logging
