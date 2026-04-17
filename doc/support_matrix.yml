@@ -302,10 +302,7 @@ chips:
       wifi:
         status: supported
       ble: supported
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
+      user_usb: not_available
       ethernet_over_usb: not_available
       ethernet: not_available
 

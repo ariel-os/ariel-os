@@ -31,7 +31,7 @@ laze build -b ulanzi-tc001
 |SPI Main Mode|<span title="needs testing">🚦</span>|
 |UART|<span title="needs testing">🚦</span>|
 |Ethernet|<span title="not available on this piece of hardware">–</span>|
-|User USB|<span title="not available on this piece of hardware">–</span>[^no-generic-usb-peripheral]|
+|User USB|<span title="not available on this piece of hardware">–</span>|
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="supported">✅</span>|
 |Bluetooth Low Energy|<span title="supported">✅</span>|
@@ -66,5 +66,4 @@ dt, dd {
 
   
 [^jtag-pins-are-not-accessible-through-the-case]: JTAG pins are not accessible through the case.
-[^no-generic-usb-peripheral]: No generic USB peripheral.
 [^requires-partitioning-support]: Requires partitioning support.
