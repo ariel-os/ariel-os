@@ -358,6 +358,7 @@ contexts:
     parent: ariel-os
     selects:
       - ?debug-console
+      - ?espflash
       - ?esp-println
     provides:
       - has_hwrng
@@ -1138,6 +1139,14 @@ modules:
           - "-Clink-arg=-v"
         LINK_ARG_PREFIX: -Wl,
 
+  - name: espflash
+    help: use `espflash` as runner
+    provides_unique:
+      - flashing-tool
+    env:
+      global:
+        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+
   - name: probe-rs
     help: use probe-rs as runner
     selects:
@@ -1150,6 +1159,7 @@ modules:
           - ?debug-uart
     provides_unique:
       - embedded-test-runner
+      - flashing-tool
 
     env:
       global:
@@ -1829,7 +1839,6 @@ modules:
       - ariel-os-debug-backend
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
         FEATURES:
           - ariel-os/esp-println
 
