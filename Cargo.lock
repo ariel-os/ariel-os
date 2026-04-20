@@ -223,6 +223,7 @@ dependencies = [
  "coap-handler",
  "coap-handler-implementations",
  "coap-numbers",
+ "coap-request",
  "coapcore",
  "critical-section",
  "embassy-net",
