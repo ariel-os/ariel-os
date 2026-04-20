@@ -196,7 +196,7 @@ jobs:
           args: --root-dir _site/dev/docs/api --require-https --no-progress --offline _site/dev/docs/api
           fail: false
 
-      - name: Keep only the summary table for the comment
+      - name: Format link checker results for PR comment
         run: |
           # Only keep the # Summary and the below table
           # This (/{d}) deletes every line between the first '##\s'
