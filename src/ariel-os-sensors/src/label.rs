@@ -27,6 +27,8 @@ pub enum Label {
     Co2,
     /// Ground speed.
     GroundSpeed,
+    /// Illuminance.
+    Illuminance,
     /// Latitude.
     Latitude,
     /// Longitude.
@@ -65,6 +67,7 @@ impl core::fmt::Display for Label {
             Self::AngularVelocityZ => write!(f, "Angular velocity Z"),
             Self::Co2 => write!(f, "CO2 concentration"),
             Self::GroundSpeed => write!(f, "Ground speed"),
+            Self::Illuminance => write!(f, "Illuminance"),
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
             Self::Opaque | Self::OpaqueGnssTime => write!(f, "[opaque]"),
