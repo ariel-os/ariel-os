@@ -36,7 +36,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+
   build:
+    permissions:
+      pull-requests: write
     if: github.repository == 'ariel-os/ariel-os'
     runs-on: ubuntu-latest
     steps:
@@ -184,6 +187,27 @@ jobs:
           sed -i "s/\[\"ariel_os\",\[\"\",\[\],\[\"lib.rs\",\"sensors.rs\"\]\]\]/[\"ariel_os\",[\"\",[],[\"lib.rs\",\"sensors.rs\"]]],$TEXT/g" ./_site/dev/docs/api/src-files.js
           # hack ariel-os-esp in the sidebar
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
+
+      - name: Check the API docs links
+        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2
+        with:
+          # Not checking fragments because lychee is bad at finding them when they exist. Especially "range" fragment like some/url#123-127 tbf.
+          # Also not checking verbatims because all of those errors are link that are written by scripts.
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --offline _site/dev/docs/api
+          fail: false
+
+      - name: Keep only the summary table for the comment
+        run: |
+          # Only keep the # Summary and the below table
+          # using sed arcanes I read about on SO
+          sed '/^##\s/,/$EOF/{d}' lychee/out.md >> summary-comment.md
+
+      - name: Comment Summary on PR
+        uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2
+        with:
+          header: stats
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: summary-comment.md
 
       - name: Install mdbook
         uses: taiki-e/install-action@74e87cbfa15a59692b158178d8905a61bf6fca95 # v2
