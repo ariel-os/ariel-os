@@ -199,8 +199,14 @@ jobs:
       - name: Keep only the summary table for the comment
         run: |
           # Only keep the # Summary and the below table
-          # using sed arcanes I read about on SO
+          # This (/{d}) deletes every line between the first '##\s'
+          # (here '## Errors per input') and a non existent '$EOF'. This
+          # extends the match to the end of the file.
           sed '/^##\s/,/$EOF/{d}' lychee/out.md >> summary-comment.md
+          # put the rest of the status check
+          echo "<details>" >> summary-comment.md
+          sed '/^#\s/,/^##\s/{d}' lychee/out.md >> summary-comment.md
+          echo "</details>" >> summary-comment.md
 
       - name: Comment Summary on PR
         uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2
