@@ -29,6 +29,7 @@ members = [
   "src/lib/rbi",
   "src/lib/ringbuffer",
   "src/sensors/ariel-os-sensor-lis2du12",
+  "src/sensors/ariel-os-sensor-lis2mdl",
   "src/sensors/ariel-os-sensor-lps22df",
   "src/sensors/ariel-os-sensor-nrf91-gnss",
   "src/sensors/ariel-os-sensor-stts22h",
@@ -152,6 +153,7 @@ ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.
 ariel-os-sensor-lis2du12 = { path = "src/sensors/ariel-os-sensor-lis2du12" }
+ariel-os-sensor-lis2mdl = { path = "src/sensors/ariel-os-sensor-lis2mdl" }
 ariel-os-sensor-lps22df = { path = "src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-nrf91-gnss = { path = "src/sensors/ariel-os-sensor-nrf91-gnss" }
 ariel-os-sensor-stts22h = { path = "src/sensors/ariel-os-sensor-stts22h" }
