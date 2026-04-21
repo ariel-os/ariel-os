@@ -10,7 +10,7 @@ license.workspace = true
 debug-output.xor = { features = ["defmt-rtt", "rtt-target", "std"] }
 
 [package.metadata.features]
-debug-console = { groups = ["debug-output"] }
+debug-output = { groups = ["debug-output"] }
 
 [dependencies]
 defmt-rtt = { workspace = true, optional = true }
@@ -24,10 +24,13 @@ semihosting = { workspace = true, optional = true, features = [
 ] }
 
 [features]
-debug-console = []
-
-semihosting = ["dep:semihosting"]
+# Enables the debug output.
+debug-output = []
+# Enables stdout support, for native.
 std = []
+
+# Enables semihosting functionality.
+semihosting = ["dep:semihosting"]
 
 # Debug output transports.
 defmt-rtt = ["dep:defmt-rtt"]
