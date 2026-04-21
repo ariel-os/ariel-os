@@ -1761,7 +1761,7 @@ modules:
     env:
       global:
         FEATURES:
-          - ariel-os/debug-console
+          - ariel-os/debug-channel
 
   - name: logging
     help: enables logging functionality

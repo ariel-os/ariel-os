@@ -7,11 +7,11 @@ repository.workspace = true
 license.workspace = true
 
 [package.metadata.feature-groups]
-debug-output.xor = { features = ["defmt-rtt", "rtt-target"] }
+debug-channel.xor = { features = ["defmt-rtt", "rtt-target"] }
 exit-implementation.xor = { features = ["semihosting", "std"] }
 
 [package.metadata.features]
-debug-console = { groups = ["debug-output"] }
+debug-channel = { groups = ["debug-channel"] }
 
 [dependencies]
 defmt-rtt = { workspace = true, optional = true }
@@ -25,7 +25,8 @@ semihosting = { workspace = true, optional = true, features = [
 ] }
 
 [features]
-debug-console = []
+# Enables the debug channel.
+debug-channel = []
 
 # Implementation backends for `exit()`.
 semihosting = ["dep:semihosting"]
