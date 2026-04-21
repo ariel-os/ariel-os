@@ -195,6 +195,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let spawner = unsafe { asynch::Spawner::for_current_executor().await };
     asynch::set_spawner(spawner.make_send());
 
+    // This should be called as early as possible in the boot sequence.
+    ariel_os_power::init();
+
     #[cfg(feature = "debug-uart")]
     debug_uart::init(&mut peripherals);
 
