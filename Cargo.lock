@@ -565,6 +565,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-sensor-ltr303als"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-hal",
+ "ariel-os-log",
+ "ariel-os-sensors",
+ "ariel-os-sensors-utils",
+ "critical-section",
+ "embassy-executor",
+ "embassy-futures",
+ "embassy-sync 0.7.2",
+ "embassy-time",
+ "embedded-hal-async",
+ "portable-atomic",
+]
+
+[[package]]
 name = "ariel-os-sensor-nrf91-gnss"
 version = "0.1.0"
 dependencies = [
@@ -580,23 +597,6 @@ dependencies = [
  "nrf-modem",
  "portable-atomic",
  "time",
-]
-
-[[package]]
-name = "ariel-os-sensor-ltr303als"
-version = "0.1.0"
-dependencies = [
- "ariel-os-debug-log",
- "ariel-os-hal",
- "ariel-os-sensors",
- "ariel-os-sensors-utils",
- "critical-section",
- "embassy-executor",
- "embassy-futures",
- "embassy-sync 0.7.2",
- "embassy-time",
- "embedded-hal-async",
- "portable-atomic",
 ]
 
 [[package]]
@@ -5662,8 +5662,8 @@ dependencies = [
  "ariel-os-boards",
  "ariel-os-sensor-lis2du12",
  "ariel-os-sensor-lps22df",
- "ariel-os-sensor-nrf91-gnss",
  "ariel-os-sensor-ltr303als",
+ "ariel-os-sensor-nrf91-gnss",
  "ariel-os-sensor-stts22h",
  "ariel-os-sensors",
  "ariel-os-sensors-gnss-time-ext",
