@@ -1,15 +1,12 @@
 # Debug Console
 
 <!-- NOTE: "Currently" because it could be extended with other semihosting functionality to make it an actual console. -->
-The debug console is currently conceptually composed of the debug output and of the ability for the target to close it (when supported).
+The debug console is currently conceptually composed of the debug channel output and of the ability for the target to close it (when supported).
 The debug console is enabled by default and the corresponding [laze module][laze-modules-book] is `debug-console`.
 
 ## Printing on the Debug Console
 
-The [`ariel_os::log::println!()`][println-macro-rustdoc] macro is used to print on the debug console.
-
-When the debug console is enabled, panic messages are automatically printed to it.
-If this is unwanted, the `panic-printing` [laze module][laze-modules-book] can be disabled.
+When the `logging-over-debug-channel` [laze module][laze-modules-book] is enabled, [logs][logging-book] are printed on the debug channel output.
 
 ## Closing the Debug Console from Firmware
 
@@ -30,5 +27,5 @@ This is needed to later be able to attach a semihosting-enabled host tool to the
 > ```
 
 [laze-modules-book]: ./build-system.md#laze-modules
-[println-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/log/macro.println.html
+[logging-book]: ./logging.md
 [debug-exit-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/fn.exit.html

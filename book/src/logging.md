@@ -3,6 +3,11 @@
 Ariel OS supports logging on all platforms and it is enabled by default with the `logging` [laze module][laze-modules-book].
 Logging offers a set of macros that print on the debug console with helpful logging formatting.
 
+## Printing Panics
+
+Panics are automatically printed on the logging output.
+If this is unwanted, the `panic-printing` [laze module][laze-modules-book] can be disabled.
+
 ## Logging
 
 Within Rust code, import `ariel_os::log` items, then use Ariel OS logging macros:
