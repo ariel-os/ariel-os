@@ -423,7 +423,7 @@ impl<I2C: Send> Sensor for Ltr303Als01<I2C> {
 
     fn reading_channels(&self) -> ReadingChannels {
         ReadingChannels::from([ReadingChannel::new(
-            Label::Heading,
+            Label::Illuminance,
             -2,
             MeasurementUnit::Lux,
         )])
