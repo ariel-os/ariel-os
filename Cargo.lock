@@ -269,6 +269,7 @@ dependencies = [
  "ariel-os-identity",
  "ariel-os-log",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-random",
  "ariel-os-rt",
  "ariel-os-storage",
@@ -367,6 +368,7 @@ dependencies = [
  "bt-hci",
  "cfg-if",
  "const_panic",
+ "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
  "embassy-hal-internal",
@@ -466,9 +468,13 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.4.0"
 dependencies = [
+ "ariel-os-hal",
  "cfg-if",
  "cortex-m",
+ "defmt 1.0.1",
+ "embassy-nrf",
  "esp-hal",
+ "portable-atomic",
 ]
 
 [[package]]

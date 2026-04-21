@@ -13,6 +13,12 @@ pub mod peripheral {
     pub use embassy_nrf::Peri;
 }
 
+pub mod power {
+    //! Provides power management functionality.
+
+    pub mod reset;
+}
+
 #[cfg(feature = "ble")]
 #[doc(hidden)]
 pub mod ble;
@@ -101,6 +107,8 @@ mod private {
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
+    power::reset::save_reason();
+
     enable_flash_cache();
 
     let peripherals = embassy_nrf::init(Config::default());

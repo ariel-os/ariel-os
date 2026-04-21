@@ -10,6 +10,7 @@ ariel-os-embassy-common = { workspace = true }
 
 cfg-if = { workspace = true }
 const_panic = { workspace = true }
+defmt = { workspace = true, optional = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-sync = { workspace = true, optional = true }
@@ -159,6 +160,7 @@ executor-interrupt = [
 ]
 
 defmt = [
+  "dep:defmt",
   "ariel-os-embassy-common/defmt",
   "ariel-os-esp/defmt",
   "ariel-os-nrf/defmt",

@@ -1,8 +1,12 @@
 //! Provides facilities related to the MCU reset.
 
 /// Indicates why the microcontroller has reset.
+///
+/// # Note
+///
+/// This is a dummy type, HALs provide additional variants specific to their microcontrollers.
 // NOTE: Marking this as `non_exhaustive` allows to make introducing *new* variants not a breaking
-// change, especially on unaffected MCU families. However, returning the newly introduced variant
+// change, especially on unaffected MCUs. However, returning the newly introduced variant
 // instead of an already existing one is still likely to be one.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -15,18 +19,4 @@ pub enum ResetReason {
     /// power-on resets.
     #[default]
     PowerOnReset,
-    /// HAL-specific reset reason.
-    Hal(ariel_os_hal::hal::power::reset::ResetReason),
-}
-
-/// Returns the reason why the microcontroller has reset.
-#[cfg(context = "nrf")]
-#[must_use]
-pub fn reason() -> ResetReason {
-    let reason = ariel_os_hal::hal::power::reset::reason();
-
-    match reason {
-        ariel_os_hal::hal::power::reset::ResetReason::PowerOnReset => ResetReason::PowerOnReset,
-        _ => ResetReason::Hal(reason),
-    }
 }
