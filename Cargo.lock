@@ -328,7 +328,7 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-threads",
  "ariel-os-utils",
- "bt-hci",
+ "bt-hci 0.8.1",
  "cfg-if",
  "critical-section",
  "defmt 1.0.1",
@@ -364,7 +364,7 @@ dependencies = [
  "ariel-os-nrf",
  "ariel-os-rp",
  "ariel-os-stm32",
- "bt-hci",
+ "bt-hci 0.8.1",
  "cfg-if",
  "const_panic",
  "embassy-embedded-hal",
@@ -491,7 +491,7 @@ dependencies = [
  "ariel-os-log",
  "ariel-os-random",
  "ariel-os-utils",
- "bt-hci",
+ "bt-hci 0.8.1",
  "cfg-if",
  "cyw43",
  "cyw43-firmware",
@@ -1038,6 +1038,20 @@ dependencies = [
  "embassy-sync 0.7.2",
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
+ "futures-intrusive",
+ "heapless 0.9.1",
+]
+
+[[package]]
+name = "bt-hci"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "211713d2e9fb4793ce4360a712c0764264aff6be48932ccf02ca2a331c0436a9"
+dependencies = [
+ "btuuid",
+ "embassy-sync 0.8.0",
+ "embedded-io 0.7.1",
+ "embedded-io-async 0.7.0",
  "futures-intrusive",
  "heapless 0.9.1",
 ]
@@ -1712,7 +1726,7 @@ name = "cyw43"
 version = "0.5.0"
 source = "git+https://github.com/ariel-os/embassy?rev=603583d9#603583d94cb7ba14b3a6bbb84c8c5fea8bffea0d"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.6.0",
  "cortex-m",
  "cortex-m-rt",
  "defmt 1.0.1",
@@ -2909,7 +2923,7 @@ version = "0.17.0"
 source = "git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6#531c629afdd80ea464682ce7f4db8baed97967a6"
 dependencies = [
  "allocator-api2",
- "bt-hci",
+ "bt-hci 0.6.0",
  "cfg-if",
  "critical-section",
  "defmt 1.0.1",
@@ -4531,7 +4545,7 @@ name = "nrf-sdc"
 version = "0.4.0"
 source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.6.0",
  "critical-section",
  "defmt 1.0.1",
  "embassy-hal-internal",
@@ -6427,7 +6441,7 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2881b4859001fe1f48445145cda5149deac9110b1d707ec0a251b7ff6d8bdfa4"
 dependencies = [
- "bt-hci",
+ "bt-hci 0.6.0",
  "defmt 1.0.1",
  "embassy-futures",
  "embassy-sync 0.7.2",
