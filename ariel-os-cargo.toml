@@ -21,20 +21,21 @@ opt-level = 3
 # includes bt-hci 0.6.0 update
 cyw43 = { git = "https://github.com/ariel-os/embassy", rev = "603583d9" }
 
-# branch = "embassy-hal-internal-v0.3.0+ariel-os"
-embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "0feffeb3c90748112a64c6570a39e1251311accb" }
-# branch = "embassy-nrf-v0.8.0+ariel-os"
-embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "3940a79a29ae578a35625cae949bea473abf21d1" }
-# branch = "embassy-net-v0.8.0+ariel-os"
-embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "3b185bf1b3852867e4b932456600621f86f78bce" }
-# branch = "embassy-rp-v0.8.0+ariel-os"
-embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "0314802282e112a47b4ccb303c0e7f09cf33df53" }
-# branch = "embassy-stm32-v0.4.0+ariel-os"
-embassy-stm32 = { git = "https://github.com/ariel-os/embassy", rev = "1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c" }
+# branch = "embassy-embedded-hal-v0.6.0+ariel-os"
+embassy-embedded-hal = { git = "https://github.com/ariel-os/embassy", rev = "cae68deb86232f1026eb338734273fa7bd1790f4" }
+# branch = "embassy-hal-internal-v0.5.0+ariel-os"
+embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "c7024cd2ee96f83d95f91570b2d445f95a222512" }
+# branch = "embassy-net-v0.9.0+ariel-os"
+embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "44f32e56aed156c1122ed24a6b58ecea8efd1163" }
+# branch = "embassy-nrf-v0.10.0+ariel-os"
+embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "791f31c20e3e0edea2a91024903993b32ee74873" }
+# branch = "embassy-rp-v0.10.0+ariel-os"
+embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "0bee931086e431ea2d7923257d84eb018a43e554" }
+# branch = "embassy-stm32-v0.6.0+ariel-os"
+embassy-stm32 = { git = "https://github.com/ariel-os/embassy", rev = "2bce2a9816bad68e3d4b8ecb1b746c6d3810d647" }
 # branch = "embassy-time-v0.5.1+ariel-os"
 embassy-time = { git = "https://github.com/ariel-os/embassy", rev = "3c1b5fbf28237ea7144ae970c3aec11c38023c3f" }
-# branch = "embassy-usb-synopsys-otg-v0.3.1+ariel-os
-embassy-usb-synopsys-otg = { git = "https://github.com/ariel-os/embassy", rev = "478df29985c8e0d0ff2e915440c8ca15e36f4403" }
+
 # ariel-os esp-hal fork, using branch = "esp-hal-v1.0.0+20251203+ariel-os"
 esp-alloc = { git = "https://github.com/ariel-os/esp-hal", rev = "531c629afdd80ea464682ce7f4db8baed97967a6" }
 esp-bootloader-esp-idf = { git = "https://github.com/ariel-os/esp-hal", rev = "531c629afdd80ea464682ce7f4db8baed97967a6" }

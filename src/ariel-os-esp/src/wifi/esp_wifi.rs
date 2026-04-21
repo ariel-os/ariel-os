@@ -13,7 +13,7 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> N
 
     let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
 
-    spawner.spawn(connection(controller)).ok();
+    spawner.spawn(connection(controller).unwrap());
 
     interfaces.station
 }

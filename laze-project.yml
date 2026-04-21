@@ -164,7 +164,7 @@ contexts:
       tree:
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} tree ${FEATURES} $@
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} tree-skim ${FEATURES} $@
         build: false
 
       size:

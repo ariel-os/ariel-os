@@ -16,7 +16,7 @@ cortex-m = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
-  "arch-cortex-m",
+  "platform-cortex-m",
 ] }
 embassy-nrf = { workspace = true, default-features = false, features = [
   "optfield",
