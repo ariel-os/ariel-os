@@ -16,7 +16,7 @@ embassy-sync = { workspace = true }
 embassy-time = { workspace = true }
 embedded-hal-async = { workspace = true }
 portable-atomic = { workspace = true }
-ariel-os-debug-log = { workspace = true }
+ariel-os-log = { workspace = true }
 
 [dev-dependencies]
 critical-section = { workspace = true, features = ["std"] }

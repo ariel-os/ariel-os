@@ -17,8 +17,8 @@ use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 
 #[allow(unused_imports, reason = "Hex and Debug2Format are actually used when a logging facade is selected")]
-use ariel_os_debug_log::{Debug2Format, Hex};
-use ariel_os_debug_log::debug;
+use ariel_os_log::{Debug2Format, Hex};
+use ariel_os_log::debug;
 
 const I2C_ADRESS: u8 = 0x29;
 
