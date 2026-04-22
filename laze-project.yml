@@ -1821,7 +1821,6 @@ modules:
   - name: defmt-rtt
     help: private
     provides_unique:
-      - ariel-os-debug-backend
       - rtt-implementation
     env:
       global:
@@ -1832,7 +1831,6 @@ modules:
   - name: rtt-target
     help: private
     provides_unique:
-      - ariel-os-debug-backend
       - rtt-implementation
     env:
       global:
@@ -1861,7 +1859,6 @@ modules:
           - esp-println
       - log # We could later support defmt as well
     provides_unique:
-      - ariel-os-debug-backend
       - logging-transport
     env:
       global:
@@ -1913,8 +1910,6 @@ modules:
     help: private
     context:
       - esp
-    provides_unique:
-      - ariel-os-debug-backend
     env:
       global:
         FEATURES:
