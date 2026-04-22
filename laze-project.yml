@@ -1107,6 +1107,7 @@ modules:
     provides_unique:
       - embedded-test-runner
       - flashing-tool
+      - rtt-enabled-host-tool
 
     env:
       global:
@@ -1788,7 +1789,8 @@ modules:
     help: use the debug output as logging transport
     selects:
       - ?debug-output-stdout
-      - ?debug-output-rtt
+      - rtt-enabled-host-tool:
+          - ?debug-output-rtt
       # It would technically be possible to also support semihosting as debug
       # output transport, even though it is extremely slow.
       - debug-output-transport
@@ -1797,6 +1799,15 @@ modules:
 
   - name: debug-output-rtt
     help: use RTT as debug output transport
+    selects:
+      - rtt
+
+  - name: rtt
+    help: 'private: use `debug-output-rtt` instead'
+    requires:
+      # Make sure this was enabled through `debug-output-rtt`, not through
+      # `debug-output-transport`.
+      - debug-output-rtt
     selects:
       # These conditional selects act as "late dependencies": the gated modules
       # would be selected *later* in the resolution process if the gating
@@ -1813,7 +1824,7 @@ modules:
   - name: defmt-rtt
     help: private
     provides_unique:
-      - rtt
+      - rtt-implementation
     env:
       global:
         FEATURES:
@@ -1823,7 +1834,7 @@ modules:
   - name: rtt-target
     help: private
     provides_unique:
-      - rtt
+      - rtt-implementation
     env:
       global:
         FEATURES:
@@ -1839,7 +1850,7 @@ modules:
   - name: logging-over-usb
     help: use USB CDC-ACM as logging transport
     selects:
-      - esp:
+      - context::esp:
           - esp-println
     provides_unique:
       - logging-transport
@@ -1847,6 +1858,8 @@ modules:
   - name: logging-over-uart
     help: use UART as logging transport
     selects:
+      - context::esp:
+          - esp-println
       - log # We could later support defmt as well
     provides_unique:
       - logging-transport
