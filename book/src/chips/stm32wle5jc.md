@@ -131,11 +131,19 @@ Boards using this chip.
   left: 0;
   z-index: 1;
 }
+@media (min-width: 768px) {
+  /* Readability tweaks for desktop */
+  .support-matrix th,
+  .support-matrix td {
+    white-space: nowrap;
+  }
+  .support-matrix th {
+    padding: 12px 10px;
+  }
+}
 @media (min-width: 1920px) {
   .support-matrix {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
+    margin: 0 auto;
   }
 }
 .support-cell {
