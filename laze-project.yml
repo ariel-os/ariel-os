@@ -1854,13 +1854,20 @@ modules:
           - esp-println
     provides_unique:
       - logging-transport
+    env:
+      global:
+        FEATURES:
+          - ariel-os/logging-over-usb
 
   - name: logging-over-uart
     help: use UART as logging transport
     selects:
       - context::esp:
           - esp-println
-      - log # We could later support defmt as well
+      - context:nrf:
+          - log # We could later support defmt as well
+      - context:stm32:
+          - log # We could later support defmt as well
     provides_unique:
       - logging-transport
     env:
