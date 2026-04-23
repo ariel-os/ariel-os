@@ -120,46 +120,6 @@ The RTT-enabled host tool either knows the location of the control block in memo
 
 <!-- TODO: document the to-be-introduced laze module that enables RTT: `debug-output-rtt` -->
 
-## Logging Transports
-
-Orthogonally to the debug output, logging allows to print logs to the logging output.
-In Ariel OS, macros from the [`ariel_os::log`][log-mod-rustdoc] module (from `trace!()` to `error!()`) are used for [logging][logging-book].
-That module also provides a [`println!()` macro][log-println-macro-rustdoc], that also prints to the logging output.
-
-Logging can use multiple transports; the table below presents those supported in Ariel OS and which hardware and host tool are required:
-
-<!-- TODO: clarify *exactly* under which conditions each of these get enabled -->
-| Logging transport                        | Description                                                   | Supported                    | How to enable                                                               | Required hardware                                                                                                               | Required host tool             |
-| ---------------------------------------- | ------------------------------------------------------------- | :--------------------------: | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Debug output                             | Prints logs on the [debug output](#debug-output-transports).  | ✅                           | Enabled with the `logging-over-debug-output` laze module                    | [Debug probe](#debug-interfaces-protocols-and-probes) attached to the [debug interface](#debug-interfaces-protocols-and-probes) | Debug output-enabled host tool |
-| [USB CDC-ACM][usb-cdc-acm-glossary-book] | Prints logs through USB CDC-ACM.                              | Currently on ESP32 MCUs only | Enabled by the `logging-over-usb` laze module, enabled by default on ESP32  | USB cable attached to the user USB port                                                                                         | Serial monitor                 |
-| [UART][uart-glossary-book]               | Prints logs over UART.                                        | Currently on ESP32 MCUs only | Enabled by the `logging-over-uart` laze module, enabled by default on ESP32 | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board)                                       | Serial monitor                 |
-
-<!-- TODO: comment about the (non?) mutual exclusiveness of the logging transports: likely mutually exclusive at first, then simultaneous transports supported -->
-
-> [!IMPORTANT]
-> When using [`defmt` as logging facade][defmt-facade-book], a `defmt`-enabled host tool must be used so that logs are rendered correctly, as `defmt` uses its own encoding on the wire.
-> probe-rs and `espflash` both support `defmt`'s encoding transparently.
->
-> When a separate serial monitor is needed, [`defmt-print`][defmt-print-cratesio] can be used as `defmt`-enabled serial monitor.
-> If this is not possible, `defmt` should be disabled and [`log`][log-facade-book] used instead as logging facade.
-
-> [!NOTE]
-> Support for other logging transports will be added in the future, including support for UART and USB CDC-ACM on non-ESP32 devices.
-
-<!-- TODO: verify this is true -->
-> [!TIP]
-> When a logging transport other than the debug output is enabled, logging can still be used when the debug output is disabled either in software (by disabling the [debug console][debug-console-debug-console-book]) or in hardware when the [debug interface](#debug-interfaces-protocols-and-probes) itself is disabled.
-> This means that logging can still be used in production, even if the debug interface has been disabled.
->
-> If this is unwanted, logging can be disabled altogether by disabling the [`logging-facade`][logging-book] laze module.
-
-On ESP32 devices, Ariel OS uses [`espflash`][espflah-cratesio] by default to obtain and print logs.
-Currently, the firmware automatically switches at runtime between using USB CDC-ACM or UART as logging transport.
-
-> [!WARNING]
-> This is likely to change in the future, and it may become necessary to select a specific laze module to choose which logging transport to enable and use.
-
 ## Additional Host-Related Functionality
 
 On top of providing a debug output, [semihosting](#semihosting) also allows the implementation of other I/O and host-related functionality.
