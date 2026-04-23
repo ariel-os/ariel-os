@@ -20,7 +20,7 @@ As host computers do not have support for these debug interface protocols, a deb
 In some cases, debug probes can also be built into the microcontrollers themselves, behind a USB interface.
 
 Ariel OS currently uses [probe-rs][probe-rs-tool-probe-rs-docs] to interact with debug probes.
-probe-rs supports both SWD and JTAG, and allows to flash firmware, to reboot into it, and to fetch the debug output from the running application over the debug interface protocol.
+probe-rs supports both SWD and JTAG, and allows to flash firmware, to reboot into it, and to fetch the debug channel from the running application over the debug interface protocol.
 When multiple host tools are available for a board, Ariel OS attempts to make the best choice, based on functionality and flashing performance.
 However, to specifically choose probe-rs as the host tool, the `probe-rs` [laze module][laze-modules-book] can be selected.
 
@@ -44,7 +44,7 @@ Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following tab
 
 | laze tasks        | Description                                                                                                    |
 | ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| `run`             | Compiles, flashes, and runs an application. The [debug output](./debug-console.md) is printed in the terminal. |
+| `run`             | Compiles, flashes, and runs an application. The [debug channel output](./debug-console.md) is printed in the terminal. |
 | `flash`           | Compiles and flashes an application, before rebooting the target.                                              |
 | `flash-erase-all` | Erases the entire flash memory, including user data. Unlocks it if locked.                                     |
 | `reset`           | Reboots the target.                                                                                            |
@@ -85,24 +85,24 @@ Ariel OS provides the [laze tasks][laze-tasks-book] listed in the following tab
 
 | laze tasks        | Availability                       | Description                                                                                                                                                                                                                                      |
 | ----------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `run`             | ESP32 devices                      | Compiles, flashes, and runs an application. [Logs](#logging-transports) (not the debug output) are printed in the terminal. Currently uses [`espflash`][espflah-cratesio].                                                           |
+| `run`             | ESP32 devices                      | Compiles, flashes, and runs an application. [Logs](#logging-transports) (not the debug channel output) are printed in the terminal. Currently uses [`espflash`][espflah-cratesio].                                                           |
 | `flash-dfuse`     | DfuSe devices, i.e., STM32 devices | Compiles and flashes an application via DfuSe, the non-standard ST protocol based on USB DFU, before rebooting the target. Requires bootloader support for DfuSe in the microcontroller, and [dfu-util][dfu-util-homepage] on the host.          |
 
-## Debug Output Transports
+## Debug Channel Transports
 
-Debug interface protocols as introduced above also allow providing an additional piece of functionality: a debug output.
-Two main techniques exist to implement such debug output over debug interface protocols: [semihosting][arm-semihosting-docs], and [Real Time Transfer (RTT)][segger-rtt-wiki].
+Debug interface protocols as introduced above also allow providing an additional piece of functionality: a debug channel, that allows moving sequential data from the target to the host, through the debug interface.
+Two main techniques exist to implement such debug channel over debug interface protocols: [semihosting][arm-semihosting-docs], and [Real Time Transfer (RTT)][segger-rtt-wiki].
 Even though originally vendor-specific technologies, they have been extended to other architectures and vendors (e.g., [semihosting on RISC-V][riscv-semihosting-spec]), and can be used on every microcontroller currently supported by Ariel OS.
 
 ### Semihosting
 
 [Semihosting][arm-semihosting-docs] provides various operations to interact with the host from the firmware running on the target.
 A semihosting operation involves triggering a specific exception (e.g., with a breakpoint) after having set the arguments required for by operation in the appropriate processor registers.
-This functionally behaves as a remote syscall interface: see for instance the [documentation of the `SYS_WRITE0` operation][arm-semihosting-sys-write0-docs], which allows sending a string to the host for the host to print it as debug output.
+This functionally behaves as a remote syscall interface: see for instance the [documentation of the `SYS_WRITE0` operation][arm-semihosting-sys-write0-docs], which allows sending a string to the host for the host to print it as debug channel output.
 
 <!-- TODO: however the `semihosting` crate can still be imported and used normally; should we mention that? -->
 > [!NOTE]
-> Due to how semihosting works, it is extremely slow as a debug output, and semihosting is currently unsupported as a debug output in Ariel OS.
+> Due to how semihosting works, it is extremely slow as a debug channel, and semihosting is currently unsupported as a debug channel in Ariel OS.
 
 > [!TIP]
 > probe-rs automatically prints the semihosting output when used in the firmware.
@@ -111,7 +111,7 @@ This functionally behaves as a remote syscall interface: see for instance the [d
 
 [RTT][segger-rtt-wiki] output relies on in-memory buffers which are written to by the firmware on the target and read, in the background (when the microcontroller supports it), by the debug probe.
 RTT supports having multiple such buffers, allowing to implement multiple channels.
-In addition, RTT supports channels in both directions: from the target to the host ("up channels"), and from the host to the target ("down channels"), but the latter are not used for the debug output.
+In addition, RTT supports channels in both directions: from the target to the host ("up channels"), and from the host to the target ("down channels"), but the latter are not used for the debug channel.
 RTT also requires an in-memory RTT Control Block, which stores the locations of the in-memory channel buffers.
 The RTT-enabled host tool either knows the location of the control block in memory, or scans the memory to find the magic bytes ("ID") the control block starts with.
 
@@ -122,7 +122,7 @@ The RTT-enabled host tool either knows the location of the control block in memo
 
 ## Additional Host-Related Functionality
 
-On top of providing a debug output, [semihosting](#semihosting) also allows the implementation of other I/O and host-related functionality.
+On top of providing a debug channel, [semihosting](#semihosting) also allows the implementation of other I/O and host-related functionality.
 In particular, [`ariel_os::debug::exit()`][debug-console-exit-book] is currently implemented through semihosting on embedded platforms.
 
 > [!TIP]
