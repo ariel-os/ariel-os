@@ -228,7 +228,7 @@ dependencies = [
  "embassy-net",
  "embassy-sync 0.7.2",
  "embedded-io-async 0.6.1",
- "embedded-nal-async 0.8.0",
+ "embedded-nal-async 0.9.0",
  "embedded-nal-coap",
  "heapless 0.9.1",
  "hexlit",
