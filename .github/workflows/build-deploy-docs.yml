@@ -68,6 +68,17 @@ jobs:
               -p ariel-os \
               -p ariel-os-sensors \
               -p coapcore \
+              -p ariel-os-bench \
+              -p ariel-os-buildinfo \
+              -p ariel-os-coap \
+              -p ariel-os-debug \
+              -p ariel-os-identity \
+              -p ariel-os-log \
+              -p ariel-os-power \
+              -p ariel-os-random \
+              -p ariel-os-rt \
+              -p ariel-os-storage \
+              -p ariel-os-thread \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
                   bench,
