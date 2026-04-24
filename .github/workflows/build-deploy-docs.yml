@@ -78,7 +78,7 @@ jobs:
               -p ariel-os-random \
               -p ariel-os-rt \
               -p ariel-os-storage \
-              -p ariel-os-thread \
+              -p ariel-os-threads \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
                   bench,
