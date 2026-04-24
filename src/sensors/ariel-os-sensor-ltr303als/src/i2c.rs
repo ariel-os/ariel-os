@@ -102,6 +102,17 @@ impl<I2C: I2c + Send> Ltr303Als01<I2C> {
         if !self.i2c.is_set() {
             Timer::after_millis(crate::INITIAL_STARTUP_TIME_MS).await;
 
+            // Initiate software reset prodedure
+            let mut ctrl = 0;
+            ctrl |= crate::SOFT_RESET;
+            if i2c_device.write(I2C_ADRESS, &[Register::Ctrl as u8, ctrl])
+                .await
+                .is_err()
+            {
+                return;
+            }
+            Timer::after_millis(crate::INITIAL_STARTUP_TIME_MS).await;
+
             let mut gain_ctrl: u8 = 0;
             gain_ctrl |= config.gain as u8;
             debug!("[LTR-303ALS-01] Configuring gain to {:?}", config.gain);

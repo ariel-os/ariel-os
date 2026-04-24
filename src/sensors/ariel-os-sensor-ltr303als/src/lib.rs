@@ -200,6 +200,7 @@ impl MeasuredAlsDataGain {
 
 /// This bit is set to 1 when an interrupt is active.
 /// See page 19 of the datasheet.
+#[expect(dead_code)]
 const ALS_INTERRUPT_STATUS: u8 = 1 << 3;
 
 /// This bit is set to 1 to indicate that the data
@@ -212,10 +213,12 @@ const ALS_DATA_STATUS: u8 = 1 << 2;
 /// - 1: when it's a logical 1
 ///
 /// See page 20 of the datasheet.
+#[expect(dead_code)]
 const INTERRUPT_POLARITY: u8 = 1 << 2;
 
 /// Set to 1 to allow ALS measurements to trigger interrupts.
 /// See page 20 of the datasheet.
+#[expect(dead_code)]
 const INTERRUPT_MODE: u8 = 1 << 1;
 
 /// Controls the number of times that the ALS measurements must be outside of
