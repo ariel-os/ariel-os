@@ -392,7 +392,13 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
         if crate::net::STACK
             .init(embassy_sync::blocking_mutex::Mutex::new(
-                SameExecutorCell::new(stack, spawner),
+                SameExecutorCell::new(
+                    ariel_os_embassy_common::net::NetworkInterface::new(
+                        stack,
+                        net::InterfaceControllerType::new(),
+                    ),
+                    spawner,
+                ),
             ))
             .is_err()
         {
@@ -421,7 +427,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "wifi-cyw43")]
     {
-        hal::cyw43::join(control).await;
+        spawner.spawn(hal::cyw43::connection(control)).unwrap();
     };
 
     // mark used

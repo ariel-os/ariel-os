@@ -17,16 +17,20 @@ use ariel_os::{
 
 #[ariel_os::task(autostart)]
 async fn tcp_echo() {
-    let stack = net::network_stack().await.unwrap();
+    let interface = net::network_interface().await.unwrap();
+
+    let stack = interface.network_stack();
 
     // Increase the buffer size if you want to send bigger packets.
     let mut rx_buffer = [0; 256];
     let mut tx_buffer = [0; 256];
 
     info!("waiting for interface to come up...");
-    stack.wait_config_up().await;
 
     loop {
+        interface.enable();
+        stack.wait_link_up().await;
+        stack.wait_config_up().await;
         let mut socket = embassy_net::tcp::TcpSocket::new(stack, &mut rx_buffer, &mut tx_buffer);
         socket.set_timeout(Some(Duration::from_secs(10)));
 
@@ -51,7 +55,7 @@ async fn tcp_echo() {
             info!("txd: {}", core::str::from_utf8(msg).unwrap());
             Timer::after_secs(1).await;
         }
-
-        Timer::after_secs(4).await;
+        interface.disable();
+        Timer::after_secs(10).await;
     }
 }

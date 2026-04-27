@@ -33,6 +33,7 @@ esp-hal = { workspace = true, default-features = false, features = [
   "rt",
 ] }
 
+embassy-futures = { workspace = true, optional = true }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
   "unstable",
@@ -158,6 +159,8 @@ wifi = []
 
 ## Enables built-in Wi-Fi hardware.
 wifi-esp = [
+  "dep:embassy-futures",
+  "dep:embassy-sync",
   # `embassy-time` is used for Wi-Fi-specific functionality.
   "dep:embassy-time",
   "_radio-esp",

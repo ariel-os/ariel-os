@@ -24,14 +24,34 @@ use cyw43::JoinOptions;
 #[cfg(feature = "ble-cyw43")]
 use crate::ble::{self, SLOTS};
 
+#[cfg(feature = "wifi")]
+pub use crate::wifi::Cyw43WifiInterfaceController;
+
 pub type NetworkDevice = cyw43::NetDriver<'static>;
 
 static STATE: StaticCell<cyw43::State> = StaticCell::new();
 
 #[cfg(feature = "wifi")]
-pub async fn join(mut control: cyw43::Control<'static>) {
+#[embassy_executor::task]
+pub async fn connection(mut control: cyw43::Control<'static>) {
+    use crate::wifi::State;
     use ariel_os_log::info;
+
+    crate::wifi::WIFI_CONTROL_WANTED_STATE
+        .sender()
+        .send(State::Enabled);
+    let mut control_receiver = crate::wifi::WIFI_CONTROL_WANTED_STATE.receiver().unwrap();
+
     loop {
+        if control_receiver.get().await == State::Disabled {
+            // Make sure we left the access point.
+            control.leave().await;
+
+            // Wait for the wanted state to change
+            control_receiver.changed().await;
+            continue;
+        }
+
         //control.join_open(WIFI_NETWORK).await;
         match control
             .join(
@@ -42,12 +62,21 @@ pub async fn join(mut control: cyw43::Control<'static>) {
         {
             Ok(_) => {
                 info!("Wifi connected!");
-                break;
+
+                // Wait for the wanted state to change.
+                // Having a loop here avoids rejoining when `Enabled` is put again in `WIFI_CONTROL_WANTED_STATE`.
+                while control_receiver.get().await == State::Enabled {
+                    control_receiver.changed().await;
+                }
             }
             Err(err) => {
                 info!(" Wifi join failed with status={}", err.status);
             }
         }
+
+        // Calling `join()` subsequently without calling `leave()` inbetween creates a panic.
+        // Leaving before retrying to join is the simplest way to avoid a panic.
+        control.leave().await;
     }
 }
 
