@@ -72,6 +72,11 @@ builders:
   - has_leds
 - name: native
   parent: native-chip
+- name: nice-nano-v2
+  parent: nrf52840
+  provides:
+  - has_leds
+  - has_usb_device_port
 - name: nordic-thingy-91-x-nrf9151
   parent: nrf9151
   provides:
