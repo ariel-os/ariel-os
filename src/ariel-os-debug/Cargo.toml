@@ -7,7 +7,8 @@ repository.workspace = true
 license.workspace = true
 
 [package.metadata.feature-groups]
-debug-output.xor = { features = ["defmt-rtt", "rtt-target", "std"] }
+debug-output.xor = { features = ["defmt-rtt", "rtt-target"] }
+exit-implementation.xor = { features = ["semihosting", "std"] }
 
 [package.metadata.features]
 debug-console = { groups = ["debug-output"] }
@@ -26,6 +27,7 @@ semihosting = { workspace = true, optional = true, features = [
 [features]
 debug-console = []
 
+# Implementation backends for `exit()`.
 semihosting = ["dep:semihosting"]
 std = []
 

@@ -418,6 +418,7 @@ dependencies = [
  "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy-common",
+ "ariel-os-log",
  "ariel-os-random",
  "cfg-if",
  "defmt 1.0.1",
