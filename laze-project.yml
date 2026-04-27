@@ -1227,7 +1227,14 @@ modules:
   - name: network
     selects:
       - network_device
+      # Enables IPv4 by default.
       - ?ipv4
+      # Requires at least one of {`ipv4`, `ipv6`}.
+      # This works only if `ipv4` or `ipv6` has been selected before this
+      # `network` module.
+      - ?no-ipv4-ipv6
+      - no-ipv4-ipv6:
+          - ipv4-or-ipv6-required
 
   - name: network-config-ipv4-default
     help: use default network configuration method
@@ -1272,10 +1279,16 @@ modules:
         FEATURES:
           - ariel-os/network-config-ipv4-static
 
+  # Disabled by modules that provide one of these.
+  - name: no-ipv4-ipv6
+    help: private
+
   - name: ipv4
     selects:
       - network
       - network-config-ipv4-default
+    disables:
+      - no-ipv4-ipv6
     env:
       global:
         FEATURES:
@@ -1302,6 +1315,8 @@ modules:
     selects:
       - network
       - network-config-ipv6-default
+    disables:
+      - no-ipv4-ipv6
     env:
       global:
         FEATURES:
