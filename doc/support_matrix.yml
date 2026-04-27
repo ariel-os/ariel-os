@@ -84,7 +84,7 @@ chips:
     manufacturer: Ariel OS
     support:
       gpio: not_currently_supported
-      debug_output: supported
+      debug_output: not_available
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
