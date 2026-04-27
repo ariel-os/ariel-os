@@ -196,9 +196,8 @@ timer-generic-queue-64 = ["ariel-os-embassy/timer-generic-queue-64"]
 timer-generic-queue-128 = ["ariel-os-embassy/timer-generic-queue-128"]
 
 #! ## Development and debugging
-# Enables the debug console, required to use
-# [`println!`](ariel_os_log::println).
-debug-console = ["ariel-os-rt/debug-console"]
+# Enables the debug output.
+debug-output = ["ariel-os-rt/debug-output"]
 # Enables logging support through `defmt`, see [`log`].
 defmt = [
   "ariel-os-bench?/defmt",
@@ -222,10 +221,11 @@ no-boards = [
 ]
 
 # These are selected by laze
+logging-over-usb = ["ariel-os-log/logging-over-usb"]
 debug-uart = ["ariel-os-embassy/debug-uart", "ariel-os-log/uart"]
 rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-log/defmt-rtt"]
-esp-println = ["ariel-os-log/esp-println"]
+esp-println = ["ariel-os-embassy/esp-println", "ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
 
 net = ["ariel-os-embassy/net"]

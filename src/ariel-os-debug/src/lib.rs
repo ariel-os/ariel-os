@@ -11,7 +11,7 @@ mod exit;
 
 pub use exit::*;
 
-#[cfg(all(feature = "debug-console", feature = "defmt-rtt"))]
+#[cfg(feature = "defmt-rtt")]
 mod backend {
     use defmt_rtt as _;
 
@@ -19,7 +19,7 @@ mod backend {
     pub fn init() {}
 }
 
-#[cfg(all(feature = "debug-console", feature = "rtt-target"))]
+#[cfg(feature = "rtt-target")]
 mod backend {
     #[cfg(feature = "defmt")]
     pub use defmt::println as debug_output_println;
@@ -59,7 +59,7 @@ mod backend {
     }
 }
 
-#[cfg(all(feature = "debug-console", feature = "std"))]
+#[cfg(feature = "std")]
 mod backend {
     pub use std::println as debug_output_println;
 
@@ -70,10 +70,7 @@ mod backend {
     }
 }
 
-#[cfg(not(all(
-    feature = "debug-console",
-    any(feature = "defmt-rtt", feature = "rtt-target", feature = "std")
-)))]
+#[cfg(not(any(feature = "defmt-rtt", feature = "rtt-target", feature = "std")))]
 mod backend {
     #[doc(hidden)]
     pub fn init() {}

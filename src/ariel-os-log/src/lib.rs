@@ -102,7 +102,7 @@ pub mod log {
     #[cfg(feature = "esp-println")]
     pub use esp_println::println;
 
-    #[cfg(feature = "uart")]
+    #[cfg(all(feature = "uart", not(feature = "esp-println")))]
     pub use crate::uart_println as println;
 
     /// Prints to the logging output, with a newline.
@@ -346,7 +346,7 @@ impl<T: AsRef<[u8]>> defmt::Format for Cbor<T> {
     }
 }
 
-#[cfg(feature = "uart")]
+#[cfg(all(feature = "uart", not(feature = "esp-println")))]
 #[doc(hidden)]
 pub mod backend {
     use embassy_sync::once_lock::OnceLock;

@@ -123,6 +123,9 @@ multicast = ["embassy-net?/multicast"]
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
 
 debug-uart = []
+# Only needed to not enable the regular logging-over-UART mechanism when
+# `esp-println` is used.
+esp-println = []
 
 # Enables cellular networking configuration.
 cellular-networking = [
