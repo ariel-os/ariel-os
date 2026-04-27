@@ -8,7 +8,7 @@
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Output|<span title="not available on this piece of hardware">–</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
@@ -88,7 +88,7 @@ Boards using this chip.
 	  <tr>
 	    <td><code>native</code></td>
 		<td style="text-align: center;">1</td>
-		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="not available on this piece of hardware">–</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>

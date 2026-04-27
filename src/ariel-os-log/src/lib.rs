@@ -10,7 +10,7 @@
 //! This means that the syntax of the formatting strings differs depending on the enabled Cargo
 //! feature; please refer to the documentation of those crates for details on the supported syntax.
 
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
 #![cfg_attr(nightly, feature(doc_cfg))]
 #![cfg_attr(
     all(feature = "log", not(target_has_atomic = "ptr")),
@@ -95,12 +95,15 @@ pub mod log {
 
     #[cfg(all(
         context = "ariel-os",
-        not(any(feature = "esp-println", feature = "uart"))
+        not(any(feature = "esp-println", feature = "std", feature = "uart"))
     ))]
     pub use ariel_os_debug::debug_output_println as println;
 
     #[cfg(feature = "esp-println")]
     pub use esp_println::println;
+
+    #[cfg(feature = "std")]
+    pub use std::println;
 
     #[cfg(feature = "uart")]
     pub use crate::uart_println as println;

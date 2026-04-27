@@ -53,6 +53,7 @@ log = ["dep:ariel-os-utils", "dep:const-str", "dep:critical-section", "dep:log"]
 # go through this crate.
 defmt-rtt = ["ariel-os-debug/defmt-rtt"]
 esp-println = ["dep:esp-println"]
+std = []
 uart = ["dep:embassy-sync"]
 
 _test = []

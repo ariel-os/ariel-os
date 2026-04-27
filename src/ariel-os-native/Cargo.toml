@@ -10,6 +10,7 @@ license.workspace = true
 ariel-os-buildinfo = { workspace = true }
 ariel-os-debug = { workspace = true, features = ["std"] }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-log = { workspace = true, features = ["std"] }
 ariel-os-random = { workspace = true, optional = true }
 cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
