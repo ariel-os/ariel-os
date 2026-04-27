@@ -309,6 +309,8 @@ contexts:
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
+    selects:
+      - ?probe-rs
     provides:
       - has_hwrng
       - has_swi
@@ -320,7 +322,6 @@ contexts:
       # This module must stay before `cortex-m0-plus` to keep correct linker settings order.
       - rp-link-arg
       - cortex-m0-plus
-      - ?probe-rs
     provides:
       - has_multi_core_support
       - has_storage_support
@@ -339,7 +340,6 @@ contexts:
     parent: rp
     selects:
       - cortex-m33f
-      - ?probe-rs
     provides:
       - has_multi_core_support
       - has_storage_support
