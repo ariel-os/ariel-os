@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct Matrix {
     pub support_keys: Vec<SupportKeyInfo>,
     pub functionalities: Vec<FunctionalityInfo>,
+    pub note_snippets: Vec<NoteSnippets>,
     pub chips: HashMap<String, ChipInfo>,
     pub builders: HashMap<String, BuilderInfo>,
     pub boards: Vec<BoardInfo>,
@@ -31,12 +32,20 @@ pub struct FunctionalityInfo {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct NoteSnippets {
+    pub name: String,
+    pub content: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChipInfo {
     pub name: String,
     pub manufacturer: String,
     pub description: Option<String>,
     pub support: HashMap<String, SupportInfo>,
     pub notes: Option<String>,
+    pub note_snippets: Option<Vec<String>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,6 +55,7 @@ pub struct BuilderInfo {
     pub tier: String,
     pub support: HashMap<String, SupportInfo>,
     pub notes: Option<String>,
+    pub note_snippets: Option<Vec<String>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

@@ -77,6 +77,10 @@ functionalities:
     support_criteria: example-storage
     description:
 
+note_snippets:
+  - name: test
+    content: This is a prose snippet that can be reused.
+
 # Encodes support status for each chip.
 chips:
   native-chip:
@@ -96,6 +100,8 @@ chips:
       ethernet: not_available
       user_usb: not_currently_supported
       ethernet_over_usb: not_currently_supported
+    note_snippets:
+      - test
 
   nrf51822-xxaa:
     name: nRF51822-xxAA
@@ -166,6 +172,8 @@ chips:
       wifi: not_available
       ble: supported
       ethernet: not_available
+    note_snippets:
+      - test
 
   nrf5340-app:
     name: nRF5340 application core
@@ -928,6 +936,8 @@ builders:
     support:
       user_usb: supported
       ethernet_over_usb: supported
+    note_snippets:
+      - test
 
   adafruit-feather-nrf52840-sense:
     chip: nrf52840
@@ -967,6 +977,8 @@ builders:
       ```bash
       /opt/openocd/bin/openocd -d3 -s /opt/openocd -f openocd_gpiod.cfg -c 'program /tmp/blinky verify reset exit'
       ```
+    note_snippets:
+      - test
 
   bbc-microbit-v1:
     chip: nrf51822-xxaa
@@ -1285,6 +1297,8 @@ builders:
     chip: esp32s3fx4r2
     tier: "3"
     support:
+    note_snippets:
+      - test
 
 # Boards are the logical entity that represents the hardware, which can have
 # one or multiple laze builders.

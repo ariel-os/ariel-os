@@ -63,6 +63,8 @@ Flash your application onto the STM32 MCU
 ```
 
 
+This is a prose snippet that can be reused.
+
 <p>Legend:</p>
 
 <dl>
