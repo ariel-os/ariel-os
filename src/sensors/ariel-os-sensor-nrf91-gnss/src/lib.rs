@@ -49,7 +49,7 @@ const EARTH_RADIUS: f64 = 6_371_008.771_4;
 // Computed at build time to improve performance.
 const DEGREES_PER_METER_BASE: f64 = 360.0 / (EARTH_RADIUS * 2.0 * PI);
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum Command {
     Start,
     Trigger,
@@ -108,7 +108,7 @@ impl Nrf91Gnss {
         loop {
             // Wait until the state is Enabled.
             if self.state.get() != State::Enabled
-                && !matches!(self.command_channel.receive().await, Command::Start)
+                && self.command_channel.receive().await != Command::Start
             {
                 continue;
             }
