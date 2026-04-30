@@ -174,6 +174,9 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
 /// This is currently only available from the thread that hosts the network stack, and panics
 /// otherwise. This restriction will be lifted in the future (by generalization in
 /// [`embedded_nal_coap`] to allow different mutexes).
+// This deprecation serves to eventually free this up to have a single argument representing the
+// origin.
+#[deprecated(note = "use `request_to_udp_unprotected` directly")]
 pub async fn coap_client()
 -> &'static embedded_nal_coap::CoAPRuntimeClient<'static, CONCURRENT_REQUESTS> {
     let mut receiver = CLIENT_READY
@@ -185,6 +188,39 @@ pub async fn coap_client()
         .get_async()
         .await // Not an actual await, just a convenient way to see which executor is running
         .expect("CoAP client can currently only be used from the thread the network is bound to")
+}
+
+/// Returns a CoAP client request instance for a concrete UDP address without using CoAP security.
+///
+/// The resulting object can be used as a [`coap_request::Stack`].
+///
+/// The current default state of that request object is to send a CON request (albeit [with severe
+/// caveats] to the server; altering this is not possible with the current version of
+/// [`coap_request`], and will be extended there.
+///
+/// [with severe caveats]: https://docs.rs/embedded-nal-coap/latest/embedded_nal_coap/struct.CoAPRuntimeClient.html#method.to`
+///
+/// This asynchronously blocks until [`coap_run()`] has been called (which happens at startup
+/// when the corresponding feature `coap-server` is not active), and the CoAP stack is operational.
+///
+/// # Panics
+///
+/// This is currently only available from the thread that hosts the network stack, and panics
+/// otherwise. This restriction will be lifted in the future (by generalization in
+/// [`embedded_nal_coap`] to allow different mutexes).
+///
+/// # Future development
+///
+/// On the long run, this function should return `impl coap_request::Stack`. It does currently not
+/// do that, as we lack the expression options to describe that the returned type has some
+/// additional constraints (most usefully, that its `::RequestMessage` implemnts
+/// `MutableWritableMessage`, and for coapcore we'd also like to know that the type is even a
+/// concrete implementation of it).
+pub async fn request_to_udp_unprotected(
+    address: core::net::SocketAddr,
+) -> embedded_nal_coap::RequestingCoAPClient<'static, CONCURRENT_REQUESTS> {
+    #[expect(deprecated, reason = "code will be moved in here when item is removed")]
+    coap_client().await.to(address)
 }
 
 /// Auto-started CoAP server that serves two purposes:

@@ -15,6 +15,8 @@ ariel-os-storage = { workspace = true, optional = true }
 coap-handler = "0.2.0"
 coap-handler-implementations = "0.6.1"
 coapcore = { path = "../lib/coapcore", default-features = false }
+# This is a public dependency.
+coap-request = "0.2.0-alpha.2"
 critical-section = { workspace = true }
 # These features should be more selective and not enabled here, but as things
 # stand, this modules also contains the embedded-nal implementation for
@@ -28,6 +30,8 @@ embassy-net = { workspace = true, features = [
 ], optional = true }
 embassy-sync = { workspace = true }
 embedded-nal-async = { version = "0.8", optional = true }
+# This is a public dependency, but should not be for long (as its use in a
+# return position of a pub function is deprecated).
 embedded-nal-coap = { workspace = true }
 lakers = { version = "0.8.0", default-features = false }
 lakers-crypto-rustcrypto = "0.8.0"
