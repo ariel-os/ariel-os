@@ -47,6 +47,6 @@ impl embedded_storage_async::nor_flash::NorFlashError for FlashError {
 }
 
 #[must_use]
-pub fn init(_: &mut crate::hal::OptionalPeripherals) -> Flash {
+pub fn init(_: &mut crate::OptionalPeripherals) -> Flash {
     Flash {}
 }

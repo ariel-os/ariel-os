@@ -16,7 +16,7 @@ macro_rules! define_input_like {
             }
 
             #[must_use]
-            pub fn get_level(&self) -> crate::hal::gpio::input::Level {
+            pub fn get_level(&self) -> crate::gpio::input::Level {
                 unimplemented!();
             }
 
@@ -80,7 +80,7 @@ macro_rules! define_input_like {
 }
 
 pub mod input {
-    use crate::hal::peripheral::IntoPeripheral;
+    use crate::peripheral::IntoPeripheral;
 
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
 
@@ -118,7 +118,7 @@ pub mod input {
 pub mod output {
     use embedded_hal::digital::StatefulOutputPin;
 
-    use crate::hal::peripheral::IntoPeripheral;
+    use crate::peripheral::IntoPeripheral;
 
     pub const DRIVE_STRENGTH_CONFIGURABLE: bool = false;
     pub const SPEED_CONFIGURABLE: bool = false;

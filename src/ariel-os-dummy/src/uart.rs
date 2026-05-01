@@ -16,6 +16,6 @@ pub enum Uart {
     Hidden,
 }
 
-pub fn init(_peripherals: &mut crate::hal::OptionalPeripherals) {
+pub fn init(_peripherals: &mut crate::OptionalPeripherals) {
     unimplemented!();
 }

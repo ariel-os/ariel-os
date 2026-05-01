@@ -6,6 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-dummy = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 
 cfg-if = { workspace = true }
@@ -36,18 +37,13 @@ ariel-os-stm32 = { workspace = true }
 [target.'cfg(not(any(context = "esp", context = "nrf", context = "rp", context = "stm32")))'.dependencies]
 embassy-executor = { workspace = true }
 embassy-hal-internal = { workspace = true }
-embassy-usb = { workspace = true }
-embedded-storage-async = { workspace = true }
 
 ariel-os-embassy-common = { workspace = true }
-
-# For ble dummy implementation
-bt-hci = { workspace = true, optional = true }
 embedded-io = { workspace = true, optional = true }
-trouble-host = { workspace = true, optional = true }
 
 [features]
 external-interrupts = [
+  "ariel-os-dummy/external-interrupts",
   "ariel-os-embassy-common/external-interrupts",
   "ariel-os-esp/external-interrupts",
   "ariel-os-nrf/external-interrupts",
@@ -59,6 +55,7 @@ i2c = [
   "dep:embassy-embedded-hal",
   "dep:embassy-sync",
 
+  "ariel-os-dummy/i2c",
   "ariel-os-embassy-common/i2c",
   "ariel-os-esp/i2c",
   "ariel-os-nrf/i2c",
@@ -67,6 +64,7 @@ i2c = [
 ]
 
 spi = [
+  "ariel-os-dummy/spi",
   "ariel-os-embassy-common/spi",
   "ariel-os-esp/spi",
   "ariel-os-nrf/spi",
@@ -83,6 +81,7 @@ time = [
 ]
 
 uart = [
+  "ariel-os-dummy/uart",
   "ariel-os-embassy-common/uart",
   "ariel-os-esp/uart",
   "ariel-os-nrf/uart",
@@ -91,19 +90,14 @@ uart = [
 ]
 
 usb = [
+  "ariel-os-dummy/usb",
   "ariel-os-esp/usb",
   "ariel-os-nrf/usb",
   "ariel-os-rp/usb",
   "ariel-os-stm32/usb",
 ]
 
-ble = [
-  "dep:bt-hci",
-  "dep:embedded-io",
-  "dep:trouble-host",
-  "ariel-os-embassy-common/ble",
-  "ariel-os-nrf/ble",
-]
+ble = ["ariel-os-dummy/ble", "ariel-os-embassy-common/ble", "ariel-os-nrf/ble"]
 ble-cyw43 = ["ariel-os-rp/ble-cyw43", "ble"]
 ble-esp = ["ariel-os-esp/ble-esp", "ble"]
 ble-peripheral = [
@@ -120,6 +114,7 @@ ble-central = [
 nrf91-modem = ["ariel-os-nrf/nrf91-modem"]
 
 hwrng = [
+  "ariel-os-dummy/hwrng",
   "ariel-os-esp/hwrng",
   "ariel-os-native/hwrng",
   "ariel-os-nrf/hwrng",
@@ -128,6 +123,7 @@ hwrng = [
 ]
 
 storage = [
+  "ariel-os-dummy/storage",
   #"ariel-os-esp/storage",
   "ariel-os-nrf/storage",
   "ariel-os-rp/storage",
