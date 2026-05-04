@@ -8,7 +8,7 @@ use trouble_host::{Stack, prelude::DefaultPacketPool};
 pub struct Peripherals {}
 
 impl Peripherals {
-    pub fn new(_peripherals: &mut crate::hal::OptionalPeripherals) -> Self {
+    pub fn new(_peripherals: &mut crate::OptionalPeripherals) -> Self {
         unimplemented!();
     }
 }

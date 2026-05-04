@@ -1,5 +1,6 @@
 //! Dummy module used to satisfy platform-independent tooling.
 
+#![no_std]
 #![allow(
     clippy::missing_errors_doc,
     reason = "this module's items are hidden in the docs"

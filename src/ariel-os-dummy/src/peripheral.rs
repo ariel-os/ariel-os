@@ -1,5 +1,7 @@
 #![deny(missing_docs)]
 
+use core::marker::PhantomData;
+
 /// Dummy type.
 ///
 /// See the `OptionalPeripherals` type of your Embassy HAL crate instead.
@@ -50,4 +52,8 @@ impl From<Peripherals> for OptionalPeripherals {
 
 mod private {
     pub trait Sealed {}
+}
+
+pub struct Peri<'a, T> {
+    _data: PhantomData<&'a T>,
 }

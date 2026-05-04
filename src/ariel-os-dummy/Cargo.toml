@@ -1,0 +1,31 @@
+[package]
+name = "ariel-os-dummy"
+version = "0.4.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-embassy-common = { workspace = true }
+bt-hci = { workspace = true }
+embassy-executor = { workspace = true }
+embassy-usb = { workspace = true }
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+embedded-io = { workspace = true }
+embedded-storage-async = { workspace = true }
+trouble-host = { workspace = true }
+
+[features]
+ble = []
+external-interrupts = []
+hwrng = []
+i2c = []
+spi = []
+storage = []
+uart = []
+usb = []
+
+[lints]
+workspace = true
