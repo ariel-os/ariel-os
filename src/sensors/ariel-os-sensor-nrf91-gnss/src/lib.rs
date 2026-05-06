@@ -92,6 +92,109 @@ fn convert_to_time_parts(
     Some(ariel_os_sensors_gnss_time_ext::convert_datetime_to_parts(timestamp).unwrap())
 }
 
+struct StreamState {
+    // Single shot mode, return data only when the stream gets closed.
+    single_shot: bool,
+
+    // If it should send an update the next time it receives data.
+    send_update_on_next_data_received: bool,
+
+    // Latest data received from nrf_modem, used in SingleShot mode.
+    latest_data: Option<nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame>,
+}
+
+#[derive(Debug)]
+enum NextAction {
+    /// Do another iteration of the loop.
+    Continue,
+    /// Stop the processing loop.
+    Break,
+    /// Send data to the app.
+    SendData(nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame),
+    /// Send data and break.
+    SendFinalData(nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame),
+    /// Send error and break.
+    SendFinalError(ReadingError),
+}
+
+impl StreamState {
+    pub fn new(operation_mode: GnssOperationMode) -> StreamState {
+        StreamState {
+            single_shot: matches!(operation_mode, GnssOperationMode::SingleShot(_)),
+            send_update_on_next_data_received: false,
+            latest_data: None,
+        }
+    }
+
+    /// Handle control flow commands received from the `command` channel, returns what the main loop should do.
+    pub fn handle_command(&mut self, command: &Command) -> NextAction {
+        match command {
+            Command::Start => {
+                warn!("GNSS sensor already started");
+                NextAction::Continue
+            }
+            Command::Stop => NextAction::Break,
+            Command::Trigger => {
+                if self.send_update_on_next_data_received || self.single_shot {
+                    warn!("Received Trigger command while already processing one");
+                } else {
+                    self.send_update_on_next_data_received = true;
+                }
+                NextAction::Continue
+            }
+        }
+    }
+
+    /// Handles data from nrf-modem, returns what the main loop should do.
+    pub fn handle_stream_data(
+        &mut self,
+        stream_data: Option<Result<GnssData, nrf_modem::Error>>,
+    ) -> NextAction {
+        let Some(data) = stream_data else {
+            // If we're here that means the stream has been closed.
+
+            let next_action = if self.single_shot {
+                // In SingleShot mode that means we need to return some data.
+                self.latest_data.map_or(
+                    NextAction::SendFinalError(ReadingError::SensorAccess),
+                    NextAction::SendFinalData,
+                )
+            } else {
+                NextAction::Break
+            };
+            return next_action;
+        };
+
+        let data = match data {
+            Ok(d) => d,
+            Err(e) => {
+                warn!("GNSS error: {}", e);
+                return NextAction::Continue;
+            }
+        };
+
+        match data {
+            GnssData::PositionVelocityTime(pos) => {
+                if self.send_update_on_next_data_received {
+                    self.send_update_on_next_data_received = false;
+                    NextAction::SendData(pos)
+                } else {
+                    self.latest_data = Some(pos);
+                    NextAction::Continue
+                }
+            }
+            GnssData::Nmea(nmea_message) => {
+                debug!("NMEA: {}", nmea_message.as_str());
+                NextAction::Continue
+            }
+            GnssData::Agps(_) => {
+                //  ignored
+                NextAction::Continue
+            }
+        }
+    }
+}
+
 pub struct Nrf91Gnss {
     config: OnceLock<config::Config>,
     label: Option<&'static str>,
@@ -137,14 +240,17 @@ impl Nrf91Gnss {
     /// When the modem library refuses the config or fails to initialize the GNSS system.
     pub async fn run(&'static self) {
         let configuration = self.config.get().await;
+
         loop {
             // Wait until the state is Enabled.
+            // `set_mode` updates `self.state` before sending a start command in `command_channel`.
             if self.state.get() != State::Enabled
                 && self.command_channel.receive().await != Command::Start
             {
                 continue;
             }
 
+            // Calling Gnss::new().await powers up the modem, it can't be factored out.
             let gnss_stream = match configuration.operation_mode {
                 GnssOperationMode::Continuous => Gnss::new()
                     .await
@@ -177,17 +283,23 @@ impl Nrf91Gnss {
                 }
             };
 
-            self.handle_gnss_stream(gnss_stream, configuration).await;
+            self.handle_stream_events(gnss_stream, configuration).await;
         }
     }
 
-    async fn handle_gnss_stream(
+    // Return data to the application.
+    fn send_data(&'static self, pos: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame) {
+        let samples = self.convert_to_samples(pos);
+        self.result_signal.signal(Ok(samples));
+    }
+
+    // Handle the events when the GNSS is running.
+    async fn handle_stream_events(
         &'static self,
         mut gnss_stream: GnssStream,
         configuration: &Config,
     ) {
-        let mut latest_data = None;
-        let mut should_send_update = false;
+        let mut stream_state = StreamState::new(configuration.operation_mode);
 
         loop {
             if !matches!(self.state.get(), State::Enabled | State::Measuring) {
@@ -195,65 +307,29 @@ impl Nrf91Gnss {
                 break;
             }
 
-            match select(self.command_channel.receive(), gnss_stream.next()).await {
-                Either::First(Command::Start) => {
-                    warn!("GNSS sensor already started");
-                }
-                Either::First(Command::Stop) => {
+            let next_action = match select(self.command_channel.receive(), gnss_stream.next()).await
+            {
+                Either::First(command) => stream_state.handle_command(&command),
+                Either::Second(data) => stream_state.handle_stream_data(data),
+            };
+            match next_action {
+                NextAction::Break => {
                     break;
                 }
-                Either::Second(None) => {
-                    // In single shot mode, the stream ending means it has found a fix.
-                    if matches!(
-                        configuration.operation_mode,
-                        GnssOperationMode::SingleShot(_)
-                    ) {
-                        self.result_signal.clear();
-                        if let Some(data) = latest_data {
-                            let samples = self.convert_to_samples(&data);
-                            self.result_signal.signal(Ok(samples));
-                        } else {
-                            self.result_signal.signal(Err(ReadingError::SensorAccess));
-                        }
-                    }
+                NextAction::Continue => {}
+                NextAction::SendData(pos) => self.send_data(&pos),
+                NextAction::SendFinalData(pos) => {
+                    self.send_data(&pos);
                     break;
                 }
-                Either::First(Command::Trigger) => {
-                    // Ignore, already running
-                    if should_send_update
-                        || matches!(
-                            configuration.operation_mode,
-                            GnssOperationMode::SingleShot(_)
-                        )
-                    {
-                        warn!("Received Trigger command while already processing one");
-                    } else {
-                        should_send_update = true;
-                    }
-                }
-                Either::Second(Some(Ok(message))) => match message {
-                    GnssData::PositionVelocityTime(pos) => {
-                        if should_send_update {
-                            let samples = self.convert_to_samples(&pos);
-                            self.result_signal.signal(Ok(samples));
-                            should_send_update = false;
-                        }
-
-                        // Only matters if we're in SingleShot mode.
-                        latest_data = Some(pos);
-                    }
-                    GnssData::Nmea(nmea_message) => {
-                        debug!("NMEA: {}", nmea_message.as_str());
-                    }
-                    GnssData::Agps(_) => {
-                        // Ignore AGPS data
-                    }
-                },
-                Either::Second(Some(Err(e))) => {
-                    warn!("GNSS error: {}", e);
+                NextAction::SendFinalError(e) => {
+                    self.result_signal.signal(Err(e));
+                    break;
                 }
             }
         }
+
+        // Deactivate the stream asynchronously to havoid blocking when dropping it.
         let _ = gnss_stream.deactivate().await;
     }
 
@@ -519,6 +595,7 @@ impl Sensor for Nrf91Gnss {
     ) -> Result<ariel_os_sensors::sensor::State, ariel_os_sensors::sensor::SetModeError> {
         let old = self.state.set_mode(mode)?;
 
+        // Start / Stop the loop in `run()`.
         let result = match mode {
             Mode::Enabled => self.command_channel.try_send(Command::Start),
             Mode::Disabled | Mode::Sleeping => self.command_channel.try_send(Command::Stop),
