@@ -98,7 +98,9 @@ impl Nrf91Gnss {
 
     /// At this point the sensor assume the modem is already initialized with the GNSS feature enabled.
     /// In single shot mode, taking a measurement will return until a fix is obtained or the timeout is reached.
-    /// In continuous or periodic mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In continuous mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In periodic mode, taking a measurement will return the current status of the GNSS module when it is currently active:
+    /// when it wakes up it will send some invalid fixes before returning a valid fix and going to sleep.
     ///
     /// # Panics
     ///
