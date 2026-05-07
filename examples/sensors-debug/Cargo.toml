@@ -14,6 +14,7 @@ ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensor-lis2du12 = { workspace = true }
 ariel-os-sensor-lps22df = { workspace = true }
 ariel-os-sensor-nrf91-gnss = { workspace = true, optional = true }
+ariel-os-sensor-ltr303als = { workspace = true }
 ariel-os-sensor-stts22h = { workspace = true }
 ariel-os-sensors = { path = "../../src/ariel-os-sensors" }
 ariel-os-sensors-gnss-time-ext = { workspace = true, optional = true }
