@@ -1,2 +1,9 @@
 apps:
-  - name: minimal
+- name: spi-loopback
+  selects:
+  - sw/threading
+  - multi-core
+  - esp-println
+  - log
+  disables:
+  - defmt

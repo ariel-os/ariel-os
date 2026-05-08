@@ -1,0 +1,7 @@
+apps:
+  - name: hello-world-loop
+    selects:
+      - alloc
+      - sw/storage
+    context:
+      - esp32
