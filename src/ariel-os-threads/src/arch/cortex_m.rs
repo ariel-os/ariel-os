@@ -213,14 +213,14 @@ macro_rules! define_pendsv_with_fpu {
 }
 
 #[cfg(any(armv7m, armv8m))]
-cfg_if::cfg_if! {
-    if #[cfg(armv7m_eabihf)] {
+cfg_select! {
+    armv7m_eabihf => {
         define_pendsv_with_fpu!(".fpu fpv4-sp-d16");
     }
-    else if #[cfg(armv8m_eabihf)] {
+    armv8m_eabihf => {
         define_pendsv_with_fpu!(".fpu fpv5-sp-d16");
     }
-    else {
+    _ => {
         define_pendsv_without_fpu!();
     }
 }

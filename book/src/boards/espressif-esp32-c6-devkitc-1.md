@@ -38,6 +38,21 @@ laze build -b espressif-esp32-c6-devkitc-1
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
+#### Additional Notes
+
+##### USB Ports
+
+This board features two USB ports: one is labeled "USB" while the other is labeled "UART".
+
+The "USB" port is connected to the USB CDC-ACM/JTAG USB peripheral of the MCU and can be used to flash the board either through the bootloader over USB CDC-ACM using `espflash`, or over JTAG using probe-rs.
+It can also be used to obtain logs when the [`logging-over-usb`](../logging.md#logging-transports) laze module is enabled.
+
+The "UART" port is connected to a USB ⟷ UART adapter, wired to UART0.
+It can be used to flash the board through the bootloader using `espflash`.
+It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
+
+Note: On the ESP32-C3, enabling `logging-over-uart` will [not prevent the logs from also being printed using the USB CDC-ACM USB peripheral](https://github.com/esp-rs/esp-hal/issues/4510).
+
 <p>Legend:</p>
 
 <dl>

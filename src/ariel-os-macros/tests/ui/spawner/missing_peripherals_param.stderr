@@ -10,4 +10,4 @@ error: ... because this function has a second parameter
  --> tests/ui/spawner/missing_peripherals_param.rs:9:9
   |
 9 | fn main(_spawner: Spawner, _peripherals: Peripherals) {}
-  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |         ^^^^^^^^

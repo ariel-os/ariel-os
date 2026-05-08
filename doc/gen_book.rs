@@ -13,9 +13,6 @@ slug = { version = "0.1" }
 thiserror = { version = "1.0.61" }
 ---
 
-// TODO: remove when upstream fixes issue
-#![allow(unused)]
-
 mod schema;
 
 use std::{
@@ -681,115 +678,146 @@ fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
 }
 
 fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardInfo>, Error> {
-    let boards =
-        matrix.boards.iter().map(|board_info| {
-            let builders =
-                board_info.builders.iter().map(|builder_technical_name| {
-                    let builder_info = matrix.builders.get(builder_technical_name).ok_or(vec![
-                        Error::InvalidBuilderName {
-                            found: builder_technical_name.to_owned(),
-                            board: board_info.name.to_owned(),
-                        },
-                    ])?;
+    let boards = matrix.boards.iter().map(|board_info| {
+        let builders = board_info.builders.iter().map(|builder_technical_name| {
+            let builder_info = matrix.builders.get(builder_technical_name).ok_or(vec![
+                Error::InvalidBuilderName {
+                    found: builder_technical_name.to_owned(),
+                    board: board_info.name.to_owned(),
+                },
+            ])?;
 
-                    // Implement chip info inheritance
-                    let chip_info = matrix.chips.get(&builder_info.chip).ok_or(vec![
-                        Error::InvalidChipName {
-                            found: builder_info.chip.to_owned(),
-                            board: board_info.name.to_owned(),
-                        },
-                    ])?;
+            // Implement chip info inheritance
+            let chip_info =
+                matrix
+                    .chips
+                    .get(&builder_info.chip)
+                    .ok_or(vec![Error::InvalidChipName {
+                        found: builder_info.chip.to_owned(),
+                        board: board_info.name.to_owned(),
+                    }])?;
 
-                    let functionalities = matrix.functionalities.iter().map(|functionality_info| {
-                        let name = &functionality_info.name;
-
-                        let (support_info, support_key) =
-                            if let Some(support_info) = builder_info.support.get(name) {
-                                let status = support_info.status();
-                                (
-                                    support_info,
-                                    matrix
-                                        .support_keys
-                                        .iter()
-                                        .find(|s| s.name == status)
-                                        .ok_or(Error::InvalidSupportKeyNameBoard {
-                                            found: status.to_owned(),
-                                            functionality: name.to_owned(),
-                                            board: board_info.name.to_owned(),
-                                        })?,
-                                )
-                            } else {
-                                let support_info = chip_info.support.get(name).ok_or(
-                                    Error::MissingSupportInfo {
-                                        board: board_info.name.to_owned(),
-                                        chip: builder_info.chip.to_owned(),
-                                        functionality: functionality_info.title.to_owned(),
-                                    },
-                                )?;
-                                let status = support_info.status();
-                                (
-                                    support_info,
-                                    matrix
-                                        .support_keys
-                                        .iter()
-                                        .find(|s| s.name == status)
-                                        .ok_or(Error::InvalidSupportKeyNameChip {
-                                            found: status.to_owned(),
-                                            functionality: name.to_owned(),
-                                            chip: chip_info.name.to_owned(),
-                                        })?,
-                                )
-                            };
-
-                        let comments = match support_info {
-                            schema::SupportInfo::StatusOnly(_) => None,
-                            schema::SupportInfo::Details { comments, .. } => comments.clone(),
-                        };
-
-                        Ok(FunctionalitySupport {
-                            title: functionality_info.title.to_owned(),
-                            icon: support_key.icon.to_owned(),
-                            description: support_key.description.to_owned(),
-                            comments,
+            // Resolve snippet content from snippet name
+            let note_snippet_content = builder_info.note_snippets.as_ref().map(|snippets| {
+                snippets.into_iter().map(|snippet_name| {
+                    matrix
+                        .note_snippets
+                        .iter()
+                        .find(|s| s.name == *snippet_name)
+                        .ok_or(Error::InvalidNoteSnippetName {
+                            found: snippet_name.to_string(),
                         })
-                    });
-                    let chip_doc_page = ["chips/", &builder_info.chip, ".html"].concat();
-                    let errors = functionalities
-                        .clone()
-                        .filter_map(|f| f.err())
-                        .collect::<Vec<_>>();
-                    if errors.is_empty() {
-                        Ok(LazeBuilder {
-                            chip: chip_info.name.to_owned(),
-                            chip_technical_name: builder_info.chip.to_owned(),
-                            chip_doc: chip_doc_page,
-                            tier: builder_info.tier.to_owned(),
-                            technical_name: builder_technical_name.to_owned(),
-                            functionalities: functionalities.map(|f| f.unwrap()).collect(),
-                            notes: builder_info.notes.clone(),
-                        })
+                        .map(|snippet| snippet.content.clone())
+                })
+            });
+
+            // Collect errors and return early (if any)
+            if let Some(ref snippets) = note_snippet_content {
+                let errors = snippets
+                    .clone()
+                    .into_iter()
+                    .filter_map(Result::err)
+                    .collect::<Vec<_>>();
+                if !errors.is_empty() {
+                    return Err(errors);
+                }
+            }
+            // Safe to unwrap here since we checked for errors above
+            let note_snippet_content = note_snippet_content
+                .map(|snippets| snippets.into_iter().map(Result::unwrap).collect::<Vec<_>>());
+
+            let functionalities = matrix.functionalities.iter().map(|functionality_info| {
+                let name = &functionality_info.name;
+
+                let (support_info, support_key) =
+                    if let Some(support_info) = builder_info.support.get(name) {
+                        let status = support_info.status();
+                        (
+                            support_info,
+                            matrix
+                                .support_keys
+                                .iter()
+                                .find(|s| s.name == status)
+                                .ok_or(Error::InvalidSupportKeyNameBoard {
+                                    found: status.to_owned(),
+                                    functionality: name.to_owned(),
+                                    board: board_info.name.to_owned(),
+                                })?,
+                        )
                     } else {
-                        Err(errors)
-                    }
-                });
+                        let support_info =
+                            chip_info
+                                .support
+                                .get(name)
+                                .ok_or(Error::MissingSupportInfo {
+                                    board: board_info.name.to_owned(),
+                                    chip: builder_info.chip.to_owned(),
+                                    functionality: functionality_info.title.to_owned(),
+                                })?;
+                        let status = support_info.status();
+                        (
+                            support_info,
+                            matrix
+                                .support_keys
+                                .iter()
+                                .find(|s| s.name == status)
+                                .ok_or(Error::InvalidSupportKeyNameChip {
+                                    found: status.to_owned(),
+                                    functionality: name.to_owned(),
+                                    chip: chip_info.name.to_owned(),
+                                })?,
+                        )
+                    };
 
-            let board_doc_page = ["boards/", &slugify(&board_info.name), ".html"].concat();
-            let errors = builders
+                let comments = match support_info {
+                    schema::SupportInfo::StatusOnly(_) => None,
+                    schema::SupportInfo::Details { comments, .. } => comments.clone(),
+                };
+
+                Ok(FunctionalitySupport {
+                    title: functionality_info.title.to_owned(),
+                    icon: support_key.icon.to_owned(),
+                    description: support_key.description.to_owned(),
+                    comments,
+                })
+            });
+            let chip_doc_page = ["chips/", &builder_info.chip, ".html"].concat();
+            let errors = functionalities
                 .clone()
                 .filter_map(|f| f.err())
-                .flatten()
                 .collect::<Vec<_>>();
             if errors.is_empty() {
-                Ok(BoardInfo {
-                    url: board_info.url.to_owned(),
-                    board_doc: board_doc_page,
-                    name: board_info.name.to_owned(),
-                    builders: builders.map(|b| b.unwrap()).collect(),
+                Ok(LazeBuilder {
+                    chip: chip_info.name.to_owned(),
+                    chip_technical_name: builder_info.chip.to_owned(),
+                    chip_doc: chip_doc_page,
+                    tier: builder_info.tier.to_owned(),
+                    technical_name: builder_technical_name.to_owned(),
+                    functionalities: functionalities.map(|f| f.unwrap()).collect(),
+                    notes: merge_notes(builder_info.notes.clone(), note_snippet_content),
                 })
             } else {
                 Err(errors)
             }
         });
+
+        let board_doc_page = ["boards/", &slugify(&board_info.name), ".html"].concat();
+        let errors = builders
+            .clone()
+            .filter_map(|f| f.err())
+            .flatten()
+            .collect::<Vec<_>>();
+        if errors.is_empty() {
+            Ok(BoardInfo {
+                url: board_info.url.to_owned(),
+                board_doc: board_doc_page,
+                name: board_info.name.to_owned(),
+                builders: builders.map(|b| b.unwrap()).collect(),
+            })
+        } else {
+            Err(errors)
+        }
+    });
 
     let errors = boards
         .clone()
@@ -805,6 +833,35 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardInfo>, 
 
 fn gen_chip_functionalities(matrix: &schema::Matrix) -> Result<Vec<ChipInfo>, Error> {
     let chips = matrix.chips.iter().map(|(chip_technical_name, chip_info)| {
+        // Resolve snippet content from snippet name
+        let note_snippet_content = chip_info.note_snippets.as_ref().map(|snippets| {
+            snippets.into_iter().map(|snippet_name| {
+                matrix
+                    .note_snippets
+                    .iter()
+                    .find(|s| s.name == *snippet_name)
+                    .ok_or(Error::InvalidNoteSnippetName {
+                        found: snippet_name.to_string(),
+                    })
+                    .map(|snippet| snippet.content.clone())
+            })
+        });
+
+        // Collect errors and return early (if any)
+        if let Some(ref snippets) = note_snippet_content {
+            let errors = snippets
+                .clone()
+                .into_iter()
+                .filter_map(Result::err)
+                .collect::<Vec<_>>();
+            if !errors.is_empty() {
+                return Err(errors);
+            }
+        }
+        // Safe to unwrap here since we checked for errors above
+        let note_snippet_content = note_snippet_content
+            .map(|snippets| snippets.into_iter().map(Result::unwrap).collect::<Vec<_>>());
+
         let functionalities = matrix.functionalities.iter().map(|functionality_info| {
             let support_info = chip_info
                 .support
@@ -856,7 +913,7 @@ fn gen_chip_functionalities(matrix: &schema::Matrix) -> Result<Vec<ChipInfo>, Er
                 technical_name: chip_technical_name.to_owned(),
                 name: chip_info.name.to_owned(),
                 functionalities: functionalities.map(|f| f.unwrap()).collect(),
-                notes: chip_info.notes.clone(),
+                notes: merge_notes(chip_info.notes.clone(), note_snippet_content),
             })
         } else {
             Err(errors)
@@ -909,6 +966,22 @@ fn add_custom_filters(env: &mut Environment) {
     env.add_filter("capitalize_first", capitalize_first);
 }
 
+fn merge_notes(notes: Option<String>, note_snippet_content: Option<Vec<String>>) -> Option<String> {
+    if let Some(snippets) = note_snippet_content {
+        if let Some(ref notes) = notes {
+            let mut tmp = String::new();
+            tmp.push_str(&notes);
+            tmp.push_str("\n\n");
+            tmp.push_str(&snippets.as_slice().join("\n\n"));
+            return Some(tmp);
+        } else {
+            return Some(snippets.as_slice().join("\n\n"));
+        }
+    } else {
+        return notes;
+    }
+}
+
 #[derive(Debug, thiserror::Error, Diagnostic)]
 enum Error {
     #[error("could not find file `{path}`")]
@@ -951,6 +1024,8 @@ enum Error {
         functionality: String,
         chip: String,
     },
+    #[error("invalid note snippet name `{found}`")]
+    InvalidNoteSnippetName { found: String },
     #[error("missing support info on board `{board}` or chip `{chip}` regarding functionality `{functionality}`")]
     MissingSupportInfo {
         board: String,

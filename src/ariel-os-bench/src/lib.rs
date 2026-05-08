@@ -4,20 +4,24 @@
 #![deny(clippy::pedantic)]
 #![deny(missing_docs)]
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "cortex-m")] {
+cfg_select! {
+    context = "cortex-m" => {
         mod cortexm;
         use cortexm as bench;
-    } else if #[cfg(context = "esp")] {
+    }
+    context = "esp" => {
         mod esp;
         use esp as bench;
-    } else if #[cfg(context = "native")] {
+    }
+    context = "native" => {
         mod native;
         use native as bench;
-    } else if #[cfg(context = "ariel-os")] {
+    }
+    context = "ariel-os" => {
         // When run with laze but the MCU family is not supported
         compile_error!("benchmarking is not supported for this MCU family");
-    } else {
+    }
+    _ => {
         // Provide a default bench module, for HAL-independent tooling
         mod bench {
             use crate::Error;

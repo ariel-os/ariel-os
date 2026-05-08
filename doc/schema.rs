@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct Matrix {
     pub support_keys: Vec<SupportKeyInfo>,
     pub functionalities: Vec<FunctionalityInfo>,
+    pub note_snippets: Vec<NoteSnippets>,
     pub chips: HashMap<String, ChipInfo>,
     pub builders: HashMap<String, BuilderInfo>,
     pub boards: Vec<BoardInfo>,
@@ -31,12 +32,20 @@ pub struct FunctionalityInfo {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct NoteSnippets {
+    pub name: String,
+    pub content: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChipInfo {
     pub name: String,
     pub manufacturer: String,
     pub description: Option<String>,
     pub support: HashMap<String, SupportInfo>,
     pub notes: Option<String>,
+    pub note_snippets: Option<Vec<String>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,6 +55,7 @@ pub struct BuilderInfo {
     pub tier: String,
     pub support: HashMap<String, SupportInfo>,
     pub notes: Option<String>,
+    pub note_snippets: Option<Vec<String>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -74,33 +84,6 @@ impl SupportInfo {
         match self {
             SupportInfo::StatusOnly(status) => status,
             SupportInfo::Details { status, .. } => status,
-        }
-    }
-}
-
-pub enum Tier {
-    Tier1,
-    Tier2,
-    Tier3,
-}
-
-impl argh::FromArgValue for Tier {
-    fn from_arg_value(value: &str) -> Result<Self, String> {
-        match value {
-            "tier-1" | "1" => Ok(Self::Tier1),
-            "tier-2" | "2" => Ok(Self::Tier2),
-            "tier-3" | "3" => Ok(Self::Tier3),
-            _ => Err("invalid board support tier".to_string()),
-        }
-    }
-}
-
-impl ToString for Tier {
-    fn to_string(&self) -> String {
-        match self {
-            Tier::Tier1 => "1".to_string(),
-            Tier::Tier2 => "2".to_string(),
-            Tier::Tier3 => "3".to_string(),
         }
     }
 }

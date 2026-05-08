@@ -39,6 +39,8 @@ enum SubCommand {
     VsCode(VsCode),
     RustAnalyzer(RustAnalyzer),
     Helix(Helix),
+    Zed(Zed),
+    Gram(Gram),
 }
 
 impl SubCommand {
@@ -47,6 +49,8 @@ impl SubCommand {
             Self::RustAnalyzer(command) => command.run(),
             Self::VsCode(command) => command.run(),
             Self::Helix(command) => command.run(),
+            Self::Zed(command) => command.run(),
+            Self::Gram(command) => command.run(),
         }
     }
 }
@@ -123,6 +127,91 @@ impl VsCode {
 }
 
 #[derive(argh::FromArgs)]
+#[argh(subcommand, name = "zed")]
+/// Generate configuration for Zed.
+struct Zed {}
+
+impl Zed {
+    fn run(&self) -> miette::Result<()> {
+        zed_and_forks(ZedFlavor::Zed)
+    }
+}
+
+#[derive(argh::FromArgs)]
+#[argh(subcommand, name = "gram")]
+/// Generate configuration for Gram.
+struct Gram {}
+
+impl Gram {
+    fn run(&self) -> miette::Result<()> {
+        zed_and_forks(ZedFlavor::Gram)
+    }
+}
+
+enum ZedFlavor {
+    Zed,
+    Gram,
+}
+
+fn zed_and_forks(flavor: ZedFlavor) -> miette::Result<()> {
+    let directory_path = match flavor {
+        ZedFlavor::Zed => PathBuf::from(".zed"),
+        ZedFlavor::Gram => PathBuf::from(".gram"),
+    };
+
+    // create directory if it doesn't exist
+    if !directory_path.exists() {
+        fs::create_dir_all(&directory_path).map_err(Error::from)?;
+    }
+
+    let settings_path = match flavor {
+        ZedFlavor::Zed => directory_path.join("settings.json"),
+        ZedFlavor::Gram => directory_path.join("settings.jsonc"),
+    };
+    // create settings.json file if it doesn't exist
+    if !settings_path.exists() {
+        fs::write(&settings_path, "{}").map_err(Error::from)?;
+    }
+
+    let settings_file = fs::File::open(&settings_path).map_err(Error::from)?;
+
+    // FIXME: properly parse jsonc files, this will throw an error if there's a comment.
+    let mut settings_json: serde_json::Map<String, serde_json::Value> =
+        serde_json::from_reader(settings_file).map_err(Error::from)?;
+
+    let settings = settings_from_env()?;
+
+    // rust-analyzer config in Zed is in object `lsp.rust-analyzer.initialization_options`
+
+    let mut wrapped_settings_rust_analyzer = HashMap::new();
+    wrapped_settings_rust_analyzer
+        .insert("initialization_options".to_string(), Value::Map(settings));
+
+    let mut wrapped_settings_lsp = HashMap::new();
+    wrapped_settings_lsp.insert(
+        "rust-analyzer".to_string(),
+        Value::Map(wrapped_settings_rust_analyzer),
+    );
+
+    let mut wrapped_settings = HashMap::new();
+    wrapped_settings.insert("lsp".to_string(), Value::Map(wrapped_settings_lsp));
+
+    for (key, value) in wrapped_settings {
+        settings_json.insert(key, value.into());
+    }
+
+    let settings_json_string = serde_json::to_string_pretty(&settings_json).map_err(Error::from)?;
+    fs::write(&settings_path, settings_json_string).map_err(Error::from)?;
+    println!(
+        "Updated settings in {}",
+        std::path::absolute(settings_path)
+            .map_err(Error::from)?
+            .to_string_lossy()
+    );
+    Ok(())
+}
+
+#[derive(argh::FromArgs)]
 #[argh(subcommand, name = "rust-analyzer")]
 /// Generate configuration for generi rust-analyzer (rust-analyzer.toml).
 struct RustAnalyzer {}
@@ -164,7 +253,6 @@ struct Helix {}
 
 impl Helix {
     fn run(&self) -> miette::Result<()> {
-
         // create directory if it doesn't exist
         let directory_path = PathBuf::from(".helix");
         if !directory_path.exists() {
@@ -184,16 +272,20 @@ impl Helix {
 
         let settings = settings_from_env()?;
 
-        // rust-analyzer config in Helix is in struct `language-server.rust-analyzer.config`
+        // rust-analyzer config in Helix is in object `language-server.rust-analyzer.config`
 
         let mut wrapped_settings_rust_analyzer = HashMap::new();
         wrapped_settings_rust_analyzer.insert("config".to_string(), settings);
 
         let mut wrapped_settings_language_server = HashMap::new();
-        wrapped_settings_language_server.insert("rust-analyzer".to_string(), wrapped_settings_rust_analyzer);
+        wrapped_settings_language_server
+            .insert("rust-analyzer".to_string(), wrapped_settings_rust_analyzer);
 
         let mut wrapped_settings = HashMap::new();
-        wrapped_settings.insert("language-server".to_string(), wrapped_settings_language_server);
+        wrapped_settings.insert(
+            "language-server".to_string(),
+            wrapped_settings_language_server,
+        );
 
         for (key, value) in wrapped_settings {
             settings_toml.insert(key, value.into());
@@ -305,9 +397,7 @@ fn settings_from_env() -> miette::Result<HashMap<String, Value>> {
         override_command.extend(extra_args);
         override_command.push(Value::String("--message-format=json".to_string()));
 
-
         let mut build_script = HashMap::new();
-
 
         build_script.insert(
             "overrideCommand".to_string(),
@@ -318,8 +408,6 @@ fn settings_from_env() -> miette::Result<HashMap<String, Value>> {
     }
 
     settings.insert("check".to_string(), Value::Map(check));
-
-
 
     let features_str = features_args.replace("--features=", "");
     let features_list = features_str

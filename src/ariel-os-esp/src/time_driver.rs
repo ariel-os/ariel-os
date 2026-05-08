@@ -65,7 +65,7 @@ impl TimeDriver {
                 Err(esp_hal::timer::Error::InvalidTimeout) if timeout != 0 => {
                     timeout /= 2;
                 }
-                Err(e) => panic!("Failed to schedule timer: {:?}", e),
+                Err(e) => panic!("Failed to schedule timer: {e:?}"),
             }
         }
     }

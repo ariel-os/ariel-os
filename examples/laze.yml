@@ -13,6 +13,7 @@ subdirs:
   - coap-server
   - device-metadata
   - gpio
+  - gpio-reuse
   - hello-world
   - hello-world-threading
   - http-client

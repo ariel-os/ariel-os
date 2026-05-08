@@ -10,12 +10,21 @@
 //! This means that the syntax of the formatting strings differs depending on the enabled Cargo
 //! feature; please refer to the documentation of those crates for details on the supported syntax.
 
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
 #![cfg_attr(nightly, feature(doc_cfg))]
+#![cfg_attr(
+    all(feature = "log", not(target_has_atomic = "ptr")),
+    expect(unsafe_code)
+)]
 #![deny(missing_docs)]
 
 #[featurecomb::comb]
 mod _featurecomb {}
+
+#[allow(unused, reason = "conditional compilation")]
+#[doc(hidden)]
+#[cfg(feature = "log")]
+mod log_logger;
 
 // This module is hidden in the docs, but would still be imported by a wildcard import of this
 // crate's items.
@@ -26,8 +35,34 @@ pub mod hidden_for_logging_macros {
     pub use defmt;
 }
 
+// Make sure the `defmt` logger gets linked.
+#[cfg(feature = "esp-println")]
+use esp_println as _;
+
 #[cfg(feature = "defmt")]
 pub use defmt::{Debug2Format, Display2Format};
+
+/// Prints the panic on the logging output in a consistent manner across loggers.
+#[doc(hidden)]
+pub fn print_panic(info: &core::panic::PanicInfo<'_>) {
+    // `location()`'s documentation currently states that it always returns `Some(_)`.
+    // It is unclear what the panic formatting would be otherwise, because the std does not
+    // currently handle the case where the location cannot be obtained.
+    #[allow(
+        unused_variables,
+        reason = "FP due to macro usage and conditional compilation"
+    )]
+    let (location, message) = (info.location().unwrap(), info.message());
+
+    // `PanicMessage` does not currently implement `defmt::Format`.
+    // We *need* to use the `Display` implementation and cannot use `PanicMessage::as_str()` as
+    // that would not work for dynamically formatted messages.
+    #[cfg(feature = "defmt")]
+    let message = Display2Format(&message);
+
+    // Mimics the `Display` implementation of `core::panic::PanicInfo`.
+    println!("panicked at {}:\n{}", location, message);
+}
 
 #[cfg(feature = "log")]
 #[doc(hidden)]
@@ -57,6 +92,34 @@ pub mod log {
             self.0.fmt(f)
         }
     }
+
+    #[cfg(all(
+        context = "ariel-os",
+        not(any(
+            feature = "esp-println",
+            feature = "logging-over-uart",
+            feature = "std"
+        ))
+    ))]
+    pub use ariel_os_debug::debug_output_println as println;
+
+    #[cfg(feature = "esp-println")]
+    pub use esp_println::println;
+
+    #[cfg(feature = "std")]
+    pub use std::println;
+
+    #[cfg(feature = "debug-uart")]
+    pub use crate::uart_println as println;
+
+    /// Prints to the logging output, with a newline.
+    #[cfg(not(context = "ariel-os"))]
+    #[macro_export]
+    macro_rules! noop_println {
+        ($($arg:tt)*) => {};
+    }
+    #[cfg(not(context = "ariel-os"))]
+    pub use crate::noop_println as println;
 }
 
 #[cfg(feature = "log")]
@@ -136,7 +199,7 @@ mod log_macros {
         }};
     }
 
-    /// Prints to the debug output, with a newline.
+    /// Prints to the logging output, with a newline.
     #[macro_export]
     macro_rules! println {
         ($($arg:tt)*) => {{
@@ -191,6 +254,14 @@ mod log_macros {
             $crate::log::error!($($arg)*);
         }};
     }
+
+    /// Prints to the logging output, with a newline.
+    #[macro_export]
+    macro_rules! println {
+        ($($arg:tt)*) => {{
+            $crate::log::println!($($arg)*);
+        }};
+    }
 }
 
 // Define no-op macros in case no facade is enabled.
@@ -223,6 +294,12 @@ mod log_macros {
     /// Logs a message at the error level.
     #[macro_export]
     macro_rules! error {
+        ($($arg:tt)*) => {};
+    }
+
+    /// Prints to the logging output, with a newline.
+    #[macro_export]
+    macro_rules! println {
         ($($arg:tt)*) => {};
     }
 }
@@ -274,4 +351,61 @@ impl<T: AsRef<[u8]>> defmt::Format for Cbor<T> {
     fn format(&self, f: defmt::Formatter<'_>) {
         defmt::write!(f, "{=[u8]:cbor}", self.0.as_ref());
     }
+}
+
+#[cfg(feature = "debug-uart")]
+#[doc(hidden)]
+pub mod backend {
+    use embassy_sync::once_lock::OnceLock;
+
+    #[doc(hidden)]
+    pub enum Error {
+        Writing,
+    }
+
+    // Populated by a downstream crate.
+    // The function must print to a UART output.
+    #[expect(clippy::type_complexity, reason = "not worth it")]
+    #[doc(hidden)]
+    pub static DEBUG_UART_WRITE_FN: OnceLock<fn(&[u8]) -> Result<(), Error>> = OnceLock::new();
+
+    struct DebugUart;
+
+    impl core::fmt::Write for DebugUart {
+        fn write_str(&mut self, s: &str) -> core::fmt::Result {
+            let bytes = s.as_bytes();
+
+            if let Some(debug_uart_write_fn) = DEBUG_UART_WRITE_FN.try_get() {
+                // Panicking in this case would not be useful as (a) it is recoverable, we would
+                // just be dropping some debug output and (b) there would not be a output to print
+                // the panic on, as there can currently only be one backend at once.
+                let _ = debug_uart_write_fn(bytes);
+            }
+
+            Ok(())
+        }
+    }
+
+    // Based on <https://blog.m-ou.se/format-args/>.
+    #[doc(hidden)]
+    pub fn _print(args: core::fmt::Arguments<'_>) {
+        use core::fmt::Write as _;
+
+        DebugUart.write_fmt(args).unwrap();
+    }
+
+    #[doc(hidden)]
+    #[macro_export]
+    macro_rules! uart_println {
+        ($($arg:tt)*) => {{
+            #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
+            $crate::backend::_print(format_args!("{}\n", format_args!($($arg)*)));
+        }};
+    }
+}
+
+#[doc(hidden)]
+pub fn init() {
+    #[cfg(feature = "log")]
+    log_logger::init();
 }

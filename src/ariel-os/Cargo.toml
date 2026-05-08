@@ -196,32 +196,37 @@ timer-generic-queue-64 = ["ariel-os-embassy/timer-generic-queue-64"]
 timer-generic-queue-128 = ["ariel-os-embassy/timer-generic-queue-128"]
 
 #! ## Development and debugging
-# Enables the debug console, required to use
-# [`println!`](ariel_os_debug::println).
-debug-console = ["ariel-os-rt/debug-console"]
+# Enables the debug channel.
+debug-channel = ["ariel-os-rt/debug-channel"]
 # Enables logging support through `defmt`, see [`log`].
 defmt = [
   "ariel-os-bench?/defmt",
   "ariel-os-coap?/defmt",
-  "ariel-os-debug/defmt",
   "ariel-os-embassy/defmt",
+  "ariel-os-log/defmt",
   "ariel-os-sensors?/defmt",
   "ariel-os-threads?/defmt",
 ]
 # Enables logging support through `log`, see [`log`].
-log = ["ariel-os-debug/log", "ariel-os-embassy/log"]
+log = ["ariel-os-embassy/log", "ariel-os-log/log"]
 ## Enables benchmarking facilities.
 bench = ["dep:ariel-os-bench"]
 # Prints panic messages on the debug console.
 panic-printing = ["ariel-os-rt/panic-printing"]
 ## Allows to have no boards selected, useful to run target-independent tooling.
-no-boards = ["ariel-os-boards/no-boards", "executor-none"]
+no-boards = [
+  "ariel-os-boards/no-boards",
+  "ariel-os-embassy/no-boards",
+  "executor-none",
+]
 
 # These are selected by laze
-debug-uart = ["ariel-os-debug/uart", "ariel-os-embassy/debug-uart"]
+debug-uart = ["ariel-os-embassy/debug-uart", "ariel-os-log/debug-uart"]
+logging-over-uart = ["ariel-os-log/logging-over-uart"]
+logging-over-usb = ["ariel-os-log/logging-over-usb"]
 rtt-target = ["ariel-os-debug/rtt-target"]
-defmt-rtt = ["ariel-os-debug/defmt-rtt"]
-esp-println = ["ariel-os-debug/esp-println"]
+defmt-rtt = ["ariel-os-log/defmt-rtt"]
+esp-println = ["ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
 
 net = ["ariel-os-embassy/net"]

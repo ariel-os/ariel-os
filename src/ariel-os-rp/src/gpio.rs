@@ -24,10 +24,10 @@ pub mod input {
 
     #[doc(hidden)]
     pub fn new<P: InputPin>(
-        pin: Peri<'static, P>,
+        pin: Peri<'_, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
-    ) -> Result<Input<'static>, core::convert::Infallible> {
+    ) -> Result<Input<'_>, core::convert::Infallible> {
         let pull = from_pull(pull);
 
         let mut input = Input::new(pin, pull);
@@ -39,10 +39,10 @@ pub mod input {
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
     pub fn new_int_enabled<P: InputPin>(
-        pin: Peri<'static, P>,
+        pin: Peri<'_, P>,
         pull: ariel_os_embassy_common::gpio::Pull,
         schmitt_trigger: bool,
-    ) -> Result<IntEnabledInput<'static>, InterruptError> {
+    ) -> Result<IntEnabledInput<'_>, InterruptError> {
         // This HAL does not require special treatment of external interrupts.
         match new(pin, pull, schmitt_trigger) {
             Ok(input) => Ok(input),
@@ -71,11 +71,11 @@ pub mod output {
 
     #[doc(hidden)]
     pub fn new<P: OutputPin>(
-        pin: Peri<'static, P>,
+        pin: Peri<'_, P>,
         initial_level: ariel_os_embassy_common::gpio::Level,
         drive_strength: super::DriveStrength,
         speed: super::Speed,
-    ) -> Output<'static> {
+    ) -> Output<'_> {
         let initial_level = match initial_level {
             ariel_os_embassy_common::gpio::Level::Low => Level::Low,
             ariel_os_embassy_common::gpio::Level::High => Level::High,

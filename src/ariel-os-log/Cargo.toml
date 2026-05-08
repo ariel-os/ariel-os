@@ -8,17 +8,60 @@ license.workspace = true
 
 [package.metadata.feature-groups]
 logging-facade.xor = { features = ["defmt", "log"] }
+logging-transport.xor = { features = [
+  "defmt-rtt",
+  "logging-over-uart",
+  "logging-over-usb",
+] }
 
 [dependencies]
+ariel-os-debug = { workspace = true }
+ariel-os-utils = { workspace = true, optional = true }
+const-str = { workspace = true, optional = true }
+critical-section = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
+embassy-sync = { workspace = true, optional = true }
 featurecomb = { workspace = true }
 log = { workspace = true, optional = true }
 
+[target.'cfg(context = "esp")'.dependencies]
+esp-println = { workspace = true, optional = true, features = [
+  "colors",
+  "critical-section",
+] }
+
+[target.'cfg(context = "esp32")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32"] }
+
+[target.'cfg(context = "esp32c3")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32c3"] }
+
+[target.'cfg(context = "esp32c6")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32c6"] }
+
+[target.'cfg(context = "esp32s2")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32s2"] }
+
+[target.'cfg(context = "esp32s3")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
+
 [features]
 ## Enables `defmt` as logging facade.
-defmt = ["dep:defmt"]
+defmt = ["dep:defmt", "esp-println?/defmt-espflash"]
 ## Enables `log` as logging facade.
-log = ["dep:log"]
+log = ["dep:ariel-os-utils", "dep:const-str", "dep:critical-section", "dep:log"]
+
+# Enables the `esp-println` crate.
+esp-println = ["dep:esp-println"]
+
+# Logging transports.
+debug-uart = ["dep:embassy-sync", "logging-over-uart"]
+# `defmt-rtt` forces the logging transport to be the debug output, so it has to
+# go through this crate.
+defmt-rtt = ["ariel-os-debug/defmt-rtt"]
+logging-over-uart = ["esp-println?/uart"]
+logging-over-usb = ["esp-println?/jtag-serial"]
+std = []
 
 _test = []
 

@@ -357,31 +357,37 @@ define_uart_drivers!(
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all UART peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(context = "stm32c031c6")] {
+    cfg_select! {
+        context = "stm32c031c6" => {
             let _ = peripherals.USART1.take().unwrap();
-        } else if #[cfg(context = "stm32f042k6")] {
+        }
+        context = "stm32f042k6" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
-        } else if #[cfg(context = "stm32f303cb")] {
+        }
+        context = "stm32f303cb" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
-        } else if #[cfg(context = "stm32f303re")] {
+        }
+        context = "stm32f303re" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
             let _ = peripherals.UART5.take().unwrap();
-        } else if #[cfg(context = "stm32f401re")] {
+        }
+        context = "stm32f401re" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART6.take().unwrap();
-        } else if #[cfg(context = "stm32f411re")] {
+        }
+        context = "stm32f411re" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART6.take().unwrap();
-        } else if #[cfg(context = "stm32f767zi")] {
+        }
+        context = "stm32f767zi" => {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
@@ -390,7 +396,8 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART6.take().unwrap();
             let _ = peripherals.UART7.take().unwrap();
             let _ = peripherals.UART8.take().unwrap();
-        } else if #[cfg(context = "stm32h755zi")] {
+        }
+        context = "stm32h755zi" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
@@ -400,7 +407,8 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART6.take().unwrap();
             let _ = peripherals.UART7.take().unwrap();
             let _ = peripherals.UART8.take().unwrap();
-        } else if #[cfg(context = "stm32h753zi")] {
+        }
+        context = "stm32h753zi" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
@@ -410,14 +418,16 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART6.take().unwrap();
             let _ = peripherals.UART7.take().unwrap();
             let _ = peripherals.UART8.take().unwrap();
-        } else if #[cfg(context = "stm32l475vg")] {
+        }
+        context = "stm32l475vg" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
             let _ = peripherals.UART5.take().unwrap();
-        } else if #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))] {
+        }
+        any(context = "stm32u073kc", context = "stm32u083mc") => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.LPUART2.take().unwrap();
             let _ = peripherals.LPUART3.take().unwrap();
@@ -425,25 +435,30 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.USART4.take().unwrap();
-        } else if #[cfg(context = "stm32u585ai")] {
+        }
+        context = "stm32u585ai" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
             let _ = peripherals.UART5.take().unwrap();
-        } else if #[cfg(context = "stm32wb55rg")] {
+        }
+        context = "stm32wb55rg" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
-        } else if #[cfg(context = "stm32wba55cg")] {
+        }
+        context = "stm32wba55cg" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
-        } else if #[cfg(context = "stm32wle5jc")] {
+        }
+        context = "stm32wle5jc" => {
             let _ = peripherals.LPUART1.take().unwrap();
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this STM32 chip is not supported");
         }
     }

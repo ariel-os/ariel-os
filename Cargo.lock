@@ -185,7 +185,6 @@ dependencies = [
 name = "ariel-os-bench"
 version = "0.4.0"
 dependencies = [
- "cfg-if",
  "cortex-m",
  "defmt 1.0.1",
  "esp-hal",
@@ -220,7 +219,6 @@ dependencies = [
  "cbor-edn",
  "cbor-macro",
  "cboritem",
- "cfg-if",
  "coap-handler",
  "coap-handler-implementations",
  "coap-numbers",
@@ -245,15 +243,8 @@ dependencies = [
 name = "ariel-os-debug"
 version = "0.4.0"
 dependencies = [
- "ariel-os-log",
- "ariel-os-utils",
- "const-str",
- "critical-section",
  "defmt-rtt",
- "embassy-sync 0.7.2",
- "esp-println",
  "featurecomb",
- "log",
  "rtt-target",
  "semihosting",
 ]
@@ -275,7 +266,6 @@ dependencies = [
  "ariel-os-storage",
  "ariel-os-threads",
  "ariel-os-utils",
- "cfg-if",
  "const-str",
  "const_panic",
  "critical-section",
@@ -330,7 +320,6 @@ dependencies = [
  "ariel-os-threads",
  "ariel-os-utils",
  "bt-hci",
- "cfg-if",
  "critical-section",
  "defmt 1.0.1",
  "embassy-embedded-hal",
@@ -367,7 +356,6 @@ dependencies = [
  "ariel-os-rp",
  "ariel-os-stm32",
  "bt-hci",
- "cfg-if",
  "const_panic",
  "embassy-embedded-hal",
  "embassy-executor",
@@ -396,7 +384,13 @@ dependencies = [
 name = "ariel-os-log"
 version = "0.4.0"
 dependencies = [
+ "ariel-os-debug",
+ "ariel-os-utils",
+ "const-str",
+ "critical-section",
  "defmt 1.0.1",
+ "embassy-sync 0.7.2",
+ "esp-println",
  "featurecomb",
  "log",
 ]
@@ -421,8 +415,8 @@ dependencies = [
  "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy-common",
+ "ariel-os-log",
  "ariel-os-random",
- "cfg-if",
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
@@ -442,7 +436,6 @@ dependencies = [
  "ariel-os-log",
  "ariel-os-random",
  "ariel-os-rt",
- "cfg-if",
  "cortex-m",
  "defmt 1.0.1",
  "embassy-embedded-hal",
@@ -468,7 +461,6 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.4.0"
 dependencies = [
- "cfg-if",
  "cortex-m",
  "esp-hal",
 ]
@@ -494,7 +486,6 @@ dependencies = [
  "ariel-os-random",
  "ariel-os-utils",
  "bt-hci",
- "cfg-if",
  "cyw43",
  "cyw43-firmware",
  "cyw43-pio",
@@ -521,7 +512,6 @@ dependencies = [
  "ariel-os-macros",
  "ariel-os-threads",
  "ariel-os-utils",
- "cfg-if",
  "cortex-m",
  "cortex-m-rt",
  "embassy-rp",
@@ -648,7 +638,6 @@ dependencies = [
  "ariel-os-random",
  "ariel-os-stm32-mapping",
  "ariel-os-utils",
- "cfg-if",
  "defmt 1.0.1",
  "embassy-embedded-hal",
  "embassy-executor",
@@ -675,7 +664,6 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-log",
  "arrayvec",
- "cfg-if",
  "embassy-sync 0.7.2",
  "embassy-time",
  "embedded-storage-async",
@@ -692,7 +680,6 @@ dependencies = [
  "ariel-os-runqueue",
  "ariel-os-utils",
  "atomic-wait",
- "cfg-if",
  "cortex-m",
  "cortex-m-rt",
  "critical-section",
@@ -3662,6 +3649,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "gpio-reuse"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "grounded"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3942,7 +3937,6 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
- "cfg-if",
  "embassy-sync 0.7.2",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -5595,7 +5589,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e7afed1f4302eeba88c601636cf2c554c45e1cbb464bab44c6012bab0e71473c"
 dependencies = [
  "critical-section",
- "defmt 0.3.100",
  "portable-atomic",
  "ufmt-write",
 ]

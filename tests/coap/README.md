@@ -29,7 +29,7 @@ This application is a work in progress demo of running CoAP with OSCORE/EDHOC se
 
 * CoAP with more than just demo keys:
     * Add `-s coap-server-config-storage` to the laze invocation; this replaces the demokeys setup.
-    * Alter the client.diag file have the `peer_cred` reflect the "CoAP server identity" line it procduces at startup
+    * Alter the client.diag file have the `peer_cred` reflect the "CoAP server identity" line it produces at startup
       <!-- FIXME: should be trivial after https://github.com/knurling-rs/defmt/pull/916 -->
       after running the hex values there through https://cbor.me's bytes to diagnostic converter.
 

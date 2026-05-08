@@ -77,8 +77,8 @@ async fn blinky(peripherals: pins::LedPeripherals) {
 
 TODO
 
-[embassy-style-hals]: ./glossary.md
-[ariel-os-hals]: ./glossary.md
+[embassy-style-hals]: ./glossary.md#embassy-style-hals
+[ariel-os-hals]: ./glossary.md#ariel-os-hals
 [spawner-attr-docs]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.spawner.html
 [task-attr-docs]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.task.html
 [spawner-or-task]: #the-spawner-and-task-ariel-os-macros

@@ -38,6 +38,18 @@ laze build -b espressif-esp32-s2-devkitc-1
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
 
+#### Additional Notes
+
+##### USB Ports
+
+This board features two USB ports: one is labeled "USB" while the other is labeled "UART".
+
+The "USB" port is connected to the USB OTG peripheral of the MCU and can only be used by the application.
+
+The "UART" port is connected to a USB ⟷ UART adapter, wired to UART0.
+It can be used to flash the board through the bootloader using `espflash`.
+It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
+
 <p>Legend:</p>
 
 <dl>

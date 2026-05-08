@@ -8,7 +8,6 @@ license.workspace = true
 [dependencies]
 ariel-os-embassy-common = { workspace = true }
 
-cfg-if = { workspace = true }
 const_panic = { workspace = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }

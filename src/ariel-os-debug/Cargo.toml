@@ -6,71 +6,35 @@ rust-version.workspace = true
 repository.workspace = true
 license.workspace = true
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package.metadata.feature-groups]
+debug-channel.xor = { features = ["defmt-rtt", "rtt-target"] }
+exit-implementation.xor = { features = ["semihosting", "std"] }
+
+[package.metadata.feature-groups.features]
+debug-channel.requires = { groups = ["debug-channel"] }
 
 [dependencies]
-ariel-os-log = { workspace = true }
-ariel-os-utils = { workspace = true }
-const-str = { workspace = true }
-critical-section = { workspace = true, optional = true }
 defmt-rtt = { workspace = true, optional = true }
-embassy-sync = { workspace = true }
 featurecomb = { workspace = true }
-log = { workspace = true, optional = true }
 rtt-target = { workspace = true, optional = true }
 semihosting = { workspace = true, optional = true }
-
-[package.metadata.feature-groups]
-debug-backend.xor = { features = ["esp-println", "rtt-target", "uart"] }
-
-[package.metadata.features]
-debug-console = { groups = ["debug-backend"] }
 
 [target.'cfg(context = "xtensa")'.dependencies]
 semihosting = { workspace = true, optional = true, features = [
   "openocd-semihosting",
 ] }
 
-[target.'cfg(context = "esp")'.dependencies]
-esp-println = { workspace = true, optional = true, features = [
-  "auto",
-  "colors",
-  "critical-section",
-] }
-
-[target.'cfg(context = "esp32")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["esp32"] }
-
-[target.'cfg(context = "esp32c3")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["esp32c3"] }
-
-[target.'cfg(context = "esp32c6")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["esp32c6"] }
-
-[target.'cfg(context = "esp32s2")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["esp32s2"] }
-
-[target.'cfg(context = "esp32s3")'.dependencies]
-esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
-
 [features]
-debug-console = []
+# Enables the debug channel.
+debug-channel = []
 
-defmt = [
-  "ariel-os-log/defmt",
-  "esp-println?/defmt-espflash",
-  "rtt-target?/defmt",
-]
-log = ["dep:critical-section", "dep:log", "ariel-os-log/log"]
-
+# Implementation backends for `exit()`.
 semihosting = ["dep:semihosting"]
-
-# Debug output backends
-defmt-rtt = ["dep:defmt-rtt"]
-esp-println = ["dep:esp-println"]
-rtt-target = ["dep:rtt-target"]
 std = []
-uart = []
+
+# Debug output transports.
+defmt-rtt = ["dep:defmt-rtt"]
+rtt-target = ["dep:rtt-target"]
 
 [lints]
 workspace = true

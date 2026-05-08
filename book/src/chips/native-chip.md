@@ -8,7 +8,7 @@
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Output|<span title="not available on this piece of hardware">–</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
@@ -54,6 +54,7 @@ dt, dd {
 Boards using this chip.
 
 <!-- This table is auto-generated. Do not edit manually. -->
+<div class="support-matrix-container">
 <table class="support-matrix">
   <thead>
     <tr>
@@ -87,7 +88,7 @@ Boards using this chip.
 	  <tr>
 	    <td><code>native</code></td>
 		<td style="text-align: center;">1</td>
-		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="not available on this piece of hardware">–</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
@@ -104,12 +105,35 @@ Boards using this chip.
 	  </tbody>
   </tbody>
 </table>
+</div>
 <style>
+.support-matrix-container {
+  overflow: auto;
+  max-height: 60vh;
+}
+.support-matrix thead {
+  z-index: 3;
+  position: relative;
+}
+/* Makes the row with column names sticky */
+.support-matrix thead tr:last-child {
+  position: sticky;
+  top: 0;
+  background-color: var(--table-header-bg);
+}
+.support-matrix th:first-child {
+  background-color: inherit;
+}
+/* Makes the first column sticky */
+.support-matrix thead tr:last-child th:first-child,
+.support-matrix tbody tr:first-child td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
 @media (min-width: 1920px) {
   .support-matrix {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
+    margin: 0 auto;
   }
 }
 .support-cell {

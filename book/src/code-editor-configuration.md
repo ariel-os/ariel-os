@@ -20,7 +20,7 @@ It is also recommended to use the the `Even Better TOML` extension to have TOML 
 
 ### Configuration for developing Ariel OS apps (vscode)
 
-This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding the linter to be confused about double declarations.
+This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding complaints from the linter about double declarations.
 
 To generate/update your vscode configuration in `.vscode/settings.json`, run in the root of your project:
 
@@ -44,12 +44,44 @@ rustup component add rust-analyzer
 
 ### Configuration for developing Ariel OS apps (helix)
 
-This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding the linter to be confused about double declarations.
+This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding complaints from the linter about double declarations.
 
 To generate/update your helix configuration in `.helix/languages.json`, run in the root of your project:
 
 ```sh
 laze build -b <builder> editor-config helix
+```
+
+## Zed
+
+[Zed](https://zed.dev/) is a code editor built in Rust with a fast and lightweight user interface. The Rust extension and language server is automatically installed when opening a `.rs` file.
+
+### Configuration for developing Ariel OS apps (Zed)
+
+This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding complaints from the linter about double declarations.
+
+To generate/update your Zed configuration in `.zed/settings.json`, run in the root of your project:
+
+```sh
+laze build -b <builder> editor-config zed
+```
+
+## Gram
+
+[Gram](https://gram.liten.app/) is a hard fork of Zed disabling AI features and focusing on stability.
+
+### Enabling Rust support on Gram
+
+User action is needed to authorize Gram to download rust-analyzer. Open a Rust source file, then open the language server configuration by clicking the fifth icon on the bottom left of the editor (should have a red notification dot) or typing `lsp::OpenLanguageServerConfig` in the command palette and finally enable "Allow download" for `rust-analyzer`.
+
+### Configuration for developing Ariel OS apps (Gram)
+
+This is meant to be used on projects created using the `cargo-generate` command in the getting-started guide. The configuration works by targeting one [laze builder][laze-builders-book], avoiding complaints from the linter about double declarations.
+
+To generate/update your Gram configuration in `.gram/settings.jsonc`, run in the root of your project:
+
+```sh
+laze build -b <builder> editor-config gram
 ```
 
 ## Generic rust-analyzer

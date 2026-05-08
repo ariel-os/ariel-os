@@ -7,7 +7,6 @@ publish = false
 [dependencies]
 ariel-os = { path = "../../src/ariel-os", features = ["i2c"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-cfg-if = { workspace = true }
 embassy-sync = { workspace = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }

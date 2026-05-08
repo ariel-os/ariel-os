@@ -36,7 +36,6 @@ static_cell = { workspace = true }
 # Used for constructing credentials
 cbor-macro = "0.1.0"
 cboritem = "0.1.2"
-cfg-if = { workspace = true }
 heapless = { workspace = true, features = ["serde"] }
 
 # FIXME: Should go out eventually

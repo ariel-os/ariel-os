@@ -9,8 +9,9 @@ on:
         required: false
         type: boolean
   schedule:
-    # run every morning at 1:07am
-    - cron: "7 1 * * *"
+    # run every morning at 00:07am UTC
+    # GitHub action seems to launch them ~4 hours late so we put the trigger 4 hours earlier.
+    - cron: "7 20 * * *"
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-build-cache
   cancel-in-progress: true
@@ -61,7 +62,7 @@ jobs:
           git rev-parse HEAD^{tree} > .tree-hash
           echo "hash=$(cat .tree-hash)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         id: result-cache
         with:
           path: .tree-hash
@@ -95,31 +96,36 @@ jobs:
         if: steps.clear-cache.outputs.result == 'true'
         run: echo "FALLBACK_KEY=none" >> "$GITHUB_ENV"
 
-      # Allows to reuse more cache
-      - name: Touch file time to commits time
-        if: steps.should-skip.outputs.result != 'true'
-        # https://stackoverflow.com/questions/21735435/git-clone-changes-file-modification-time
-        run: |
-          git ls-tree -r --name-only HEAD | while read filename; do
-            unixtime=$(git log -1 --format="%at" -- "${filename}")
-            touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
-            touch -t ${touchtime} "${filename}"
-          done
-
       - name: Cache with post-job cleanup
         if: steps.should-skip.outputs.result != 'true'
         uses: gacts/run-and-post-run@81b6ce503cde93862cec047c54652e45c5dca991 # v1
         with:
           run: |
-            cache-thing pull -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --fallback-key ${FALLBACK_KEY} || true
+            cache-thing pull -f /home/runner/metadata -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --fallback-key ${FALLBACK_KEY} || true
 
           post: |
             export  RUST_LOG=trace
             cache-thing clean --prefix global || true
 
-      - id: get_toolchain
+      # Allows to reuse more cache
+      - name: Touch file time to commits time
         if: steps.should-skip.outputs.result != 'true'
-        run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
+        # https://stackoverflow.com/questions/21735435/git-clone-changes-file-modification-time
+        run: |
+          if [ -f /home/runner/metadata/cache-ref ]; then
+            git ls-tree -r --name-only HEAD | while read filename; do
+              unixtime=$(git log -1 --format="%at" -- "${filename}")
+              touchtime=$(date -d @$unixtime +'%Y%m%d%H%M.%S')
+              touch -t ${touchtime} "${filename}"
+            done
+
+            # Treat all files modified after the cached commit as "changed", by touching them.
+            git diff --name-only $(cat /home/runner/metadata/cache-ref) | while read filename; do
+              touch "${filename}"
+            done
+          else
+             echo "/home/runner/metadata/cache-ref not found, skipping step"
+          fi
 
       - name: "Show installed versions"
         run: |
@@ -153,9 +159,13 @@ jobs:
       - name: show sccache stats
         run: sccache --show-stats
 
+      - name: update ref of nightly
+        if: steps.should-skip.outputs.result != 'true'
+        run: git rev-parse HEAD > /home/runner/metadata/cache-ref
+
       - name: "Save cache of nightly run"
         if: steps.should-skip.outputs.result != 'true'
         env:
           RUST_LOG: trace
         run: |
-          cache-thing push -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --fixed-key nightly --only-fixed-key || true
+          cache-thing push -f /home/runner/metadata -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --fixed-key nightly --only-fixed-key || true

@@ -1,0 +1,4 @@
+apps:
+  - name: gpio-reuse
+    selects:
+      - has_leds

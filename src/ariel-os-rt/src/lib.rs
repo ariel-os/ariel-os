@@ -19,27 +19,28 @@ compile_error!(
 
 use ariel_os_log::debug;
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "cortex-m")] {
+cfg_select! {
+    context = "cortex-m" => {
         mod cortexm;
         use cortexm as arch;
     }
-    else if #[cfg(context = "xtensa")] {
+    context = "xtensa" => {
         mod xtensa;
         use xtensa as arch;
     }
-    else if #[cfg(context = "riscv")] {
+    context = "riscv" => {
         mod riscv;
         use riscv as arch;
     }
-    else if #[cfg(context = "native")] {
+    context = "native" => {
         mod native;
         use native as arch;
     }
-    else if #[cfg(context = "ariel-os")] {
+    context = "ariel-os" => {
         // When run with laze but the MCU family is not supported
         compile_error!("no runtime is defined for this MCU family");
-    } else {
+    }
+    _ => {
         // Provide a default implementation, for arch-independent tooling
         #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
         mod arch {
@@ -138,7 +139,7 @@ mod isr_stack {
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {
     #[cfg(feature = "panic-printing")]
-    ariel_os_debug::print_panic(_info);
+    ariel_os_log::print_panic(_info);
 
     ariel_os_debug::exit(ariel_os_debug::ExitCode::FAILURE);
 
@@ -157,8 +158,10 @@ pub static INIT_FUNCS: [fn()] = [..];
 fn startup() -> ! {
     arch::init();
 
-    #[cfg(feature = "debug-console")]
+    #[cfg(feature = "debug-channel")]
     ariel_os_debug::init();
+
+    ariel_os_log::init();
 
     debug!("ariel_os_rt::startup()");
 

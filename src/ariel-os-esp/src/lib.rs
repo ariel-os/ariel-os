@@ -107,11 +107,12 @@ pub fn init() -> OptionalPeripherals {
     #[cfg(feature = "time")]
     {
         let embassy_timer = {
-            cfg_if::cfg_if! {
-                if #[cfg(context = "esp32")] {
+            cfg_select! {
+                context = "esp32" => {
                     use esp_hal::timer::timg::TimerGroup;
                     TimerGroup::new(peripherals.TIMG1.take().unwrap()).timer0
-                } else {
+                }
+                _ => {
                     use esp_hal::timer::systimer::{SystemTimer};
                     SystemTimer::new(peripherals.SYSTIMER.take().unwrap()).alarm0
                 }

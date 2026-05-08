@@ -5,89 +5,107 @@
 > Instead, it aims to clarify and emphasize the differences between related terms.
 > Links are provided when relevant to learn more about each concept.
 
-- Ariel OS HALs: currently the following crates:
-  [`ariel-os-esp`][ariel-os-esp-rustdoc],
-  [`ariel-os-nrf`][ariel-os-nrf-rustdoc],
-  [`ariel-os-rp`][ariel-os-rp-rustdoc], and
-  [`ariel-os-stm32`][ariel-os-stm32-rustdoc].
+<dl>
+  <dt id="ariel-os-hals">Ariel OS HALs:</dt>
+  <dd>
+    Currently the following crates:
+    <a href="https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_esp/index.html"><code>ariel-os-esp</code></a>,
+    <a href="https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_nrf/index.html"><code>ariel-os-nrf</code></a>,
+    <a href="https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_rp/index.html"><code>ariel-os-rp</code></a>, and
+    <a href="https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_stm32/index.html"><code>ariel-os-stm32</code></a>.
+  </dd>
 
-- **[ARM (or Arm)][arm-arch-wikipedia]:** a family of instruction set architectures.
+  <dt id="arm"><a href="https://en.wikipedia.org/wiki/ARM_architecture_family">ARM (or Arm)</a>:</dt>
+  <dd>A family of instruction set architectures.</dd>
 
-- **[Arm (Arm Holdings)][arm-holdings]:** the company behind the ARM architecture family.
+  <dt id="arm-holdings"><a href="https://en.wikipedia.org/wiki/Arm_Holdings">Arm (Arm Holdings)</a>:</dt>
+  <dd>The company behind the ARM architecture family.</dd>
 
-- **[Chip][integrated-circuit-wikipedia]:** an integrated circuit (IC).
+  <dt id="chip"><a href="https://en.wikipedia.org/wiki/Integrated_circuit">Chip</a>:</dt>
+  <dd>An integrated circuit (IC).</dd>
 
-- **[Cortex-M][cortex-m-wikipedia]:** a family of 32-bit processor implementations from Arm.
+  <dt id="cortex-m"><a href="https://en.wikipedia.org/wiki/ARM_Cortex-M">Cortex-M</a>:</dt>
+  <dd>A family of 32-bit processor implementations from Arm.</dd>
 
-- **[ESP32][esp32-wikipedia]:** a family of 32-bit microcontrollers from Espressif.
-  Its older microcontrollers are based on the Xtensa architecture, while newer ones use RISC-V.
-  Can also specifically refer to the eponymous ESP32 microcontroller.
+  <dt id="esp32"><a href="https://en.wikipedia.org/wiki/ESP32">ESP32</a>:</dt>
+  <dd>
+    A family of 32-bit microcontrollers from Espressif.
+    Its older microcontrollers are based on the Xtensa architecture, while newer ones use RISC-V.
+    Can also specifically refer to the eponymous ESP32 microcontroller.
+  </dd>
 
-- **[Embassy][embassy-homepage]:** a software project developing HALs for multiple microcontroller families (e.g., [`embassy-nrf`][embassy-nrf-embassydev], [`embassy-rp`][embassy-rp-embassydev], [`embassy-stm32`][embassy-stm32-embassydev]), along with other components (e.g., [`embassy-executor`][embassy-executor-docsrs], [`embassy-time`][embassy-time-docsrs]).
+  <dt id="embassy"><a href="https://embassy.dev/">Embassy</a>:</dt>
+  <dd>
+    A software project developing HALs for multiple microcontroller families (e.g.,
+    <a href="https://docs.embassy.dev/embassy-nrf/"><code>embassy-nrf</code></a>,
+    <a href="https://docs.embassy.dev/embassy-rp/"><code>embassy-rp</code></a>,
+    <a href="https://docs.embassy.dev/embassy-stm32/"><code>embassy-stm32</code></a>),
+    along with other components (e.g.,
+    <a href="https://docs.rs/embassy-executor/latest/embassy_executor/"><code>embassy-executor</code></a>,
+    <a href="https://docs.rs/embassy-time/latest/embassy_time/"><code>embassy-time</code></a>).
+  </dd>
 
-- Embassy-style HALs: currently the following crates:
-  [`embassy-nrf`][embassy-nrf-embassydev],
-  [`embassy-rp`][embassy-rp-embassydev],
-  [`embassy-stm32`][embassy-stm32-embassydev], and
-  [`esp-hal`][esp-hal-homepage].
-  In particular, these HALs feature [peripheral ZSTs][peripheral-zsts] modeling compile-time
+  <dt id="embassy-style-hals">Embassy-style HALs:</dt>
+  <dd>
+    Currently the following crates:
+    <a href="https://docs.embassy.dev/embassy-nrf/"><code>embassy-nrf</code></a>,
+    <a href="https://docs.embassy.dev/embassy-rp/"><code>embassy-rp</code></a>,
+    <a href="https://docs.embassy.dev/embassy-stm32/"><code>embassy-stm32</code></a>,
+    <a href="https://docs.espressif.com/projects/rust/esp-hal/latest/"><code>esp-hal</code></a>.
+    In particular, these HALs feature <a href="./application.md#obtaining-peripheral-access">peripheral ZSTs</a> modeling compile-time
   exclusive access, that drivers require for instantiation.
+  </dd>
 
-- **[esp-hal][esp-hal-homepage]:** a HAL for ESP32 microcontrollers, developed by their manufacturer Espressif.
+  <dt id="esp-hal"><a href="https://docs.espressif.com/projects/rust/esp-hal/latest/">esp-hal</a>:</dt>
+  <dd>A HAL for ESP32 microcontrollers, developed by their manufacturer Espressif.</dd>
 
-- **HAL (Hardware Abstraction Layer):** a software layer that makes specific pieces of hardware (e.g., microcontroller peripherals) easier to use, by hiding some of their details.
+  <dt id="hal">HAL (Hardware Abstraction Layer):</dt>
+  <dd>A software layer that makes specific pieces of hardware (e.g., microcontroller peripherals) easier to use, by hiding some of their details.</dd>
 
-- **[MCU][microcontroller-wikipedia]:** a microcontroller.
-  Contains a processor, memory, and peripherals to interact with the outside world.
+  <dt id="mcu"><a href="https://en.wikipedia.org/wiki/Microcontroller">MCU</a>:</dt>
+  <dd>
+    A microcontroller.
+    Contains a processor, memory, and peripherals to interact with the outside world.
+  </dd>
 
-- **nRF:** a family of 32-bit microcontrollers developed by Nordic Semiconductor.
+  <dt id="nrf">nRF:</dt>
+  <dd>A family of 32-bit microcontrollers developed by Nordic Semiconductor.</dd>
 
-- **Raspberry Pi:** can refer to the [family of single-board computers][raspberry-pi-sbc-wikipedia] or to [Raspberry Pi Holdings][raspberry-pi-holdings-wikipedia], the company that manufactures them as well as RP microcontrollers.
-  Sometimes abbreviated to "RPi."
+  <dt id="raspberry-pi">Raspberry Pi:</dt>
+  <dd>
+    Can refer to the <a href="https://en.wikipedia.org/wiki/Raspberry_Pi">family of single-board computers</a>
+    or to <a href="https://en.wikipedia.org/wiki/Raspberry_Pi_Holdings">Raspberry Pi Holdings</a>, the company that manufactures
+    them as well as RP microcontrollers. Sometimes abbreviated to “RPi.“
+  </dd>
 
-- **[RISC-V][risc-v-wikipedia]:** an open, royalty-free instruction set architecture.
+  <dt id="risc-v"><a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V</a>:</dt>
+  <dd>An open, royalty-free instruction set architecture.</dd>
 
-- **RP:** a family of 32-bit microcontrollers designed by Raspberry Pi, which includes the RP2040 and RP2350 microcontrollers.
+  <dt id="rp">RP:</dt>
+  <dd>A family of 32-bit microcontrollers designed by Raspberry Pi, which includes the RP2040 and RP2350 microcontrollers.</dd>
 
-- **[SoC (System on Chip)][system-on-chip-wikipedia]:** often synonymous with microcontroller in practice, at least in the embedded domain.
-  Sometimes used to emphasize the presence of a sizable analog component (usually for radio).
+  <dt id="soc"><a href="https://en.wikipedia.org/wiki/System_on_a_chip">SoC (System on Chip)</a>:</dt>
+  <dd>
+    Often synonymous with microcontroller in practice, at least in the embedded domain.
+    Sometimes used to emphasize the presence of a sizable analog component (usually for radio).
+  </dd>
 
-- **[STM32][stm32-wikipedia]:** a family of 32-bit microcontrollers developed by STMicroelectronics.
+  <dt id="stm32"><a href="https://en.wikipedia.org/wiki/STM32">STM32</a>:</dt>
+  <dd>A family of 32-bit microcontrollers developed by STMicroelectronics.</dd>
 
-- **[UART (Universal Asynchronous Receiver-Transmitter)][uart-wikipedia]:** a (microcontroller) peripheral.
-  By extension, can also refer to the link-layer protocol it implements.
-  Sometimes incorrectly used to refer to serial communication over USB (e.g., instead of [USB CDC-ACM][usb-cdc-acm-wikipedia]).
+  <dt id="uart"><a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART (Universal Asynchronous Receiver-Transmitter)</a>:</dt>
+  <dd>
+    A (microcontroller) peripheral.
+    By extension, can also refer to the link-layer protocol it implements.
+    Sometimes incorrectly used to refer to serial communication over USB (e.g., instead of <a href="https://en.wikipedia.org/wiki/USB_communications_device_class#Abstract_Control_Model">USB CDC-ACM</a>).
+  </dd>
 
-- **[USB CDC-ACM][usb-cdc-acm-wikipedia]:** a standard protocol implementing serial communication over USB.
+  <dt id="usb-cdc-acm"><a href="https://en.wikipedia.org/wiki/USB_communications_device_class#Abstract_Control_Model">USB CDC-ACM</a>:</dt>
+  <dd>A standard protocol implementing serial communication over USB.</dd>
 
-- **[USB CDC-NCM][usb-cdc-ncm-wikipedia]:** a standard protocol implementing Ethernet over USB.
+  <dt id="usb-cdc-ncm"><a href="https://en.wikipedia.org/wiki/Ethernet_over_USB#Protocols">USB-CDC-NCM</a>:</dt>
+  <dd>A standard protocol implementing Ethernet over USB.</dd>
 
-- **[Xtensa][xtensa-wikipedia]:** a family of instruction set architectures, used in some ESP32 microcontrollers.
-
-[ariel-os-esp-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_esp/index.html
-[ariel-os-nrf-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_nrf/index.html
-[ariel-os-rp-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_rp/index.html
-[ariel-os-stm32-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os_stm32/index.html
-[arm-arch-wikipedia]: https://en.wikipedia.org/wiki/ARM_architecture_family
-[arm-holdings]: https://en.wikipedia.org/wiki/Arm_Holdings
-[integrated-circuit-wikipedia]: https://en.wikipedia.org/wiki/Integrated_circuit
-[cortex-m-wikipedia]: https://en.wikipedia.org/wiki/ARM_Cortex-M
-[embassy-homepage]: https://embassy.dev/
-[embassy-executor-docsrs]: https://docs.rs/embassy-executor/latest/embassy_executor/
-[embassy-nrf-embassydev]: https://docs.embassy.dev/embassy-nrf/
-[embassy-rp-embassydev]: https://docs.embassy.dev/embassy-rp/
-[embassy-stm32-embassydev]: https://docs.embassy.dev/embassy-stm32/
-[embassy-time-docsrs]: https://docs.rs/embassy-time/latest/embassy_time/
-[esp32-wikipedia]: https://en.wikipedia.org/wiki/ESP32
-[esp-hal-homepage]: https://docs.espressif.com/projects/rust/esp-hal/latest/
-[microcontroller-wikipedia]: https://en.wikipedia.org/wiki/Microcontroller
-[peripheral-zsts]: ./application.md#obtaining-peripheral-access
-[raspberry-pi-sbc-wikipedia]: https://en.wikipedia.org/wiki/Raspberry_Pi
-[raspberry-pi-holdings-wikipedia]: https://en.wikipedia.org/wiki/Raspberry_Pi_Holdings
-[risc-v-wikipedia]: https://en.wikipedia.org/wiki/RISC-V
-[stm32-wikipedia]: https://en.wikipedia.org/wiki/STM32
-[system-on-chip-wikipedia]: https://en.wikipedia.org/wiki/System_on_a_chip
-[uart-wikipedia]: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter
-[usb-cdc-acm-wikipedia]: https://en.wikipedia.org/wiki/USB_communications_device_class#Abstract_Control_Model
-[usb-cdc-ncm-wikipedia]: https://en.wikipedia.org/wiki/Ethernet_over_USB#Protocols
-[xtensa-wikipedia]: https://en.wikipedia.org/wiki/Tensilica#Xtensa_configurable_cores
+  <dt id="xtensa"><a href="https://en.wikipedia.org/wiki/Tensilica#Xtensa_configurable_cores">Xtensa</a>:</dt>
+  <dd>A family of instruction set architectures, used in some ESP32 microcontrollers.</dd>
+</dl>

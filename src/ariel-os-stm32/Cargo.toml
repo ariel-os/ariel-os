@@ -11,7 +11,6 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-stm32-mapping = { path = "../ariel-os-stm32-mapping" }
 ariel-os-utils = { workspace = true }
-cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [

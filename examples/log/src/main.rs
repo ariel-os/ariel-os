@@ -1,7 +1,7 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{debug::println, log::*};
+use ariel_os::log::*;
 
 #[ariel_os::task(autostart)]
 async fn main() {

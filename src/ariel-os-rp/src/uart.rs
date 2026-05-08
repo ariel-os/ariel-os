@@ -246,11 +246,12 @@ define_uart_drivers!(
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all UART peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(any(context = "rp2040", context = "rp235xa"))] {
+    cfg_select! {
+        any(context = "rp2040", context = "rp235xa") => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this RP chip is not supported");
         }
     }

@@ -51,6 +51,6 @@ Please make sure that:
 - [ ] I have tested and performed a self-review of my own code.
 - [ ] I have made corresponding changes to the documentation.
 
-[conventional-commits]: https://www.conventional-commits.org/en/v1.0.0/
+[conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
 [coding-conventions]: https://ariel-os.github.io/ariel-os/dev/docs/book/coding-conventions.html
 [autosquash]: https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autosquash

@@ -119,15 +119,18 @@ pub async fn coap_run(handler: impl coap_handler::Handler + coap_handler::Report
 ///
 /// This can only be run once, as it sets up a system wide CoAP handler.
 async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Reporting) -> ! {
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "coap-server-config-storage")] {
+    cfg_select! {
+        feature = "coap-server-config-storage" => {
             let security_config = stored::server_security_config().await;
-        } else if #[cfg(feature = "coap-server-config-demokeys")] {
+        }
+        feature = "coap-server-config-demokeys" => {
             let security_config = demo_setup::build_demo_ssc();
-        } else if #[cfg(feature = "coap-server-config-unprotected")] {
+        }
+        feature = "coap-server-config-unprotected" => {
             // Not setting the config to `coapcore::seccfg::AllowAll` because it won't be taken up
             // by a security context anyway (handler is not wrapped in an OscoreEdhocHandler).
-        } else {
+        }
+        _ => {
             // Not setting the config to `coapcore::seccfg::DenyAll` because it won't be taken up
             // by a security context anyway -- and as there is no sever configured, there is no
             // resource to which the policy would be applied.
@@ -153,12 +156,14 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
         coapcore::time::TimeUnknown,
     );
 
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "coap-transport-udp")] {
+    cfg_select! {
+        feature = "coap-transport-udp" => {
             transport_udp::coap_run_udp(handler).await
-        } else if #[cfg(feature = "doc")] {
+        }
+        feature = "doc" => {
             loop {}
-        } else {
+        }
+        _ => {
             compile_error!("No CoAP transport configuration was chosen out of the coap-transport-* features.")
         }
     }

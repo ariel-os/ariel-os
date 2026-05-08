@@ -24,7 +24,7 @@ laze build -b native
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Output|<span title="not available on this piece of hardware">–</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|

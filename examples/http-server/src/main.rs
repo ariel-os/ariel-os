@@ -31,7 +31,7 @@ const SERVER_CONFIG: picoserve::Config = {
 static APP: StaticCell<picoserve::Router<routes::AppRouter>> = StaticCell::new();
 
 #[cfg(feature = "button-reading")]
-static BUTTON_INPUT: OnceLock<ariel_os::gpio::Input> = OnceLock::new();
+static BUTTON_INPUT: OnceLock<ariel_os::gpio::Input<'_>> = OnceLock::new();
 
 #[ariel_os::task(pool_size = WEB_TASK_POOL_SIZE)]
 async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRouter>) -> ! {

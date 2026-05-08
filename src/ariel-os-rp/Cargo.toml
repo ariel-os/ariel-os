@@ -11,7 +11,6 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
-cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-net-driver-channel = { workspace = true, optional = true }
@@ -49,6 +48,7 @@ embassy-rp = { workspace = true, default-features = false, features = [
 [target.'cfg(context = "rp235xa")'.dependencies]
 embassy-rp = { workspace = true, default-features = false, features = [
   "binary-info",
+  "imagedef-secure-exe",
   "rp235xa",
 ] }
 

@@ -164,17 +164,11 @@ impl Scheduler {
     #[inline]
     #[allow(clippy::unnecessary_wraps, reason = "only unnecessary in clippy path")]
     fn current_tid(&self) -> Option<ThreadId> {
-        cfg_if::cfg_if! {
-            if #[cfg(feature = "single-core")] {
-                self.current_thread
-            }
-            else if #[cfg(feature = "multi-core")] {
-                self.current_threads[usize::from(core_id())]
-            }
-            else if #[cfg(context = "native")] {
-                ThreadData::ID.get()
-            }
-            else {
+        cfg_select! {
+            feature = "single-core" => self.current_thread,
+            feature = "multi-core" => self.current_threads[usize::from(core_id())],
+            context = "native" => ThreadData::ID.get(),
+            _ => {
                 let _ = self;
                 unreachable!();
             }

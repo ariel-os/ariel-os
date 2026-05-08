@@ -18,11 +18,12 @@ fn from_mode(mode: Mode) -> (Polarity, Phase) {
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all SPI peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(context = "rp")] {
+    cfg_select! {
+        context = "rp" => {
             let _ = peripherals.SPI0.take().unwrap();
             let _ = peripherals.SPI1.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this RP chip is not supported");
         }
     }

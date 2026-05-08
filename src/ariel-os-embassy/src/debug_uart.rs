@@ -19,11 +19,11 @@ pub fn init(peripherals: &mut crate::hal::OptionalPeripherals) {
 
     let _ = DEBUG_UART.init(embassy_sync::mutex::Mutex::new(uart));
 
-    let _ = ariel_os_debug::DEBUG_UART_WRITE_FN.init(write_debug_uart);
+    let _ = ariel_os_log::backend::DEBUG_UART_WRITE_FN.init(write_debug_uart);
 }
 
-fn write_debug_uart(buffer: &[u8]) -> Result<(), ariel_os_debug::Error> {
-    use ariel_os_debug::Error;
+fn write_debug_uart(buffer: &[u8]) -> Result<(), ariel_os_log::backend::Error> {
+    use ariel_os_log::backend::Error;
 
     #[cfg(context = "stm32")]
     use embedded_io::Write as _;

@@ -7,7 +7,6 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-cfg-if = { workspace = true }
 defmt = { workspace = true, optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]

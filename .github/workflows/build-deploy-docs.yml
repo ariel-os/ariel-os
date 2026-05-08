@@ -162,11 +162,20 @@ jobs:
           mkdir -p ./_site/dev/docs/api
           mv target/riscv32imac-unknown-none-elf/doc/ariel_os_esp/ ./_site/dev/docs/api
           mv target/doc/* ./_site/dev/docs/api
+          mv target/riscv32imac-unknown-none-elf/doc/src/ariel_os_esp ./_site/dev/docs/api/src
+          mv target/riscv32imac-unknown-none-elf/doc/static.files/* ./_site/dev/docs/api/static.files
+          # get the ariel-os-esp sidebar contents
+          # save the first line of the src-files.js in a variable
+          TEXT=`head -n 1 target/riscv32imac-unknown-none-elf/doc/src-files.js`
+          # use sed keep only the first element of the JSON string (i.e. "ariel_os_esp")
+          TEXT=`echo $TEXT | sed "s/createSrcSidebar('//" - | sed "s/');//" - | jq '.[0]' -cr`
+          # hack ariel-os-esp source files in the source files sidebar
+          sed -i "s/\[\"ariel_os\",\[\"\",\[\],\[\"lib.rs\",\"sensors.rs\"\]\]\]/[\"ariel_os\",[\"\",[],[\"lib.rs\",\"sensors.rs\"]]],$TEXT/g" ./_site/dev/docs/api/src-files.js
           # hack ariel-os-esp in the sidebar
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
 
       - name: Install mdbook
-        uses: taiki-e/install-action@e9e8e031bcd90cdbe8ac6bb1d376f8596e587fbf # v2
+        uses: taiki-e/install-action@74e87cbfa15a59692b158178d8905a61bf6fca95 # v2
         with:
           tool: mdbook@0.5
 
@@ -201,7 +210,7 @@ jobs:
 
       - name: Upload artifact
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: ./_site
 
@@ -215,7 +224,7 @@ jobs:
 
       - name: Upload artifact (PR)
         if: github.event_name == 'pull_request' && steps.check.conclusion == 'success'
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pr-${{ github.event.number }}-docs
           path: ./_site
@@ -224,7 +233,7 @@ jobs:
 
       - name: Upload artifact (PR number)
         if: github.event_name == 'pull_request' && steps.check.conclusion == 'success'
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pr-number
           path: ./pr

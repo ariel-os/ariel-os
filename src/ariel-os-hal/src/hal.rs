@@ -32,22 +32,28 @@ pub use crate::group_peripherals;
 
 pub use define_peripherals::*;
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "native")] {
+cfg_select! {
+    context = "native" => {
         mod dummy;
         pub use ariel_os_native::*;
         pub use dummy::{gpio, peripheral, peripheral::IntoPeripheral};
-    } else if #[cfg(context = "nrf")] {
+    }
+    context = "nrf" => {
         pub use ariel_os_nrf::*;
-    } else if #[cfg(context = "rp")] {
+    }
+    context = "rp" => {
         pub use ariel_os_rp::*;
-    } else if #[cfg(context = "esp")] {
+    }
+    context = "esp" => {
         pub use ariel_os_esp::*;
-    } else if #[cfg(context = "stm32")] {
+    }
+    context = "stm32" => {
         pub use ariel_os_stm32::*;
-    } else if #[cfg(context = "ariel-os")] {
+    }
+    context = "ariel-os" => {
         compile_error!("this MCU family is not supported");
-    } else {
+    }
+    _ => {
         mod dummy;
         pub use dummy::*;
     }

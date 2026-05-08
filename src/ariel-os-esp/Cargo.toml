@@ -13,7 +13,6 @@ ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true, features = ["alloc"] }
 ariel-os-threads = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
-cfg-if = { workspace = true }
 critical-section = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }

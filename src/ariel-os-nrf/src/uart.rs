@@ -329,26 +329,15 @@ define_uart_drivers!(
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all UART peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(context = "nrf52832")] {
+    cfg_select! {
+        context = "nrf52832" => {
             let _ = peripherals.UARTE0.take().unwrap();
             let _ = peripherals.TIMER4.take().unwrap();
             let _ = peripherals.PPI_CH14.take().unwrap();
             let _ = peripherals.PPI_CH15.take().unwrap();
             let _ = peripherals.PPI_GROUP5.take().unwrap();
-        } else if #[cfg(context = "nrf52833")] {
-            let _ = peripherals.UARTE0.take().unwrap();
-            let _ = peripherals.TIMER3.take().unwrap();
-            let _ = peripherals.PPI_CH13.take().unwrap();
-            let _ = peripherals.PPI_CH14.take().unwrap();
-            let _ = peripherals.PPI_GROUP4.take().unwrap();
-
-            let _ = peripherals.UARTE1.take().unwrap();
-            let _ = peripherals.TIMER4.take().unwrap();
-            let _ = peripherals.PPI_CH15.take().unwrap();
-            let _ = peripherals.PPI_CH16.take().unwrap();
-            let _ = peripherals.PPI_GROUP5.take().unwrap();
-        } else if #[cfg(context = "nrf52840")] {
+        }
+        context = "nrf52833" => {
             let _ = peripherals.UARTE0.take().unwrap();
             let _ = peripherals.TIMER3.take().unwrap();
             let _ = peripherals.PPI_CH13.take().unwrap();
@@ -360,19 +349,35 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.PPI_CH15.take().unwrap();
             let _ = peripherals.PPI_CH16.take().unwrap();
             let _ = peripherals.PPI_GROUP5.take().unwrap();
-        } else if #[cfg(context = "nrf5340-app")] {
+        }
+        context = "nrf52840" => {
+            let _ = peripherals.UARTE0.take().unwrap();
+            let _ = peripherals.TIMER3.take().unwrap();
+            let _ = peripherals.PPI_CH13.take().unwrap();
+            let _ = peripherals.PPI_CH14.take().unwrap();
+            let _ = peripherals.PPI_GROUP4.take().unwrap();
+
+            let _ = peripherals.UARTE1.take().unwrap();
+            let _ = peripherals.TIMER4.take().unwrap();
+            let _ = peripherals.PPI_CH15.take().unwrap();
+            let _ = peripherals.PPI_CH16.take().unwrap();
+            let _ = peripherals.PPI_GROUP5.take().unwrap();
+        }
+        context = "nrf5340-app" => {
             let _ = peripherals.SERIAL3.take().unwrap();
             let _ = peripherals.TIMER2.take().unwrap();
             let _ = peripherals.PPI_CH18.take().unwrap();
             let _ = peripherals.PPI_CH19.take().unwrap();
             let _ = peripherals.PPI_GROUP5.take().unwrap();
-        } else if #[cfg(any(context = "nrf9151", context = "nrf9160"))] {
+        }
+        any(context = "nrf9151", context = "nrf9160") => {
             let _ = peripherals.SERIAL3.take().unwrap();
             let _ = peripherals.TIMER2.take().unwrap();
             let _ = peripherals.PPI_CH14.take().unwrap();
             let _ = peripherals.PPI_CH15.take().unwrap();
             let _ = peripherals.PPI_GROUP5.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this nRF chip is not supported");
         }
     }

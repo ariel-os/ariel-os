@@ -19,35 +19,41 @@ use ariel_os::{
 use embassy_sync::mutex::Mutex;
 use embedded_hal_async::i2c::I2c as _;
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "nordic-thingy-91-x-nrf9151")] {
+cfg_select! {
+    context = "nordic-thingy-91-x-nrf9151" => {
         // Alternate address
         const TARGET_I2C_ADDR: u8 = 0x1d;
-    } else if #[cfg(context = "stm32u083c-dk")] {
+    }
+    context = "stm32u083c-dk" => {
         // STTS22H
         const TARGET_I2C_ADDR: u8 = 0x3f;
-    } else {
+    }
+    _ => {
         const TARGET_I2C_ADDR: u8 = 0x19;
     }
 }
 
 // WHO_AM_I register of the sensor
-cfg_if::cfg_if! {
-    if #[cfg(context = "nordic-thingy-91-x-nrf9151")] {
+cfg_select! {
+    context = "nordic-thingy-91-x-nrf9151" => {
         const WHO_AM_I_REG_ADDR: u8 = 0x02;
-    } else if #[cfg(context = "stm32u083c-dk")] {
+    }
+    context = "stm32u083c-dk" => {
         const WHO_AM_I_REG_ADDR: u8 = 0x01;
-    } else {
+    }
+    _ => {
         const WHO_AM_I_REG_ADDR: u8 = 0x0f;
     }
 }
 
-cfg_if::cfg_if! {
-    if #[cfg(context = "nordic-thingy-91-x-nrf9151")] {
+cfg_select! {
+    context = "nordic-thingy-91-x-nrf9151" => {
         const DEVICE_ID: u8 = 0xf7;
-    } else if #[cfg(context = "stm32u083c-dk")] {
+    }
+    context = "stm32u083c-dk" => {
         const DEVICE_ID: u8 = 0xa0;
-    } else {
+    }
+    _ => {
         const DEVICE_ID: u8 = 0x33;
     }
 }

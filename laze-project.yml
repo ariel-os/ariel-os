@@ -22,9 +22,10 @@ contexts:
     selects:
       - executor-default
       - ?critical-section
+      # Optional as we want to be able to disable it in applications.
+      - ?logging
       - ?hw/device-identity
       - ?lto
-      - ?semihosting
 
       # Selecting default toolchain here. try xtensa, stable, nightly.
       - ?xtensa
@@ -55,13 +56,6 @@ contexts:
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
-      QEMU_SYSTEM_ARM: >-
-        qemu-system-arm
-        -machine ${QEMU_MACHINE}
-        -nographic
-        -serial mon:stdio
-        -semihosting-config enable=on,target=native
-        -kernel
       PROBE_RS_PROTOCOL: swd
       CARGO_PRESHELL: []
 
@@ -225,16 +219,6 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf51822_xxAA
 
-  - name: bbc-microbit-base
-    # this is a context, not a builder, to be used as parent by  "bbc-microbit" and
-    # "bbc-microbit-qemu"
-    parent: nrf51
-    selects:
-      - "bbc-microbit disabled due to missing nrf51 support in embassy"
-    env:
-      OPENOCD_ARGS:
-        - "-f board/nordic_nrf52_dk.cfg"
-
   - name: nrf52
     parent: nrf
     provides:
@@ -305,6 +289,10 @@ contexts:
     parent: nrf
     selects:
       - cortex-m33f
+      # Initializing the modem reduces the power consumption of the MCU.
+      # For blinky the measured consumption is ~3milliAmps without nrf91-modem to ~4 microAmps with nrf91-modem.
+      # Tested using the ppk2 in ampere mode on the Thingy:91 X and nrf9160dk.
+      - ?nrf91-modem
 
   - name: nrf9160
     parent: nrf91
@@ -327,6 +315,8 @@ contexts:
   - name: rp
     help: Raspberry Pi Pico (2) MCU support (based on embassy-rp)
     parent: ariel-os
+    selects:
+      - ?probe-rs
     provides:
       - has_hwrng
       - has_swi
@@ -338,7 +328,6 @@ contexts:
       # This module must stay before `cortex-m0-plus` to keep correct linker settings order.
       - rp-link-arg
       - cortex-m0-plus
-      - ?probe-rs
     provides:
       - has_multi_core_support
       - has_storage_support
@@ -357,7 +346,6 @@ contexts:
     parent: rp
     selects:
       - cortex-m33f
-      - ?probe-rs
     provides:
       - has_multi_core_support
       - has_storage_support
@@ -375,8 +363,7 @@ contexts:
   - name: esp
     parent: ariel-os
     selects:
-      - ?debug-console
-      - ?esp-println
+      - ?espflash
     provides:
       - has_hwrng
       - has_storage_support
@@ -519,6 +506,7 @@ contexts:
     parent: ariel-os
     selects:
       - infini-core
+      - logging-over-stdout
       - ?debug-console
     provides:
       - has_device_identity
@@ -976,16 +964,6 @@ modules:
           - CC="${CC}"
           - CFLAGS="${CFLAGS}"
 
-  - name: debug-console
-    context: ariel-os
-    selects:
-      - ?logging-facade-default
-      - ?panic-printing
-    env:
-      global:
-        FEATURES:
-          - ariel-os/debug-console
-
   - name: emit-stack-sizes
     conflicts:
       - stable
@@ -1035,48 +1013,9 @@ modules:
     env:
       global:
         # this pins our nightly version
-        CARGO_TOOLCHAIN: +nightly-2026-01-20
+        CARGO_TOOLCHAIN: +nightly-2026-04-28
         RUSTFLAGS:
           - --cfg nightly
-
-  # This module should be hard-selected when an application *requires* logging.
-  - name: logging-facade-default
-    selects:
-      - ?defmt
-      - ?log
-      - logging-facade
-
-  - name: defmt
-    help: Use the `defmt` crate as the logging facade
-    provides_unique:
-      - logging-facade
-    env:
-      global:
-        FEATURES:
-          - ariel-os/defmt
-        RUSTFLAGS:
-          - -Clink-arg=-Tdefmt.x
-        ESPFLASH_LOG_FORMAT: "--log-format defmt"
-        CARGO_ENV:
-          - DEFMT_LOG=info,${LOG}
-
-  - name: log
-    help: Use the `log` crate as the logging facade
-    provides_unique:
-      - logging-facade
-    env:
-      global:
-        FEATURES:
-          - ariel-os/log
-        CARGO_ENV:
-          - LOG_LEVEL=${LOG}
-
-  - name: panic-printing
-    context: ariel-os
-    env:
-      global:
-        FEATURES:
-          - ariel-os/panic-printing
 
   - name: lto
     context: ariel-os
@@ -1160,17 +1099,21 @@ modules:
           - "-Clink-arg=-v"
         LINK_ARG_PREFIX: -Wl,
 
+  - name: espflash
+    help: use `espflash` as runner
+    provides_unique:
+      - flashing-tool
+    env:
+      global:
+        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+
   - name: probe-rs
     help: use probe-rs as runner
     selects:
       - ?debug-console
-      - defmt:
-          - defmt-rtt
-      - log:
-          - ?rtt-target
-          - ?debug-uart
     provides_unique:
       - embedded-test-runner
+      - flashing-tool
 
     env:
       global:
@@ -1206,6 +1149,8 @@ modules:
           - probe-rs reset --chip ${PROBE_RS_CHIP} $@
 
   - name: openocd
+    selects:
+      - ?semihosting
     tasks:
       flash:
         cmd:
@@ -1236,7 +1181,14 @@ modules:
   - name: network
     selects:
       - network_device
+      # Enables IPv4 by default.
       - ?ipv4
+      # Requires at least one of {`ipv4`, `ipv6`}.
+      # This works only if `ipv4` or `ipv6` has been selected before this
+      # `network` module.
+      - ?no-ipv4-ipv6
+      - no-ipv4-ipv6:
+          - ipv4-or-ipv6-required
 
   - name: network-config-ipv4-default
     help: use default network configuration method
@@ -1281,10 +1233,16 @@ modules:
         FEATURES:
           - ariel-os/network-config-ipv4-static
 
+  # Disabled by modules that provide one of these.
+  - name: no-ipv4-ipv6
+    help: private
+
   - name: ipv4
     selects:
       - network
       - network-config-ipv4-default
+    disables:
+      - no-ipv4-ipv6
     env:
       global:
         FEATURES:
@@ -1311,6 +1269,8 @@ modules:
     selects:
       - network
       - network-config-ipv6-default
+    disables:
+      - no-ipv4-ipv6
     env:
       global:
         FEATURES:
@@ -1811,49 +1771,208 @@ modules:
         FEATURES:
           - ariel-os/infini-core
 
-  - name: defmt-rtt
-    help: use defmt-rtt in ariel-os-debug
+  - name: debug-console
+    help: enable support for the debug console
+    context: ariel-os
+    selects:
+      # Mandatory.
+      - logging-over-debug-channel
+      # Optional for now, at least until multiple logging transports can be used
+      # at the same time: allows using semihosting while a logging transport
+      # other than `logging-over-debug-channel` is used.
+      - ?semihosting
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-channel
+
+  - name: logging
+    help: enables logging functionality
+    selects:
+      # Mandatory; the logging transport must be selected before the facade.
+      - logging-transport-default
+      # Mandatory.
+      - logging-facade-default
+      # Optional as we want to be able to disable it in applications.
+      - ?panic-printing
+
+  # Ordered by priority.
+  # Currently the logging transports are mutually exclusive.
+  - name: logging-transport-default
+    help: 'private: use `logging` instead'
+    selects:
+      - ?logging-over-stdout
+      - ?logging-over-debug-channel
+      - ?logging-over-usb
+      - ?logging-over-uart
+      - logging-transport
+
+  - name: logging-over-debug-channel
+    help: use the debug channel as logging transport
+    selects:
+      - probe-rs:
+          - ?debug-channel-rtt
+      # It would technically be possible to also support semihosting as debug
+      # channel transport, even though it is extremely slow.
+      - ?no-debug-channel-transport
+      - no-debug-channel-transport:
+          - debug-channel-transport-required
     provides_unique:
-      - ariel-os-debug-backend
+      - logging-transport
+
+  # Disabled by modules that provide a `debug-channel-transport`.
+  - name: no-debug-channel-transport
+    help: private
+
+  - name: debug-channel-rtt
+    help: use RTT as debug channel transport
+    selects:
+      # These conditional selects act as "late dependencies": the gated modules
+      # would be selected *later* in the resolution process if the gating
+      # modules get selected further down the line.
+      - defmt:
+          - defmt-rtt
+      - log:
+          - rtt-target
+    disables:
+      - no-debug-channel-transport
+    provides_unique:
+      # Debug channel transports are mutually exclusive.
+      - debug-channel-transport
+
+  # Enables `defmt-rtt` in `ariel-os-debug` and `ariel-os-log`.
+  - name: defmt-rtt
+    help: private
+    provides_unique:
+      - rtt-implementation
     env:
       global:
         FEATURES:
           - ariel-os/defmt-rtt
 
+  # Enables `rtt-target` in `ariel-os-debug`.
   - name: rtt-target
-    help: use rtt-target in ariel-os-debug
+    help: private
     provides_unique:
-      - ariel-os-debug-backend
+      - rtt-implementation
     env:
       global:
         FEATURES:
           - ariel-os/rtt-target
 
+  - name: logging-over-stdout
+    help: use native's stdout as logging transport
+    context:
+      - native-chip
+    provides_unique:
+      - logging-transport
+
+  - name: logging-over-usb
+    help: use USB CDC-ACM as logging transport
+    # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral
+    # until introducing a `usb-cdc-acm-esp` module.
+    # Should be later extended to chips with a generic USB peripheral.
+    context:
+      - esp32s3
+      - esp32c3
+      - esp32c6
+    selects:
+      - context::esp:
+          - esp-println
+    provides_unique:
+      - logging-transport
+    env:
+      global:
+        FEATURES:
+          - ariel-os/logging-over-usb
+
+  - name: logging-over-uart
+    help: use UART as logging transport
+    # Temporarily restricted to ESP and boards that have ad hoc support.
+    context:
+      - esp
+      - nrf52840dk
+      - nrf52dk
+      - stm32u083c-dk
+    selects:
+      - context::esp:
+          - esp-println
+      - ?debug-uart
+    provides_unique:
+      - logging-transport
+    env:
+      global:
+        FEATURES:
+          - ariel-os/logging-over-uart
+
+  # Temporary module for boards that have ad hoc support.
   - name: debug-uart
-    help: use UART in ariel-os-debug
+    help: private
+    context:
+      - nrf52840dk
+      - nrf52dk
+      - stm32u083c-dk
     selects:
       - log # We could later support defmt as well
-    provides_unique:
-      - ariel-os-debug-backend
     env:
       global:
         FEATURES:
           - ariel-os/debug-uart
 
-  - name: esp-println
-    help: use esp-println in ariel-os-debug
-    context:
-      - esp
+  - name: logging-facade-default
+    help: 'private: use `logging` instead'
+    selects:
+      - ?defmt
+      - ?log
+      - logging-facade
+
+  - name: defmt
+    help: Use the `defmt` crate as the logging facade
     provides_unique:
-      - ariel-os-debug-backend
+      - logging-facade
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+        FEATURES:
+          - ariel-os/defmt
+        RUSTFLAGS:
+          - -Clink-arg=-Tdefmt.x
+        ESPFLASH_LOG_FORMAT: "--log-format defmt"
+        CARGO_ENV:
+          - DEFMT_LOG=info,${LOG}
+
+  - name: log
+    help: Use the `log` crate as the logging facade
+    provides_unique:
+      - logging-facade
+    env:
+      global:
+        FEATURES:
+          - ariel-os/log
+        CARGO_ENV:
+          - LOG_LEVEL=${LOG}
+
+  - name: panic-printing
+    help: print panics, on the logging output
+    context: ariel-os
+    selects:
+      - logging
+    env:
+      global:
+        FEATURES:
+          - ariel-os/panic-printing
+
+  # Enables `esp-println` in `ariel-os-log`.
+  - name: esp-println
+    help: private
+    context:
+      - esp
+    env:
+      global:
         FEATURES:
           - ariel-os/esp-println
 
   - name: semihosting
-    help: enable semihosting in ariel-os-debug
+    help: enable semihosting functionality
     env:
       global:
         FEATURES:
@@ -2001,7 +2120,7 @@ builders:
           - rustup ${CARGO_TOOLCHAIN} target add riscv32imc-unknown-none-elf
           - rustup ${CARGO_TOOLCHAIN} target add riscv32imac-unknown-none-elf
           - rustup ${CARGO_TOOLCHAIN} component add rust-src llvm-tools
-          - if command -v espup >/dev/null; then espup update --toolchain-version 1.94.0.2 --targets=esp32,esp32s2,esp32s3; fi
+          - if command -v espup >/dev/null; then espup update --targets=esp32,esp32s2,esp32s3; fi
 
       update-book:
         build: false
@@ -2017,29 +2136,6 @@ builders:
         build: false
         cmd:
           - cargo fmt --all -- --config format_generated_files=false
-
-  - name: bbc-microbit
-    parent: bbc-microbit-base
-    env:
-      CARGO_RUNNER:
-        - ${relroot}/${SCRIPTS}/debug-openocd.sh
-      OPENOCD_ARGS:
-        - "-f board/nordic_nrf52_dk.cfg"
-
-  - name: bbc-microbit-qemu
-    parent: bbc-microbit-base
-    env:
-      CARGO_RUNNER:
-        - '"qemu-system-arm -machine microbit -nographic -semihosting-config enable=on,target=native -s -S -kernel"'
-      QEMU_MACHINE: microbit
-    tasks:
-      qemu:
-        build: true
-        cmd:
-          - ${QEMU_SYSTEM_ARM} ${out} $@
-
-    disables:
-      - periph_rtt
 
 apps:
   # define a dummy host application so the host tasks work

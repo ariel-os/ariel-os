@@ -257,25 +257,30 @@ define_uart_drivers!(UART0, UART1, UART2);
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all UART peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(context = "esp32")] {
+    cfg_select! {
+        context = "esp32" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
             let _ = peripherals.UART2.take().unwrap();
-        } else if #[cfg(context = "esp32c3")] {
+        }
+        context = "esp32c3" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
-        } else if #[cfg(context = "esp32c6")] {
+        }
+        context = "esp32c6" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
-        } else if #[cfg(context = "esp32s2")] {
+        }
+        context = "esp32s2" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
-        } else if #[cfg(context = "esp32s3")] {
+        }
+        context = "esp32s3" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
             let _ = peripherals.UART2.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this ESP32 chip is not supported");
         }
     }

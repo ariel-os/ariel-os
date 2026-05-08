@@ -24,21 +24,25 @@ fn from_bit_order(bit_order: BitOrder) -> embassy_nrf::spim::BitOrder {
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     // Take all SPI peripherals and do nothing with them.
-    cfg_if::cfg_if! {
-        if #[cfg(context = "nrf52833")] {
+    cfg_select! {
+        context = "nrf52833" => {
             let _ = peripherals.SPI3.take().unwrap();
-        } else if #[cfg(context = "nrf52840")] {
+        }
+        context = "nrf52840" => {
             let _ = peripherals.SPI2.take().unwrap();
             let _ = peripherals.SPI3.take().unwrap();
-        } else if #[cfg(context = "nrf5340-app")] {
+        }
+        context = "nrf5340-app" => {
             let _ = peripherals.SERIAL2.take().unwrap();
             // Used by UART
             // let _ = peripherals.SERIAL3.take().unwrap();
-        } else if #[cfg(context = "nrf91")] {
+        }
+        context = "nrf91" => {
             let _ = peripherals.SERIAL2.take().unwrap();
             // Used by UART
             // let _ = peripherals.SERIAL3.take().unwrap();
-        } else {
+        }
+        _ => {
             compile_error!("this nRF chip is not supported");
         }
     }

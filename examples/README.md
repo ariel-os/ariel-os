@@ -12,6 +12,7 @@ This directory contains example applications that showcase how to use Ariel OS.
 - [coap-server](./coap-server) and [coap-client](./coap-client): Application level networking examples
 - [device-metadata/](./device-metadata): Retrieve metadata about the running device
 - [gpio/](./gpio): GPIO pin control example.
+- [gpio-reuse/](./gpio-reuse): Change GPIO role at runtime
 - [hello-world/](./hello-world): A classic, async version
 - [hello-world-threading/](./hello-world-threading): A classic, using a thread
 - [http-client/](./http-client): HTTP client example

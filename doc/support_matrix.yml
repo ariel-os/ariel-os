@@ -77,6 +77,54 @@ functionalities:
     support_criteria: example-storage
     description:
 
+note_snippets:
+  - name: ethernet-identity-based-mac-address
+    content: |-
+      ### Ethernet Link
+
+      The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
+      A different index should therefore be used to generate other EUI-48 identifiers.
+  - name: espressif-devkit-two-usb-ports-only-usb-otg
+    content: |-
+      ##### USB Ports
+
+      This board features two USB ports: one is labeled "USB" while the other is labeled "UART".
+
+      The "USB" port is connected to the USB OTG peripheral of the MCU and can only be used by the application.
+
+      The "UART" port is connected to a USB ⟷ UART adapter, wired to UART0.
+      It can be used to flash the board through the bootloader using `espflash`.
+      It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
+  - name: espressif-devkit-two-usb-ports-with-usb-otg
+    content: |-
+      ##### USB Ports
+
+      This board features two USB ports: one is labeled "USB" while the other is labeled "UART".
+
+      The "USB" port is connected to the internal USB PHY, which is shared by the USB CDC-ACM/JTAG USB peripheral and the USB OTG peripheral.
+      It can be used to flash the board either through the bootloader over USB CDC-ACM using `espflash`, or over JTAG using probe-rs.
+      When the USB OTG peripheral is not used by the application, the "USB" port can also be used to obtain logs when the [`logging-over-usb`](../logging.md#logging-transports) laze module is enabled.
+
+      The "UART" port is connected to a USB ⟷ UART adapter, wired to UART0.
+      It can be used to flash the board through the bootloader using `espflash`.
+      It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
+
+      Note: On the ESP32-S3, enabling `logging-over-uart` will [not prevent the logs from also being printed using the USB CDC-ACM USB peripheral](https://github.com/esp-rs/esp-hal/issues/4510).
+  - name: espressif-devkit-two-usb-ports-no-usb-otg
+    content: |-
+      ##### USB Ports
+
+      This board features two USB ports: one is labeled "USB" while the other is labeled "UART".
+
+      The "USB" port is connected to the USB CDC-ACM/JTAG USB peripheral of the MCU and can be used to flash the board either through the bootloader over USB CDC-ACM using `espflash`, or over JTAG using probe-rs.
+      It can also be used to obtain logs when the [`logging-over-usb`](../logging.md#logging-transports) laze module is enabled.
+
+      The "UART" port is connected to a USB ⟷ UART adapter, wired to UART0.
+      It can be used to flash the board through the bootloader using `espflash`.
+      It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
+
+      Note: On the ESP32-C3, enabling `logging-over-uart` will [not prevent the logs from also being printed using the USB CDC-ACM USB peripheral](https://github.com/esp-rs/esp-hal/issues/4510).
+
 # Encodes support status for each chip.
 chips:
   native-chip:
@@ -84,7 +132,7 @@ chips:
     manufacturer: Ariel OS
     support:
       gpio: not_currently_supported
-      debug_output: supported
+      debug_output: not_available
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -302,10 +350,7 @@ chips:
       wifi:
         status: supported
       ble: supported
-      user_usb:
-        status: not_available
-        comments:
-          - no generic USB peripheral
+      user_usb: not_available
       ethernet_over_usb: not_available
       ethernet: not_available
 
@@ -717,11 +762,8 @@ chips:
           - removing items not supported
       wifi: not_available
       ble: not_available
-    notes: |-
-      ### Ethernet Link
-
-      The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
-      A different index should therefore be used to generate other EUI-48 identifiers.
+    note_snippets:
+      - ethernet-identity-based-mac-address
 
   stm32h755zi:
     name: STM32H755ZI
@@ -748,11 +790,8 @@ chips:
           - removing items not supported
       wifi: not_available
       ble: not_available
-    notes: |-
-      ### Ethernet Link
-
-      The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
-      A different index should therefore be used to generate other EUI-48 identifiers.
+    note_snippets:
+      - ethernet-identity-based-mac-address
 
   stm32l475vg:
     name: STM32L475VG
@@ -1110,16 +1149,22 @@ builders:
     chip: esp32c6
     tier: "1"
     support:
+    note_snippets:
+      - espressif-devkit-two-usb-ports-no-usb-otg
 
   espressif-esp32-s2-devkitc-1:
     chip: esp32s2
     tier: "3"
     support:
+    note_snippets:
+      - espressif-devkit-two-usb-ports-only-usb-otg
 
   espressif-esp32-s3-devkitc-1:
     chip: esp32s3
     tier: "1"
     support:
+    note_snippets:
+      - espressif-devkit-two-usb-ports-with-usb-otg
 
   heltec-wifi-lora-32-v3:
     chip: esp32s3
