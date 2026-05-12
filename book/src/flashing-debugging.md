@@ -115,8 +115,20 @@ In addition, RTT supports channels in both directions: from the target to the ho
 RTT also requires an in-memory RTT Control Block, which stores the locations of the in-memory channel buffers.
 The RTT-enabled host tool either knows the location of the control block in memory, or scans the memory to find the magic bytes ("ID") the control block starts with.
 
+<!-- NOTE: done manually when using `rtt-target`; `defmt-rtt` uses non-blocking, trimming mode. -->
+Ariel OS sets RTT into non-blocking, trimming mode by default: that is, new data will fill up the RTT up buffers as much as possible (and may be truncated), and excess data will be discarded, but execution will not block when the up buffers are full.
+RTT-enabled host tools may change the mode when attached, to enable blocking mode and avoid losing data; however that means that the execution may freeze if they get detached without resetting the mode to non-blocking.
+
+<!--
+probe-rs does not document the blocking behavior but the following confirms it:
+
+- <https://github.com/probe-rs/probe-rs/pull/2326>
+- <https://github.com/probe-rs/probe-rs/issues/2184#issuecomment-2370724689>
+- <https://github.com/probe-rs/probe-rs/pull/3364>
+-->
 > [!TIP]
 > probe-rs automatically prints the RTT output when used in the firmware.
+> It sets the mode to blocking when attached to the target.
 
 <!-- TODO: document the to-be-introduced laze module that enables RTT: `debug-output-rtt` -->
 
