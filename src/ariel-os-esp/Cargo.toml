@@ -31,6 +31,7 @@ esp-hal = { workspace = true, default-features = false, features = [
   "optfield",
   "rt",
 ] }
+esp-storage = { workspace = true, optional = true }
 
 esp-radio = { workspace = true, default-features = false, features = [
   "esp-alloc",
@@ -56,6 +57,7 @@ esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
+esp-storage = { workspace = true, features = ["esp32", "critical-section"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
@@ -137,6 +139,9 @@ log = ["esp-hal/log-04", "esp-radio-rtos-driver?/log-04", "esp-radio?/log-04"]
 
 # Enables USB support.
 usb = []
+
+## Enables storage support.
+storage = ["dep:esp-storage", "dep:embassy-embedded-hal"]
 
 ## Enables BLE support.
 ble-esp = [

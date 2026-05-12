@@ -2,7 +2,7 @@
 
 use esp_hal::{
     interrupt::{self, software::SoftwareInterrupt},
-    peripherals::{CPU_CTRL, Interrupt},
+    peripherals::Interrupt,
     system::{Cpu, CpuControl, Stack},
 };
 
@@ -28,10 +28,9 @@ impl Multicore for Chip {
     }
 
     fn startup_other_cores(stack: &'static mut Self::Stack) {
-        // Trigger scheduler.
         let start_threading = move || {
-            // Use `CPU_INTR1` to trigger the scheduler on our second core.
-            // We need to use a different interrupt here than on the first core so that
+            // Use `CPU_INTR1` to trigger the scheduler on the APP core.
+            // We need to use a different interrupt here than on the PRO core so that
             // we specifically trigger the scheduler on one or the other core.
             interrupt::disable(Cpu::ProCpu, Interrupt::FROM_CPU_INTR1);
             Self::schedule_on_core(Self::core_id());
@@ -42,7 +41,7 @@ impl Multicore for Chip {
             unreachable!()
         };
 
-        let mut cpu_ctrl = unsafe { CpuControl::new(CPU_CTRL::steal()) };
+        let mut cpu_ctrl = unsafe { CpuControl::new(esp_hal::peripherals::CPU_CTRL::steal()) };
         let guard = cpu_ctrl.start_app_core(stack, start_threading);
 
         // Dropping the guard would park the other core.
@@ -50,7 +49,7 @@ impl Multicore for Chip {
     }
 
     fn schedule_on_core(id: CoreId) {
-        let ptr = esp_hal::peripherals::SYSTEM::regs();
+        let ptr = esp_hal::peripherals::DPORT::regs();
         let mut id = id.0;
         let already_set = ptr
             .cpu_intr_from_cpu(id.into())
@@ -80,7 +79,7 @@ impl Multicore for Chip {
 impl<const SIZE: usize> StackLimits for Stack<SIZE> {
     fn limits(&self) -> (usize, usize) {
         let lowest = self.mem.as_ptr() as usize;
-        let highest = lowest + self.len();
+        let highest = lowest + SIZE;
         (lowest, highest)
     }
 }

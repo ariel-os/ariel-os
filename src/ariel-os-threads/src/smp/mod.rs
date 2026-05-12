@@ -56,12 +56,14 @@ pub trait StackLimits {
 
 cfg_select! {
     context = "rp" => {
-        mod rp;
-        pub use rp::Chip;
-    }
-    context = "esp32s3" => {
-        mod esp32s3;
-        pub use esp32s3::Chip;
+    mod rp;
+    pub use rp::Chip;
+    } else if #[cfg(context = "esp32")] {
+    mod esp32;
+    pub use esp32::Chip;
+    } else if #[cfg(context = "esp32s3")] {
+    mod esp32s3;
+    pub use esp32s3::Chip;
     }
     _ => {
         use crate::{Arch as _, Cpu};

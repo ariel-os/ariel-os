@@ -96,13 +96,11 @@ extern "C" fn FROM_CPU_INTR0(trap_frame: &mut TrapFrame) {
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn FROM_CPU_INTR1(trap_frame: &mut TrapFrame) {
-    unsafe {
-        // clear FROM_CPU_INTR1
-        // SAFETY: `steal().reset()` is safe on an initialized software interrupt
-        unsafe { SoftwareInterrupt::<1>::steal().reset() }
+    // clear FROM_CPU_INTR1
+    // SAFETY: `steal().reset()` is safe on an initialized software interrupt
+    unsafe { SoftwareInterrupt::<1>::steal().reset() }
 
-        sched(trap_frame)
-    }
+    unsafe { sched(trap_frame) }
 }
 
 /// Probes the runqueue for the next thread and switches context if needed.

@@ -46,6 +46,9 @@ fn flash_range_from_linker() -> Range<u32> {
     const OFFSET: usize = 0x1000_0000;
     #[cfg(context = "stm32")]
     const OFFSET: usize = 0x0800_0000;
+    // ESP32 uses direct mapping (no offset needed)
+    #[cfg(context = "esp")]
+    const OFFSET: usize = 0x0;
     // Default for platform-independent tooling.
     #[cfg(not(context = "ariel-os"))]
     const OFFSET: usize = 0x0;
@@ -92,7 +95,7 @@ pub async fn init(p: &mut OptionalPeripherals) {
     embassy_time::block_for(embassy_time::Duration::from_millis(10));
 
     // Use a marker to ensure that this storage is initialized.
-    if Ok(Some(MARKER_VALUE)) != get::<u8>(MARKER_KEY).await {
+    if get::<u8>(MARKER_KEY).await.map_or(true, |r| r.is_none()) {
         ariel_os_log::info!("storage: initializing");
         erase_all().await.unwrap();
     }

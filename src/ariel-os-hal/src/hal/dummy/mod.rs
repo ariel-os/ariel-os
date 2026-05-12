@@ -42,7 +42,13 @@ pub mod identity;
 pub mod spi;
 
 #[doc(hidden)]
-#[cfg(feature = "storage")]
+#[cfg(all(feature = "storage", context = "esp"))]
+pub mod storage {
+    pub use ariel_os_esp::storage::{Flash, FlashError, init as flash_init};
+}
+
+#[doc(hidden)]
+#[cfg(all(feature = "storage", not(context = "esp")))]
 pub mod storage;
 
 #[doc(hidden)]
