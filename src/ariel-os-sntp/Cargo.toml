@@ -1,0 +1,22 @@
+[package]
+name = "ariel-os-sntp"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-embassy = { workspace = true, features = ["net", "udp", "time"] }
+ariel-os-log = { workspace = true }
+ariel-os-threads = { workspace = true }
+embassy-executor = { workspace = true }
+sntpc = { version = "0.8.1", default-features = false }
+sntpc-net-embassy = { version = "0.8.0", default-features = false }
+
+[features]
+defmt = ["sntpc/defmt", "sntpc-net-embassy/defmt"]
+log = ["sntpc/log", "sntpc-net-embassy/log"]
+
+[lints]
+workspace = true

@@ -157,6 +157,7 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-sensors",
  "ariel-os-sensors-registry",
+ "ariel-os-sntp",
  "ariel-os-storage",
  "ariel-os-threads",
  "ariel-os-utils",
@@ -223,7 +224,7 @@ dependencies = [
  "coap-numbers",
  "coapcore",
  "critical-section",
- "embassy-net",
+ "embassy-net 0.8.0",
  "embassy-sync 0.7.2",
  "embedded-io-async 0.6.1",
  "embedded-nal-async 0.8.0",
@@ -272,7 +273,7 @@ dependencies = [
  "embassy-executor",
  "embassy-futures",
  "embassy-hal-internal",
- "embassy-net",
+ "embassy-net 0.8.0",
  "embassy-nrf",
  "embassy-stm32",
  "embassy-sync 0.7.2",
@@ -439,7 +440,7 @@ dependencies = [
  "embassy-embedded-hal",
  "embassy-executor",
  "embassy-futures",
- "embassy-net",
+ "embassy-net 0.8.0",
  "embassy-net-driver-channel 0.3.2",
  "embassy-nrf",
  "embassy-sync 0.7.2",
@@ -626,6 +627,18 @@ dependencies = [
  "embassy-sync 0.7.2",
  "embassy-time",
  "portable-atomic",
+]
+
+[[package]]
+name = "ariel-os-sntp"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-embassy",
+ "ariel-os-log",
+ "ariel-os-threads",
+ "embassy-executor",
+ "sntpc",
+ "sntpc-net-embassy",
 ]
 
 [[package]]
@@ -2151,7 +2164,24 @@ dependencies = [
  "embedded-nal-async 0.9.0",
  "heapless 0.8.0",
  "managed",
- "smoltcp",
+ "smoltcp 0.12.0",
+]
+
+[[package]]
+name = "embassy-net"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "347bc855bdbdf50ed9c5a1d80e8204badb0ba149b8732dde38e1e9708ed9d313"
+dependencies = [
+ "document-features",
+ "embassy-net-driver",
+ "embassy-sync 0.8.0",
+ "embassy-time",
+ "embedded-io-async 0.7.0",
+ "embedded-nal-async 0.9.0",
+ "heapless 0.9.1",
+ "managed",
+ "smoltcp 0.13.0",
 ]
 
 [[package]]
@@ -2929,7 +2959,7 @@ dependencies = [
  "num-traits",
  "portable-atomic",
  "portable_atomic_enum",
- "smoltcp",
+ "smoltcp 0.12.0",
  "xtensa-lx-rt",
 ]
 
@@ -4869,7 +4899,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e4976908c758efc04289ad266181f22e252b67daac2710581da9f5aa7a3207a"
 dependencies = [
  "const-sha1",
- "embassy-net",
+ "embassy-net 0.9.1",
  "embassy-time",
  "embedded-io-async 0.7.0",
  "heapless 0.8.0",
@@ -5833,6 +5863,52 @@ dependencies = [
  "defmt 0.3.100",
  "heapless 0.8.0",
  "managed",
+]
+
+[[package]]
+name = "smoltcp"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ac729b0a77bd092a3f06ddaddc59fe0d67f48ba0de45a9abe707c2842c7f8767"
+dependencies = [
+ "bitflags 1.3.2",
+ "byteorder",
+ "cfg-if",
+ "heapless 0.9.1",
+ "managed",
+]
+
+[[package]]
+name = "sntp-router"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-sntp",
+]
+
+[[package]]
+name = "sntpc"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3334dc3b0fc8775d320764f947eec3dd5e63d15117b6bde6305989b3558134ef"
+dependencies = [
+ "cfg-if",
+ "defmt 1.0.1",
+ "log",
+]
+
+[[package]]
+name = "sntpc-net-embassy"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d7ee9f9a51937a08ff1774451fa09df22c049475f1f2549275f5be0125a7bd00"
+dependencies = [
+ "cfg-if",
+ "defmt 1.0.1",
+ "embassy-net 0.8.0",
+ "log",
+ "sntpc",
 ]
 
 [[package]]
