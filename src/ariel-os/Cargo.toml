@@ -34,6 +34,7 @@ ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
 ariel-os-sensors = { workspace = true, optional = true }
 ariel-os-sensors-registry = { workspace = true, optional = true }
+ariel-os-sntp = { path = "../ariel-os-sntp", optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
@@ -207,6 +208,7 @@ defmt = [
   "ariel-os-embassy/defmt",
   "ariel-os-log/defmt",
   "ariel-os-sensors?/defmt",
+  "ariel-os-sntp?/defmt",
   "ariel-os-threads?/defmt",
 ]
 # Enables logging support through `log`, see [`log`].
