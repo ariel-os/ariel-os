@@ -22,8 +22,9 @@ cfg_if::cfg_if! {
     "espressif-esp32-s3-devkitc-1")] { include!("espressif-esp32-s3-devkitc-1.rs"); }
     else if #[cfg(context = "heltec-wifi-lora-32-v3")] {
     include!("heltec-wifi-lora-32-v3.rs"); } else if #[cfg(context = "native")] {
-    include!("native.rs"); } else if #[cfg(context = "nordic-thingy-91-x-nrf9151")] {
-    include!("nordic-thingy-91-x-nrf9151.rs"); } else if #[cfg(context =
+    include!("native.rs"); } else if #[cfg(context = "nice-nano-v2")] {
+    include!("nice-nano-v2.rs"); } else if #[cfg(context = "nordic-thingy-91-x-nrf9151")]
+    { include!("nordic-thingy-91-x-nrf9151.rs"); } else if #[cfg(context =
     "nordic-thingy-91-x-nrf5340-app")] { include!("nordic-thingy-91-x-nrf5340-app.rs"); }
     else if #[cfg(context = "nordic-thingy-91-x-nrf5340-net")] {
     include!("nordic-thingy-91-x-nrf5340-net.rs"); } else if #[cfg(context =
