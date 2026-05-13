@@ -58,7 +58,7 @@ When an idle thread is scheduled, it prompts the current core to enter sleep mod
 ### Core Affinity
 
 Core affinity, also known as core pinning, is optionally configurable for each thread using the [`#[ariel_os:thread]` attribute macro][thread-attr-macro-rustdoc].
-It allows to restrict the execution of a thread to a specific core and prevent it from being scheduled on another one.
+It allows restricting the execution of a thread to a specific core and prevents it from being scheduled on another one. This is only enabled when the `core-affinity` [laze module][laze-modules-book] is selected. Otherwise, the `affinity` parameter of the [`#[ariel_os:thread]` attribute macro][thread-attr-macro-rustdoc] is ignored.
 See the [`threading-multicore` example][threading-multicore-example-repo] for a usage example.
 
 [Embassy]: https://embassy.dev/
