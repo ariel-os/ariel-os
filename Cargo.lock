@@ -656,10 +656,11 @@ dependencies = [
 name = "ariel-os-sntp"
 version = "0.1.0"
 dependencies = [
- "ariel-os-embassy",
  "ariel-os-log",
  "ariel-os-threads",
  "embassy-executor",
+ "embassy-net 0.8.0",
+ "embassy-time",
  "sntpc",
  "sntpc-net-embassy",
 ]

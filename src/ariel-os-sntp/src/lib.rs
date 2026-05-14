@@ -10,16 +10,16 @@
 //! available at any point after the initial synchronization. The monotonic
 //! `embassy-time` clock is used to advance the stored timestamp between syncs.
 
-use ariel_os_embassy::reexports::embassy_net::{
-    Stack,
-    udp::{PacketMetadata, UdpSocket},
-};
-use ariel_os_embassy::reexports::embassy_time::{Duration, Instant, Timer, with_timeout};
-use ariel_os_embassy::reexports::embassy_executor;
 use ariel_os_log::{debug, error};
 use ariel_os_threads::sync::Mutex;
 use core::ops::AddAssign;
 use core::{fmt, net};
+use embassy_executor;
+use embassy_net::{
+    Stack,
+    udp::{PacketMetadata, UdpSocket},
+};
+use embassy_time::{Duration, Instant, Timer, with_timeout};
 pub use sntpc::NtpResult;
 use sntpc::{NtpContext, NtpTimestampGenerator, get_time};
 use sntpc_net_embassy::UdpSocketWrapper;
@@ -29,9 +29,6 @@ pub const NTP_PORT: u16 = 123;
 
 /// Default timeout for a single SNTP request.
 pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(3);
-
-/// Default synchronization interval.
-pub const DEFAULT_INTERVAL: Duration = Duration::from_secs(60);
 
 /// Size of the UDP RX payload buffer.
 ///
@@ -47,10 +44,6 @@ pub const DEFAULT_TX_BUFFER_SIZE: usize = 64;
 ///
 /// A larger difference causes [`PlausibilityError::JumpTooLarge`].
 pub const MAX_PLAUSIBLE_DIFF: Duration = Duration::from_millis(100);
-
-// ---------------------------------------------------------------------------
-// Error types
-// ---------------------------------------------------------------------------
 
 /// Errors that can occur while fetching SNTP time.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -152,8 +145,12 @@ impl GlobalClock {
             } else {
                 current.duration_since(unix_secs)
             };
-            debug!("SNTP plausibility check: current estimate = {}ms, new value = {}ms, diff = {}ms",
-                current.as_millis(), unix_secs.as_millis(), diff.as_millis());
+            debug!(
+                "SNTP plausibility check: current estimate = {}ms, new value = {}ms, diff = {}ms",
+                current.as_millis(),
+                unix_secs.as_millis(),
+                diff.as_millis()
+            );
             if diff > MAX_PLAUSIBLE_DIFF {
                 return Err(PlausibilityError::JumpTooLarge);
             }
@@ -173,10 +170,6 @@ impl GlobalClock {
 /// Use [`start`] to begin periodic synchronization and [`now`] to read the time.
 pub static GLOBAL_CLOCK: GlobalClock = GlobalClock::new();
 
-// ---------------------------------------------------------------------------
-// Public API
-// ---------------------------------------------------------------------------
-
 /// Starts the SNTP background task.
 ///
 /// Spawns a task that periodically synchronizes [`GLOBAL_CLOCK`] with the given
@@ -185,15 +178,13 @@ pub static GLOBAL_CLOCK: GlobalClock = GlobalClock::new();
 ///
 /// Call this from any async context, e.g. an `#[ariel_os::task(autostart)]`:
 ///
-/// ```rust,ignore
+/// ```rust
 /// ariel_os_sntp::start(stack, server_addr, Duration::from_secs(60)).await;
 /// ```
 pub async fn start(stack: Stack<'static>, addr: net::SocketAddr, interval: Duration) {
     // SAFETY: same pattern used throughout ariel-os-embassy
     #![expect(unsafe_code)]
-    let spawner = unsafe {
-        ariel_os_embassy::reexports::embassy_executor::Spawner::for_current_executor().await
-    };
+    let spawner = unsafe { embassy_executor::Spawner::for_current_executor().await };
     spawner.must_spawn(sntp_task(stack, addr, interval));
 }
 
@@ -202,10 +193,6 @@ pub async fn start(stack: Stack<'static>, addr: net::SocketAddr, interval: Durat
 pub fn now() -> Option<Instant> {
     GLOBAL_CLOCK.now()
 }
-
-// ---------------------------------------------------------------------------
-// Background task
-// ---------------------------------------------------------------------------
 
 #[embassy_executor::task]
 async fn sntp_task(stack: Stack<'static>, addr: net::SocketAddr, interval: Duration) {
@@ -218,10 +205,6 @@ async fn sntp_task(stack: Stack<'static>, addr: net::SocketAddr, interval: Durat
         Timer::after(interval).await;
     }
 }
-
-// ---------------------------------------------------------------------------
-// Low-level helpers
-// ---------------------------------------------------------------------------
 
 /// Synchronizes [`GLOBAL_CLOCK`] from an SNTP server.
 pub async fn update_global_clock(
@@ -263,12 +246,10 @@ pub async fn fetch_time(
         &mut tx_buffer,
     );
 
-    socket.bind(0).map_err(|_| Error::Bind)?;
+    socket.bind(NTP_PORT).map_err(|_| Error::Bind)?;
 
     let socket = UdpSocketWrapper::new(socket);
-    let context = NtpContext::new(EmbassyTimestampGenerator {
-        instant: Instant::now(),
-    });
+    let context = NtpContext::new(EmbassyTimestampGenerator::default());
 
     let response = with_timeout(timeout, get_time(addr, &socket, context))
         .await
@@ -278,21 +259,27 @@ pub async fn fetch_time(
     Ok(response)
 }
 
-// ---------------------------------------------------------------------------
-// Timestamp generator
-// ---------------------------------------------------------------------------
-
 /// Timestamp generator backed by `embassy-time`.
 ///
 /// This does not provide wall-clock time. It provides a monotonic timestamp
 /// source for `sntpc`, which is enough for request/response measurements.
-#[derive(Debug, Clone, Copy)]
+#[derive(Copy, Clone)]
 struct EmbassyTimestampGenerator {
     instant: Instant,
 }
 
+impl Default for EmbassyTimestampGenerator {
+    fn default() -> Self {
+        Self {
+            instant: Instant::from_secs(0),
+        }
+    }
+}
+
 impl NtpTimestampGenerator for EmbassyTimestampGenerator {
-    fn init(&mut self) {}
+    fn init(&mut self) {
+        self.instant = Instant::now();
+    }
 
     fn timestamp_sec(&self) -> u64 {
         self.instant.as_secs()
