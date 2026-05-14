@@ -1,13 +1,13 @@
 #![no_main]
 #![no_std]
 
-use core::net::{IpAddr, SocketAddr};
 use ariel_os::{
     log::info,
     net,
     time::{Duration, Timer},
 };
 use ariel_os_sntp::NTP_PORT;
+use core::net::{IpAddr, SocketAddr};
 
 #[ariel_os::task(autostart)]
 async fn main() {
@@ -28,6 +28,6 @@ async fn main() {
             None => info!("SNTP clock not synchronized yet"),
         }
 
-        Timer::after_secs(10*60).await;
+        Timer::after_secs(10 * 60).await;
     }
 }
