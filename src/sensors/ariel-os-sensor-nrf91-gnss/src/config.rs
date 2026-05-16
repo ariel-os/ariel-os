@@ -1,3 +1,5 @@
+pub use nrf_modem::GnssPowerSaveMode;
+
 /// Operation modes for the GNSS module.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -20,6 +22,9 @@ pub struct Config {
     pub operation_mode: GnssOperationMode,
     /// Whether NMEA messages should be logged as logs (adds extra processing).
     pub log_nmea: bool,
+    /// GNSS power saving mode.
+    /// Power consumption: `GnssPowerSaveMode::Disabled` > `GnssPowerSaveMode::DutyCyclingPerformance` > `GnssPowerSaveMode::DutyCycling`.
+    pub power_mode: GnssPowerSaveMode,
 }
 
 impl Default for Config {
@@ -27,6 +32,7 @@ impl Default for Config {
         Self {
             operation_mode: GnssOperationMode::Continuous,
             log_nmea: false,
+            power_mode: GnssPowerSaveMode::Disabled,
         }
     }
 }
@@ -49,6 +55,6 @@ pub(crate) fn convert_gnss_config(config: &Config) -> nrf_modem::GnssConfig {
         },
         // Tcxo offers more precise 1PPS but uses more energy, we don't use 1PPS so Rtc makes more sense.
         timing_source: nrf_modem::GnssTimingSource::Rtc,
-        power_mode: nrf_modem::GnssPowerSaveMode::Disabled,
+        power_mode: config.power_mode.clone(),
     }
 }
