@@ -1,6 +1,6 @@
 # Logging
 
-Ariel OS supports logging on all platforms and it is enabled by default with the `logging` [laze module][laze-modules-book].
+Ariel OS supports logging on all platforms and it is enabled by default with the `logging` [laze module][laze-modules-book].
 Logging offers a set of macros that print on the debug console with helpful logging formatting.
 
 ## Printing Panics
@@ -23,7 +23,7 @@ async fn main() {
 
 ## Filtering Logs
 
-In Ariel OS, the log level defaults to `info`. It can be configured using the
+In Ariel OS, the log level defaults to `info`. It can be configured using the
 laze variable `LOG`.
 Depending on the logger, it may be possible to configure different levels per crate or per module.
 
