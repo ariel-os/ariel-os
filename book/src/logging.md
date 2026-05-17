@@ -21,6 +21,16 @@ async fn main() {
 }
 ```
 
+In the `laze-project.yml` file, add the appropriate modules (see table below). For an ESP32-based board, the resulting app could look like:
+
+```yaml
+apps:
+  - name: main
+    selects:
+      - logging-over-uart
+      - has_buttons
+```
+
 ## Filtering Logs
 
 In Ariel OS, the log level defaults to `info`. It can be configured using the
@@ -70,6 +80,12 @@ $ laze build -C examples/log --builders nrf52840dk -DLOG=info,ariel_os_rt=trace 
 ```
 
 ### [log]
+
+To build your project with plain logging support rather than defmt, use the `--select=log` option on the command line. For example:
+
+```
+$ laze build -C examples/log --builders nrf52840dk --select=log
+```
 
 Ariel OS's logger for `log` supports configuring the log level globally, but does not currently support per-crate filtering.
 
