@@ -71,6 +71,12 @@ $ laze build -C examples/log --builders nrf52840dk -DLOG=info,ariel_os_rt=trace 
 
 ### [log]
 
+To build your project with plain logging support rather than defmt, use the `--select=log` option on the command line. For example:
+
+```
+$ laze build -C examples/log --builders nrf52840dk --select=log
+```
+
 Ariel OS's logger for `log` supports configuring the log level globally, but does not currently support per-crate filtering.
 
 ## Logging Transports
