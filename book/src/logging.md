@@ -93,6 +93,11 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 >
 > When a separate serial monitor is needed, [`defmt-print`][defmt-print-cratesio] can be used as `defmt`-enabled serial monitor.
 > If this is not possible, `defmt` should be disabled and [`log`](#log) used instead as logging facade.
+>
+> This is what you may see instead of your messages if you use `defmt` logging but use a serial monitor that is not `defmt`-enabled:
+> ```
+> ~� z� j� z� j� z� j� z� j� z� j
+> ```
 
 <!-- TODO: link to "debug interface" when the page exists -->
 > [!TIP]
