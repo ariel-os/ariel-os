@@ -20,6 +20,8 @@ embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
   "medium-ethernet",
 ] }
+embassy-net-driver = { version = "0.2", optional = true }
+embassy-net-driver-channel = { version = "0.4", optional = true }
 embassy-sync = { workspace = true }
 embassy-time = { workspace = true, optional = true }
 embassy-time-queue-utils = { workspace = true, optional = true }
@@ -143,6 +145,8 @@ ltem-nrf-modem = [
   "net",
   "nrf91-modem",
 ]
+
+user-net-driver-channel = ["embassy-net-driver-channel", "embassy-net-driver", "embassy-net/medium-ip"]
 
 ble = [
   "dep:trouble-host",
