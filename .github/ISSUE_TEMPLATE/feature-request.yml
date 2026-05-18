@@ -31,7 +31,10 @@ body:
       label: Are you planning to do it yourself in a pull request?
       options:
         - "Yes"
-        - "No"
         - Maybe
+        - "No, but I'm about to hire someone to do it"
+        - "No. Please contact me for funding this feature"
+        - "No. I'm only expressing a wish"
+        - "Yes, in very far future. Don't wait for me."
     validations:
       required: true
