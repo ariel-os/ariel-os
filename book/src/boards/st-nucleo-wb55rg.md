@@ -38,6 +38,13 @@ laze build -b st-nucleo-wb55
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
 
+#### Additional Notes
+
+##### Logging over UART
+
+Using UART as the [logging transport](../logging.md#logging-transports) is supported on this board.
+Currently only the UART peripheral and the UART pins connected to the onboard, built-in debug probe can be used.
+
 <p>Legend:</p>
 
 <dl>

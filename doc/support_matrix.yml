@@ -124,6 +124,18 @@ note_snippets:
       It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
 
       Note: On the ESP32-C3, enabling `logging-over-uart` will [not prevent the logs from also being printed using the USB CDC-ACM USB peripheral](https://github.com/esp-rs/esp-hal/issues/4510).
+  - name: logging-over-uart-board-debug-probe
+    content: |-
+      ##### Logging over UART
+
+      Using UART as the [logging transport](../logging.md#logging-transports) is supported on this board.
+      Currently only the UART peripheral and the UART pins connected to the onboard, built-in debug probe can be used.
+  - name: logging-over-uart-rpi-pico
+    content: |-
+      ##### Logging over UART
+
+      Using UART as the [logging transport](../logging.md#logging-transports) is supported on this board.
+      Currently the UART0 peripheral is used and the output is on the GP0 pin.
 
 # Encodes support status for each chip.
 chips:
@@ -1070,6 +1082,8 @@ builders:
     tier: "2"
     support:
       ble: supported
+    note_snippets:
+      - logging-over-uart-board-debug-probe
 
   nrf52840dk:
     chip: nrf52840
@@ -1077,6 +1091,8 @@ builders:
     support:
       user_usb: supported
       ethernet_over_usb: supported
+    note_snippets:
+      - logging-over-uart-board-debug-probe
 
   nrf5340dk-app:
     chip: nrf5340-app
@@ -1111,6 +1127,8 @@ builders:
     support:
       user_usb: supported
       ethernet_over_usb: supported
+    note_snippets:
+      - logging-over-uart-rpi-pico
 
   rpi-pico-w:
     chip: rp2040
@@ -1120,6 +1138,8 @@ builders:
       wifi: supported
       ble: supported
       ethernet_over_usb: supported
+    note_snippets:
+      - logging-over-uart-rpi-pico
 
   rpi-pico2:
     chip: rp235xa
@@ -1212,6 +1232,8 @@ builders:
         status: not_currently_supported
         comments:
           - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+    note_snippets:
+      - logging-over-uart-board-debug-probe
 
   st-nucleo-c031c6:
     chip: stm32c031c6
@@ -1278,6 +1300,8 @@ builders:
       user_usb: supported
       wifi: not_available
       ethernet_over_usb: supported
+    note_snippets:
+      - logging-over-uart-board-debug-probe
 
   st-nucleo-wba55:
     chip: stm32wba55cg
@@ -1321,6 +1345,8 @@ builders:
       user_usb: supported
       wifi: not_available
       ethernet_over_usb: supported
+    note_snippets:
+      - logging-over-uart-board-debug-probe
 
   ulanzi-tc001:
     chip: esp32-d0wd

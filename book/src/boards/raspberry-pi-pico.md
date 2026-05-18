@@ -38,6 +38,13 @@ laze build -b rpi-pico
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
 
+#### Additional Notes
+
+##### Logging over UART
+
+Using UART as the [logging transport](../logging.md#logging-transports) is supported on this board.
+Currently the UART0 peripheral is used and the output is on the GP0 pin.
+
 <p>Legend:</p>
 
 <dl>
