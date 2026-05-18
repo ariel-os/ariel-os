@@ -23,6 +23,7 @@ use embassy_time::{Duration, Instant, Timer, with_timeout};
 pub use sntpc::NtpResult;
 use sntpc::{NtpContext, NtpTimestampGenerator, get_time};
 use sntpc_net_embassy::UdpSocketWrapper;
+use sntpc_time_embassy::EmbassyTimestampGenerator;
 
 /// SNTP port.
 pub const NTP_PORT: u16 = 123;
@@ -257,35 +258,4 @@ pub async fn fetch_time(
         .map_err(|_| Error::Protocol)?;
 
     Ok(response)
-}
-
-/// Timestamp generator backed by `embassy-time`.
-///
-/// This does not provide wall-clock time. It provides a monotonic timestamp
-/// source for `sntpc`, which is enough for request/response measurements.
-#[derive(Copy, Clone)]
-struct EmbassyTimestampGenerator {
-    instant: Instant,
-}
-
-impl Default for EmbassyTimestampGenerator {
-    fn default() -> Self {
-        Self {
-            instant: Instant::from_secs(0),
-        }
-    }
-}
-
-impl NtpTimestampGenerator for EmbassyTimestampGenerator {
-    fn init(&mut self) {
-        self.instant = Instant::now();
-    }
-
-    fn timestamp_sec(&self) -> u64 {
-        self.instant.as_secs()
-    }
-
-    fn timestamp_subsec_micros(&self) -> u32 {
-        self.instant.as_micros() as u32 % 1_000_000
-    }
 }

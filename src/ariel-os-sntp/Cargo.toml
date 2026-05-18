@@ -12,8 +12,9 @@ embassy-time = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-threads = { workspace = true }
 embassy-executor = { workspace = true }
-sntpc = { version = "0.8.1", default-features = false }
-sntpc-net-embassy = { version = "0.8.0", default-features = false }
+sntpc = { version = "0.10.1", default-features = false }
+sntpc-net-embassy = { version = "0.10.0", default-features = false }
+sntpc-time-embassy = { version = "0.5.0" }
 
 [features]
 defmt = ["sntpc/defmt", "sntpc-net-embassy/defmt"]
