@@ -2,6 +2,8 @@ version: 0.3.0
 targets:
   dfrobot-firebeetle2-esp32-c6:
     chip: esp32c6fx4
+    flags:
+      - has_usb_cdc_acm_port
     leds:
       led0:
         pin: GPIO15

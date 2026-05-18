@@ -192,7 +192,6 @@ rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
 executor-thread = ["ariel-os-embassy-common/executor-thread", "threading"]
-executor-none = []
 
 # Allows to have no built-in board selected.
 no-boards = []
@@ -212,7 +211,7 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["dhcpv4", "executor-none", "external-interrupts", "i2c", "spi", "time"]
+_test = ["dhcpv4", "external-interrupts", "i2c", "spi", "time"]
 
 [lints]
 workspace = true

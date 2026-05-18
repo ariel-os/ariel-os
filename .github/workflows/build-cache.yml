@@ -98,7 +98,7 @@ jobs:
 
       - name: Cache with post-job cleanup
         if: steps.should-skip.outputs.result != 'true'
-        uses: gacts/run-and-post-run@81b6ce503cde93862cec047c54652e45c5dca991 # v1
+        uses: gacts/run-and-post-run@598d7a875d5620e0457490555b5e18e46082aa47 # v1
         with:
           run: |
             cache-thing pull -f /home/runner/metadata -f build -f /home/runner/.cargo/git -f /home/runner/.cargo/registry --prefix global --fallback-key ${FALLBACK_KEY} || true

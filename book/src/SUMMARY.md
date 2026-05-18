@@ -18,6 +18,7 @@
   - [Espressif ESP32-S2-DevKitC-1](./boards/espressif-esp32-s2-devkitc-1.md)
   - [Espressif ESP32-S3-DevKitC-1](./boards/espressif-esp32-s3-devkitc-1.md)
   - [Heltec WiFi LoRa 32 V3](./boards/heltec-wifi-lora-32-v3.md)
+  - [Makerdiary nRF52840 MDK USB Dongle](./boards/makerdiary-nrf52840-mdk-usb-dongle.md)
   - [native](./boards/native.md)
   - [Nordic Thingy:91 X](./boards/nordic-thingy-91-x.md)
   - [nRF52-DK](./boards/nrf52-dk.md)

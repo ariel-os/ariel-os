@@ -8,7 +8,7 @@
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
@@ -65,7 +65,7 @@ Boards using this chip.
       <th>Manufacturer Name</th>
       <th><a href="../build-system.html#laze-builders">laze builders</a></th>
       <th>Tier</th>
-      <th>Debug Output</th>
+      <th>Debug Channel</th>
       <th>Logging</th>
       <th>GPIO</th>
       <th>I2C Controller Mode</th>

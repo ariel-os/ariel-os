@@ -144,12 +144,14 @@ pub type Task = fn(asynch::Spawner, &mut hal::OptionalPeripherals);
 #[distributed_slice]
 pub static EMBASSY_TASKS: [Task] = [..];
 
-#[cfg(not(any(
-    feature = "executor-interrupt",
-    feature = "executor-none",
-    feature = "executor-thread"
-)))]
-compile_error!(r#"must select one of "executor-interrupt", "executor-thread", "executor-none"!"#);
+#[cfg(all(
+    context = "ariel-os",
+    not(any(feature = "executor-interrupt", feature = "executor-thread"))
+))]
+compile_error!(r#"must select one of "executor-interrupt", "executor-thread"!"#);
+
+#[cfg(all(feature = "executor-interrupt", feature = "executor-thread"))]
+compile_error!(r#"must select only one of "executor-interrupt", "executor-thread"!"#);
 
 #[cfg(feature = "executor-interrupt")]
 #[distributed_slice(ariel_os_rt::INIT_FUNCS)]

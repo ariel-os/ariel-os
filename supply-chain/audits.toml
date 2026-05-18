@@ -38,6 +38,29 @@ criteria = "safe-to-deploy"
 delta = "0.7.1 -> 1.1.0"
 notes = "No meaningful changes in the rust code or the dependencies"
 
+[[audits.crc]]
+who = "Antoine Lavandier <antoine.lavandier@inria.fr>"
+criteria = "safe-to-deploy"
+delta = "3.3.0 -> 3.4.0"
+notes = """
+The only changes are:
+- Clippy lints
+- some functions are now const fn
+- MSRV was bumped from 1.65 to 1.83
+"""
+
+[[audits.defmt]]
+who = "ROMemories <152802150+ROMemories@users.noreply.github.com>"
+criteria = "safe-to-deploy"
+delta = "1.0.1 -> 1.1.0"
+notes = "New tests have been added, `Format` has been implemented on a few extra types, and the `xtensa-esp32s2-none-elf` target has been marked as not having atomic CAS instructions, apparently allowing to use the `alloc` feature on that target."
+
+[[audits.defmt-rtt]]
+who = "ROMemories <152802150+ROMemories@users.noreply.github.com>"
+criteria = "safe-to-deploy"
+delta = "1.1.0 -> 1.2.0"
+notes = "Many `usize` types have been changed to `u32` for increased portability, and an arithmetic bug has been fixed and a test added for it."
+
 [[audits.embassy-net-tuntap]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"

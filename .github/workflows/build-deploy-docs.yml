@@ -192,6 +192,7 @@ jobs:
           repository: ariel-os/docs
           ref: main
           path: ./_older-docs
+          persist-credentials: false
 
       - name: Move older docs
         if: github.event_name != 'pull_request'

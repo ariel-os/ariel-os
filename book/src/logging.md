@@ -69,9 +69,6 @@ The defmt logger supports configuring the log level per crate and per module, as
 $ laze build -C examples/log --builders nrf52840dk -DLOG=info,ariel_os_rt=trace run
 ```
 
-Note: On Cortex-M devices, the order of `ariel_os::log::println!()` output and
-      `defmt` log output is not deterministic.
-
 ### [log]
 
 Ariel OS's logger for `log` supports configuring the log level globally, but does not currently support per-crate filtering.

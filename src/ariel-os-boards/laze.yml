@@ -35,6 +35,7 @@ builders:
   provides:
   - has_buttons
   - has_leds
+  - has_usb_cdc_acm_port
 - name: dwm1001
   parent: nrf52832
   provides:
@@ -45,12 +46,16 @@ builders:
   provides:
   - has_buttons
   - has_leds
+  - has_usb_cdc_acm_port
 - name: espressif-esp32-c3-lcdkit
   parent: esp32-c3-mini-1
+  provides:
+  - has_usb_cdc_acm_port
 - name: espressif-esp32-c6-devkitc-1
   parent: esp32-c6-wroom-1
   provides:
   - has_buttons
+  - has_usb_cdc_acm_port
 - name: espressif-esp32-devkitc
   parent: esp-wroom-32
   provides:
@@ -64,11 +69,16 @@ builders:
   parent: esp32-s3-wroom-1
   provides:
   - has_buttons
+  - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:
   - has_buttons
+  - has_leds
+- name: makerdiary-nrf52840-mdk-usb-dongle
+  parent: nrf52840
+  provides:
   - has_leds
 - name: native
   parent: native-chip
@@ -163,6 +173,7 @@ builders:
   provides:
   - has_buttons
   - has_leds
+  - has_usb_cdc_acm_port
 - name: seeedstudio-xiao-nrf52840-plus
   parent: nrf52840
   provides:
@@ -312,8 +323,10 @@ builders:
   parent: esp32-s3-wroom-1
   provides:
   - has_buttons
+  - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: waveshare-esp32-s3-matrix
   parent: esp32s3fx4r2
   provides:
+  - has_usb_cdc_acm_port
   - has_usb_device_port

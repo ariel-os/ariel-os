@@ -6,6 +6,7 @@
 - [Arduino UNO Q](./arduino-uno-q.md)
 - [BBC micro:bit V1](./bbc-micro-bit-v1.md)
 - [BBC micro:bit V2](./bbc-micro-bit-v2.md)
+- [Makerdiary nRF52840 MDK USB Dongle](./makerdiary-nrf52840-mdk-usb-dongle.md)
 - [native](./native.md)
 - [Nordic Thingy:91 X](./nordic-thingy-91-x.md)
 - [nRF52-DK](./nrf52-dk.md)

@@ -17,6 +17,7 @@ apps:
       - st-nucleo-wb55 # No sensors currently supported, for build tests only
       - st-steval-mkboxpro
       - stm32u083c-dk
+      - unihiker-k10
     selects:
       - ?defmt-app
       - ?nrf91-modem-sensor

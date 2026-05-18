@@ -21,38 +21,13 @@ mod backend {
 
 #[cfg(feature = "rtt-target")]
 mod backend {
-    #[cfg(feature = "defmt")]
-    pub use defmt::println as debug_output_println;
-
-    #[cfg(not(feature = "defmt"))]
     pub use rtt_target::rprintln as debug_output_println;
 
     #[doc(hidden)]
     pub fn init() {
-        #[cfg(not(feature = "defmt"))]
-        {
-            use rtt_target::ChannelMode::NoBlockTrim;
+        use rtt_target::ChannelMode::NoBlockTrim;
 
-            rtt_target::rtt_init_print!(NoBlockTrim);
-        }
-
-        #[cfg(feature = "defmt")]
-        {
-            use rtt_target::ChannelMode::NoBlockSkip;
-            const DEFMT_BUFFER_SIZE: usize = 1024;
-            let channels = rtt_target::rtt_init! {
-                up: {
-                    0: {
-                        size: DEFMT_BUFFER_SIZE,
-                        mode: NoBlockSkip,
-                        // probe-run autodetects whether defmt is in use based on this channel name
-                        name: "defmt"
-                    }
-                }
-            };
-
-            rtt_target::set_defmt_channel(channels.up.0);
-        }
+        rtt_target::rtt_init_print!(NoBlockTrim);
     }
 }
 

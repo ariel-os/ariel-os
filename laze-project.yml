@@ -406,6 +406,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_usb_cdc_acm
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -423,6 +424,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_usb_cdc_acm
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -476,6 +478,7 @@ contexts:
       # TODO: re-enable as soon as upstream peripheral drivers become `Send`
       # in combination with multi-core.
       # - has_multi_core_support
+      - has_usb_cdc_acm
       - sw/benchmark
     env:
       RUSTC_TARGET: xtensa-esp32s3-none-elf
@@ -1434,12 +1437,38 @@ modules:
           - ariel-os/nrf91-modem
 
   - name: usb
+    disables:
+      # Currently the generic USB should take priority.
+      - usb-cdc-acm-esp
     selects:
       - hw/usb-device-port
     env:
       global:
         FEATURES:
           - ariel-os/usb
+
+  # Available on ESP32 boards with ESP32 having a non-generic USB CDC-ACM
+  # peripheral (they may *also* have a generic USB peripheral) and a USB port
+  # connected to it.
+  - name: usb-cdc-acm-esp
+    context:
+      - esp
+    selects:
+      - has_usb_cdc_acm
+      - has_usb_cdc_acm_port
+
+  # Provided by ESP32 MCUs with a non-generic USB CDC-ACM peripheral (they may
+  # *also* have a generic USB peripheral).
+  - name: has_usb_cdc_acm
+    selects:
+      - doc-only
+
+  # Provided by boards having a USB port connected to a USB peripheral
+  # supporting USB CDC-ACM while not being a generic USB peripheral.
+  # A board may *also* have `has_usb_device_port`.
+  - name: has_usb_cdc_acm_port
+    selects:
+      - doc-only
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
@@ -1865,14 +1894,9 @@ modules:
 
   - name: logging-over-usb
     help: use USB CDC-ACM as logging transport
-    # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral
-    # until introducing a `usb-cdc-acm-esp` module.
-    # Should be later extended to chips with a generic USB peripheral.
-    context:
-      - esp32s3
-      - esp32c3
-      - esp32c6
     selects:
+      # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral.
+      - usb-cdc-acm-esp
       - context::esp:
           - esp-println
     provides_unique:
