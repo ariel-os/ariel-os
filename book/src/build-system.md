@@ -22,15 +22,8 @@ For example, to run the hello-world example from the `ariel-os` directory, the c
 
 Tasks available in Ariel OS include:
 
-- `run`: Compiles, flashes, and runs an application. The [debug output](./debug-console.md) is printed in the terminal.
-- `flash`: Compiles and flashes an application, before rebooting the target.
-- `flash-dfuse`: Only available on DfuSe devices, i.e., STM32 devices.
-  Compiles and flashes an application via DfuSe, the non-standard ST protocol based on USB DFU, before rebooting the target.
-  Requires bootloader support for DfuSe in the microcontroller, and [dfu-util][dfu-util-homepage] on the host.
 - `debug`: Starts a GDB debug session for the selected application.
   The application needs to be flashed using the `flash` task beforehand.
-- `flash-erase-all`: Erases the entire flash memory, including user data. Unlocks it if locked.
-- `reset`: Reboots the target.
 - `tree`: Prints the application's `cargo tree`.
 - `editor-config`: update rust-analyzer configuration for supported code editors, see [Code Editor Configuration](./code-editor-configuration.md)
 - `fmt`: Formats the project's Rust source code following the [Coding Conventions](./coding-conventions.md) (formats all Rust files except generated ones).
@@ -140,7 +133,6 @@ apps:
       - rpi-pico-w
 ```
 
-[dfu-util-homepage]: https://dfu-util.sourceforge.net/
 [laze-imports-book]: https://kaspar030.github.io/laze/dev/reference/imports.html
 [laze-git-import-book]: https://kaspar030.github.io/laze/dev/reference/import/git.html
 [laze-path-import-book]: https://kaspar030.github.io/laze/dev/reference/import/path.html
