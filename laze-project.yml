@@ -1105,6 +1105,12 @@ modules:
     env:
       global:
         CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+    tasks:
+      attach:
+        help: attach `espflash` to a running target
+        build: false
+        cmd:
+          - espflash monitor ${ESPFLASH_LOG_FORMAT} --elf ${out} $@
 
   - name: probe-rs
     help: use probe-rs as runner

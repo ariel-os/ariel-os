@@ -107,6 +107,25 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 > - Other logging transports will later be supported, including UART and USB CDC-ACM on non-ESP32 devices.
 > - Using multiple transports at the same time may be supported in the future.
 
+## Fetching and Displaying the Logging Output on the Host
+
+When the [flashing][flashing-board-book] transport allows it, the `run` laze task not only flashes the board but also fetches and displays the logging output on the host.
+In addition, the `attach` laze task is available to fetch and display the logging output from an already-flashed, running target.
+
+The available laze tasks are summarized in the following table:
+
+| laze task | Supported          | Host tool              | [Logging transport](#logging-transports) |
+| --------- | ------------------ | ---------------------- | ---------------------------------------- |
+| `run`     | On all chips       | probe-rs               | [Debug channel][debug-channel-book]      |
+| `run`     | On ESP32 MCUs only | `espflash`             | USB CDC-ACM or UART                      |
+| `attach`  | On all chips       | probe-rs               | [Debug channel][debug-channel-book]      |
+| `attach`  | On ESP32 MCUs only | `espflash`             | USB CDC-ACM or UART                      |
+
+When multiple tasks of the same name exist, which variant is used depends on which host tool is enabled through its associated [laze module][laze-modules-book] (e.g., `probe-rs` or `espflash`).
+
+> [!TIP]
+> It is possible to [`flash` the board][flashing-board-book] using a host tool before switching to another one to fetch and display the logging output (e.g., in production).
+
 [defmt]: https://github.com/knurling-rs/defmt
 [defmt documentation]: https://defmt.ferrous-systems.com/
 [log]: https://github.com/rust-lang/log
@@ -117,3 +136,5 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 [defmt-print-cratesio]: https://crates.io/crates/defmt-print
 [debug-console-debug-console-book]: ./debug-console.md#debug-console
 [espflah-cratesio]: https://crates.io/crates/espflash
+[debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
+[flashing-board-book]: ./flashing-debugging.md#flashing-a-board
