@@ -124,6 +124,15 @@ note_snippets:
       It can also be used to obtain logs when the [`logging-over-uart`](../logging.md#logging-transports) laze module is enabled.
 
       Note: On the ESP32-C3, enabling `logging-over-uart` will [not prevent the logs from also being printed using the USB CDC-ACM USB peripheral](https://github.com/esp-rs/esp-hal/issues/4510).
+    - name: espressif-uart-log-configuration
+    content: |-
+      ##### UART logging
+
+      The UART logger is configured to use:
+      - 115200 baud,
+      - 8 data bits,
+      - 1 stop bit,
+      - no parity.
 
 # Encodes support status for each chip.
 chips:
@@ -1158,6 +1167,7 @@ builders:
     support:
     note_snippets:
       - espressif-devkit-two-usb-ports-no-usb-otg
+      - espressif-uart-log-configuration
 
   espressif-esp32-s2-devkitc-1:
     chip: esp32s2
