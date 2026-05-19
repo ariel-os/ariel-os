@@ -121,6 +121,9 @@ cfg_select! {
     feature = "ltem-nrf-modem" => {
         use crate::hal::ltem::NetworkDevice;
     }
+    feature = "user-net-driver-channel" => {
+        type NetworkDevice = embassy_net_driver_channel::Device<'static, 1500>;
+    }
     context = "ariel-os" => {
         compile_error!("no backend for net is active");
     }
@@ -356,6 +359,8 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     let device = crate::hal::tuntap::create();
     #[cfg(feature = "ltem-nrf-modem")]
     let (device, control) = hal::ltem::init(spawner).await;
+    #[cfg(feature = "user-net-driver-channel")]
+    let device = net::user_net_device(spawner);
 
     #[cfg(feature = "net")]
     {
@@ -379,6 +384,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             feature = "ethernet",
             feature = "tuntap",
             feature = "ltem-nrf-modem",
+            feature = "user-net-driver-channel",
         )))]
         // The creation of `device` is not organized in such a way that they could be put in a
         // cfg-if without larger refactoring; relying on unused variable lints to keep the
