@@ -118,8 +118,6 @@ The RTT-enabled host tool either knows the location of the control block in memo
 > [!TIP]
 > probe-rs automatically prints the RTT output when used in the firmware.
 
-<!-- TODO: document the to-be-introduced laze module that enables RTT: `debug-output-rtt` -->
-
 ## Additional Host-Related Functionality
 
 On top of providing a debug channel, [semihosting](#semihosting) also allows the implementation of other I/O and host-related functionality.
