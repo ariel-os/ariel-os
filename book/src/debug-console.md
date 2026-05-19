@@ -1,12 +1,12 @@
 # Debug Console
 
 <!-- NOTE: "Currently" because it could be extended with other semihosting functionality to make it an actual console. -->
-The debug console is currently conceptually composed of the debug channel output and of the ability for the target to close it (when supported).
+The debug console is currently conceptually composed of the [debug channel output][debug-channel-book] and of the ability for the target to close it (when supported).
 The debug console is enabled by default and the corresponding [laze module][laze-modules-book] is `debug-console`.
 
 ## Printing on the Debug Console
 
-When the `logging-over-debug-channel` [laze module][laze-modules-book] is enabled, [logs][logging-book] are printed on the debug channel output.
+When the `logging-over-debug-channel` [laze module][laze-modules-book] is enabled, [logs][logging-book] are printed on the [debug channel output][debug-channel-book].
 
 ## Closing the Debug Console from Firmware
 
@@ -26,6 +26,7 @@ This is needed to later be able to attach a semihosting-enabled host tool to the
 > [ERROR] panicked at 'Unhandled interrupt on ProCpu' (esp_hal src/interrupt/mod.rs:90)
 > ```
 
+[debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
 [laze-modules-book]: ./build-system.md#laze-modules
 [logging-book]: ./logging.md
 [debug-exit-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/fn.exit.html
