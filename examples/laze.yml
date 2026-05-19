@@ -24,6 +24,7 @@ subdirs:
   - power
   - random
   - sensors-debug
+  - sntp-router
   - storage
   - tcp-client
   - tcp-echo
