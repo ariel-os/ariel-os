@@ -10,7 +10,7 @@ When the `logging-over-debug-channel` [laze module][laze-modules-book] is enable
 
 ## Closing the Debug Console from Firmware
 
-When using semihosting, it is possible for the target to request the debug console to exit, and to return an exit code indicating success or failure.
+When using [semihosting][semihosting-book], it is possible for the target to request the debug console to exit, and to return an exit code indicating success or failure.
 In Ariel OS, the [`ariel_os::debug::exit()` function][debug-exit-fn-rustdoc] can be used for this.
 When using a host tool that supports semihosting, this will cause the tool to exit, with the exit code given to [`exit()`][debug-exit-fn-rustdoc] on the target being passed to the host.
 
@@ -29,4 +29,5 @@ This is needed to later be able to attach a semihosting-enabled host tool to the
 [debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
 [laze-modules-book]: ./build-system.md#laze-modules
 [logging-book]: ./logging.md
+[semihosting-book]: ./flashing-debugging.md#semihosting
 [debug-exit-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/fn.exit.html
