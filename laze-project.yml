@@ -2110,6 +2110,8 @@ modules:
     # option, and because nrf-modem too only does the selection in one way.
     context:
       - nrf9151
+    conflicts:
+      - ltem-nrf-modem
     env:
       global:
         FEATURES:
