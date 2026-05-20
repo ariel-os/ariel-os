@@ -1,0 +1,23 @@
+[package]
+name = "ariel-os-nrf-time"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+embassy-nrf = { workspace = true, default-features = false, features = [] }
+
+[target.'cfg(context = "nrf54lm20-app")'.dependencies]
+embassy-nrf = { workspace = true, default-features = false, features = [
+  "time-driver-grtc",
+] }
+
+[target.'cfg(not(context = "nrf54lm20-app"))'.dependencies]
+embassy-nrf = { workspace = true, default-features = false, features = [
+  "time-driver-rtc1",
+] }
+
+[lints]
+workspace = true

@@ -16,6 +16,7 @@ members = [
   "src/ariel-os-log",
   "src/ariel-os-macros",
   "src/ariel-os-nrf",
+  "src/ariel-os-nrf-time",
   "src/ariel-os-power",
   "src/ariel-os-random",
   "src/ariel-os-rp",
@@ -85,6 +86,9 @@ embassy-hal-internal = { version = "0.5.0", default-features = false }
 embassy-net = { version = "0.9.1", default-features = false }
 embassy-net-driver-channel = { version = "0.4.0", default-features = false }
 embassy-nrf = { version = "0.10.0", default-features = false }
+# Need an alias of embassy-nrf to select timer-driver-X based on cfg value.
+# See `src/ariel-os-nrf/Cargo.toml`.
+embassy-nrf-timer = { version = "0.10.0", package = "embassy-nrf", default-features = false }
 embassy-rp = { version = "0.10.0", default-features = false }
 embassy-stm32 = { version = "0.6.0", default-features = false }
 embassy-sync = { version = "0.8.0", default-features = false }
@@ -137,6 +141,7 @@ ariel-os-identity = { path = "src/ariel-os-identity" }
 ariel-os-log = { path = "src/ariel-os-log", default-features = false }
 ariel-os-macros = { path = "src/ariel-os-macros" }
 ariel-os-nrf = { path = "src/ariel-os-nrf" }
+ariel-os-nrf-time = { path = "src/ariel-os-nrf-time" }
 ariel-os-power = { path = "src/ariel-os-power" }
 ariel-os-random = { path = "src/ariel-os-random" }
 ariel-os-rp = { path = "src/ariel-os-rp" }

@@ -9,6 +9,7 @@ license.workspace = true
 [dependencies]
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
+ariel-os-nrf-time = { workspace = true, optional = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true, features = ["memory-x"] }
 cortex-m = { workspace = true, optional = true }
@@ -60,6 +61,14 @@ embassy-nrf = { workspace = true, features = ["nrf5340-app-s"] }
 embassy-nrf = { workspace = true, features = ["nrf5340-net"] }
 nrf-sdc = { workspace = true, features = ["nrf5340-net"], optional = true }
 
+[target.'cfg(context = "nrf54lm20-app")'.dependencies]
+embassy-nrf = { workspace = true, features = ["nrf54lm20-app-s"] }
+
+# TODO
+# [target.'cfg(context = "nrf5340-net")'.dependencies]
+# embassy-nrf = { workspace = true, features = ["nrf5340-net"] }
+# nrf-sdc = { workspace = true, features = ["nrf5340-net"], optional = true }
+
 [target.'cfg(context = "nrf9151")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9151-s"] }
 nrf-modem = { workspace = true, features = ["nrf9151"], optional = true }
@@ -85,7 +94,7 @@ i2c = ["ariel-os-embassy-common/i2c", "time"]
 spi = ["ariel-os-embassy-common/spi"]
 
 ## Enables a time driver, and functionality requiring `embassy-time`.
-time = ["embassy-nrf/time", "embassy-nrf/time-driver-rtc1"]
+time = ["embassy-nrf/time", "dep:ariel-os-nrf-time"]
 
 ## Enables UART support.
 uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
