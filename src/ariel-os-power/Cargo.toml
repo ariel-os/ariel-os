@@ -14,5 +14,8 @@ cortex-m = { workspace = true }
 [target.'cfg(context = "esp")'.dependencies]
 esp-hal = { workspace = true }
 
+[target.'cfg(context = "riscv")'.dependencies]
+riscv = { workspace = true }
+
 [lints]
 workspace = true

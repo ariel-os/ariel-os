@@ -461,6 +461,7 @@ version = "0.4.0"
 dependencies = [
  "cortex-m",
  "esp-hal",
+ "riscv",
 ]
 
 [[package]]
@@ -508,6 +509,7 @@ dependencies = [
  "ariel-os-debug",
  "ariel-os-log",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-threads",
  "ariel-os-utils",
  "cortex-m",
