@@ -46,6 +46,8 @@ fn flash_range_from_linker() -> Range<u32> {
     const OFFSET: usize = 0x1000_0000;
     #[cfg(context = "stm32")]
     const OFFSET: usize = 0x0800_0000;
+    #[cfg(context = "esp")]
+    const OFFSET: usize = 0;
     // Default for platform-independent tooling.
     #[cfg(not(context = "ariel-os"))]
     const OFFSET: usize = 0x0;

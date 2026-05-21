@@ -58,6 +58,10 @@ pub mod usb;
 #[doc(hidden)]
 pub mod wifi;
 
+#[cfg(feature = "storage")]
+#[doc(hidden)]
+pub mod storage;
+
 #[doc(hidden)]
 pub mod peripheral {}
 

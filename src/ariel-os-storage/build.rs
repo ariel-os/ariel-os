@@ -7,6 +7,53 @@ fn main() {
     // Important: only homogeneous flash organizations are currently supported.
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
     // could be pushed out of it by a large enough binary.
+
+    let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+
+    if is_in_current_contexts(&["esp"]) {
+        let offset = env::var("ESP_STORAGE_OFFSET");
+        let storage_size = env::var("ESP_STORAGE_SIZE");
+
+        let (offset, size) = match (offset, storage_size) {
+            (Ok(offset), Ok(storage_size)) => (offset, storage_size),
+            (Err(_), Err(_)) => panic!(
+                "ESP storage support was selected, but ESP_STORAGE_OFFSET and\
+                ESP_STORAGE_SIZE are not set. Is the ESP storage partition\
+                module missing from laze?"
+            ),
+            _ => panic!(
+                "ESP storage support was selected, but one of ESP_STORAGE_OFFSET or ESP_STORAGE_SIZE is not set."
+            ),
+        };
+
+        let storage_offset =
+            u32::from_str_radix(offset.trim_start_matches("0x").trim_start_matches("0X"), 16)
+                .expect("Invalid ESP_STORAGE_OFFSET env var");
+
+        let storage_size =
+            u32::from_str_radix(size.trim_start_matches("0x").trim_start_matches("0X"), 16)
+                .expect("Invalid ESP_STORAGE_SIZE env var");
+
+        let storage_end = storage_offset
+            .checked_add(storage_size)
+            .expect("ESP storage range overflows u32");
+
+        let storage_x = format!(
+            "\
+            PROVIDE(__storage_start = 0x{storage_offset:08x});
+            PROVIDE(__storage_end   = 0x{storage_end:08x});
+            "
+        );
+
+        std::fs::write(out.join("storage.x"), storage_x).unwrap();
+
+        println!("cargo:rerun-if-env-changed=CARGO_CFG_CONTEXT");
+        println!("cargo:rerun-if-env-changed=ESP_STORAGE_OFFSET");
+        println!("cargo:rerun-if-env-changed=ESP_STORAGE_SIZE");
+        println!("cargo:rustc-link-search={}", out.display());
+        return;
+    }
+
     let (storage_size_total, flash_page_size) = if is_in_current_contexts(&[
         "stm32f303cb",
         "stm32f303re",
@@ -32,9 +79,6 @@ fn main() {
 
     // `sequential-storage` needs at least two flash pages.
     assert!(storage_size_total / flash_page_size >= 2);
-
-    // Put the linker script somewhere the linker can find it
-    let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
     let mut storage_template = std::fs::read_to_string("storage.ld.in").unwrap();
     storage_template = storage_template.replace("${ALIGNMENT}", &format!("{flash_page_size}"));
