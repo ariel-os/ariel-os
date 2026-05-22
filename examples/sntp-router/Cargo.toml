@@ -11,4 +11,3 @@ ariel-os-sntp = { path = "../../src/ariel-os-sntp" }
 
 [lints]
 workspace = true
-
