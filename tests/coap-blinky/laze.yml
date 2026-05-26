@@ -3,4 +3,5 @@ apps:
     selects:
       - has_leds
       - coap-server
-      - ?coap-server-config-demokeys
+      - ?coap-server-config-storage
+      - ?coap-server-config-runtime-identity

@@ -2,4 +2,5 @@ apps:
   - name: example-coap-server
     selects:
       - coap-server
-      - ?coap-server-config-demokeys
+      - ?coap-server-config-storage
+      - ?coap-server-config-runtime-identity
