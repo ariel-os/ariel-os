@@ -12,7 +12,10 @@
 #[cfg(feature = "coap-transport-udp")]
 mod udp_nal;
 
-#[cfg(feature = "coap-server-config-storage")]
+#[cfg(any(
+    feature = "coap-server-config-storage",
+    feature = "coap-server-config-runtime-identity"
+))]
 mod stored;
 
 #[cfg(feature = "coap-transport-udp")]
@@ -120,7 +123,7 @@ pub async fn coap_run(handler: impl coap_handler::Handler + coap_handler::Report
 /// This can only be run once, as it sets up a system wide CoAP handler.
 async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Reporting) -> ! {
     cfg_select! {
-        feature = "coap-server-config-storage" => {
+        any(feature = "coap-server-config-storage", feature = "coap-server-config-runtime-identity") => {
             let security_config = stored::server_security_config().await;
         }
         feature = "coap-server-config-demokeys" => {
@@ -146,6 +149,7 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
     let handler = handler.with_wkc();
     #[cfg(any(
         feature = "coap-server-config-storage",
+        feature = "coap-server-config-runtime-identity",
         feature = "coap-server-config-demokeys"
     ))]
     let handler = coapcore::OscoreEdhocHandler::new(
