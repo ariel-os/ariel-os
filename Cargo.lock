@@ -229,7 +229,6 @@ dependencies = [
  "embedded-nal-async 0.8.0",
  "embedded-nal-coap",
  "heapless 0.9.1",
- "hexlit",
  "lakers",
  "lakers-crypto-rustcrypto",
  "minicbor",
@@ -3795,12 +3794,6 @@ name = "hexfloat2"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "befe65164a090041cdf6e0d21a0ec3198d856fbfe2b76e324a073e790bb49f8c"
-
-[[package]]
-name = "hexlit"
-version = "0.5.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b6e75c860d4216ac53f9ac88b25c99eaedba075b3a7b2ed31f2adc51a74fffd"
 
 [[package]]
 name = "hkdf"

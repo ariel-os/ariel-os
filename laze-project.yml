@@ -1624,20 +1624,6 @@ modules:
         FEATURES:
           - ariel-os/coap-server-config-unprotected
 
-  - name: coap-server-config-demokeys
-    help:
-      Configure the CoAP server as expected by simple examples that expect a fixed server key.
-
-      This configuration may change over time, in lockstep with the examples' setup.
-    selects:
-      - coap
-      - random
-    provides_unique: [coap-server-config]
-    env:
-      global:
-        FEATURES:
-          - ariel-os/coap-server-config-demokeys
-
   - name: coap-client
     help: Support for CoAP client functionality.
     selects:

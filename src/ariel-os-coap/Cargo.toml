@@ -38,9 +38,6 @@ cbor-macro = "0.1.0"
 cboritem = "0.1.2"
 heapless = { workspace = true, features = ["serde"] }
 
-# FIXME: Should go out eventually
-hexlit = "0.5.5"
-
 # For the udp_nal
 embedded-io-async = { workspace = true }
 
@@ -66,7 +63,6 @@ coap-server = []
 
 coap-server-config-storage = ["dep:ariel-os-random", "dep:ariel-os-storage"]
 coap-server-config-unprotected = []
-coap-server-config-demokeys = ["dep:ariel-os-random"]
 coap-server-config-runtime-identity = ["dep:ariel-os-random"]
 
 coap-transport-udp = [
