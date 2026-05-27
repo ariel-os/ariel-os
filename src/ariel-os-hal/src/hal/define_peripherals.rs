@@ -45,7 +45,15 @@ macro_rules! define_peripherals {
                 $peripherals {
                     $(
                         $(#[$inner])*
-                        $peripheral_name: self.$peripheral_field.take().unwrap()
+                        $peripheral_name: match self.$peripheral_field.take() {
+                            Some(x) => x,
+                            None => panic!(
+                                "Peripheral {} ({}::{}) already taken",
+                                stringify!($peripheral_field),
+                                stringify!($peripherals),
+                                stringify!($peripheral_name),
+                            ),
+                        }
                     ),*
                 }
             }
@@ -87,7 +95,15 @@ macro_rules! define_peripherals {
                 $peripherals {
                     $(
                         $(#[$inner])*
-                        $peripheral_name: self.$peripheral_field.take().unwrap()
+                        $peripheral_name: match self.$peripheral_field.take() {
+                            Some(x) => x,
+                            None => panic!(
+                                "Peripheral {} ({}::{}) already taken",
+                                stringify!($peripheral_field),
+                                stringify!($peripherals),
+                                stringify!($peripheral_name),
+                            ),
+                        }
                     ),*
                 }
             }
