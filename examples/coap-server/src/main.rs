@@ -7,7 +7,11 @@ async fn coap_run() {
 
     let handler = new_dispatcher()
         // We offer a single resource: /hello, which responds just with a text string.
-        .at(&["hello"], SimpleRendered("Hello from Ariel OS"));
+        .at(&["hello"], SimpleRendered("Hello from Ariel OS"))
+        .at(
+            &["admin"],
+            SimpleRendered("Congratulations, you are authorized."),
+        );
 
     ariel_os::coap::coap_run(handler).await;
 }

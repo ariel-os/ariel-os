@@ -1,0 +1,20 @@
+{
+  "coap://*": {
+    "edhoc-oscore": {
+      "suite": 2,
+      "method": 3,
+
+      "own_cred": {14:{8:{1:{1:2,2:h'10',-1:1,-2:h'08d2b043a68a79f595327ecb6aa1dd73c102cb8108bc5bceae9aa24da7ad74ef',-3:h'0874fbe3bf19b57ea520232d26f78fdbb080b854661f672759fd9c01d12c476e'}}}},
+      "own_cred_style": "by-key-id",
+
+      / With anything but the example's keys, this would be an entry pointing /
+      / to a file with user-only permissions, like:                           /
+      /                                                                       /
+      / "private_key_file": "my-identity.key",                                /
+      "private_key": {1:2,-1:1,-4:h'dfeb4d96d1f830757480ae5128f73cf42f5977330ecb9502e4d4eb6d7858d44c'},
+
+      / See regular-client.diag to authenticate the server.                   /
+      "peer_cred": {"unauthenticated": true},
+    }
+  },
+}

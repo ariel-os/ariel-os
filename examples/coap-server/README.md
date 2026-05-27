@@ -4,12 +4,8 @@
 
 This application starts a minimal CoAP server.
 
-The server offers a single resource, `/hello`, which returns a friendly message.
-
-The default policy allows access to the resource,
-but clients can cryptographically verify that they are talking to the right server using its public key.
-Both the policy and the key are currently hard-coded;
-making the former configurable and the latter dynamic is work in progress.
+The server offers a single resource, `/hello`, which returns a friendly message,
+as well as a message accessible only to authorized users.
 
 ## Running
 
@@ -18,11 +14,12 @@ making the former configurable and the latter dynamic is work in progress.
 * Run `aiocoap-client`
   to list the resources of the device:
 
-  ```sh
+  ```console
   $ pipx install 'aiocoap[oscore,prettyprint]'
-  $ aiocoap-client coap://10.42.0.61/.well-known/core --credentials client.diag
+  $ aiocoap-client coap://10.42.0.61/.well-known/core --credentials regular-client.diag
   # application/link-format content was re-formatted
   </hello>
+  </admin>
   ```
 
   If you prefer not to install the CoAP client, you can
@@ -30,15 +27,51 @@ making the former configurable and the latter dynamic is work in progress.
 
   The output tells you there is a `/hello` resource, so read that next:
 
-  ```sh
-  $ aiocoap-client coap://10.42.0.61/hello --credentials client.diag
+  ```console
+  $ aiocoap-client coap://10.42.0.61/hello --credentials regular-client.diag
   Hello from Ariel OS
   ```
 
-  The argument `--credentials client.diag` tells the client to establish a secure connection;
-  that file describes the server's public key, and that the client can use a random key.
-  Without the argument, the requests come through just as well,
-  but the client has no assurance on the server's identity.
+* Explore different authorization levels:
+
+  The argument `--credentials {filename}` and that file's content tell the client to establish a secure connection.
+  The resource `/admin` is not accessible to anyone:
+
+  ```console
+  $ aiocoap-client coap://10.42.0.61/admin --credentials regular-client.diag
+  4.01 Unauthorized
+  ```
+
+  but there is a configuration with a built-in key available that can get in:
+
+  ```console
+  $ aiocoap-client coap://10.42.0.61/admin --credentials admin-client.diag
+  Congratulations, you are authorized.
+  ```
+
+* Making sure you connect to the intended device:
+
+  To make the example usable out of the box, both securityc onfigurations are set up to not authenticate the server --
+  anyone could impersonate your device.
+  Watch the debug output of your device for a line like this:
+
+  ```
+   [INFO ] CoAP server identity: {8:{1:{1:2, 2:h'', -1:1, -2:h'b9943adbc95be73fd6db7b700a2f9b20b311ed0691317cb418da61e14e03db07'}}}
+  ```
+
+  Inside `regular-client.diag` you can now replace the `"peer_cred": {"unauthenticated: true}` line
+  (which tells your computer to not care whom it is talking to)
+  with values copied from the debug output:
+
+  ```
+      "peer_cred": {14:{8:{1:{1:2, 2:h'', -1:1, -2:h'b9943adbc95be73fd6db7b700a2f9b20b311ed0691317cb418da61e14e03db07'}}}}
+  ```
+
+  Beware that depending on your device's capabilites,
+  that key might change:
+  If the device has support for [persistent storage](https://ariel-os.github.io/ariel-os/dev/docs/book/storage.html),
+  it will stay constant across reboots,
+  whereas devices without storage fall back to a mode where the device's identity key changes on every startup.
 
 ## Further references
 

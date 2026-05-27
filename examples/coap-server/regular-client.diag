@@ -1,0 +1,16 @@
+{
+  "coap://*": {
+    "edhoc-oscore": {
+      "suite": 2,
+      "method": 3,
+      "own_cred": {"unauthenticated": true},
+
+      / Once you have a concrete device to talk to, watch for a line like     /
+      /     [INFO ] CoAP server identity: {8:{1:{1:…}}}                       /
+      / and replace the next line with:                                       /
+      /                                                                       /
+      / "peer_cred": {14:{8:{1:{1:…}}},                                       /
+      "peer_cred": {"unauthenticated": true},
+    }
+  },
+}
