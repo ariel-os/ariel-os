@@ -1,4 +1,4 @@
-use ariel_os::hal::{i2c, peripherals};
+use ariel_os::hal::i2c;
 
 #[cfg(any(context = "nrf52833", context = "nrf52840"))]
 pub type SensorI2c = i2c::controller::TWISPI0;
