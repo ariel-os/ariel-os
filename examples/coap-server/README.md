@@ -117,7 +117,7 @@ or by trying to use it with a different device.
 ### Using your own key
 
 This test's setup ships a hard-coded key.
-That is dangerous: Everyone who finds the top secret Ariel OS repository!!!
+That is dangerous: Everyone who finds the top secret Ariel OS repository can use your device!!!
 
 Better generate your own key:
 
