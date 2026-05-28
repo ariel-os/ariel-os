@@ -189,6 +189,7 @@ timer-generic-queue-64 = ["embassy-time?/generic-queue-64"]
 timer-generic-queue-128 = ["embassy-time?/generic-queue-128"]
 
 network-config-ipv4-static = []
+network-config-ipv6-slaac = ["embassy-net/slaac"]
 network-config-ipv6-static = []
 network-config-override = []
 override-usb-config = []
