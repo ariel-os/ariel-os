@@ -106,6 +106,13 @@ that key might change over time:
 If the device has support for [persistent storage](https://ariel-os.github.io/ariel-os/dev/docs/book/storage.html),
 it will stay constant across reboots,
 whereas devices without storage fall back to a mode where the device's identity key changes on every startup.
+You can find out whether storage is supported by running `laze build -b THE_BOARD_YOU_USE info-modules` --
+if that contains `coap-server-config-storage`, the key will persist across reboots.
+
+In subsequent CoAP exchanges,
+the client can verify that it is talking to the right server.
+You can simulate failure by changing details of the credential (e.g. replacing `h''` with `h'1234'`),
+or by trying to use it with a different device.
 
 ### Using your own key
 
