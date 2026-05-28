@@ -41,7 +41,7 @@ The handler needs to concern itself with security aspects of the request content
 but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
 
 [provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
-[its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
+[its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/532b0afbd24b5884b729baf87c381d4ba2aed857/examples/coap-server/src/main.rs#L5
 
 
 ## Usage: Client side
