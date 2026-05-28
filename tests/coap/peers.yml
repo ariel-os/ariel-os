@@ -17,6 +17,6 @@
     #
     # It is expressed in CBOR diagnostic notation (which at the YAML level is
     # just a string), and compatible with aiocoap's credentials.
-    {2: "42-50-31-FF-EF-37-32-39", 8: {1: {1: 2, 2: h'2b', -1: 1, -2: h'ac75e9ece3e50bfc8ed60399889522405c47bf16df96660a41298cb4307f7eb6', -3: h'6e5de611388a4b8a8211334ac7d37ecb52a387d257e6db3c2a93df21ff3affc8'}}}
+    {8:{1:{1:2,2:h'fe',-1:1,-2:h'c141dfcf6de525af8b8b45354de4d28fb7d7ccd8ef5997cf5c793143672cd544',-3:h'a2f479cc8ffd0ee43823577cb72a514c025a15c54a899ad53c460fefe22e5fcb'}}}
   # This simple alternative to per-resource permission allows all requests.
   scope: allow-all
