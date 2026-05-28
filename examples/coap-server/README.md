@@ -134,6 +134,16 @@ as the key file has stricter access permissions set up).
 
   Now it is only you who can use its protected resources.
 
+## Security expectations
+
+Ariel OS has not received external security review,
+and neither have several cryptographic components that it uses:
+The 'isprovided "as is"' disclaimers of the licenses apply.
+
+That being said,
+after following the ['Using your own key'](#using-your-own-key) and ['Making sure you connect to the intended device'](#making-sure-you-connect-to-the-intended-device) sections,
+this example protects your application-level communication with all that Ariel OS can offer on your platform.
+
 ## Further references
 
 There is a [chapter in the book](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html)
