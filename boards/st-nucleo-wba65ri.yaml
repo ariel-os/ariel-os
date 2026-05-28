@@ -7,31 +7,31 @@ targets:
     ariel:
       swi: USART1
     leds:
-      led0:
-        pin: PD8
+      # led0
+      - pin: PD8
         aliases:
           - LD1
         color: blue
-      led1:
-        pin: PC4
+      # led1
+      - pin: PC4
         aliases:
           - LD2
         color: green
-      led2:
-        pin: PB8
+      # led2
+      - pin: PB8
         aliases:
           - LD3
         color: red
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
         aliases:
           - B1
-      button1:
-        pin: PC5
+      # button1
+      - pin: PC5
         aliases:
           - B2
-      button2:
-        pin: PB4
+      # button2
+      - pin: PB4
         aliases:
           - B3

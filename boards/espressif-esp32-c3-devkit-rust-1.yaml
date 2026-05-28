@@ -5,9 +5,9 @@ targets:
     flags:
       - has_usb_cdc_acm_port
     buttons:
-      button0:
-        pin: GPIO9
+      # button0
+      - pin: GPIO9
         active: low
     leds:
-      led0:
-        pin: GPIO7
+      # led0
+      - pin: GPIO7

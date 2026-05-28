@@ -4,23 +4,22 @@ targets:
     # website: https://wiki.makerdiary.com/nrf52840-mdk-usb-dongle/
     chip: nrf52840
     leds:
-      led0:
-        # note: this is the RGB LED red channel
+      # led0
+      - # note: this is the RGB LED red channel
         color: red
         pin: P0_23
         active: low
-      led1:
-        # note: this is the RGB LED green channel
+      # led1
+      - # note: this is the RGB LED green channel
         color: green
         pin: P0_22
         active: low
-      led2:
-        # note: this is the RGB LED blue channel
+      # led2
+      - # note: this is the RGB LED blue channel
         color: blue
         pin: P0_24
         active: low
-    buttons:
-      # button0:
-      #   # note: this is configurable via UICR
-      #   pin: P0_18
-      #   active: low
+    # buttons:
+    #   - # note: this is configurable via UICR
+    #     pin: P0_18
+    #     active: low

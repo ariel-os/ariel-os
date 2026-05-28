@@ -5,6 +5,6 @@ targets:
     flags:
       - has_usb_device_port
     leds:
-      led0:
-        pin: PIN_25
+      # led0
+      - pin: PIN_25
         color: green

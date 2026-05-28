@@ -5,5 +5,5 @@ targets:
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PA5
+      # led0
+      - pin: PA5

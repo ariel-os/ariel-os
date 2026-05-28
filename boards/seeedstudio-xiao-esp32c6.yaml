@@ -5,16 +5,16 @@ targets:
     flags:
       - has_usb_cdc_acm_port
     leds:
-      led0:
-        pin: GPIO15
+      # led0
+      - pin: GPIO15
         color: yellow
         active: low
         aliases:
           - D4
           - USER_LED
     buttons:
-      button0:
-        pin: GPIO9
+      # button0
+      - pin: GPIO9
         active: low
         aliases:
           - BOOT

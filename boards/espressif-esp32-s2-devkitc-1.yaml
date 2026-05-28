@@ -5,6 +5,6 @@ targets:
     flags:
       - has_usb_device_port
     buttons:
-      button0:
-        pin: GPIO0
+      # button0
+      - pin: GPIO0
         active: low

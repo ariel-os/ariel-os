@@ -3,8 +3,8 @@ targets:
   nrf9160dk-nrf9160:
     chip: nrf9160
     leds:
-      led0:
-        pin: P0_02
+      # led0
+      - pin: P0_02
     buttons:
-      button0:
-        pin: P0_06
+      # button0
+      - pin: P0_06
