@@ -48,6 +48,9 @@ beyond what is in the [CoAP server example](../../examples/coap-server).
       You can simulate failure by changing details of the credential (e.g. replacing `h''` with `h'1234'`),
       or by trying to use it with a different device.
 
+See also the [main CoAP server example's "beyond the basics" section](../../examples/coap/README.md#exploration-beyond-the-basics):
+most of the content there applies here just as well.
+
 ## Roadmap
 
 Eventually, all of this should be covered by 20-line examples.
