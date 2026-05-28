@@ -1,0 +1,12 @@
+{
+  "coap://*": {
+    "edhoc-oscore": {
+      "suite": 2,
+      "method": 3,
+      "own_cred_style": "by-key-id",
+      "own_cred": {14:{8:{1:{1:2,2:h'01011010',-1:1,-2:h'5871de361fb60d902c5851e8db22eb3b06efef8c8b23ffc666f25e62dbadeaf2',-3:h'118cddf7a311daff81e77c45dad6ffd386cd2d01fcfa3c8a738aa79dbabd9c7f'}}}},
+      "private_key": {1:2,-1:1,-4:h'7531f1e1cdf0401aecd7c2a2a6c5617bdd902e8d2f415d40defcbd5f0ed4fe35'},
+      "peer_cred": {"unauthenticated": true},
+    }
+  },
+}

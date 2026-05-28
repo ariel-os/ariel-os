@@ -1,24 +1,10 @@
 - from: unauthenticated
   scope:
     /.well-known/core: GET
-    /poem: GET
-    /hello: GET
-    /led: [GET, POST, PUT]
+    /led: GET
 
 - kccs: |
-    {
-        2:"42-50-31-FF-EF-37-32-39",
-        8:{
-            1:{
-                1:2,
-                2:h'2b',
-                -1:1,
-                -2:h'ac75e9ece3e50bfc8ed60399889522405c47bf16df96660a41298cb4307f7eb6',
-                -3:h'6e5de611388a4b8a8211334ac7d37ecb52a387d257e6db3c2a93df21ff3affc8'
-            }
-        }
-    }
+    {8:{1:{1:2,2:h'01011010',-1:1,-2:h'5871de361fb60d902c5851e8db22eb3b06efef8c8b23ffc666f25e62dbadeaf2',-3:h'118cddf7a311daff81e77c45dad6ffd386cd2d01fcfa3c8a738aa79dbabd9c7f'}}}
   scope:
     /.well-known/core: GET
-    /stdout: [GET, FETCH]
-    /poem: GET
+    /led: [GET, POST, PUT]
