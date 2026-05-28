@@ -1,4 +1,4 @@
-# coap server demo
+# CoAP Server demo
 
 ## About
 
@@ -9,23 +9,24 @@ as well as a message accessible only to authorized users.
 
 ## Running
 
-* Run on any board with networking, eg. `laze build -b particle-xenon run`.
+* Run on any board with networking, eg. `laze build -b st-nucleo-wb55 run`.
 * [Set up networking](../README.md#networking).
 * Run `aiocoap-client`
-  to list the resources of the device:
+  to list the resources of the device,
+  which are both defined in the [application's `main()` function](src/main.rs).
 
   ```console
   $ pipx install 'aiocoap[oscore,prettyprint]'
   $ aiocoap-client coap://10.42.0.61/.well-known/core --credentials regular-client.diag
   # application/link-format content was re-formatted
-  </hello>
+  </hello>,
   </admin>
   ```
 
-  If you prefer not to install the CoAP client, you can
-  replace any call to `aiocoap-client` with `pipx run --spec 'aiocoap[oscore,prettyprint]' aiocoap-client` instead.
+  > If you prefer not to install the CoAP client, you can
+  > replace any call to `aiocoap-client` with `pipx run --spec 'aiocoap[oscore,prettyprint]' aiocoap-client` instead.
 
-  The output tells you there is a `/hello` resource, so read that next:
+  The output tells you about the `/hello` resource, so read that next:
 
   ```console
   $ aiocoap-client coap://10.42.0.61/hello --credentials regular-client.diag
@@ -35,14 +36,14 @@ as well as a message accessible only to authorized users.
 * Explore different authorization levels:
 
   The argument `--credentials {filename}` and that file's content tell the client to establish a secure connection.
-  The resource `/admin` is not accessible to anyone:
+  The resource `/admin` is not accessible to everyone:
 
   ```console
   $ aiocoap-client coap://10.42.0.61/admin --credentials regular-client.diag
   4.01 Unauthorized
   ```
 
-  but there is a configuration with a built-in key available that can get in:
+  but this example provides a configuration file with a key, so that can get in:
 
   ```console
   $ aiocoap-client coap://10.42.0.61/admin --credentials admin-client.diag
@@ -51,9 +52,11 @@ as well as a message accessible only to authorized users.
 
 * Making sure you connect to the intended device:
 
-  To make the example usable out of the box, both securityc onfigurations are set up to not authenticate the server --
+  To make the example usable out of the box, both security configurations are set up to not authenticate the server --
   anyone could impersonate your device.
-  Watch the debug output of your device for a line like this:
+
+  In most real applications, you will want to also authenticate the server.
+  To do this, watch the debug output of your device for a line like:
 
   ```
    [INFO ] CoAP server identity: {8:{1:{1:2, 2:h'', -1:1, -2:h'b9943adbc95be73fd6db7b700a2f9b20b311ed0691317cb418da61e14e03db07'}}}
@@ -68,7 +71,7 @@ as well as a message accessible only to authorized users.
   ```
 
   Beware that depending on your device's capabilites,
-  that key might change:
+  that key might change over time:
   If the device has support for [persistent storage](https://ariel-os.github.io/ariel-os/dev/docs/book/storage.html),
   it will stay constant across reboots,
   whereas devices without storage fall back to a mode where the device's identity key changes on every startup.
