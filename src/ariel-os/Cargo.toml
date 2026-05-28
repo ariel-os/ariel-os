@@ -96,7 +96,9 @@ coap-server = ["ariel-os-coap/coap-server", "coap"]
 # modules, because while those here work without any extra help from laze, most
 # later ones will likely need some build system help.
 coap-server-config-storage = ["ariel-os-coap/coap-server-config-storage"]
-coap-server-config-demokeys = ["ariel-os-coap/coap-server-config-demokeys"]
+coap-server-config-runtime-identity = [
+  "ariel-os-coap/coap-server-config-runtime-identity",
+]
 coap-server-config-unprotected = [
   "ariel-os-coap/coap-server-config-unprotected",
 ]

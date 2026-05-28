@@ -69,7 +69,9 @@ enum KnownSource {
 }
 
 fn main() {
-    if !build_rs::input::cargo_feature("coap-server-config-storage") {
+    if !build_rs::input::cargo_feature("coap-server-config-storage")
+        && !build_rs::input::cargo_feature("coap-server-config-runtime-identity")
+    {
         return;
     }
 

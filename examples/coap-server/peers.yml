@@ -1,0 +1,9 @@
+- from: unauthenticated
+  scope:
+    /.well-known/core: GET
+    /hello: GET
+
+- kccs: |
+    # This is the credential stored in `admin-client.diag`.
+    {8:{1:{1:2,2:h'10',-1:1,-2:h'08d2b043a68a79f595327ecb6aa1dd73c102cb8108bc5bceae9aa24da7ad74ef',-3:h'0874fbe3bf19b57ea520232d26f78fdbb080b854661f672759fd9c01d12c476e'}}}
+  scope: allow-all

@@ -41,7 +41,7 @@ The handler needs to concern itself with security aspects of the request content
 but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
 
 [provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
-[its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
+[its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/532b0afbd24b5884b729baf87c381d4ba2aed857/examples/coap-server/src/main.rs#L5
 
 
 ## Usage: Client side
@@ -104,11 +104,16 @@ Examples of described policy entries are:
 * Any (even unauthenticated) device may GET `/hello/`.
 
 In Ariel OS, the policies are selected through [laze modules][laze-modules-book]:
-* `coap-server-config-demokeys` selects a set of hard-coded identities and policies usable for examples.
 * `coap-server-config-unprotected` allows access from any client without any authentication or integrity protection.
 * `coap-server-config-storage` reads configuration of the application, currently in a `peers.yml` file ([example](https://github.com/ariel-os/ariel-os/blob/main/tests/coap/peers.yml)).
   CoAP clients described in there are assigned permissions as described there; the file format is currently only documented in the example file, and still in flux.
   The device generates an EDHOC key at first startup, [stores it locally](../storage.md), and reports its public credential at startup.
+* `coap-server-config-runtime-identity` is a weaker version thereof that does not use persistent storage for the device's EDHOC key.
+  Whenever the device reboots, it creates a new key.
+
+  This is mainly used for demos and experimentation on devices where storage is not yet implemented.
+  In practice, demos that use this often do not authenticate the server at all:
+  Anyone on the network could intercept the traffic and pretend to be the server.
 
 The list of supported policies is being extended.
 

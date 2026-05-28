@@ -1,4 +1,4 @@
-//! Credential and key configuration backed by ariel-os storage
+//! Credential and key configuration backed by ariel-os storage or RAM
 
 use ariel_os_log::{Cbor, debug, info};
 use cbor_macro::cbo;
@@ -94,22 +94,32 @@ fn generate_credpair() -> (heapless::Vec<u8, 60>, lakers::BytesP256ElemLen) {
 
 impl StoredPolicy {
     async fn load() -> Self {
-        // Storage format: ([u8], [u8; 32]), where the former is a CCS, and the latter the
-        // corresponding key. We may need to extend the latter to be a COSE_Key when crypto agility
-        // becomes a thing.
-        const OWN_CREDENTIAL_KEY: &str = "ariel-os-coap.own-edhoc-credential";
+        let (credential, key) = cfg_select! {
+            feature = "coap-server-config-storage" => {{
+                // Storage format: ([u8], [u8; 32]), where the former is a CCS, and the latter the
+                // corresponding key. We may need to extend the latter to be a COSE_Key when crypto agility
+                // becomes a thing.
+                const OWN_CREDENTIAL_KEY: &str = "ariel-os-coap.own-edhoc-credential";
 
-        let (credential, key) = match ariel_os_storage::get(OWN_CREDENTIAL_KEY)
-            .await
-            .expect("flash error prevents startup")
-        {
-            Some(credpair) => credpair,
-            None => {
-                let credpair = generate_credpair();
-                ariel_os_storage::insert(OWN_CREDENTIAL_KEY, credpair.clone())
+                match ariel_os_storage::get(OWN_CREDENTIAL_KEY)
                     .await
-                    .expect("flash error prevents startup");
-                credpair
+                    .expect("flash error prevents startup")
+                {
+                    Some(credpair) => credpair,
+                    None => {
+                        let credpair = generate_credpair();
+                        ariel_os_storage::insert(OWN_CREDENTIAL_KEY, credpair.clone())
+                            .await
+                            .expect("flash error prevents startup");
+                        credpair
+                    }
+                }
+            }}
+            feature = "coap-server-config-runtime-identity" => {
+                generate_credpair()
+            }
+            _ => {
+                compile_error!("Module ariel_os_coap::stored, but none of its cfgs is active.")
             }
         };
 

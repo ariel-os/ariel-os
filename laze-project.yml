@@ -1584,6 +1584,30 @@ modules:
         FEATURES:
           - ariel-os/coap-server
 
+  - name: coap-server-config-runtime-identity
+    help: |
+      Configure the CoAP server to accept requests depending on buildtime configuration.
+
+      A new identity is created on every startup.
+
+      This is mostly used when coap-server-config-storage is unavailable
+      because the platform has no (implemented) persistent storage.
+    selects:
+      - coap
+      - random
+    provides_unique:
+      - coap-server-config
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-server-config-runtime-identity
+        # Path is relative to the appdir from which CARGO_ENV will be interpreted
+        PEERS_YML: peers.yml
+        CARGO_ENV:
+          # By the time a build script sees this, Cargo has chdir'd into *its*
+          # source, so we better pass an absolute path.
+          - PEERS_YML=$$(realpath ${PEERS_YML})
+
   - name: coap-server-config-storage
     help: Configure the CoAP server to accept requests depending on build- and runtime configuration
     selects:
@@ -1616,20 +1640,6 @@ modules:
       global:
         FEATURES:
           - ariel-os/coap-server-config-unprotected
-
-  - name: coap-server-config-demokeys
-    help:
-      Configure the CoAP server as expected by simple examples that expect a fixed server key.
-
-      This configuration may change over time, in lockstep with the examples' setup.
-    selects:
-      - coap
-      - random
-    provides_unique: [coap-server-config]
-    env:
-      global:
-        FEATURES:
-          - ariel-os/coap-server-config-demokeys
 
   - name: coap-client
     help: Support for CoAP client functionality.
