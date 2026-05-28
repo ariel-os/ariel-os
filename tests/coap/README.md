@@ -29,32 +29,6 @@ beyond what is in the [CoAP server example](../../examples/coap-server).
       the `/poem` resource is accessible this way,
       because the security policy in `peers.yml` says so.
 
-* Using your own key:
-
-  This test's setup ships a hard-coded key.
-  That is dangerous: Everyone who finds the top secret Ariel OS repository!!!
-
-  Better generate your own key:
-
-  ```console
-  pipx run --spec 'aiocoap[oscore,prettyprint]' aiocoap-keygen -k 0123 mysecret.cosekey
-  ```
-
-  Update your `admin_client.diag` file:
-  * Put the output of that command in the `"own_cred"` key.
-  * Replace `"private_key": ...,` with `"private_key_file": "mysecret.cosekey",`.
-
-    (This better lives in a separate file rather than inside the configuration,
-    as the key file has stricter access permissions set up).
-  
-  … and update your `peers.yml` file:
-
-  * Put **only what is inside of** the `{14:` / `}` of the command's output
-    into the `kccs` of key of `peers.yml`.
-
-  * Flash your device again:
-    Now it is only you who can use its protected resources.
-
 * Authenticating the server:
     * Watch for a line like this in the server's output:
 

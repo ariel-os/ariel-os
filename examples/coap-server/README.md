@@ -107,6 +107,33 @@ If the device has support for [persistent storage](https://ariel-os.github.io/ar
 it will stay constant across reboots,
 whereas devices without storage fall back to a mode where the device's identity key changes on every startup.
 
+### Using your own key
+
+This test's setup ships a hard-coded key.
+That is dangerous: Everyone who finds the top secret Ariel OS repository!!!
+
+Better generate your own key:
+
+```console
+$ aiocoap-keygen -k 0123 mysecret.cosekey
+```
+
+Update your `admin-client.diag` file:
+* Put the output of that command in the `"own_cred"` key.
+* Replace `"private_key": ...,` with `"private_key_file": "mysecret.cosekey",`.
+
+(This better lives in a separate file rather than inside the configuration,
+as the key file has stricter access permissions set up).
+
+… and update your `peers.yml` file:
+
+* Put **only what is inside of** the `{14:` / `}` of the command's output
+  into the `kccs` of key of `peers.yml`.
+
+* Flash your device again:
+
+  Now it is only you who can use its protected resources.
+
 ## Further references
 
 There is a [chapter in the book](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html)
