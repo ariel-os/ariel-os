@@ -19,13 +19,12 @@ This application is a work in progress demo of running CoAP with OSCORE/EDHOC se
   aiocoap does not currently attempt to persist EDHOC derived OSCORE contexts across runs.
 * Running multiple concurrent terminal instances is supported,
   up to the maximum number of security contexts that are stored (currently 4).
-* There is also `./fauxhoc.py`, which did EDHOC manually before it was integrated in aiocoap.
 
 ### Variation
 
 * CoAP in NoSec mode: Building a smaller binary at the cost of confidentiality and integrity protection.
     * Add `-s coap-server-config-unprotected` to the laze invocation; this replaces the demokeys setup.
-    * All resources are now only accessible without `--credentials`. (The "fauxhoc" script does not work in that mode).
+    * All resources are now only accessible without `--credentials`.
 
 * CoAP with more than just demo keys:
     * Add `-s coap-server-config-storage` to the laze invocation; this replaces the demokeys setup.
