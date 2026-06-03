@@ -247,6 +247,8 @@ embedded-test = ["ariel-os-rt/embedded-test"]
 # Enables idle threads. Selected by laze if needed.
 idle-threads = ["ariel-os-threads/idle-threads"]
 
+sntp = ["ariel-os-embassy/sntp"]
+
 # features needed for `cargo test`
 _test = [
   "ariel-os-rt/_test",

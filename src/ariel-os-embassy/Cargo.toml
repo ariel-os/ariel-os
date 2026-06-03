@@ -42,6 +42,7 @@ ariel-os-log = { workspace = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-random = { path = "../ariel-os-random", optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
+ariel-os-sntp = { workspace = true, optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
@@ -112,9 +113,9 @@ random = ["dep:ariel-os-random", "dep:rand_core"]
 hwrng = ["ariel-os-hal/hwrng"]
 
 ## Enables support for IPv4.
-ipv4 = ["ariel-os-hal/ipv4", "embassy-net?/proto-ipv4"]
+ipv4 = ["ariel-os-hal/ipv4", "ariel-os-sntp?/ipv4", "embassy-net?/proto-ipv4"]
 ## Enables support for IPv6.
-ipv6 = ["ariel-os-hal/ipv6", "embassy-net?/proto-ipv6"]
+ipv6 = ["ariel-os-hal/ipv6", "ariel-os-sntp?/ipv6", "embassy-net?/proto-ipv6"]
 ## Enables support for DHCPv4.
 dhcpv4 = ["embassy-net?/dhcpv4"]
 ## Enables support for TCP.
@@ -127,6 +128,8 @@ dns = ["embassy-net?/dns"]
 mdns = ["embassy-net?/mdns"]
 ## Enables support for multicast (for both IPv4 and/or IPv6 if enabled).
 multicast = ["embassy-net?/multicast"]
+## Enables support for SNTP.
+sntp = ["dep:ariel-os-sntp"]
 
 ## Enable storage support [`ariel-os::storage`].
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
