@@ -3,7 +3,7 @@
 ## About
 
 This example synchronizes `ariel-os-sntp` with an NTP server on the local
-router (default: `192.168.188.1:123`) and updates the global SNTP clock.
+router (e.g.: `10.42.0.1:123` in many NetworkManager setups) and updates the global SNTP clock.
 It starts a background task for the sync loop and a small monitor task that
 prints the current time.
 
