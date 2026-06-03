@@ -9,6 +9,12 @@
 //! A global [`GlobalClock`] is provided so that the fetched network time is
 //! available at any point after the initial synchronization. The monotonic
 //! `embassy-time` clock is used to advance the stored timestamp between syncs.
+//! With enabling the `sntp` feature in [`ariel-os`], the `sntp_task` is
+//! automatically started with an interval of 1 hour to synchronize the clock.
+//! The [`now`]-function provides POSIX time which isn't guaranteed to be monotonic.
+//!
+//! SECURITY: The time provided can only be trusted to the extent that the
+//! NTP server can be trusted. SNTP requests are not authenticated.
 
 use ariel_os_log::{debug, error};
 use ariel_os_threads::sync::Mutex;
