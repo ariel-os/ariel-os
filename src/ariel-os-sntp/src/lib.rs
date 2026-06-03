@@ -12,8 +12,9 @@
 
 use ariel_os_log::{debug, error};
 use ariel_os_threads::sync::Mutex;
+use core::fmt;
+use core::net::{IpAddr, SocketAddr};
 use core::ops::AddAssign;
-use core::{fmt, net};
 use embassy_executor;
 use embassy_net::{
     Stack,
@@ -21,7 +22,7 @@ use embassy_net::{
 };
 use embassy_time::{Duration, Instant, Timer, with_timeout};
 pub use sntpc::NtpResult;
-use sntpc::{NtpContext, NtpTimestampGenerator, get_time};
+use sntpc::{NtpContext, get_time};
 use sntpc_net_embassy::UdpSocketWrapper;
 use sntpc_time_embassy::EmbassyTimestampGenerator;
 
@@ -46,7 +47,11 @@ pub const DEFAULT_TX_BUFFER_SIZE: usize = 64;
 /// A larger difference causes [`PlausibilityError::JumpTooLarge`].
 pub const MAX_PLAUSIBLE_DIFF: Duration = Duration::from_millis(100);
 
+/// The sleep interval for between synchronizations
+pub const SYNC_INTERVAL: Duration = Duration::from_secs(60 * 60);
+
 /// Errors that can occur while fetching SNTP time.
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
     /// The local UDP socket could not be bound.
@@ -74,6 +79,7 @@ impl fmt::Display for Error {
 }
 
 /// Reason why a received SNTP timestamp was rejected.
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PlausibilityError {
     /// The new timestamp differs from the current estimate by more than
@@ -89,11 +95,8 @@ impl fmt::Display for PlausibilityError {
     }
 }
 
-// ---------------------------------------------------------------------------
-// Global clock
-// ---------------------------------------------------------------------------
-
 /// A snapshot that anchors an NTP Unix-second value to an [`Instant`].
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Clone, Copy)]
 struct ClockSnapshot {
     /// Unix timestamp in whole seconds at the moment of the snapshot.
@@ -114,7 +117,7 @@ impl ClockSnapshot {
 ///
 /// After the first successful synchronization, [`GlobalClock::now`] returns the
 /// estimated current Unix time derived from the monotonic `embassy-time` clock.
-pub struct GlobalClock {
+struct GlobalClock {
     inner: Mutex<Option<ClockSnapshot>>,
 }
 
@@ -169,25 +172,7 @@ impl GlobalClock {
 /// The process-global SNTP clock.
 ///
 /// Use [`start`] to begin periodic synchronization and [`now`] to read the time.
-pub static GLOBAL_CLOCK: GlobalClock = GlobalClock::new();
-
-/// Starts the SNTP background task.
-///
-/// Spawns a task that periodically synchronizes [`GLOBAL_CLOCK`] with the given
-/// NTP server. The executor spawner is obtained internally – no external
-/// `Spawner` needs to be passed.
-///
-/// Call this from any async context, e.g. an `#[ariel_os::task(autostart)]`:
-///
-/// ```rust
-/// ariel_os_sntp::start(stack, server_addr, Duration::from_secs(60)).await;
-/// ```
-pub async fn start(stack: Stack<'static>, addr: net::SocketAddr, interval: Duration) {
-    // SAFETY: same pattern used throughout ariel-os-embassy
-    #![expect(unsafe_code)]
-    let spawner = unsafe { embassy_executor::Spawner::for_current_executor().await };
-    spawner.must_spawn(sntp_task(stack, addr, interval));
-}
+static GLOBAL_CLOCK: GlobalClock = GlobalClock::new();
 
 /// Returns the current Unix timestamp from [`GLOBAL_CLOCK`], or `None` if not
 /// synchronized yet.
@@ -195,22 +180,29 @@ pub fn now() -> Option<Instant> {
     GLOBAL_CLOCK.now()
 }
 
+/// Task for automated updating of the global clock via sntp
 #[embassy_executor::task]
-async fn sntp_task(stack: Stack<'static>, addr: net::SocketAddr, interval: Duration) {
+pub async fn sntp_task(stack: Stack<'static>) {
+    stack.wait_config_up().await;
+    #[cfg(all(feature = "ipv4", not(feature = "ipv6")))]
+    let ip = stack.config_v4().unwrap().gateway.unwrap();
+    #[cfg(feature = "ipv6")]
+    let ip = config.config_v6().unwrap().gateway.unwrap();
+    let addr = SocketAddr::new(IpAddr::from(ip), NTP_PORT);
     loop {
         match update_global_clock(stack, addr).await {
             Ok(_) => debug!("SNTP clock updated"),
             Err(_) => error!("SNTP update failed"),
         }
 
-        Timer::after(interval).await;
+        Timer::after(SYNC_INTERVAL).await;
     }
 }
 
 /// Synchronizes [`GLOBAL_CLOCK`] from an SNTP server.
 pub async fn update_global_clock(
     stack: Stack<'static>,
-    addr: net::SocketAddr,
+    addr: SocketAddr,
 ) -> Result<NtpResult, Error> {
     let result = fetch_time(stack, addr, DEFAULT_TIMEOUT).await?;
     let mut result_instant = Instant::from_secs(result.sec() as u64);
@@ -231,7 +223,7 @@ fn ntp_fraction_to_duration(sec_fraction: u32) -> Duration {
 /// Makes a single SNTP request to fetch the current time from the given server.
 pub async fn fetch_time(
     stack: Stack<'static>,
-    addr: net::SocketAddr,
+    addr: SocketAddr,
     timeout: Duration,
 ) -> Result<NtpResult, Error> {
     let mut rx_meta = [PacketMetadata::EMPTY; 16];

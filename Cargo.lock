@@ -257,6 +257,7 @@ dependencies = [
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-rt",
+ "ariel-os-sntp",
  "ariel-os-storage",
  "ariel-os-threads",
  "ariel-os-utils",
@@ -440,6 +441,7 @@ dependencies = [
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
+ "heapless 0.8.0",
  "heapless 0.9.1",
  "nrf-modem",
  "nrf-sdc",
@@ -648,7 +650,7 @@ dependencies = [
  "ariel-os-log",
  "ariel-os-threads",
  "embassy-executor",
- "embassy-net 0.8.0",
+ "embassy-net",
  "embassy-time",
  "sntpc",
  "sntpc-net-embassy",
@@ -4897,7 +4899,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e4976908c758efc04289ad266181f22e252b67daac2710581da9f5aa7a3207a"
 dependencies = [
  "const-sha1",
- "embassy-net 0.9.1",
+ "embassy-net",
  "embassy-time",
  "embedded-io-async 0.7.0",
  "heapless 0.8.0",
@@ -5916,7 +5918,7 @@ checksum = "c450c686c9762eff9878ac3dbd14094b9f76ea63cd383a21afbe8787c5bff9d4"
 dependencies = [
  "cfg-if",
  "defmt 1.1.0",
- "embassy-net 0.9.1",
+ "embassy-net",
  "log",
  "sntpc",
 ]
