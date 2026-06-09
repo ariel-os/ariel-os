@@ -1,5 +1,3 @@
-use crate::irqs::Irqs;
-
 /// Constructs the hardware random number generator (RNG) for the nRF family.
 ///
 /// # Panics
@@ -10,6 +8,7 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
         // The union of all contexts that wind up in a construct_rng should be synchronized
         // with laze-project.yml's hwrng module.
         any(context = "nrf51", context = "nrf52", context = "nrf5340-net") => {
+            use crate::irqs::Irqs;
             let p =
                 peripherals
                     .RNG
@@ -17,6 +16,16 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
                     .expect("RNG has not been previously used");
 
             let mut rng = embassy_nrf::rng::Rng::new(p, Irqs);
+
+            ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
+        }
+        context = "nrf54l15-app" => {
+            let p = peripherals
+                .CRACEN
+                .take()
+                .expect("CRACEN has not been previously used");
+
+            let mut rng = embassy_nrf::cracen::Cracen::new_blocking(p);
 
             ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
         }

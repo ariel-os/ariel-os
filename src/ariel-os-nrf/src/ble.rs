@@ -62,6 +62,25 @@ const SDC_MEM_SIZE: usize = 4904;
 #[cfg(all(context = "nrf53", feature = "ble-peripheral", feature = "ble-central"))]
 const SDC_MEM_SIZE: usize = 6080;
 
+#[cfg(all(
+    context = "nrf54l15-app",
+    feature = "ble-peripheral",
+    not(feature = "ble-central")
+))]
+const SDC_MEM_SIZE: usize = 4096;
+#[cfg(all(
+    context = "nrf54l15-app",
+    feature = "ble-central",
+    not(feature = "ble-peripheral")
+))]
+const SDC_MEM_SIZE: usize = 4096;
+#[cfg(all(
+    context = "nrf54l15-app",
+    feature = "ble-peripheral",
+    feature = "ble-central"
+))]
+const SDC_MEM_SIZE: usize = 8192;
+
 // Size of the TX buffer (number of packets), minimum is 1, SoftDevice default is 3 (SDC_DEFAULT_TX_PACKET_COUNT).
 const L2CAP_TXQ: u8 = 3;
 // Size of the RX buffer (number of packets), minimum is 1, SoftDevice default is 2 (SDC_DEFAULT_RX_PACKET_COUNT).
@@ -193,6 +212,90 @@ impl Peripherals {
     }
 }
 
+#[cfg(context = "nrf54l15-app")]
+pub struct Peripherals {
+    // MPSL peripherals
+    pub grtc_ch7: Peri<'static, peripherals::GRTC_CH7>,
+    pub grtc_ch8: Peri<'static, peripherals::GRTC_CH8>,
+    pub grtc_ch9: Peri<'static, peripherals::GRTC_CH9>,
+    pub grtc_ch10: Peri<'static, peripherals::GRTC_CH10>,
+    pub grtc_ch11: Peri<'static, peripherals::GRTC_CH11>,
+    pub timer10: Peri<'static, peripherals::TIMER10>,
+    pub timer20: Peri<'static, peripherals::TIMER20>,
+    pub temp: Peri<'static, peripherals::TEMP>,
+    pub ppi10_ch0: Peri<'static, peripherals::PPI10_CH0>,
+    pub ppi20_ch1: Peri<'static, peripherals::PPI20_CH1>,
+    pub ppib11_ch0: Peri<'static, peripherals::PPIB11_CH0>,
+    pub ppib21_ch0: Peri<'static, peripherals::PPIB21_CH0>,
+
+    // SDC peripherals
+    pub ppi00_ch1: Peri<'static, peripherals::PPI00_CH1>,
+    pub ppi00_ch3: Peri<'static, peripherals::PPI00_CH3>,
+    pub ppi10_ch1: Peri<'static, peripherals::PPI10_CH1>,
+    pub ppi10_ch2: Peri<'static, peripherals::PPI10_CH2>,
+    pub ppi10_ch3: Peri<'static, peripherals::PPI10_CH3>,
+    pub ppi10_ch4: Peri<'static, peripherals::PPI10_CH4>,
+    pub ppi10_ch5: Peri<'static, peripherals::PPI10_CH5>,
+    pub ppi10_ch6: Peri<'static, peripherals::PPI10_CH6>,
+    pub ppi10_ch7: Peri<'static, peripherals::PPI10_CH7>,
+    pub ppi10_ch8: Peri<'static, peripherals::PPI10_CH8>,
+    pub ppi10_ch9: Peri<'static, peripherals::PPI10_CH9>,
+    pub ppi10_ch10: Peri<'static, peripherals::PPI10_CH10>,
+    pub ppi10_ch11: Peri<'static, peripherals::PPI10_CH11>,
+    pub ppib00_ch1: Peri<'static, peripherals::PPIB00_CH1>,
+    pub ppib00_ch2: Peri<'static, peripherals::PPIB00_CH2>,
+    pub ppib00_ch3: Peri<'static, peripherals::PPIB00_CH3>,
+    pub ppib10_ch1: Peri<'static, peripherals::PPIB10_CH1>,
+    pub ppib10_ch2: Peri<'static, peripherals::PPIB10_CH2>,
+    pub ppib10_ch3: Peri<'static, peripherals::PPIB10_CH3>,
+}
+
+#[cfg(context = "nrf54l15-app")]
+impl Peripherals {
+    /// Reserves the necessary peripherals for the BLE stack.
+    ///
+    /// # Panics
+    /// Panics if any of the required peripherals are not available.
+    #[must_use]
+    #[allow(clippy::too_many_lines)]
+    pub fn new(peripherals: &mut crate::OptionalPeripherals) -> Self {
+        Self {
+            grtc_ch7: peripherals.GRTC_CH7.take().unwrap(),
+            grtc_ch8: peripherals.GRTC_CH8.take().unwrap(),
+            grtc_ch9: peripherals.GRTC_CH9.take().unwrap(),
+            grtc_ch10: peripherals.GRTC_CH10.take().unwrap(),
+            grtc_ch11: peripherals.GRTC_CH11.take().unwrap(),
+            timer10: peripherals.TIMER10.take().unwrap(),
+            timer20: peripherals.TIMER20.take().unwrap(),
+            temp: peripherals.TEMP.take().unwrap(),
+            ppi10_ch0: peripherals.PPI10_CH0.take().unwrap(),
+            ppi20_ch1: peripherals.PPI20_CH1.take().unwrap(),
+            ppib11_ch0: peripherals.PPIB11_CH0.take().unwrap(),
+            ppib21_ch0: peripherals.PPIB21_CH0.take().unwrap(),
+
+            ppi00_ch1: peripherals.PPI00_CH1.take().unwrap(),
+            ppi00_ch3: peripherals.PPI00_CH3.take().unwrap(),
+            ppi10_ch1: peripherals.PPI10_CH1.take().unwrap(),
+            ppi10_ch2: peripherals.PPI10_CH2.take().unwrap(),
+            ppi10_ch3: peripherals.PPI10_CH3.take().unwrap(),
+            ppi10_ch4: peripherals.PPI10_CH4.take().unwrap(),
+            ppi10_ch5: peripherals.PPI10_CH5.take().unwrap(),
+            ppi10_ch6: peripherals.PPI10_CH6.take().unwrap(),
+            ppi10_ch7: peripherals.PPI10_CH7.take().unwrap(),
+            ppi10_ch8: peripherals.PPI10_CH8.take().unwrap(),
+            ppi10_ch9: peripherals.PPI10_CH9.take().unwrap(),
+            ppi10_ch10: peripherals.PPI10_CH10.take().unwrap(),
+            ppi10_ch11: peripherals.PPI10_CH11.take().unwrap(),
+            ppib00_ch1: peripherals.PPIB00_CH1.take().unwrap(),
+            ppib00_ch2: peripherals.PPIB00_CH2.take().unwrap(),
+            ppib00_ch3: peripherals.PPIB00_CH3.take().unwrap(),
+            ppib10_ch1: peripherals.PPIB10_CH1.take().unwrap(),
+            ppib10_ch2: peripherals.PPIB10_CH2.take().unwrap(),
+            ppib10_ch3: peripherals.PPIB10_CH3.take().unwrap(),
+        }
+    }
+}
+
 /// Configures and initializes the nRF BLE driver.
 ///
 /// # Panics
@@ -209,6 +312,21 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
     #[cfg(context = "nrf53")]
     let mpsl_p = mpsl::Peripherals::new(
         p.rtc0, p.timer0, p.timer1, p.temp, p.ppi_ch0, p.ppi_ch1, p.ppi_ch2,
+    );
+    #[cfg(context = "nrf54l15-app")]
+    let mpsl_p = mpsl::Peripherals::new(
+        p.grtc_ch7,
+        p.grtc_ch8,
+        p.grtc_ch9,
+        p.grtc_ch10,
+        p.grtc_ch11,
+        p.timer10,
+        p.timer20,
+        p.temp,
+        p.ppi10_ch0,
+        p.ppi20_ch1,
+        p.ppib11_ch0,
+        p.ppib21_ch0,
     );
     #[allow(clippy::cast_possible_truncation)]
     let lfclk_cfg = mpsl::raw::mpsl_clock_lfclk_cfg_t {
@@ -235,6 +353,28 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
     let sdc_p = sdc::Peripherals::new(
         p.ppi_ch3, p.ppi_ch4, p.ppi_ch5, p.ppi_ch6, p.ppi_ch7, p.ppi_ch8, p.ppi_ch9, p.ppi_ch10,
         p.ppi_ch11, p.ppi_ch12,
+    );
+    #[cfg(context = "nrf54l15-app")]
+    let sdc_p = sdc::Peripherals::new(
+        p.ppi00_ch1,
+        p.ppi00_ch3,
+        p.ppi10_ch1,
+        p.ppi10_ch2,
+        p.ppi10_ch3,
+        p.ppi10_ch4,
+        p.ppi10_ch5,
+        p.ppi10_ch6,
+        p.ppi10_ch7,
+        p.ppi10_ch8,
+        p.ppi10_ch9,
+        p.ppi10_ch10,
+        p.ppi10_ch11,
+        p.ppib00_ch1,
+        p.ppib00_ch2,
+        p.ppib00_ch3,
+        p.ppib10_ch1,
+        p.ppib10_ch2,
+        p.ppib10_ch3,
     );
 
     let sdc_mem = SDC_MEM.init(sdc::Mem::new());

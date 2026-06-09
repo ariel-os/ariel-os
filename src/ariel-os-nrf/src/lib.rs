@@ -107,7 +107,16 @@ mod private {
 pub fn init() -> OptionalPeripherals {
     enable_flash_cache();
 
-    let peripherals = embassy_nrf::init(Config::default());
+    let config = {
+        let mut c = Config::default();
+        // nRF54L defaults to 64 MHz; MPSL (BLE) requires 128 MHz.
+        #[cfg(context = "nrf54l15-app")]
+        {
+            c.clock_speed = embassy_nrf::config::ClockSpeed::CK128;
+        }
+        c
+    };
+    let peripherals = embassy_nrf::init(config);
     OptionalPeripherals::from(peripherals)
 }
 
