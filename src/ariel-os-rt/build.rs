@@ -89,6 +89,9 @@ fn write_memoryx() {
         (512, 1024)
     } else if context("nrf5340-net") {
         (64, 256)
+    } else if context("nrf54l15-app") {
+        // nRF54L15: 256 KB RAM, 1.5 MB RRAM
+        (256, 1536)
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
         let ram = 256;
         let flash = 1024;

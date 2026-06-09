@@ -325,6 +325,14 @@ define_uart_drivers!(
 define_uart_drivers!(
    SERIAL3 => SERIAL3 + TIMER2 + PPI_CH14 + PPI_CH15 + PPI_GROUP5,
 );
+// FIXME(nrf54l): embassy-nrf's BufferedUarte API on nrf54l uses DPPI rather
+// than PPI. Once embassy-nrf is bumped to a version that fully supports the
+// nRF54L15, add a real `define_uart_drivers!` invocation here (likely using
+// UARTE20 and the chip's DPPI channels).
+#[cfg(context = "nrf54l15")]
+compile_error!(
+    "UART is not yet implemented for nRF54L15: needs DPPI-based BufferedUarte support"
+);
 
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {

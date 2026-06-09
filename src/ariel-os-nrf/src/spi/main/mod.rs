@@ -247,3 +247,11 @@ define_spi_drivers!(
     // Used by UART
     // SERIAL3 => SERIAL3,
 );
+// FIXME(nrf54l): peripheral inventory differs from earlier nRF families.
+// Adjust SPIM21/SPIM22/SPIM30 selection based on board pin muxing once embassy-nrf
+// fully supports the nRF54L15.
+#[cfg(context = "nrf54l15")]
+define_spi_drivers!(
+    SPIM21 => SPIM21,
+    SPIM22 => SPIM22,
+);
