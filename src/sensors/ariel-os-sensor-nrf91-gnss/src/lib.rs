@@ -42,6 +42,8 @@ use ariel_os_sensors_utils::AtomicState;
 
 use crate::config::{Config, GnssOperationMode, convert_gnss_config};
 
+const SAMPLE_UNAVAILABLE: Sample = Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable);
+
 // From WGS 84, Mean Radius of the Three Semi-axes in meters.
 // Source: table 3.5 in https://nsgreg.nga.mil/doc/view?i=4085
 const EARTH_RADIUS: f64 = 6_371_008.771_4;
@@ -338,43 +340,26 @@ impl Nrf91Gnss {
         &'static self,
         data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
     ) -> Samples {
-        let time_parts = convert_to_time_parts(data);
-
-        let (time_seconds_part, time_nanos_part) = if let Some(time_parts) = time_parts {
-            (
-                Sample::new(time_parts.0, SampleMetadata::UnknownAccuracy),
-                Sample::new(time_parts.1, SampleMetadata::UnknownAccuracy),
-            )
-        } else {
-            (
-                Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable),
-                Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable),
-            )
-        };
-
-        let latitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE) as f32;
-
-        // For longitude, the distance represented by a degree changes depending on the latitude
-
-        // The perimeter of the circle formed by the latitude is `cos(latitude_radians) * EARTH_RADIUS * 2 * PI`
-        // Full formula here is `longitude_accuracy = accuracy * 360 / (cos(latitude_radians) * EARTH_RADIUS * 2 * PI)`. We have 360 / (EARTH_RADIUS * 2 * PI) already pre-computed.
-        let longitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE
-            / libm::cos(data.latitude.to_radians())) as f32;
-
-        // Convert for 10^-7 channel scaling.
-        let latitude_value = (data.latitude * 10_000_000f64) as i32;
-        // Convert for 10^-7 channel scaling.
-        let longitude_value = (data.longitude * 10_000_000f64) as i32;
-        // Convert for 10^-2 channel scaling.
-        let altitude_value = (data.altitude * 100f32) as i32;
+        let (time_seconds_part, time_nanos_part) =
+            if let Some((seconds, nanos)) = convert_to_time_parts(data) {
+                (
+                    Sample::new(seconds, SampleMetadata::UnknownAccuracy),
+                    Sample::new(nanos, SampleMetadata::UnknownAccuracy),
+                )
+            } else {
+                (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
+            };
 
         let fix_valid = (u32::from(data.flags)
             & nrf_modem::nrfxlib_sys::NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID)
             != 0;
 
         let (latitude, longitude, altitude) = if fix_valid {
+            let latitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE) as f32;
+
             let latitude = Sample::new(
-                latitude_value,
+                // Convert for 10^-7 channel scaling.
+                (data.latitude * 10_000_000f64) as i32,
                 SampleMetadata::SymmetricalError {
                     // One meter is approximately 0.000009 degrees. Accuracy value usually between 1 and 50 meters.
                     deviation: clamp_to_u8(latitude_accuracy * 100_000f32),
@@ -383,8 +368,18 @@ impl Nrf91Gnss {
                     scaling: -5,
                 },
             );
+
+            // For longitude, the distance represented by a degree changes depending on the latitude
+
+            // The perimeter of the circle formed by the latitude is `cos(latitude_radians) * EARTH_RADIUS * 2 * PI`
+            // Full formula here is `longitude_accuracy = accuracy * 360 / (cos(latitude_radians) * EARTH_RADIUS * 2 * PI)`. We have 360 / (EARTH_RADIUS * 2 * PI) already pre-computed.
+            let longitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE
+                / libm::cos(data.latitude.to_radians()))
+                as f32;
+
             let longitude = Sample::new(
-                longitude_value,
+                // Convert for 10^-7 channel scaling.
+                (data.longitude * 10_000_000f64) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(longitude_accuracy * 100_000f32),
                     bias: 0,
@@ -393,7 +388,8 @@ impl Nrf91Gnss {
                 },
             );
             let altitude = Sample::new(
-                altitude_value,
+                // Convert for 10^-2 channel scaling.
+                (data.altitude * 100f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.altitude_accuracy * 10f32),
                     bias: 0,
@@ -403,28 +399,8 @@ impl Nrf91Gnss {
             );
             (latitude, longitude, altitude)
         } else {
-            (
-                Sample::new(
-                    latitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    longitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    altitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-            )
+            (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
         };
-
-        // Convert for 10^-6 channel scaling.
-        let horizontal_speed_value = (data.speed * 1_000_000f32) as i32;
-        // Convert for 10^-6 channel scaling.
-        let vertical_speed_value = (data.vertical_speed * 1_000_000f32) as i32;
-        // Convert for 10^-6 channel scaling.
-        let heading_value = (data.heading * 1_000_000f32) as i32;
 
         let velocity_valid = (u32::from(data.flags)
             & nrf_modem::nrfxlib_sys::NRF_MODEM_GNSS_PVT_FLAG_VELOCITY_VALID)
@@ -432,7 +408,8 @@ impl Nrf91Gnss {
 
         let (horizontal_speed, vertical_speed, heading) = if velocity_valid {
             let horizontal_speed = Sample::new(
-                horizontal_speed_value,
+                // Convert for 10^-6 channel scaling.
+                (data.speed * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.speed_accuracy * 10f32),
                     bias: 0,
@@ -442,7 +419,8 @@ impl Nrf91Gnss {
             );
 
             let vertical_speed = Sample::new(
-                vertical_speed_value,
+                // Convert for 10^-6 channel scaling.
+                (data.vertical_speed * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.vertical_speed_accuracy * 10f32),
                     bias: 0,
@@ -452,7 +430,8 @@ impl Nrf91Gnss {
             );
 
             let heading = Sample::new(
-                heading_value,
+                // Convert for 10^-6 channel scaling.
+                (data.heading * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.heading_accuracy),
                     bias: 0,
@@ -461,17 +440,7 @@ impl Nrf91Gnss {
             );
             (horizontal_speed, vertical_speed, heading)
         } else {
-            (
-                Sample::new(
-                    horizontal_speed_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    vertical_speed_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(heading_value, SampleMetadata::ChannelTemporarilyUnavailable),
-            )
+            (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
         };
 
         Samples::from_8(
