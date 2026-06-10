@@ -57,6 +57,7 @@ esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
@@ -83,6 +84,7 @@ esp-hal = { workspace = true, features = ["esp32s2"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s2",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s2"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
@@ -91,6 +93,7 @@ esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s3",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]

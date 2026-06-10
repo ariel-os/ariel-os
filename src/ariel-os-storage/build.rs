@@ -1,4 +1,7 @@
-use std::{env, path::PathBuf};
+use std::{
+    env,
+    path::{Path, PathBuf},
+};
 
 const KIBIBYTES: u32 = 1024;
 
@@ -7,50 +10,10 @@ fn main() {
     // Important: only homogeneous flash organizations are currently supported.
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
     // could be pushed out of it by a large enough binary.
-
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
     if is_in_current_contexts(&["esp"]) {
-        let offset = env::var("ESP_STORAGE_OFFSET");
-        let storage_size = env::var("ESP_STORAGE_SIZE");
-
-        let (offset, size) = match (offset, storage_size) {
-            (Ok(offset), Ok(storage_size)) => (offset, storage_size),
-            (Err(_), Err(_)) => panic!(
-                "ESP storage support was selected, but ESP_STORAGE_OFFSET and\
-                ESP_STORAGE_SIZE are not set. Is the ESP storage partition\
-                module missing from laze?"
-            ),
-            _ => panic!(
-                "ESP storage support was selected, but one of ESP_STORAGE_OFFSET or ESP_STORAGE_SIZE is not set."
-            ),
-        };
-
-        let storage_offset =
-            u32::from_str_radix(offset.trim_start_matches("0x").trim_start_matches("0X"), 16)
-                .expect("Invalid ESP_STORAGE_OFFSET env var");
-
-        let storage_size =
-            u32::from_str_radix(size.trim_start_matches("0x").trim_start_matches("0X"), 16)
-                .expect("Invalid ESP_STORAGE_SIZE env var");
-
-        let storage_end = storage_offset
-            .checked_add(storage_size)
-            .expect("ESP storage range overflows u32");
-
-        let storage_x = format!(
-            "\
-            PROVIDE(__storage_start = 0x{storage_offset:08x});
-            PROVIDE(__storage_end   = 0x{storage_end:08x});
-            "
-        );
-
-        std::fs::write(out.join("storage.x"), storage_x).unwrap();
-
-        println!("cargo:rerun-if-env-changed=CARGO_CFG_CONTEXT");
-        println!("cargo:rerun-if-env-changed=ESP_STORAGE_OFFSET");
-        println!("cargo:rerun-if-env-changed=ESP_STORAGE_SIZE");
-        println!("cargo:rustc-link-search={}", out.display());
+        emit_esp_storage_symbols(&out);
         return;
     }
 
@@ -88,6 +51,80 @@ fn main() {
 
     println!("cargo:rerun-if-env-changed=CARGO_CFG_CONTEXT");
     println!("cargo:rerun-if-changed=storage.ld.in");
+    println!("cargo:rustc-link-search={}", out.display());
+}
+
+fn emit_esp_storage_symbols(out: &Path) {
+    const MISSING_ESP_PARTITION_TABLE_HINT: &str = concat!(
+        "ESP storage is enabled, but no ESP partition table was configured.\n",
+        "\n",
+        "Add a partition table CSV to your application and point ESP_PARTITION_TABLE ",
+        "at it from your application's laze-project.yml:\n",
+        "\n",
+        "env:\n",
+        "  global:\n",
+        "    ESP_PARTITION_TABLE: \"./esp32.csv\"\n",
+        "\n",
+        "The build system resolves this path and passes it to Cargo as ",
+        "ARIEL_ESP_PARTITION_TABLE. The table must contain the storage partition ",
+        "configured by ARIEL_ESP_STORAGE_PARTITION; the default name is `ariel_store`."
+    );
+    const ESP_FLASH_SECTOR_SIZE: u32 = 4096;
+
+    let partition_table = std::env::var("ARIEL_ESP_PARTITION_TABLE")
+        .ok()
+        .filter(|s| !s.trim().is_empty())
+        .unwrap_or_else(|| panic!("{MISSING_ESP_PARTITION_TABLE_HINT}"));
+
+    let partition_name = std::env::var("ARIEL_ESP_STORAGE_PARTITION")
+        .ok()
+        .filter(|s| !s.trim().is_empty())
+        .unwrap_or_else(|| "ariel_store".to_owned());
+
+    let csv = std::fs::read_to_string(&partition_table).unwrap_or_else(|err| {
+        panic!("failed to read ESP partition table `{partition_table}`: {err}")
+    });
+
+    let table = esp_idf_part::PartitionTable::try_from_str(&csv).unwrap_or_else(|err| {
+        panic!("failed to read ESP partition table `{partition_table}`: {err}")
+    });
+
+    let part = table.find(&partition_name).unwrap_or_else(|| {
+        panic!("failed to find ESP storage partition `{partition_name}` in `{partition_table}`")
+    });
+
+    let storage_start = part.offset();
+    let storage_size = part.size();
+    let storage_end = storage_start
+        .checked_add(storage_size)
+        .expect("ESP storage partition range overflows u32");
+
+    assert!(
+        storage_start.is_multiple_of(ESP_FLASH_SECTOR_SIZE),
+        "ESP storage partition `{partition_name}` offset 0x{storage_start:08x} is not sector-aligned"
+    );
+    assert!(
+        storage_size.is_multiple_of(ESP_FLASH_SECTOR_SIZE),
+        "ESP storage partition `{partition_name}` size 0x{storage_size:08x} is not sector-aligned"
+    );
+    assert!(
+        storage_size >= 2 * ESP_FLASH_SECTOR_SIZE,
+        "ESP storage partition `{partition_name}` must be at least two flash sectors"
+    );
+
+    let storage_x = format!(
+        "\
+        PROVIDE(__storage_start = 0x{storage_start:08x});
+        PROVIDE(__storage_end   = 0x{storage_end:08x});
+        "
+    );
+
+    std::fs::write(out.join("storage.x"), storage_x).unwrap();
+
+    println!("cargo:rerun-if-env-changed=ARIEL_ESP_PARTITION_TABLE");
+    println!("cargo:rerun-if-env-changed=ARIEL_ESP_STORAGE_PARTITION");
+    println!("cargo:rerun-if-changed={partition_table}");
+    println!("cargo:rerun-if-env-changed=CARGO_CFG_CONTEXT");
     println!("cargo:rustc-link-search={}", out.display());
 }
 

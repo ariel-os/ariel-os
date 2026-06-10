@@ -116,6 +116,7 @@ esp-radio-rtos-driver = { version = "0.2.0", default-features = false }
 esp-rom-sys = { version = "0.1.2", default-features = false }
 esp-sync = { version = "0.1.0", default-features = false }
 esp-wifi-sys = { version = "0.8.1", default-features = false }
+esp-idf-part = { version = "0.6.0"}
 
 esp-storage = { version = "0.8.0" }
 xtensa-lx-rt = { version = "0.21.0", default-features = false }

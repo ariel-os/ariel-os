@@ -366,6 +366,7 @@ contexts:
       - ?espflash
     provides:
       - has_hwrng
+      - has_storage_support
     env:
       esp_wifi_heapsize_required: $(72*1024)
       RUSTFLAGS:
@@ -417,8 +418,6 @@ contexts:
 
   - name: esp32c3fx4
     parent: esp32c3
-    provides:
-      - has_storage_support
 
   - name: esp32c6
     parent: esp
@@ -428,7 +427,6 @@ contexts:
       - has_ble_esp
       - has_usb_cdc_acm
       - sw/benchmark
-      - has_storage_support
     provides_unique: [c-function-abort]
     env:
       RUSTC_TARGET: riscv32imac-unknown-none-elf
@@ -1311,17 +1309,15 @@ modules:
 
   - name: esp32-storage-partition
     context:
-      - esp32c3fx4
-      - esp32c6
+      - esp
     env:
       global:
-        ARIEL_ESP_PARTITION_TABLE: "${relroot}/${root}/src/ariel-os-esp/partitions/esp32-4m-storage-64k.csv"
         ESPFLASH_ARGS:
           - --partition-table
           - ${ARIEL_ESP_PARTITION_TABLE}
         CARGO_ENV:
-          - ESP_STORAGE_OFFSET="0x003f0000"
-          - ESP_STORAGE_SIZE="0x00010000"
+          - ARIEL_ESP_PARTITION_TABLE="$$(realpath "${ARIEL_ESP_PARTITION_TABLE}")"
+          - ARIEL_ESP_STORAGE_PARTITION=${ARIEL_ESP_STORAGE_PARTITION}
 
   - name: sw/threading
     selects:
