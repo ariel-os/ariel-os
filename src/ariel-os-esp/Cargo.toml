@@ -40,6 +40,7 @@ esp-radio-rtos-driver = { workspace = true, default-features = false, features =
   "ipc-implementations",
 ], optional = true }
 esp-rom-sys = { workspace = true }
+esp-storage = { workspace = true, optional = true }
 esp-sync = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
 paste = { workspace = true }
@@ -56,6 +57,7 @@ esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
@@ -64,6 +66,7 @@ esp-hal = { workspace = true, features = ["esp32c3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c3",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32c3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
@@ -72,6 +75,7 @@ esp-hal = { workspace = true, features = ["esp32c6"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c6",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32c6"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
@@ -80,6 +84,7 @@ esp-hal = { workspace = true, features = ["esp32s2"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s2",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s2"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
@@ -88,6 +93,7 @@ esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s3",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
@@ -176,6 +182,9 @@ _radio-esp = [
   "esp-radio?/esp-alloc",
   "time",
 ]
+
+## Enables storage support
+storage = ["dep:esp-storage", "dep:embassy-embedded-hal"]
 
 #! ## Executor type selection for the (autostarted) main executor
 #! Exactly one of the features below must be enabled at once.

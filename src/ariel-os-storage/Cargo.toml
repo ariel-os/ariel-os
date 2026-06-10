@@ -19,5 +19,8 @@ serde = { workspace = true, default-features = false }
 [target.'cfg(context = "rp")'.dependencies]
 embassy-time = { workspace = true, default-features = false }
 
+[build-dependencies]
+esp-idf-part = { workspace = true }
+
 [lints]
 workspace = true

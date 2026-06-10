@@ -366,6 +366,7 @@ contexts:
       - ?espflash
     provides:
       - has_hwrng
+      - has_storage_support
     env:
       esp_wifi_heapsize_required: $(72*1024)
       RUSTFLAGS:
@@ -1105,7 +1106,8 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+        ESPFLASH_ARGS: []
+        CARGO_RUNNER: '"espflash flash ${ESPFLASH_ARGS} --monitor ${ESPFLASH_LOG_FORMAT}"'
     tasks:
       flash:
         help: flash the target using `espflash`
@@ -1305,6 +1307,7 @@ modules:
   - name: sw/storage
     selects:
       - has_storage_support
+      - ?esp32-storage-partition
     env:
       global:
         FEATURES:
@@ -1315,6 +1318,18 @@ modules:
   - name: has_storage_support
     selects:
       - doc-only
+
+  - name: esp32-storage-partition
+    context:
+      - esp
+    env:
+      global:
+        ESPFLASH_ARGS:
+          - --partition-table
+          - ${ARIEL_ESP_PARTITION_TABLE}
+        CARGO_ENV:
+          - ARIEL_ESP_PARTITION_TABLE="$$(realpath "${ARIEL_ESP_PARTITION_TABLE}")"
+          - ARIEL_ESP_STORAGE_PARTITION=${ARIEL_ESP_STORAGE_PARTITION}
 
   - name: sw/threading
     selects:
