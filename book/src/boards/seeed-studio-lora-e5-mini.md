@@ -24,7 +24,7 @@ laze build -b seeedstudio-lora-e5-mini
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|

@@ -29,7 +29,7 @@ impl ExitCode {
     }
 }
 
-/// Terminates the debug output session.
+/// Terminates the debug console.
 ///
 /// # Note
 ///

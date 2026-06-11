@@ -69,9 +69,6 @@ The defmt logger supports configuring the log level per crate and per module, as
 $ laze build -C examples/log --builders nrf52840dk -DLOG=info,ariel_os_rt=trace run
 ```
 
-Note: On Cortex-M devices, the order of `ariel_os::log::println!()` output and
-      `defmt` log output is not deterministic.
-
 ### [log]
 
 Ariel OS's logger for `log` supports configuring the log level globally, but does not currently support per-crate filtering.
@@ -83,7 +80,7 @@ The table below presents those supported in Ariel OS and which hardware and hos
 
 | Logging transport                        | Supported               | laze module                  | Required hardware                                                                         | Required host tool              |
 | ---------------------------------------- | :---------------------: | ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------- |
-| Debug channel                            | Available on all chips  | `logging-over-debug-channel` | Debug probe attached to the debug interface                                               | Debug channel-enabled host tool |
+| [Debug channel][debug-channel-book]      | Available on all chips  | `logging-over-debug-channel` | Debug probe attached to the debug interface                                               | Debug channel-enabled host tool |
 | [USB CDC-ACM][usb-cdc-acm-glossary-book] | On ESP32 MCUs only      | `logging-over-usb`           | USB cable attached to the user USB port                                                   | Serial monitor                  |
 | [UART][uart-glossary-book]               | On ESP32 MCUs only      | `logging-over-uart`          | USB ⟷ UART adapter attached to the supported UART pins (may already be part of the board) | Serial monitor                  |
 
@@ -97,9 +94,8 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 > When a separate serial monitor is needed, [`defmt-print`][defmt-print-cratesio] can be used as `defmt`-enabled serial monitor.
 > If this is not possible, `defmt` should be disabled and [`log`](#log) used instead as logging facade.
 
-<!-- TODO: link to "debug interface" when the page exists -->
 > [!TIP]
-> When a logging transport other than the debug channel is enabled, logging can still be used when the debug channel is disabled either in software (by disabling the `logging-over-debug-channel` laze module) or in hardware when the debug interface itself is disabled.
+> When a logging transport other than the [debug channel][debug-channel-book] is enabled, logging can still be used when the debug channel is disabled either in software (by disabling the `logging-over-debug-channel` laze module) or in hardware when the debug interface itself is disabled.
 > This means that logging can still be used in production, even if the debug interface has been disabled.
 >
 > If this is unwanted, logging can be disabled altogether by disabling the [`logging`](#logging) laze module.
@@ -109,6 +105,29 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 >
 > - Other logging transports will later be supported, including UART and USB CDC-ACM on non-ESP32 devices.
 > - Using multiple transports at the same time may be supported in the future.
+
+## Fetching and Displaying the Logging Output on the Host
+
+When the [flashing][flashing-board-book] transport allows it, the `run` laze task not only flashes the board but also fetches and displays the logging output on the host.
+In addition, the `attach` laze task is available to fetch and display the logging output from an already-flashed, running target.
+Both the `run` and `attach` tasks may be [terminated by the target][closing-debug-console-book] when using [semihosting][semihosting-book].
+
+The available laze tasks are summarized in the following table:
+
+| [laze task][laze-tasks-book] | Supported          | Host tool              | [Logging transport](#logging-transports) |
+| ---------------------------- | ------------------ | ---------------------- | ---------------------------------------- |
+| `run`                        | On all chips       | probe-rs               | [Debug channel][debug-channel-book]      |
+| `run`                        | On ESP32 MCUs only | `espflash`             | USB CDC-ACM or UART                      |
+| `attach`                     | On all chips       | probe-rs               | [Debug channel][debug-channel-book]      |
+| `attach`                     | On ESP32 MCUs only | `espflash`             | USB CDC-ACM or UART                      |
+
+When multiple tasks of the same name exist, which variant is used depends on which host tool is enabled through its associated [laze module][laze-modules-book] (e.g., `probe-rs` or `espflash`).
+
+> [!NOTE]
+> Depending on the logging transport and on the [debug channel transport][debug-channel-book] used (if used as logging transport), the `attach` task may display some logs that have been issued before the task was started: this may happen when the transport uses internal buffers that are only emptied when fetched by a host tool (e.g., [RTT][rtt-book]).
+
+> [!TIP]
+> It is possible to [`flash` the board][flashing-board-book] using one host tool, before switching to another one to fetch and display the logging output (e.g., in production).
 
 [defmt]: https://github.com/knurling-rs/defmt
 [defmt documentation]: https://defmt.ferrous-systems.com/
@@ -120,3 +139,9 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 [defmt-print-cratesio]: https://crates.io/crates/defmt-print
 [debug-console-debug-console-book]: ./debug-console.md#debug-console
 [espflah-cratesio]: https://crates.io/crates/espflash
+[debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
+[flashing-board-book]: ./flashing-debugging.md#flashing-a-board
+[closing-debug-console-book]: ./debug-console.md#closing-the-debug-console-from-firmware
+[semihosting-book]: ./flashing-debugging.md#semihosting
+[laze-tasks-book]: ./build-system.md#laze-tasks
+[rtt-book]: ./flashing-debugging.md#real-time-transfer-rtt

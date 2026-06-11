@@ -14,7 +14,7 @@ making the former configurable and the latter dynamic is work in progress.
 ## Running
 
 * Run on any board with networking, eg. `laze build -b particle-xenon run`.
-* [Set up networking](../README.md#networking).
+* [Set up networking](https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html).
 * Run `aiocoap-client`
   to list the resources of the device:
 

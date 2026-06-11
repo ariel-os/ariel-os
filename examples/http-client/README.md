@@ -17,4 +17,6 @@ A GET request will be made every 3 seconds, even in case of failure and the
 response body will be printed as a string, along with some relevant HTTP
 response headers.
 
-Look [here](../README.md#networking) for more information about network configuration.
+The [networking chapter] of the book contains information on how to set up networking.
+
+[networking chapter]: https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html

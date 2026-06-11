@@ -8,7 +8,7 @@
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported with some caveats">☑️</span>[^pins-need-to-be-assigned-to-the-network-core-from-the-application-core]|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
@@ -65,7 +65,7 @@ Boards using this chip.
       <th>Manufacturer Name</th>
       <th><a href="../build-system.html#laze-builders">laze builders</a></th>
       <th>Tier</th>
-      <th>Debug Output</th>
+      <th>Debug Channel</th>
       <th>Logging</th>
       <th>GPIO</th>
       <th>I2C Controller Mode</th>

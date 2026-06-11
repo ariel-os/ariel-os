@@ -117,7 +117,7 @@ jobs:
       # TODO: we'll eventually want to check relevant feature combinations
       # TODO: we may want to use --no-deps as well
       - name: clippy
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -171,7 +171,7 @@ jobs:
             --deny warnings
 
       - name: lint with Clippy when using the `log` logging facade
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -186,7 +186,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="esp32c6" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for ESP32
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -206,7 +206,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for RP
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -225,7 +225,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF52
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -244,14 +244,13 @@ jobs:
             --deny warnings
       - run: echo 'RUSTFLAGS=--cfg context="nrf9160" --cfg context="nrf91" --cfg context="nrf" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF91
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
             --features "
                 dns,
                 external-interrupts,
-                executor-none,
                 i2c,
                 ipv4,
                 ipv6,
@@ -274,7 +273,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rg" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for STM32
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -292,7 +291,7 @@ jobs:
       # Reset `RUSTFLAGS`.
       - run: echo 'RUSTFLAGS=' >> $GITHUB_ENV
       - name: clippy
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -302,10 +301,11 @@ jobs:
 
       # Lint sensor drivers.
       - name: Clippy on sensor drivers
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
+            -p ariel-os-sensor-aht20
             -p ariel-os-sensor-lis2du12
             -p ariel-os-sensor-lps22df
             -p ariel-os-sensor-stts22h
@@ -313,7 +313,7 @@ jobs:
             --deny warnings
 
       - name: Clippy on nrf91 sensor drivers
-        uses: clechasseur/rs-clippy-check@3a0225255fc5c07aefde16d229e8479a137ddd8e # v6.0.3
+        uses: clechasseur/rs-clippy-check@1e16925ceec49b64803a6abc5f6bbe79044c3bd4 # v6.0.4
         with:
           args: |
             --locked
@@ -529,7 +529,7 @@ jobs:
           persist-credentials: false
 
       - name: typos
-        uses: crate-ci/typos@bbaefadf97b0ec5fdc942684b647f1a6ab250274 # v1.46.0
+        uses: crate-ci/typos@f8a58b6b53f2279f71eb605f03a4ae4d10608f45 # v1.47.0
 
       - name: Check that the book summary has an up-to-date board list
         run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --check

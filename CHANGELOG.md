@@ -7,6 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 
+## [0.5.0] - 2026-06-04
+
+### Release Highlights
+
+- Ariel OS's MSRV is now 1.95. ([#2054](https://github.com/ariel-os/ariel-os/pull/2054))
+- (STM32) The built-in Ethernet MAC found on some STM32 MCUs is now supported on the currently supported development boards having an Ethernet PHY and an RJ45 socket. ([#1926](https://github.com/ariel-os/ariel-os/pull/1926))
+- "Debug logging" has been renamed to "logging" and the definitions of logging and of the debug console have been revisited: `ariel_os::log` should be used instead of `ariel_os::debug::log`, and `ariel_os::log::println!()` instead of `ariel_os::debug::println!()`, which has been removed. In addition, the `logging` laze module should now be used instead of `logging-facade` (formerly `debug-logging-facade`) when enabling or disabling logging as a whole. Panics are now always printed to the logging output. A new page about logging has been added to the book. ([#2008](https://github.com/ariel-os/ariel-os/pull/2008)) ([#2013](https://github.com/ariel-os/ariel-os/pull/2013)) ([#2030](https://github.com/ariel-os/ariel-os/pull/2030)) ([#2034](https://github.com/ariel-os/ariel-os/pull/2034))
+- New laze modules have been introduced to select the transport used by logging: `logging-over-debug-channel`, `logging-over-usb`, and `logging-over-uart`. Not every transport is available on every MCU and board. Documentation about logging transports has been added to the book. ([#2036](https://github.com/ariel-os/ariel-os/pull/2036))
+
+### Breaking Changes
+
+- `embassy-net` has been updated to v0.9.1: this is a breaking change as this crate is re-exported from `ariel_os::reexports`. ([#2125](https://github.com/ariel-os/ariel-os/pull/2125))
+- (ESP32) As the runtime auto-selection of the logging transport has been disabled on these MCUs, it must now be selected at build time using either `logging-over-usb` or `logging-over-uart` (`logging-over-usb` is the default when available). ([#2039](https://github.com/ariel-os/ariel-os/pull/2039))
+- The editor configuration generation task has been renamed from `vscode-config` to `editor-config vscode`. It now also supports Helix, Zed, Gram, and bare rust-analyzer. ([#1976](https://github.com/ariel-os/ariel-os/pull/1976))
+- `ariel_os::gpio::Input`, `ariel_os::gpio::IntEnabledInput` and `ariel_os::gpio::Output` now each have a generic lifetime parameter, allowing to re-use GPIOs. ([#2027](https://github.com/ariel-os/ariel-os/pull/2027))
+- Semihosting is now only enabled by default when probe-rs is selected as host tool during compilation. This fixes the "Unhandled interrupt" panic on Xtensa when calling `ariel_os::debug::exit()` when using `espflash`. Semihosting can be manually enabled using the `semihosting` laze module if needed. ([#1985](https://github.com/ariel-os/ariel-os/pull/1985))
+- The `ariel_os::debug::log::defmt` module has been removed. The portable items from `ariel_os::log` should be used instead, or the `defmt` crate should be used directly instead if actually needed. ([#1994](https://github.com/ariel-os/ariel-os/pull/1994))
+- The `flash-dfu` laze task has been renamed to `flash-dfuse` for clarity, as it is only available on DfuSe devices, i.e., STM32 devices. ([#1986](https://github.com/ariel-os/ariel-os/pull/1986))
+- `embedded-test` has been updated to v0.7.1: existing applications need to adjust its version number and to enable the `ariel-os-09` Cargo feature instead of `ariel-os`. ([#1963](https://github.com/ariel-os/ariel-os/pull/1963))
+- (STM32) Ethernet support on STM32 MCUs is now using a stable MAC address (derived from the device identity) instead of a fixed one. ([#1942](https://github.com/ariel-os/ariel-os/pull/1942))
+- The `embassy-usb` dependency, also re-exported as `ariel_os::reexports::embassy_usb`, has been updated to v0.6.0. The `usbd-hid` crate, re-exported as `ariel_os::reexports::usbd_hid`, has been updated to v0.10.0. ([#1932](https://github.com/ariel-os/ariel-os/pull/1932))
+
+### Fixed
+
+- `laze build run` now works properly when there are multiple binaries within a single application directory. ([#2093](https://github.com/ariel-os/ariel-os/pull/2093))
+- The `esp-hal` dependency is now pinned to a specific minor version. ([#2122](https://github.com/ariel-os/ariel-os/pull/2122))
+- `defmt` has been updated to v1.1.0. Please see [the upstream changelog](https://github.com/knurling-rs/defmt/blob/a87ee8e98b0eb22c802991924e31b4da84342e17/CHANGELOG.md#defmt-v110-2026-05-12) for a list of changes. ([#2089](https://github.com/ariel-os/ariel-os/pull/2089))
+- The `storage` example can now be used with both `defmt` or `log`. ([#1999](https://github.com/ariel-os/ariel-os/pull/1999))
+- (STM32F042K6) Semihosting is now enabled on that MCU. ([#1996](https://github.com/ariel-os/ariel-os/pull/1996))
+- It has been clarified in the book whether the `flash` and `flash-dfuse` laze tasks reboot the target. ([#1982](https://github.com/ariel-os/ariel-os/pull/1982))
+- (ST NUCLEO-H755ZI-Q) The pin association of the red LED (LD3) has been fixed. ([#1973](https://github.com/ariel-os/ariel-os/pull/1973))
+- `embassy-time` is no longer *always* part of the build of Ariel OS. It was previously compiled even when it was not actually necessary. ([#1969](https://github.com/ariel-os/ariel-os/pull/1969))
+- The `http-client` example no longer needlessly enables the `time` Cargo feature. ([#1950](https://github.com/ariel-os/ariel-os/pull/1950))
+- (ESP32) It is now possible to use the built-in Wi-Fi and BLE radio without enabling the `time` Cargo feature at the same time. ([#1968](https://github.com/ariel-os/ariel-os/pull/1968))
+- Unnecessary dependencies on `cortex-m-semihosting` and `panic-semihosting` have been removed. ([#1961](https://github.com/ariel-os/ariel-os/pull/1961))
+- (Nordic Thingy:91 X) USB is now usable on the `nordic-thingy-91-x-nrf5340-app` laze builder. This fixes the discrepancy between the docs and the build system. ([#1953](https://github.com/ariel-os/ariel-os/pull/1953))
+
+### Added
+
+- (ESP32) A `flash` laze task is now available to flash a board over UART or USB CDC-ACM. ([#2108](https://github.com/ariel-os/ariel-os/pull/2108))
+- (ESP32) A `reset` laze task is now available to reset a connected target over UART or USB CDC-ACM. ([#2106](https://github.com/ariel-os/ariel-os/pull/2106))
+- An `attach` laze task is now available to fetch and display the logs from a running target. ([#2091](https://github.com/ariel-os/ariel-os/pull/2091))
+- Documentation about how flashing works has been added to the book. ([#1987](https://github.com/ariel-os/ariel-os/pull/1987))
+- (nRF91) The power consumption of the nRF91 SiP family has been improved by always initializing its modem. ([#2064](https://github.com/ariel-os/ariel-os/pull/2064))
+- (ESP32) It is now possible to access the debug interface of plain ESP32s using probe-rs. ([#2014](https://github.com/ariel-os/ariel-os/pull/2014))
+- A section about using semihosting to exit from the debug console has been added to the book. ([#1988](https://github.com/ariel-os/ariel-os/pull/1988))
+- The documentation now explains when to re-generate the editor configuration. ([#1980](https://github.com/ariel-os/ariel-os/pull/1980))
+- (nRF91) Cellular networking over LTE-M is now supported on the nRF91 SiP series. ([#1795](https://github.com/ariel-os/ariel-os/pull/1795))
+- The `sensors-debug` example now prints the time using the GNSS extension when available. ([#1965](https://github.com/ariel-os/ariel-os/pull/1965))
+
+### Changed
+
+- The board support table can now be scrolled horizontal and vertically in the documentation, improving the viewing experience. ([#2050](https://github.com/ariel-os/ariel-os/pull/2050))
+- The `embassy-time` crate re-exported as `ariel_os::reexports::embassy_time` has been updated from v0.5.0 to v0.5.1. ([#1944](https://github.com/ariel-os/ariel-os/pull/1944))
+- (CYW43) Firmware blobs required for the CYW43 chip are now provided through the `cyw43-firmware` crate, making license tracking easier. ([#1933](https://github.com/ariel-os/ariel-os/pull/1933))
+
+### New Supported Hardware
+
+- The Makerdiary nRF52840 MDK USB Dongle board is now supported. ([#2079](https://github.com/ariel-os/ariel-os/pull/2079))
+- The Waveshare ESP32-S3-Matrix board is now supported. ([#1959](https://github.com/ariel-os/ariel-os/pull/1959))
+- The Ulanzi TC001 pixel clock is now supported ([#1948](https://github.com/ariel-os/ariel-os/pull/1948))
+- The Unihiker K10 board is now supported. ([#1946](https://github.com/ariel-os/ariel-os/pull/1946))
+- Support for the MCU (STM32U585) of the Arduino UNO Q board has been added. ([#1536](https://github.com/ariel-os/ariel-os/pull/1536))
+
+### New Sensor Drivers
+
+- A sensor driver for the AHT20, compatible with Ariel OS's sensor API, is now available. ([#1941](https://github.com/ariel-os/ariel-os/pull/1941))
+- The GNSS on the nRF91 SiP family can now be used as a sensor through Ariel OS's sensor API. ([#1330](https://github.com/ariel-os/ariel-os/pull/1330))
+
 ## [0.4.0] - 2026-03-18
 
 ### Release Highlights
@@ -223,7 +292,8 @@ internal polish that is not mentioned here.
 ## [0.1.0] - 2025-02-25
 
 <!-- next-url -->
-[Unreleased]: https://github.com/ariel-os/ariel-os/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/ariel-os/ariel-os/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/ariel-os/ariel-os/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/ariel-os/ariel-os/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/ariel-os/ariel-os/compare/v0.2.0...v0.3.0
 [0.2.1]: https://github.com/ariel-os/ariel-os/compare/v0.2.0...v0.2.1

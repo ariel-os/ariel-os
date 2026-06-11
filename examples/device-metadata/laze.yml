@@ -1,7 +1,6 @@
 apps:
   - name: device-metadata
     selects:
-      - debug-console
       - ?nrf91-modem-metadata
 
 modules:

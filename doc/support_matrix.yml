@@ -20,10 +20,10 @@ support_keys:
 
 # Defines existing pieces of functionality, hardware or software.
 functionalities:
-  - name: debug_output
-    title: Debug Output
+  - name: debug_channel
+    title: Debug Channel
     support_criteria: example-log
-    description:
+    description: debug channel (over SWD or JTAG)
   - name: logging
     title: Logging
     support_criteria: example-log
@@ -132,7 +132,7 @@ chips:
     manufacturer: Ariel OS
     support:
       gpio: not_currently_supported
-      debug_output: not_available
+      debug_channel: not_available
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -150,7 +150,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -168,7 +168,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -186,7 +186,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: needs_testing
       hwrng: supported
       i2c_controller: supported
@@ -204,7 +204,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -220,7 +220,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng:
         status: not_currently_supported
         comments:
@@ -242,7 +242,7 @@ chips:
         status: supported_with_caveats
         comments:
           - pins need to be assigned to the network core from the application core
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -260,7 +260,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng:
         status: not_currently_supported
         comments:
@@ -281,7 +281,7 @@ chips:
     manufacturer: Nordic Semiconductor
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng:
         status: not_currently_supported
         comments:
@@ -302,7 +302,7 @@ chips:
     manufacturer: Raspberry Pi
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -318,7 +318,7 @@ chips:
     manufacturer: Raspberry Pi
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -337,7 +337,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: needs_testing
+      debug_channel: needs_testing
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -359,7 +359,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -385,7 +385,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -410,7 +410,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -436,7 +436,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -461,7 +461,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -483,7 +483,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -505,7 +505,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -527,7 +527,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -548,7 +548,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -570,7 +570,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: needs_testing
@@ -592,7 +592,7 @@ chips:
     manufacturer: Espressif
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: needs_testing
       spi_main: needs_testing
@@ -613,7 +613,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: not_available
       hwrng: not_available
       i2c_controller: supported
@@ -634,7 +634,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: not_available
       hwrng: not_available
       i2c_controller: not_currently_supported
@@ -655,7 +655,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: needs_testing
+      debug_channel: needs_testing
       ethernet_over_usb: needs_testing
       hwrng: not_available
       i2c_controller: supported
@@ -676,7 +676,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: needs_testing
       hwrng: not_available
       i2c_controller: supported
@@ -697,7 +697,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: needs_testing
       hwrng: not_available
       i2c_controller: needs_testing
@@ -718,7 +718,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: not_currently_supported
       hwrng: not_available
       i2c_controller: supported
@@ -742,7 +742,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet:
         status: supported_with_caveats
         comments:
@@ -770,7 +770,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet:
         status: supported_with_caveats
         comments:
@@ -798,7 +798,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb:
         status: not_currently_supported
         comments:
@@ -821,7 +821,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb: needs_testing
       hwrng: supported
       i2c_controller: needs_testing
@@ -842,7 +842,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -861,7 +861,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       ethernet_over_usb:
         status: not_currently_supported
         comments:
@@ -884,7 +884,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: supported
       spi_main: supported
@@ -903,7 +903,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -924,7 +924,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -945,7 +945,7 @@ chips:
     manufacturer: STMicroelectronics
     support:
       gpio: supported
-      debug_output: supported
+      debug_channel: supported
       hwrng: supported
       i2c_controller: not_currently_supported
       spi_main: not_currently_supported
@@ -1021,6 +1021,13 @@ builders:
     support:
       user_usb: not_available
       ethernet_over_usb: not_available
+
+  makerdiary-nrf52840-mdk-usb-dongle:
+    chip: nrf52840
+    tier: "3"
+    support:
+      user_usb: supported
+      ethernet_over_usb: supported
 
   native:
     chip: native-chip
@@ -1319,7 +1326,7 @@ builders:
     chip: esp32-d0wd
     tier: "2"
     support:
-      debug_output:
+      debug_channel:
         status: not_available
         comments:
           - JTAG pins are not accessible through the case
@@ -1361,6 +1368,11 @@ boards:
     url: https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/
     builders:
       - bbc-microbit-v2
+
+  - name: Makerdiary nRF52840 MDK USB Dongle
+    url: https://web.archive.org/web/20260508214910/https://wiki.makerdiary.com/nrf52840-mdk-usb-dongle/
+    builders:
+      - makerdiary-nrf52840-mdk-usb-dongle
 
   - name: native
     url: "#"

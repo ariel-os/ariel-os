@@ -24,7 +24,7 @@ laze build -b nrf9151-dk
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|

@@ -24,7 +24,7 @@ laze build -b ulanzi-tc001
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="not available on this piece of hardware">–</span>[^jtag-pins-are-not-accessible-through-the-case]|
+|Debug Channel|<span title="not available on this piece of hardware">–</span>[^jtag-pins-are-not-accessible-through-the-case]|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|

@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-embassy"
-version = "0.4.0"
+version = "0.5.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -18,6 +18,10 @@ embassy-executor = { workspace = true }
 embassy-futures = { workspace = true }
 embassy-hal-internal = { workspace = true }
 embassy-net = { workspace = true, optional = true, features = [
+  # Could be removed for a future rom-small build, but it's a sensible default
+  # of smoltcp that is disabled by embassy-net's no-default-features on the
+  # smoltcp dependency.
+  "auto-icmp-echo-reply",
   "medium-ethernet",
 ] }
 embassy-sync = { workspace = true }
@@ -192,7 +196,6 @@ rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
 executor-thread = ["ariel-os-embassy-common/executor-thread", "threading"]
-executor-none = []
 
 # Allows to have no built-in board selected.
 no-boards = []
@@ -200,6 +203,7 @@ no-boards = []
 defmt = [
   "ariel-os-embassy-common/defmt",
   "ariel-os-hal/defmt",
+  "embassy-executor/defmt",
   "embassy-net?/defmt",
   "embassy-time?/defmt",
   "embassy-usb?/defmt",
@@ -212,7 +216,7 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
-_test = ["dhcpv4", "executor-none", "external-interrupts", "i2c", "spi", "time"]
+_test = ["dhcpv4", "external-interrupts", "i2c", "spi", "time"]
 
 [lints]
 workspace = true

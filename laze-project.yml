@@ -130,7 +130,7 @@ contexts:
         build: false
         workdir: ${appdir}
         cmd:
-          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --profile=${PROFILE} ${FEATURES} $@
+          - ${CARGO_PRESHELL} ${CARGO_ENV} ${CARGO} ${CARGO_TOOLCHAIN} ${CARGO_ARGS} run --profile=${PROFILE} ${FEATURES} --bin ${app} $@
 
       clippy:
         build: false
@@ -235,7 +235,7 @@ contexts:
     selects:
       - cortex-m4f
     provides:
-      - has_nrf_ble
+      - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
 
@@ -244,7 +244,7 @@ contexts:
     selects:
       - cortex-m4f
     provides:
-      - has_nrf_ble
+      - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52833_xxAA
 
@@ -253,7 +253,7 @@ contexts:
     selects:
       - cortex-m4f
     provides:
-      - has_nrf_ble
+      - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
 
@@ -275,7 +275,7 @@ contexts:
       - cortex-m33
     provides:
       - has_hwrng
-      - has_nrf_ble
+      - has_ble_nrf
       # Currently hard-faults.
       # - has_storage_support
     disables:
@@ -410,6 +410,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_usb_cdc_acm
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -427,6 +428,7 @@ contexts:
       - riscv
     provides:
       - has_ble_esp
+      - has_usb_cdc_acm
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
@@ -480,6 +482,7 @@ contexts:
       # TODO: re-enable as soon as upstream peripheral drivers become `Send`
       # in combination with multi-core.
       # - has_multi_core_support
+      - has_usb_cdc_acm
       - sw/benchmark
     env:
       RUSTC_TARGET: xtensa-esp32s3-none-elf
@@ -506,8 +509,9 @@ contexts:
     parent: ariel-os
     selects:
       - infini-core
+      # NOTE: semantically this should only be enabled when `logging` is
+      # enabled, but laze does not support conditions on contexts.
       - logging-over-stdout
-      - ?debug-console
     provides:
       - has_device_identity
       - has_hwrng
@@ -1106,6 +1110,23 @@ modules:
     env:
       global:
         CARGO_RUNNER: '"espflash flash --monitor ${ESPFLASH_LOG_FORMAT}"'
+    tasks:
+      flash:
+        help: flash the target using `espflash`
+        cmd:
+          - espflash flash --after hard-reset ${out} $@
+
+      attach:
+        help: attach `espflash` to a running target
+        build: false
+        cmd:
+          - espflash monitor ${ESPFLASH_LOG_FORMAT} --elf ${out} $@
+
+      reset:
+        help: reset the target
+        build: false
+        cmd:
+          - espflash reset --after hard-reset $@
 
   - name: probe-rs
     help: use probe-rs as runner
@@ -1394,14 +1415,16 @@ modules:
     selects:
       - doc_only
 
-  - name: has_nrf_ble
-    context:
-      - nrf52
-      - nrf53
+  - name: ble-nrf
     selects:
+      - has_ble_nrf
       - hwrng
     provides:
       - has_ble
+
+  - name: has_ble_nrf
+    selects:
+      - doc_only
 
   - name: ble-peripheral
     help: Enables BLE peripheral functionality
@@ -1438,12 +1461,38 @@ modules:
           - ariel-os/nrf91-modem
 
   - name: usb
+    disables:
+      # Currently the generic USB should take priority.
+      - usb-cdc-acm-esp
     selects:
       - hw/usb-device-port
     env:
       global:
         FEATURES:
           - ariel-os/usb
+
+  # Available on ESP32 boards with ESP32 having a non-generic USB CDC-ACM
+  # peripheral (they may *also* have a generic USB peripheral) and a USB port
+  # connected to it.
+  - name: usb-cdc-acm-esp
+    context:
+      - esp
+    selects:
+      - has_usb_cdc_acm
+      - has_usb_cdc_acm_port
+
+  # Provided by ESP32 MCUs with a non-generic USB CDC-ACM peripheral (they may
+  # *also* have a generic USB peripheral).
+  - name: has_usb_cdc_acm
+    selects:
+      - doc-only
+
+  # Provided by boards having a USB port connected to a USB peripheral
+  # supporting USB CDC-ACM while not being a generic USB peripheral.
+  # A board may *also* have `has_usb_device_port`.
+  - name: has_usb_cdc_acm_port
+    selects:
+      - doc-only
 
   - name: hw/usb-device-port
     help: provided if a device has a USB device port wired up
@@ -1775,16 +1824,13 @@ modules:
     help: enable support for the debug console
     context: ariel-os
     selects:
-      # Mandatory.
-      - logging-over-debug-channel
+      - logging:
+          # Mandatory when logging is otherwise enabled.
+          - logging-over-debug-channel
       # Optional for now, at least until multiple logging transports can be used
       # at the same time: allows using semihosting while a logging transport
       # other than `logging-over-debug-channel` is used.
       - ?semihosting
-    env:
-      global:
-        FEATURES:
-          - ariel-os/debug-channel
 
   - name: logging
     help: enables logging functionality
@@ -1819,6 +1865,10 @@ modules:
           - debug-channel-transport-required
     provides_unique:
       - logging-transport
+    env:
+      global:
+        FEATURES:
+          - ariel-os/debug-channel
 
   # Disabled by modules that provide a `debug-channel-transport`.
   - name: no-debug-channel-transport
@@ -1869,14 +1919,9 @@ modules:
 
   - name: logging-over-usb
     help: use USB CDC-ACM as logging transport
-    # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral
-    # until introducing a `usb-cdc-acm-esp` module.
-    # Should be later extended to chips with a generic USB peripheral.
-    context:
-      - esp32s3
-      - esp32c3
-      - esp32c6
     selects:
+      # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral.
+      - usb-cdc-acm-esp
       - context::esp:
           - esp-println
     provides_unique:
@@ -2090,6 +2135,8 @@ modules:
     # option, and because nrf-modem too only does the selection in one way.
     context:
       - nrf9151
+    conflicts:
+      - ltem-nrf-modem
     env:
       global:
         FEATURES:

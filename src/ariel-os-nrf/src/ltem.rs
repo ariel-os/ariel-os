@@ -1,7 +1,6 @@
 use embassy_executor::Spawner;
 use embassy_net::Stack;
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, signal::Signal};
-use heapless::Vec;
 use nrf_modem::embassy_net_modem::{
     NetDriver, Runner, State,
     context::{self, AuthProt, PdConfig, PdnAuth, PdpType, Status},
@@ -125,15 +124,15 @@ pub async fn control_task(
 }
 
 fn can_contain<TContained, TContainer, const N_CONTAINED: usize, const N_CONTAINER: usize>(
-    _: &heapless::Vec<TContained, N_CONTAINED>,
-) -> heapless::Vec<TContainer, N_CONTAINER> {
+    _: &heapless_for_nrfmodem::Vec<TContained, N_CONTAINED>,
+) -> heapless_for_embassy::Vec<TContainer, N_CONTAINER> {
     const {
         assert!(
             N_CONTAINER >= N_CONTAINED,
             "embassy config cannot contain the maximum number of DNS servers"
         );
     };
-    Vec::new()
+    heapless_for_embassy::vec::Vec::new()
 }
 
 /// Creates an embassy-net config from a modem status update.

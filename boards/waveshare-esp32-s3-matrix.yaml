@@ -4,6 +4,7 @@ targets:
     # website: https://www.waveshare.com/wiki/ESP32-S3-Matrix
     chip: esp32s3fx4r2
     flags:
+      - has_usb_cdc_acm_port
       - has_usb_device_port
     # To be added, eg. through ariel.global_env.ESPFLASH_ARGS and once
     # <https://github.com/esp-rs/espflash/issues/1023> is resolved:

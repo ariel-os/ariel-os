@@ -11,6 +11,36 @@ pub enum GnssOperationMode {
     SingleShot(u16),
 }
 
+/// Power saving modes for the GNSS module.
+///
+/// From the [`nrfxlib` documentation]:
+///
+/// > In the duty-cycling performance mode, duty-cycled tracking is engaged when it can be done without significant performance degradation. In the duty-cycling power mode, duty-cycled tracking is engaged more aggressively with acceptable performance degradation.
+///
+/// [nrfxlib documentation]: https://nrfconnectdocs.nordicsemi.com/ncs/3.3.0/nrfxlib/nrf_modem/doc/gnss_interface.html#power-saving-mode
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum GnssPowerSavingMode {
+    /// No duty cycling.
+    Disabled,
+    /// Duty cycling while preserving tracking performance.
+    DutyCyclingPerformance,
+    /// Duty cycling engaged more aggressively with "acceptable performance degradation".
+    DutyCyclingAggressive,
+}
+
+impl GnssPowerSavingMode {
+    fn to_nrf_modem(self) -> nrf_modem::GnssPowerSaveMode {
+        match self {
+            GnssPowerSavingMode::Disabled => nrf_modem::GnssPowerSaveMode::Disabled,
+            GnssPowerSavingMode::DutyCyclingPerformance => {
+                nrf_modem::GnssPowerSaveMode::DutyCyclingPerformance
+            }
+            GnssPowerSavingMode::DutyCyclingAggressive => nrf_modem::GnssPowerSaveMode::DutyCycling,
+        }
+    }
+}
+
 /// Configuration for the GNSS sensor.
 #[derive(Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -20,6 +50,8 @@ pub struct Config {
     pub operation_mode: GnssOperationMode,
     /// Whether NMEA messages should be logged as logs (adds extra processing).
     pub log_nmea: bool,
+    /// GNSS power saving mode (duty cycling).
+    pub power_saving_mode: GnssPowerSavingMode,
 }
 
 impl Default for Config {
@@ -27,6 +59,7 @@ impl Default for Config {
         Self {
             operation_mode: GnssOperationMode::Continuous,
             log_nmea: false,
+            power_saving_mode: GnssPowerSavingMode::Disabled,
         }
     }
 }
@@ -49,6 +82,6 @@ pub(crate) fn convert_gnss_config(config: &Config) -> nrf_modem::GnssConfig {
         },
         // Tcxo offers more precise 1PPS but uses more energy, we don't use 1PPS so Rtc makes more sense.
         timing_source: nrf_modem::GnssTimingSource::Rtc,
-        power_mode: nrf_modem::GnssPowerSaveMode::Disabled,
+        power_mode: config.power_saving_mode.to_nrf_modem(),
     }
 }

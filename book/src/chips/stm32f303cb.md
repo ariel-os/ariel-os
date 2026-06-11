@@ -8,7 +8,7 @@
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="needs testing">🚦</span>|
+|Debug Channel|<span title="needs testing">🚦</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|

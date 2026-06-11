@@ -15,4 +15,6 @@ expose a JSON endpoint at <http://10.42.0.61/button> reporting on the state of
 a connected push button if present, otherwise the endpoint will not be exposed
 at all.
 
-Look [here](../README.md#networking) for more information about network configuration.
+The [networking chapter] of the book contains information on how to set up networking.
+
+[networking chapter]: https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html

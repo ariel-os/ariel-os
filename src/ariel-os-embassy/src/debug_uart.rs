@@ -31,9 +31,9 @@ fn write_debug_uart(buffer: &[u8]) -> Result<(), ariel_os_log::backend::Error> {
     use embedded_io_async::Write as _;
 
     embassy_futures::block_on(async {
-        // This effectively drops any debug output until the UART driver is populated.
+        // This effectively drops logs until the UART driver is populated.
         // If we instead waited on it to be set, this would deadlock when trying to print
-        // on the debug output before the driver is populated.
+        // on the logging output before the driver is populated.
         if let Some(uart) = DEBUG_UART.try_get() {
             let mut uart = uart.lock().await;
 

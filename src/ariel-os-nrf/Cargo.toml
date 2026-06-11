@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-nrf"
-version = "0.4.0"
+version = "0.5.0"
 edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
@@ -35,8 +35,8 @@ trouble-host = { workspace = true, optional = true }
 embassy-futures = { workspace = true, optional = true }
 embassy-net = { workspace = true, optional = true }
 embassy-net-driver-channel = { workspace = true, optional = true }
-# Version needed for embassy-net
-heapless = { version = "0.8.0", optional = true }
+heapless_for_embassy = { package = "heapless", version = "0.9.0", optional = true }
+heapless_for_nrfmodem = { package = "heapless", version = "0.8.0", optional = true }
 
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
@@ -116,7 +116,8 @@ ltem-nrf-modem = [
   "dep:embassy-futures",
   "dep:embassy-net",
   "dep:embassy-net-driver-channel",
-  "dep:heapless",
+  "dep:heapless_for_embassy",
+  "dep:heapless_for_nrfmodem",
   "ariel-os-embassy-common/cellular-networking",
   "nrf-modem/embassy-net",
   "nrf91-modem",

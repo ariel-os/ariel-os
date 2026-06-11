@@ -13,7 +13,6 @@
 ///
 // Inspired by https://github.com/adamgreig/assign-resources/tree/94ad10e2729afdf0fd5a77cd12e68409a982f58a
 // under MIT license
-#[cfg(not(context = "esp"))]
 #[macro_export]
 macro_rules! define_peripherals {
     (
@@ -31,8 +30,8 @@ macro_rules! define_peripherals {
         pub struct $peripherals {
             $(
                 $(#[$inner])*
-                pub $peripheral_name: $crate::hal::peripheral::Peri<'static, peripherals::$peripheral_field>
-            ),*
+                pub $peripheral_name: $crate::__peripheral_ty!($peripheral_field),
+            )*
         }
 
         $($(
@@ -53,46 +52,30 @@ macro_rules! define_peripherals {
     }
 }
 
-// This is almost identical to the version above, only the line that contains `Peri` is different.
-// TODO: unify
+// This helper macro creates a peripheral type from its name.
+// We need two variants: one for embassy hal `Peri`, one for the esp-hal style peripheral
+// singletons.
+// This is split out of `define_peripherals` so the gating on `esp` is done at definition time in
+// this crate, and not at usage time, as that would make all crates using `define_peripherals` need
+// to add a check-cfg for `esp`.
+// These macros are not importable from applications as they are not part of the re-exported
+// `ariel_os_hal::api`.
+#[cfg(not(context = "esp"))]
+#[macro_export]
+#[doc(hidden)]
+macro_rules! __peripheral_ty {
+    ($field:ident) => {
+        $crate::hal::peripheral::Peri<'static, peripherals::$field>
+    };
+}
+
 #[cfg(context = "esp")]
 #[macro_export]
-macro_rules! define_peripherals {
-    (
-        $(#[$outer:meta])*
-        $peripherals:ident {
-            $(
-                $(#[$inner:meta])*
-                $peripheral_name:ident : $peripheral_field:ident $(=$peripheral_alias:ident)?
-            ),*
-            $(,)?
-        }
-    ) => {
-        #[allow(dead_code,non_snake_case)]
-        $(#[$outer])*
-        pub struct $peripherals {
-            $(
-                $(#[$inner])*
-                pub $peripheral_name: peripherals::$peripheral_field<'static>
-            ),*
-        }
-
-        $($(
-            #[allow(missing_docs, non_camel_case_types)]
-            pub type $peripheral_alias = peripherals::$peripheral_field;
-        )?)*
-
-        impl $crate::hal::TakePeripherals<$peripherals> for &mut $crate::hal::OptionalPeripherals {
-            fn take_peripherals(&mut self) -> $peripherals {
-                $peripherals {
-                    $(
-                        $(#[$inner])*
-                        $peripheral_name: self.$peripheral_field.take().unwrap()
-                    ),*
-                }
-            }
-        }
-    }
+#[doc(hidden)]
+macro_rules! __peripheral_ty {
+    ($field:ident) => {
+        peripherals::$field<'static>
+    };
 }
 
 /// This macro allows to group peripheral structs defined with

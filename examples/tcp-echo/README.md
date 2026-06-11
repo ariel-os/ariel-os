@@ -18,4 +18,6 @@ e.g., `telnet`:
 
     telnet 10.42.0.61 1234
 
-Look [here](../README.md#networking) for more information about network configuration.
+The [networking chapter] of the book contains information on how to set up networking.
+
+[networking chapter]: https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html

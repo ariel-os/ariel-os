@@ -462,7 +462,7 @@ version = "1.0.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.defmt-macros]]
-version = "1.0.1"
+version = "1.1.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.defmt-or-log]]
@@ -542,7 +542,7 @@ version = "0.3.0@git:0feffeb3c90748112a64c6570a39e1251311accb"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net]]
-version = "0.8.0@git:3b185bf1b3852867e4b932456600621f86f78bce"
+version = "0.9.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net-driver]]
@@ -953,10 +953,6 @@ criteria = "safe-to-deploy"
 version = "0.3.10"
 criteria = "safe-to-deploy"
 
-[[exemptions.instant]]
-version = "0.1.13"
-criteria = "safe-to-deploy"
-
 [[exemptions.itertools]]
 version = "0.13.0"
 criteria = "safe-to-deploy"
@@ -1353,6 +1349,10 @@ criteria = "safe-to-deploy"
 version = "0.12.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.smoltcp]]
+version = "0.13.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.socket2]]
 version = "0.4.4"
 criteria = "safe-to-deploy"
@@ -1414,15 +1414,7 @@ version = "1.0.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.time]]
-version = "0.3.45"
-criteria = "safe-to-deploy"
-
-[[exemptions.time]]
 version = "0.3.47"
-criteria = "safe-to-deploy"
-
-[[exemptions.time-core]]
-version = "0.1.7"
 criteria = "safe-to-deploy"
 
 [[exemptions.tinyrlibc]]

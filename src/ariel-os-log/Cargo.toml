@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-log"
-version = "0.4.0"
+version = "0.5.0"
 edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
@@ -56,8 +56,8 @@ esp-println = ["dep:esp-println"]
 
 # Logging transports.
 debug-uart = ["dep:embassy-sync", "logging-over-uart"]
-# `defmt-rtt` forces the logging transport to be the debug output, so it has to
-# go through this crate.
+# `defmt-rtt` uses the debug channel as the logging transport, so it has to go
+# through this crate.
 defmt-rtt = ["ariel-os-debug/defmt-rtt"]
 logging-over-uart = ["esp-println?/uart"]
 logging-over-usb = ["esp-println?/jtag-serial"]

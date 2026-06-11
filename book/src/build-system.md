@@ -22,15 +22,9 @@ For example, to run the hello-world example from the `ariel-os` directory, the c
 
 Tasks available in Ariel OS include:
 
-- `run`: Compiles, flashes, and runs an application. The [debug output](./debug-console.md) is printed in the terminal.
-- `flash`: Compiles and flashes an application, before rebooting the target.
-- `flash-dfuse`: Only available on DfuSe devices, i.e., STM32 devices.
-  Compiles and flashes an application via DfuSe, the non-standard ST protocol based on USB DFU, before rebooting the target.
-  Requires bootloader support for DfuSe in the microcontroller, and [dfu-util][dfu-util-homepage] on the host.
+- `run`, `flash`, `flash-dfuse`, `flash-erase-all`, `attach`, `reset`: See [Flashing & Debugging][flashing-debugging-book] and [Logging][logging-book] for flashing and logging-related tasks.
 - `debug`: Starts a GDB debug session for the selected application.
   The application needs to be flashed using the `flash` task beforehand.
-- `flash-erase-all`: Erases the entire flash memory, including user data. Unlocks it if locked.
-- `reset`: Reboots the target.
 - `tree`: Prints the application's `cargo tree`.
 - `editor-config`: update rust-analyzer configuration for supported code editors, see [Code Editor Configuration](./code-editor-configuration.md)
 - `fmt`: Formats the project's Rust source code following the [Coding Conventions](./coding-conventions.md) (formats all Rust files except generated ones).
@@ -91,6 +85,16 @@ The cloned repository is stored inside `build/imports`.
 It is alternatively possible to clone the repository manually and specify the resulting directory using a [`path` import][laze-path-import-book].
 This can be useful when needing to modify Ariel OS itself, when also working on an application.
 
+#### Cargo Workspaces
+
+As your project gets bigger, you might want to use your own workspace with several crates. When doing so, you need to
+[exclude](https://doc.rust-lang.org/cargo/reference/workspaces.html#the-members-and-exclude-fields) `build/` to not interfere with Ariel OS' workspace.
+
+```toml
+[workspace]
+exclude = ["build"]
+```
+
 ### Enabling laze modules for an application
 
 Instead of manually specifying [laze modules on the command line](#laze-modules), laze modules required for an application must be specified in the application's laze configuration file, `laze-project.yml`.
@@ -140,9 +144,10 @@ apps:
       - rpi-pico-w
 ```
 
-[dfu-util-homepage]: https://dfu-util.sourceforge.net/
 [laze-imports-book]: https://kaspar030.github.io/laze/dev/reference/imports.html
 [laze-git-import-book]: https://kaspar030.github.io/laze/dev/reference/import/git.html
 [laze-path-import-book]: https://kaspar030.github.io/laze/dev/reference/import/path.html
 [laze-module-selects-book]: https://kaspar030.github.io/laze/dev/reference/module/selects.html
 [laze-module-conflicts-book]: https://kaspar030.github.io/laze/dev/reference/module/conflicts.html
+[flashing-debugging-book]: ./flashing-debugging.md
+[logging-book]: ./logging.md

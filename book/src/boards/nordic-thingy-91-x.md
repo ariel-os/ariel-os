@@ -24,7 +24,7 @@ laze build -b nordic-thingy-91-x-nrf9151
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
@@ -54,7 +54,7 @@ laze build -b nordic-thingy-91-x-nrf5340-app
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="supported">✅</span>|
@@ -84,7 +84,7 @@ laze build -b nordic-thingy-91-x-nrf5340-net
 
 |Functionality|Support Status|
 |---|:---:|
-|Debug Output|<span title="supported">✅</span>|
+|Debug Channel|<span title="supported">✅</span>|
 |Logging|<span title="supported">✅</span>|
 |GPIO|<span title="supported with some caveats">☑️</span>[^pins-need-to-be-assigned-to-the-network-core-from-the-application-core]|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|

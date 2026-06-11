@@ -1,16 +1,16 @@
 # Debug Console
 
 <!-- NOTE: "Currently" because it could be extended with other semihosting functionality to make it an actual console. -->
-The debug console is currently conceptually composed of the debug channel output and of the ability for the target to close it (when supported).
+The debug console is currently conceptually composed of the [debug channel output][debug-channel-book] and of the ability for the target to close it (when supported).
 The debug console is enabled by default and the corresponding [laze module][laze-modules-book] is `debug-console`.
 
 ## Printing on the Debug Console
 
-When the `logging-over-debug-channel` [laze module][laze-modules-book] is enabled, [logs][logging-book] are printed on the debug channel output.
+When the `logging-over-debug-channel` [laze module][laze-modules-book] is enabled, [logs][logging-book] are printed on the [debug channel output][debug-channel-book].
 
 ## Closing the Debug Console from Firmware
 
-When using semihosting, it is possible for the target to request the debug console to exit, and to return an exit code indicating success or failure.
+When using [semihosting][semihosting-book], it is possible for the target to request the debug console to exit, and to return an exit code indicating success or failure.
 In Ariel OS, the [`ariel_os::debug::exit()` function][debug-exit-fn-rustdoc] can be used for this.
 When using a host tool that supports semihosting, this will cause the tool to exit, with the exit code given to [`exit()`][debug-exit-fn-rustdoc] on the target being passed to the host.
 
@@ -26,6 +26,8 @@ This is needed to later be able to attach a semihosting-enabled host tool to the
 > [ERROR] panicked at 'Unhandled interrupt on ProCpu' (esp_hal src/interrupt/mod.rs:90)
 > ```
 
+[debug-channel-book]: ./flashing-debugging.md#debug-channel-transports
 [laze-modules-book]: ./build-system.md#laze-modules
 [logging-book]: ./logging.md
+[semihosting-book]: ./flashing-debugging.md#semihosting
 [debug-exit-fn-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/debug/fn.exit.html

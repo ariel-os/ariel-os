@@ -67,31 +67,10 @@ pub fn print_panic(info: &core::panic::PanicInfo<'_>) {
 #[cfg(feature = "log")]
 #[doc(hidden)]
 pub mod log {
-    use core::fmt::{Debug, Display, Formatter};
 
     // Re-export only the minimum set of items to minimize breaking changes in case `log`
     // adds/removes any items.
     pub use log::{debug, error, info, trace, warn};
-
-    /// No-op wrapper that formats the Debug trait (drop-in replacement for the equivalent `defmt`
-    /// type).
-    pub struct Debug2Format<T: Debug>(pub T);
-
-    impl<T: Debug> Debug for Debug2Format<T> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
-            self.0.fmt(f)
-        }
-    }
-
-    /// No-op wrapper that formats the Display trait (drop-in replacement for the equivalent
-    /// `defmt` type).
-    pub struct Display2Format<T: Display>(pub T);
-
-    impl<T: Display> Display for Display2Format<T> {
-        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
-            self.0.fmt(f)
-        }
-    }
 
     #[cfg(all(
         context = "ariel-os",
@@ -101,7 +80,7 @@ pub mod log {
             feature = "std"
         ))
     ))]
-    pub use ariel_os_debug::debug_output_println as println;
+    pub use ariel_os_debug::debug_channel_println as println;
 
     #[cfg(feature = "esp-println")]
     pub use esp_println::println;
@@ -122,8 +101,34 @@ pub mod log {
     pub use crate::noop_println as println;
 }
 
-#[cfg(feature = "log")]
-pub use log::{Debug2Format, Display2Format};
+// NOTE: this module is used both for `log` and when no logging facades are enabled.
+#[cfg(not(feature = "defmt"))]
+#[doc(hidden)]
+mod format_wrappers {
+    use core::fmt::{Debug, Display, Formatter};
+
+    /// No-op wrapper that formats the Debug trait (drop-in replacement for the equivalent `defmt`
+    /// type).
+    pub struct Debug2Format<T: Debug>(pub T);
+
+    impl<T: Debug> Debug for Debug2Format<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
+            self.0.fmt(f)
+        }
+    }
+
+    /// No-op wrapper that formats the Display trait (drop-in replacement for the equivalent `defmt`
+    /// type).
+    pub struct Display2Format<T: Display>(pub T);
+
+    impl<T: Display> Display for Display2Format<T> {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {
+            self.0.fmt(f)
+        }
+    }
+}
+#[cfg(not(feature = "defmt"))]
+pub use format_wrappers::{Debug2Format, Display2Format};
 
 // NOTE: log macros are defined within private modules so that `doc_cfg` does not produce
 // "feature flairs" on them.
@@ -377,7 +382,7 @@ pub mod backend {
 
             if let Some(debug_uart_write_fn) = DEBUG_UART_WRITE_FN.try_get() {
                 // Panicking in this case would not be useful as (a) it is recoverable, we would
-                // just be dropping some debug output and (b) there would not be a output to print
+                // just be dropping some logs and (b) there would not be a logging output to print
                 // the panic on, as there can currently only be one backend at once.
                 let _ = debug_uart_write_fn(bytes);
             }

@@ -13,8 +13,10 @@ In this directory, run
 
 The application will try to connect to [tcpbin.com](https://tcpbin.com/), a simple echo server using TCP.
 
-Look [here](../README.md#networking) for more information about network configuration.
+The [networking chapter] of the book contains information on how to set up networking.
 
 If everything goes well, you should see the server's response:
 
     [INFO ] txd: Hello world!
+
+[networking chapter]: https://ariel-os.github.io/ariel-os/dev/docs/book/networking.html

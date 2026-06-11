@@ -1178,7 +1178,7 @@ impl<
                     // This makes extract_token and everything down the line effectively dead code on
                     // setups with empty SSC, without triggering clippy's nervous dead code warnings.
                     //
-                    // The compiler should be able to eliminiate even this one statement based on
+                    // The compiler should be able to eliminate even this one statement based on
                     // this variant not being constructed under the same condition, but that
                     // property is not being tested.
                     unreachable!("State is not constructed");

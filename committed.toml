@@ -12,6 +12,7 @@ allowed_types = [
   "feat",
   "perf",
   "refactor",
+  "revert",
   "style",
   "test",
 ]
