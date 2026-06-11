@@ -10,6 +10,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"arduino-uno-q\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v1\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v2\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"cy8cproto-062-4343w\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"dfrobot-firebeetle2-esp32-c6\"))"
     );
