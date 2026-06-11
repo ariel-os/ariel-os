@@ -17,6 +17,7 @@ members = [
   "src/ariel-os-macros",
   "src/ariel-os-nrf",
   "src/ariel-os-power",
+  "src/ariel-os-psoc",
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
@@ -120,6 +121,9 @@ esp-wifi-sys = { version = "0.8.1", default-features = false }
 esp-storage = { version = "0.8.0" }
 xtensa-lx-rt = { version = "0.21.0", default-features = false }
 
+# Infineon PSoC HAL
+psoc = { git = "https://github.com/Infineon/psoc-rs", rev = "c0796211705b45661a6522b393ea62657ee8e76c", default-features = false }
+
 linkme = { version = "0.3.32" }
 
 ariel-os = { path = "src/ariel-os", default-features = false }
@@ -138,6 +142,7 @@ ariel-os-log = { path = "src/ariel-os-log", default-features = false }
 ariel-os-macros = { path = "src/ariel-os-macros" }
 ariel-os-nrf = { path = "src/ariel-os-nrf" }
 ariel-os-power = { path = "src/ariel-os-power" }
+ariel-os-psoc = { path = "src/ariel-os-psoc" }
 ariel-os-random = { path = "src/ariel-os-random" }
 ariel-os-rp = { path = "src/ariel-os-rp" }
 ariel-os-rt = { path = "src/ariel-os-rt" }
