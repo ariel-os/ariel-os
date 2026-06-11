@@ -1,0 +1,13 @@
+version: 0.3.0
+targets:
+  cy8cproto-062-4343w:
+    chip: cy8c624abzi-s2d44
+    leds:
+      led0:
+        pin: P13_7
+        color: red
+        active: high
+    buttons:
+      button0:
+        pin: P0_4
+        active: low
