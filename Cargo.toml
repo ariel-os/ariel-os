@@ -19,6 +19,7 @@ members = [
   "src/ariel-os-nrf",
   "src/ariel-os-nrf-time",
   "src/ariel-os-power",
+  "src/ariel-os-psoc",
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
