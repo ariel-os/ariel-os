@@ -60,6 +60,19 @@ ariel_os::hal::define_peripherals!(ButtonPeripherals {
     btn_8: P0_08,
 });
 
+#[cfg(context = "nrf54l15-app")]
+ariel_os::hal::define_peripherals!(ButtonPeripherals {
+    btn_0: P1_00,
+    btn_1: P1_01,
+    btn_2: P1_02,
+    btn_3: P1_03,
+    btn_4: P1_04,
+    btn_5: P1_05,
+    btn_6: P1_06,
+    btn_7: P1_07,
+    btn_8: P1_08,
+});
+
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: ButtonPeripherals) {
     let _btn_0 = Input::builder(peripherals.btn_0, Pull::Up)
