@@ -27,3 +27,9 @@ SECTIONS {
 }
 
 INSERT AFTER .data
+
+/* without this, the linker makes `__sdata` point to `0x800xxxx` but `__edata` point
+   to `0x1000xxx`, making the startup code .data initialization fail
+*/
+__sdata = ADDR(.data);
+__edata = __sdata + SIZEOF(.data);
