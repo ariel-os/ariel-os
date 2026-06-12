@@ -259,16 +259,16 @@ chips:
     name: nRF54L15
     manufacturer: Nordic Semiconductor
     support:
-      gpio: not_currently_supported
+      gpio: needs_testing
       debug_channel: not_currently_supported
-      hwrng: not_currently_supported
-      i2c_controller: not_currently_supported
-      spi_main: not_currently_supported
+      hwrng: needs_testing
+      i2c_controller: needs_testing
+      spi_main: needs_testing
       uart: not_currently_supported
       logging: not_currently_supported
       storage: not_currently_supported
       wifi: not_available
-      ble: not_currently_supported
+      ble: needs_testing
       user_usb: not_available
       ethernet_over_usb: not_available
       ethernet: not_available
