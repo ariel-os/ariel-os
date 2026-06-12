@@ -2,7 +2,7 @@
 
 ## References
 
-- [Manufacturer link](https://www.nordicsemi.com/Products/Development-hardware/nRF54L15-DK)
+- [Manufacturer link](https://web.archive.org/web/20250121081026/https://www.nordicsemi.com/Products/Development-hardware/nRF54L15-DK)
 
 ## laze Builders
 
@@ -12,7 +12,7 @@ For more information on laze builders, check out [this page](../build-system.md#
 
 - **Tier:** 2
 - **Chip:** [nRF54L15](../chips/nrf54l15.md)
-- **Chip Ariel OS Name:** `nrf54l15-app`
+- **Chip Ariel OS Name:** `nrf54l15`
 
 To target this laze builder, run the following command in the root of your Ariel OS app:
 
@@ -35,8 +35,8 @@ laze build -b nrf54l15dk-app
 |Ethernet over USB|<span title="not available on this piece of hardware">–</span>|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
 |Bluetooth Low Energy|<span title="needs testing">🚦</span>|
-|Hardware Random Number Generator|<span title="needs testing">🚦</span>[^no-dedicated-rng-cracen]|
-|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^rram-not-yet-supported]|
+|Hardware Random Number Generator|<span title="needs testing">🚦</span>[^no-dedicated-rng-peripheral-randomness-is-provided-by-the-cracen-cryptographic-accelerator]|
+|Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^the-nrf54l15-uses-rram-rather-than-flash-ariel-os-s-storage-backend-does-not-yet-support-it]|
 
 <p>Legend:</p>
 
@@ -65,6 +65,5 @@ dt, dd {
 
 
   
-[^rram-not-yet-supported]: The nRF54L15 uses RRAM rather than flash; Ariel OS's storage backend does not yet support it.
-  
-[^no-dedicated-rng-cracen]: No dedicated RNG peripheral; randomness is provided by the CRACEN cryptographic accelerator.
+[^no-dedicated-rng-peripheral-randomness-is-provided-by-the-cracen-cryptographic-accelerator]: No dedicated RNG peripheral; randomness is provided by the CRACEN cryptographic accelerator.
+[^the-nrf54l15-uses-rram-rather-than-flash-ariel-os-s-storage-backend-does-not-yet-support-it]: The nRF54L15 uses RRAM rather than flash; Ariel OS's storage backend does not yet support it.

@@ -261,12 +261,18 @@ chips:
     support:
       gpio: needs_testing
       debug_channel: not_currently_supported
-      hwrng: needs_testing
+      hwrng:
+        status: needs_testing
+        comments:
+          - no dedicated RNG peripheral; randomness is provided by the CRACEN cryptographic accelerator
       i2c_controller: needs_testing
       spi_main: needs_testing
       uart: not_currently_supported
       logging: not_currently_supported
-      storage: not_currently_supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - the nRF54L15 uses RRAM rather than flash; Ariel OS's storage backend does not yet support it
       wifi: not_available
       ble: needs_testing
       user_usb: not_available
@@ -1113,7 +1119,7 @@ builders:
       ble: supported
 
   nrf54l15dk-app:
-    chip: nrf54l15-app
+    chip: nrf54l15
     tier: "2"
     support:
 
@@ -1424,6 +1430,11 @@ boards:
     builders:
       - nrf5340dk-app
       - nrf5340dk-net
+
+  - name: nRF54L15-DK
+    url: https://web.archive.org/web/20250121081026/https://www.nordicsemi.com/Products/Development-hardware/nRF54L15-DK
+    builders:
+      - nrf54l15dk-app
 
   - name: nRF9151-DK
     url: https://web.archive.org/web/20250622211955/https://www.nordicsemi.com/Products/Development-hardware/nRF9151-DK
