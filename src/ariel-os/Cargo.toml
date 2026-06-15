@@ -37,6 +37,7 @@ ariel-os-sensors-registry = { workspace = true, optional = true }
 ariel-os-storage = { workspace = true, optional = true }
 ariel-os-threads = { path = "../ariel-os-threads", optional = true }
 ariel-os-utils = { workspace = true }
+ariel-os-mpu = { path = "../ariel-os-mpu", optional = true }
 document-features = { workspace = true }
 linkme = { workspace = true }
 static_cell = { workspace = true }

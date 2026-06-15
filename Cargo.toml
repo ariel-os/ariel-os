@@ -122,6 +122,8 @@ xtensa-lx-rt = { version = "0.21.0", default-features = false }
 
 linkme = { version = "0.3.32" }
 
+bitflags = { version = "2.13.0" }
+
 ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
 ariel-os-bench = { path = "src/ariel-os-bench", default-features = false }
@@ -150,6 +152,7 @@ ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
+ariel-os-mpu = { path = "src/ariel-os-mpu"}
 
 # Built-in sensor drivers.
 ariel-os-sensor-aht20 = { path = "src/sensors/ariel-os-sensor-aht20" }
