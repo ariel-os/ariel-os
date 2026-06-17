@@ -1,9 +1,7 @@
 SECTIONS {
-    .storage ALIGN(${ALIGNMENT}) (NOLOAD) : {
+    .storage (NOLOAD): {
         __storage_start = .;
         . += ${SIZE};
         __storage_end = .;
     }
 }
-
-${INSERT_WHERE}
