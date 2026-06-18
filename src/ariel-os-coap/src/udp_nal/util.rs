@@ -55,6 +55,19 @@ pub enum Error {
     AddressFamilyUnavailable,
 }
 
+impl core::error::Error for Error {}
+
+impl core::fmt::Display for Error {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::RecvError(e) => write!(f, "receive error: {e:?}"),
+            Self::SendError(e) => write!(f, "send error: {e:?}"),
+            Self::BindError(e) => write!(f, "bind error: {e:?}"),
+            Self::AddressFamilyUnavailable => write!(f, "address family unavailable"),
+        }
+    }
+}
+
 impl embedded_io_async::Error for Error {
     fn kind(&self) -> embedded_io_async::ErrorKind {
         match self {

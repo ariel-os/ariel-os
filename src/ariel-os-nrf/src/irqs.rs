@@ -5,7 +5,7 @@
 use embassy_nrf::bind_interrupts;
 
 bind_interrupts!(pub(crate) struct Irqs {
-    #[cfg(feature = "hwrng")]
+    #[cfg(all(feature = "hwrng", not(context = "nrf54l15-app")))]
     RNG => embassy_nrf::rng::InterruptHandler<embassy_nrf::peripherals::RNG>;
 
     #[cfg(feature = "usb")]
@@ -26,13 +26,22 @@ bind_interrupts!(pub(crate) struct Irqs {
     EGU1_SWI1 => nrf_sdc::mpsl::LowPrioInterruptHandler;
     #[cfg(all(feature = "ble", context = "nrf53"))]
     SWI0 => nrf_sdc::mpsl::LowPrioInterruptHandler;
+    // SWI00 is used by the executor on nRF54; use SWI01 for MPSL low-priority handler
+    #[cfg(all(feature = "ble", context = "nrf54l15-app"))]
+    SWI01 => nrf_sdc::mpsl::LowPrioInterruptHandler;
 
-    #[cfg(feature = "ble")]
+    #[cfg(all(feature = "ble", not(context = "nrf54l15-app")))]
     RADIO => nrf_sdc::mpsl::HighPrioInterruptHandler;
+    #[cfg(all(feature = "ble", context = "nrf54l15-app"))]
+    RADIO_0 => nrf_sdc::mpsl::HighPrioInterruptHandler;
 
-    #[cfg(feature = "ble")]
+    #[cfg(all(feature = "ble", not(context = "nrf54l15-app")))]
     TIMER0 => nrf_sdc::mpsl::HighPrioInterruptHandler;
+    #[cfg(all(feature = "ble", context = "nrf54l15-app"))]
+    TIMER10 => nrf_sdc::mpsl::HighPrioInterruptHandler;
 
-    #[cfg(feature = "ble")]
+    #[cfg(all(feature = "ble", not(context = "nrf54l15-app")))]
     RTC0 => nrf_sdc::mpsl::HighPrioInterruptHandler;
+    #[cfg(all(feature = "ble", context = "nrf54l15-app"))]
+    GRTC_3 => nrf_sdc::mpsl::HighPrioInterruptHandler;
 });

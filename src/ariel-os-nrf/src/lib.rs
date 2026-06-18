@@ -69,6 +69,10 @@ ariel_os_embassy_common::executor_swi!(EGU0_SWI0);
 #[cfg(any(context = "nrf53", context = "nrf91"))]
 ariel_os_embassy_common::executor_swi!(EGU0);
 
+#[cfg(feature = "executor-interrupt")]
+#[cfg(context = "nrf54")]
+ariel_os_embassy_common::executor_swi!(SWI00);
+
 use embassy_nrf::{Peri, PeripheralType, config::Config};
 
 #[doc(hidden)]
@@ -103,7 +107,16 @@ mod private {
 pub fn init() -> OptionalPeripherals {
     enable_flash_cache();
 
-    let peripherals = embassy_nrf::init(Config::default());
+    let config = {
+        let mut c = Config::default();
+        // nRF54L defaults to 64 MHz; MPSL (BLE) requires 128 MHz.
+        #[cfg(context = "nrf54l15-app")]
+        {
+            c.clock_speed = embassy_nrf::config::ClockSpeed::CK128;
+        }
+        c
+    };
+    let peripherals = embassy_nrf::init(config);
     OptionalPeripherals::from(peripherals)
 }
 
@@ -117,6 +130,10 @@ fn enable_flash_cache() {
         }
         context = "nrf5340-app" => {
             embassy_nrf::pac::CACHE_S
+                .enable().write(|w| w.set_enable(true));
+        }
+        context = "nrf54l15-app" => {
+            embassy_nrf::pac::ICACHE_S
                 .enable().write(|w| w.set_enable(true));
         }
         _ => {}

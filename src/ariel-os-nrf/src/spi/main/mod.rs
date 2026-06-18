@@ -269,3 +269,10 @@ define_spi_drivers!(
     // Used by UART
     // SERIAL3 => SERIAL3,
 );
+#[cfg(context = "nrf54l15-app")]
+define_spi_drivers!(
+    SERIAL20 => SERIAL20,
+    SERIAL21 => SERIAL21,
+    SERIAL22 => SERIAL22,
+    SERIAL30 => SERIAL30,
+);

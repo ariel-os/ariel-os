@@ -1,0 +1,51 @@
+version: 0.3.0
+targets:
+  nrf54l15dk-app:
+    chip: nrf54l15-app
+    leds:
+      led0:
+        color: green
+        pin: P2_09
+        active: high
+        aliases:
+          - LED1
+      led1:
+        color: green
+        pin: P1_10
+        active: high
+        aliases:
+          - LED2
+      led2:
+        color: green
+        pin: P2_07
+        active: high
+        aliases:
+          - LED3
+      led3:
+        color: green
+        pin: P1_14
+        active: high
+        aliases:
+          - LED4
+
+    buttons:
+      button0:
+        pin: P1_13
+        active: low
+        aliases:
+          - Button 1
+      button1:
+        pin: P1_09
+        active: low
+        aliases:
+          - Button 2
+      button2:
+        pin: P1_08
+        active: low
+        aliases:
+          - Button 3
+      button3:
+        pin: P0_04
+        active: low
+        aliases:
+          - Button 4

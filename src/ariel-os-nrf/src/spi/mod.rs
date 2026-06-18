@@ -42,6 +42,12 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             // Used by UART
             // let _ = peripherals.SERIAL3.take().unwrap();
         }
+        context = "nrf54l15-app" => {
+            let _ = peripherals.SERIAL20.take().unwrap();
+            let _ = peripherals.SERIAL21.take().unwrap();
+            let _ = peripherals.SERIAL22.take().unwrap();
+            let _ = peripherals.SERIAL30.take().unwrap();
+        }
         _ => {
             compile_error!("this nRF chip is not supported");
         }
