@@ -105,6 +105,7 @@
 - [Clocks](./clocks.md)
 - [Global Allocator](./global-allocator.md)
 - [Networking](./networking.md)
+- [USB](./usb.md)
 - [Bluetooth Low Energy](./bluetooth.md)
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
