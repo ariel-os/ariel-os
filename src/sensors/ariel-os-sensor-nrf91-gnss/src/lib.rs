@@ -455,58 +455,58 @@ impl Sensor for Nrf91Gnss {
 
     fn reading_channels(&self) -> ariel_os_sensors::sensor::ReadingChannels {
         ReadingChannels::from([
-            // Putting these first so `GnssExt` doesn't spend more time searching for them.
+            // Putting the time-related channels first so `GnssTimeExt` doesn't iterate much to find them.
             ReadingChannel::new(
-                // Seconds since Ariel epoch (2025-01-01)
+                // Opaque: seconds since [`ariel_os_sensors_gnss_time_ext::ARIEL_EPOCH`].
                 Label::OpaqueGnssTime,
                 0,
                 MeasurementUnit::Second,
             ),
             ReadingChannel::new(
-                // Milliseconds
+                // Opaque: nanoseconds.
                 Label::Opaque,
-                -3,
+                // Scaling doesn't matter here as GnssTimeExt doesn't read it.
+                0,
                 MeasurementUnit::Second,
             ),
             ReadingChannel::new(
-                // Accuracy is in meters.
+                // Latitude in degrees.
+                // Resolution of this channel is 1*10^-7 degrees.
                 Label::Latitude,
                 -7,
                 MeasurementUnit::DecimalDegree,
             ),
             ReadingChannel::new(
-                // Max value of an i32 is 2,147,483,647
-                // The value ranges from -180 to 180, we can go to 10^-7, making the max possible value 214.
-                // The smallest distance between two points at the equator is 40,075,016/360 * 10^-7 ~= 0.012 meters
-                // Accuracy is in meters.
+                // Longitude in degrees.
+                // Resolution of this channel is 1*10^-7 degrees.
                 Label::Longitude,
                 -7,
                 MeasurementUnit::DecimalDegree,
             ),
             ReadingChannel::new(
-                // Smallest distance between two altitude reading: 0.01 meters.
-                // Value ranging from -21,474,836 meters to 21,474,836 meters.
+                // Altitude in meters. Value ranging from -21,474,836 meters to 21,474,836 meters.
+                // Resolution of this channel is 0.01 meters.
                 Label::Altitude,
                 -2,
                 MeasurementUnit::Meter,
             ),
             ReadingChannel::new(
-                // Max value is 2,147 m/s
-                // Smallest distance between two speed readings: 0.000001 m/s
+                // Ground speed in m/s. Max value is 2,147 m/s.
+                // Resolution of this channel is 1*10^-6 m/s.
                 Label::GroundSpeed,
                 -6,
                 MeasurementUnit::MeterPerSecond,
             ),
             ReadingChannel::new(
-                // Max value is 2,147 m/s
-                // Smallest distance between two speed readings: 0.000001 m/s
+                // Vertical speed in m/s. Max value is 2,147 m/s.
+                // Resolution of this channel is 1*10^-6 m/s.
                 Label::VerticalSpeed,
                 -6,
                 MeasurementUnit::MeterPerSecond,
             ),
             ReadingChannel::new(
-                // Max value is 360 degrees
-                // Smallest distance between two heading readings: 0.000001 degrees
+                // Heading in degrees. From 0 to 360 degrees.
+                // Resolution of this channel is 1*10^-6 degrees.
                 Label::Heading,
                 -6,
                 MeasurementUnit::Degree,
