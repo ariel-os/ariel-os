@@ -463,6 +463,8 @@ name = "ariel-os-power"
 version = "0.5.0"
 dependencies = [
  "cortex-m",
+ "critical-section",
+ "embassy-stm32",
  "esp-hal",
 ]
 
