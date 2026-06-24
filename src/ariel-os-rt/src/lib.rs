@@ -47,7 +47,6 @@ cfg_select! {
             use crate::stack::Stack;
 
             pub fn init() {}
-            pub fn wfi() {}
             pub fn sp() -> usize { 0 }
             pub fn stack() -> Stack { Stack::default() }
         }
@@ -195,7 +194,7 @@ fn startup() -> ! {
         test_main();
 
         loop {
-            arch::wfi();
+            ariel_os_power::enter_sleep_mode();
         }
     }
 }
