@@ -1733,6 +1733,19 @@ modules:
         FEATURES:
           - ariel-os/tuntap
 
+  - name: user-net-driver-channel
+    help: Network backend is provided by the user.
+
+      While Ariel OS can not let user define an arbitrary embassy-net driver
+      (as that type needs to be named), an embassy_net_driver can be
+      implemented.
+    provides_unique:
+      - network_device
+    env:
+      global:
+        FEATURES:
+          - ariel-os/user-net-driver-channel
+
   - name: idle-threads
     help: create idle-threads to be taken when no other threads are ready
     env:
