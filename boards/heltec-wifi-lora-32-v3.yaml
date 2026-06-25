@@ -11,3 +11,14 @@ targets:
       button0:
         pin: GPIO0
         active: low
+
+ariel_doc:
+  name: Heltec WiFi LoRa 32 V3
+  url: https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/
+  builders:
+    heltec-wifi-lora-32-v3:
+      chip: esp32s3
+      tier: "3"
+      support:
+        user_usb: not_available
+        ethernet_over_usb: not_available

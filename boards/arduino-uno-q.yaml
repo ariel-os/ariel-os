@@ -28,3 +28,39 @@ targets:
       led5:
         color: blue
         pin: PH15
+
+ariel_doc:
+  name: Arduino UNO Q
+  url: https://web.archive.org/web/20260315192100/https://docs.arduino.cc/hardware/uno-q/
+  builders:
+    arduino-uno-q:
+      chip: stm32u585ai
+      tier: "2"
+      support:
+        ethernet_over_usb: not_available
+        user_usb:
+          status: not_available
+          comments:
+            - despite having a USB port on the board, it is only usable by the Qualcomm chip
+      notes: |
+        The MCU can be flashed from the Qualcomm chip on the board which runs a Linux system with the [`openocd`](https://openocd.org/) binary ready for use. Install [adb](https://developer.android.com/tools/adb) to communicate with the Qualcomm chip.
+
+        Build your application (in this case the [blinky](https://github.com/ariel-os/ariel-os/tree/main/examples/blinky) example from the Ariel OS repository):
+        ```bash
+        laze -C examples/blinky build -b arduino-uno-q
+        ```
+
+        Then copy the binary onto the Qualcomm chip:
+        ```bash
+        adb push build/bin/arduino-uno-q/cargo/thumbv8m.main-none-eabihf/release/blinky /tmp
+        ```
+
+        Get a shell on the Qualcomm chip:
+        ```bash
+        adb shell
+        ```
+
+        Flash your application onto the STM32 MCU
+        ```bash
+        /opt/openocd/bin/openocd -d3 -s /opt/openocd -f openocd_gpiod.cfg -c 'program /tmp/blinky verify reset exit'
+        ```

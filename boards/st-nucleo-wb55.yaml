@@ -35,3 +35,15 @@ targets:
         pin: PD1
         aliases:
           - SW3
+
+ariel_doc:
+  name: ST NUCLEO-WB55RG
+  url: https://web.archive.org/web/20240803070523/https://www.st.com/en/evaluation-tools/nucleo-wb55rg.html
+  builders:
+    st-nucleo-wb55:
+      chip: stm32wb55rg
+      tier: "1"
+      support:
+        user_usb: supported
+        wifi: not_available
+        ethernet_over_usb: supported

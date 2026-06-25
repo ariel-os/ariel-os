@@ -29,3 +29,19 @@ targets:
     buttons:
       button0:
         pin: PC13
+
+ariel_doc:
+  name: ST NUCLEO-H755ZI-Q
+  url: https://web.archive.org/web/20240524105149/https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html
+  builders:
+    st-nucleo-h755zi-q:
+      chip: stm32h755zi
+      tier: "1"
+      support:
+        ethernet: supported
+        user_usb: supported
+        wifi: not_available
+        ethernet_over_usb:
+          status: not_currently_supported
+          comments:
+            - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"

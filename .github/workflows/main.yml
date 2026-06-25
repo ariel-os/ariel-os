@@ -532,25 +532,25 @@ jobs:
         uses: crate-ci/typos@f8a58b6b53f2279f71eb605f03a4ae4d10608f45 # v1.47.0
 
       - name: Check that the book summary has an up-to-date board list
-        run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --check
+        run: ./doc/gen_book.rs summary doc/support_matrix.yml book/src/SUMMARY.md --template-path book/templates/SUMMARY.md.tmpl --boards-dir boards/ --check
 
       - name: Check that the board pages are all up-to-date
-        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl
+        run: ./doc/gen_book.rs board-pages doc/support_matrix.yml book/src/boards/ --check --template-path book/templates/board-page.md.tmpl --boards-dir boards/
 
       - name: Check that the chip pages are all up-to-date
-        run: ./doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --check --chip-template-path book/templates/chip-page.md.tmpl --matrix-template-path book/templates/support-matrix.html.tmpl
+        run: ./doc/gen_book.rs chip-pages doc/support_matrix.yml book/src/chips/ --check --chip-template-path book/templates/chip-page.md.tmpl --matrix-template-path book/templates/support-matrix.html.tmpl --boards-dir boards/
 
       - name: Check that the support matrix is up-to-date
         run: |
-          ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix.html --template-path book/templates/support-matrix.html.tmpl --check
+          ./doc/gen_book.rs matrix doc/support_matrix.yml book/src/support_matrix.html --template-path book/templates/support-matrix.html.tmpl --boards-dir boards/ --check
 
       - name: Check that the board index page is up-to-date
         run: |
-          ./doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl --check
+          ./doc/gen_book.rs board-index doc/support_matrix.yml book/src/boards/index.md --template-path book/templates/board-index.md.tmpl --boards-dir boards/ --check
 
       - name: Check that the chip index page is up-to-date
         run: |
-          ./doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl --check
+          ./doc/gen_book.rs chip-index doc/support_matrix.yml book/src/chips/index.md --template-path book/templates/chip-index.md.tmpl --boards-dir boards/ --check
 
       - name: Install mdbook
         uses: taiki-e/install-action@74e87cbfa15a59692b158178d8905a61bf6fca95 # v2

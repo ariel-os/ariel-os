@@ -45,3 +45,32 @@ targets:
         pin: PE0
         aliases:
           - BT2
+
+ariel_doc:
+  name: ST STEVAL-MKBOXPRO
+  url: https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html
+  builders:
+    st-steval-mkboxpro:
+      chip: stm32u585ai
+      tier: "2"
+      support:
+        user_usb: supported
+        wifi: not_available
+        ble: not_currently_supported
+        ethernet_over_usb:
+          status: not_currently_supported
+          comments:
+            - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+      notes: |-
+        The `st-steval-mkboxpro` can be flashed using USB DFU and using a debug probe.
+
+        ##### Using USB DFU for Flashing
+
+        After connecting a USB-C cable, start the bootloader with DFU by cycling the power of the microcontroller while pressing button 2 on the side of the case.
+        The microcontroller enumerates as "STMicroelectronics STM Device in DFU Mode" on the host computer.
+        Use the `laze build flash-dfuse` task to flash the microcontroller.
+
+        ##### Using a Debug Probe for Flashing
+
+        After opening the case, use the JP2/SWD connector (marked "MCU SWD") with an SWD debug probe (e.g., the STLINK-V3MINIE):
+        do note that JP2 is not keyed, the red wire of the ribbon cable must be closer to the JP2 pin marked "1" on the PCB (close to the POWER switch).
