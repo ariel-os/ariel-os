@@ -27,7 +27,6 @@ Tasks available in Ariel OS include:
   The application needs to be flashed using the `flash` task beforehand.
 - `tree`: Prints the application's `cargo tree`.
 - `editor-config`: update rust-analyzer configuration for supported code editors, see [Code Editor Configuration](./code-editor-configuration.md)
-- `fmt`: Formats the project's Rust source code following the [Coding Conventions](./coding-conventions.md) (formats all Rust files except generated ones).
 
 > [!IMPORTANT]
 > As some tasks may trigger a rebuild, it is necessary to pass the same settings to related consecutive commands:

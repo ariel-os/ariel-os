@@ -56,6 +56,14 @@ This comment contains links that allow accessing the deployed documentation.
 > [!IMPORTANT]
 > When making a PR with changes that affect the documentation, the preview should be checked to make sure the docs are rendered as expected.
 
+## Development laze tasks
+
+There are laze tasks available to ease the development of Ariel OS itself, using the syntax `laze build <task>` in the Ariel OS repository:
+
+- `install-toolchain`: installs the targets and components needed to build for every supported MCUs. Select the `nightly` option with `laze build -s nightly install-toolchain` to install the targets and components on the nightly version used by Ariel OS.
+- `fmt`: Formats the project's Rust source code following the [Coding Conventions](./coding-conventions.md) (formats all Rust files except generated ones).
+- `update-book`: run the book generation scripts (board and chip support pages, board support matrix). You can build the book by running `mdbook build book` (not a laze task), the built HTML files will be in `book/book`.
+
 ## Dependency Vetting
 
 We are currently experimenting with the process of vetting our Rust dependencies through [`cargo-vet`][cargo-vet-repo], with the aim of defending against supply-chain attacks.

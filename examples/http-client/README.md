@@ -10,12 +10,12 @@ In this directory, run
 
     laze build -b nrf52840dk run
 
-This example needs to be provided with an endpoint URL to send the HTTP GET
-request to, through the `ENDPOINT_URL` environment variable.
+This example does a GET request to <https://crab.ariel-os.org> or an URL configured
+through the `ENDPOINT_URL` environment variable, the response body will be printed
+as a string, along with some relevant HTTP response headers before the program exits.
 TLS 1.3 and mDNS are supported; however the server is not authenticated.
-A GET request will be made every 3 seconds, even in case of failure and the
-response body will be printed as a string, along with some relevant HTTP
-response headers.
+Websites using TLS and a RSA signature won't work out of the box, you will need to
+select the `alloc` laze module and enable the `rsa` feature on `reqwless`.
 
 The [networking chapter] of the book contains information on how to set up networking.
 
