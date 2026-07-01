@@ -19,7 +19,7 @@ Additionally, no stability guarantees are currently provided regarding the memor
 - The thread stacks, if [multithreading][multithreading-book] is enabled, are currently allocated as individual `static`s, anywhere in the `.bss` section.
 - If [multithreading][multithreading-book] is enabled, and if the MCU has two symmetrical cores and [`multi-core`][multicore-support-book] is enabled, the ISR stack of the second core is allocated as a `static`, anywhere in the `.bss` section.
 - Depending on the architecture, the uninitialized section is either called `.uninit` or `.noinit`.
-- The heap, if enabled, may take up to the remaining space.
+- The [heap][global-allocator-book], if enabled, may take up to the remaining space.
   `heapsize_required` ensures that there is enough space for the heap, at link time.
 
 [^flip-link-hw-support]: Currently that is Cortex-M-based MCUs and *some* RISC-V based ESP32s (the ESP32-C6, but not the ESP32-C3).
@@ -160,3 +160,4 @@ Addresses| | .isr_stack  | | ≥ "isr_stacksize_required"
 [multithreading-book]: ./multithreading.md
 [multicore-support-book]: ./multithreading.md#multicore-support
 [flip-link-readme]: https://github.com/knurling-rs/flip-link/blob/199347bebde115e690393dd1f5016f2703083df9/README.md
+[global-allocator-book]: ./global-allocator.md
