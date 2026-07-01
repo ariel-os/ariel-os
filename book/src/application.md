@@ -49,8 +49,6 @@ Functions can currently be registered as either `spawner`s or `task`s:
   They are provided with a [`Spawner`](https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.Spawner.html) instance and can therefore be used to [`spawn`](https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.Spawner.html#method.spawn) other `async` tasks.
 - [`task` functions][task-attr-docs] are `async` functions that are statically allocated at compile-time.
   They are especially useful for long-running, `async` tasks.
-  They must also be used to use *Ariel OS configuration hooks*, which can be requested with their associated macro parameter, and allow to provide configuration during boot.
-  Please refer to the documentation of [`task`][task-attr-docs] for a list of available hooks and to [Configuration Hooks](#configuration-hooks) to know more about hook usage.
 
 Both of these can be provided with an instance of an Ariel OS peripheral struct when needed, using the `peripherals` macro parameters (see the macros' documentation) and taking that Ariel OS peripheral struct as parameter.
 
@@ -72,10 +70,6 @@ async fn blinky(peripherals: pins::LedPeripherals) {
     }
 }
 ```
-
-## Configuration Hooks
-
-TODO
 
 [embassy-style-hals]: ./glossary.md#embassy-style-hals
 [ariel-os-hals]: ./glossary.md#ariel-os-hals
