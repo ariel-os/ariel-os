@@ -4,7 +4,6 @@
 use ariel_os::{
     debug::{ExitCode, exit},
     gpio::{self, Input, Pull},
-    hal::peripherals,
     log::info,
 };
 

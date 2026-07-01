@@ -1,4 +1,4 @@
-use ariel_os::hal::{i2c, peripherals};
+use ariel_os::hal::i2c;
 
 ariel_os::hal::group_peripherals!(Peripherals {
     lcd: LcdPeripherals,

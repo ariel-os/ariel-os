@@ -1,5 +1,3 @@
-use ariel_os::hal::peripherals;
-
 #[cfg(context = "nrf52840dk")]
 ariel_os::hal::define_peripherals!(Buttons {
     btn1: P0_11,

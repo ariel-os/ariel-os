@@ -5,12 +5,6 @@
 /// the [`cfg`
 /// attribute](https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-attribute)),
 /// to define different setups for different boards.
-///
-/// # Note
-///
-/// The [`define_peripherals!`](crate::define_peripherals!) macro expects the
-/// `ariel_os::hal::peripherals` module to be in scope.
-///
 // Inspired by https://github.com/adamgreig/assign-resources/tree/94ad10e2729afdf0fd5a77cd12e68409a982f58a
 // under MIT license
 #[macro_export]
@@ -65,7 +59,7 @@ macro_rules! define_peripherals {
 #[doc(hidden)]
 macro_rules! __peripheral_ty {
     ($field:ident) => {
-        $crate::hal::peripheral::Peri<'static, peripherals::$field>
+        $crate::hal::peripheral::Peri<'static, $crate::hal::peripherals::$field>
     };
 }
 
@@ -74,7 +68,7 @@ macro_rules! __peripheral_ty {
 #[doc(hidden)]
 macro_rules! __peripheral_ty {
     ($field:ident) => {
-        peripherals::$field<'static>
+        $crate::hal::peripherals::$field<'static>
     };
 }
 
