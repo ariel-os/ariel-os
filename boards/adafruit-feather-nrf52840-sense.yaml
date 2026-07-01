@@ -5,17 +5,15 @@ targets:
     flags:
       - has_usb_device_port
     leds:
-      # FIXME: led0/led1 names are purely synthetic to work with the current
-      # sbd::ariel convention of naming them sequentially.
-      led0:
-        color: red
+      # led0
+      - color: red
         pin: P1_09
         active: high
         aliases:
           - D13 # bus name in schematic, and silkscreen label
           - D2 # LED part designator in schematic
-      led1:
-        color: blue
+      # led1
+      - color: blue
         pin: P1_10
         active: high
         aliases:
@@ -29,10 +27,8 @@ targets:
       # * orange D3 is hardwired to LiPo charge port STAT
 
     buttons:
-      # FIXME: "button0" name is purely synthetic to work with the current
-      # sbd::ariel convention of naming them sequentially.
-      button0:
-        pin: P1_02
+      # button0
+      - pin: P1_02
         # Note that there is no external pull-up.
         active: low
         aliases:

@@ -8,24 +8,24 @@ targets:
     ariel:
       swi: UART5
     leds:
-      led0:
-        pin: PB0
+      # led0
+      - pin: PB0
         aliases:
           - LD1
         color: green
         active: high
-      led1:
-        pin: PE1
+      # led1
+      - pin: PE1
         aliases:
           - LD2
         color: yellow
         active: high
-      led2:
-        pin: PB14
+      # led2
+      - pin: PB14
         aliases:
           - LD3
         color: red
         active: high
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13

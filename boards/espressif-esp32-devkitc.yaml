@@ -3,6 +3,6 @@ targets:
   espressif-esp32-devkitc:
     chip: esp-wroom-32
     buttons:
-      button0:
-        pin: GPIO0
+      # button0
+      - pin: GPIO0
         active: low

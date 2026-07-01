@@ -5,11 +5,11 @@ targets:
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PB5
+      # led0
+      - pin: PB5
         aliases:
           - LD1
         color: red
     buttons:
-      button0:
-        pin: PB13
+      # button0
+      - pin: PB13

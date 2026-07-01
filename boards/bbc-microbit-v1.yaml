@@ -3,7 +3,7 @@ targets:
   bbc-microbit-v1:
     chip: nrf51822-xxaa
     buttons:
-      button0:
-        pin: P0_17
-      button1:
-        pin: P0_26
+      # button0
+      - pin: P0_17
+      # button1
+      - pin: P0_26

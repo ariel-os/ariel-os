@@ -10,21 +10,21 @@ targets:
           - CONFIG_VBUS_DETECTION=false
           - CONFIG_SWI=USART2
     leds:
-      led0:
-        color: red
+      # led0
+      - color: red
         pin: PH10
-      led1:
-        color: green
+      # led1
+      - color: green
         pin: PH11
-      led2:
-        color: blue
+      # led2
+      - color: blue
         pin: PH12
-      led3:
-        color: red
+      # led3
+      - color: red
         pin: PH13
-      led4:
-        color: green
+      # led4
+      - color: green
         pin: PH14
-      led5:
-        color: blue
+      # led5
+      - color: blue
         pin: PH15
