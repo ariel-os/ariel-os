@@ -23,6 +23,7 @@ members = [
   "src/ariel-os-sensors-gnss-time-ext",
   "src/ariel-os-sensors-registry",
   "src/ariel-os-sensors-utils",
+  "src/ariel-os-sntp",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "src/lib/coapcore",
@@ -146,6 +147,7 @@ ariel-os-sensors = { path = "src/ariel-os-sensors" }
 ariel-os-sensors-gnss-time-ext = { path = "src/ariel-os-sensors-gnss-time-ext" }
 ariel-os-sensors-registry = { path = "src/ariel-os-sensors-registry" }
 ariel-os-sensors-utils = { path = "src/ariel-os-sensors-utils" }
+ariel-os-sntp = { path = "src/ariel-os-sntp" }
 ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }

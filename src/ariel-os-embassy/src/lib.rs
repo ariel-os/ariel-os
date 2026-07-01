@@ -427,6 +427,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
                     .unwrap();
             }
         }
+
+        #[cfg(feature = "sntp")]
+        {
+            spawner.spawn(ariel_os_sntp::sntp_task(stack)).unwrap();
+        }
     }
 
     #[cfg(feature = "wifi-cyw43")]
