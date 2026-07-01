@@ -84,7 +84,7 @@ embassy-futures = { version = "0.1.2", default-features = false }
 embassy-hal-internal = { version = "0.3.0", default-features = false }
 embassy-net = { version = "0.9.1", default-features = false }
 embassy-net-driver-channel = { version = "0.3.2", default-features = false }
-embassy-nrf = { version = "0.8.0", default-features = false }
+embassy-nrf = { version = "0.9.0", default-features = false }
 embassy-rp = { version = "0.8", default-features = false }
 embassy-stm32 = { version = "0.4", default-features = false }
 embassy-sync = { version = "0.7.2", default-features = false }
@@ -184,7 +184,7 @@ trouble-host = { version = "0.5.0" }
 
 # nrf-sdc 0.4.0 has not been released, yet. need it for bt-hci 0.6 bump
 #nrf-sdc = { version = "0.4.0" }
-nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
+nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "d4d244d5ce21f59fa2263333cb1d8f2a5d997145" }
 
 futures-util = { version = "0.3.32", default-features = false }
 nrf-modem = { version = "0.10.2" }
