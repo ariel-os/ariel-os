@@ -1282,6 +1282,17 @@ modules:
         FEATURES:
           - ariel-os/network-config-ipv6-static
 
+  - name: network-config-ipv6-slaac
+    help: use SLAAC for IPv6 network configuration
+    selects:
+      - ipv6
+    provides_unique:
+      - network-config-ipv6
+    env:
+      global:
+        FEATURES:
+          - ariel-os/network-config-ipv6-slaac
+
   - name: ipv6
     selects:
       - network
