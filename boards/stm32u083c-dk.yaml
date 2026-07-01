@@ -19,3 +19,15 @@ targets:
     buttons:
       button0:
         pin: PC2
+
+ariel_doc:
+  name: STM32U083C-DK
+  url: https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html
+  builders:
+    stm32u083c-dk:
+      chip: stm32u083mc
+      tier: "1"
+      support:
+        user_usb: supported
+        wifi: not_available
+        ethernet_over_usb: supported

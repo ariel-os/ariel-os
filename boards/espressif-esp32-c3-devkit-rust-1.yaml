@@ -11,3 +11,12 @@ targets:
     leds:
       led0:
         pin: GPIO7
+
+ariel_doc:
+  name: Espressif ESP32-C3-DevKit-RUST-1
+  url: https://web.archive.org/web/20250729095245/https://github.com/esp-rs/esp-rust-board/tree/v1.2
+  builders:
+    espressif-esp32-c3-devkit-rust-1:
+      chip: esp32c3
+      tier: "3"
+      support: {}

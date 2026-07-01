@@ -10,3 +10,15 @@ targets:
     buttons:
       button0:
         pin: PC13
+
+ariel_doc:
+  name: ST NUCLEO-F401RE
+  url: https://web.archive.org/web/20250115005425/https://www.st.com/en/evaluation-tools/nucleo-f401re.html
+  builders:
+    st-nucleo-f401re:
+      chip: stm32f401re
+      tier: "2"
+      support:
+        user_usb: not_available
+        wifi: not_available
+        ethernet_over_usb: not_available

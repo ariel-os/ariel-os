@@ -9,8 +9,24 @@ pub struct Matrix {
     pub functionalities: Vec<FunctionalityInfo>,
     pub note_snippets: Vec<NoteSnippets>,
     pub chips: HashMap<String, ChipInfo>,
+    #[serde(default)]
     pub builders: HashMap<String, BuilderInfo>,
+    #[serde(default)]
     pub boards: Vec<BoardInfo>,
+}
+
+/// Top-level schema for reading ariel_doc sections from boards/*.yaml BSP files.
+/// Only the ariel_doc key is read; all other BSP fields are ignored.
+#[derive(Debug, Deserialize)]
+pub struct BspFile {
+    pub ariel_doc: Option<ArielDocSection>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ArielDocSection {
+    pub name: String,
+    pub url: String,
+    pub builders: HashMap<String, BuilderInfo>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

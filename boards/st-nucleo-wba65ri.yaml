@@ -35,3 +35,12 @@ targets:
         pin: PB4
         aliases:
           - B3
+
+ariel_doc:
+  name: ST NUCLEO-WBA65RI
+  url: https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html
+  builders:
+    st-nucleo-wba65ri:
+      chip: stm32wba65ri
+      tier: "3"
+      support: {}

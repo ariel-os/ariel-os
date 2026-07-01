@@ -37,3 +37,22 @@ targets:
 
   nrf5340dk-net:
     chip: nrf5340-net
+
+ariel_doc:
+  name: nRF5340-DK
+  url: https://web.archive.org/web/20250115224621/https://www.nordicsemi.com/Products/Development-hardware/nrf5340-dk
+  builders:
+    nrf5340dk-app:
+      chip: nrf5340-app
+      tier: "1"
+      support:
+        user_usb: supported
+        ethernet_over_usb: supported
+        ble: not_available
+    nrf5340dk-net:
+      chip: nrf5340-net
+      tier: "1"
+      support:
+        user_usb: not_available
+        ethernet_over_usb: not_available
+        ble: supported

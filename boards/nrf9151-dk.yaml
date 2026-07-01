@@ -44,3 +44,12 @@ targets:
         active: low
         aliases:
           - Button 4
+
+ariel_doc:
+  name: nRF9151-DK
+  url: https://web.archive.org/web/20250622211955/https://www.nordicsemi.com/Products/Development-hardware/nRF9151-DK
+  builders:
+    nrf9151-dk:
+      chip: nrf9151
+      tier: "2"
+      support: {}

@@ -10,3 +10,12 @@ targets:
         pin: GPIO0
         aliases:
           - BOOT
+
+ariel_doc:
+  name: Unihiker K10
+  url: https://web.archive.org/web/20260207013308/https://www.unihiker.com/products/k10
+  builders:
+    unihiker-k10:
+      chip: esp32s3
+      tier: "2"
+      support: {}

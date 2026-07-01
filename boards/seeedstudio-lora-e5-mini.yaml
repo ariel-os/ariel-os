@@ -13,3 +13,12 @@ targets:
     buttons:
       button0:
         pin: PB13
+
+ariel_doc:
+  name: Seeed Studio LoRa-E5 mini
+  url: https://web.archive.org/web/20250802201959/https://wiki.seeedstudio.com/LoRa_E5_mini/
+  builders:
+    seeedstudio-lora-e5-mini:
+      chip: stm32wle5jc
+      tier: "3"
+      support: {}

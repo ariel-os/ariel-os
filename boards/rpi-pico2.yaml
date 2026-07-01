@@ -8,3 +8,14 @@ targets:
       led0:
         pin: PIN_25
         color: green
+
+ariel_doc:
+  name: Raspberry Pi Pico 2
+  url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
+  builders:
+    rpi-pico2:
+      chip: rp235xa
+      tier: "1"
+      support:
+        user_usb: supported
+        ethernet_over_usb: supported
