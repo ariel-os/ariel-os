@@ -13,3 +13,15 @@ targets:
       button0:
         pin: PC13
         active: high
+
+ariel_doc:
+  name: ST NUCLEO-G431RB
+  url: https://web.archive.org/web/20260318122407/https://www.st.com/en/evaluation-tools/nucleo-g431rb.html
+  builders:
+    st-nucleo-g431rb:
+      chip: stm32g431rb
+      tier: "3"
+      support:
+        user_usb: not_available
+        wifi: not_available
+        ethernet_over_usb: not_available
