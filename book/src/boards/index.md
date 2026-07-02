@@ -34,6 +34,7 @@
 - [ST NUCLEO-F303RE](./st-nucleo-f303re.md)
 - [ST NUCLEO-F401RE](./st-nucleo-f401re.md)
 - [ST NUCLEO-F411RE](./st-nucleo-f411re.md)
+- [ST NUCLEO-G431RB](./st-nucleo-g431rb.md)
 - [ST NUCLEO-H753ZI](./st-nucleo-h753zi.md)
 - [ST NUCLEO-H755ZI-Q](./st-nucleo-h755zi-q.md)
 - [ST NUCLEO-WB55RG](./st-nucleo-wb55rg.md)

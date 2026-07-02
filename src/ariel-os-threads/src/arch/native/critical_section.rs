@@ -59,6 +59,25 @@ unsafe impl critical_section::Impl for ArielCriticalSection {
             // indicated by the threads entry in `THREAD_RUNNABLE`.
             if let Some(thread_id) = thread_id {
                 atomic_wait::wait(&super::THREAD_RUNNABLE[usize::from(thread_id)], 0);
+
+                // For regular multicore, setting a thread to `Runnable` (e.g., by doing a
+                // `threadlist::pop()`) triggers a scheduler run by pending an ISR that implicitly
+                // re-acquires a critical section in `sched()`. This is guaranteed to happen only
+                // after the critical section calling `pop()` has finished.
+                //
+                // As infinicore doesn't have a scheduler, that `pop()` immediately lets the popped
+                // thread continue (by releasing the `THREAD_RUNNABLE` atomic that is being waited
+                // for here), breaking a lot of assumptions in this crate's IPC code.
+                // E.g., see https://github.com/ariel-os/ariel-os/issues/2139 for how that
+                // manifests.
+                // To work around this, we explicitly get/release the (global) critical section
+                // here again, making sure the thread that woke this thread up finishes it's
+                // critical section first.
+                //
+                // SAFETY: delegating safety to upstream implementation
+                unsafe { StdCriticalSection::acquire() };
+                // SAFETY: delegating safety to upstream implementation
+                unsafe { StdCriticalSection::release(false) };
             }
         }
     }

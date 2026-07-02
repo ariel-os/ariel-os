@@ -151,3 +151,14 @@ ariel_os::hal::define_peripherals!(Peripherals {
     spi_mosi: PA7,
     spi_cs: PB6,
 });
+
+// Side SPI of Arduino v3 connector
+#[cfg(context = "st-nucleo-g431rb")]
+pub type SensorSpi = spi::main::SPI1;
+#[cfg(context = "st-nucleo-g431rb")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    spi_sck: PA5,
+    spi_miso: PA6,
+    spi_mosi: PA7,
+    spi_cs: PB6,
+});

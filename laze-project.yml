@@ -603,6 +603,18 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32F411RE
 
+  - name: stm32g431rb
+    parent: stm32
+    selects:
+      - cortex-m4f
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32G431RB
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+
   - name: stm32f767zi
     parent: stm32
     selects:

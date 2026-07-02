@@ -425,6 +425,24 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         rcc.mux.otghssel = Otghssel::HSE; // USB OTG HS ref clock from HSE (32 MHz)
     }
 
+    #[cfg(context = "stm32g431rb")]
+    {
+        use embassy_stm32::rcc::*;
+
+        // HSI 16 MHz / 4 = 4 MHz; * 85 = 340 MHz VCO; / 2 = 170 MHz SYSCLK.
+        rcc.hsi = true;
+        rcc.pll = Some(Pll {
+            source: PllSource::HSI,
+            prediv: PllPreDiv::DIV4,
+            mul: PllMul::MUL85,
+            divp: None,
+            divq: None,
+            divr: Some(PllRDiv::DIV2),
+        });
+        rcc.sys = Sysclk::PLL1_R;
+        rcc.boost = true; // required for SYSCLK > 150 MHz
+    }
+
     rcc
 }
 

@@ -111,3 +111,11 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: PB9,
     i2c_scl: PB8,
 });
+
+#[cfg(context = "st-nucleo-g431rb")]
+pub type SensorI2c = i2c::controller::I2C1;
+#[cfg(context = "st-nucleo-g431rb")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_sda: PB9,
+    i2c_scl: PB8,
+});

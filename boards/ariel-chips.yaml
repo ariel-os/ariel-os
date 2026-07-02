@@ -40,6 +40,7 @@ ariel:
     - stm32f042k6
     - stm32f401re
     - stm32f411re
+    - stm32g431rb
     - stm32f767zi
     - stm32h753zi
     - stm32h755zi

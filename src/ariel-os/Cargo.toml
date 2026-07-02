@@ -45,7 +45,7 @@ static_cell = { workspace = true }
 default = ["ariel-os-rt/_panic-handler"]
 
 #! ## System functionality
-## Enables a global system allocator.
+# Enables a global system allocator.
 alloc = ["ariel-os-rt/alloc"]
 ## Enables GPIO interrupt support.
 external-interrupts = ["ariel-os-embassy/external-interrupts"]

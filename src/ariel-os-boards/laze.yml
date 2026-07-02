@@ -243,6 +243,15 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART2
+- name: st-nucleo-g431rb
+  parent: stm32g431rb
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
 - name: st-nucleo-h753zi
   parent: stm32h753zi
   provides:

@@ -31,6 +31,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         any(context = "stm32f401re", context = "stm32f411re") => {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
         }
+        context = "stm32g431rb" => {
+            take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
+        }
         any(context = "stm32h755zi", context = "stm32h753zi") => {
             take_all_i2c_peripherals!(I2C1, I2C2, I2C3, I2C4);
         }

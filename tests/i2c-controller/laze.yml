@@ -15,6 +15,7 @@ apps:
       - st-nucleo-f042k6
       - st-nucleo-f303re
       - st-nucleo-f411re
+      - st-nucleo-g431rb
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
       - stm32u083c-dk

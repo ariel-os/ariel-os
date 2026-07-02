@@ -52,6 +52,7 @@ cfg_if::cfg_if! {
     "st-nucleo-f401re")] { include!("st-nucleo-f401re.rs"); } else if #[cfg(context =
     "st-nucleo-f411re")] { include!("st-nucleo-f411re.rs"); } else if #[cfg(context =
     "st-nucleo-f767zi")] { include!("st-nucleo-f767zi.rs"); } else if #[cfg(context =
+    "st-nucleo-g431rb")] { include!("st-nucleo-g431rb.rs"); } else if #[cfg(context =
     "st-nucleo-h753zi")] { include!("st-nucleo-h753zi.rs"); } else if #[cfg(context =
     "st-nucleo-h755zi-q")] { include!("st-nucleo-h755zi-q.rs"); } else if #[cfg(context =
     "st-nucleo-wb55")] { include!("st-nucleo-wb55.rs"); } else if #[cfg(context =
