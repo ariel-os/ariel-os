@@ -9,7 +9,8 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> N
     let config = ControllerConfig::default();
     let wifi = peripherals.WIFI.take().unwrap();
 
-    let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
+    // (swallowing the `WifiError` here, it pulls in quite a bit of fmt code.)
+    let (controller, interfaces) = esp_radio::wifi::new(wifi, config).ok().unwrap();
 
     spawner.spawn(connection(controller).unwrap());
 
@@ -28,7 +29,10 @@ async fn connection(mut controller: WifiController<'static>) {
             .with_ssid(crate::wifi::WIFI_NETWORK)
             .with_password(crate::wifi::WIFI_PASSWORD.into()),
     );
-    controller.set_config(&client_config).unwrap();
+
+    // (swallowing the `WifiError` here, it pulls in quite a bit of fmt code.)
+    controller.set_config(&client_config).ok().unwrap();
+
     debug!("Wi-Fi configured!");
 
     loop {
