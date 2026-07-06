@@ -1,0 +1,33 @@
+version: 0.4.1
+targets:
+  stm32f723e-disco:
+    chip: stm32f723ie
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: WWDG
+    leds:
+      # led0
+      - pin: PA5
+        aliases:
+          - LD1
+        color: blue
+      # led1
+      - pin: PA7
+        aliases:
+          - LD5
+        color: red
+      # led2
+      - pin: PB1
+        aliases:
+          - LD6
+        color: green
+    buttons:
+      # button0
+      - pin: PA0
+        active: high
+    i2c:
+      - sda_pin: PH5
+        scl_pin: PH4
+        possible_peripherals:
+          - I2C2

@@ -407,6 +407,17 @@ builders:
     CARGO_ENV:
     - CONFIG_VBUS_DETECTION=false
     - CONFIG_SWI=WWDG
+- name: stm32f723e-disco
+  parent: stm32f723ie
+  provides:
+  - has_buttons
+  - has_i2c_bus
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=WWDG
 - name: stm32u083c-dk
   parent: stm32u083mc
   provides:

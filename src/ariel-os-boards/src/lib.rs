@@ -62,7 +62,8 @@ cfg_select! {
     include!("st-nucleo-wb55.rs"); } context = "st-nucleo-wba55" => {
     include!("st-nucleo-wba55.rs"); } context = "st-nucleo-wba65ri" => {
     include!("st-nucleo-wba65ri.rs"); } context = "st-steval-mkboxpro" => {
-    include!("st-steval-mkboxpro.rs"); } context = "stm32u083c-dk" => {
+    include!("st-steval-mkboxpro.rs"); } context = "stm32f723e-disco" => {
+    include!("stm32f723e-disco.rs"); } context = "stm32u083c-dk" => {
     include!("stm32u083c-dk.rs"); } context = "ulanzi-tc001" => {
     include!("ulanzi-tc001.rs"); } context = "unihiker-k10" => {
     include!("unihiker-k10.rs"); } context = "waveshare-esp32-s3-eth" => {
