@@ -118,6 +118,27 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_P;
     }
 
+    #[cfg(context = "stm32f723e-disco")]
+    {
+        use embassy_stm32::rcc::*;
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(25_000_000),
+            mode: HseMode::Oscillator,
+        });
+        rcc.pll_src = PllSource::HSE;
+        rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV25,
+            mul: PllMul::MUL432,
+            divp: Some(PllPDiv::DIV2), // sysclk 216 MHz (25 / 25 * 432 / 2)
+            divq: Some(PllQDiv::DIV9), // 48 MHz clock for USB and the RNG (432 / 9)
+            divr: None,
+        });
+        rcc.ahb_pre = AHBPrescaler::DIV1;
+        rcc.apb1_pre = APBPrescaler::DIV4;
+        rcc.apb2_pre = APBPrescaler::DIV2;
+        rcc.sys = Sysclk::PLL1_P;
+    }
+
     #[cfg(context = "st-nucleo-f767zi")]
     {
         use embassy_stm32::rcc::*;
