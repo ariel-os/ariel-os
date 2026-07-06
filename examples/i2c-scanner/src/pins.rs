@@ -8,6 +8,14 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: P0_08,
 });
 
+#[cfg(context = "st-b-l072z-lrwan1")]
+pub type SensorI2c = i2c::controller::I2C1;
+#[cfg(context = "st-b-l072z-lrwan1")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_scl: PB8, // SCL/D15 on silkscreen
+    i2c_sda: PB9  // SDA/D14 on silkscreen
+});
+
 #[cfg(context = "st-nucleo-f042k6")]
 pub type SensorI2c = i2c::controller::I2C1;
 #[cfg(context = "st-nucleo-f042k6")]

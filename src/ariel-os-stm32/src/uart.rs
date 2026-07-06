@@ -347,6 +347,14 @@ define_uart_drivers!(
    UART7 => UART7,
    UART8 => UART8,
 );
+#[cfg(context = "stm32l072cz")]
+define_uart_drivers!(
+   USART1 => USART1,
+   // USART2 => USART2, // Often used as SWI
+   USART4_5 => USART4,
+   // USART5 shares the USART4_5 interrupt with USART4
+   // LPUART1 shares the RNG_LPUART1 interrupt with the RNG
+);
 #[cfg(context = "stm32l475vg")]
 define_uart_drivers!(
    LPUART1 => LPUART1,
@@ -461,6 +469,13 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART6.take().unwrap();
             let _ = peripherals.UART7.take().unwrap();
             let _ = peripherals.UART8.take().unwrap();
+        }
+        context = "stm32l072cz" => {
+            let _ = peripherals.LPUART1.take().unwrap();
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART4.take().unwrap();
+            let _ = peripherals.USART5.take().unwrap();
         }
         context = "stm32l475vg" => {
             let _ = peripherals.LPUART1.take().unwrap();

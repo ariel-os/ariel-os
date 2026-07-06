@@ -655,6 +655,24 @@ contexts:
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
 
+  - name: stm32l072cz
+    parent: stm32
+    selects:
+      - cortex-m0-plus
+      - ram-small
+    disables:
+      # not enough RAM for the network stack
+      - network
+    provides:
+      - has_hwrng
+    env:
+      isr_stacksize_required_default: "1024"
+      executor_stacksize_required_default: "4096"
+      PROBE_RS_CHIP: STM32L072CZTx
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng-lpuart1\"
+        - --cfg capability=\"hw/stm32-usb\"
+
   - name: stm32l475vg
     parent: stm32
     selects:
@@ -1957,6 +1975,7 @@ modules:
       - nrf52dk
       - rp2040
       - stm32u083c-dk
+      - st-b-l072z-lrwan1
     selects:
       - context::esp:
           - esp-println
@@ -1976,6 +1995,7 @@ modules:
       - nrf52dk
       - rp2040
       - stm32u083c-dk
+      - st-b-l072z-lrwan1
     selects:
       - log # We could later support defmt as well
     env:

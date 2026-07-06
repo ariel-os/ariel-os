@@ -381,6 +381,19 @@ fn rcc_config() -> embassy_stm32::rcc::Config {
         });
     }
 
+    #[cfg(context = "stm32l072cz")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hsi = true;
+        rcc.pll = Some(Pll {
+            source: PllSource::HSI,
+            mul: PllMul::MUL6, // PLLVCO = 16 * 6 = 96 MHz, USB and RNG clock = PLLVCO / 2 = 48 MHz
+            div: PllDiv::DIV3, // sysclk 32 MHz (16 * 6 / 3)
+        });
+        rcc.sys = Sysclk::PLL1_R;
+    }
+
     #[cfg(context = "seeedstudio-lora-e5-mini")]
     {
         use embassy_stm32::rcc::*;

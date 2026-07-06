@@ -122,7 +122,7 @@ mod iot_lab {
             )
         };
 
-        #[cfg(context = "stm32u083c-dk")]
+        #[cfg(any(context = "stm32u083c-dk", context="st-b-l072z-lrwan1"))]
         let (p, uart_rx, uart_tx) = {
             config.baudrate = 115_200;
             (
