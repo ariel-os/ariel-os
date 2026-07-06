@@ -118,6 +118,15 @@ ariel_os::hal::define_peripherals!(Peripherals {
     uart_tx: PA9,
 });
 
+// USART2 on the Arduino v3 connector (D1/D0)
+#[cfg(context = "stm32f723e-disco")]
+pub type TestUart<'a> = uart::USART2<'a>;
+#[cfg(context = "stm32f723e-disco")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    uart_rx: PA3,
+    uart_tx: PA2,
+});
+
 // Side UART of Arduino v3 connector
 #[cfg(context = "st-nucleo-h755zi-q")]
 pub type TestUart<'a> = uart::USART1<'a>;

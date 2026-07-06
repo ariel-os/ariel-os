@@ -28,6 +28,9 @@ const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(18);
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
 #[cfg(context = "stm32f411re")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(25);
+// SPI1/SPI4/SPI5 support up to 54 Mbit/s, SPI2/SPI3 only up to 27 Mbit/s.
+#[cfg(context = "stm32f723ie")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(27);
 #[cfg(context = "stm32g431rb")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(75);
 #[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
@@ -213,6 +216,14 @@ define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
    SPI3 => SPI3,
+);
+#[cfg(context = "stm32f723ie")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
+   SPI3 => SPI3,
+   SPI4 => SPI4,
+   SPI5 => SPI5,
 );
 #[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
 define_spi_drivers!(

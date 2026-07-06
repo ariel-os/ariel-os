@@ -895,6 +895,24 @@ chips:
           - a more complete clock configuration needs to be provided
       ethernet: not_available
 
+  stm32f723ie:
+    name: STM32F723IE
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: supported
+      ethernet_over_usb: needs_testing
+      hwrng: needs_testing
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage: not_currently_supported
+      user_usb: needs_testing
+      wifi: not_available
+      ble: not_available
+      ethernet: not_available
+
   stm32g431rb:
     name: STM32G431RB
     manufacturer: STMicroelectronics
@@ -1528,6 +1546,11 @@ builders:
       After opening the case, use the JP2/SWD connector (marked "MCU SWD") with an SWD debug probe (e.g., the STLINK-V3MINIE):
       do note that JP2 is not keyed, the red wire of the ribbon cable must be closer to the JP2 pin marked "1" on the PCB (close to the POWER switch).
 
+  stm32f723e-disco:
+    chip: stm32f723ie
+    tier: "3"
+    support:
+
   stm32u083c-dk:
     chip: stm32u083mc
     tier: "1"
@@ -1788,6 +1811,11 @@ boards:
     url: https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html
     builders:
       - st-steval-mkboxpro
+
+  - name: STM32F723E-DISCO
+    url: https://www.st.com/en/evaluation-tools/32f723ediscovery.html
+    builders:
+      - stm32f723e-disco
 
   - name: STM32U083C-DK
     url: https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html

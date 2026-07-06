@@ -1,0 +1,28 @@
+version: 0.4.0
+targets:
+  stm32f723e-disco:
+    chip: stm32f723ie
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: USART3
+    leds:
+      # led0
+      - pin: PA5
+        aliases:
+          - LD1
+        color: blue
+      # led1
+      - pin: PA7
+        aliases:
+          - LD5
+        color: red
+      # led2
+      - pin: PB1
+        aliases:
+          - LD6
+        color: green
+    buttons:
+      # button0
+      - pin: PA0
+        active: high

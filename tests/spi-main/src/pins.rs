@@ -142,6 +142,17 @@ ariel_os::hal::define_peripherals!(Peripherals {
     spi_cs: PB6,
 });
 
+// SPI of the PMOD connector (the Arduino connector SPI shares its SCK pin with LD1)
+#[cfg(context = "stm32f723e-disco")]
+pub type SensorSpi = spi::main::SPI2;
+#[cfg(context = "stm32f723e-disco")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    spi_sck: PI1,
+    spi_miso: PI2,
+    spi_mosi: PI3,
+    spi_cs: PI0,
+});
+
 #[cfg(any(context = "stm32f401re", context = "stm32f411re"))]
 pub type SensorSpi = spi::main::SPI1;
 #[cfg(any(context = "st-nucleo-f401re", context = "st-nucleo-f411re"))]
