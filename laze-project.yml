@@ -2317,6 +2317,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
       - st-b-l072z-lrwan1
       - st-b-l475e-iot01a
@@ -2340,6 +2341,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
       - st-b-l072z-lrwan1
     selects:
