@@ -24,7 +24,8 @@ cfg_select! {
     include!("espressif-esp32-s3-devkitc-1.rs"); } context =
     "espressif-esp8684-devkitc-02" => { include!("espressif-esp8684-devkitc-02.rs"); }
     context = "heltec-wifi-lora-32-v3" => { include!("heltec-wifi-lora-32-v3.rs"); }
-    context = "makerdiary-nrf52840-mdk-usb-dongle" => {
+    context = "iotlab-a8-m3" => { include!("iotlab-a8-m3.rs"); } context = "iotlab-m3" =>
+    { include!("iotlab-m3.rs"); } context = "makerdiary-nrf52840-mdk-usb-dongle" => {
     include!("makerdiary-nrf52840-mdk-usb-dongle.rs"); } context =
     "makerdiary-nrf52840-mdk" => { include!("makerdiary-nrf52840-mdk.rs"); } context =
     "makerdiary-nrf9151-connect-kit" => { include!("makerdiary-nrf9151-connect-kit.rs");
