@@ -4,6 +4,8 @@ apps:
       # list of contexts that have an entry in `pins.rs`
       - bbc-microbit-v2
       - heltec-wifi-lora-32-v3
+      - iotlab-a8-m3
+      - iotlab-m3
       - st-nucleo-f042k6
       - st-nucleo-f303re
       - st-steval-mkboxpro

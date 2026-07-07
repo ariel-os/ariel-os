@@ -808,6 +808,24 @@ chips:
       ble: not_available
       ethernet: not_available
 
+  stm32f103re:
+    name: STM32F103RE
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: needs_testing
+      ethernet_over_usb: not_available
+      hwrng: not_available
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage: not_currently_supported
+      user_usb: not_available
+      wifi: not_available
+      ble: not_available
+      ethernet: not_available
+
   stm32f303cb:
     name: STM32F303CB
     manufacturer: STMicroelectronics
@@ -1381,6 +1399,68 @@ builders:
       user_usb: not_available
       ethernet_over_usb: not_available
 
+  iotlab-a8-m3:
+    chip: stm32f103re
+    tier: "3"
+    support:
+    notes: |
+      This board is only available on the [FIT IoT-LAB](https://www.iot-lab.info/) testbed.
+      To get console output on the testbed serial infrastructure, the firmware must be built with the `logging-over-uart` laze module.
+
+      ##### Usage on FIT IoT-LAB
+
+      Build your application (in this case the [log](https://github.com/ariel-os/ariel-os/tree/main/examples/log) example from the Ariel OS repository):
+      ```bash
+      laze -C examples/log build -b iotlab-a8-m3 -s logging-over-uart
+      ```
+
+      Flash it on the M3 of an A8 node of your experiment with the IoT-LAB CLI tools:
+      ```bash
+      iotlab-ssh flash build/bin/iotlab-a8-m3/cargo/thumbv7m-none-eabi/release/example-log -l <site>,a8,<id>
+      ```
+
+      The console UART runs at 500000 baud. From the A8 Linux system of the node, open it with a serial terminal:
+      ```bash
+      miniterm.py /dev/ttyA8_M3 500000
+      ```
+
+      ##### Flashing Without IoT-LAB Tools
+
+      The board embeds an FT2232H USB interface providing both JTAG and the console UART.
+      probe-rs supports FTDI adapters over JTAG, which the laze builder is configured to use;
+      OpenOCD (with `interface/ftdi/iotlab-usb.cfg`) can be used as a fallback.
+
+  iotlab-m3:
+    chip: stm32f103re
+    tier: "3"
+    support:
+    notes: |
+      This board is only available on the [FIT IoT-LAB](https://www.iot-lab.info/) testbed.
+      To get console output on the testbed serial infrastructure, the firmware must be built with the `logging-over-uart` laze module.
+
+      ##### Usage on FIT IoT-LAB
+
+      Build your application (in this case the [log](https://github.com/ariel-os/ariel-os/tree/main/examples/log) example from the Ariel OS repository):
+      ```bash
+      laze -C examples/log build -b iotlab-m3 -s logging-over-uart
+      ```
+
+      Flash it on a node of your experiment with the IoT-LAB CLI tools, which upload the firmware through the IoT-LAB REST API:
+      ```bash
+      iotlab-node --flash build/bin/iotlab-m3/cargo/thumbv7m-none-eabi/release/example-log -l <site>,m3,<id>
+      ```
+
+      The console UART runs at 500000 baud and is exposed by the SSH frontend on TCP port 20000:
+      ```bash
+      nc m3-<id> 20000
+      ```
+
+      ##### Flashing Without IoT-LAB Tools
+
+      The board embeds an FT2232H USB interface providing both JTAG and the console UART.
+      probe-rs supports FTDI adapters over JTAG, which the laze builder is configured to use;
+      OpenOCD (with `interface/ftdi/iotlab-usb.cfg`) can be used as a fallback.
+
   seeedstudio-xiao-esp32c6:
     chip: esp32c6fx4
     tier: "2"
@@ -1703,6 +1783,16 @@ boards:
     url: https://web.archive.org/web/20250807184214/https://heltec.org/project/wifi-lora-32-v3/
     builders:
       - heltec-wifi-lora-32-v3
+
+  - name: IoT-LAB A8-M3
+    url: https://www.iot-lab.info/docs/boards/iot-lab-a8-m3/
+    builders:
+      - iotlab-a8-m3
+
+  - name: IoT-LAB M3
+    url: https://www.iot-lab.info/docs/boards/iot-lab-m3/
+    builders:
+      - iotlab-m3
 
   - name: Seeed Studio XIAO ESP32C6
     url: https://web.archive.org/web/20250827114042/https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/

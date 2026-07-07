@@ -43,6 +43,8 @@ pub fn main() {
         "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp8684-devkitc-02-h4\"))"
     );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"heltec-wifi-lora-32-v3\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"iotlab-a8-m3\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"iotlab-m3\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"makerdiary-nrf52840-mdk-usb-dongle\"))"
     );

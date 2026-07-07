@@ -37,6 +37,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         context = "stm32c031c6" => {
             take_all_spi_peripherals!(Peripherals, SPI1);
         }
+        context = "stm32f103re" => {
+            take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
+        }
         context = "stm32f303cb" => {
             take_all_spi_peripherals!(Peripherals, SPI1, SPI2, SPI3);
         }

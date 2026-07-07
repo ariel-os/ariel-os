@@ -28,6 +28,8 @@
 - [Espressif ESP32-S2-DevKitC-1](./espressif-esp32-s2-devkitc-1.md)
 - [Espressif ESP32-S3-DevKitC-1](./espressif-esp32-s3-devkitc-1.md)
 - [Heltec WiFi LoRa 32 V3](./heltec-wifi-lora-32-v3.md)
+- [IoT-LAB A8-M3](./iot-lab-a8-m3.md)
+- [IoT-LAB M3](./iot-lab-m3.md)
 - [Seeed Studio XIAO ESP32C6](./seeed-studio-xiao-esp32c6.md)
 - [Seeed Studio XIAO NRF52840 Plus](./seeed-studio-xiao-nrf52840-plus.md)
 - [Seeed Studio XIAO ESP32-S3](./seeed-studio-xiao-esp32-s3.md)

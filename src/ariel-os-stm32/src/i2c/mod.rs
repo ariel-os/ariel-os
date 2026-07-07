@@ -22,6 +22,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         context = "stm32f042k6" => {
             take_all_i2c_peripherals!(I2C1);
         }
+        context = "stm32f103re" => {
+            take_all_i2c_peripherals!(I2C1, I2C2);
+        }
         context = "stm32f303cb" => {
             take_all_i2c_peripherals!(I2C1, I2C2);
         }
