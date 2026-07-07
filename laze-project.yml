@@ -720,6 +720,18 @@ contexts:
       executor_stacksize_required_default: "512"
       PROBE_RS_CHIP: STM32F042K6
 
+  - name: stm32f103re
+    parent: stm32
+    selects:
+      - cortex-m3
+    env:
+      # The IoT-LAB nodes embed an FT2232H debug adapter, which only supports JTAG.
+      PROBE_RS_PROTOCOL: jtag
+      PROBE_RS_CHIP: STM32F103RE
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(512 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(64 * 1024)
+
   - name: stm32f303cb
     parent: stm32
     selects:
@@ -1057,6 +1069,15 @@ modules:
       global:
         RUSTFLAGS:
           - --cfg context=\"cortex-m0-plus\"
+
+  - name: cortex-m3
+    selects:
+      - cortex-m
+      - thumbv7m-none-eabi
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg context=\"cortex-m3\"
 
   - name: cortex-m4
     selects:
@@ -2258,6 +2279,8 @@ modules:
     context:
       - decawave-dwm1001-dev
       - esp
+      - iotlab-a8-m3
+      - iotlab-m3
       - nrf52840dk
       - nrf52dk
       - rp2040
@@ -2279,6 +2302,8 @@ modules:
     help: private
     context:
       - decawave-dwm1001-dev
+      - iotlab-a8-m3
+      - iotlab-m3
       - nrf52840dk
       - nrf52dk
       - rp2040
