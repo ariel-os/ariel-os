@@ -44,6 +44,8 @@ const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(32);
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(80);
 #[cfg(context = "stm32wb55rg")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(32);
+#[cfg(context = "stm32wl55jc")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(16);
 
 /// SPI bus configuration.
 #[derive(Clone)]
@@ -251,4 +253,10 @@ define_spi_drivers!(
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
+);
+#[cfg(context = "stm32wl55jc")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
+   // SUBGHZSPI is the internal link to the radio and is not exposed here.
 );

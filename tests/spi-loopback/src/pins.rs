@@ -125,6 +125,17 @@ ariel_os::hal::define_peripherals!(Peripherals {
     spi_cs: PA4,
 });
 
+// SPI1 on the Arduino connector (D10-D13).
+#[cfg(context = "stm32wl55jc")]
+pub type SensorSpi = spi::main::SPI1;
+#[cfg(context = "stm32wl55jc")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    spi_sck: PA5,
+    spi_miso: PA6,
+    spi_mosi: PA7,
+    spi_cs: PA4,
+});
+
 // Side SPI of Arduino v3 connector
 // SPI1 is connected to the SX1276 radio inside the module, so use SPI2.
 #[cfg(context = "st-b-l072z-lrwan1")]
