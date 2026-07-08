@@ -4141,6 +4141,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 
 [[package]]
+name = "lora-modulation"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2c96c4a41a1f1ad04de765306e1829c7007a37898fe4033204fa82cf2e055624"
+
+[[package]]
+name = "lora-phy"
+version = "3.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "61471c3b2909789e3332083577f6cf6c41a4fcf37674ef15156bcbb20504ac65"
+dependencies = [
+ "defmt 0.3.100",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "lora-modulation",
+ "num-traits",
+]
+
+[[package]]
+name = "lora-rx"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-sync 0.7.2",
+ "lora-phy",
+]
+
+[[package]]
+name = "lora-tx"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-sync 0.7.2",
+ "lora-phy",
+]
+
+[[package]]
 name = "managed"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

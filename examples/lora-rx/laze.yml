@@ -1,0 +1,5 @@
+apps:
+  - name: lora-rx
+    context:
+      # The SX1276 radio is wired to SPI1 on the module of this board only.
+      - st-b-l072z-lrwan1
