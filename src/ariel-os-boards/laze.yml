@@ -360,6 +360,15 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART1
+- name: st-nucleo-wl55jc
+  parent: stm32wl55jc
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=USART2
 - name: st-steval-mkboxpro
   parent: stm32u585ai
   provides:

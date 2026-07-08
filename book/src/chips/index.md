@@ -63,4 +63,5 @@ Here is the list of supported chips in Ariel OS.
 - [STM32WB55RG](./stm32wb55rg.md)
 - [STM32WBA55CG](./stm32wba55cg.md)
 - [STM32WBA65RI](./stm32wba65ri.md)
+- [STM32WL55JC](./stm32wl55jc.md)
 - [STM32WLE5JC](./stm32wle5jc.md)
