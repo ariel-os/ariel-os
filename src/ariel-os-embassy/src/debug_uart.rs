@@ -132,6 +132,17 @@ mod iot_lab {
             )
         };
 
+        // LPUART1 is wired to the ST-LINK virtual COM port.
+        #[cfg(context = "st-nucleo-wl55jc")]
+        let (p, uart_rx, uart_tx) = {
+            config.baudrate = 115_200;
+            (
+                peripherals.LPUART1.take().unwrap(),
+                peripherals.PA3.take().unwrap(),
+                peripherals.PA2.take().unwrap(),
+            )
+        };
+
         embassy_stm32::usart::Uart::new_blocking(p, uart_rx, uart_tx, config).unwrap()
     }
 }
