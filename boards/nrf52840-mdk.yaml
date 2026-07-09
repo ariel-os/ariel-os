@@ -1,8 +1,8 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   nrf52840-mdk:
     chip: nrf52840
-    leds:
+    monocolorleds:
       led0:
         # note: this is the RGB LED red channel
         color: red

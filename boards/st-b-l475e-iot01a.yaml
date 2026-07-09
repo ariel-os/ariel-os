@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-b-l475e-iot01a:
     chip: stm32l475vg
@@ -6,7 +6,7 @@ targets:
       - has_usb_device_port
     ariel:
       swi: UART5
-    leds:
+    monocolorleds:
       led0:
         pin: PA5
         aliases:

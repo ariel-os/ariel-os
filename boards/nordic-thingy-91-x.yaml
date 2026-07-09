@@ -1,8 +1,8 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   nordic-thingy-91-x-nrf9151:
     chip: nrf9151
-    leds:
+    monocolorleds:
       led0:
         pin: P0_29
         color: red
@@ -20,7 +20,7 @@ targets:
     chip: nrf5340-app
     flags:
       - has_usb_device_port
-    leds:
+    monocolorleds:
       led0:
         pin: P0_14
         color: red

@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   arduino-uno-q:
     chip: stm32u585ai
@@ -9,7 +9,7 @@ targets:
         CARGO_ENV:
           - CONFIG_VBUS_DETECTION=false
           - CONFIG_SWI=USART2
-    leds:
+    monocolorleds:
       led0:
         color: red
         pin: PH10

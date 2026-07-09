@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-f767zi:
     chip: stm32f767zi
@@ -6,7 +6,7 @@ targets:
       - has_ethernet_stm32
     ariel:
       swi: USART2
-    leds:
+    monocolorleds:
       led0:
         pin: PB0
         color: green

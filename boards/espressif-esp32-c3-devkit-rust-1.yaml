@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   espressif-esp32-c3-devkit-rust-1:
     chip: esp32-c3-mini-1
@@ -8,6 +8,6 @@ targets:
       button0:
         pin: GPIO9
         active: low
-    leds:
+    monocolorleds:
       led0:
         pin: GPIO7

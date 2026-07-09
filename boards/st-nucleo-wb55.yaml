@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-wb55:
     chip: stm32wb55rg
@@ -6,7 +6,7 @@ targets:
       - has_usb_device_port
     ariel:
       swi: USART1
-    leds:
+    monocolorleds:
       led0:
         pin: PB5
         color: blue

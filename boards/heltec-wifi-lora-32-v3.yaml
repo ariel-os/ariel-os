@@ -1,8 +1,8 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   heltec-wifi-lora-32-v3:
     chip: esp32s3fx8
-    leds:
+    monocolorleds:
       led0:
         pin: GPIO35
         color: white

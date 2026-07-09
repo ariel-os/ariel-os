@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   stm32u083c-dk:
     chip: stm32u083mc
@@ -6,7 +6,7 @@ targets:
       - has_usb_device_port
     ariel:
       swi: USART4_LPUART3
-    leds:
+    monocolorleds:
       led0:
         pin: PC13
         color: green

@@ -1,8 +1,8 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   nrf9160dk-nrf9160:
     chip: nrf9160
-    leds:
+    monocolorleds:
       led0:
         pin: P0_02
     buttons:

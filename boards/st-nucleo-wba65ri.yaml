@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-wba65ri:
     chip: stm32wba65ri
@@ -6,7 +6,7 @@ targets:
       - has_usb_device_port
     ariel:
       swi: USART1
-    leds:
+    monocolorleds:
       led0:
         pin: PD8
         aliases:

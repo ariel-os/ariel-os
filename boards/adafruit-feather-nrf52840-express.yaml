@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   # different names in use: "Adafruit Feather nRF52840 Express" on shop as of
   # 2025-12-14, whereas schematics dating from 2025-05-05 label it as "Adafruit
@@ -8,7 +8,7 @@ targets:
     chip: nrf52840
     flags:
       - has_usb_device_port
-    leds:
+    monocolorleds:
       # FIXME: led0/led1 names are purely synthetic to work with the current
       # sbd::ariel convention of naming them sequentially.
       led0:

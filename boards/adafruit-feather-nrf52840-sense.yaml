@@ -1,10 +1,10 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   adafruit-feather-nrf52840-sense:
     chip: nrf52840
     flags:
       - has_usb_device_port
-    leds:
+    monocolorleds:
       # FIXME: led0/led1 names are purely synthetic to work with the current
       # sbd::ariel convention of naming them sequentially.
       led0:

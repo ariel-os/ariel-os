@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   espressif-esp32-s2-devkitc-1:
     chip: esp32-s2-solo-2
