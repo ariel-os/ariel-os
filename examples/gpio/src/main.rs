@@ -9,7 +9,7 @@ use ariel_os::{
 };
 
 ariel_os::hal::group_peripherals!(Peripherals {
-    leds: pins::LedPeripherals,
+    leds: pins::MonocolorLedPeripherals,
     buttons: pins::ButtonPeripherals,
 });
 

@@ -10,7 +10,7 @@ use ariel_os::{
 };
 
 #[ariel_os::task(autostart, peripherals)]
-async fn blinky(mut peripherals: pins::LedPeripherals) {
+async fn blinky(mut peripherals: pins::MonocolorLedPeripherals) {
     loop {
         // First, set the GPIO as input and read its level.
         // Some HALs require dropping both the driver itself and the peripheral ZST before using it

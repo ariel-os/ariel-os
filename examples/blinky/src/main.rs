@@ -9,7 +9,7 @@ use ariel_os::{
 };
 
 #[ariel_os::task(autostart, peripherals)]
-async fn blinky(peripherals: pins::LedPeripherals) {
+async fn blinky(peripherals: pins::MonocolorLedPeripherals) {
     let mut led0 = Output::new(peripherals.led0, Level::Low);
 
     loop {
