@@ -3,7 +3,7 @@
 pub mod pins {
     use ariel_os_hal::hal::peripherals;
     ariel_os_hal::define_peripherals!(
-        LedPeripherals { led0 : P0_26, led1 : P0_06, led2 : P0_30, }
+        MonocolorLedPeripherals { led0 : P0_26, led1 : P0_06, led2 : P0_30, }
     );
 }
 #[allow(unused_variables)]
