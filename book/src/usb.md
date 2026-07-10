@@ -50,7 +50,7 @@ The table below lists some of the well-known USB device classes and how to use t
 | [USB CDC-NCM][usb-cdc-ncm-glossary-book] | Enable the [`usb-ethernet` laze module][usb-ethernet-laze-module-book]                                                                        |
 | USB HID                                  | Enable the `usb-hid` Cargo feature and apply the [`HidReaderWriter`][ariel-os-embassy-usb-hidreaderwriter-rustdoc] constructor on the builder |
 
-Other device classes are supported.
+[Other well-known device classes][ariel-os-embassy-usb-class-rustdoc] are supported, and it is also possible to implement custom ones.
 
 ### Device Configuration
 
@@ -85,6 +85,7 @@ Otherwise, an appropriate clock configuration must be [provided in the applicati
 [ariel-os-embassy-usb-hidreaderwriter-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/embassy_usb/class/hid/struct.HidReaderWriter.html
 [usb-ethernet-laze-module-book]: ./networking.md#network-link-selection
 [usb-cdc-ncm-glossary-book]: ./glossary.md#usb-cdc-ncm
+[ariel-os-embassy-usb-class-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/embassy_usb/class/index.html
 [ariel-os-embassy-usb-config-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/embassy_usb/struct.Config.html
 [config-attr-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.config.html
 [crystal-resonator-book]: ./clocks.md#piezoelectric-oscillators
