@@ -274,6 +274,7 @@ dependencies = [
  "embassy-hal-internal",
  "embassy-net",
  "embassy-nrf",
+ "embassy-rp",
  "embassy-stm32",
  "embassy-sync 0.7.2",
  "embassy-time",

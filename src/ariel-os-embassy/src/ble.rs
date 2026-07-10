@@ -53,8 +53,19 @@ pub fn current_address() -> impl Future<Output = Address> {
 }
 
 /// Generates a random address.
+#[cfg(not(feature = "ble-config-static-address"))]
 fn get_random_addr() -> [u8; 6] {
     let mut addr = [0u8; 6];
     rand_core::RngCore::fill_bytes(&mut ariel_os_random::crypto_rng(), &mut addr);
     addr
+}
+
+/// Get random address from env.
+#[cfg(feature = "ble-config-static-address")]
+fn get_random_addr() -> [u8; 6] {
+    use ariel_os_utils::eui48_from_env;
+    eui48_from_env!(
+        "CONFIG_BLE_STATIC_ADDRESS",
+        "static address for BLE in format XX:XX:XX:XX:XX:XX",
+    )
 }

@@ -1456,6 +1456,15 @@ modules:
     selects:
       - doc-only
 
+  - name: ble-config-static-address
+    help: Use a static address for BLE, the two most significant bits will be set to 1 to indicate a static random address.
+    selects:
+      - ble
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ble-config-static-address
+
   - name: has_nrf91_modem
     selects:
       - doc-only
@@ -1946,6 +1955,7 @@ modules:
       - esp
       - nrf52840dk
       - nrf52dk
+      - rp2040
       - stm32u083c-dk
     selects:
       - context::esp:
@@ -1964,6 +1974,7 @@ modules:
     context:
       - nrf52840dk
       - nrf52dk
+      - rp2040
       - stm32u083c-dk
     selects:
       - log # We could later support defmt as well

@@ -14,16 +14,28 @@ If you want to learn more about BLE concepts, you can read the [TrouBLE document
 
 ## Configuring the BLE Stack
 
-The ability to configure which Bluetooth address is used and other capacity parameters like the MTU is planned in future updates.
+The ability to use a private address and other capacity parameters like the MTU is planned in future updates.
 
 > [!IMPORTANT]
 > For compatibility reasons the MTU is fixed at 27 bytes.
 >
-> The device address is randomly generated at boot and may be periodically rotated.
+> By default the device address is randomly generated at boot and may be periodically rotated.
 >
 > Current implementation: the address is a static device address and is not rotated during execution.
 > This allows to use the BLE feature of Ariel OS on multiple devices in the same location.
 > We later plan to switch to private device addresses by default, which *are* rotated during execution.
+
+### Using a Static Address
+
+> [!IMPORTANT]
+> It is not recommended to have personal devices advertise a static (and constant) address as this can easily be tracked and compromise the privacy of the user.
+>
+> The use case of advertising a static address is for static devices like BLE beacons.
+
+To set an address that will persist across reboots, use the `ble-config-static-address` [laze module][laze-modules-book] and set the address using the `CONFIG_BLE_STATIC_ADDRESS` environment variable, the expected format is `XX:XX:XX:XX:XX:XX` where X is a hex digit.
+
+> [!NOTE]
+> The address will be advertised as a [random static address](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html#UUID-7edea27a-a47f-8436-4bd7-aedc1945c366_figure-idm4497995733171233616486354268) and the two most significant bits of the address will therefore be set to 1.
 
 ## Using the BLE Stack
 

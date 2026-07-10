@@ -102,6 +102,7 @@
 - [Debug Console](./debug-console.md)
 - [Async Executors](./async-support.md)
 - [Memory Layout](./memory-layout.md)
+- [Clocks](./clocks.md)
 - [Global Allocator](./global-allocator.md)
 - [Networking](./networking.md)
 - [Bluetooth Low Energy](./bluetooth.md)

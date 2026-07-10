@@ -2,6 +2,8 @@
 
 #[cfg(context = "nrf")]
 type UartDriver = embassy_nrf::uarte::Uarte<'static>;
+#[cfg(context = "rp2040")]
+type UartDriver = embassy_rp::uart::Uart<'static, embassy_rp::uart::Blocking>;
 #[cfg(context = "stm32")]
 type UartDriver = embassy_stm32::usart::Uart<'static, embassy_stm32::mode::Blocking>;
 
@@ -25,7 +27,7 @@ pub fn init(peripherals: &mut crate::hal::OptionalPeripherals) {
 fn write_debug_uart(buffer: &[u8]) -> Result<(), ariel_os_log::backend::Error> {
     use ariel_os_log::backend::Error;
 
-    #[cfg(context = "stm32")]
+    #[cfg(any(context = "rp", context = "stm32"))]
     use embedded_io::Write as _;
     #[cfg(context = "nrf")]
     use embedded_io_async::Write as _;
@@ -42,6 +44,13 @@ fn write_debug_uart(buffer: &[u8]) -> Result<(), ariel_os_log::backend::Error> {
                 uart.write(buffer).await.map_err(|_| Error::Writing)?;
                 // TODO: is flushing needed here?
                 uart.flush().await.map_err(|_| Error::Writing)?;
+            }
+
+            #[cfg(context = "rp")]
+            {
+                uart.write_all(buffer).map_err(|_| Error::Writing)?;
+                // TODO: is flushing needed here?
+                uart.flush().map_err(|_| Error::Writing)?;
             }
 
             #[cfg(context = "stm32")]
@@ -79,6 +88,23 @@ mod iot_lab {
         };
 
         embassy_nrf::uarte::Uarte::new(p, uart_rx, uart_tx, Irqs, config)
+    }
+
+    #[cfg(context = "rp2040")]
+    pub fn get_uart_driver(peripherals: &mut crate::hal::OptionalPeripherals) -> super::UartDriver {
+        let mut config = embassy_rp::uart::Config::default();
+
+        #[cfg(any(context = "rpi-pico", context = "rpi-pico-w"))]
+        let (p, uart_rx, uart_tx) = {
+            config.baudrate = 115_200;
+            (
+                peripherals.UART0.take().unwrap(),
+                peripherals.PIN_1.take().unwrap(),
+                peripherals.PIN_0.take().unwrap(),
+            )
+        };
+
+        embassy_rp::uart::Uart::new_blocking(p, uart_tx, uart_rx, config)
     }
 
     #[cfg(context = "stm32")]

@@ -232,3 +232,37 @@ macro_rules! ipv6_addr_from_env_or {
         }
     }};
 }
+
+/// Reads an eui48 at compile time from the given environment variable, produces an
+/// `[u8; 6]`, matched to the endianness of the target.
+///
+/// - The `$doc` parameter allows to provide a documentation string for this tunable (see
+///   [`str_from_env!`](str_from_env)).
+///
+/// # Errors
+///
+/// - Produces a compile-time error when [`option_env!`](option_env) does.
+/// - Produces a compile-time error when the environment variable cannot be parsed into a eui48
+#[macro_export]
+macro_rules! eui48_from_env {
+    // $doc is currently unused
+    ($env_var:literal, $doc:literal $(,)?) => {{
+        const {
+            const str_addr: &str = if let Some(str_value) = option_env!($env_var) {
+                str_value
+            } else {
+                $crate::env::const_panic::concat_panic!(
+                    "`",
+                    $env_var,
+                    "` environment variable was expected to provide the ",
+                    $doc,
+                );
+            };
+            let mut eui48: [u8; 6] =
+                $crate::const_str::hex!($crate::const_str::replace!(str_addr, ":", ""));
+            // Human readable eui48 is big endian.
+            eui48.reverse();
+            eui48
+        }
+    }};
+}

@@ -63,6 +63,11 @@ embassy-nrf = { workspace = true }
 embedded-io-async = { workspace = true }
 
 # Required for debug-over-uart.
+[target.'cfg(context = "rp")'.dependencies]
+embassy-rp = { workspace = true }
+embedded-io = { workspace = true }
+
+# Required for debug-over-uart.
 [target.'cfg(context = "stm32")'.dependencies]
 embassy-stm32 = { workspace = true }
 embedded-io = { workspace = true }
@@ -126,7 +131,8 @@ multicast = ["embassy-net?/multicast"]
 ## Enable storage support [`ariel-os::storage`].
 storage = ["dep:ariel-os-storage", "ariel-os-hal/storage", "time"]
 
-debug-uart = []
+# NOTE: `time` is only needed on RP.
+debug-uart = ["time"]
 
 # Enables cellular networking configuration.
 cellular-networking = [
@@ -163,6 +169,7 @@ ble-cyw43 = ["ariel-os-hal/ble-cyw43", "ble"]
 ble-esp = ["ariel-os-hal/ble-esp", "ble"]
 ble-central = ["ariel-os-hal/ble-central", "ble"]
 ble-peripheral = ["ariel-os-hal/ble-peripheral", "ble"]
+ble-config-static-address = []
 
 nrf91-modem = ["ariel-os-hal/nrf91-modem"]
 

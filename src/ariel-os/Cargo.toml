@@ -174,6 +174,8 @@ ble-esp = ["ariel-os-embassy/ble-esp"]
 ble-central = ["ariel-os-embassy/ble-central", "ble"]
 # Enables BLE to act as a peripheral. Can be used in conjunction with `ble-central`.
 ble-peripheral = ["ariel-os-embassy/ble-peripheral", "ble"]
+# Selects static BLE address configuration for setting a static address at build.
+ble-config-static-address = ["ariel-os-embassy/ble-config-static-address"]
 
 # ## Enables support for the nRF91xx SiP modem.
 nrf91-modem = ["ariel-os-embassy/nrf91-modem", "ariel-os-rt/nrf91-modem"]
