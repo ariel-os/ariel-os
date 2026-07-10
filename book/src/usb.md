@@ -60,6 +60,20 @@ In particular, it allows setting the Vendor ID (VID) and Product ID (PID), and t
 Additionally, some environment variables are used by [`embassy-usb`][ariel-os-reexports-embassy-usb-rustdoc] for configuration.
 See its documentation for more.
 
+### Clock Configuration
+
+<!-- NOTE: THE STM32F4 MCUs do *not* support crystal-less USB. -->
+As USB microcontroller peripherals rely on specific clock frequencies (to accommodate the signaling rates of USB), they are usually provided with a dedicated clock signal, that is often not shared with other peripherals.
+Because USB requires accurate timings[^usb-timings-requirements], the clock source typically relies on a [crystal resonator][crystal-resonator-book] (or an [external crystal oscillator][external-crystal-oscillator]).
+When that is not the case, the microcontroller must feature a clock recovery system that is able to recover a clock from the USB Start Of Frame (SOF) packets (sent by the USB host every 1 ms for Full-Speed USB) and that trims an internal oscillator, keeping it in sync with the USB host and thus enabling crystal-less USB.
+Many STM32 MCUs feature such clock recovery system (CRS).
+
+To be able to use USB, the [clock configuration][clock-tree-configuration-book] must enable and configure the clock source required for the USB microcontroller peripheral.
+[The default clock configuration provided by Ariel OS][clock-tree-configuration-book] usually already configures it appropriately when made possible by the board.
+Otherwise, an appropriate clock configuration must be [provided in the application][clock-tree-configuration-book].
+
+[^usb-timings-requirements]: Full-Speed USB requires a bit rate accuracy of 2500 ppm, while Hi-Speed USB requires 500 ppm (see section 7.1.11 of the [USB 2.0 specification][usb-2.0-spec]).
+
 [usb-cdc-acm-book-glossary]: ./glossary.md#usb-cdc-acm
 [logging-transports-book]: ./logging.md#logging-transports
 [debug-probes-book]: ./flashing-debugging.md#debug-interfaces-protocols-and-probes
@@ -73,3 +87,7 @@ See its documentation for more.
 [usb-cdc-ncm-glossary-book]: ./glossary.md#usb-cdc-ncm
 [ariel-os-embassy-usb-config-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/reexports/embassy_usb/struct.Config.html
 [config-attr-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.config.html
+[crystal-resonator-book]: ./clocks.md#piezoelectric-oscillators
+[external-crystal-oscillator]: ./clocks.md#external-clock-signals
+[clock-tree-configuration-book]: ./clocks.md#configuring-the-clock-tree
+[usb-2.0-spec]: https://www.usb.org/document-library/usb-20-specification
