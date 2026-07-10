@@ -104,6 +104,7 @@
 - [Async Executors](./async-support.md)
 - [Memory Layout](./memory-layout.md)
 - [Clocks](./clocks.md)
+- [Power Management](./power-management.md)
 - [Global Allocator](./global-allocator.md)
 - [Networking](./networking.md)
 - [USB](./usb.md)
