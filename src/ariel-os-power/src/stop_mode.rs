@@ -72,6 +72,9 @@ impl<'a, T: ariel_os_hal::hal::IntoPeripheral<'a, P>, P: ariel_os_hal::hal::powe
 // Unlike [`standby_mode::enter()`], waking up does not involve rebooting, and execution resumes
 // normally after calling this function.
 /// In addition, the state of GPIOs, including their pull setting, is maintained.
+/// On some microcontrollers, whose power management is done automatically by hardware through a
+/// power management unit (PMU), calling this function may be similar to simply entering the sleep
+/// mode, and peripherals should instead be released by dropping their drivers when unneeded.
 ///
 /// The entry into the low-power mode may be delayed by a few cycles, in particular because of
 /// outstanding memory writes.
