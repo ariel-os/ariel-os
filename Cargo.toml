@@ -126,6 +126,7 @@ ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
 ariel-os-bench = { path = "src/ariel-os-bench", default-features = false }
 ariel-os-boards = { path = "src/ariel-os-boards", default-features = false }
+ariel-os-build = { path = "src/ariel-os-build", default-features = false }
 ariel-os-buildinfo = { path = "src/ariel-os-buildinfo", default-features = false }
 ariel-os-coap = { path = "src/ariel-os-coap", default-features = false }
 ariel-os-debug = { path = "src/ariel-os-debug", default-features = false }

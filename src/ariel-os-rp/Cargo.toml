@@ -36,6 +36,9 @@ bt-hci = { workspace = true, optional = true }
 embassy-sync = { workspace = true, optional = true }
 trouble-host = { workspace = true, optional = true }
 
+[build-dependencies]
+ariel-os-build = { workspace = true }
+
 [target.'cfg(context = "cortex-m")'.dependencies]
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",

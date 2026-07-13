@@ -1,6 +1,8 @@
 use std::env;
 use std::path::PathBuf;
 
+use ariel_os_build::{context, context_any};
+
 // 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
 #[allow(dead_code, reason = "only used when the feature is enabled")]
 const NRF91_MODEM_IPC_KB: u64 = 32;
@@ -127,20 +129,4 @@ fn write_memoryx() {
     ));
 
     memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
-}
-
-/// Returns the first of the given contexts that is in the current `cfg` contexts.
-fn context_any(contexts: &[&'static str]) -> Option<&'static str> {
-    // Contexts cannot include commas.
-    contexts.iter().find(|c| context(c)).copied()
-}
-
-/// Returns whether the given context is in the current 'cfg' contexts.
-fn context(context: &'static str) -> bool {
-    let Ok(context_var) = std::env::var("CARGO_CFG_CONTEXT") else {
-        return false;
-    };
-
-    // Contexts cannot include commas.
-    context_var.split(',').any(|c| c == context)
 }
