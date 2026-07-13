@@ -437,6 +437,7 @@ dependencies = [
 name = "ariel-os-nrf"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-build",
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
@@ -454,6 +455,7 @@ dependencies = [
  "embedded-io-async 0.6.1",
  "heapless 0.8.0",
  "heapless 0.9.1",
+ "ld-memory",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -526,7 +528,6 @@ dependencies = [
  "embassy-rp",
  "embedded-test",
  "esp-hal",
- "ld-memory",
  "linkme",
  "portable-atomic",
  "riscv",

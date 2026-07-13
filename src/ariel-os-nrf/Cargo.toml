@@ -10,7 +10,7 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
-ariel-os-rt = { workspace = true, features = ["memory-x"] }
+ariel-os-rt = { workspace = true }
 cortex-m = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
@@ -37,6 +37,10 @@ embassy-net = { workspace = true, optional = true }
 embassy-net-driver-channel = { workspace = true, optional = true }
 heapless_for_embassy = { package = "heapless", version = "0.9.0", optional = true }
 heapless_for_nrfmodem = { package = "heapless", version = "0.8.0", optional = true }
+
+[build-dependencies]
+ariel-os-build = { workspace = true }
+ld-memory = { workspace = true, features = ["build-rs"] }
 
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf51"] }
