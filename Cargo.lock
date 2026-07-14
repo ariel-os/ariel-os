@@ -199,6 +199,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-build"
+version = "0.5.0"
+
+[[package]]
 name = "ariel-os-buildinfo"
 version = "0.5.0"
 dependencies = [
@@ -433,6 +437,7 @@ dependencies = [
 name = "ariel-os-nrf"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-build",
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
@@ -450,6 +455,7 @@ dependencies = [
  "embedded-io-async 0.6.1",
  "heapless 0.8.0",
  "heapless 0.9.1",
+ "ld-memory",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -483,6 +489,7 @@ dependencies = [
 name = "ariel-os-rp"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-build",
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
@@ -510,6 +517,7 @@ name = "ariel-os-rt"
 version = "0.5.0"
 dependencies = [
  "ariel-os-alloc",
+ "ariel-os-build",
  "ariel-os-debug",
  "ariel-os-log",
  "ariel-os-macros",
@@ -520,7 +528,6 @@ dependencies = [
  "embassy-rp",
  "embedded-test",
  "esp-hal",
- "ld-memory",
  "linkme",
  "portable-atomic",
  "riscv",
