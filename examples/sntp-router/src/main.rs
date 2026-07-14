@@ -1,13 +1,7 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{
-    log::info,
-    net,
-    time::{Duration, Timer},
-};
-use ariel_os_sntp::NTP_PORT;
-use core::net::{IpAddr, SocketAddr};
+use ariel_os::{log::info, time::Timer};
 
 #[ariel_os::task(autostart)]
 async fn main() {
