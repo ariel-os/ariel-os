@@ -274,7 +274,7 @@ version = "0.10.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.chrono]]
-version = "0.4.41"
+version = "0.4.44"
 criteria = "safe-to-deploy"
 
 [[exemptions.clang-sys]]
@@ -1209,6 +1209,10 @@ criteria = "safe-to-deploy"
 version = "3.3.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.pure-rust-locales]]
+version = "0.8.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.r-efi]]
 version = "5.2.0"
 criteria = "safe-to-deploy"
@@ -1351,6 +1355,18 @@ criteria = "safe-to-deploy"
 
 [[exemptions.smoltcp]]
 version = "0.13.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.sntpc]]
+version = "0.11.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.sntpc-net-embassy]]
+version = "0.11.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.sntpc-time-embassy]]
+version = "0.6.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.socket2]]
