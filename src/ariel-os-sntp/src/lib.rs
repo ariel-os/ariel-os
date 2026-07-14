@@ -17,10 +17,12 @@
 //! NTP server can be trusted. SNTP requests are not authenticated.
 
 use ariel_os_log::{debug, error};
-use core::cell::Cell;
-use core::fmt;
-use core::net::{IpAddr, SocketAddr};
-use core::ops::AddAssign;
+use core::{
+    cell::Cell,
+    fmt,
+    net::{IpAddr, SocketAddr},
+    ops::AddAssign,
+};
 use critical_section::Mutex;
 use embassy_executor;
 use embassy_net::{
