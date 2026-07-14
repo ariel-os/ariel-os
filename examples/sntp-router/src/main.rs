@@ -11,6 +11,6 @@ async fn main() {
             None => info!("SNTP clock not synchronized yet"),
         }
 
-        Timer::after_secs(5 * 60).await;
+        Timer::after_secs(5).await;
     }
 }
