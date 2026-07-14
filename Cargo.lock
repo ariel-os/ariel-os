@@ -5905,9 +5905,9 @@ dependencies = [
 
 [[package]]
 name = "sntpc"
-version = "0.10.1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29793617f843f4e7df42c83b896939e5ca3b773a5b5d25ea68eaa247b7edbf9d"
+checksum = "294278b134cd7d06d7f22eca970aebe38707864c080f66547f9ad26327534af3"
 dependencies = [
  "cfg-if",
  "chrono",
@@ -5917,9 +5917,9 @@ dependencies = [
 
 [[package]]
 name = "sntpc-net-embassy"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c450c686c9762eff9878ac3dbd14094b9f76ea63cd383a21afbe8787c5bff9d4"
+checksum = "97d4addcbed51e6aa5178ba85834d1748b70da0f3df4552382a10afbfe285ae3"
 dependencies = [
  "cfg-if",
  "defmt 1.1.0",
@@ -5930,9 +5930,9 @@ dependencies = [
 
 [[package]]
 name = "sntpc-time-embassy"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12826825945190de063eca0c06d89247d1feece2772e1b315a33a6e4ee68fd0a"
+checksum = "184c354de440d7b2e95a547eb16f2527a1eba1bb666f322782cdb4d4668fc66f"
 dependencies = [
  "embassy-time",
  "sntpc",
