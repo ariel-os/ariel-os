@@ -8,7 +8,7 @@ license.workspace = true
 
 [dependencies]
 ariel-os-log = { workspace = true }
-ariel-os-threads = { workspace = true }
+critical-section = { workspace = true }
 embassy-executor = { workspace = true }
 embassy-net = { workspace = true, features = ["udp"] }
 embassy-time = { workspace = true }

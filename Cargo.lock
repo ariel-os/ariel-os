@@ -652,7 +652,7 @@ name = "ariel-os-sntp"
 version = "0.1.0"
 dependencies = [
  "ariel-os-log",
- "ariel-os-threads",
+ "critical-section",
  "embassy-executor",
  "embassy-net",
  "embassy-time",

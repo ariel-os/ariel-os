@@ -17,10 +17,11 @@
 //! NTP server can be trusted. SNTP requests are not authenticated.
 
 use ariel_os_log::{debug, error};
-use ariel_os_threads::sync::Mutex;
+use core::cell::Cell;
 use core::fmt;
 use core::net::{IpAddr, SocketAddr};
 use core::ops::AddAssign;
+use critical_section::Mutex;
 use embassy_executor;
 use embassy_net::{
     Stack,
@@ -124,7 +125,7 @@ impl ClockSnapshot {
 /// After the first successful synchronization, [`GlobalClock::now`] returns the
 /// estimated current Unix time derived from the monotonic `embassy-time` clock.
 struct GlobalClock {
-    inner: Mutex<Option<ClockSnapshot>>,
+    inner: Mutex<Cell<Option<ClockSnapshot>>>,
 }
 
 impl GlobalClock {
@@ -133,13 +134,13 @@ impl GlobalClock {
     /// Intended for use as a `static`.
     pub const fn new() -> Self {
         Self {
-            inner: Mutex::new(None),
+            inner: Mutex::new(Cell::new(None)),
         }
     }
 
     /// Returns the estimated current Unix timestamp, or `None` if not synchronized yet.
     pub fn now(&self) -> Option<Instant> {
-        self.inner.lock().as_ref().map(|s| s.now())
+        critical_section::with(|cs| self.inner.borrow(cs).get().map(|s| s.now()))
     }
 
     /// Validates and stores the given Unix timestamp.
@@ -166,9 +167,11 @@ impl GlobalClock {
             }
         }
 
-        *self.inner.lock() = Some(ClockSnapshot {
-            unix: unix_secs,
-            anchor: Instant::now(),
+        critical_section::with(|cs| {
+            self.inner.borrow(cs).set(Some(ClockSnapshot {
+                unix: unix_secs,
+                anchor: Instant::now(),
+            }))
         });
 
         Ok(())
