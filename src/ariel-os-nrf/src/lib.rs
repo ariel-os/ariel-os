@@ -17,6 +17,8 @@ pub mod peripheral {
 #[doc(hidden)]
 pub mod ble;
 
+pub mod boards;
+
 #[cfg(feature = "external-interrupts")]
 #[doc(hidden)]
 pub mod extint_registry;
