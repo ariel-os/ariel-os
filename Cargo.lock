@@ -1049,7 +1049,7 @@ dependencies = [
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
  "futures-intrusive",
- "heapless 0.8.0",
+ "heapless 0.9.1",
 ]
 
 [[package]]
@@ -1846,7 +1846,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 1.0.109",
+ "syn 2.0.114",
 ]
 
 [[package]]
@@ -2223,8 +2223,8 @@ dependencies = [
 
 [[package]]
 name = "embassy-nrf"
-version = "0.8.0"
-source = "git+https://github.com/ariel-os/embassy?rev=3940a79a29ae578a35625cae949bea473abf21d1#3940a79a29ae578a35625cae949bea473abf21d1"
+version = "0.9.0"
+source = "git+https://github.com/nponsard/embassy-ariel?rev=fadbbb47002dbdad82f2ac192a3c8c9b6c02ddf2#fadbbb47002dbdad82f2ac192a3c8c9b6c02ddf2"
 dependencies = [
  "bitflags 2.9.1",
  "cfg-if",
@@ -2234,6 +2234,7 @@ dependencies = [
  "defmt 1.1.0",
  "document-features",
  "embassy-embedded-hal",
+ "embassy-futures",
  "embassy-hal-internal",
  "embassy-sync 0.7.2",
  "embassy-time",
@@ -4513,8 +4514,9 @@ dependencies = [
 [[package]]
 name = "nrf-mpsl"
 version = "0.3.0"
-source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
+source = "git+https://github.com/alexmoon/nrf-sdc?rev=d4d244d5ce21f59fa2263333cb1d8f2a5d997145#d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
 dependencies = [
+ "cfg-if",
  "cortex-m",
  "defmt 1.1.0",
  "embassy-nrf",
@@ -4528,7 +4530,7 @@ dependencies = [
 [[package]]
 name = "nrf-mpsl-sys"
 version = "0.2.1"
-source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
+source = "git+https://github.com/alexmoon/nrf-sdc?rev=d4d244d5ce21f59fa2263333cb1d8f2a5d997145#d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
 dependencies = [
  "bindgen 0.72.1",
  "doxygen-rs",
@@ -4536,9 +4538,8 @@ dependencies = [
 
 [[package]]
 name = "nrf-pac"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d334027d6703534f2a80de0794ae435c0e029358d28278533d3935e69b221b01"
+version = "0.2.0"
+source = "git+https://github.com/embassy-rs/nrf-pac.git?rev=074935b9b24ab302fe812f91725937f57cd082cf#074935b9b24ab302fe812f91725937f57cd082cf"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -4547,7 +4548,7 @@ dependencies = [
 [[package]]
 name = "nrf-sdc"
 version = "0.4.0"
-source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
+source = "git+https://github.com/alexmoon/nrf-sdc?rev=d4d244d5ce21f59fa2263333cb1d8f2a5d997145#d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
 dependencies = [
  "bt-hci",
  "critical-section",
@@ -4565,7 +4566,7 @@ dependencies = [
 [[package]]
 name = "nrf-sdc-sys"
 version = "0.2.1"
-source = "git+https://github.com/alexmoon/nrf-sdc?rev=e64ad081a6948b3439d1e811da36d39a5785dbda#e64ad081a6948b3439d1e811da36d39a5785dbda"
+source = "git+https://github.com/alexmoon/nrf-sdc?rev=d4d244d5ce21f59fa2263333cb1d8f2a5d997145#d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
 dependencies = [
  "bindgen 0.72.1",
  "doxygen-rs",
