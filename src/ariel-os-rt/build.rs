@@ -1,7 +1,9 @@
 use std::env;
 use std::path::PathBuf;
 
-use ariel_os_buildutils::{context, context_any};
+use ariel_os_buildutils::{
+    context, context_any, copy_and_rerun_if_changed, env_var_and_rerun_if_changed,
+};
 
 // 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
 #[allow(dead_code, reason = "only used when the feature is enabled")]
@@ -49,26 +51,21 @@ fn main() {
     }
 
     if context("xtensa") {
-        let isr_stacksize =
-            std::env::var("CONFIG_ISR_STACKSIZE").expect("CONFIG_ISR_STACKSIZE env var not set");
+        let isr_stacksize = env_var_and_rerun_if_changed("CONFIG_ISR_STACKSIZE")
+            .expect("CONFIG_ISR_STACKSIZE env var not set");
         let template = std::fs::read_to_string("isr_stack_xtensa.ld.in")
             .unwrap()
             .replace("${ISR_STACKSIZE}", &isr_stacksize);
         std::fs::write(out.join("isr_stack_xtensa.x"), &template).unwrap();
         println!("cargo:rerun-if-changed=isr_stack_xtensa.ld.in");
-        println!("cargo:rerun-if-env-changed=CONFIG_ISR_STACKSIZE");
     }
 
-    std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
-    std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
-    std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
+    copy_and_rerun_if_changed("linkme.x");
+    copy_and_rerun_if_changed("eheap.x");
+    copy_and_rerun_if_changed("keep-stack-sizes.x");
 
     #[cfg(feature = "memory-x")]
     write_memoryx();
-
-    println!("cargo:rerun-if-changed=linkme.x");
-    println!("cargo:rerun-if-changed=eheap.x");
-    println!("cargo:rerun-if-changed=keep-stack-sizes.x");
 
     println!("cargo:rustc-link-search={}", out.display());
 }
