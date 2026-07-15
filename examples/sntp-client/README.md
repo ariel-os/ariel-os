@@ -1,4 +1,4 @@
-# sntp-router
+# sntp-client
 
 ## About
 

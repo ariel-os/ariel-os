@@ -5895,7 +5895,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sntp-router"
+name = "sntp-client"
 version = "0.0.0"
 dependencies = [
  "ariel-os",
