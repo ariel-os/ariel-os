@@ -8,6 +8,7 @@
 #![no_std]
 #![deny(missing_docs)]
 
+mod ping;
 // Moving work from https://github.com/embassy-rs/embassy/pull/2519 in here for the time being
 #[cfg(feature = "coap-transport-udp")]
 mod udp_nal;
