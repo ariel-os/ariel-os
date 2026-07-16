@@ -46,6 +46,7 @@ cfg_if::cfg_if! {
     "seeedstudio-xiao-esp32c6")] { include!("seeedstudio-xiao-esp32c6.rs"); } else if
     #[cfg(context = "seeedstudio-xiao-nrf52840-plus")] {
     include!("seeedstudio-xiao-nrf52840-plus.rs"); } else if #[cfg(context =
+    "st-b-l072z-lrwan1")] { include!("st-b-l072z-lrwan1.rs"); } else if #[cfg(context =
     "st-b-l475e-iot01a")] { include!("st-b-l475e-iot01a.rs"); } else if #[cfg(context =
     "st-nucleo-c031c6")] { include!("st-nucleo-c031c6.rs"); } else if #[cfg(context =
     "st-nucleo-f042k6")] { include!("st-nucleo-f042k6.rs"); } else if #[cfg(context =

@@ -1,0 +1,32 @@
+version: 0.3.0
+targets:
+  st-b-l072z-lrwan1:
+    chip: stm32l072cz
+    flags:
+      - has_usb_device_port
+    ariel:
+      swi: USART2
+    leds:
+      led0:
+        pin: PB5
+        aliases:
+          - LD1
+        color: green
+      led1:
+        pin: PA5
+        aliases:
+          - LD2
+        color: red
+      led2:
+        pin: PB6
+        aliases:
+          - LD3
+        color: blue
+      led3:
+        pin: PB7
+        aliases:
+          - LD4
+        color: red
+    buttons:
+      button0:
+        pin: PB2

@@ -126,6 +126,18 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // Side SPI of Arduino v3 connector
+// SPI1 is connected to the SX1276 radio inside the module, so use SPI2.
+#[cfg(context = "st-b-l072z-lrwan1")]
+pub type SensorSpi = spi::main::SPI2;
+#[cfg(context = "st-b-l072z-lrwan1")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    spi_sck: PB13,
+    spi_miso: PB14,
+    spi_mosi: PB15,
+    spi_cs: PB6, // Shared with the blue LED (LD3)
+});
+
+// Side SPI of Arduino v3 connector
 #[cfg(any(context = "st-nucleo-f303re"))]
 pub type SensorSpi = spi::main::SPI1;
 #[cfg(any(context = "st-nucleo-f303re"))]

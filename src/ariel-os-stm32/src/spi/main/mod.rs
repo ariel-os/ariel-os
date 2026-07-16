@@ -32,6 +32,8 @@ const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(25);
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(75);
 #[cfg(any(context = "stm32h755zi", context = "stm32h753zi"))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(150);
+#[cfg(context = "stm32l072cz")]
+const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(16);
 #[cfg(context = "stm32l475vg")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(40);
 #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
@@ -222,6 +224,11 @@ define_spi_drivers!(
    SPI4 => SPI4,
    SPI5 => SPI5,
    SPI6 => SPI6,
+);
+#[cfg(context = "stm32l072cz")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
 );
 #[cfg(context = "stm32l475vg")]
 define_spi_drivers!(

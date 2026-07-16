@@ -811,6 +811,27 @@ chips:
     note_snippets:
       - ethernet-identity-based-mac-address
 
+  stm32l072cz:
+    name: STM32L072CZ
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: supported
+      ethernet_over_usb:
+        status: not_currently_supported
+        comments:
+          - not enough RAM for the network stack
+      hwrng: needs_testing
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage: not_currently_supported
+      user_usb: needs_testing
+      wifi: not_available
+      ble: not_available
+      ethernet: not_available
+
   stm32l475vg:
     name: STM32L475VG
     manufacturer: STMicroelectronics
@@ -1220,6 +1241,11 @@ builders:
     tier: "3"
     support:
 
+  st-b-l072z-lrwan1:
+    chip: stm32l072cz
+    tier: "3"
+    support:
+
   st-b-l475e-iot01a:
     chip: stm32l475vg
     tier: "2"
@@ -1517,6 +1543,11 @@ boards:
     url: https://web.archive.org/web/20250802201959/https://wiki.seeedstudio.com/LoRa_E5_mini/
     builders:
       - seeedstudio-lora-e5-mini
+
+  - name: ST B-L072Z-LRWAN1
+    url: https://www.st.com/en/evaluation-tools/b-l072z-lrwan1.html
+    builders:
+      - st-b-l072z-lrwan1
 
   - name: ST B-L475E-IOT01A
     url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html
