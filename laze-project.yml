@@ -339,6 +339,10 @@ contexts:
       - has_hwrng
       - has_swi
       - sw/benchmark
+    env:
+      CHIP_ROM_START_ADDRESS: "0x10000000"
+      CHIP_ROM_PAGE_COUNT: "8192"
+      CHIP_ROM_PAGE_SIZE_BYTES: "256"
 
   - name: rp2040
     parent: rp
