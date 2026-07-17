@@ -6,7 +6,7 @@ targets:
       swi: USART2
     leds:
       # led0
-      - pin: PB5
+      - pin: PA5
     buttons:
       # button0
       - pin: PC13
