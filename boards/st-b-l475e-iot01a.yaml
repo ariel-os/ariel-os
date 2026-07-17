@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-b-l475e-iot01a:
     chip: stm32l475vg
@@ -7,19 +7,19 @@ targets:
     ariel:
       swi: UART5
     leds:
-      led0:
-        pin: PA5
+      # led0
+      - pin: PA5
         aliases:
           - LD1
         color: green
-      led1:
-        pin: PB14
+      # led1
+      - pin: PB14
         aliases:
           - LD2
         color: green
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
 
 ariel_doc:
   name: ST B-L475E-IOT01A
@@ -40,3 +40,4 @@ ariel_doc:
           status: not_currently_supported
           comments:
             - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+            

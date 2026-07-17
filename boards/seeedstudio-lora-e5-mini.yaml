@@ -1,18 +1,18 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   seeedstudio-lora-e5-mini:
     chip: stm32wle5jc
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PB5
+      # led0
+      - pin: PB5
         aliases:
           - LD1
         color: red
     buttons:
-      button0:
-        pin: PB13
+      # button0
+      - pin: PB13
 
 ariel_doc:
   name: Seeed Studio LoRa-E5 mini

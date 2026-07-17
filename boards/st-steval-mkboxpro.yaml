@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-steval-mkboxpro:
     chip: stm32u585ai
@@ -12,37 +12,37 @@ targets:
           - CONFIG_VBUS_DETECTION=false
           - CONFIG_SWI=USART2
     leds:
-      led0:
-        pin: PF6
+      # led0
+      - pin: PF6
         aliases:
           - LED1
           - D5
         color: green
-      led1:
-        pin: PH11
+      # led1
+      - pin: PH11
         aliases:
           - LED2
           - D6
         color: red
-      led2:
-        pin: PH12
+      # led2
+      - pin: PH12
         aliases:
           - LED3
           - D7
         color: orange
-      led3:
-        pin: PF9
+      # led3
+      - pin: PF9
         aliases:
           - USB_enum_LED
           - D10
         color: blue
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
         aliases:
           - BT1
-      button1:
-        pin: PE0
+      # button1
+      - pin: PE0
         aliases:
           - BT2
 

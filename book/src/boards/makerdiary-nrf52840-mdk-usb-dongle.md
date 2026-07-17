@@ -1,4 +1,4 @@
-# Makerdiary nRF52840 MDK USB Dongle
+# makerdiary nRF52840 MDK USB Dongle
 
 ## References
 

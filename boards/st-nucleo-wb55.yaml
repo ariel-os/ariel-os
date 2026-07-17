@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-wb55:
     chip: stm32wb55rg
@@ -7,32 +7,32 @@ targets:
     ariel:
       swi: USART1
     leds:
-      led0:
-        pin: PB5
+      # led0
+      - pin: PB5
         color: blue
         aliases:
           - LED1
-      led1:
-        pin: PB0
+      # led1
+      - pin: PB0
         color: green
         aliases:
           - LED2
-      led2:
-        pin: PB1
+      # led2
+      - pin: PB1
         color: red
         aliases:
           - LED3
     buttons:
-      button0:
-        pin: PC4
+      # button0
+      - pin: PC4
         aliases:
           - SW1
-      button1:
-        pin: PD0
+      # button1
+      - pin: PD0
         aliases:
           - SW2
-      button2:
-        pin: PD1
+      # button2
+      - pin: PD1
         aliases:
           - SW3
 

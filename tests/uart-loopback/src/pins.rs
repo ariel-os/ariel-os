@@ -1,4 +1,4 @@
-use ariel_os::hal::{peripherals, uart};
+use ariel_os::hal::uart;
 
 #[cfg(context = "esp")]
 pub type TestUart<'a> = uart::UART0<'a>;

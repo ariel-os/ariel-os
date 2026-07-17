@@ -1,38 +1,38 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   nrf5340dk-app:
     chip: nrf5340-app
     flags:
       - has_usb_device_port
     leds:
-      led0:
-        color: green
+      # led0
+      - color: green
         pin: P0_28
         active: low
-      led1:
-        color: green
+      # led1
+      - color: green
         pin: P0_29
         active: low
-      led2:
-        color: green
+      # led2
+      - color: green
         pin: P0_30
         active: low
-      led3:
-        color: green
+      # led3
+      - color: green
         pin: P0_31
 
     buttons:
-      button0:
-        pin: P0_23
+      # button0
+      - pin: P0_23
         active: low
-      button1:
-        pin: P0_24
+      # button1
+      - pin: P0_24
         active: low
-      button2:
-        pin: P0_08
+      # button2
+      - pin: P0_08
         active: low
-      button3:
-        pin: P0_09
+      # button3
+      - pin: P0_09
         active: low
 
   nrf5340dk-net:

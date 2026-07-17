@@ -1,6 +1,6 @@
 # This file contains Ariel OS specific information needed by sbd-gen for
 # generating an Ariel OS BSP crate.
-version: 0.3.0
+version: 0.4.0
 ariel:
   # This list contains all currently supported chips. The names must correspond
   # to an Ariel OS laze context.

@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-h755zi-q:
     chip: stm32h755zi
@@ -8,27 +8,27 @@ targets:
     ariel:
       swi: UART5
     leds:
-      led0:
-        pin: PB0
+      # led0
+      - pin: PB0
         aliases:
           - LD1
         color: green
         active: high
-      led1:
-        pin: PE1
+      # led1
+      - pin: PE1
         aliases:
           - LD2
         color: yellow
         active: high
-      led2:
-        pin: PB14
+      # led2
+      - pin: PB14
         aliases:
           - LD3
         color: red
         active: high
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
 
 ariel_doc:
   name: ST NUCLEO-H755ZI-Q
@@ -45,3 +45,4 @@ ariel_doc:
           status: not_currently_supported
           comments:
             - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+

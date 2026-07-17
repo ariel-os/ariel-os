@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-f767zi:
     chip: stm32f767zi
@@ -7,24 +7,24 @@ targets:
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PB0
+      # led0
+      - pin: PB0
         color: green
         active: high
         aliases:
           - LD1
-      led1:
-        pin: PB7
+      # led1
+      - pin: PB7
         color: blue
         active: high
         aliases:
           - LD2
-      led2:
-        pin: PB14
+      # led2
+      - pin: PB14
         color: red
         active: high
         aliases:
           - LD3
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13

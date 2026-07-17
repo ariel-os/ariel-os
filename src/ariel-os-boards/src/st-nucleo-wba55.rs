@@ -1,7 +1,6 @@
 // @generated
 
 pub mod pins {
-    use ariel_os_hal::hal::peripherals;
     ariel_os_hal::define_peripherals!(
         LedPeripherals { led0 : PB4, led1 : PA9, led2 : PB8, }
     );

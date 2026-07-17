@@ -1,15 +1,15 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-f401re:
     chip: stm32f401re
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PB5
+      # led0
+      - pin: PA5
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
 
 ariel_doc:
   name: ST NUCLEO-F401RE

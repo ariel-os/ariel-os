@@ -1,4 +1,4 @@
-use ariel_os::hal::{peripherals, spi};
+use ariel_os::hal::spi;
 
 #[cfg(context = "esp")]
 pub type SensorSpi = spi::main::SPI2;

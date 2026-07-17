@@ -1,24 +1,24 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   seeedstudio-xiao-nrf52840-plus:
     chip: nrf52840
     flags:
       - has_usb_device_port
     leds:
-      led0:
-        pin: P0_26
+      # led0
+      - pin: P0_26
         color: red
         active: low
         aliases:
           - USER_LED_R
-      led1:
-        pin: P0_06
+      # led1
+      - pin: P0_06
         color: blue
         active: low
         aliases:
           - USER_LED_B
-      led2:
-        pin: P0_30
+      # led2
+      - pin: P0_30
         color: green
         active: low
         aliases:

@@ -1,0 +1,18 @@
+version: 0.4.0
+# Note that the "kit" is really part of the board name, and not the
+# composition of the board with the pin headers and the antennas: It says
+# "nRF9151 Connect Kit" on the board's silkscreen.
+targets:
+  # There is another potential target, the programmer (an nRF52820 without radio wiring)
+  makerdiary-nrf9151-connect-kit:
+    chip: nrf9151
+    # Pinout from https://wiki.makerdiary.com/nrf9151-connectkit/assets/attachments/nrf9151-connectkit-hardware-diagram_reva.pdf
+    # leds:
+      # No user accessible LEDs: There is a green and an RGB LED, but both are
+      # only accessible from the interface chip.
+    buttons:
+      # button0
+      - pin: P0_25
+        active: low # … and no built-in pull-up.
+        aliases:
+          - USR

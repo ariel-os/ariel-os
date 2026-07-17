@@ -1,12 +1,12 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   bbc-microbit-v1:
     chip: nrf51822-xxaa
     buttons:
-      button0:
-        pin: P0_17
-      button1:
-        pin: P0_26
+      # button0
+      - pin: P0_17
+      # button1
+      - pin: P0_26
 
 ariel_doc:
   name: BBC micro:bit V1

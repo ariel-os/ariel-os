@@ -1,4 +1,4 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   stm32u083c-dk:
     chip: stm32u083mc
@@ -7,18 +7,18 @@ targets:
     ariel:
       swi: USART4_LPUART3
     leds:
-      led0:
-        pin: PC13
+      # led0
+      - pin: PC13
         color: green
-      led1:
-        pin: PA5
+      # led1
+      - pin: PA5
         color: blue
-      led2:
-        pin: PB2
+      # led2
+      - pin: PB2
         color: red
     buttons:
-      button0:
-        pin: PC2
+      # button0
+      - pin: PC2
 
 ariel_doc:
   name: STM32U083C-DK

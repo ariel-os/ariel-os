@@ -45,13 +45,13 @@ targets:
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PB5
+      # led0
+      - pin: PB5
         color: green
         active: high
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
         active: high
 ```
 
@@ -74,7 +74,7 @@ sbd-gen generate-ariel boards -o src/ariel-os-boards --mode update
 ### `stm32`
 
 - STM32 chips do not have a dedicated SWI, so you need to choose one. Select any unused interrupt, like one of the UARTs, and set the `targets.<board_name>.ariel.swi` field in the board description.
-- Each STM32 MCU needs an entry for configuring the clock config, in `src/ariel-os-stm32/src/lib.rs` `rcc_config()`.
+- Each STM32 MCU needs an entry for configuring the clock config, in `src/ariel-os-stm32/src/rcc.rs`'s `default()`.
 
 ### `esp32`
 

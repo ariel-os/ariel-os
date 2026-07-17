@@ -1,38 +1,38 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   nordic-thingy-91-x-nrf9151:
     chip: nrf9151
     leds:
-      led0:
-        pin: P0_29
+      # led0
+      - pin: P0_29
         color: red
-      led1:
-        pin: P0_31
+      # led1
+      - pin: P0_31
         color: green
-      led2:
-        pin: P0_30
+      # led2
+      - pin: P0_30
         color: blue
     buttons:
-      button0:
-        pin: P0_26
+      # button0
+      - pin: P0_26
 
   nordic-thingy-91-x-nrf5340-app:
     chip: nrf5340-app
     flags:
       - has_usb_device_port
     leds:
-      led0:
-        pin: P0_14
+      # led0
+      - pin: P0_14
         color: red
-      led1:
-        pin: P0_26
+      # led1
+      - pin: P0_26
         color: green
-      led2:
-        pin: P0_15
+      # led2
+      - pin: P0_15
         color: blue
     buttons:
-      button0:
-        pin: P0_24
+      # button0
+      - pin: P0_24
 
   nordic-thingy-91-x-nrf5340-net:
     chip: nrf5340-net

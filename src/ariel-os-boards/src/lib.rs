@@ -24,7 +24,8 @@ cfg_if::cfg_if! {
     include!("heltec-wifi-lora-32-v3.rs"); } else if #[cfg(context =
     "makerdiary-nrf52840-mdk-usb-dongle")] {
     include!("makerdiary-nrf52840-mdk-usb-dongle.rs"); } else if #[cfg(context =
-    "native")] { include!("native.rs"); } else if #[cfg(context =
+    "makerdiary-nrf9151-connect-kit")] { include!("makerdiary-nrf9151-connect-kit.rs"); }
+    else if #[cfg(context = "native")] { include!("native.rs"); } else if #[cfg(context =
     "nordic-thingy-91-x-nrf9151")] { include!("nordic-thingy-91-x-nrf9151.rs"); } else if
     #[cfg(context = "nordic-thingy-91-x-nrf5340-app")] {
     include!("nordic-thingy-91-x-nrf5340-app.rs"); } else if #[cfg(context =

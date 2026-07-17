@@ -1,17 +1,17 @@
-version: 0.3.0
+version: 0.4.0
 targets:
   st-nucleo-g431rb:
     chip: stm32g431rb
     ariel:
       swi: USART2
     leds:
-      led0:
-        pin: PA5
+      # led0
+      - pin: PA5
         color: green
         active: high
     buttons:
-      button0:
-        pin: PC13
+      # button0
+      - pin: PC13
         active: high
 
 ariel_doc:

@@ -34,6 +34,9 @@ pub fn main() {
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"makerdiary-nrf52840-mdk-usb-dongle\"))"
     );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"makerdiary-nrf9151-connect-kit\"))"
+    );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"native\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"nordic-thingy-91-x-nrf9151\"))"

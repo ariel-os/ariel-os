@@ -16,6 +16,7 @@ embedded-test = { workspace = true, optional = true }
 linkme = { workspace = true }
 
 [build-dependencies]
+ariel-os-buildutils = { workspace = true }
 ld-memory = { workspace = true, features = ["build-rs"], optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]

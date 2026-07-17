@@ -80,6 +80,10 @@ builders:
   parent: nrf52840
   provides:
   - has_leds
+- name: makerdiary-nrf9151-connect-kit
+  parent: nrf9151
+  provides:
+  - has_buttons
 - name: native
   parent: native-chip
 - name: nordic-thingy-91-x-nrf9151
