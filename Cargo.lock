@@ -424,6 +424,7 @@ dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
+ "ariel-os-rt",
  "ariel-os-utils",
  "bt-hci",
  "cyw43",

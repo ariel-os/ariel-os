@@ -70,7 +70,7 @@ fn main() {
     copy_and_rerun_if_changed("keep-stack-sizes.x");
 
     #[cfg(feature = "memory-x")]
-    write_memoryx();
+    memoryx();
 
     println!("cargo:rustc-link-search={}", out.display());
 }
@@ -80,7 +80,7 @@ fn main() {
 /// # Panics
 /// Panics if called outside of a known laze context.
 #[cfg(feature = "memory-x")]
-fn write_memoryx() {
+fn memoryx() {
     let nvm_start = parse_dec_or_hex(
         &env_var_and_rerun_if_changed("CHIP_NVM_START_ADDRESS")
             .expect("CHIP_NVM_START_ADDRESS env var not set"),
@@ -101,16 +101,19 @@ fn write_memoryx() {
     let layout = memsolve::Memory::new(chip);
     let layout = if context("nrf") {
         layout_nrf(layout)
+    } else if context("rp") {
+        layout_rp(layout)
     } else {
         panic!("unknown MCU laze context");
     };
-
     let memory = layout
         .resolve_layout()
         .expect("Unable to resolve nvm layout")
         .into_memory();
     let memory = if context("nrf") {
         memory_nrf(memory)
+    } else if context("rp") {
+        memory_rp(memory)
     } else {
         panic!("unknown MCU laze context");
     };
@@ -172,6 +175,50 @@ fn memory_nrf(memory: ld_memory::Memory) -> ld_memory::Memory {
     ));
 
     memory.add_section(MemorySection::new("RAM", ram_base, ram * 1024))
+}
+
+/// Generates the rp nvm layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn layout_rp(mut layout: memsolve::Memory<()>) -> memsolve::Memory<()> {
+    if context("rp2040") {
+        let boot = Section::new("BOOT2").unwrap().set_size(256).set_boot(true);
+        layout.add_section(boot);
+        layout.add_section(flash_section().set_address(0x1000_0100));
+    } else {
+        layout.add_section(flash_section().set_boot(true));
+    }
+    layout
+}
+
+/// Adds the rp memory sections to the generated layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn memory_rp(memory: ld_memory::Memory) -> ld_memory::Memory {
+    let ram = if context("rp2040") {
+        256
+    } else if context("rp235xa") {
+        512
+    } else {
+        panic!("unknown rp MCU laze context");
+    };
+
+    let memory = memory.add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024));
+    if context("rp2040") {
+        memory
+            .add_section(MemorySection::new("SRAM4", 0x2004_0000, 4096))
+            .add_section(MemorySection::new("SRAM5", 0x2004_1000, 4096))
+    } else if context("rp235xa") {
+        memory
+            .add_section(MemorySection::new("SRAM4", 0x2008_0000, 4096))
+            .add_section(MemorySection::new("SRAM5", 0x2008_1000, 4096))
+    } else {
+        panic!("unknown rp MCU laze context");
+    }
 }
 
 /// Parses a number, supporting hexadecimal and decimal format.

@@ -340,9 +340,9 @@ contexts:
       - has_swi
       - sw/benchmark
     env:
-      CHIP_ROM_START_ADDRESS: "0x10000000"
-      CHIP_ROM_PAGE_COUNT: "8192"
-      CHIP_ROM_PAGE_SIZE_BYTES: "256"
+      CHIP_NVM_START_ADDRESS: "0x10000000"
+      CHIP_NVM_PAGE_COUNT: "8192"
+      CHIP_NVM_PAGE_SIZE_BYTES: "256"
 
   - name: rp2040
     parent: rp
@@ -377,6 +377,9 @@ contexts:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:
         - "-f interface/cmsis-dap.cfg -f target/rp2040.cfg"
+      RUSTFLAGS:
+        # Extra rp235xa link bits
+        - -Clink-arg=-Tmemory-rp235xa.x
     tasks:
       flash:
         cmd:
