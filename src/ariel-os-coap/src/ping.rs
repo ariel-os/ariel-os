@@ -175,13 +175,8 @@ impl MeasurmentManager {
         })
     }
 
-    /// Initializez the [`MeasurmentManaget`]
-    ///
-    /// This function connects to the configured endpoint and waits for a response.
-    ///
     /// # Panics
-    ///
-    /// Panics if the internal state is invalid or if a required invariant is violated.
+    /// Panics if the index is wrong which is imposible.
     fn init(&'static self, config: CborPingSchema) -> Result<u64, ()> {
         if config.ip_list.is_empty() || config.ip_list.len() > 16 {
             return Err(());
