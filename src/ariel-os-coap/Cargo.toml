@@ -32,6 +32,7 @@ embassy-net = { workspace = true, features = [
   "icmp",
   "udp",
 ], optional = true }
+
 embassy-sync = { workspace = true }
 embedded-nal-async = { version = "0.8", optional = true }
 embedded-nal-coap = { workspace = true }
@@ -73,6 +74,10 @@ coap-server = []
 coap-server-config-storage = ["dep:ariel-os-random", "dep:ariel-os-storage"]
 coap-server-config-unprotected = []
 coap-server-config-demokeys = ["dep:ariel-os-random"]
+
+coap-ping-monitoring = [
+  "dep:embassy-net",
+]
 
 coap-transport-udp = [
   "dep:ariel-os-random",
