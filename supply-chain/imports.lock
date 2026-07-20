@@ -2481,13 +2481,6 @@ end = "2024-06-16"
 notes = "Maintained by Henri Sivonen who works at Mozilla."
 aggregated-from = "https://hg.mozilla.org/mozilla-central/raw-file/tip/supply-chain/audits.toml"
 
-[[audits.mozilla.audits.android-tzdata]]
-who = "Mark Hammond <mhammond@skippinet.com.au>"
-criteria = "safe-to-deploy"
-version = "0.1.1"
-notes = "Small crate parsing a file. No unsafe code"
-aggregated-from = "https://hg.mozilla.org/mozilla-central/raw-file/tip/supply-chain/audits.toml"
-
 [[audits.mozilla.audits.as-slice]]
 who = "Erich Gubler <erichdongubler@gmail.com>"
 criteria = "safe-to-deploy"
@@ -3236,6 +3229,12 @@ version = "0.1.1"
 notes = "A microsoft crate allowing unsafe calls to windows apis."
 aggregated-from = "https://hg.mozilla.org/mozilla-central/raw-file/tip/supply-chain/audits.toml"
 
+[[audits.mozilla.audits.windows-link]]
+who = "Erich Gubler <erichdongubler@gmail.com>"
+criteria = "safe-to-deploy"
+delta = "0.1.1 -> 0.2.0"
+aggregated-from = "https://hg.mozilla.org/mozilla-central/raw-file/tip/supply-chain/audits.toml"
+
 [[audits.mozilla.audits.zeroize]]
 who = "Benjamin Beurdouche <beurdouche@mozilla.com>"
 criteria = "safe-to-deploy"
@@ -3474,3 +3473,10 @@ criteria = "safe-to-deploy"
 delta = "0.4.1 -> 0.5.0"
 notes = "I checked correctness of to_blocks which uses unsafe code in a safe function."
 aggregated-from = "https://raw.githubusercontent.com/zcash/zcash/master/qa/supply-chain/audits.toml"
+
+[[audits.zcash.audits.windows-link]]
+who = "Jack Grigg <jack@electriccoin.co>"
+criteria = "safe-to-deploy"
+delta = "0.2.0 -> 0.2.1"
+notes = "No code changes at all."
+aggregated-from = "https://raw.githubusercontent.com/zcash/librustzcash/main/supply-chain/audits.toml"

@@ -74,12 +74,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c583acf993cf4245c4acb0a2cc2ab1f9cc097de73411bb6d3647ff6af2b1013d"
 
 [[package]]
-name = "android-tzdata"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e999941b234f3131b00bc13c22d06e8c5ff726d1b6318ac7eb276997bbb4fef0"
-
-[[package]]
 name = "android_system_properties"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -157,6 +151,7 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-sensors",
  "ariel-os-sensors-registry",
+ "ariel-os-sntp",
  "ariel-os-storage",
  "ariel-os-threads",
  "ariel-os-utils",
@@ -266,6 +261,7 @@ dependencies = [
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-rt",
+ "ariel-os-sntp",
  "ariel-os-storage",
  "ariel-os-threads",
  "ariel-os-utils",
@@ -655,6 +651,20 @@ dependencies = [
  "embassy-sync 0.7.2",
  "embassy-time",
  "portable-atomic",
+]
+
+[[package]]
+name = "ariel-os-sntp"
+version = "0.1.0"
+dependencies = [
+ "ariel-os-log",
+ "critical-section",
+ "embassy-executor",
+ "embassy-net",
+ "embassy-time",
+ "sntpc",
+ "sntpc-net-embassy",
+ "sntpc-time-embassy",
 ]
 
 [[package]]
@@ -1055,7 +1065,7 @@ dependencies = [
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
  "futures-intrusive",
- "heapless 0.8.0",
+ "heapless 0.9.1",
 ]
 
 [[package]]
@@ -1247,16 +1257,17 @@ dependencies = [
 
 [[package]]
 name = "chrono"
-version = "0.4.41"
+version = "0.4.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c469d952047f47f91b68d1cba3f10d63c11d73e4636f24f08daf0278abf01c4d"
+checksum = "c673075a2e0e5f4a1dde27ce9dee1ea4558c7ffe648f576438a20ca1d2acc4b0"
 dependencies = [
- "android-tzdata",
+ "defmt 1.1.0",
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "pure-rust-locales",
  "wasm-bindgen",
- "windows-link",
+ "windows-link 0.2.1",
 ]
 
 [[package]]
@@ -1852,7 +1863,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 1.0.109",
+ "syn 2.0.114",
 ]
 
 [[package]]
@@ -5203,6 +5214,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "pure-rust-locales"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "869675ad2d7541aea90c6d88c81f46a7f4ea9af8cd0395d38f11a95126998a0d"
+dependencies = [
+ "defmt 1.1.0",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.43"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5878,6 +5898,50 @@ dependencies = [
  "defmt 0.3.100",
  "heapless 0.9.1",
  "managed",
+]
+
+[[package]]
+name = "sntp-client"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-sntp",
+]
+
+[[package]]
+name = "sntpc"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "294278b134cd7d06d7f22eca970aebe38707864c080f66547f9ad26327534af3"
+dependencies = [
+ "cfg-if",
+ "chrono",
+ "defmt 1.1.0",
+ "log",
+]
+
+[[package]]
+name = "sntpc-net-embassy"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97d4addcbed51e6aa5178ba85834d1748b70da0f3df4552382a10afbfe285ae3"
+dependencies = [
+ "cfg-if",
+ "defmt 1.1.0",
+ "embassy-net",
+ "log",
+ "sntpc",
+]
+
+[[package]]
+name = "sntpc-time-embassy"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "184c354de440d7b2e95a547eb16f2527a1eba1bb666f322782cdb4d4668fc66f"
+dependencies = [
+ "embassy-time",
+ "sntpc",
 ]
 
 [[package]]
@@ -6845,7 +6909,7 @@ checksum = "4763c1de310c86d75a878046489e2e5ba02c649d185f21c67d4cf8a56d098980"
 dependencies = [
  "windows-implement",
  "windows-interface",
- "windows-link",
+ "windows-link 0.1.1",
  "windows-result",
  "windows-strings",
 ]
@@ -6879,12 +6943,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "76840935b766e1b0a05c0066835fb9ec80071d4c09a16f6bd5f7e655e3c14c38"
 
 [[package]]
+name = "windows-link"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+
+[[package]]
 name = "windows-result"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c64fd11a4fd95df68efcfee5f44a294fe71b8bc6a91993e2791938abcc712252"
 dependencies = [
- "windows-link",
+ "windows-link 0.1.1",
 ]
 
 [[package]]
@@ -6893,7 +6963,7 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a2ba9642430ee452d5a7aa78d72907ebe8cfda358e8cb7918a2050581322f97"
 dependencies = [
- "windows-link",
+ "windows-link 0.1.1",
 ]
 
 [[package]]
