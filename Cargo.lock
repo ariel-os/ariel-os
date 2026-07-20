@@ -467,6 +467,8 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
  "cortex-m",
  "esp-hal",
 ]
