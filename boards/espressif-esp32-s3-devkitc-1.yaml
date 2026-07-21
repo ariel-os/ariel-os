@@ -9,3 +9,14 @@ targets:
       # button0
       - pin: GPIO0
         active: low
+
+ariel_doc:
+  name: Espressif ESP32-S3-DevKitC-1
+  url: https://web.archive.org/web/20250122153707/https://www.espressif.com/en/dev-board/esp32-s3-devkitc-1-en
+  builders:
+    espressif-esp32-s3-devkitc-1:
+      chip: esp32s3
+      tier: "1"
+      support: {}
+      note_snippets:
+        - espressif-devkit-two-usb-ports-with-usb-otg

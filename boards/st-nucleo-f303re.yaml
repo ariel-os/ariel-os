@@ -10,3 +10,15 @@ targets:
     buttons:
       # button0
       - pin: PC13
+
+ariel_doc:
+  name: ST NUCLEO-F303RE
+  url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f303re.html
+  builders:
+    st-nucleo-f303re:
+      chip: stm32f303re
+      tier: "2"
+      support:
+        user_usb: not_available
+        wifi: not_available
+        ethernet_over_usb: not_available

@@ -2,3 +2,12 @@ version: 0.4.0
 targets:
   native:
     chip: native-chip
+
+ariel_doc:
+  name: native
+  url: "#"
+  builders:
+    native:
+      chip: native-chip
+      tier: "1"
+      support: {}

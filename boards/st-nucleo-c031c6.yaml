@@ -10,3 +10,12 @@ targets:
     buttons:
       # button0
       - pin: PC13
+
+ariel_doc:
+  name: ST NUCLEO-C031C6
+  url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-c031c6.html
+  builders:
+    st-nucleo-c031c6:
+      chip: stm32c031c6
+      tier: "1"
+      support: {}

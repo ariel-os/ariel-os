@@ -32,3 +32,13 @@ targets:
       # button3
       - pin: P0_16
         active: low
+
+ariel_doc:
+  name: nRF52-DK
+  url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK
+  builders:
+    nrf52dk:
+      chip: nrf52832
+      tier: "2"
+      support:
+        ble: supported

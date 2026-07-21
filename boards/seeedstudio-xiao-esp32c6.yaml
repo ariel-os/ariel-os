@@ -18,3 +18,12 @@ targets:
         active: low
         aliases:
           - BOOT
+
+ariel_doc:
+  name: Seeed Studio XIAO ESP32C6
+  url: https://web.archive.org/web/20250827114042/https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
+  builders:
+    seeedstudio-xiao-esp32c6:
+      chip: esp32c6fx4
+      tier: "2"
+      support: {}

@@ -7,3 +7,14 @@ targets:
       - pin: P0_14
       # button1
       - pin: P0_23
+
+ariel_doc:
+  name: BBC micro:bit V2
+  url: https://web.archive.org/web/20250109121140/https://microbit.org/new-microbit/
+  builders:
+    bbc-microbit-v2:
+      chip: nrf52833
+      tier: "1"
+      support:
+        user_usb: not_available
+        ethernet_over_usb: not_available

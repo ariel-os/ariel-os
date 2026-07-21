@@ -38,3 +38,14 @@ targets:
 
       # Only to be mapped if we start expressing aspects that are not user controllable:
       # * SW1 is a reset pin at P0_18/RESET
+
+ariel_doc:
+  name: Adafruit Feather nRF52840 Sense
+  url: https://web.archive.org/web/20251022231756/https://www.adafruit.com/product/4516
+  builders:
+    adafruit-feather-nrf52840-sense:
+      chip: nrf52840
+      tier: "3"
+      support:
+        user_usb: needs_testing
+        ethernet_over_usb: needs_testing

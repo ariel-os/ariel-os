@@ -15,3 +15,12 @@ targets:
     # chip's config, not sure for lack of other ESP32S3 devices).
 
     # No buttons, no native LEDs, but an 8x8 WS281x chain on GPIO14.
+
+ariel_doc:
+  name: Waveshare ESP32-S3-Matrix
+  url: https://web.archive.org/web/20251121141909/https://www.waveshare.com/wiki/ESP32-S3-Matrix
+  builders:
+    waveshare-esp32-s3-matrix:
+      chip: esp32s3fx4r2
+      tier: "3"
+      support: {}

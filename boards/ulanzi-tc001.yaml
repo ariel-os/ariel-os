@@ -23,3 +23,16 @@ targets:
         description: turn off buzzer
         pin: GPIO15
         level: low
+
+ariel_doc:
+  name: Ulanzi TC001
+  url: https://web.archive.org/web/20260206132721/https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882
+  builders:
+    ulanzi-tc001:
+      chip: esp32-d0wd
+      tier: "2"
+      support:
+        debug_channel:
+          status: not_available
+          comments:
+            - JTAG pins are not accessible through the case
