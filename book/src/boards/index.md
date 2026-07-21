@@ -13,6 +13,7 @@
 - [nRF52-DK](./nrf52-dk.md)
 - [nRF52840-DK](./nrf52840-dk.md)
 - [nRF5340-DK](./nrf5340-dk.md)
+- [nRF54LM20-DK](./nrf54lm20-dk.md)
 - [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160-dk.md)
 - [Raspberry Pi Pico](./raspberry-pi-pico.md)

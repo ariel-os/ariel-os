@@ -34,7 +34,8 @@ cfg_if::cfg_if! {
     #[cfg(context = "nrf52840dk")] { include!("nrf52840dk.rs"); } else if #[cfg(context =
     "nrf52dk")] { include!("nrf52dk.rs"); } else if #[cfg(context = "nrf5340dk-app")] {
     include!("nrf5340dk-app.rs"); } else if #[cfg(context = "nrf5340dk-net")] {
-    include!("nrf5340dk-net.rs"); } else if #[cfg(context = "nrf9151-dk")] {
+    include!("nrf5340dk-net.rs"); } else if #[cfg(context = "nrf54lm20dk-app")] {
+    include!("nrf54lm20dk-app.rs"); } else if #[cfg(context = "nrf9151-dk")] {
     include!("nrf9151-dk.rs"); } else if #[cfg(context = "nrf9160dk-nrf9160")] {
     include!("nrf9160dk-nrf9160.rs"); } else if #[cfg(context = "particle-xenon")] {
     include!("particle-xenon.rs"); } else if #[cfg(context = "rpi-pico-w")] {

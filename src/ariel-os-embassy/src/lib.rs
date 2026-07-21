@@ -168,11 +168,11 @@ pub(crate) fn init() {
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
         hal::EXECUTOR.start(hal::SWI);
-        hal::EXECUTOR.spawner().must_spawn(init_task(p));
+        hal::EXECUTOR.spawner().spawn(init_task(p).unwrap());
     }
 
     #[cfg(context = "esp")]
-    EXECUTOR.run(|spawner| spawner.must_spawn(init_task(p)));
+    EXECUTOR.run(|spawner| spawner.spawn(init_task(p)));
 }
 
 #[cfg(feature = "executor-thread")]
@@ -189,7 +189,7 @@ fn init() {
     static EXECUTOR: StaticCell<thread_executor::Executor> = StaticCell::new();
     EXECUTOR
         .init_with(thread_executor::Executor::new)
-        .run(|spawner| spawner.must_spawn(init_task(p)));
+        .run(|spawner| spawner.spawn(init_task(p).unwrap()));
 }
 
 /// Main Ariel OS async system setup function
@@ -320,7 +320,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             our_mac_addr,
         );
 
-        spawner.spawn(usb::ethernet::usb_ncm_task(runner)).unwrap();
+        spawner.spawn(usb::ethernet::usb_ncm_task(runner).unwrap());
 
         device
     };
@@ -337,7 +337,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             }
         }
         let usb = usb_builder.build();
-        spawner.spawn(usb::usb_task(usb)).unwrap();
+        spawner.spawn(usb::usb_task(usb).unwrap());
     }
 
     #[cfg(all(feature = "ble-cyw43", not(feature = "wifi-cyw43")))]
@@ -398,7 +398,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             seed,
         );
 
-        spawner.spawn(net::net_task(runner)).unwrap();
+        spawner.spawn(net::net_task(runner).unwrap());
 
         if crate::net::STACK
             .init(embassy_sync::blocking_mutex::Mutex::new(

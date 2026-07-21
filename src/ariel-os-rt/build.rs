@@ -92,6 +92,12 @@ fn write_memoryx() {
         (512, 1024)
     } else if context("nrf5340-net") {
         (64, 256)
+    } else if context("nrf54lm20-app") {
+        // Actual RAM size is 512K, but:
+        //
+        // 0x2007df40 - 0x2007fe40: VPR saved context
+        // 0x2007ff00 - 0x2007ffff: Protected RAM
+        (511, 2036)
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
         let ram = 256;
         let flash = 1024;
