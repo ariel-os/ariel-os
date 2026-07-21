@@ -8,7 +8,8 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "arduino-uno-q")] { include!("arduino-uno-q.rs"); } else if
     #[cfg(context = "bbc-microbit-v1")] { include!("bbc-microbit-v1.rs"); } else if
     #[cfg(context = "bbc-microbit-v2")] { include!("bbc-microbit-v2.rs"); } else if
-    #[cfg(context = "dfrobot-firebeetle2-esp32-c6")] {
+    #[cfg(context = "cy8cproto-062-4343w")] { include!("cy8cproto-062-4343w.rs"); } else
+    if #[cfg(context = "dfrobot-firebeetle2-esp32-c6")] {
     include!("dfrobot-firebeetle2-esp32-c6.rs"); } else if #[cfg(context = "dwm1001")] {
     include!("dwm1001.rs"); } else if #[cfg(context =
     "espressif-esp32-c3-devkit-rust-1")] {

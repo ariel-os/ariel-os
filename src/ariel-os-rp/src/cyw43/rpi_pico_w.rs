@@ -1,15 +1,16 @@
 //! Board specific configuration for the CYW43439 chip, found on the Raspberry Pi Pico W.
 
 use cyw43_pio::PioSpi;
-use embassy_rp::{Peri, bind_interrupts, peripherals, pio::InterruptHandler};
+use embassy_rp::{Peri, bind_interrupts, dma, peripherals, pio::InterruptHandler};
 
 pub use cyw43_pio::DEFAULT_CLOCK_DIVIDER;
 
 bind_interrupts!(pub struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<CYW43_PIO>;
+    DMA_IRQ_0 => dma::InterruptHandler<CYW43_DMA_CH>;
 });
 
-pub type CywSpi = PioSpi<'static, CYW43_PIO, 0, CYW43_DMA_CH>;
+pub type CywSpi = PioSpi<'static, CYW43_PIO, 0>;
 
 pub struct Cyw43Periphs {
     pub pwr: Peri<'static, peripherals::PIN_23>,

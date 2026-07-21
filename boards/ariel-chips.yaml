@@ -34,6 +34,7 @@ ariel:
     - nrf9160
     - rp2040
     - rp235xa
+    - cy8c624abzi-s2d44
     - stm32c031c6
     - stm32f303cb
     - stm32f303re

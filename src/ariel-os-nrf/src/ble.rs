@@ -222,7 +222,7 @@ pub fn driver(p: Peripherals, spawner: Spawner, config: ariel_os_embassy_common:
         mpsl::MultiprotocolServiceLayer::new(mpsl_p, Irqs, lfclk_cfg)
             .expect("Failed to initialize MPSL"),
     );
-    spawner.must_spawn(mpsl_task(mpsl));
+    spawner.spawn(mpsl_task(mpsl).unwrap());
 
     let rng = RNG.init(ariel_os_random::crypto_rng_send());
 
@@ -278,13 +278,13 @@ fn build_sdc<'d, const N: usize>(
     // Order matters here if we want multirole to work.
 
     #[cfg(feature = "ble-peripheral")]
-    let builder = builder.support_adv()?;
+    let builder = builder.support_adv();
     #[cfg(feature = "ble-central")]
-    let builder = builder.support_scan()?;
+    let builder = builder.support_scan();
     #[cfg(feature = "ble-peripheral")]
-    let builder = builder.support_peripheral()?;
+    let builder = builder.support_peripheral();
     #[cfg(feature = "ble-central")]
-    let builder = builder.support_central()?;
+    let builder = builder.support_central();
     #[cfg(feature = "ble-peripheral")]
     let builder = builder.peripheral_count(1)?;
     #[cfg(feature = "ble-central")]

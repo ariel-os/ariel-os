@@ -4,9 +4,10 @@
 )]
 mod rpi_pico_w;
 
-use cyw43::{Control, Runner};
+use cyw43::{Control, JoinError, Runner};
 use embassy_executor::Spawner;
 use embassy_rp::{
+    dma::Channel,
     gpio::{Level, Output},
     pio::Pio,
 };
@@ -44,15 +45,18 @@ pub async fn join(mut control: cyw43::Control<'static>) {
                 info!("Wifi connected!");
                 break;
             }
-            Err(err) => {
-                info!(" Wifi join failed with status={}", err.status);
+            Err(JoinError::JoinFailure(status)) => {
+                info!(" Wifi join failed with status={}", status);
+            }
+            Err(e) => {
+                info!(" Wifi join failed with error={:?}", e);
             }
         }
     }
 }
 
 #[embassy_executor::task]
-async fn wifi_cyw43_task(runner: Runner<'static, Output<'static>, CywSpi>) -> ! {
+async fn wifi_cyw43_task(runner: Runner<'static, cyw43::SpiBus<Output<'static>, CywSpi>>) -> ! {
     runner.run().await
 }
 
@@ -67,6 +71,7 @@ pub async fn device<'a, 'b: 'a>(
     let pins = rpi_pico_w::take_pins(peripherals);
 
     let fw = cyw43_firmware::CYW43_43439A0;
+    let nvram = cyw43_firmware::NVRAM_RP2040;
     let clm = cyw43_firmware::CYW43_43439A0_CLM;
     #[cfg(feature = "ble-cyw43")]
     let btfw = cyw43_firmware::CYW43_43439A0_BTFW;
@@ -89,12 +94,12 @@ pub async fn device<'a, 'b: 'a>(
         cs,
         pins.dio,
         pins.clk,
-        pins.dma,
+        Channel::new(pins.dma, Irqs),
     );
 
     #[cfg(not(feature = "ble-cyw43"))]
     let (net_device, mut control, runner) =
-        cyw43::new(STATE.init_with(cyw43::State::new), pwr, spi, fw).await;
+        cyw43::new(STATE.init_with(cyw43::State::new), pwr, spi, fw, nvram).await;
 
     #[cfg(feature = "ble-cyw43")]
     let (net_device, mut control, runner) = {
@@ -118,7 +123,7 @@ pub async fn device<'a, 'b: 'a>(
     //     .await;
 
     // this needs to be spawned here (before using `control`)
-    spawner.spawn(wifi_cyw43_task(runner)).unwrap();
+    spawner.spawn(wifi_cyw43_task(runner).unwrap());
 
     control.init(clm).await;
 
