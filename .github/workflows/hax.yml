@@ -14,7 +14,7 @@ jobs:
           persist-credentials: false
 
       - name: ⤵ Install and configure hax
-        uses: hacspec/hax-actions@main
+        uses: hacspec/hax-actions@1f01b89579f425ad7c1e66aebbd5df7e688cb576 # main
         with:
           # pin hax to known-working
           hax_reference: cc29a3f8c0eee80a1682be78cb3b0447a0257d5b
