@@ -13,7 +13,7 @@ use embassy_stm32::{
     gpio,
     mode::Blocking,
     peripherals,
-    spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi},
+    spi::{MisoPin, MosiPin, SckPin, Spi as InnerSpi, mode::Master},
     time::Hertz,
 };
 
@@ -90,7 +90,7 @@ macro_rules! define_spi_drivers {
         $(
             /// Peripheral-specific SPI driver.
             pub struct $peripheral {
-                spim: YieldingAsync<BlockingAsync<InnerSpi<'static, Blocking>>>,
+                spim: YieldingAsync<BlockingAsync<InnerSpi<'static, Blocking, Master>>>,
             }
 
             // Ensure this peripheral has only one active Instance.
