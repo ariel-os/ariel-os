@@ -1,5 +1,41 @@
 //! Provides HAL-agnostic UART-related types.
 
+/// A grouping of peripherals that can be combined to start a UART.
+///
+/// There is some asymmetry in the types involved because the [`Tx`][Self::Tx] and [`Rx`][Self::Rx]
+/// pins are carried as singleton instances, whereas the [`Device`][Self::Device] type is the one
+/// that has the `::new()` method (currently not associated with any trait) as a type method (which
+/// then takes ownership of the pin singletons).
+///
+/// # Usage
+///
+/// An application that works on some configured UART can be written as taking an type `U:
+/// Assignment` (not yet a generic, until the Ariel OS UART API is backed by traits), and is
+/// initialized with an owned instance thereof. A typical input would be
+/// `ariel_os::boards::pins::HOST_FACING_UART` on boards that have it, or an explicitly configured
+/// other assignment.
+///
+/// That application can then turn that assignment [`let (tx, rx) =
+/// u.into_pins()`][Self::into_pins], possibly set them up (eg. by sending a BREAK condition), and
+/// then create the UART as `<U as Assignment>::Device::new(rx, tx, rx_buf, tx_buf, config)`.
+///
+/// # Future development
+///
+/// Once "being a UART device" is formalized in a trait, this can become a requirement on the
+/// Device type, and this type can provide methods to initialize that concrete UART assignment into
+/// an operational instance.
+pub trait Assignment {
+    /// Type that has a `Device::new()` method that conforms to the informal Ariel OS HAL.
+    type Device<'a>;
+    /// Transmit pin type that is passed into the device's `new()` method as the `tx` argument.
+    type Tx;
+    /// Receive pin type that is passed into the device's `new()` method as the `rx` argument.
+    type Rx;
+
+    /// Destructor that provides the contained pin singletons to the user.
+    fn into_pins(self) -> (Self::Tx, Self::Rx);
+}
+
 /// UART configuration error.
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
