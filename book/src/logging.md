@@ -1,6 +1,6 @@
 # Logging
 
-Ariel OS supports logging on all platforms and it is enabled by default with the `logging` [laze module][laze-modules-book].
+Ariel OS supports logging on all platforms and it is enabled by default thanks to the `logging` [laze module][laze-modules-book].
 Logging offers a set of macros that print on the debug console with helpful logging formatting.
 
 ## Printing Panics
@@ -23,7 +23,7 @@ async fn main() {
 
 ## Filtering Logs
 
-In Ariel OS, the log level defaults to `info`. It can be configured using the
+In Ariel OS, the log level defaults to `info`. It can be configured using the
 laze variable `LOG`.
 Depending on the logger, it may be possible to configure different levels per crate or per module.
 
@@ -71,6 +71,12 @@ $ laze build -C examples/log --builders nrf52840dk -DLOG=info,ariel_os_rt=trace 
 
 ### [log]
 
+To build your project with plain logging support rather than defmt, use the `--select=log` option on the command line. For example:
+
+```
+$ laze build -C examples/log --builders nrf52840dk --select=log
+```
+
 Ariel OS's logger for `log` supports configuring the log level globally, but does not currently support per-crate filtering.
 
 ## Logging Transports
@@ -93,6 +99,11 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 >
 > When a separate serial monitor is needed, [`defmt-print`][defmt-print-cratesio] can be used as `defmt`-enabled serial monitor.
 > If this is not possible, `defmt` should be disabled and [`log`](#log) used instead as logging facade.
+>
+> This is what you may see instead of your messages if you use `defmt` logging but use a serial monitor that is not `defmt`-enabled:
+> ```
+> ~� z� j� z� j� z� j� z� j� z� j
+> ```
 
 > [!TIP]
 > When a logging transport other than the [debug channel][debug-channel-book] is enabled, logging can still be used when the debug channel is disabled either in software (by disabling the `logging-over-debug-channel` laze module) or in hardware when the debug interface itself is disabled.
