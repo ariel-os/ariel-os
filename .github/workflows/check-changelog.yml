@@ -18,6 +18,7 @@ jobs:
         with:
           prefix_mode: true
           one_of: "changelog:"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
       - name: "Check changelog label"
         if: "!contains(github.event.pull_request.labels.*.name, 'changelog:skip')"
         run: |
