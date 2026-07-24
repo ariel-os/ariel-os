@@ -13,6 +13,11 @@ jobs:
   check-changelog:
     runs-on: ubuntu-24.04
     steps:
+      - name: "Check that a changelog label exists"
+        uses: agilepathway/label-checker@c3d16ad512e7cea5961df85ff2486bb774caf3c5 # v1.6.65
+        with:
+          prefix_mode: true
+          one_of: "changelog:"
       - name: "Check changelog label"
         if: "!contains(github.event.pull_request.labels.*.name, 'changelog:skip')"
         run: |
