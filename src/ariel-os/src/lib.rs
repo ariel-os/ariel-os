@@ -33,8 +33,14 @@ pub use ariel_os_buildinfo as buildinfo;
 pub use ariel_os_coap as coap;
 #[doc(inline)]
 pub use ariel_os_debug as debug;
+#[cfg(feature = "i2c")]
 #[doc(inline)]
-pub use ariel_os_hal::api::*;
+pub use ariel_os_hal::api::i2c;
+#[cfg(feature = "uart")]
+#[doc(inline)]
+pub use ariel_os_hal::api::uart;
+#[doc(inline)]
+pub use ariel_os_hal::api::{gpio, hal};
 #[doc(inline)]
 pub use ariel_os_identity as identity;
 #[doc(inline)]
@@ -60,7 +66,17 @@ pub use ariel_os_macros::task;
 #[cfg(any(feature = "threading", doc))]
 pub use ariel_os_macros::thread;
 
-pub use ariel_os_embassy::api::*;
+#[cfg(feature = "ble")]
+pub use ariel_os_embassy::api::ble;
+#[cfg(feature = "net")]
+pub use ariel_os_embassy::api::net;
+#[cfg(feature = "spi")]
+pub use ariel_os_embassy::api::spi;
+#[cfg(feature = "time")]
+pub use ariel_os_embassy::api::time;
+#[cfg(feature = "usb")]
+pub use ariel_os_embassy::api::usb;
+pub use ariel_os_embassy::api::{EMBASSY_TASKS, asynch, cell, delegate};
 
 pub mod config {
     //! Provides configuration to the system and the application.
