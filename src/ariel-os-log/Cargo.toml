@@ -52,7 +52,7 @@ esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
 ## Enables `defmt` as logging facade.
-defmt = ["dep:defmt", "esp-println?/defmt-espflash"]
+defmt = ["dep:critical-section", "dep:defmt", "esp-println?/defmt-espflash"]
 ## Enables `log` as logging facade.
 log = ["dep:ariel-os-utils", "dep:const-str", "dep:critical-section", "dep:log"]
 
