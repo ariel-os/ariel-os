@@ -10,6 +10,10 @@
 mod _featurecomb {}
 
 cfg_select! {
+    feature = "uart" => {
+        mod uart;
+        pub use uart::init;
+    }
     _ => {
         mod dummy;
         pub use dummy::init;

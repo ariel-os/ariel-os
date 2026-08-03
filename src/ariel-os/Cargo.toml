@@ -240,8 +240,13 @@ panic-printing = ["ariel-os-rt/panic-printing"]
 no-boards = ["ariel-os-boards/no-boards", "ariel-os-embassy/no-boards"]
 
 # These are selected by laze
-debug-uart = ["ariel-os-embassy/debug-uart", "ariel-os-log/debug-uart"]
-logging-over-uart = ["ariel-os-log/logging-over-uart"]
+# NOTE: `time` is only needed on RP.
+logging-over-uart = [
+  "ariel-os-log-transport-driver/uart",
+  "log-transport-driver",
+  "time",
+  "uart",
+]
 logging-over-usb = ["ariel-os-log/logging-over-usb"]
 rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-log/defmt-rtt"]
