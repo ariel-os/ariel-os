@@ -27,10 +27,10 @@ ariel-os-embassy = { workspace = true }
 ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
 ariel-os-log = { workspace = true }
+ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-macros = { workspace = true }
 ariel-os-nrf = { workspace = true, optional = true }
 ariel-os-power = { workspace = true }
-ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true }
 ariel-os-sensors = { workspace = true, optional = true }

@@ -1,3 +1,5 @@
+// Dummy definition of a transport, this only registers empty functions.
+
 use embassy_executor::Spawner;
 
 use ariel_os_hal::hal::OptionalPeripherals;
@@ -8,5 +10,5 @@ fn flush() {}
 
 /// Initializes the custom transport driver.
 pub fn init(_peripherals: &mut OptionalPeripherals, _spawner: Spawner) {
-    ariel_os_log::custom_transport::register_transport_functions(write_bytes, flush);
+    ariel_os_log::transport::register_custom_transport(write_bytes, flush);
 }
