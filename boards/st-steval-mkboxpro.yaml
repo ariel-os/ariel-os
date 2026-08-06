@@ -45,3 +45,8 @@ targets:
       - pin: PE0
         aliases:
           - BT2
+    i2c:
+      - sda_pin: PB7
+        scl_pin: PB6
+        possible_peripherals:
+          - I2C1
