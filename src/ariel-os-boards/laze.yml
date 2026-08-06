@@ -322,6 +322,7 @@ builders:
   parent: stm32u083mc
   provides:
   - has_buttons
+  - has_i2c
   - has_leds
   - has_swi
   - has_usb_device_port

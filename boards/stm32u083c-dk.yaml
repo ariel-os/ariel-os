@@ -19,3 +19,15 @@ targets:
     buttons:
       # button0
       - pin: PC2
+    i2c:
+      - scl_pin: PB8
+        sda_pin: PB7
+        devices:
+          - type: sensor
+            address: 0x7e
+            part_number: STTS22H
+        possible_peripherals:
+          - I2C1
+        aliases:
+          - SensorI2c
+          - I2C_0
