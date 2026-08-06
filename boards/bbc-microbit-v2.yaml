@@ -7,3 +7,8 @@ targets:
       - pin: P0_14
       # button1
       - pin: P0_23
+    i2c:
+      - scl_pin: P0_08
+        sda_pin: P0_16
+        possible_peripherals:
+          - TWISPI0
