@@ -16,8 +16,14 @@ use ariel_os::{
 
 use stm32_lcd_driver::{Digit, Lcd};
 
+ariel_os::hal::group_peripherals!(Peripherals {
+    lcd: pins::LcdPeripherals,
+    pins: pins::Pins,
+    i2c: ariel_os_boards::pins::SensorI2c,
+});
+
 #[ariel_os::task(autostart, peripherals)]
-async fn main(peripherals: pins::Peripherals) {
+async fn main(peripherals: Peripherals) {
     i2c_bus::init(peripherals.i2c);
     sensors::init().await;
 

@@ -10,11 +10,15 @@ pub static I2C_BUS: once_cell::sync::OnceCell<
     Mutex<embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex, hal::i2c::controller::I2c>,
 > = once_cell::sync::OnceCell::new();
 
-pub fn init(peripherals: crate::pins::I2CPins) {
+use ariel_os::i2c::BusPart;
+use ariel_os_boards::pins::i2c0;
+
+pub fn init(peripherals: i2c0) {
     let mut i2c_config = hal::i2c::controller::Config::default();
     i2c_config.frequency = const { highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(400)) };
     debug!("Selected frequency: {:?}", i2c_config.frequency);
 
-    let i2c_bus = crate::pins::SensorI2c::new(peripherals.i2c_sda, peripherals.i2c_scl, i2c_config);
+    let (sda, scl) = peripherals.into_pins();
+    let i2c_bus = <i2c0 as BusPart>::I2CPeri::new(sda, scl, i2c_config);
     let _ = I2C_BUS.set(Mutex::new(i2c_bus));
 }
