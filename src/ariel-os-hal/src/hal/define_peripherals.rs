@@ -108,7 +108,6 @@ macro_rules! group_peripherals {
     }
 }
 
-
 /// Repeatedly calls [``define_i2c_bus``] with each item of a comma separated list.
 #[cfg(feature = "i2c")]
 #[macro_export]
@@ -125,8 +124,6 @@ macro_rules! define_i2c_buses {
 macro_rules! define_i2c_buses {
     ( $($_:tt)+ ) => {};
 }
-
-
 
 /// Packages given pins and peripherals into a struct implementing the [``crate::i2c::BusPart``] trait.
 ///
@@ -214,7 +211,6 @@ macro_rules! define_i2c_alias {
         pub type $arg = $name;
     };
 }
-
 
 #[doc(hidden)]
 pub trait TakePeripherals<T> {

@@ -9,8 +9,8 @@ use ariel_os::{
 
 use embedded_hal_async::i2c::I2c;
 
-use ariel_os_boards::pins;
 use ariel_os::i2c::BusPart;
+use ariel_os_boards::pins;
 
 #[ariel_os::task(autostart, peripherals)]
 async fn i2c_scanner(peripherals: pins::i2c0) {
