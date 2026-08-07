@@ -63,11 +63,15 @@ fn main() {
     #[cfg(feature = "memory-x")]
     memoryx::write_memoryx(out);
 
+    #[cfg(feature = "esp-partition")]
+    gen_esp_partition_table();
+
     println!("cargo:rustc-link-search={}", out.display());
 }
 
 #[cfg(feature = "memory-x")]
 mod memoryx {
+    use crate::helpers::{Nvm, Ram, u64_from_env_maybe};
     use ariel_os_buildutils::env_var_and_rerun_if_changed;
     use ld_memory::{MemorySection, Whence};
     use memsolve::{Memory, section::Section};
@@ -271,12 +275,78 @@ mod memoryx {
             }
         }
     }
+}
+
+/// Generate the esp32 partition table.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "esp-partition")]
+fn gen_esp_partition_table() {
+    use esp_idf_part::{AppType, DataType, Type};
+    use helpers::Nvm;
+    use memsolve::{Memory, chip::Chip, section::Section};
+
+    // Gather chip NVM config
+    let nvm = Nvm::from_env();
+    let chip = Chip::new(nvm.page_size, nvm.start_address, nvm.total_size).unwrap();
+    // define NVM layout
+    let mut memory = Memory::new(chip);
+
+    memory.add_section(
+        Section::new("nvs")
+            .unwrap()
+            .set_size(0x6000)
+            .set_address(0x9000)
+            .add_esp_metadata(Type::Data, DataType::Nvs),
+    );
+    memory.add_section(
+        Section::new("phy_init")
+            .unwrap()
+            .set_size(0x1000)
+            .set_address(0xf000)
+            .add_esp_metadata(Type::Data, DataType::Phy),
+    );
+    // memory.add_section(
+    //     Section::new("storage")
+    //         .unwrap()
+    //         .set_size(0x1000)
+    //         .set_address_align(0x10000)
+    //         .add_esp_metadata(Type::Data, DataType::Undefined),
+    // );
+    memory.add_section(
+        Section::new("factory")
+            .unwrap()
+            .set_maximize(true)
+            .set_address_align(0x10000)
+            .add_esp_metadata(Type::App, AppType::Factory),
+    );
+    let layout = memory.resolve_layout().unwrap();
+    let partition_table = layout.into_esp_partition().to_csv().unwrap();
+
+    // construct `$OUT_DIR/../../../${app}-partitions.csv`
+    // TODO: encoding ${app} here actually forces a rerun for every application,
+    // as that obviously changes for every application.
+    let filename = format!(
+        "{}-partitions.csv",
+        env_var_and_rerun_if_changed("CONFIG_APPLICATION").unwrap()
+    );
+
+    let out_dir = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
+    let path = out_dir.ancestors().nth(3).unwrap().join(filename);
+
+    std::fs::write(path, partition_table).unwrap();
+}
+
+#[allow(unused, reason = "use depending on features")]
+mod helpers {
+    use ariel_os_buildutils::env_var_and_rerun_if_changed;
 
     /// Struct holding Non Volatile Memory info.
-    struct Nvm {
-        total_size: u64,
-        start_address: u64,
-        page_size: u64,
+    pub struct Nvm {
+        pub total_size: u64,
+        pub start_address: u64,
+        pub page_size: u64,
     }
 
     impl Nvm {
@@ -300,9 +370,9 @@ mod memoryx {
 
     /// Get RAM info.
     ///
-    struct Ram {
-        start_address: u64,
-        size: u64,
+    pub struct Ram {
+        pub start_address: u64,
+        pub size: u64,
     }
 
     impl Ram {
@@ -335,7 +405,7 @@ mod memoryx {
     /// Get an u64 value (hex or dec) from env or panic.
     /// # Panics
     /// Panics if the env var is not set or does not parse as `u64` in hex or decimal.
-    fn u64_from_env(key: &'static str) -> u64 {
+    pub fn u64_from_env(key: &'static str) -> u64 {
         parse_dec_or_hex(
             &env_var_and_rerun_if_changed(key).unwrap_or_else(|_| panic!("{key} env var not set")),
         )
@@ -345,7 +415,7 @@ mod memoryx {
     /// Get an u64 value (hex or dec) from env, if set and it parses correctly.
     /// # Panics
     /// Panics then `key` is in env but does not parse as `u64` in hex or decimal.
-    fn u64_from_env_maybe(key: &'static str) -> Option<u64> {
+    pub fn u64_from_env_maybe(key: &'static str) -> Option<u64> {
         if let Ok(value) = &env_var_and_rerun_if_changed(key) {
             Some(
                 parse_dec_or_hex(value)

@@ -47,7 +47,8 @@ contexts:
         - >-
           OPENOCD_ARGS="${OPENOCD_ARGS}"
           SCRIPTS=${SCRIPTS}
-          CONFIG_BOARD=${builder}
+          CONFIG_APPLICATION="${app}"
+          CONFIG_BOARD="${builder}"
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
@@ -460,6 +461,7 @@ contexts:
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
+      ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
@@ -1338,12 +1340,12 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor"'
+        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${ESP_PARTITION_FILE}"'
     tasks:
       flash:
         help: flash the target using `espflash`
         cmd:
-          - espflash flash --after hard-reset ${out} $@
+          - espflash flash --partition-table ${ESP_PARTITION_FILE} --after hard-reset ${out} $@
 
       attach:
         help: attach `espflash` to a running target
