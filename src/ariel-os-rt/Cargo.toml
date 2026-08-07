@@ -17,6 +17,7 @@ linkme = { workspace = true }
 
 [build-dependencies]
 ariel-os-buildutils = { workspace = true }
+esp-idf-part = { workspace = true, optional = true }
 ld-memory = { workspace = true, features = [
   "build-rs",
   "parse",
@@ -66,6 +67,7 @@ memory-x = ["dep:ld-memory", "dep:memsolve"]
 
 embassy-boot-loader = []
 embassy-boot-application = []
+esp-partition = ["dep:esp-idf-part", "memsolve/esp"]
 
 # features needed for `cargo test`
 _test = []
