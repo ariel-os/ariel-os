@@ -218,11 +218,6 @@ pub fn init() {
     }
 }
 
-#[allow(dead_code, reason = "conditional compilation")]
-pub fn wfi() {
-    cortex_m::asm::wfi();
-}
-
 /// Returns a `Stack` handle for the currently active thread.
 pub(crate) fn stack() -> crate::stack::Stack {
     #[cfg(feature = "threading")]
