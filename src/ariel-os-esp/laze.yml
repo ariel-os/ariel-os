@@ -1,0 +1,10 @@
+apps:
+  - name: crates/ariel-os-esp
+    selects:
+      - host-test-only
+    env:
+      global:
+        RUSTFLAGS:
+          - '--cfg context="esp32c6"'
+        RUSTDOCFLAGS:
+          - '--cfg context="esp32c6"'
