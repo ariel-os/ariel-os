@@ -99,6 +99,12 @@ fn memoryx() {
     let chip = memsolve::chip::Chip::new(nvm_page_size, nvm_start, nvm_page_size * nvm_page_count)
         .unwrap();
     let layout = memsolve::Memory::new(chip);
+    if context("esp") {
+        #[cfg(feature = "esp-partition")]
+        gen_esp_partition_table(layout.with_esp_metadata());
+        return;
+    }
+
     let layout = if context("nrf") {
         layout_nrf(layout)
     } else if context("rp") {
@@ -219,6 +225,42 @@ fn memory_rp(memory: ld_memory::Memory) -> ld_memory::Memory {
     } else {
         panic!("unknown rp MCU laze context");
     }
+}
+
+/// Generate the esp32 partition table.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "esp-partition")]
+fn gen_esp_partition_table(mut memory: memsolve::esp::EspMemory) {
+    use ariel_os_buildutils::rerun_if_changed;
+    use esp_idf_part::{AppType, DataType, Type};
+    memory.add_section(
+        Section::new("nvs")
+            .unwrap()
+            .set_size(0x6000)
+            .set_address(0x9000)
+            .add_esp_metadata(Type::Data, DataType::Nvs),
+    );
+    memory.add_section(
+        Section::new("phy_init")
+            .unwrap()
+            .set_size(0x1000)
+            .set_address(0xf000)
+            .add_esp_metadata(Type::Data, DataType::Phy),
+    );
+    memory.add_section(
+        Section::new("factory")
+            .unwrap()
+            .set_maximize(true)
+            .set_address_align(0x10000)
+            .add_esp_metadata(Type::App, AppType::Factory),
+    );
+    let layout = memory.resolve_layout().unwrap();
+    let partition_table = layout.into_esp_partition().to_csv().unwrap();
+    let path = &PathBuf::from(env::var_os("ESP_PARTITION_FILE").unwrap());
+    std::fs::write(path, partition_table).unwrap();
+    rerun_if_changed(path.to_str().unwrap());
 }
 
 /// Parses a number, supporting hexadecimal and decimal format.

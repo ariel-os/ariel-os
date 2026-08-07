@@ -17,6 +17,7 @@ linkme = { workspace = true }
 
 [build-dependencies]
 ariel-os-buildutils = { workspace = true }
+esp-idf-part = { workspace = true, optional = true }
 ld-memory = { workspace = true, features = ["build-rs"], optional = true }
 memsolve = { workspace = true, optional = true }
 
@@ -60,6 +61,7 @@ _panic-handler = []
 single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory", "dep:memsolve"]
+esp-partition = ["memory-x", "dep:esp-idf-part", "memsolve/esp"]
 nrf91-modem = []
 
 # features needed for `cargo test`
