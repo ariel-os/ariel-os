@@ -107,6 +107,18 @@ spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
 ## Enables UART support.
 uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
 
+## Enables PSRAM as additional heap memory.
+##
+## Boards enabling this feature must also set `ESP_HAL_CONFIG_PSRAM_MODE` to
+## `quad` or `octal` to match their actual PSRAM chip (e.g. via
+## `ariel.global_env.CARGO_ENV` in the board's SBD yaml) — esp-hal cannot
+## detect which SPI mode the populated chip needs, and driving an
+## Octal-wired chip with Quad commands (or vice versa) does not fail
+## visibly: the chip responds and boots, but every real PSRAM read/write
+## beyond what fits in cache silently returns corrupted data. See the
+## `esp32` section of the board porting guide (`book/src/adding-board-support.md`).
+psram = ["dep:esp-alloc", "esp-hal/psram"]
+
 ## Enables threading support.
 threading = [
   "dep:ariel-os-threads",

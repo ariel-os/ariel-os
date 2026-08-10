@@ -118,6 +118,13 @@ pub fn init() -> OptionalPeripherals {
         crate::time_driver::init(embassy_timer);
     }
 
+    #[cfg(feature = "psram")]
+    {
+        ariel_os_log::debug!("initializing psram");
+        esp_alloc::psram_allocator!(peripherals.PSRAM.take().unwrap(), esp_hal::psram);
+        ariel_os_log::debug!("psram: {} bytes free", esp_alloc::HEAP.free());
+    }
+
     peripherals
 }
 

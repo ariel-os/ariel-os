@@ -96,6 +96,9 @@ usb = [
   "ariel-os-stm32/usb",
 ]
 
+## Enables PSRAM as additional heap memory (ESP32-only, currently).
+psram = ["ariel-os-esp/psram"]
+
 ble = [
   "dep:bt-hci",
   "dep:embedded-io",
