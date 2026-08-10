@@ -7,6 +7,8 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-embassy-common = { workspace = true }
+ariel-os-hal = { workspace = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 cortex-m = { workspace = true }
