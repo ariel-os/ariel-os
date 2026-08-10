@@ -87,6 +87,8 @@ impl fmt::Display for Error {
     }
 }
 
+impl core::error::Error for Error {}
+
 /// Reason why a received SNTP timestamp was rejected.
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -103,6 +105,8 @@ impl fmt::Display for PlausibilityError {
         }
     }
 }
+
+impl core::error::Error for PlausibilityError {}
 
 /// A snapshot that anchors an NTP Unix-second value to an [`Instant`].
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
