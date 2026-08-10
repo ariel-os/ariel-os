@@ -36,28 +36,28 @@ use sntpc_net_embassy::UdpSocketWrapper;
 use sntpc_time_embassy::EmbassyTimestampGenerator;
 
 /// SNTP port.
-pub const NTP_PORT: u16 = 123;
+const NTP_PORT: u16 = 123;
 
 /// Default timeout for a single SNTP request.
-pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(3);
+const DEFAULT_TIMEOUT: Duration = Duration::from_secs(3);
 
 /// Size of the UDP RX payload buffer.
 ///
 /// SNTP packets are 48 bytes, but the buffer is intentionally a bit larger.
-pub const DEFAULT_RX_BUFFER_SIZE: usize = 64;
+const DEFAULT_RX_BUFFER_SIZE: usize = 64;
 
 /// Size of the UDP TX payload buffer.
 ///
 /// SNTP packets are 48 bytes, but the buffer is intentionally a bit larger.
-pub const DEFAULT_TX_BUFFER_SIZE: usize = 64;
+const DEFAULT_TX_BUFFER_SIZE: usize = 64;
 
 /// Maximum tolerated absolute difference between local estimate and SNTP.
 ///
 /// A larger difference causes [`PlausibilityError::JumpTooLarge`].
-pub const MAX_PLAUSIBLE_DIFF: Duration = Duration::from_millis(100);
+const MAX_PLAUSIBLE_DIFF: Duration = Duration::from_millis(100);
 
 /// The sleep interval for between synchronizations
-pub const SYNC_INTERVAL: Duration = Duration::from_secs(60 * 60);
+const SYNC_INTERVAL: Duration = Duration::from_secs(60 * 60);
 
 /// Errors that can occur while fetching SNTP time.
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
