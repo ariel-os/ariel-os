@@ -20,6 +20,17 @@ pub fn construct_rng(peripherals: &mut crate::OptionalPeripherals) {
 
             ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut rng));
         }
+        any(context = "nrf91", context = "nrf5340-app") => {
+            let p =
+                peripherals
+                    .CC_RNG
+                    .take()
+                    .expect("CC_RNG has not been previously used");
+
+            let mut cc_rng = embassy_nrf::cryptocell::rng::CcRng::new(p, Irqs);
+
+            ariel_os_random::construct_rng(&mut ariel_os_random::RngAdapter(&mut cc_rng));
+        }
         context = "ariel-os" => {
             compile_error!("hardware RNG is not supported on this MCU family");
         }
