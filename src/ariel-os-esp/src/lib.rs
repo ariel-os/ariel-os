@@ -78,6 +78,11 @@ pub trait IntoPeripheral<'a, T> {
     fn into_hal_peripheral(self) -> T;
 }
 
+#[cfg(feature = "psram")]
+mod psram;
+#[cfg(feature = "psram")]
+pub use psram::PSRAM_HEAP;
+
 #[doc(hidden)]
 impl<T> IntoPeripheral<'_, T> for T {
     fn into_hal_peripheral(self) -> T {
@@ -121,8 +126,8 @@ pub fn init() -> OptionalPeripherals {
     #[cfg(feature = "psram")]
     {
         ariel_os_log::debug!("initializing psram");
-        esp_alloc::psram_allocator!(peripherals.PSRAM.take().unwrap(), esp_hal::psram);
-        ariel_os_log::debug!("psram: {} bytes free", esp_alloc::HEAP.free());
+        psram::init(peripherals.PSRAM.take().unwrap());
+        ariel_os_log::debug!("psram: {} bytes free", psram::PSRAM_HEAP.free());
     }
 
     peripherals
