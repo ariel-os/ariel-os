@@ -8,7 +8,7 @@ pub mod controller;
 ///
 /// This trait relies on the fact that
 /// - the I2C Peripheral type from the MCU is also the name of the "driver-creating" type using the same peripheral.
-/// - this "device-creating" type has a method `new(sda, scl) -> X` that create something that impl [``embedded_hal_async::i2c::I2c``]
+/// - this "device-creating" type has a method `new(sda, scl) -> X` that creates something that impl [`embedded_hal_async::i2c::I2c`]
 ///
 /// # Usage
 ///
@@ -27,13 +27,13 @@ pub mod controller;
 /// fn main(p: i2c0) {
 ///     let mut i2c_config = hal::i2c::controller::Config::default();
 ///     let (sda, scl) = p.into_pins();
-///     let i2c = <i2c0 as BusPart>::I2CPeri::new(sda, scl, i2c_config);
+///     let i2c = <i2c0 as BusPart>::I2cPeri::new(sda, scl, i2c_config);
 ///     let _ = I2C_BUS.set(Mutex::new(i2c_bus));
 /// }
 /// ```
 pub trait BusPart {
     /// The dedicated I2C Peripheral from the MCU.
-    type I2CPeri;
+    type I2cPeri;
     /// The pin connected to the I2C Data line.
     type Sda;
     /// The pin connected to the I2C clock line.
