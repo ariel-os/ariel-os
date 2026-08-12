@@ -1948,17 +1948,8 @@ modules:
 
   - name: logging-over-uart
     help: use UART as logging transport
-    # Temporarily restricted to ESP and boards that have ad hoc support.
-    context:
-      - esp
-      - nrf52840dk
-      - nrf52dk
-      - rp2040
-      - stm32u083c-dk
     selects:
-      - context::esp:
-          - esp-println
-      - ?debug-uart
+      - has_host_facing_uart
     provides_unique:
       - logging-transport
     env:

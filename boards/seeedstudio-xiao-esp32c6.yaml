@@ -18,3 +18,10 @@ targets:
         active: low
         aliases:
           - BOOT
+    uarts:
+      - rx_pin: GPIO17
+        tx_pin: GPIO16
+        possible_peripherals:
+          - UART0
+          - UART1
+        host_facing: true

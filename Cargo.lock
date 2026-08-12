@@ -101,6 +101,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-nrf",
  "ariel-os-power",
@@ -214,6 +215,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-rt",
@@ -349,6 +351,21 @@ dependencies = [
  "esp-println",
  "featurecomb",
  "log",
+]
+
+[[package]]
+name = "ariel-os-log-transport-driver"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-boards",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-log",
+ "embassy-executor",
+ "embassy-futures",
+ "embassy-sync 0.7.2",
+ "embedded-io-async 0.6.1",
+ "static_cell",
 ]
 
 [[package]]
@@ -3150,6 +3167,15 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+]
+
+[[package]]
+name = "example-uart-echo"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embedded-io-async 0.6.1",
 ]
 
 [[package]]

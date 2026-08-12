@@ -1,0 +1,4 @@
+apps:
+  - name: example-uart-echo
+    depends:
+      - has_host_facing_uart

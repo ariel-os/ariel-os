@@ -27,6 +27,7 @@ ariel-os-embassy = { path = "../ariel-os-embassy" }
 ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
 ariel-os-log = { workspace = true }
+ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-nrf = { path = "../ariel-os-nrf", optional = true }
 ariel-os-power = { path = "../ariel-os-power" }
@@ -199,7 +200,7 @@ timer-generic-queue-128 = ["ariel-os-embassy/timer-generic-queue-128"]
 
 #! ## Development and debugging
 # Enables the debug channel.
-debug-channel = ["ariel-os-rt/debug-channel"]
+debug-channel = ["ariel-os-log/debug-channel", "ariel-os-rt/debug-channel"]
 # Enables logging support through `defmt`, see [`log`].
 defmt = [
   "ariel-os-bench?/defmt",
@@ -219,13 +220,21 @@ panic-printing = ["ariel-os-rt/panic-printing"]
 no-boards = ["ariel-os-boards/no-boards", "ariel-os-embassy/no-boards"]
 
 # These are selected by laze
-debug-uart = ["ariel-os-embassy/debug-uart", "ariel-os-log/debug-uart"]
-logging-over-uart = ["ariel-os-log/logging-over-uart"]
+# NOTE: `time` is only needed on RP.
+logging-over-uart = [
+  "ariel-os-log-transport-driver/uart",
+  "log-transport-driver",
+  "time",
+  "uart",
+]
 logging-over-usb = ["ariel-os-log/logging-over-usb"]
 rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-log/defmt-rtt"]
 esp-println = ["ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
+
+# Use an Ariel OS log transport driver.
+log-transport-driver = ["ariel-os-embassy/log-transport-driver"]
 
 net = ["ariel-os-embassy/net"]
 
