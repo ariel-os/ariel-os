@@ -12,6 +12,7 @@ include = ["src/**/*", "README.md"]
 ariel-os-log = { workspace = true }
 ariel-os-runqueue = { workspace = true }
 ariel-os-utils = { workspace = true }
+ariel-os-mpu = { workspace = true }
 critical-section = { workspace = true }
 embassy-time = { workspace = true }
 embassy-time-driver = { workspace = true }
@@ -69,6 +70,7 @@ multi-core = [
 infini-core = []
 core-affinity = ["multi-core"]
 idle-threads = []
+mpu = ["dep:ariel-os-mpu"]
 
 _test = ["single-core"]
 
