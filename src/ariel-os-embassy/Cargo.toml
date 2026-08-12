@@ -39,6 +39,7 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-hal = { path = "../ariel-os-hal" }
 ariel-os-identity = { path = "../ariel-os-identity" }
 ariel-os-log = { workspace = true }
+ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-random = { path = "../ariel-os-random", optional = true }
 ariel-os-rt = { path = "../ariel-os-rt" }
@@ -224,6 +225,12 @@ defmt = [
   "usbd-hid?/defmt",
 ]
 log = ["ariel-os-hal/log"]
+
+# Use a log transport driver implemented in `ariel-os-log-transport-driver`.
+# The protocol used is selected with features in `ariel-os`.
+log-transport-driver = ["dep:ariel-os-log-transport-driver"]
+
+logging-over-generic-usb = ["usb"]
 
 _test = ["dhcpv4", "external-interrupts", "i2c", "spi", "time"]
 

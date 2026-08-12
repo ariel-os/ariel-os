@@ -205,6 +205,11 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "debug-uart")]
     debug_uart::init(&mut peripherals);
+    #[cfg(all(
+        feature = "log-transport-driver",
+        not(feature = "logging-over-generic-usb")
+    ))]
+    ariel_os_log_transport_driver::init(&mut peripherals, spawner);
 
     debug!("ariel-os-embassy::init_task()");
 
@@ -284,6 +289,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
             CONTROL_BUF.take(),
         )
     };
+
+    #[cfg(feature = "logging-over-generic-usb")]
+    ariel_os_log_transport_driver::init(&mut usb_builder, spawner);
 
     #[cfg(feature = "usb-ethernet")]
     let device = {

@@ -101,6 +101,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-nrf",
  "ariel-os-power",
@@ -214,6 +215,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-rt",
@@ -349,6 +351,21 @@ dependencies = [
  "esp-println",
  "featurecomb",
  "log",
+]
+
+[[package]]
+name = "ariel-os-log-transport-driver"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-hal",
+ "ariel-os-log",
+ "embassy-executor",
+ "embassy-futures",
+ "embassy-sync 0.7.2",
+ "embassy-usb",
+ "embedded-io-async 0.7.0",
+ "esp-hal",
+ "static_cell",
 ]
 
 [[package]]
@@ -2796,7 +2813,6 @@ dependencies = [
  "esp-metadata-generated",
  "esp-sync",
  "log",
- "portable-atomic",
 ]
 
 [[package]]
