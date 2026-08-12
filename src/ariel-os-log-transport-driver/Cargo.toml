@@ -1,0 +1,22 @@
+[package]
+name = "ariel-os-log-transport-driver"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-hal = { workspace = true }
+ariel-os-log = { workspace = true, features = ["custom-transport"] }
+embassy-executor = { workspace = true }
+embassy-sync = { workspace = true, optional = true }
+esp-hal = { workspace = true, optional = true }
+
+[features]
+usb-cdc-acm-esp = ["dep:embassy-sync", "dep:esp-hal"]
+
+_test = []
+
+[lints]
+workspace = true

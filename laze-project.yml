@@ -1935,16 +1935,22 @@ modules:
   - name: logging-over-usb
     help: use USB CDC-ACM as logging transport
     selects:
-      # Temporarily restricted to ESP32s having a USB CDC-ACM/JTAG USB peripheral.
-      - usb-cdc-acm-esp
-      - context::esp:
-          - esp-println
+      - ?logging-over-usb-cdc-acm-esp
+      - usb-log-transport
     provides_unique:
       - logging-transport
+
+  - name: logging-over-usb-cdc-acm-esp
+    context:
+      - esp
+    selects:
+      - usb-cdc-acm-esp
+    provides_unique:
+      - usb-log-transport
     env:
       global:
         FEATURES:
-          - ariel-os/logging-over-usb
+          - ariel-os/logging-over-usb-cdc-acm-esp
 
   - name: logging-over-uart
     help: use UART as logging transport

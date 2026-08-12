@@ -21,10 +21,17 @@
 #[featurecomb::comb]
 mod _featurecomb {}
 
+#[doc(hidden)]
+#[cfg(feature = "custom-transport")]
+pub mod custom_transport;
+
 #[allow(unused, reason = "conditional compilation")]
 #[doc(hidden)]
 #[cfg(feature = "log")]
 mod log_logger;
+
+#[cfg(all(feature = "defmt", feature = "custom-transport"))]
+mod defmt_logger;
 
 // This module is hidden in the docs, but would still be imported by a wildcard import of this
 // crate's items.
@@ -72,33 +79,36 @@ pub mod log {
     // adds/removes any items.
     pub use log::{debug, error, info, trace, warn};
 
-    #[cfg(all(
-        context = "ariel-os",
-        not(any(
-            feature = "esp-println",
-            feature = "logging-over-uart",
-            feature = "std"
-        ))
-    ))]
-    pub use ariel_os_debug::debug_channel_println as println;
-
-    #[cfg(feature = "esp-println")]
-    pub use esp_println::println;
-
-    #[cfg(feature = "std")]
-    pub use std::println;
-
-    #[cfg(feature = "debug-uart")]
-    pub use crate::uart_println as println;
-
-    /// Prints to the logging output, with a newline.
-    #[cfg(not(context = "ariel-os"))]
-    #[macro_export]
-    macro_rules! noop_println {
-        ($($arg:tt)*) => {};
+    cfg_select! {
+        feature = "debug-channel" => {
+            pub use ariel_os_debug::debug_channel_println as println;
+        }
+        feature = "debug-uart" => {
+           pub use crate::uart_println as println;
+        }
+        feature = "esp-println" => {
+            pub use esp_println::println;
+        }
+        feature = "std" => {
+            pub use std::println;
+        }
+        feature = "custom-transport" => {
+            pub use crate::transport_println as println;
+        }
+        not(context = "ariel-os") => {
+            pub use crate::noop_println as println;
+        }
+        _ => {
+            compile_error!("No logging transport available !");
+        }
     }
-    #[cfg(not(context = "ariel-os"))]
-    pub use crate::noop_println as println;
+}
+
+/// Prints to the logging output, with a newline.
+#[cfg(not(context = "ariel-os"))]
+#[macro_export]
+macro_rules! noop_println {
+    ($($arg:tt)*) => {};
 }
 
 // NOTE: this module is used both for `log` and when no logging facades are enabled.
@@ -413,4 +423,33 @@ pub mod backend {
 pub fn init() {
     #[cfg(feature = "log")]
     log_logger::init();
+}
+
+// From `esp-println`: espflash reads this metadata to know when to decode defmt.
+#[cfg(all(context = "esp", not(feature = "esp-println")))]
+#[expect(unsafe_code)]
+mod esp {
+    macro_rules! log_format {
+        ($value:expr) => {
+            #[unsafe(link_section = concat!(".espressif.metadata"))]
+            #[used]
+            #[unsafe(export_name = concat!("espflash.LOG_FORMAT"))]
+            static LOG_FORMAT: [u8; $value.len()] = const {
+                let val_bytes = $value.as_bytes();
+                let mut val_bytes_array = [0; $value.len()];
+                let mut i = 0;
+                while i < val_bytes.len() {
+                    val_bytes_array[i] = val_bytes[i];
+                    i += 1;
+                }
+                val_bytes_array
+            };
+        };
+    }
+
+    #[cfg(feature = "defmt")]
+    log_format!("defmt-espflash");
+
+    #[cfg(not(feature = "defmt"))]
+    log_format!("serial");
 }
