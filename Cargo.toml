@@ -167,6 +167,7 @@ defmt-rtt = { version = "1.1.0" }
 document-features = "0.2.8"
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.9.1", default-features = false }
+jiff = { version = "0.2", default-features = false }
 ld-memory = { version = "0.2.9" }
 log = { version = "0.4.20", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
@@ -190,7 +191,6 @@ nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b34
 
 futures-util = { version = "0.3.32", default-features = false }
 nrf-modem = { version = "0.10.2" }
-time = { version = "0.3.47", default-features = false }
 tinyrlibc = "0.5.0"
 
 [workspace.lints.rust]

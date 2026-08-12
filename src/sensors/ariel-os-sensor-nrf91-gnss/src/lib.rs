@@ -26,8 +26,8 @@ use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex, channel::Channel, once_lock::OnceLock,
 };
 use futures_util::StreamExt as _;
+use jiff::{civil::DateTime, tz::TimeZone};
 use nrf_modem::{Gnss, GnssData, GnssStream};
-use time::{Date, Month, Time, UtcDateTime};
 
 use ariel_os_log::{Debug2Format, debug, error, warn};
 use ariel_os_sensors::{
@@ -42,6 +42,8 @@ use ariel_os_sensors_utils::AtomicState;
 
 use crate::config::{Config, GnssOperationMode, convert_gnss_config};
 
+const SAMPLE_UNAVAILABLE: Sample = Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable);
+
 // From WGS 84, Mean Radius of the Three Semi-axes in meters.
 // Source: table 3.5 in https://nsgreg.nga.mil/doc/view?i=4085
 const EARTH_RADIUS: f64 = 6_371_008.771_4;
@@ -49,7 +51,7 @@ const EARTH_RADIUS: f64 = 6_371_008.771_4;
 // Computed at build time to improve performance.
 const DEGREES_PER_METER_BASE: f64 = 360.0 / (EARTH_RADIUS * 2.0 * PI);
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum Command {
     Start,
     Trigger,
@@ -60,6 +62,139 @@ enum Command {
 #[expect(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
 fn clamp_to_u8(value: f32) -> u8 {
     value.clamp(u8::MIN.into(), u8::MAX.into()) as u8
+}
+
+struct StreamState {
+    // Single shot mode, return data only when the stream gets closed.
+    single_shot: bool,
+
+    // If it should send an update the next time it receives data.
+    send_update_on_next_data_received: bool,
+
+    // Latest data received from nrf_modem, used in SingleShot mode.
+    latest_data: Option<nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame>,
+}
+
+#[derive(Debug)]
+enum NextAction {
+    /// Do another iteration of the loop.
+    Continue,
+    /// Stop the processing loop.
+    Break,
+    /// Send data to the app.
+    SendData(nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame),
+    /// Send data and break.
+    SendFinalData(nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame),
+    /// Send error and break.
+    SendFinalError(ReadingError),
+}
+
+impl StreamState {
+    pub fn new(operation_mode: GnssOperationMode) -> StreamState {
+        StreamState {
+            single_shot: matches!(operation_mode, GnssOperationMode::SingleShot(_)),
+            send_update_on_next_data_received: false,
+            latest_data: None,
+        }
+    }
+
+    /// Handle control flow commands received from the `command` channel, returns what the main loop should do.
+    pub fn handle_command(&mut self, command: &Command) -> NextAction {
+        match command {
+            Command::Start => {
+                warn!("GNSS sensor already started");
+                NextAction::Continue
+            }
+            Command::Stop => NextAction::Break,
+            Command::Trigger => {
+                if self.send_update_on_next_data_received || self.single_shot {
+                    warn!("Received Trigger command while already processing one");
+                } else {
+                    self.send_update_on_next_data_received = true;
+                }
+                NextAction::Continue
+            }
+        }
+    }
+
+    /// Handles data from nrf-modem, returns what the main loop should do.
+    pub fn handle_stream_data(
+        &mut self,
+        stream_data: Option<Result<GnssData, nrf_modem::Error>>,
+    ) -> NextAction {
+        let Some(data) = stream_data else {
+            // If we're here that means the stream has been closed.
+
+            let next_action = if self.single_shot {
+                // In SingleShot mode that means we need to return some data.
+                self.latest_data.map_or(
+                    NextAction::SendFinalError(ReadingError::SensorAccess),
+                    NextAction::SendFinalData,
+                )
+            } else {
+                NextAction::Break
+            };
+            return next_action;
+        };
+
+        let data = match data {
+            Ok(d) => d,
+            Err(e) => {
+                warn!("GNSS error: {}", e);
+                return NextAction::Continue;
+            }
+        };
+
+        match data {
+            GnssData::PositionVelocityTime(pos) => {
+                if self.send_update_on_next_data_received {
+                    self.send_update_on_next_data_received = false;
+                    NextAction::SendData(pos)
+                } else {
+                    self.latest_data = Some(pos);
+                    NextAction::Continue
+                }
+            }
+            GnssData::Nmea(nmea_message) => {
+                debug!("NMEA: {}", nmea_message.as_str());
+                NextAction::Continue
+            }
+            GnssData::Agps(_) => {
+                //  ignored
+                NextAction::Continue
+            }
+        }
+    }
+}
+
+/// Convert time from `nrf_modem` to parts that can be put in samples.
+///
+/// # Panics
+///
+/// When the date is too far in the future / past.
+fn convert_to_time_parts(
+    data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
+) -> Option<(i32, i32)> {
+    // Default year when no GNSS fix.
+    if data.datetime.year == 1980 {
+        return None;
+    }
+    let parsed_date_time = DateTime::new(
+        data.datetime.year.cast_signed(),
+        data.datetime.month.cast_signed(),
+        data.datetime.day.cast_signed(),
+        data.datetime.hour.cast_signed(),
+        data.datetime.minute.cast_signed(),
+        data.datetime.seconds.cast_signed(),
+        i32::from(data.datetime.ms) * 1_000_000,
+    )
+    .ok()?
+    .to_zoned(TimeZone::UTC)
+    .ok()?;
+
+    let timestamp = parsed_date_time.timestamp().as_nanosecond();
+
+    Some(ariel_os_sensors_gnss_time_ext::convert_datetime_to_parts(timestamp).unwrap())
 }
 
 pub struct Nrf91Gnss {
@@ -98,21 +233,26 @@ impl Nrf91Gnss {
 
     /// At this point the sensor assume the modem is already initialized with the GNSS feature enabled.
     /// In single shot mode, taking a measurement will return until a fix is obtained or the timeout is reached.
-    /// In continuous or periodic mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In continuous mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In periodic mode, taking a measurement will return the current status of the GNSS module when it is currently active:
+    /// when it wakes up it will send some invalid fixes before returning a valid fix and going to sleep.
     ///
     /// # Panics
     ///
     /// When the modem library refuses the config or fails to initialize the GNSS system.
     pub async fn run(&'static self) {
         let configuration = self.config.get().await;
+
         loop {
             // Wait until the state is Enabled.
+            // `set_mode` updates `self.state` before sending a start command in `command_channel`.
             if self.state.get() != State::Enabled
-                && !matches!(self.command_channel.receive().await, Command::Start)
+                && self.command_channel.receive().await != Command::Start
             {
                 continue;
             }
 
+            // Calling Gnss::new().await powers up the modem, it can't be factored out.
             let gnss_stream = match configuration.operation_mode {
                 GnssOperationMode::Continuous => Gnss::new()
                     .await
@@ -145,17 +285,23 @@ impl Nrf91Gnss {
                 }
             };
 
-            self.handle_gnss_stream(gnss_stream, configuration).await;
+            self.handle_stream_events(gnss_stream, configuration).await;
         }
     }
 
-    async fn handle_gnss_stream(
+    // Return data to the application.
+    fn send_data(&'static self, pos: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame) {
+        let samples = self.convert_to_samples(pos);
+        self.result_signal.signal(Ok(samples));
+    }
+
+    // Handle the events when the GNSS is running.
+    async fn handle_stream_events(
         &'static self,
         mut gnss_stream: GnssStream,
         configuration: &Config,
     ) {
-        let mut latest_data = None;
-        let mut should_send_update = false;
+        let mut stream_state = StreamState::new(configuration.operation_mode);
 
         loop {
             if !matches!(self.state.get(), State::Enabled | State::Measuring) {
@@ -163,99 +309,30 @@ impl Nrf91Gnss {
                 break;
             }
 
-            match select(self.command_channel.receive(), gnss_stream.next()).await {
-                Either::First(Command::Start) => {
-                    warn!("GNSS sensor already started");
-                }
-                Either::First(Command::Stop) => {
+            let next_action = match select(self.command_channel.receive(), gnss_stream.next()).await
+            {
+                Either::First(command) => stream_state.handle_command(&command),
+                Either::Second(data) => stream_state.handle_stream_data(data),
+            };
+            match next_action {
+                NextAction::Break => {
                     break;
                 }
-                Either::Second(None) => {
-                    // In single shot mode, the stream ending means it has found a fix.
-                    if matches!(
-                        configuration.operation_mode,
-                        GnssOperationMode::SingleShot(_)
-                    ) {
-                        self.result_signal.clear();
-                        if let Some(data) = latest_data {
-                            let samples = self.convert_to_samples(&data);
-                            self.result_signal.signal(Ok(samples));
-                        } else {
-                            self.result_signal.signal(Err(ReadingError::SensorAccess));
-                        }
-                    }
+                NextAction::Continue => {}
+                NextAction::SendData(pos) => self.send_data(&pos),
+                NextAction::SendFinalData(pos) => {
+                    self.send_data(&pos);
                     break;
                 }
-                Either::First(Command::Trigger) => {
-                    // Ignore, already running
-                    if should_send_update
-                        || matches!(
-                            configuration.operation_mode,
-                            GnssOperationMode::SingleShot(_)
-                        )
-                    {
-                        warn!("Received Trigger command while already processing one");
-                    } else {
-                        should_send_update = true;
-                    }
-                }
-                Either::Second(Some(Ok(message))) => match message {
-                    GnssData::PositionVelocityTime(pos) => {
-                        if should_send_update {
-                            let samples = self.convert_to_samples(&pos);
-                            self.result_signal.signal(Ok(samples));
-                            should_send_update = false;
-                        }
-
-                        // Only matters if we're in SingleShot mode.
-                        latest_data = Some(pos);
-                    }
-                    GnssData::Nmea(nmea_message) => {
-                        debug!("NMEA: {}", nmea_message.as_str());
-                    }
-                    GnssData::Agps(_) => {
-                        // Ignore AGPS data
-                    }
-                },
-                Either::Second(Some(Err(e))) => {
-                    warn!("GNSS error: {}", e);
+                NextAction::SendFinalError(e) => {
+                    self.result_signal.signal(Err(e));
+                    break;
                 }
             }
         }
+
+        // Deactivate the stream asynchronously to havoid blocking when dropping it.
         let _ = gnss_stream.deactivate().await;
-    }
-
-    /// Convert time from `nrf_modem` to parts that can be put in samples.
-    ///
-    /// # Panics
-    ///
-    /// When the date is too far in the future / past.
-    fn convert_to_time_parts(
-        data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
-    ) -> Option<(i32, i32)> {
-        let parsed_date = Date::from_calendar_date(
-            data.datetime.year.into(),
-            Month::try_from(data.datetime.month).ok()?,
-            data.datetime.day,
-        )
-        .ok()?;
-
-        let time = Time::from_hms_milli(
-            data.datetime.hour,
-            data.datetime.minute,
-            data.datetime.seconds,
-            data.datetime.ms,
-        )
-        .ok()?;
-
-        // Default year when no GNSS fix.
-        if data.datetime.year == 1980 {
-            return None;
-        }
-
-        let timestamp = UtcDateTime::new(parsed_date, time).unix_timestamp_nanos();
-
-        Some(ariel_os_sensors_gnss_time_ext::convert_datetime_to_parts(timestamp).unwrap())
     }
 
     #[expect(clippy::cast_possible_truncation)]
@@ -263,43 +340,26 @@ impl Nrf91Gnss {
         &'static self,
         data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
     ) -> Samples {
-        let time_parts = Self::convert_to_time_parts(data);
-
-        let (time_seconds_part, time_nanos_part) = if let Some(time_parts) = time_parts {
-            (
-                Sample::new(time_parts.0, SampleMetadata::UnknownAccuracy),
-                Sample::new(time_parts.1, SampleMetadata::UnknownAccuracy),
-            )
-        } else {
-            (
-                Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable),
-                Sample::new(0, SampleMetadata::ChannelTemporarilyUnavailable),
-            )
-        };
-
-        let latitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE) as f32;
-
-        // For longitude, the distance represented by a degree changes depending on the latitude
-
-        // The perimeter of the circle formed by the latitude is `cos(latitude_radians) * EARTH_RADIUS * 2 * PI`
-        // Full formula here is `longitude_accuracy = accuracy * 360 / (cos(latitude_radians) * EARTH_RADIUS * 2 * PI)`. We have 360 / (EARTH_RADIUS * 2 * PI) already pre-computed.
-        let longitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE
-            / libm::cos(data.latitude.to_radians())) as f32;
-
-        // Convert for 10^-7 channel scaling.
-        let latitude_value = (data.latitude * 10_000_000f64) as i32;
-        // Convert for 10^-7 channel scaling.
-        let longitude_value = (data.longitude * 10_000_000f64) as i32;
-        // Convert for 10^-2 channel scaling.
-        let altitude_value = (data.altitude * 100f32) as i32;
+        let (time_seconds_part, time_nanos_part) =
+            if let Some((seconds, nanos)) = convert_to_time_parts(data) {
+                (
+                    Sample::new(seconds, SampleMetadata::UnknownAccuracy),
+                    Sample::new(nanos, SampleMetadata::UnknownAccuracy),
+                )
+            } else {
+                (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
+            };
 
         let fix_valid = (u32::from(data.flags)
             & nrf_modem::nrfxlib_sys::NRF_MODEM_GNSS_PVT_FLAG_FIX_VALID)
             != 0;
 
         let (latitude, longitude, altitude) = if fix_valid {
+            let latitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE) as f32;
+
             let latitude = Sample::new(
-                latitude_value,
+                // Convert for 10^-7 channel scaling.
+                (data.latitude * 10_000_000f64) as i32,
                 SampleMetadata::SymmetricalError {
                     // One meter is approximately 0.000009 degrees. Accuracy value usually between 1 and 50 meters.
                     deviation: clamp_to_u8(latitude_accuracy * 100_000f32),
@@ -308,8 +368,18 @@ impl Nrf91Gnss {
                     scaling: -5,
                 },
             );
+
+            // For longitude, the distance represented by a degree changes depending on the latitude
+
+            // The perimeter of the circle formed by the latitude is `cos(latitude_radians) * EARTH_RADIUS * 2 * PI`
+            // Full formula here is `longitude_accuracy = accuracy * 360 / (cos(latitude_radians) * EARTH_RADIUS * 2 * PI)`. We have 360 / (EARTH_RADIUS * 2 * PI) already pre-computed.
+            let longitude_accuracy = (f64::from(data.accuracy) * DEGREES_PER_METER_BASE
+                / libm::cos(data.latitude.to_radians()))
+                as f32;
+
             let longitude = Sample::new(
-                longitude_value,
+                // Convert for 10^-7 channel scaling.
+                (data.longitude * 10_000_000f64) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(longitude_accuracy * 100_000f32),
                     bias: 0,
@@ -318,7 +388,8 @@ impl Nrf91Gnss {
                 },
             );
             let altitude = Sample::new(
-                altitude_value,
+                // Convert for 10^-2 channel scaling.
+                (data.altitude * 100f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.altitude_accuracy * 10f32),
                     bias: 0,
@@ -328,28 +399,8 @@ impl Nrf91Gnss {
             );
             (latitude, longitude, altitude)
         } else {
-            (
-                Sample::new(
-                    latitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    longitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    altitude_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-            )
+            (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
         };
-
-        // Convert for 10^-6 channel scaling.
-        let horizontal_speed_value = (data.speed * 1_000_000f32) as i32;
-        // Convert for 10^-6 channel scaling.
-        let vertical_speed_value = (data.vertical_speed * 1_000_000f32) as i32;
-        // Convert for 10^-6 channel scaling.
-        let heading_value = (data.heading * 1_000_000f32) as i32;
 
         let velocity_valid = (u32::from(data.flags)
             & nrf_modem::nrfxlib_sys::NRF_MODEM_GNSS_PVT_FLAG_VELOCITY_VALID)
@@ -357,7 +408,8 @@ impl Nrf91Gnss {
 
         let (horizontal_speed, vertical_speed, heading) = if velocity_valid {
             let horizontal_speed = Sample::new(
-                horizontal_speed_value,
+                // Convert for 10^-6 channel scaling.
+                (data.speed * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.speed_accuracy * 10f32),
                     bias: 0,
@@ -367,7 +419,8 @@ impl Nrf91Gnss {
             );
 
             let vertical_speed = Sample::new(
-                vertical_speed_value,
+                // Convert for 10^-6 channel scaling.
+                (data.vertical_speed * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.vertical_speed_accuracy * 10f32),
                     bias: 0,
@@ -377,7 +430,8 @@ impl Nrf91Gnss {
             );
 
             let heading = Sample::new(
-                heading_value,
+                // Convert for 10^-6 channel scaling.
+                (data.heading * 1_000_000f32) as i32,
                 SampleMetadata::SymmetricalError {
                     deviation: clamp_to_u8(data.heading_accuracy),
                     bias: 0,
@@ -386,17 +440,7 @@ impl Nrf91Gnss {
             );
             (horizontal_speed, vertical_speed, heading)
         } else {
-            (
-                Sample::new(
-                    horizontal_speed_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(
-                    vertical_speed_value,
-                    SampleMetadata::ChannelTemporarilyUnavailable,
-                ),
-                Sample::new(heading_value, SampleMetadata::ChannelTemporarilyUnavailable),
-            )
+            (SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE, SAMPLE_UNAVAILABLE)
         };
 
         Samples::from_8(
@@ -520,6 +564,7 @@ impl Sensor for Nrf91Gnss {
     ) -> Result<ariel_os_sensors::sensor::State, ariel_os_sensors::sensor::SetModeError> {
         let old = self.state.set_mode(mode)?;
 
+        // Start / Stop the loop in `run()`.
         let result = match mode {
             Mode::Enabled => self.command_channel.try_send(Command::Start),
             Mode::Disabled | Mode::Sleeping => self.command_channel.try_send(Command::Stop),

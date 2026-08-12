@@ -17,10 +17,10 @@ defmt = { workspace = true, optional = true }
 embassy-futures = { workspace = true }
 embassy-sync = { workspace = true }
 futures-util = { workspace = true, default-features = false }
+jiff = { workspace = true }
 libm = "0.2.15"
 nrf-modem = { workspace = true, features = ["modem-log"] }
 portable-atomic = { workspace = true }
-time = { workspace = true }
 
 [features]
 defmt = ["dep:defmt", "ariel-os-sensors/defmt", "nrf-modem/defmt"]

@@ -547,10 +547,10 @@ dependencies = [
  "embassy-futures",
  "embassy-sync 0.7.2",
  "futures-util",
+ "jiff",
  "libm",
  "nrf-modem",
  "portable-atomic",
- "time",
 ]
 
 [[package]]
