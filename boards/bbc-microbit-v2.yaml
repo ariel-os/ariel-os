@@ -16,8 +16,3 @@ targets:
         tx_pin: P0_06 # UART_INT_RX
         possible_peripherals: [UARTE0, UARTE1]
         host_facing: true
-    i2c:
-      - scl_pin: P0_08
-        sda_pin: P0_16
-        possible_peripherals:
-          - TWISPI0
