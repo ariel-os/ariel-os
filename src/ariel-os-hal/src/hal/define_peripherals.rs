@@ -108,7 +108,7 @@ macro_rules! group_peripherals {
     }
 }
 
-/// Repeatedly calls [``define_i2c_bus``] with each item of a comma separated list.
+/// Repeatedly calls [`define_i2c_bus`] with each item of a comma separated list.
 #[cfg(feature = "i2c")]
 #[macro_export]
 macro_rules! define_i2c_buses {
