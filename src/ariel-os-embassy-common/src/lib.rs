@@ -22,6 +22,9 @@ pub mod ble;
 #[cfg(feature = "cellular-networking")]
 pub mod cellular_networking;
 
+#[cfg(feature = "net")]
+pub mod net;
+
 pub mod identity;
 
 #[cfg(feature = "spi")]

@@ -1,5 +1,7 @@
-use ariel_os_log::{debug, info};
+use ariel_os_log::{debug, info, warn};
 use embassy_executor::Spawner;
+use embassy_futures::select::{Either, select};
+use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, watch::Watch};
 use embassy_time::{Duration, Timer};
 use esp_radio::wifi::{
     Config, ModeConfig, WifiController, WifiDevice, WifiEvent, WifiStationState, sta::StationConfig,
@@ -7,9 +9,39 @@ use esp_radio::wifi::{
 
 pub type NetworkDevice = WifiDevice<'static>;
 
+// State of the wifi interface so it can be controlled from another task.
+static WIFI_CONTROL_WANTED_STATE: Watch<CriticalSectionRawMutex, State, 1> = Watch::new();
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum State {
+    Enabled,
+    Disabled,
+}
+
+/// Interface controller for the esp wifi.
+#[derive(Debug, Clone, Copy)]
+pub struct EspWifiInterfaceController {}
+impl EspWifiInterfaceController {
+    /// Create a new interface controller.
+    pub fn new() -> Self {
+        Self {}
+    }
+}
+
+impl ariel_os_embassy_common::net::InterfaceController for EspWifiInterfaceController {
+    fn disable(&self) {
+        WIFI_CONTROL_WANTED_STATE.sender().send(State::Disabled);
+    }
+    fn enable(&self) {
+        WIFI_CONTROL_WANTED_STATE.sender().send(State::Enabled);
+    }
+}
+
 pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {
     let config = Config::default();
     let wifi = peripherals.WIFI.take().unwrap();
+
+    WIFI_CONTROL_WANTED_STATE.sender().send(State::Enabled);
 
     let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
 
@@ -20,18 +52,39 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> N
 
 #[embassy_executor::task]
 async fn connection(mut controller: WifiController<'static>) {
+    let mut control_receiver = WIFI_CONTROL_WANTED_STATE.receiver().unwrap();
+
     debug!("start connection task");
 
     #[cfg(not(feature = "defmt"))]
     debug!("Device capabilities: {:?}", controller.capabilities());
 
     loop {
+        if control_receiver.get().await == State::Disabled {
+            // Turn off the wifi modem.
+            if let Err(err) = controller.stop_async().await {
+                warn!("Error when stopping wifi: {}", err);
+            }
+
+            control_receiver.changed().await;
+            continue;
+        }
+
         match esp_radio::wifi::station_state() {
             WifiStationState::Connected => {
-                // wait until we're no longer connected
-                controller
-                    .wait_for_event(WifiEvent::StationDisconnected)
-                    .await;
+                // wait until we're no longer connected or we receive a command to stop.
+                match select(
+                    controller.wait_for_event(WifiEvent::StationDisconnected),
+                    control_receiver.changed(),
+                )
+                .await
+                {
+                    Either::First(_) => {}
+                    // We want to change the state, this is handled at the start of the loop.
+                    Either::Second(_) => {
+                        continue;
+                    }
+                }
                 Timer::after(Duration::from_secs(5)).await
             }
             _ => {}
