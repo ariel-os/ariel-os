@@ -18,7 +18,7 @@ async fn i2c_scanner(peripherals: pins::i2c0) {
     i2c_config.frequency = const { highest_freq_in(Kilohertz::kHz(100)..=Kilohertz::kHz(400)) };
 
     let (sda, scl) = peripherals.into_pins();
-    let mut i2c_bus = <pins::i2c0 as BusPart>::I2CPeri::new(sda, scl, i2c_config);
+    let mut i2c_bus = <pins::i2c0 as BusPart>::I2cPeri::new(sda, scl, i2c_config);
 
     info!("Checking for I2C devices on the bus...");
 
