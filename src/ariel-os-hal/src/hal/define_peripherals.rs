@@ -125,13 +125,12 @@ macro_rules! define_i2c_buses {
     ( $($_:tt)+ ) => {};
 }
 
-/// Packages given pins and peripherals into a struct implementing the [``crate::i2c::BusPart``] trait.
+/// Packages given pins and peripherals into a struct implementing the [`crate::i2c::BusPart`] trait.
 ///
 /// This also aliases the generated struct.
 #[macro_export]
 macro_rules! define_i2c_bus {
-    // No aliases version
-    ( name: $name:ident, peripheral: $peripheral:ident, sda: $sda:ident, scl: $scl:ident ) => {
+    ( name: $name:ident, peripheral: $peripheral:ident, sda: $sda:ident, scl: $scl:ident, aliases: [$($alias:ident,)*] ) => {
 
         // Because the dedicated I2C peripherals are all already taken,
         // we can only package the data and clock in the struct
@@ -154,40 +153,7 @@ macro_rules! define_i2c_bus {
         // The actual I2C peripheral (through its associated bus creating type)
         // is given through this BusPart (name tbd) trait.
         impl $crate::i2c::BusPart for $name {
-            type I2CPeri = $crate::hal::i2c::controller::$peripheral;
-            type Sda = $crate::__peripheral_ty!($sda);
-            type Scl = $crate::__peripheral_ty!($scl);
-
-            fn into_pins(self) -> (Self::Sda, Self::Scl) {
-                (self.sda, self.scl)
-            }
-        }
-    };
-    // With aliases version
-    ( name: $name:ident, peripheral: $peripheral:ident, sda: $sda:ident, scl: $scl:ident, aliases: [$($arg:ident,)+] ) => {
-
-        // Because the dedicated I2C peripherals are all already taken,
-        // we can only package the data and clock in the struct
-        // line pins.
-        #[allow(nonstandard_style)]
-        pub struct $name {
-            sda: $crate::__peripheral_ty!($sda),
-            scl: $crate::__peripheral_ty!($scl),
-        }
-
-        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
-            fn take_peripherals(&mut self) -> $name {
-                $name {
-                    sda: self.$sda.take().unwrap(),
-                    scl: self.$scl.take().unwrap(),
-                }
-            }
-        }
-
-        // The actual I2C peripheral (through its associated bus creating type)
-        // is given through this BusPart (name tbd) trait.
-        impl $crate::i2c::BusPart for $name {
-            type I2CPeri = $crate::hal::i2c::controller::$peripheral;
+            type I2cPeri = $crate::hal::i2c::controller::$peripheral;
             type Sda = $crate::__peripheral_ty!($sda);
             type Scl = $crate::__peripheral_ty!($scl);
 
@@ -197,7 +163,7 @@ macro_rules! define_i2c_bus {
         }
 
         $(
-            $crate::define_i2c_alias!{$name = $arg}
+            $crate::define_i2c_alias!{$name = $alias}
         )*
 
     };
@@ -206,9 +172,9 @@ macro_rules! define_i2c_bus {
 /// Aliases the sbd default name "i2c{n}" with sbd defined aliases.
 #[macro_export]
 macro_rules! define_i2c_alias {
-    ($name:ident = $arg:ident) => {
+    ($name:ident = $alias:ident) => {
         #[allow(nonstandard_style)]
-        pub type $arg = $name;
+        pub type $alias = $name;
     };
 }
 
