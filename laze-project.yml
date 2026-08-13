@@ -1965,6 +1965,13 @@ modules:
       global:
         FEATURES:
           - ariel-os/logging-over-uart
+    tasks:
+      # This task is currently excluded from Ariel OS's compatibility guarantees.
+      flash-slices-ri:
+        help: flash the binary to a SLICES-RI node; requires a running experiment but will wait for it
+        cmd:
+          - iotlab-experiment wait --timeout 30 --cancel-on-timeout
+          - iotlab-node --flash ${out} $@
 
   # Temporary module for boards that have ad hoc support.
   - name: debug-uart
