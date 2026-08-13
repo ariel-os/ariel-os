@@ -1,3 +1,9 @@
+ariel_os::hal::group_peripherals!(Peripherals {
+    lcd: LcdPeripherals,
+    pins: Pins,
+    i2c: ariel_os_boards::pins::I2c0,
+});
+
 ariel_os::hal::define_peripherals!(LcdPeripherals { lcd: LCD });
 ariel_os::hal::define_peripherals!(Pins {
     pc4: PC4,
