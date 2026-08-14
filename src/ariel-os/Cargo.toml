@@ -27,6 +27,7 @@ ariel-os-embassy = { path = "../ariel-os-embassy" }
 ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
 ariel-os-log = { workspace = true }
+ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-macros = { path = "../ariel-os-macros" }
 ariel-os-nrf = { path = "../ariel-os-nrf", optional = true }
 ariel-os-power = { path = "../ariel-os-power" }
@@ -229,6 +230,12 @@ rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-log/defmt-rtt"]
 esp-println = ["ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
+
+# Use an Ariel OS log transport driver.
+log-transport-driver = [
+  "dep:ariel-os-log-transport-driver",
+  "ariel-os-embassy/log-transport-driver",
+]
 
 net = ["ariel-os-embassy/net"]
 
