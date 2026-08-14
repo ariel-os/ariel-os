@@ -14,7 +14,7 @@ macro_rules! define_peripherals {
         $peripherals:ident {
             $(
                 $(#[$inner:meta])*
-                $peripheral_name:ident : $peripheral_field:ident $(=$peripheral_alias:ident)?
+                $peripheral_name:ident : $peripheral_field:ident
             ),*
             $(,)?
         }
@@ -27,11 +27,6 @@ macro_rules! define_peripherals {
                 pub $peripheral_name: $crate::__peripheral_ty!($peripheral_field),
             )*
         }
-
-        $($(
-            #[allow(missing_docs, non_camel_case_types)]
-            pub type $peripheral_alias = peripherals::$peripheral_field;
-        )?)*
 
         impl $crate::hal::TakePeripherals<$peripherals> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $peripherals {
