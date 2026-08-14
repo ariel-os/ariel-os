@@ -69,8 +69,12 @@ builders:
   parent: esp32-s3-wroom-1
   provides:
   - has_buttons
+  - has_psram
   - has_usb_cdc_acm_port
   - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - ESP_HAL_CONFIG_PSRAM_MODE=octal
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:

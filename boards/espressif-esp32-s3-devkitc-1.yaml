@@ -5,6 +5,18 @@ targets:
     flags:
       - has_usb_cdc_acm_port
       - has_usb_device_port
+    ariel:
+      global_env:
+        CARGO_ENV:
+          # All current official ordering codes for this board (N8R8,
+          # N8R8U, N32R16V) ship an ESP32-S3-WROOM-1/-2 module with Octal
+          # SPI PSRAM. Other WROOM-1 variants (e.g. the older, no longer
+          # listed N8R2) have Quad SPI PSRAM instead, which needs
+          # `ESP_HAL_CONFIG_PSRAM_MODE=quad`: the two are electrically
+          # different and esp-hal cannot detect which one is present, so
+          # every board with PSRAM must set this explicitly to match its
+          # actual module variant.
+          - ESP_HAL_CONFIG_PSRAM_MODE=octal
     buttons:
       # button0
       - pin: GPIO0
