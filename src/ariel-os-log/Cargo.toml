@@ -10,6 +10,7 @@ license.workspace = true
 logging-facade.xor = { features = ["defmt", "log"] }
 logging-transport.xor = { features = [
   "logging-over-debug-channel",
+  "custom-transport",
   "logging-over-uart",
   "logging-over-usb",
 ] }
@@ -51,7 +52,7 @@ esp-println = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
 ## Enables `defmt` as logging facade.
-defmt = ["dep:defmt", "esp-println?/defmt-espflash"]
+defmt = ["dep:critical-section", "dep:defmt", "esp-println?/defmt-espflash"]
 ## Enables `log` as logging facade.
 log = ["dep:ariel-os-utils", "dep:const-str", "dep:critical-section", "dep:log"]
 
@@ -67,6 +68,7 @@ defmt-rtt = ["ariel-os-debug/defmt-rtt"]
 logging-over-debug-channel = ["dep:ariel-os-debug"]
 logging-over-uart = ["esp-println?/uart"]
 logging-over-usb = ["esp-println?/jtag-serial"]
+custom-transport = ["dep:embassy-sync"]
 std = []
 
 _test = []

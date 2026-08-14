@@ -21,10 +21,17 @@
 #[featurecomb::comb]
 mod _featurecomb {}
 
+#[doc(hidden)]
+#[cfg(feature = "custom-transport")]
+pub mod custom_transport;
+
 #[allow(unused, reason = "conditional compilation")]
 #[doc(hidden)]
 #[cfg(feature = "log")]
 mod log_logger;
+
+#[cfg(all(feature = "defmt", feature = "custom-transport"))]
+mod defmt_logger;
 
 // This module is hidden in the docs, but would still be imported by a wildcard import of this
 // crate's items.
@@ -91,6 +98,9 @@ pub mod log {
         }
         feature = "std" => {
             pub use std::println;
+        }
+        feature = "custom-transport" => {
+            pub use crate::transport_println as println;
         }
         not(context = "ariel-os") => {
             pub use crate::noop_println as println;
