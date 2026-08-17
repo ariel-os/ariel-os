@@ -83,7 +83,7 @@ A program that triggers a CoAP request needs to provide[^whatsinarequest] some c
 ## Security
 
 The CoAP stack is configured with server and client policies.
-The security mechanisms used depend on those selected in the policies.
+The policies select which security mechanisms to use.
 
 At this stage, Ariel OS uses three pieces of security components:
 OSCORE (for symmetric encryption), EDHOC (for key exchange) and ACE (for authentication).
@@ -101,17 +101,17 @@ but are currently not implemented in Ariel OS.
 ### Server access policy
 
 A policy is configured for the whole server depending on the desired security mechanisms.
-Examples of described policy entries are:
+Possible policy entries include:
 
 * This is a fixed public key, and requests authenticated with that key are allowed to GET and PUT to `/limit`.
 * The device has a shared secret from its authorization server, with which the authorization server secures the tokens it issues to clients. Clients may perform any action as long as they securely present a token that allows it. For example, a token may allow GET on `/limit` and PUT on `/led/0`.
 * Any (even unauthenticated) device may GET `/hello/`.
 
-In Ariel OS, the policies are selected through [laze modules][laze-modules-book]:
+In Ariel OS, which policy to use is selected through [laze modules][laze-modules-book]:
 * `coap-server-config-demokeys` selects a set of hard-coded identities and policies usable for examples.
 * `coap-server-config-unprotected` allows access from any client without any authentication or integrity protection.
 * `coap-server-config-storage` reads configuration of the application, currently in a `peers.yml` file ([example](https://github.com/ariel-os/ariel-os/blob/main/tests/coap/peers.yml)).
-  CoAP clients described in there are assigned permissions as described there; the file format is currently only documented in the example file, and still in flux.
+  CoAP clients described in that file are assigned the specified permissions; the format is currently only documented in the file itself, and still in flux.
   The device generates an EDHOC key at first startup, [stores it locally](../storage.md), and reports its public credential at startup.
 
 The list of supported policies is being extended.
