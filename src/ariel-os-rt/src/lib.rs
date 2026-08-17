@@ -36,6 +36,10 @@ cfg_select! {
         mod native;
         use native as arch;
     }
+    context = "avr" => {
+        mod avr;
+        use avr as arch;
+    }
     context = "ariel-os" => {
         // When run with laze but the MCU family is not supported
         compile_error!("no runtime is defined for this MCU family");

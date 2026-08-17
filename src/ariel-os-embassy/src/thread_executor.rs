@@ -2,79 +2,87 @@
 #![deny(missing_docs)]
 #![expect(unsafe_code)]
 
-// This is based on the upstream embassy cortex-m interrupt executor.
+// This module is only available on non-AVR targets, as AVR uses the direct
+// embassy-executor thread mode executor instead of the thread-based executor.
+#[cfg(all(feature = "threading", not(context = "avr")))]
+mod thread_executor_inner {
+    use core::marker::PhantomData;
 
-use core::marker::PhantomData;
+    use ariel_os_threads::{ThreadId, current_tid, thread_flags, thread_flags::ThreadFlags};
+    use embassy_executor::{Spawner, raw};
 
-use ariel_os_threads::{ThreadId, current_tid, thread_flags, thread_flags::ThreadFlags};
-use embassy_executor::{Spawner, raw};
+    // This is based on the upstream embassy cortex-m interrupt executor.
 
-// This is only used between `__pender` and `Executor::run( )`, actual flag
-// doesn't matter.
-const THREAD_FLAG_WAKEUP: ThreadFlags = 0x01;
+    // This is only used between `__pender` and `Executor::run( )`, actual flag
+    // doesn't matter.
+    const THREAD_FLAG_WAKEUP: ThreadFlags = 0x01;
 
-// SAFETY: this name is required by embassy-executor and the function signature matches the
-// expected one.
-#[unsafe(no_mangle)]
-fn __pender(context: *mut ()) {
-    // SAFETY: `context` is a `ThreadId` passed by `ThreadExecutor::new`.
-    let thread_id = ThreadId::new(context as usize as u8);
+    // SAFETY: this name is required by embassy-executor and the function signature matches the
+    // expected one.
+    #[unsafe(no_mangle)]
+    fn __pender(context: *mut ()) {
+        // SAFETY: `context` is a `ThreadId` passed by `ThreadExecutor::new`.
+        let thread_id = ThreadId::new(context as usize as u8);
 
-    thread_flags::set(thread_id, THREAD_FLAG_WAKEUP);
-}
-
-/// Thread mode executor for Ariel OS threads.
-pub struct Executor {
-    inner: raw::Executor,
-    // This executor is tied to a specific thread by storing the `ThreadId` inside
-    // the inner `raw::Executor`. It thus cannot be `Send`.
-    not_send: PhantomData<*mut ()>,
-}
-
-impl Executor {
-    /// Creates a new [`Executor`].
-    ///
-    /// This must be called from the thread that will actually poll the executor.
-    /// Otherwise, the internally used thread flag will be sent to the wrong thread,
-    /// causing the executor thread to never wake up.
-    ///
-    /// # Panics
-    ///
-    /// This function panics when called without a running thread.
-    #[expect(clippy::new_without_default)]
-    pub fn new() -> Self {
-        let current_thread = current_tid().unwrap();
-        Self {
-            inner: raw::Executor::new(usize::from(current_thread) as *mut ()),
-            not_send: PhantomData,
-        }
+        thread_flags::set(thread_id, THREAD_FLAG_WAKEUP);
     }
 
-    /// Runs the executor.
-    ///
-    /// The `init` closure is called with a [`Spawner`] that spawns tasks on
-    /// this executor. Use it to spawn the initial task(s). After `init` returns,
-    /// the executor starts running the tasks.
-    ///
-    /// To spawn more tasks later, you may keep copies of the [`Spawner`] (it is `Copy`),
-    /// for example by passing it as an argument to the initial tasks.
-    ///
-    /// This function requires `&'static mut self`. This means you have to store the
-    /// [`Executor`] instance in a place where it'll live forever and grants you mutable
-    /// access. There's a few ways to do this:
-    ///
-    /// - a [`StaticCell`](https://docs.rs/static_cell/latest/static_cell/) (safe)
-    /// - a `static mut` (unsafe)
-    /// - a local variable in a function you know never returns (like `fn main() -> !`), upgrading its lifetime with `transmute`. (unsafe)
-    pub fn run(&'static mut self, init: impl FnOnce(Spawner)) -> ! {
-        init(self.inner.spawner());
+    /// Thread mode executor for Ariel OS threads.
+    pub struct Executor {
+        inner: raw::Executor,
+        // This executor is tied to a specific thread by storing the `ThreadId` inside
+        // the inner `raw::Executor`. It thus cannot be `Send`.
+        not_send: PhantomData<*mut ()>,
+    }
 
-        loop {
-            // SAFETY: `poll()` may net be called reentrantly on the same executor, which we don't.
-            unsafe {
-                self.inner.poll();
-            };
-            thread_flags::wait_any(THREAD_FLAG_WAKEUP);
+    impl Executor {
+        /// Creates a new [`Executor`].
+        ///
+        /// This must be called from the thread that will actually poll the executor.
+        /// Otherwise, the internally used thread flag will be sent to the wrong thread,
+        /// causing the executor thread to never wake up.
+        ///
+        /// # Panics
+        ///
+        /// This function panics when called without a running thread.
+        #[expect(clippy::new_without_default)]
+        pub fn new() -> Self {
+            let current_thread = current_tid().unwrap();
+            Self {
+                inner: raw::Executor::new(usize::from(current_thread) as *mut ()),
+                not_send: PhantomData,
+            }
+        }
+
+        /// Runs the executor.
+        ///
+        /// The `init` closure is called with a [`Spawner`] that spawns tasks on
+        /// this executor. Use it to spawn the initial task(s). After `init` returns,
+        /// the executor starts running the tasks.
+        ///
+        /// To spawn more tasks later, you may keep copies of the [`Spawner`] (it is `Copy`),
+        /// for example by passing it as an argument to the initial tasks.
+        ///
+        /// This function requires `&'static mut self`. This means you have to store the
+        /// [`Executor`] instance in a place where it'll live forever and grants you mutable
+        /// access. There's a few ways to do this:
+        ///
+        /// - a [`StaticCell`](https://docs.rs/static_cell/latest/static_cell/) (safe)
+        /// - a `static mut` (unsafe)
+        /// - a local variable in a function you know never returns (like `fn main() -> !`), upgrading its lifetime with `transmute`. (unsafe)
+        pub fn run(&'static mut self, init: impl FnOnce(Spawner)) -> ! {
+            init(self.inner.spawner());
+
+            loop {
+                // SAFETY: `poll()` may net be called reentrantly on the same executor, which we don't.
+                unsafe {
+                    self.inner.poll();
+                };
+                thread_flags::wait_any(THREAD_FLAG_WAKEUP);
+            }
         }
     }
 }
+
+#[cfg(all(feature = "threading", not(context = "avr")))]
+pub use thread_executor_inner::Executor;

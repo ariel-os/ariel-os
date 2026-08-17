@@ -72,6 +72,13 @@ embedded-io = { workspace = true }
 embassy-stm32 = { workspace = true }
 embedded-io = { workspace = true }
 
+[target.'cfg(context = "avr")'.dependencies]
+embassy-executor = { workspace = true, default-features = false, features = [
+  "arch-avr",
+  "executor-thread",
+] }
+embassy-avr = { workspace = true }
+
 [features]
 ## Enables GPIO interrupt support.
 external-interrupts = [
@@ -204,7 +211,11 @@ override-usb-config = []
 rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
-executor-thread = ["ariel-os-embassy-common/executor-thread", "threading"]
+# NOTE: `threading` is NOT included here; it is added separately via the
+# laze `sw/threading` module.  This allows AVR (which cannot use the
+# threading runtime) to use `executor-thread` without pulling in
+# `ariel-os-threads`.
+executor-thread = ["ariel-os-embassy-common/executor-thread"]
 
 # Allows to have no built-in board selected.
 no-boards = []

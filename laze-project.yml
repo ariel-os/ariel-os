@@ -358,10 +358,62 @@ contexts:
         cmd:
           - picotool load -u -v -x -t elf ${out} $@
 
+  - name: avr
+    help: AVR MCU support (based on embassy-avr, currently ATmega328P / Arduino Uno)
+    parent: ariel-os
+    selects:
+      # AVR requires nightly (no stable AVR target support)
+      - nightly
+      # ATmega328P has 2 KB SRAM — select ram-tiny for small stacks
+      - ram-tiny
+      # AVR only supports the thread executor (no SWI/interrupt executor)
+      - executor-thread
+    provides:
+      - has_device_identity
+    env:
+      global:
+        RUSTC_TARGET: avr-none
+        CARGO_TARGET_PREFIX: CARGO_TARGET_AVR_NONE
+        RUSTFLAGS:
+          - --cfg context="avr"
+          - -C target-cpu=atmega328p
+        CARGO_WRAPPER: ""
+        # Force build-std because the AVR target's core/alloc are not pre-built
+        # in some installations.
+        CARGO_ARGS:
+          - -Zbuild-std=core,alloc
+
+  - name: atmega328p
+    parent: avr
+    provides:
+      - has_leds
+      - has_storage_support
+    env:
+      global:
+        RUSTFLAGS:
+          - --cfg context="atmega328p"
+
+  - name: arduino-uno
+    help: Arduino Uno (ATmega328P, 16 MHz, 32 KB flash, 2 KB SRAM)
+    parent: atmega328p
+    provides:
+      - has_leds
+      - has_storage_support
+    tasks:
+      flash:
+        help: flash the target using avrdude
+        cmd:
+          - avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -U flash:w:${out}:e
+      flash-15:
+        help: flash the target using avrdude on an Arduino Uno R4 (programmer stk500v1, baud 115200)
+        cmd:
+          - avrdude -c stk500v1 -p atmega328p -P /dev/ttyACM0 -b 115200 -U flash:w:${out}:e
+
   - name: esp
     parent: ariel-os
     selects:
       - ?espflash
+      - sw/threading
     provides:
       - has_hwrng
     env:
@@ -506,6 +558,7 @@ contexts:
       # NOTE: semantically this should only be enabled when `logging` is
       # enabled, but laze does not support conditions on contexts.
       - logging-over-stdout
+      - sw/threading
     provides:
       - has_device_identity
       - has_hwrng
@@ -530,6 +583,7 @@ contexts:
     parent: ariel-os
     selects:
       - ?probe-rs
+      - sw/threading
     provides:
       - has_device_identity
       - sw/benchmark

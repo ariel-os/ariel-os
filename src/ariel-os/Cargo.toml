@@ -237,13 +237,22 @@ executor-interrupt = [
   "ariel-os-rt/executor-interrupt",
 ]
 # Enables the ariel-os-threading thread executor.
-executor-thread = ["ariel-os-embassy/executor-thread", "threading"]
+# NOTE: `threading` is NOT included here — it must be selected separately
+# (e.g. via the laze `sw/threading` module).  This allows architectures
+# like AVR that cannot support the full threading runtime (ariel-os-threads)
+# to use `executor-thread` without pulling in `ariel-os-threads`.
+executor-thread = ["ariel-os-embassy/executor-thread"]
 
 # Enables embedded-test support. Selected by laze.
 embedded-test = ["ariel-os-rt/embedded-test"]
 
 # Enables idle threads. Selected by laze if needed.
-idle-threads = ["ariel-os-threads/idle-threads"]
+idle-threads = [
+  "dep:ariel-os-threads",
+  "ariel-os-threads/idle-threads",
+  "ariel-os-embassy/threading",
+  "ariel-os-rt/threading",
+]
 
 # features needed for `cargo test`
 _test = [

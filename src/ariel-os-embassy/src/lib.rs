@@ -175,7 +175,11 @@ pub(crate) fn init() {
     EXECUTOR.run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
-#[cfg(feature = "executor-thread")]
+#[cfg(all(
+    feature = "executor-thread",
+    feature = "threading",
+    not(context = "avr")
+))]
 #[ariel_os_macros::thread(autostart, no_wait, stacksize = executor_thread::STACKSIZE, priority = executor_thread::PRIORITY)]
 fn init() {
     use static_cell::StaticCell;
@@ -189,6 +193,28 @@ fn init() {
     static EXECUTOR: StaticCell<thread_executor::Executor> = StaticCell::new();
     EXECUTOR
         .init_with(thread_executor::Executor::new)
+        .run(|spawner| spawner.must_spawn(init_task(p)));
+}
+
+/// AVR-specific init path: thread-mode executor WITHOUT the threading runtime.
+///
+/// Used when `executor-thread` feature is enabled but `threading` is not.
+/// This is for architectures like AVR that cannot support the full threading
+/// runtime (ariel-os-threads) but can use embassy-executor's thread-mode executor.
+#[cfg(all(
+    feature = "executor-thread",
+    not(feature = "threading"),
+    context = "avr"
+))]
+#[distributed_slice(ariel_os_rt::INIT_FUNCS)]
+pub(crate) fn init() {
+    debug!("ariel-os-embassy::init(): using embassy-executor thread mode (AVR)");
+    let p = hal::init();
+
+    use crate::api::cell::StaticCell;
+    static EXECUTOR: StaticCell<embassy_executor::Executor> = StaticCell::new();
+    EXECUTOR
+        .init_with(embassy_executor::Executor::new)
         .run(|spawner| spawner.must_spawn(init_task(p)));
 }
 
