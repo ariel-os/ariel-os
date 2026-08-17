@@ -26,9 +26,11 @@ whereas client support is not mature yet, and lacks security support.
 
 ## Usage: Server side
 
-An example of a CoAP server is [provided as `examples/coap-server`], see [its `coap_run()` task] for the practical steps.
-This requires selecting the `coap-server` [laze module][laze-modules-book], and on top of the user's handlers, it runs any operating-system-provided CoAP handlers
+Ariel OS provides a CoAP server implementation, exposed as [`coap_run()`][coap-coap-run-rustdoc].
+The `coap-server` [laze module][laze-modules-book] needs to be enabled to make it available.
+The CoAP server runs the user's handlers, as well as any operating-system-provided CoAP handlers
 (which would be started in an independent task if `coap-server` was not selected).
+An example of a CoAP server is [provided as `examples/coap-server`]: see [its `coap_run()` task] for the practical steps.
 
 A CoAP server is created by assembling several **resource handlers on dedicated paths**:
 There might be a path `/s/0` representing a particular sensor,
@@ -40,6 +42,7 @@ The handler needs to concern itself with security aspects of the request content
 (eg. file format parsers should treat incoming data as possibly malformed),
 but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
 
+[coap-coap-run-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/coap/fn.coap_run.html
 [provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
 [its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
 
