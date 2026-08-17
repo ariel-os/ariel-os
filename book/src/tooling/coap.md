@@ -10,11 +10,11 @@ other standards for running [over SMS and NB-IoT], and more in development).
 It relies on proxies to span across transports and to accommodate the characteristics of particular networks,
 and offers features exceeding the classical REST set such as [observation].
 
-**Ariel OS supports** the use of CoAP
+**Ariel OS supports** the use of CoAP
 for implementing clients, servers or both in a single device.
 As part of our mission for strong security,
 we use encrypted CoAP traffic by default as explained below.
-*Currently*, Ariel OS supports CoAP on its original UDP transport.
+*Currently*, Ariel OS supports CoAP on its original UDP transport.
 Its CoAP server implementation supports several security mechanisms,
 whereas client support is not mature yet, and lacks security support.
 
@@ -85,7 +85,7 @@ A program that triggers a CoAP request needs to provide[^whatsinarequest] some c
 The CoAP stack is configured with server and client policies.
 The policies select which security mechanisms to use.
 
-At this stage, Ariel OS leverages three security mechanisms:
+At this stage, Ariel OS leverages three security mechanisms:
 OSCORE (for symmetric encryption), EDHOC (for key exchange) and ACE (for authentication).
 
 OSCORE/EDHOC/ACE were chosen first because they scale down
@@ -96,7 +96,7 @@ Thus, they work homogeneously across all CoAP transports,
 and provide end-to-end security across untrusted proxies.
 
 Alternatives are possible (for instance DTLS, TLS, IPsec or link-layer encryption)
-but are currently not implemented in Ariel OS.
+but are currently not implemented in Ariel OS.
 
 ### Server access policy
 
@@ -107,7 +107,7 @@ Possible policy entries include:
 * The device has a shared secret from its authorization server, with which the authorization server secures the tokens it issues to clients. Clients may perform any action as long as they securely present a token that allows it. For example, a token may allow GET on `/limit` and PUT on `/led/0`.
 * Any (even unauthenticated) device may GET `/hello/`.
 
-In Ariel OS, which policy to use is selected through [laze modules][laze-modules-book]:
+In Ariel OS, which policy to use is selected through [laze modules][laze-modules-book]:
 * `coap-server-config-demokeys` selects a set of hard-coded identities and policies usable for examples.
 * `coap-server-config-unprotected` allows access from any client without any authentication or integrity protection.
 * `coap-server-config-storage` reads configuration of the application, currently in a `peers.yml` file ([example](https://github.com/ariel-os/ariel-os/blob/main/tests/coap/peers.yml)).
@@ -117,18 +117,18 @@ In Ariel OS, which policy to use is selected through [laze modules][laze-modules
 The list of supported policies is being extended.
 
 
-#### Outlook: Interacting with an Ariel OS CoAP server from the host
+#### Outlook: Interacting with an Ariel OS CoAP server from the host
 
 *This section is currently not implemented.*
 
-A convenient policy (which is the default of Ariel OS's examples)
+A convenient policy (which is the default of Ariel OS's examples)
 is to grant the user who flashes the device all access on it.
 When that policy is enabled in the build system,
 an unencrypted key is created in the developer's [state home directory]<!-- precise location TBD -->,
 from where it can be picked up by tools such as [aiocoap-client].
 
 Furthermore,
-when a CoAP server is provisioned through the Ariel OS build system,
+when a CoAP server is provisioned through the Ariel OS build system,
 public keys and their device associations are stored
 in the developer's state home directory.
 
@@ -164,7 +164,7 @@ EDHOC can only practically be used in combination with OSCORE, and
 ACE comes with profiles with individual dependencies
 (eg. using the ACE-EDHOC profile requires EDHOC).
 
-*Currently*, while all the mechanisms described here are implemented in Ariel OS,
+*Currently*, while all the mechanisms described here are implemented in Ariel OS,
 only EDHOC can be set up through the policy features.
 
 #### Symmetric encryption: OSCORE
@@ -181,7 +181,7 @@ Working with symmetric keys requires a lot of care and effort managing keys:
 assigning the same key twice can have catastrophic consequences,
 and even recovering from an unplanned reboot is by far not trivial.
 
-For these reasons, Ariel OS does not offer direct access to OSCORE
+For these reasons, Ariel OS does not offer direct access to OSCORE
 and uses OSCORE's companion mechanisms to set up keys.
 Policies are also not described in terms of OSCORE keys.
 
@@ -199,7 +199,7 @@ In particular, two CoAP devices can run EDHOC over CoAP to obtain key material f
 which can then be used for fast communication.
 
 Unless ACE (or, later, certificate chains) are used,
-the main use of EDHOC in Ariel OS is with raw public keys:
+the main use of EDHOC in Ariel OS is with raw public keys:
 Devices (including the host machine) generate a private key,
 make the corresponding public key known,
 and then send the public key (or its short ID) along with EDHOC messages to be identified by that public key.
@@ -269,17 +269,17 @@ after the client has authenticated the server.
 *This section is currently not implemented.*
 
 While full operation of ACE requires having an AS as part of the network,
-CoAP servers running on Ariel OS can be used in the ACE framework without a live server.
+CoAP servers running on Ariel OS can be used in the ACE framework without a live server.
 
 Similar to how an EDHOC key is created on demand on the host,
 an AS's list of Resource Servers is maintained by default.
-Tools at the host can then use the locally stored key to create tokens that grant fine-grained permissions on the Ariel OS device.
+Tools at the host can then use the locally stored key to create tokens that grant fine-grained permissions on the Ariel OS device.
 
 With the [New ACE Workflow developed in ACE],
 such tokens can also be provisioned into Resource Servers on behalf of clients that are being provisioned.
 Thus,
-the offline AS can enable deployed Ariel OS based CoAP servers
-to accept requests from newly created Ariel OS based CoAP clients
+the offline AS can enable deployed Ariel OS based CoAP servers
+to accept requests from newly created Ariel OS based CoAP clients
 without the need for the CoAP client to create a network connection to the host.
 (Instead, the host needs to find the Resource Server over the network).
 
@@ -287,7 +287,7 @@ without the need for the CoAP client to create a network connection to the host.
 > Some more exploration of this workflow will be necessary
 > as to how the client can trigger the AS to re-install (or renew) its token
 > in case the Resource Server retired the token before its expiration.
-> For Ariel OS internal use,
+> For Ariel OS internal use,
 > AS-provisioned tokens might just be retained longer.
 
 [New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
