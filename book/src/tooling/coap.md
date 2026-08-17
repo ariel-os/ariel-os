@@ -144,12 +144,13 @@ in that they enable a server policy like
 
 The policy for outgoing requests can be defined globally or per request.
 
-Examples of policies that can be available are
-  "expect the server to present some concrete public key, use this secret key once the server is verified",
-  "use a token for this audience and scope obtained from that authentication server",
-  "expect the server to present a chain of certificates for its hostname down to a set of root certificates" (which is the default for web browsers),
-  "establish an encrypted connection and trust the peer's key on first use",
-  down to "do not use any encryption".
+Possible policies include:
+
+* "expect the server to present some concrete public key, use this secret key once the server is verified",
+* "use a token for this audience and scope obtained from that authentication server",
+* "expect the server to present a chain of certificates for its hostname down to a set of root certificates" (which is the default for web browsers),
+* "establish an encrypted connection and trust the peer's key on first use", down to
+* "do not use any encryption".
 
 *Currently*, the only available client security policy is "use an insecure request".
 
