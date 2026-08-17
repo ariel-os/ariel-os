@@ -85,7 +85,7 @@ A program that triggers a CoAP request needs to provide[^whatsinarequest] some c
 The CoAP stack is configured with server and client policies.
 The policies select which security mechanisms to use.
 
-At this stage, Ariel OS uses three pieces of security components:
+At this stage, Ariel OS leverages three security mechanisms:
 OSCORE (for symmetric encryption), EDHOC (for key exchange) and ACE (for authentication).
 
 OSCORE/EDHOC/ACE were chosen first because they scale down
@@ -156,11 +156,11 @@ Possible policies include:
 
 ### Available security mechanisms
 
-These components are optional, but enabled as needed by the policy —
-only with the "unprotected" policy, none of them are built
+The security mechanisms (OSCORE, EDHOC, and ACE) are optional, but enabled as needed by the policy in use.
+With the "unprotected" policy, none of them are included in the build
 (which may make sense on a link layer with tight access control).
-The components also have internal dependencies:
-EDHOC can only practically be used in combination with OSCORE;
+The security mechanisms also have internal dependencies:
+EDHOC can only practically be used in combination with OSCORE, and
 ACE comes with profiles with individual dependencies
 (eg. using the ACE-EDHOC profile requires EDHOC).
 
@@ -181,10 +181,9 @@ Working with symmetric keys requires a lot of care and effort managing keys:
 assigning the same key twice can have catastrophic consequences,
 and even recovering from an unplanned reboot is by far not trivial.
 
-Ariel OS does not offer direct access to OSCORE for those reasons,
+For these reasons, Ariel OS does not offer direct access to OSCORE
 and uses OSCORE's companion mechanisms to set up keys.
-
-Policies are not described in terms of OSCORE keys.
+Policies are also not described in terms of OSCORE keys.
 
 [RFC8613]: https://datatracker.ietf.org/doc/html/rfc8613
 [^parts]: Most of the message is encrypted.
@@ -206,9 +205,9 @@ make the corresponding public key known,
 and then send the public key (or its short ID) along with EDHOC messages to be identified by that public key.
 This is similar to how SSH keys are commonly used.
 
-Policies described in terms of EDHOC keys include the public key of the peer,
+Policies described in terms of EDHOC keys need to specify the public key of the peer,
 which private key to use,
-whether our public key needs to be sent as a full public key or can be sent by key ID,
+whether the device's public key needs to be sent as a full public key or can be sent by key ID,
 and what the peer is authorized to do.
 
 [RFC9528]: https://datatracker.ietf.org/doc/html/rfc9528
