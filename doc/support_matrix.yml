@@ -1390,6 +1390,11 @@ boards:
     builders:
       - arduino-uno-q
 
+  - name: Arduino Uno (ATmega328P)
+    url: https://web.archive.org/web/20260315192100/https://docs.arduino.cc/hardware/uno-rev3/
+    builders:
+      - arduino-uno
+
   - name: BBC micro:bit V1
     url: https://web.archive.org/web/20250109121140/https://microbit.org/get-started/features/overview/#original-micro:bit
     builders:

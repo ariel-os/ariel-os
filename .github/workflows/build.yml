@@ -253,6 +253,11 @@ jobs:
             'ci-build:stm32')
               echo "LAZE_DISABLE=$(allow_context stm32)" >> "$GITHUB_ENV"
               ;;
+            'ci-build:avr')
+              echo "LAZE_BUILDERS=arduino-uno" >> "$GITHUB_ENV"
+              echo "LAZE_DISABLE=$(allow_context avr)" >> "$GITHUB_ENV"
+              echo "NEEDS_AVR_TOOLCHAIN=1" >> "$GITHUB_ENV"
+              ;;
             *)
               # Can happen if `check-labels` finds no labels but still completes
               # successfully because of a bug.

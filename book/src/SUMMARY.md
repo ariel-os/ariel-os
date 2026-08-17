@@ -9,6 +9,7 @@
   - [Adafruit Feather nRF52840 Express](./boards/adafruit-feather-nrf52840-express.md)
   - [Adafruit Feather nRF52840 Sense](./boards/adafruit-feather-nrf52840-sense.md)
   - [Arduino UNO Q](./boards/arduino-uno-q.md)
+  - [Arduino Uno (ATmega328P)](./boards/arduino-uno.md)
   - [BBC micro:bit V1](./boards/bbc-micro-bit-v1.md)
   - [BBC micro:bit V2](./boards/bbc-micro-bit-v2.md)
   - [DFRobot FireBeetle 2 ESP32-C6](./boards/dfrobot-firebeetle-2-esp32-c6.md)
@@ -92,6 +93,7 @@
   - [STM32WBA55CG](./chips/stm32wba55cg.md)
   - [STM32WBA65RI](./chips/stm32wba65ri.md)
   - [STM32WLE5JC](./chips/stm32wle5jc.md)
+  - [ATmega328P](./chips/atmega328p.md)
 
 # User Guide
 
