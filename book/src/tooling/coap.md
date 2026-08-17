@@ -49,10 +49,10 @@ but the decision whether or not a request is allowed is delegated to an [access 
 
 ## Usage: Client side
 
-The example [provided as `examples/coap-client`], which sends a single POST request.
-It requires selecting the `coap-client` [laze module][laze-modules-book].
+Ariel OS also provides a CoAP client, which is enabled with the `coap-client` [laze module][laze-modules-book], and can be obtained with [`coap_client()`][coap-coap-client-rustdoc].
+An example is [provided as `examples/coap-client`], which sends a single POST request.
 
-A program that triggers a CoAP request provides[^whatsinarequest] some components to the CoAP stack before phrasing the actual request:
+A program that triggers a CoAP request needs to provide[^whatsinarequest] some components to the CoAP stack before phrasing the actual request:
 
 * A **URL describing the resource**, eg. `coap://coap.summit.riot-os.org/agenda` or `coap+tcp://[2001:db8::1]/.well-known/core`.
 
@@ -77,6 +77,7 @@ A program that triggers a CoAP request provides[^whatsinarequest] some component
     but the decisions are still made.
     At the time of writing, there [is an open issue](https://github.com/core-wg/corrclar/issues/41) to clarify this in the specifications.
 
+[coap-coap-client-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/coap/fn.coap_client.html
 [provided as `examples/coap-client`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-client
 
 ## Security
