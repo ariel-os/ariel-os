@@ -1,0 +1,36 @@
+#![allow(unused, reason = "used by documentation only")]
+
+use embassy_executor::SpawnToken;
+
+#[doc(hidden)]
+pub struct Executor;
+
+impl Executor {
+    #[allow(clippy::new_without_default)]
+    #[must_use]
+    pub const fn new() -> Self {
+        Self {}
+    }
+
+    pub fn start(&self, _: crate::dummy::SWI) {
+        unimplemented!();
+    }
+
+    #[must_use]
+    pub fn spawner(&self) -> Spawner {
+        unimplemented!();
+    }
+}
+
+#[doc(hidden)]
+pub struct Spawner;
+
+impl Spawner {
+    #[allow(clippy::result_unit_err)]
+    pub fn spawn<S>(&self, _token: SpawnToken<S>) -> Result<(), ()> {
+        unimplemented!();
+    }
+
+    #[allow(clippy::unused_self)]
+    pub fn must_spawn<S>(&self, _token: SpawnToken<S>) {}
+}

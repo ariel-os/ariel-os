@@ -1,0 +1,71 @@
+[package]
+name = "ariel-os-avr"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-embassy-common = { workspace = true }
+ariel-os-log = { workspace = true }
+ariel-os-random = { workspace = true, optional = true }
+ariel-os-utils = { workspace = true }
+
+embassy-executor = { workspace = true, default-features = false, features = [
+  "arch-avr",
+] }
+embassy-time = { workspace = true }
+embassy-time-queue-utils = { workspace = true }
+
+embassy-avr = { workspace = true, features = [
+  "arduino-uno",
+  "time-driver-tc0",
+] }
+
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+embedded-io = { workspace = true }
+embedded-io-async = { workspace = true }
+embedded-storage = { workspace = true }
+embedded-storage-async = { workspace = true }
+
+critical-section = { workspace = true }
+portable-atomic = { workspace = true, features = ["unsafe-assume-single-core"] }
+
+[features]
+## Enables GPIO interrupt support.
+external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
+
+## Enables I2C support.
+i2c = ["ariel-os-embassy-common/i2c"]
+
+## Enables SPI support.
+spi = ["ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["ariel-os-embassy-common/uart"]
+
+## Enables storage support.
+storage = []
+
+## Enables a time driver. (Always-on on AVR — embassy-avr provides Timer0 driver.)
+time = []
+
+random = ["dep:ariel-os-random"]
+
+## Enables the thread executor. (AVR has no interrupt executor.)
+threading = []
+
+executor-thread = ["threading"]
+
+## Enables defmt support.
+defmt = [
+  "ariel-os-embassy-common/defmt",
+  "embassy-executor/defmt",
+  "embassy-time/defmt",
+  "embedded-hal-async/defmt-03",
+  "embedded-hal/defmt-03",
+]
+
+[lints]
+workspace = true
