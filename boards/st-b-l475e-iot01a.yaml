@@ -20,3 +20,24 @@ targets:
     buttons:
       # button0
       - pin: PC13
+
+ariel_doc:
+  name: ST B-L475E-IOT01A
+  url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html
+  builders:
+    st-b-l475e-iot01a:
+      chip: stm32l475vg
+      tier: "2"
+      support:
+        user_usb:
+          status: supported
+        wifi:
+          status: not_currently_supported
+          comments:
+            - an external Wi-Fi module is present on the board
+        ble: not_currently_supported
+        ethernet_over_usb:
+          status: not_currently_supported
+          comments:
+            - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+            

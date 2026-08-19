@@ -4,3 +4,12 @@ targets:
     chip: esp32-c3-mini-1
     flags:
       - has_usb_cdc_acm_port
+
+ariel_doc:
+  name: Espressif ESP32-C3-LCDkit
+  url: https://web.archive.org/web/20250408100740/https://www.espressif.com/en/dev-board/esp32-c3-lcdkit-en
+  builders:
+    espressif-esp32-c3-lcdkit:
+      chip: esp32c3
+      tier: "1"
+      support: {}

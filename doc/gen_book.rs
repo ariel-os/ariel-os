@@ -31,6 +31,9 @@ use slug::slugify;
 struct Args {
     #[argh(subcommand)]
     command: SubCommand,
+    #[argh(option)]
+    /// path to the directory containing BSP YAML files with ariel_doc sections
+    boards_dir: Option<PathBuf>,
 }
 
 impl Args {
@@ -619,7 +622,7 @@ fn main() -> miette::Result<()> {
         source,
     })?;
 
-    let matrix = serde_yaml::from_str(&input_file).map_err(|source| {
+    let mut matrix: schema::Matrix = serde_yaml::from_str(&input_file).map_err(|source| {
         let err_span = miette::SourceSpan::from(source.location().unwrap().index());
         Error::Parsing {
             path: args.input_path().into(),
@@ -629,9 +632,66 @@ fn main() -> miette::Result<()> {
         }
     })?;
 
+    if let Some(boards_dir) = &args.boards_dir {
+        let (builders, boards) = load_bsp_docs(boards_dir)?;
+        matrix.builders = builders;
+        matrix.boards = boards;
+    }
+
     validate_input(&matrix)?;
 
     args.command.run(&matrix)
+}
+
+fn load_bsp_docs(
+    boards_dir: &Path,
+) -> miette::Result<(
+    HashMap<String, schema::BuilderInfo>,
+    Vec<schema::BoardInfo>,
+)> {
+    let mut builders: HashMap<String, schema::BuilderInfo> = HashMap::new();
+    let mut boards: Vec<schema::BoardInfo> = Vec::new();
+
+    let mut entries: Vec<_> = fs::read_dir(boards_dir)
+        .map_err(|source| Error::ReadingBoardsDir {
+            path: boards_dir.to_path_buf(),
+            source,
+        })?
+        .filter_map(|e| e.ok())
+        .filter(|e| e.path().extension().map(|x| x == "yaml").unwrap_or(false))
+        .collect();
+    entries.sort_by_key(|e| e.path());
+
+    for entry in entries {
+        let path = entry.path();
+        let content = fs::read_to_string(&path).map_err(|source| Error::InputFile {
+            path: path.clone(),
+            source,
+        })?;
+        let bsp: schema::BspFile = serde_yaml::from_str(&content).map_err(|source| {
+            let err_span = miette::SourceSpan::from(source.location().unwrap().index());
+            Error::Parsing {
+                path: path.clone(),
+                src: content,
+                err_span,
+                source,
+            }
+        })?;
+
+        if let Some(doc) = bsp.ariel_doc {
+            boards.push(schema::BoardInfo {
+                name: doc.name,
+                url: doc.url,
+                description: None,
+                builders: doc.builders.keys().cloned().collect(),
+            });
+            for (builder_name, builder_info) in doc.builders {
+                builders.insert(builder_name, builder_info);
+            }
+        }
+    }
+
+    Ok((builders, boards))
 }
 
 fn validate_input(matrix: &schema::Matrix) -> Result<(), Error> {
@@ -1032,6 +1092,8 @@ enum Error {
         chip: String,
         functionality: String,
     },
+    #[error("could not read boards directory `{path}`")]
+    ReadingBoardsDir { path: PathBuf, source: io::Error },
     #[error("could not write the output HTML file `{path}`")]
     WritingOutputFile { path: PathBuf, source: io::Error },
     #[error("could not read existing output HTML file `{path}`")]

@@ -8,3 +8,13 @@ targets:
     buttons:
       # button0
       - pin: P0_06
+
+ariel_doc:
+  name: nRF9160-DK
+  url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
+  builders:
+    nrf9160dk-nrf9160:
+      chip: nrf9160
+      tier: "2"
+      support:
+        ble: not_available

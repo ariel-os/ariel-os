@@ -6,3 +6,16 @@ targets:
       - has_ble_cyw43
       - has_usb_device_port
       - has_wifi_cyw43
+
+ariel_doc:
+  name: Raspberry Pi Pico 2 W
+  url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
+  builders:
+    rpi-pico2-w:
+      chip: rp235xa
+      tier: "1"
+      support:
+        user_usb: supported
+        wifi: supported
+        ble: supported
+        ethernet_over_usb: supported
