@@ -85,7 +85,7 @@ Some HALs allow enabling internal pull-up resistors on the I2C lines: these typi
 
 Some HALs also allow increasing the drive strength of the pins used for the I2C lines: this increases the current draw but helps achieve higher frequencies as well as accommodate a higher number of I2C targets on the bus (i.e., a higher bus capacitance).
 
-[^peripherals-free-cargo-feature]: When the Cargo feature is not enabled (including indirectly as a dependency of another Cargo feature), the peripherals and their interrupts are not managed by Ariel OS and can be used separately, including through their [Embassy-style HAL][embassy-style-hals].
+[^peripherals-free-cargo-feature]: When the Cargo feature is not enabled (including indirectly as a dependency of another Cargo feature), the peripherals and their interrupts are not managed by Ariel OS and can be used separately, including [through their Embassy-style HAL][using-third-party-hals-directly-book].
 
 [embedded-hal-async-i2c-i2c-docsrs]: https://docs.rs/embedded-hal-async/latest/embedded_hal_async/i2c/trait.I2c.html
 [embedded-hal-i2c-i2c-docsrs]: https://docs.rs/embedded-hal/latest/embedded_hal/i2c/trait.I2c.html
@@ -93,3 +93,4 @@ Some HALs also allow increasing the drive strength of the pins used for the I2C 
 [i2c-clock-stretching-wikipedia]: https://en.wikipedia.org/wiki/I2C#Clock_stretching_using_SCL
 [obtaining-peripheral-access-book]: ./application.md#obtaining-peripheral-access
 [embassy-style-hals]: ./glossary.md#embassy-style-hals
+[using-third-party-hals-directly-book]: ./application.md#using-the-third-party-hals-directly
