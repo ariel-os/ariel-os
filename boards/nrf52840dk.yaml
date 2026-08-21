@@ -34,3 +34,14 @@ targets:
       # button3
       - pin: P0_25
         active: low
+
+    uarts:
+      - aliases:
+          - VCOM0
+        tx_pin: P0_06
+        rx_pin: P0_08
+        rts_pin: P0_05
+        cts_pin: P0_07
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [UARTE0, UARTE1]
+        host_facing: true
