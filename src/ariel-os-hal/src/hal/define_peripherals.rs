@@ -150,15 +150,9 @@ macro_rules! define_i2c_bus {
             }
         }
 
-        // The actual I2C peripheral (through its associated bus creating type)
-        // is given through this BusPart (name tbd) trait.
-        impl $crate::i2c::BusPart for $name {
-            type I2cPeri = $crate::hal::i2c::controller::$peripheral;
-            type Sda = $crate::__peripheral_ty!($sda);
-            type Scl = $crate::__peripheral_ty!($scl);
-
-            fn into_pins(self) -> (Self::Sda, Self::Scl) {
-                (self.sda, self.scl)
+        impl $name {
+            pub fn with_config(self, config: $crate::hal::i2c::controller::Config) -> $crate::hal::i2c::controller::I2c {
+                $crate::hal::i2c::controller::$peripheral::new(self.sda, self.scl, config)
             }
         }
 
