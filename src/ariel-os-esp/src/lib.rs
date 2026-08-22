@@ -38,11 +38,7 @@ pub mod hwrng {
 pub mod i2c;
 
 #[doc(hidden)]
-pub mod identity {
-    use ariel_os_embassy_common::identity;
-
-    pub type DeviceId = identity::NoDeviceId<identity::NotImplemented>;
-}
+pub mod identity;
 
 #[cfg(feature = "spi")]
 pub mod spi;
