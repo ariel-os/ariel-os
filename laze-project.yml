@@ -1378,6 +1378,70 @@ modules:
     selects:
       - doc-only
 
+  - name: ethernet-wiznet-w5500
+    selects:
+      - has_ethernet_w5500
+      - network
+    provides_unique:
+      - network_device
+      - wiznet_chip
+    env:
+      global:
+        FEATURES:
+          - ariel-os/wiznet-w5500
+
+  - name: has_ethernet_w5500
+    selects:
+      - doc-only
+
+  - name: ethernet-wiznet-w5100s
+    selects:
+      - has_ethernet_w5100s
+      - network
+    provides_unique:
+      - network_device
+      - wiznet_chip
+    env:
+      global:
+        FEATURES:
+          - ariel-os/wiznet-w5100s
+
+  - name: has_ethernet_w5100s
+    selects:
+      - doc-only
+
+  - name: ethernet-wiznet-w6100
+    selects:
+      - has_ethernet_w6100
+      - network
+    provides_unique:
+      - network_device
+      - wiznet_chip
+    env:
+      global:
+        FEATURES:
+          - ariel-os/wiznet-w6100
+
+  - name: has_ethernet_w6100
+    selects:
+      - doc-only
+
+  - name: ethernet-wiznet-w6300
+    selects:
+      - has_ethernet_w6300
+      - network
+    provides_unique:
+      - network_device
+      - wiznet_chip
+    env:
+      global:
+        FEATURES:
+          - ariel-os/wiznet-w6300
+
+  - name: has_ethernet_w6300
+    selects:
+      - doc-only
+
   - name: usb-ethernet
     provides_unique:
       - network_device
