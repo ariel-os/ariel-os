@@ -338,6 +338,12 @@ builders:
   - has_buttons
   - has_usb_cdc_acm_port
   - has_usb_device_port
+- name: waveshare-esp32-s3-eth
+  parent: esp32s3r8
+  provides:
+  - has_ethernet_w5500
+  - has_usb_cdc_acm_port
+  - has_usb_device_port
 - name: waveshare-esp32-s3-matrix
   parent: esp32s3fx4r2
   provides:

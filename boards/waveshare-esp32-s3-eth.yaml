@@ -1,0 +1,9 @@
+version: 0.4.0
+targets:
+  waveshare-esp32-s3-eth:
+    # website: https://www.waveshare.com/wiki/ESP32-S3-ETH
+    chip: esp32s3r8
+    flags:
+      - has_ethernet_w5500
+      - has_usb_cdc_acm_port
+      - has_usb_device_port

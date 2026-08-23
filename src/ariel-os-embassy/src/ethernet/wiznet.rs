@@ -4,6 +4,10 @@
 //! identically on any MCU family. Only the board-specific pin mapping needs to be added per board.
 
 cfg_select! {
+    context = "waveshare-esp32-s3-eth" => {
+        #[path = "wiznet/waveshare_esp32_s3_eth.rs"]
+        mod board;
+    }
     // Add a `#[path = "wiznet/<board>.rs"] mod board;` arm here, gated on
     // `context = "<board>"`, for each additional board that wires up a WIZnet chip.
     context = "ariel-os" => {

@@ -85,6 +85,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"stm32u083c-dk\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"ulanzi-tc001\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"unihiker-k10\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"waveshare-esp32-s3-eth\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"waveshare-esp32-s3-matrix\"))"
     );
