@@ -616,6 +616,7 @@ dependencies = [
 name = "ariel-os-stm32-mapping"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-rt",
  "embassy-stm32",
 ]
 

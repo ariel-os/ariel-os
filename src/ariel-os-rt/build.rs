@@ -109,6 +109,8 @@ fn memoryx() {
         layout_nrf(layout)
     } else if context("rp") {
         layout_rp(layout)
+    } else if context("stm32") {
+        layout_stm32(layout)
     } else {
         panic!("unknown MCU laze context");
     };
@@ -120,6 +122,8 @@ fn memoryx() {
         memory_nrf(memory)
     } else if context("rp") {
         memory_rp(memory)
+    } else if context("stm32") {
+        memory_stm32(memory)
     } else {
         panic!("unknown MCU laze context");
     };
@@ -225,6 +229,49 @@ fn memory_rp(memory: ld_memory::Memory) -> ld_memory::Memory {
     } else {
         panic!("unknown rp MCU laze context");
     }
+}
+
+/// Generates the stm32 nvm layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn layout_stm32(mut layout: memsolve::Memory<()>) -> memsolve::Memory<()> {
+    layout.add_section(flash_section().set_boot(true));
+    layout
+}
+
+/// Adds the stm32 memory sections to the generated layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn memory_stm32(memory: ld_memory::Memory) -> ld_memory::Memory {
+    // Sorted by ram size
+    let (ram, ram_base) = if context("stm32c031c6") {
+        (12, 0x2000_0000)
+    } else if context("stm32g431rb") {
+        (32, 0x2000_0000)
+    } else if context_any(&["stm32u073kc", "stm32u083mc", "stm32f303cb"]).is_some() {
+        (40, 0x2000_0000)
+    } else if context_any(&["stm32f303re", "stm32wle5jc"]).is_some() {
+        (64, 0x2000_0000)
+    } else if context("stm32l475vg") {
+        (96, 0x2000_0000)
+    } else if context("stm32wba55cg") {
+        (128, 0x2000_0000)
+    } else if context("stm32wb55rg") {
+        (192, 0x2000_0000)
+    } else if context_any(&["stm32h755zi", "stm32h753zi"]).is_some() {
+        (512, 0x2400_0000)
+    } else if context("stm32wba65ri") {
+        (512, 0x2000_0000)
+    } else if context("stm32u585ai") {
+        (768, 0x2000_0000)
+    } else {
+        panic!("please set the MCU laze context");
+    };
+    memory.add_section(MemorySection::new("RAM", ram_base, ram * 1024))
 }
 
 /// Generate the esp32 partition table.

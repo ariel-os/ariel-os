@@ -17,6 +17,12 @@ const END_PATTERN: &str = "END AUTO-GENERATED STM32 MAPPING";
 const CM4_CM7_MCU_PREFIXES: &[&str] = &["stm32h745", "stm32h747", "stm32h755", "stm32h757"];
 const CM0P_CM4_MCU_PREFIXES: &[&str] = &["stm32wl54", "stm32wl55"];
 
+// These MCUs support memory-x generation
+const SUPPORT_MEMORYX: &[&str] = &[
+    "stm32c0", "stm32f3", "stm32wl", "stm32g4", "stm32h7", "stm32l4", "stm32u0", "stm32u5",
+    "stm32wb",
+];
+
 fn main() {
     let cargo_manifest_path = std::env::var("CARGO_MANIFEST_PATH").unwrap();
     let mut cargo_manifest = std::fs::read_to_string(&cargo_manifest_path).unwrap();
@@ -60,10 +66,17 @@ fn generate_target_table(row: &str) -> String {
         }
     };
 
-    format!(
+    // The TOML quotation marks come from the already-quoted CSV strings.
+    let mut target = format!(
         r#"
 [target.'cfg(context = "{mcu}")'.dependencies]
 embassy-stm32 = {{ workspace = true, features = [{cargo_feature}] }}
 "#,
-    )
+    );
+
+    if SUPPORT_MEMORYX.iter().any(|prefix| mcu.starts_with(prefix)) {
+        target.push_str(r#"ariel-os-rt = { workspace = true, features = ["memory-x"] }"#);
+    }
+
+    target
 }
