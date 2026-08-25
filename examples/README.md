@@ -23,6 +23,7 @@ This directory contains example applications that showcase how to use Ariel OS.
 - [power/](./power): Demonstrates power management functionality
 - [random/](./random): Demonstrates obtaining random values
 - [sensors-debug/](./sensors-debug): Demonstrates accessing the sensor API.
+- [sntp-client/](./sntp-client): Demonstrates using the SNTP client.
 - [storage/](./storage): Demonstrates persistent storage interaction
 - [tcp-client/](./tcp-client): Demonstrates basic Embassy TCP networking usage
 - [tcp-echo/](./tcp-echo): TCP echo example
