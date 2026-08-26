@@ -764,7 +764,7 @@ chips:
       ethernet:
         status: supported_with_caveats
         comments:
-          - currently only supported on a limited set of boards
+          - the pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac)
       ethernet_over_usb:
         status: not_currently_supported
         comments:
@@ -792,7 +792,7 @@ chips:
       ethernet:
         status: supported_with_caveats
         comments:
-          - currently only supported on a limited set of boards
+          - the pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac)
       ethernet_over_usb:
         status: not_currently_supported
         comments:
