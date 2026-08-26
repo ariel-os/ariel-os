@@ -169,13 +169,6 @@ dt, dd {
 </style>
 
 
-## Additional Notes
-
-### Ethernet Link
-
-The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
-A different index should therefore be used to generate other EUI-48 identifiers.
-
 
 [^the-pinout-of-the-rmii-is-currently-fixed-ethernet-md-using-microcontrollers-with-built-in-ethernet-mac]: The pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac).
 [^usb-does-not-enumerate-https-github-com-embassy-rs-embassy-issues-2376-workaround-https-github-com-ariel-os-ariel-os-pull-1126]: [USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126).
