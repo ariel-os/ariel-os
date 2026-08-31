@@ -75,6 +75,7 @@ builders:
   parent: esp32s3fx8
   provides:
   - has_buttons
+  - has_i2c
   - has_leds
 - name: makerdiary-nrf52840-mdk-usb-dongle
   parent: nrf52840
@@ -205,6 +206,7 @@ builders:
 - name: st-nucleo-f042k6
   parent: stm32f042k6
   provides:
+  - has_i2c
   - has_leds
   - has_swi
   env:
@@ -214,6 +216,7 @@ builders:
   parent: stm32f303re
   provides:
   - has_buttons
+  - has_i2c
   - has_leds
   - has_swi
   env:
@@ -311,6 +314,7 @@ builders:
   parent: stm32u585ai
   provides:
   - has_buttons
+  - has_i2c
   - has_leds
   - has_swi
   - has_usb_device_port
@@ -322,6 +326,7 @@ builders:
   parent: stm32u083mc
   provides:
   - has_buttons
+  - has_i2c
   - has_leds
   - has_swi
   - has_usb_device_port
