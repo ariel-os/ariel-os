@@ -253,5 +253,10 @@ fn ariel_os_network_config() -> embassy_net::Config {
         });
     }
 
+    #[cfg(feature = "network-config-ipv6-slaac")]
+    {
+        config.ipv6 = embassy_net::ConfigV6::Slaac;
+    }
+
     config
 }
