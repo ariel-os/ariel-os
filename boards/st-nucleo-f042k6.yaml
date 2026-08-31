@@ -7,3 +7,12 @@ targets:
     leds:
       # led0
       - pin: PA5
+
+ariel_doc:
+  name: ST NUCLEO-F042K6
+  url: https://web.archive.org/web/20241114214921/https://www.st.com/en/evaluation-tools/nucleo-f042k6.html
+  builders:
+    st-nucleo-f042k6:
+      chip: stm32f042k6
+      tier: "3"
+      support: {}

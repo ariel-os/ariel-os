@@ -7,3 +7,12 @@ targets:
       - pin: P0_17
       # button1
       - pin: P0_26
+
+ariel_doc:
+  name: BBC micro:bit V1
+  url: https://web.archive.org/web/20250109121140/https://microbit.org/get-started/features/overview/#original-micro:bit
+  builders:
+    bbc-microbit-v1:
+      chip: nrf51822-xxaa
+      tier: "3"
+      support: {}

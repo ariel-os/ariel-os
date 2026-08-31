@@ -29,3 +29,20 @@ targets:
     buttons:
       # button0
       - pin: PC13
+
+ariel_doc:
+  name: ST NUCLEO-H753ZI
+  url: https://web.archive.org/web/20240625050043/https://www.st.com/en/evaluation-tools/nucleo-h753zi.html
+  builders:
+    st-nucleo-h753zi:
+      chip: stm32h753zi
+      tier: "3"
+      support:
+        ethernet: supported
+        user_usb: supported
+        wifi: not_available
+        ethernet_over_usb:
+          status: not_currently_supported
+          comments:
+            - "[USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126)"
+

@@ -6,3 +6,16 @@ targets:
       - has_ble_cyw43
       - has_wifi_cyw43
       - has_usb_device_port
+
+ariel_doc:
+  name: Raspberry Pi Pico W
+  url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
+  builders:
+    rpi-pico-w:
+      chip: rp2040
+      tier: "1"
+      support:
+        user_usb: supported
+        wifi: supported
+        ble: supported
+        ethernet_over_usb: supported
