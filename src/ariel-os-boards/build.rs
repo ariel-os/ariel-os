@@ -63,6 +63,9 @@ pub fn main() {
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-lora-e5-mini\"))"
     );
     println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-xiao-esp32-s3\"))"
+    );
+    println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-xiao-esp32c6\"))"
     );
     println!(
