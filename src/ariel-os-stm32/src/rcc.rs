@@ -296,6 +296,29 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_R;
     }
 
+    #[cfg(context = "st-nucleo-wba55")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hse = Some(Hse {
+            prescaler: HsePrescaler::DIV1,
+        });
+
+        rcc.pll1 = Some(Pll {
+            source: PllSource::HSE,
+            prediv: PllPreDiv::DIV2, // 32 / 2 = 16 MHz
+            mul: PllMul::MUL25,      // 16 * 25 = 400 MHz VCO (128..=544)
+            divp: None,
+            divq: None,
+            divr: Some(PllDiv::DIV4), // 400 / 4 = 100 MHz (sysclk, max)
+            frac: None,
+        });
+        rcc.sys = Sysclk::PLL1_R;
+        // The PLL is unavailable in voltage range 2
+        rcc.voltage_scale = VoltageScale::RANGE1;
+        rcc.mux.sai1sel = mux::Sai1sel::HSI;
+    }
+
     #[cfg(context = "st-nucleo-wba65ri")]
     {
         use embassy_stm32::rcc::*;
