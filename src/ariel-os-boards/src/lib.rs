@@ -9,7 +9,8 @@ cfg_select! {
     include!("adafruit-feather-nrf52840-sense.rs"); } context = "arduino-uno-q" => {
     include!("arduino-uno-q.rs"); } context = "bbc-microbit-v1" => {
     include!("bbc-microbit-v1.rs"); } context = "bbc-microbit-v2" => {
-    include!("bbc-microbit-v2.rs"); } context = "decawave-dwm1001-dev" => {
+    include!("bbc-microbit-v2.rs"); } context = "cy8cproto-062-4343w" => {
+    include!("cy8cproto-062-4343w.rs"); } context = "decawave-dwm1001-dev" => {
     include!("decawave-dwm1001-dev.rs"); } context = "dfrobot-firebeetle2-esp32-c6" => {
     include!("dfrobot-firebeetle2-esp32-c6.rs"); } context =
     "espressif-esp32-c3-devkit-rust-1" => {
