@@ -26,7 +26,7 @@ jobs:
           persist-credentials: false
 
       - name: Install toolchain
-        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
+        uses: dtolnay/rust-toolchain@d1031067263f94b142dd6c0ce24c5eb9d02d52a0 # master
         with:
           toolchain: stable
 
@@ -82,7 +82,7 @@ jobs:
 
       # Clippy linting is better done with the nightly set of lints.
       - name: Install toolchain
-        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
+        uses: dtolnay/rust-toolchain@d1031067263f94b142dd6c0ce24c5eb9d02d52a0 # master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
           # Required for checking ariel-os-esp and ariel-os-nrf
@@ -339,7 +339,7 @@ jobs:
 
       # Generating the rustdoc docs requires nightly features.
       - name: Install toolchain
-        uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9 # master
+        uses: dtolnay/rust-toolchain@d1031067263f94b142dd6c0ce24c5eb9d02d52a0 # master
         with:
           toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
           targets: riscv32imac-unknown-none-elf
