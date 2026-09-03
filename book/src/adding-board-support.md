@@ -79,6 +79,10 @@ sbd-gen generate-ariel boards -o src/ariel-os-boards --mode update
 ### `esp32`
 
 - Some ancillary esp-hal crates require a chip-specific feature to be enabled. You will need to add a device-specific dependency section to `ariel-os-debug`, and `ariel-os-esp`, similar to the existing ones.
+- If the board has PSRAM and enables the `psram` feature, set `ESP_HAL_CONFIG_PSRAM_MODE` to `quad` or `octal` in `targets.<board_name>.ariel.global_env.CARGO_ENV`, matching the board's actual PSRAM chip.
+  esp-hal cannot detect which SPI mode a populated chip needs, and driving one in the wrong mode does not fail visibly: the chip responds and boots normally, and size auto-detection can even report a plausible-looking (wrong) value, but every real PSRAM read/write beyond what fits in the CPU's data cache silently returns corrupted data.
+  Small, cache-resident accesses read back fine regardless, which makes this easy to misdiagnose as a driver or hardware bug rather than a protocol mismatch — always verify with an allocation large enough to force real cache evictions (at least a few times the chip's D-cache size) before trusting a PSRAM port.
+  Check the exact module part number/ordering code (not just the module family): PSRAM SPI mode varies by variant, not by chip family — e.g. ESP32-S3-WROOM-1 modules ship with either Quad or Octal PSRAM depending on the ordering code (`R2` = Quad, `R8`/`R16` = Octal).
 
 ## Adding Support for an MCU from a Supported MCU family
 

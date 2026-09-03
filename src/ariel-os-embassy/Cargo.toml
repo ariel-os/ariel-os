@@ -100,6 +100,9 @@ uart = ["ariel-os-embassy-common/uart", "ariel-os-hal/uart"]
 usb = ["dep:embassy-usb", "ariel-os-hal/usb"]
 usb-hid = ["dep:usbd-hid", "embassy-usb?/usbd-hid", "usb"]
 
+## Enables PSRAM as additional heap memory (ESP32-only, currently).
+psram = ["ariel-os-hal/psram"]
+
 # `embassy-net` requires a time driver, which HALs provide.
 net = ["dep:embassy-net", "ariel-os-hal/time"]
 # NOTE: `time` is only needed on STM32 for the workaround.
