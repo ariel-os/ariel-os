@@ -348,7 +348,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     ble::init_stack(ble_controller, spawner);
 
     #[cfg(feature = "wifi-esp")]
-    let device = hal::wifi::esp_wifi::init(&mut peripherals, spawner);
+    let (device, control) = hal::wifi::esp_wifi::init(&mut peripherals);
 
     #[cfg(feature = "tuntap")]
     let device = crate::hal::tuntap::create();
@@ -427,9 +427,20 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
         }
     }
 
+    #[cfg(feature = "wifi")]
+    let wifi_config = ariel_os_embassy_common::wifi::WIFI_CONFIG;
+
     #[cfg(feature = "wifi-cyw43")]
     {
-        hal::cyw43::join(control).await;
+        // Using an embassy task would cost us a lot of storage and RAM.
+        hal::cyw43::join(control, wifi_config).await;
+    };
+
+    #[cfg(feature = "wifi-esp")]
+    {
+        spawner
+            .spawn(hal::wifi::esp_wifi::join(control, wifi_config))
+            .expect("start wifi join task");
     };
 
     // mark used

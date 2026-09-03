@@ -98,7 +98,7 @@ ble-central = ["ble-cyw43"]
 defmt = ["dep:defmt", "cyw43?/defmt", "embassy-rp/defmt"]
 
 ## Enables Wi-Fi support.
-wifi = []
+wifi = ["ariel-os-embassy-common/wifi"]
 
 ## Enables support for the CYW43 Wi-Fi chip.
 wifi-cyw43 = ["_cyw43", "cyw43-firmware?/wifi", "wifi"]

@@ -140,7 +140,7 @@ cellular-networking = [
   "ariel-os-embassy-common/cellular-networking",
 ]
 
-wifi = []
+wifi = ["ariel-os-embassy-common/wifi"]
 wifi-cyw43 = ["ariel-os-hal/wifi-cyw43", "net", "wifi"]
 wifi-esp = ["ariel-os-hal/wifi-esp", "net", "wifi"]
 
