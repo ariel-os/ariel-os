@@ -767,14 +767,24 @@ pub fn yield_same() {
         if !scheduler.runqueue.is_empty(prio) {
             schedule();
 
-            // Check if the yielding thread can continue their execution on another
-            // core that currently runs a lower priority thread.
-            // This is only necessary when core-affinities are enabled, because only
-            // then it is possible that a lower prio thread runs while a higher prio
-            // runqueue isn't empty.
+            // Check edge case when core-affinities are enabled.
+            // With core-affinities, it might be that we are yielding to a same-prio
+            // thread that is pinned to our core. Due to this pinning, it is possible that
+            // another, lower prio thread is running on the second core.
+            // If that's the case, we should preempt the lower-prio thread.
             #[cfg(feature = "core-affinity")]
             if _affinity == CoreAffinity::no_affinity() {
-                scheduler.schedule_if_higher_prio(_tid, prio);
+                let pid = scheduler
+                    .runqueue
+                    .get_next()
+                    .expect("Runqueue isn't empty.");
+                let thread = scheduler.get_unchecked(pid);
+
+                // Check if the next thread is pinned to our core.
+                if thread.core_affinity == CoreAffinity::one(core_id()) {
+                    // Check if we can run on the second core.
+                    scheduler.schedule_if_higher_prio(_tid, prio);
+                }
             }
         }
     });
