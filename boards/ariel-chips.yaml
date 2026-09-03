@@ -22,6 +22,7 @@ ariel:
     - esp32s3
     - esp32s3fx4r2
     - esp32s3fx8
+    - esp32s3r8
     - native-chip
     - nrf51822-xxaa
     - nrf52

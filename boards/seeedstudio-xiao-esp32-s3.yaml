@@ -1,0 +1,19 @@
+version: 0.4.0
+targets:
+  seeedstudio-xiao-esp32-s3:
+    chip: esp32s3r8
+    flags:
+      - has_ble_esp
+      - has_usb_cdc_acm_port
+      - has_usb_device_port
+    leds:
+      - pin: GPIO21
+        color: yellow
+        active: low
+        aliases:
+          - USER_LED
+    buttons:
+      - pin: GPIO0
+        active: low
+        aliases:
+          - BOOT

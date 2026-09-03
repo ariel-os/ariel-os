@@ -172,6 +172,14 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=USART2
+- name: seeedstudio-xiao-esp32-s3
+  parent: esp32s3r8
+  provides:
+  - has_ble_esp
+  - has_buttons
+  - has_leds
+  - has_usb_cdc_acm_port
+  - has_usb_device_port
 - name: seeedstudio-xiao-esp32c6
   parent: esp32c6fx4
   provides:

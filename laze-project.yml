@@ -495,6 +495,9 @@ contexts:
   - name: esp32s3fx8
     parent: esp32s3
 
+  - name: esp32s3r8
+    parent: esp32s3
+
   - name: esp32-s3-wroom-1
     parent: esp32s3
 
