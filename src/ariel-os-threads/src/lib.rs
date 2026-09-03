@@ -458,13 +458,10 @@ impl Scheduler {
         // On multi-core with core-affinities, get next thread with matching affinity.
         #[cfg(all(feature = "multi-core", feature = "core-affinity"))]
         {
-            // TODO: this would benefit from a `del_one_with_filter` to avoid
-            // iterating twice.
-            let next = self
+            let (next, prev, rq) = self
                 .runqueue
                 .get_next_filter(|&t| self.is_affine_to_curr_core(t))?;
-            // Delete thread from runqueue to match the `pop_next`.
-            self.runqueue.del(next);
+            self.runqueue.del_opt(next, prev, rq);
             Some(next)
         }
     }
