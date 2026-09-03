@@ -7,9 +7,15 @@ This application is testing basic
 
 ## How to run
 
-In this directory, run
+This example can either use IPv4 or IPv6.
 
-    laze build -b rpi-pico-w run
+Using IPv4:
+
+    laze build -b rpi-pico-w -s ipv4 -d ipv6 run
+
+Using IPv6:
+
+    laze build -b rpi-pico-w -s ipv6 -d ipv4 run
 
 The application will try to connect to [tcpbin.com](https://tcpbin.com/), a simple echo server using TCP.
 
