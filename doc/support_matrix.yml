@@ -608,6 +608,28 @@ chips:
       ble: supported
       ethernet: not_available
 
+  # Currently identical to esp32s3.
+  esp32s3r8:
+    name: ESP32-S3R8
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      user_usb: supported
+      ethernet_over_usb: supported
+      wifi: supported
+      ble: supported
+      ethernet: not_available
+
   stm32c031c6:
     name: STM32C031C6
     manufacturer: STMicroelectronics
@@ -1367,6 +1389,12 @@ builders:
     tier: "2"
     support:
 
+  waveshare-esp32-s3-eth:
+    chip: esp32s3r8
+    tier: "3"
+    support:
+      ethernet: supported
+
   waveshare-esp32-s3-matrix:
     chip: esp32s3fx4r2
     tier: "3"
@@ -1597,6 +1625,11 @@ boards:
     url: https://web.archive.org/web/20260207013308/https://www.unihiker.com/products/k10
     builders:
       - unihiker-k10
+
+  - name: Waveshare ESP32-S3-ETH
+    url: https://web.archive.org/web/20260723193713/https://www.waveshare.com/wiki/ESP32-S3-ETH
+    builders:
+      - waveshare-esp32-s3-eth
 
   - name: Waveshare ESP32-S3-Matrix
     url: https://web.archive.org/web/20251121141909/https://www.waveshare.com/wiki/ESP32-S3-Matrix

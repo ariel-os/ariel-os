@@ -20,6 +20,7 @@ Here is the list of supported chips in Ariel OS.
 - [ESP32-S3](./esp32s3.md)
 - [ESP32-S3Fx4R2](./esp32s3fx4r2.md)
 - [ESP32-S3Fx8](./esp32s3fx8.md)
+- [ESP32-S3R8](./esp32s3r8.md)
 
 ## Nordic Semiconductor
   
