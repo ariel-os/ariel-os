@@ -159,6 +159,16 @@ wifi-cyw43 = ["ariel-os-embassy/wifi-cyw43"]
 wifi-esp = ["ariel-os-embassy/wifi-esp"]
 # Selects STM32 Ethernet
 ethernet-stm32 = ["ariel-os-embassy/ethernet-stm32"]
+# Selects Ethernet via a WIZnet SPI chip.
+ethernet-wiznet = ["ariel-os-embassy/ethernet-wiznet"]
+# Selects the W5500 as the WIZnet chip in use.
+wiznet-w5500 = ["ariel-os-embassy/wiznet-w5500"]
+# Selects the W5100S as the WIZnet chip in use.
+wiznet-w5100s = ["ariel-os-embassy/wiznet-w5100s"]
+# Selects the W6100 as the WIZnet chip in use.
+wiznet-w6100 = ["ariel-os-embassy/wiznet-w6100"]
+# Selects the W6300 as the WIZnet chip in use.
+wiznet-w6300 = ["ariel-os-embassy/wiznet-w6300"]
 # Selects the network backend that goes through tun/tap (native only).
 tuntap = ["ariel-os-embassy/tuntap"]
 # Selects LTE-M on nRF SiPs (currently only available on nRF91 SiPs).

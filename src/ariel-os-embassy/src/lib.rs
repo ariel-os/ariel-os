@@ -318,6 +318,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(feature = "ethernet-stm32")]
     let device = hal::ethernet::device(&mut peripherals);
 
+    #[cfg(feature = "ethernet-wiznet")]
+    let device = ethernet::wiznet::device(&mut peripherals, spawner).await;
+
     #[cfg(feature = "usb")]
     {
         for hook in usb::USB_BUILDER_HOOKS {
