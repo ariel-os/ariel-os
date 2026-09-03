@@ -925,6 +925,9 @@ modules:
           # and the second $ escapes for laze's internal ninja, resulting in
           # the shell to see just ${ESPUP_...
           - . $\\${ESPUP_EXPORT_FILE:-~/export-esp.sh}
+        CARGO_ENV:
+          # liboscore's bindgen needs the Xtensa sysroot to find relevant headers
+          - BINDGEN_EXTRA_CLANG_ARGS=--sysroot=$$(${CC} -print-sysroot)
 
   - name: riscv
     selects:
