@@ -129,6 +129,23 @@ When multiple tasks of the same name exist, which variant is used depends on whi
 > [!TIP]
 > It is possible to [`flash` the board][flashing-board-book] using one host tool, before switching to another one to fetch and display the logging output (e.g., in production).
 
+### Reading from other logging transports
+
+When the logging transport is not supported by the flashing tool, receiving the logs will depend on 
+the logging transport used. When using the [log] facade, the data transmitted through the logging transport will be UTF-8 encoded and can be directly read. You can read USB CDC-ACM and UART bridges using [picocom],
+e.g. `picocom --imap lfcrlf /dev/ttyACM1 --baud 115200`.
+
+When using [defmt] as a logging facade the logs will need to be decoded (not using a special encoding 
+unlike `log` that uses text). For that you can use [defmt-print], you will need to pass the compiled
+binary with the `-e` parameter, you can find the compiled binary in `./build/bin/<board>/cargo/<architecture>/release/<app name>`. 
+[defmt-print] can decode from stdin, a TCP server and a serial device / UNIX character file.
+For example to read the logs of the logs of the `ble-scanner` example from an `rpi-pico-w`
+using the USB CDC-ACM logging transport (appearing as `/dev/ttyACM1` here) you have to use: 
+
+```sh
+defmt-print -e ./build/bin/rpi-pico-w/cargo/thumbv6m-none-eabi/release/ble-scanner serial --path /dev/ttyACM0
+```
+
 [defmt]: https://github.com/knurling-rs/defmt
 [defmt documentation]: https://defmt.ferrous-systems.com/
 [log]: https://github.com/rust-lang/log
@@ -145,3 +162,5 @@ When multiple tasks of the same name exist, which variant is used depends on whi
 [semihosting-book]: ./flashing-debugging.md#semihosting
 [laze-tasks-book]: ./build-system.md#laze-tasks
 [rtt-book]: ./flashing-debugging.md#real-time-transfer-rtt
+[picocom]: https://github.com/npat-efault/picocom
+[defmt-print]: https://github.com/knurling-rs/defmt/tree/e628f436c1b5ee6032a0b4a14f290c9cfffff07b/print
