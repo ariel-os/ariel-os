@@ -10,5 +10,6 @@ apps:
     conflicts:
       - ram-small
       # not enough ram
+      - context::esp32c2
       - context::esp32s2
       - context::stm32l475vg

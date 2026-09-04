@@ -17,12 +17,18 @@ cfg_if::cfg_if! {
     #[cfg(context = "espressif-esp32-c6-devkitc-1")] {
     include!("espressif-esp32-c6-devkitc-1.rs"); } else if #[cfg(context =
     "espressif-esp32-devkitc")] { include!("espressif-esp32-devkitc.rs"); } else if
-    #[cfg(context = "espressif-esp32-s2-devkitc-1")] {
-    include!("espressif-esp32-s2-devkitc-1.rs"); } else if #[cfg(context =
-    "espressif-esp32-s3-devkitc-1")] { include!("espressif-esp32-s3-devkitc-1.rs"); }
-    else if #[cfg(context = "heltec-wifi-lora-32-v3")] {
-    include!("heltec-wifi-lora-32-v3.rs"); } else if #[cfg(context =
-    "makerdiary-nrf52840-mdk-usb-dongle")] {
+    #[cfg(context = "espressif-esp32-h2-devkitm-1-h2s")] {
+    include!("espressif-esp32-h2-devkitm-1-h2s.rs"); } else if #[cfg(context =
+    "espressif-esp32-h2-devkitm-1-h4s")] {
+    include!("espressif-esp32-h2-devkitm-1-h4s.rs"); } else if #[cfg(context =
+    "espressif-esp32-s2-devkitc-1")] { include!("espressif-esp32-s2-devkitc-1.rs"); }
+    else if #[cfg(context = "espressif-esp32-s3-devkitc-1")] {
+    include!("espressif-esp32-s3-devkitc-1.rs"); } else if #[cfg(context =
+    "espressif-esp8684-devkitc-02-h2")] { include!("espressif-esp8684-devkitc-02-h2.rs");
+    } else if #[cfg(context = "espressif-esp8684-devkitc-02-h4")] {
+    include!("espressif-esp8684-devkitc-02-h4.rs"); } else if #[cfg(context =
+    "heltec-wifi-lora-32-v3")] { include!("heltec-wifi-lora-32-v3.rs"); } else if
+    #[cfg(context = "makerdiary-nrf52840-mdk-usb-dongle")] {
     include!("makerdiary-nrf52840-mdk-usb-dongle.rs"); } else if #[cfg(context =
     "makerdiary-nrf9151-connect-kit")] { include!("makerdiary-nrf9151-connect-kit.rs"); }
     else if #[cfg(context = "native")] { include!("native.rs"); } else if #[cfg(context =

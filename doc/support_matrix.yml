@@ -354,6 +354,74 @@ chips:
       ethernet_over_usb: not_available
       ethernet: not_available
 
+  esp32c2:
+    name: ESP32-C2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: needs_testing
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      ble: supported
+      user_usb: not_available
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
+  # Currently identical to esp32c2.
+  esp8684h2:
+    name: ESP8684H2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: needs_testing
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      ble: supported
+      user_usb: not_available
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
+  # Currently identical to esp32c2.
+  esp8684h4:
+    name: ESP8684H4
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: needs_testing
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi:
+        status: supported
+      ble: supported
+      user_usb: not_available
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
   esp32c3:
     name: ESP32-C3
     manufacturer: Espressif
@@ -448,6 +516,80 @@ chips:
           - requires partitioning support
       wifi:
         status: supported
+      ble: supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
+  esp32h2:
+    name: ESP32-H2
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi: not_available
+      ble: supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
+  # Currently identical to esp32h2.
+  esp32h2fh2s:
+    name: ESP32-H2FH2S
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi: not_available
+      ble: supported
+      user_usb:
+        status: not_available
+        comments:
+          - no generic USB peripheral
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
+  # Currently identical to esp32h2.
+  esp32h2fh4s:
+    name: ESP32-H2FH4S
+    manufacturer: Espressif
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - requires partitioning support
+      wifi: not_available
       ble: supported
       user_usb:
         status: not_available
@@ -1204,6 +1346,30 @@ builders:
     note_snippets:
       - espressif-devkit-two-usb-ports-no-usb-otg
 
+  espressif-esp32-h2-devkitm-1-h2s:
+    chip: esp32h2fh2s
+    tier: "3"
+    support:
+    note_snippets:
+      - espressif-devkit-two-usb-ports-no-usb-otg
+
+  espressif-esp32-h2-devkitm-1-h4s:
+    chip: esp32h2fh4s
+    tier: "3"
+    support:
+    note_snippets:
+      - espressif-devkit-two-usb-ports-no-usb-otg
+
+  espressif-esp8684-devkitc-02-h2:
+    chip: esp8684h2
+    tier: "3"
+    support:
+
+  espressif-esp8684-devkitc-02-h4:
+    chip: esp8684h4
+    tier: "3"
+    support:
+
   espressif-esp32-s2-devkitc-1:
     chip: esp32s2
     tier: "3"
@@ -1514,6 +1680,18 @@ boards:
     url: https://web.archive.org/web/20250122153727/https://www.espressif.com/en/dev-board/esp32-c6-devkitc-1-en
     builders:
       - espressif-esp32-c6-devkitc-1
+
+  - name: Espressif ESP32-H2-DevKitM-1
+    url: https://web.archive.org/web/20260420232231/https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32h2/esp32-h2-devkitm-1/index.html
+    builders:
+      - espressif-esp32-h2-devkitm-1-h2s
+      - espressif-esp32-h2-devkitm-1-h4s
+
+  - name: Espressif ESP8684-DevKitC-02
+    url: https://web.archive.org/web/20260607024208/https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c2/esp8684-devkitc-02/user_guide.html
+    builders:
+      - espressif-esp8684-devkitc-02-h2
+      - espressif-esp8684-devkitc-02-h4
 
   - name: Espressif ESP32-S2-DevKitC-1
     url: https://web.archive.org/web/20251022182104/https://www.espressif.com/en/dev-board/esp32-s2-devkitc-1-en

@@ -60,6 +60,16 @@ builders:
   parent: esp-wroom-32
   provides:
   - has_buttons
+- name: espressif-esp32-h2-devkitm-1-h2s
+  parent: esp32-h2-mini-1-h2s
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-h2-devkitm-1-h4s
+  parent: esp32-h2-mini-1-h4s
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
 - name: espressif-esp32-s2-devkitc-1
   parent: esp32-s2-solo-2
   provides:
@@ -71,6 +81,16 @@ builders:
   - has_buttons
   - has_usb_cdc_acm_port
   - has_usb_device_port
+- name: espressif-esp8684-devkitc-02-h2
+  parent: esp8684-wroom-02c-h2
+  provides:
+  - has_buttons
+  - has_leds
+- name: espressif-esp8684-devkitc-02-h4
+  parent: esp8684-wroom-02c-h4
+  provides:
+  - has_buttons
+  - has_leds
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:

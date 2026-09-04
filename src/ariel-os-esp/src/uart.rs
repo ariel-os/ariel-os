@@ -273,9 +273,13 @@ macro_rules! define_uart_drivers {
 
 #[cfg(context = "esp32")]
 define_uart_drivers!(UART0, UART1, UART2);
+#[cfg(context = "esp32c2")]
+define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32c3")]
 define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32c6")]
+define_uart_drivers!(UART0, UART1);
+#[cfg(context = "esp32h2")]
 define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32s2")]
 define_uart_drivers!(UART0, UART1);
@@ -291,11 +295,19 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.UART1.take().unwrap();
             let _ = peripherals.UART2.take().unwrap();
         }
+        context = "esp32c2" => {
+            let _ = peripherals.UART0.take().unwrap();
+            let _ = peripherals.UART1.take().unwrap();
+        }
         context = "esp32c3" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
         }
         context = "esp32c6" => {
+            let _ = peripherals.UART0.take().unwrap();
+            let _ = peripherals.UART1.take().unwrap();
+        }
+        context = "esp32h2" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
         }
