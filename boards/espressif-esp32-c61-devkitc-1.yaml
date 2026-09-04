@@ -1,0 +1,14 @@
+version: 0.5.0
+targets:
+  espressif-esp32-c61-devkitc-1:
+    chip: esp32-c61-wroom-1-n8rx
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0
+      - pin: GPIO9
+        resistor: pullup
+        active: low
+        aliases:
+          - BOOT
+          - SW1

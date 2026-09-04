@@ -53,8 +53,14 @@ esp-println = { workspace = true, optional = true, features = ["esp32c2"] }
 [target.'cfg(context = "esp32c3")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["esp32c3"] }
 
+[target.'cfg(context = "esp32c5")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32c5"] }
+
 [target.'cfg(context = "esp32c6")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["esp32c6"] }
+
+[target.'cfg(context = "esp32c61")'.dependencies]
+esp-println = { workspace = true, optional = true, features = ["esp32c61"] }
 
 [target.'cfg(context = "esp32h2")'.dependencies]
 esp-println = { workspace = true, optional = true, features = ["esp32h2"] }
