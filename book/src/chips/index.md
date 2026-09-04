@@ -8,11 +8,15 @@ Here is the list of supported chips in Ariel OS.
 
 ## Espressif
   
+- [ESP32-C2](./esp32c2.md)
 - [ESP32-C3](./esp32c3.md)
 - [ESP32-C3Fx4](./esp32c3fx4.md)
 - [ESP32-C6](./esp32c6.md)
 - [ESP32-C6Fx4](./esp32c6fx4.md)
 - [ESP32-D0WD](./esp32-d0wd.md)
+- [ESP32-H2](./esp32h2.md)
+- [ESP32-H2FH2S](./esp32h2fh2s.md)
+- [ESP32-H2FH4S](./esp32h2fh4s.md)
 - [ESP32-S2](./esp32s2.md)
 - [ESP32-S2Fx2](./esp32s2fx2.md)
 - [ESP32-S2Fx4](./esp32s2fx4.md)
@@ -21,6 +25,8 @@ Here is the list of supported chips in Ariel OS.
 - [ESP32-S3Fx4R2](./esp32s3fx4r2.md)
 - [ESP32-S3Fx8](./esp32s3fx8.md)
 - [ESP32-S3R8](./esp32s3r8.md)
+- [ESP8684H2](./esp8684h2.md)
+- [ESP8684H4](./esp8684h4.md)
 
 ## Nordic Semiconductor
   

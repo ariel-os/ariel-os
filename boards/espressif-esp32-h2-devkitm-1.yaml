@@ -1,0 +1,19 @@
+version: 0.4.0
+targets:
+  espressif-esp32-h2-devkitm-1-h2s:
+    chip: esp32-h2-mini-1-h2s
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO9
+        active: low
+
+  espressif-esp32-h2-devkitm-1-h4s:
+    chip: esp32-h2-mini-1-h4s
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO9
+        active: low
