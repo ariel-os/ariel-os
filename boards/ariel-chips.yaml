@@ -10,10 +10,26 @@ ariel:
     - esp32-wroom-32d
     - esp32-wroom-32u
     - esp32-c3-mini-1
+    - esp32-c5-wroom-1-n16rx
+    - esp32-c5-wroom-1-n32rx
+    - esp32-c5-wroom-1-n4
+    - esp32-c5-wroom-1-n4rx
+    - esp32-c5-wroom-1-n8rx
     - esp32-c6-wroom-1
+    - esp32-c61-wroom-1-h16rx
+    - esp32-c61-wroom-1-n8rx
     - esp32-s3-wroom-1
     - esp32-s2-solo-2
+    - esp32c2
+    - esp32c5
+    - esp32c5hf4
+    - esp32c5hrx
+    - esp32c5nf8rxla
     - esp32c6
+    - esp32c61
+    - esp32c61hf4
+    - esp32c61hrx
+    - esp32c61nf8rxla
     - esp32c6fx4
     - esp32s2
     - esp32s2fx2

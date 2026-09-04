@@ -51,8 +51,43 @@ builders:
   parent: esp32-c3-mini-1
   provides:
   - has_usb_cdc_acm_port
+- name: espressif-esp32-c5-devkitc-1-n4
+  parent: esp32-c5-wroom-1-n4
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c5-devkitc-1-n4rx
+  parent: esp32-c5-wroom-1-n4rx
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c5-devkitc-1-n8rx
+  parent: esp32-c5-wroom-1-n8rx
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c5-devkitc-1-n16rx
+  parent: esp32-c5-wroom-1-n16rx
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c5-devkitc-1-n32rx
+  parent: esp32-c5-wroom-1-n32rx
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
 - name: espressif-esp32-c6-devkitc-1
   parent: esp32-c6-wroom-1
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c61-devkitc-1-n8rx
+  parent: esp32-c61-wroom-1-n8rx
+  provides:
+  - has_buttons
+  - has_usb_cdc_acm_port
+- name: espressif-esp32-c61-devkitc-1-h16rx
+  parent: esp32-c61-wroom-1-h16rx
   provides:
   - has_buttons
   - has_usb_cdc_acm_port

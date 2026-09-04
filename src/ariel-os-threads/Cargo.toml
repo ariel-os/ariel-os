@@ -31,8 +31,14 @@ xtensa-lx-rt = { workspace = true, features = ["float-save-restore"] }
 [target.'cfg(context = "esp32c3")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32c3"] }
 
+[target.'cfg(context = "esp32c5")'.dependencies]
+esp-hal = { workspace = true, features = ["esp32c5"] }
+
 [target.'cfg(context = "esp32c6")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32c6"] }
+
+[target.'cfg(context = "esp32c61")'.dependencies]
+esp-hal = { workspace = true, features = ["esp32c61"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
 esp-hal = { workspace = true, features = ["esp32s2"] }

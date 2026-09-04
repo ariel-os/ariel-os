@@ -21,7 +21,28 @@ pub fn main() {
         "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c3-lcdkit\"))"
     );
     println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c5-devkitc-1-n4\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c5-devkitc-1-n4rx\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c5-devkitc-1-n8rx\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c5-devkitc-1-n16rx\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c5-devkitc-1-n32rx\"))"
+    );
+    println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c6-devkitc-1\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c61-devkitc-1-n8rx\"))"
+    );
+    println!(
+        "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c61-devkitc-1-h16rx\"))"
     );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-devkitc\"))");
     println!(

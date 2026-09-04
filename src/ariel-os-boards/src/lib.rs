@@ -14,8 +14,21 @@ cfg_if::cfg_if! {
     "espressif-esp32-c3-devkit-rust-1")] {
     include!("espressif-esp32-c3-devkit-rust-1.rs"); } else if #[cfg(context =
     "espressif-esp32-c3-lcdkit")] { include!("espressif-esp32-c3-lcdkit.rs"); } else if
-    #[cfg(context = "espressif-esp32-c6-devkitc-1")] {
-    include!("espressif-esp32-c6-devkitc-1.rs"); } else if #[cfg(context =
+    #[cfg(context = "espressif-esp32-c5-devkitc-1-n4")] {
+    include!("espressif-esp32-c5-devkitc-1-n4.rs"); } else if #[cfg(context =
+    "espressif-esp32-c5-devkitc-1-n4rx")] {
+    include!("espressif-esp32-c5-devkitc-1-n4rx.rs"); } else if #[cfg(context =
+    "espressif-esp32-c5-devkitc-1-n8rx")] {
+    include!("espressif-esp32-c5-devkitc-1-n8rx.rs"); } else if #[cfg(context =
+    "espressif-esp32-c5-devkitc-1-n16rx")] {
+    include!("espressif-esp32-c5-devkitc-1-n16rx.rs"); } else if #[cfg(context =
+    "espressif-esp32-c5-devkitc-1-n32rx")] {
+    include!("espressif-esp32-c5-devkitc-1-n32rx.rs"); } else if #[cfg(context =
+    "espressif-esp32-c6-devkitc-1")] { include!("espressif-esp32-c6-devkitc-1.rs"); }
+    else if #[cfg(context = "espressif-esp32-c61-devkitc-1-n8rx")] {
+    include!("espressif-esp32-c61-devkitc-1-n8rx.rs"); } else if #[cfg(context =
+    "espressif-esp32-c61-devkitc-1-h16rx")] {
+    include!("espressif-esp32-c61-devkitc-1-h16rx.rs"); } else if #[cfg(context =
     "espressif-esp32-devkitc")] { include!("espressif-esp32-devkitc.rs"); } else if
     #[cfg(context = "espressif-esp32-s2-devkitc-1")] {
     include!("espressif-esp32-s2-devkitc-1.rs"); } else if #[cfg(context =

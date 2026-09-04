@@ -1,0 +1,46 @@
+version: 0.4.0
+targets:
+  espressif-esp32-c5-devkitc-1-n4:
+    chip: esp32-c5-wroom-1-n4
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO28
+        active: low
+
+  espressif-esp32-c5-devkitc-1-n4rx:
+    chip: esp32-c5-wroom-1-n4rx
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO28
+        active: low
+
+  espressif-esp32-c5-devkitc-1-n8rx:
+    chip: esp32-c5-wroom-1-n8rx
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO28
+        active: low
+
+  espressif-esp32-c5-devkitc-1-n16rx:
+    chip: esp32-c5-wroom-1-n16rx
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO28
+        active: low
+
+  espressif-esp32-c5-devkitc-1-n32rx:
+    chip: esp32-c5-wroom-1-n32rx
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO28
+        active: low

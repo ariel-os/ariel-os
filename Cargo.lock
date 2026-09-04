@@ -2975,12 +2975,16 @@ dependencies = [
  "esp-sync",
  "esp-wifi-sys-esp32",
  "esp-wifi-sys-esp32c3",
+ "esp-wifi-sys-esp32c5",
  "esp-wifi-sys-esp32c6",
+ "esp-wifi-sys-esp32c61",
  "esp-wifi-sys-esp32s2",
  "esp-wifi-sys-esp32s3",
  "esp32",
  "esp32c3",
+ "esp32c5",
  "esp32c6",
+ "esp32c61",
  "esp32s2",
  "esp32s3",
  "log",
@@ -3029,13 +3033,17 @@ dependencies = [
  "esp-wifi-sys-esp32",
  "esp-wifi-sys-esp32c2",
  "esp-wifi-sys-esp32c3",
+ "esp-wifi-sys-esp32c5",
  "esp-wifi-sys-esp32c6",
+ "esp-wifi-sys-esp32c61",
  "esp-wifi-sys-esp32h2",
  "esp-wifi-sys-esp32s2",
  "esp-wifi-sys-esp32s3",
  "esp32",
  "esp32c3",
+ "esp32c5",
  "esp32c6",
+ "esp32c61",
  "esp32s2",
  "esp32s3",
  "heapless 0.9.1",
@@ -3082,7 +3090,9 @@ dependencies = [
  "esp-metadata-generated",
  "esp32",
  "esp32c3",
+ "esp32c5",
  "esp32c6",
+ "esp32c61",
  "esp32s2",
  "esp32s3",
 ]
@@ -3147,6 +3157,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "esp-wifi-sys-esp32c5"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "039337bdc50a40335ed01598e83053164426fed82817492719513d922dcc3592"
+
+[[package]]
 name = "esp-wifi-sys-esp32c6"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3155,6 +3171,12 @@ dependencies = [
  "defmt 1.1.0",
  "log",
 ]
+
+[[package]]
+name = "esp-wifi-sys-esp32c61"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ac5e79401e84dc2715569271782fb4c34059e175e4835c2f3f92ff8df5e519c8"
 
 [[package]]
 name = "esp-wifi-sys-esp32h2"

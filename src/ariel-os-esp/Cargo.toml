@@ -67,6 +67,14 @@ esp-radio = { workspace = true, default-features = false, features = [
 ], optional = true }
 esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
 
+[target.'cfg(context = "esp32c5")'.dependencies]
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32c5"] }
+esp-hal = { workspace = true, features = ["esp32c5"] }
+esp-radio = { workspace = true, default-features = false, features = [
+  "esp32c5",
+], optional = true }
+esp-sync = { workspace = true, optional = true, features = ["esp32c5"] }
+
 [target.'cfg(context = "esp32c6")'.dependencies]
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c6"] }
 esp-hal = { workspace = true, features = ["esp32c6"] }
@@ -74,6 +82,14 @@ esp-radio = { workspace = true, default-features = false, features = [
   "esp32c6",
 ], optional = true }
 esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
+
+[target.'cfg(context = "esp32c61")'.dependencies]
+esp-bootloader-esp-idf = { workspace = true, features = ["esp32c61"] }
+esp-hal = { workspace = true, features = ["esp32c61"] }
+esp-radio = { workspace = true, default-features = false, features = [
+  "esp32c61",
+], optional = true }
+esp-sync = { workspace = true, optional = true, features = ["esp32c61"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32s2"] }
