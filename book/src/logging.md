@@ -106,6 +106,22 @@ When `espflash` is selected at the time of compilation, `logging-over-debug-chan
 > - Other logging transports will later be supported, including UART and USB CDC-ACM on non-ESP32 devices.
 > - Using multiple transports at the same time may be supported in the future.
 
+### Custom logging transports
+
+An application can connect a custom logging transport to send the logs through.
+
+This is enabled using the `custom-log-transport` [laze module][laze-modules-book], this will disable 
+all other logging transports and gives access to `ariel_os::log::transport::register_transport_functions(write_bytes_fn: fn(&[u8]), flush_fn: fn())`
+to register the logging transport functions.
+
+> [!IMPORTANT]
+> The functions given to `register_transport_functions` must not wait on interrupts they may be called
+> in the context of a critical section and should not make calls to the logging facade.
+
+> [!NOTE]
+> The logs triggered before setting the logging transport functions using `register_transport_functions` 
+> will be discarded.
+
 ## Fetching and Displaying the Logging Output on the Host
 
 When the [flashing][flashing-board-book] transport allows it, the `run` laze task not only flashes the board but also fetches and displays the logging output on the host.

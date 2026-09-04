@@ -73,6 +73,6 @@ pub fn _print(args: core::fmt::Arguments<'_>) {
 macro_rules! transport_println {
     ($($arg:tt)*) => {{
         #[expect(clippy::used_underscore_items, reason = "consistency with std::println")]
-        $crate::custom_transport::_print(format_args!("{}\n", format_args!($($arg)*)));
+        $crate::transport::_print(format_args!("{}\n", format_args!($($arg)*)));
     }};
 }

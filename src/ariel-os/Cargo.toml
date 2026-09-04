@@ -229,6 +229,8 @@ rtt-target = ["ariel-os-debug/rtt-target"]
 defmt-rtt = ["ariel-os-log/defmt-rtt"]
 esp-println = ["ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
+# Log transport defined by the application.
+custom-log-transport = ["ariel-os-log/custom-transport-driver"]
 
 net = ["ariel-os-embassy/net"]
 

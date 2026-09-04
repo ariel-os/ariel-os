@@ -1859,6 +1859,18 @@ modules:
       # Optional as we want to be able to disable it in applications.
       - ?panic-printing
 
+  - name: custom-log-transport
+    help: Connect a custom logging transport to pass the logs through.
+    provides_unique:
+      - logging-transport
+    # Conflicts with defmt until a logger is implemented.
+    conflicts:
+      - defmt
+    env:
+      global:
+        FEATURES:
+          - ariel-os/custom-log-transport
+
   # Ordered by priority.
   # Currently the logging transports are mutually exclusive.
   - name: logging-transport-default

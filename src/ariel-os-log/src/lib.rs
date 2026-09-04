@@ -96,7 +96,7 @@ pub mod log {
         feature = "std" => {
             pub use std::println;
         }
-        feature = "custom-transport" => {
+        feature = "_pluggable-transport" => {
             pub use crate::transport_println as println;
         }
         not(context = "ariel-os") => {
