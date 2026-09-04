@@ -8,6 +8,11 @@
 #![no_std]
 #![deny(missing_docs)]
 
+#[cfg(feature = "coap-ping-monitoring")]
+mod cbor_impls;
+#[cfg(feature = "coap-ping-monitoring")]
+pub mod ping;
+
 // Moving work from https://github.com/embassy-rs/embassy/pull/2519 in here for the time being
 #[cfg(feature = "coap-transport-udp")]
 mod udp_nal;
