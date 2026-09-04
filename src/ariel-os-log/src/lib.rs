@@ -25,6 +25,10 @@ mod _featurecomb {}
 #[cfg(feature = "_pluggable-transport")]
 pub mod transport;
 
+// Use our custom logger when using a pluggable log transport.
+#[cfg(all(feature = "defmt", feature = "_pluggable-transport"))]
+mod defmt_logger;
+
 #[allow(unused, reason = "conditional compilation")]
 #[doc(hidden)]
 #[cfg(feature = "log")]
