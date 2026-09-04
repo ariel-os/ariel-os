@@ -38,7 +38,7 @@ fn main() {
     if context("riscv") {
         let region_alias = if context_any(&["esp32c2", "esp32c3"]).is_some() {
             "REGION_ALIAS(FLASH, DROM)"
-        } else if context_any(&["esp32c6", "esp32h2"]).is_some() {
+        } else if context_any(&["esp32c5", "esp32c6", "esp32c61", "esp32h2"]).is_some() {
             "REGION_ALIAS(FLASH, ROM)"
         } else {
             panic!("unexpected riscv platform");
