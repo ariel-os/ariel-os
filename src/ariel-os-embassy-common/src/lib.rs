@@ -6,6 +6,7 @@
 
 pub mod cell;
 pub mod gpio;
+pub mod power;
 
 #[cfg(context = "cortex-m")]
 pub mod executor_swi;
