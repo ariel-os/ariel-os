@@ -340,6 +340,10 @@ criteria = "safe-to-deploy"
 version = "0.2.15"
 criteria = "safe-to-deploy"
 
+[[exemptions.conv]]
+version = "0.3.3"
+criteria = "safe-to-deploy"
+
 [[exemptions.convert_case]]
 version = "0.8.0"
 criteria = "safe-to-deploy"
@@ -394,6 +398,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.curve25519-dalek-derive]]
 version = "0.1.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.custom_derive]]
+version = "0.1.7"
 criteria = "safe-to-deploy"
 
 [[exemptions.cyw43]]
@@ -1000,6 +1008,14 @@ criteria = "safe-to-deploy"
 version = "0.1.1"
 criteria = "safe-to-deploy"
 
+[[exemptions.matrixmultiply]]
+version = "0.3.11"
+criteria = "safe-to-deploy"
+
+[[exemptions.microlp]]
+version = "0.6.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.minicbor]]
 version = "2.1.3"
 criteria = "safe-to-deploy"
@@ -1014,6 +1030,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.minimal-lexical]]
 version = "0.2.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.ndarray]]
+version = "0.17.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.nourl]]
@@ -1200,6 +1220,10 @@ criteria = "safe-to-deploy"
 version = "0.3.1"
 criteria = "safe-to-deploy"
 
+[[exemptions.rawpointer]]
+version = "0.2.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.rbi]]
 version = "0.1.1"
 criteria = "safe-to-deploy"
@@ -1352,6 +1376,10 @@ criteria = "safe-to-deploy"
 version = "0.7.3"
 criteria = "safe-to-deploy"
 
+[[exemptions.sprs]]
+version = "0.11.4"
+criteria = "safe-to-deploy"
+
 [[exemptions.ssmarshal]]
 version = "1.0.0"
 criteria = "safe-to-deploy"
@@ -1442,6 +1470,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.volatile-register]]
 version = "0.2.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.web-time]]
+version = "1.1.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx]]

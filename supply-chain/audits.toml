@@ -372,6 +372,17 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "0.4.27 -> 0.4.28"
 
+[[audits.log]]
+who = "Koen Zandberg <koen@bergzand.net>"
+criteria = "safe-to-deploy"
+delta = "0.4.29 -> 0.4.34"
+notes = "No changes to unsafe code. Newly added code looks reasonable."
+
+[[audits.memsolve]]
+who = "Koen Zandberg <koen@bergzand.net>"
+criteria = "safe-to-deploy"
+version = "0.2.3"
+
 [[audits.minicbor-adapters]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
@@ -393,6 +404,17 @@ who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "3.0.3+3.0.2 -> 3.1.0+3.3.0"
 notes = "Review extends to the source of nrfxlib-sys only. The library ships also proprietary C components, which were not (and, due to being closed source, can not) be reviewed."
+
+[[audits.num-complex]]
+who = "Koen Zandberg <koen@bergzand.net>"
+criteria = "safe-to-deploy"
+delta = "0.4.2 -> 0.4.6"
+notes = """
+Minor update of the crate:
+- Bumps the rust  edition to 2021
+- Adds support for rkyv and bytecheck as optional dependencies
+- Rest of the changes are all safe code
+"""
 
 [[audits.num-conv]]
 who = "Nils Ponsard <nils.ponsard@inria.fr>"

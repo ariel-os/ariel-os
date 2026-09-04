@@ -170,6 +170,7 @@ heapless = { version = "0.9.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
 ld-memory = { version = "0.2.9" }
 log = { version = "0.4.20", default-features = false }
+memsolve = { version = "0.2.3", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }
