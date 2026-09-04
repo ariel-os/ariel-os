@@ -14,8 +14,8 @@ Boards may support all of them, only some of them, or none of them. However, cur
 Which link layer is used for networking is selected at compile time,
 through [laze modules][laze-modules-book].
 
-- `ethernet-stm32`: Selects Ethernet on STM32 chips.
-  Currently only the reduced media-independent interface (RMII) is supported.
+- `ethernet-stm32`: Selects [Ethernet on STM32 chips][ethernet-builtin-mac-book], through the built-in MAC.
+- `ethernet-wiznet-*`: Selects [Ethernet using an external MAC chip][ethernet-external-mac-book], through the selected WIZnet chip.
 - `ltem-nrf-modem`: Selects LTE-M on nRF91 MCUs.
 - `usb-ethernet`: Selects Ethernet over USB (currently using USB CDC-NCM).
 - `wifi-cyw43`: Selects Wi-Fi using the CYW43 chip along an RP2040 or RP235x MCU (e.g., on the Raspberry Pi Pico W or Pico 2 W).
@@ -136,6 +136,8 @@ For Ethernet over USB, ensure that, in addition to the USB cable used for flashi
 and debugging, the *user* USB port is also connected to the host computer with
 a second cable.
 
+[ethernet-builtin-mac-book]: ./ethernet.md#using-microcontrollers-with-built-in-ethernet-mac
+[ethernet-external-mac-book]: ./ethernet.md#using-external-ethernet-mac--phy-chips
 [rustdoc-homepage]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/index.html
 [config-attr-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.config.html
 [network-stack-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/net/fn.network_stack.html
