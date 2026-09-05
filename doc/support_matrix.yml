@@ -78,12 +78,6 @@ functionalities:
     description:
 
 note_snippets:
-  - name: ethernet-identity-based-mac-address
-    content: |-
-      ### Ethernet Link
-
-      The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
-      A different index should therefore be used to generate other EUI-48 identifiers.
   - name: espressif-devkit-two-usb-ports-only-usb-otg
     content: |-
       ##### USB Ports
@@ -786,7 +780,7 @@ chips:
       ethernet:
         status: supported_with_caveats
         comments:
-          - currently only supported on a limited set of boards
+          - the pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac)
       ethernet_over_usb:
         status: not_currently_supported
         comments:
@@ -802,8 +796,6 @@ chips:
           - removing items not supported
       wifi: not_available
       ble: not_available
-    note_snippets:
-      - ethernet-identity-based-mac-address
 
   stm32h755zi:
     name: STM32H755ZI
@@ -814,7 +806,7 @@ chips:
       ethernet:
         status: supported_with_caveats
         comments:
-          - currently only supported on a limited set of boards
+          - the pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac)
       ethernet_over_usb:
         status: not_currently_supported
         comments:
@@ -830,8 +822,6 @@ chips:
           - removing items not supported
       wifi: not_available
       ble: not_available
-    note_snippets:
-      - ethernet-identity-based-mac-address
 
   stm32l475vg:
     name: STM32L475VG
