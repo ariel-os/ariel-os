@@ -12,6 +12,7 @@ pub use ariel_os_embassy_common::spi::main::*;
 /// Needs to be provided with an MCU-specific SPI driver tied to a specific SPI peripheral,
 /// obtainable from the [`hal::spi::main`] module.
 /// It also requires a [`gpio::Output`] for the chip select (CS) signal.
+/// The output should be set to high initially, as CS is an active-low signal.
 ///
 /// See [`embedded_hal::spi`] to learn more about the distinction between an
 /// [`SpiBus`](embedded_hal::spi::SpiBus) and an
@@ -23,6 +24,8 @@ pub use ariel_os_embassy_common::spi::main::*;
 /// However, it cannot block indefinitely as a timeout is implemented, either by leveraging
 /// SPI-specific hardware capabilities or through a generic software timeout.
 // TODO: do we actually need a CriticalSectionRawMutex here?
+// NOTE: the inner `SpiDevice` does not initially set the output's level, so it should already be
+// set to the proper level when given to the constructor.
 pub type SpiDevice<'a> =
     InnerSpiDevice<'a, CriticalSectionRawMutex, hal::spi::main::Spi, gpio::Output<'a>>;
 
