@@ -1,8 +1,8 @@
 error: Providing a core affinity does nothing unless the 'core-affinity' feature is enabled.
- --> tests/ui/thread/core-affinity-without-the-feature.rs:7:42
+ --> tests/ui/thread/core-affinity-without-the-feature.rs:7:20
   |
 7 | #[ariel_os::thread(autostart, affinity = CoreAffinity::one(CoreId::new(1)))]
-  |                                          ^^^^^^^^^^^^
+  |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 warning: unused imports: `CoreAffinity` and `CoreId`
  --> tests/ui/thread/core-affinity-without-the-feature.rs:4:24

@@ -1,7 +1,7 @@
-error: custom attribute panicked
+error: the `autostart` parameter must be provided
  --> tests/ui/thread/missing_autostart_param.rs:5:1
   |
 5 | #[ariel_os::thread]
   | ^^^^^^^^^^^^^^^^^^^
   |
-  = help: message: the `autostart` parameter must be provided
+  = note: this error originates in the attribute macro `ariel_os::thread` (in Nightly builds, run with -Z macro-backtrace for more info)
