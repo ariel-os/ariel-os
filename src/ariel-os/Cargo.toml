@@ -136,7 +136,11 @@ override-usb-config = ["ariel-os-embassy/override-usb-config"]
 
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).
-core-affinity = ["ariel-os-macros/core-affinity", "ariel-os-threads?/core-affinity", "multi-core"]
+core-affinity = [
+  "ariel-os-macros/core-affinity",
+  "ariel-os-threads?/core-affinity",
+  "multi-core",
+]
 # Exactly one of the features below must be enabled at once.
 # Selection of these should be done through laze configuration.
 # Enables one single core, even if the hardware provides multiple cores.
