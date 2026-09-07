@@ -78,7 +78,10 @@ pub fn thread(args: TokenStream, item: TokenStream) -> TokenStream {
         stack_size,
         priority,
         affinity,
-    } = Parameters::from(attrs);
+    } = match Parameters::try_from(attrs) {
+        Ok(p) => p,
+        Err(e) => return e.into_compile_error().into(),
+    };
 
     let expanded = quote! {
         #[inline(always)]
@@ -114,22 +117,32 @@ mod thread {
         }
     }
 
-    impl From<Attributes> for Parameters {
-        fn from(attrs: Attributes) -> Self {
+    impl TryFrom<Attributes> for Parameters {
+        type Error = syn::Error;
+
+        fn try_from(attrs: Attributes) -> syn::Result<Self> {
             let default = Self::default();
 
             let stack_size = attrs.stack_size.unwrap_or(default.stack_size);
             let priority = attrs.priority.unwrap_or(default.priority);
-            let affinity = attrs
-                .affinity
-                .map(|expr| syn::parse_quote! { Some(#expr) })
-                .unwrap_or(default.affinity);
+            let affinity = match attrs.affinity {
+                #[cfg(not(feature = "core-affinity"))]
+                Some(affinity) => {
+                    use syn::spanned::Spanned as _;
+                    return Err(syn::Error::new(affinity.span(), "Providing a core affinity does nothing unless the 'core-affinity' feature is enabled."))
+                },
+                #[cfg(feature = "core-affinity")]
+                Some(affinity) => {
+                    syn::parse_quote! { Some(#affinity) }
+                },
+                None => default.affinity
+            };
 
-            Self {
+            Ok(Self {
                 stack_size,
                 priority,
                 affinity,
-            }
+            })
         }
     }
 
