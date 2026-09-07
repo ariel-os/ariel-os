@@ -116,7 +116,7 @@ mod thread {
 
     pub enum ParametersError {
         NoAutostart,
-        #[allow(unused, reason = "conditionnal compilation")]
+        #[allow(unused, reason = "conditional compilation")]
         CoreAffinityNotEnabled,
     }
 
