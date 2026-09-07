@@ -48,12 +48,8 @@ pub fn thread(args: TokenStream, item: TokenStream) -> TokenStream {
 
     let mut attrs = Attributes::default();
     let thread_parser = syn::meta::parser(|meta| attrs.parse(&meta));
-    syn::parse_macro_input!(args with thread_parser);
-
-    assert!(
-        attrs.autostart,
-        "the `autostart` parameter must be provided",
-    );
+    let args2 = args.clone();
+    syn::parse_macro_input!(args2 with thread_parser);
 
     let thread_function = syn::parse_macro_input!(item as syn::ItemFn);
 
@@ -80,7 +76,8 @@ pub fn thread(args: TokenStream, item: TokenStream) -> TokenStream {
         affinity,
     } = match Parameters::try_from(attrs) {
         Ok(p) => p,
-        Err(e) => return e.into_compile_error().into(),
+        Err(ParametersError::CoreAffinityNotEnabled) => return syn::Error::new_spanned(<TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()), "Providing a core affinity does nothing unless the 'core-affinity' feature is enabled.").into_compile_error().into(),
+        Err(ParametersError::NoAutostart) => return syn::Error::new_spanned(<TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()), "the `autostart` parameter must be provided").into_compile_error().into(),
     };
 
     let expanded = quote! {
@@ -117,19 +114,28 @@ mod thread {
         }
     }
 
-    impl TryFrom<Attributes> for Parameters {
-        type Error = syn::Error;
+    pub enum ParametersError {
+        NoAutostart,
+        #[allow(unused, reason = "conditionnal compilation")]
+        CoreAffinityNotEnabled,
+    }
 
-        fn try_from(attrs: Attributes) -> syn::Result<Self> {
+    impl TryFrom<Attributes> for Parameters {
+        type Error = ParametersError;
+
+        fn try_from(attrs: Attributes) -> Result<Self, ParametersError> {
             let default = Self::default();
+
+            if !attrs.autostart {
+                return Err(ParametersError::NoAutostart)
+            }
 
             let stack_size = attrs.stack_size.unwrap_or(default.stack_size);
             let priority = attrs.priority.unwrap_or(default.priority);
             let affinity = match attrs.affinity {
                 #[cfg(not(feature = "core-affinity"))]
-                Some(affinity) => {
-                    use syn::spanned::Spanned as _;
-                    return Err(syn::Error::new(affinity.span(), "Providing a core affinity does nothing unless the 'core-affinity' feature is enabled."))
+                Some(_affinity) => {
+                    return Err(ParametersError::CoreAffinityNotEnabled)
                 },
                 #[cfg(feature = "core-affinity")]
                 Some(affinity) => {
