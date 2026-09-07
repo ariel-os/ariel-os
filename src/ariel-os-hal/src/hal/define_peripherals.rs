@@ -14,7 +14,7 @@ macro_rules! define_peripherals {
         $peripherals:ident {
             $(
                 $(#[$inner:meta])*
-                $peripheral_name:ident : $peripheral_field:ident
+                $peripheral_name:ident : $peripheral_field:ident $(=$peripheral_alias:ident)?
             ),*
             $(,)?
         }
@@ -27,6 +27,11 @@ macro_rules! define_peripherals {
                 pub $peripheral_name: $crate::__peripheral_ty!($peripheral_field),
             )*
         }
+
+        $($(
+            #[allow(missing_docs, non_camel_case_types)]
+            pub type $peripheral_alias = $crate::__peripheral_alias_ty!($peripheral_field);
+        )?)*
 
         impl $crate::hal::TakePeripherals<$peripherals> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $peripherals {
@@ -62,6 +67,28 @@ macro_rules! __peripheral_ty {
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __peripheral_ty {
+    ($field:ident) => {
+        $crate::hal::peripherals::$field<'static>
+    };
+}
+
+// This helper macro creates the type a peripheral alias refers to. The alias names the peripheral
+// itself and not the embassy hal `Peri` wrapper. For `esp-hal` however, it does alias the
+// peripheral with its lifetime parameter, as there is no distinction between a peripheral and the
+// exclusive access to it, making it identical to `__peripheral_ty!()`.
+#[cfg(not(context = "esp"))]
+#[macro_export]
+#[doc(hidden)]
+macro_rules! __peripheral_alias_ty {
+    ($field:ident) => {
+        $crate::hal::peripherals::$field
+    };
+}
+
+#[cfg(context = "esp")]
+#[macro_export]
+#[doc(hidden)]
+macro_rules! __peripheral_alias_ty {
     ($field:ident) => {
         $crate::hal::peripherals::$field<'static>
     };
