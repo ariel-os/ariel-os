@@ -1387,8 +1387,6 @@ modules:
       global:
         FEATURES:
           - ariel-os/storage
-        RUSTFLAGS:
-          - -Clink-arg=-Tstorage.x
 
   - name: has_storage_support
     selects:
