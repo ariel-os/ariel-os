@@ -63,7 +63,7 @@ In addition to the clock sources, it comprises multiplexers, dividers, multiplie
 Refer to your MCU's datasheet to learn about its clock tree.
 
 The typical configuration is to use an oscillator with a crystal resonator, and to derive the required frequencies using the PLL and the dividers available for the peripheral clocks.
-Unless the peak current the MCU is allowed to draw is limited (e.g., because it uses energy harvesting of an RF field, or runs on a coin cell), the CPU is usually run at its maximum frequency, and the peripherals at lower frequencies to limit power consumption.
+Unless the peak current the MCU is allowed to draw is limited (e.g., because it uses energy harvesting of an RF field, or runs on a coin cell), the CPU is usually run at its maximum frequency, and the peripherals at lower frequencies to [limit power consumption][power-management-adjusting-clocks-book].
 When configuring the PLL, care must be taken to minimize the settling time and the maximum intermediate frequency: to this end, multipliers and dividers should usually be set to the smallest values that satisfy the desired outputs.
 Additionally, if the RTC is needed, an appropriate clock source must also be configured, especially if it needs to run in low-power modes.
 
@@ -71,9 +71,10 @@ At reset, the CPU clock is set by hardware to the default clock source (often on
 Early in Ariel OS's startup, clocks are configured with a default configuration that depends on the MCU and the board.
 The [`#[ariel_os::config]` macro][config-attr-macro-rustdoc] allows providing a custom configuration for clocks, which will be used by Ariel OS instead of the default one; currently this is only supported on STM32 MCUs.
 
-Peripheral drivers automatically enable the peripheral's clock when instantiated, and disable it (["gate it"][clock-gating-wikipedia]) when dropped, but the clock tree still needs to be configured manually to distribute the required clock signal to the peripheral.
+Peripheral drivers automatically enable the peripheral's clock when instantiated, and disable it (["gate it"][power-management-clock-gating-book]) when dropped, but the clock tree still needs to be configured manually to distribute the required clock signal to the peripheral.
 
 [synchronous-logic-wikipedia]: https://en.wikipedia.org/wiki/Synchronous_circuit
 [crystal-oscillator-wikipedia]: https://en.wikipedia.org/wiki/Crystal_oscillator
+[power-management-adjusting-clocks-book]: ./power-management.md#adjusting-the-clocks-of-the-cpu-and-peripherals
 [config-attr-macro-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/attr.config.html
-[clock-gating-wikipedia]: https://en.wikipedia.org/wiki/Clock_gating
+[power-management-clock-gating-book]: ./power-management.md#clock-gating
