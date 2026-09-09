@@ -415,14 +415,20 @@ jobs:
         env:
           LABEL: ${{ needs.check-labels.outputs.label }}
 
+
+      # These dependencies are pre-installed in self-hosted runners. Install them only if running in github-hosted runners.
+      - name: Install dependencies to get size of the example binary
+        if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule' && matrix.partition == '1/12' && runner.environment != 'self-hosted'
+        run: |
+          sudo apt update
+          sudo apt install llvm -y
+
       - name: Get size of example binary
         if: steps.should-skip.outputs.result != 'true' && github.event_name != 'schedule' && matrix.partition == '1/12'
         id: size
         run: |
           echo "${EXAMPLE_PATH}" | awk -F/ '{print "EXAMPLE_BUILDER="$3}' >> "$GITHUB_ENV"
           echo "${EXAMPLE_PATH}" | awk -F/ '{print "EXAMPLE_BINARY="$NF}' >> "$GITHUB_ENV"
-          sudo apt update
-          sudo apt install llvm -y
           {
             echo 'binsize<<EOF'
             llvm-size -x "${EXAMPLE_PATH}"
