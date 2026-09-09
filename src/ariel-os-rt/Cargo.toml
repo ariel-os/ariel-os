@@ -63,6 +63,7 @@ multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory", "dep:memsolve"]
 esp-partition = ["memory-x", "dep:esp-idf-part", "memsolve/esp"]
 nrf91-modem = []
+memory-storage = ["memory-x"]
 
 # features needed for `cargo test`
 _test = []

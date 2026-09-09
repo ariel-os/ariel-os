@@ -105,7 +105,8 @@ fn memoryx() {
         return;
     }
 
-    let layout = if context("nrf") {
+    #[warn(unused_mut)]
+    let mut layout = if context("nrf") {
         layout_nrf(layout)
     } else if context("rp") {
         layout_rp(layout)
@@ -114,6 +115,10 @@ fn memoryx() {
     } else {
         panic!("unknown MCU laze context");
     };
+
+    #[cfg(feature = "memory-storage")]
+    layout.add_section(storage_section());
+
     let memory = layout
         .resolve_layout()
         .expect("Unable to resolve nvm layout")
@@ -332,4 +337,14 @@ fn parse_dec_or_hex(input: &str) -> Result<u64, std::num::ParseIntError> {
 )]
 fn flash_section() -> Section<()> {
     Section::new("FLASH").unwrap().set_maximize(true)
+}
+
+/// Creates the storage section for memsolve.
+#[cfg(all(feature = "memory-x", feature = "memory-storage"))]
+#[allow(
+    clippy::missing_panics_doc,
+    reason = "Panic only happens with incorrect section names"
+)]
+fn storage_section() -> Section<()> {
+    Section::new("storage").unwrap().set_pages(2)
 }
