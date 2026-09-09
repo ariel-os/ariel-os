@@ -70,12 +70,12 @@ jobs:
               -p coapcore \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
+                  ariel-os-log/custom-transport-driver,
                   bench,
                   ble,
                   coap,
                   core-affinity,
                   csprng,
-                  defmt,
                   dns,
                   executor-thread,
                   external-interrupts,
