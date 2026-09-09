@@ -76,8 +76,14 @@ pub fn thread(args: TokenStream, item: TokenStream) -> TokenStream {
         affinity,
     } = match Parameters::try_from(attrs) {
         Ok(p) => p,
-        Err(ParametersError::CoreAffinityNotEnabled) => return syn::Error::new_spanned(<TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()), "Providing a core affinity does nothing unless the 'core-affinity' feature is enabled.").into_compile_error().into(),
-        Err(ParametersError::NoAutostart) => return syn::Error::new_spanned(<TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()), "the `autostart` parameter must be provided").into_compile_error().into(),
+        Err(ParametersError::CoreAffinityNotEnabled) => return syn::Error::new_spanned(
+            <TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()),
+            "providing a core affinity does nothing unless the `core-affinity` feature is enabled"
+            ).into_compile_error().into(),
+        Err(ParametersError::NoAutostart) => return syn::Error::new_spanned(
+                <TokenStream as Into<proc_macro2::TokenStream>>::into(args.clone()),
+                "the `autostart` parameter must be provided"
+                ).into_compile_error().into(),
     };
 
     let expanded = quote! {
