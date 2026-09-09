@@ -3,6 +3,6 @@
 
 use ariel_os::thread::{CoreAffinity, CoreId};
 
-// FAIL: the `autostart` parameter is mandatory
+// FAIL: using the affinity argument requires enabling the `core-affinity` feature.
 #[ariel_os::thread(autostart, affinity = CoreAffinity::one(CoreId::new(1)))]
 fn main() {}
