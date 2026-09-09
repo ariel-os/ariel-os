@@ -22,8 +22,21 @@
 mod _featurecomb {}
 
 #[doc(hidden)]
-#[cfg(feature = "_pluggable-transport")]
+#[cfg(feature = "internal-transport-driver")]
 pub mod transport;
+
+#[cfg(feature = "custom-transport-driver")]
+pub mod transport;
+
+// Use our custom logger when using a pluggable log transport.
+#[cfg(all(
+    feature = "defmt",
+    any(
+        feature = "internal-transport-driver",
+        feature = "custom-transport-driver"
+    )
+))]
+mod defmt_logger;
 
 #[allow(unused, reason = "conditional compilation")]
 #[doc(hidden)]
@@ -96,7 +109,7 @@ pub mod log {
         feature = "std" => {
             pub use std::println;
         }
-        feature = "custom-transport" => {
+        any(feature = "internal-transport-driver", feature = "custom-transport-driver") => {
             pub use crate::transport_println as println;
         }
         not(context = "ariel-os") => {
