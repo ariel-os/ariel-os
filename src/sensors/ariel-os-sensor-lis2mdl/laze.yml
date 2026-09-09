@@ -1,0 +1,4 @@
+apps:
+  - name: crates/ariel-os-sensor-lis2mdl
+    selects:
+      - host-test-only
