@@ -150,7 +150,7 @@ ble-central = ["ble-esp"]
 ble-peripheral = ["ble-esp"]
 
 ## Enables Wi-Fi support.
-wifi = []
+wifi = ["ariel-os-embassy-common/wifi"]
 
 ## Enables built-in Wi-Fi hardware.
 wifi-esp = [
