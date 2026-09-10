@@ -17,6 +17,12 @@ const END_PATTERN: &str = "END AUTO-GENERATED STM32 MAPPING";
 const CM4_CM7_MCU_PREFIXES: &[&str] = &["stm32h745", "stm32h747", "stm32h755", "stm32h757"];
 const CM0P_CM4_MCU_PREFIXES: &[&str] = &["stm32wl54", "stm32wl55"];
 
+// These MCUs support memory-x generation
+const SUPPORT_MEMORYX: &[&str] = &[
+    "stm32c0", "stm32f3", "stm32wl", "stm32g4", "stm32h7", "stm32l4", "stm32u0", "stm32u5",
+    "stm32wb",
+];
+
 fn main() {
     let cargo_manifest_path = std::env::var("CARGO_MANIFEST_PATH").unwrap();
     let mut cargo_manifest = std::fs::read_to_string(&cargo_manifest_path).unwrap();
@@ -41,33 +47,36 @@ fn generate_target_table(row: &str) -> String {
     let mut cols = row.split(',');
 
     let mcu = cols.next().unwrap();
+    let mcu = &mcu[1..mcu.len() - 1];
     let cargo_feature = {
-        let mut mcu_base = mcu.to_owned();
-        let skip_leading_quotation_mark = &mcu_base[1..];
         if CM4_CM7_MCU_PREFIXES
             .iter()
-            .any(|prefix| skip_leading_quotation_mark.starts_with(prefix))
+            .any(|prefix| mcu.starts_with(prefix))
         {
             // Remove the trailing quotation mark.
-            mcu_base.pop();
-            format!("{mcu_base}-cm7\"")
+            format!("\"{mcu}-cm7\"")
         } else if CM0P_CM4_MCU_PREFIXES
             .iter()
-            .any(|prefix| skip_leading_quotation_mark.starts_with(prefix))
+            .any(|prefix| mcu.starts_with(prefix))
         {
             // Remove the trailing quotation mark.
-            mcu_base.pop();
-            format!("{mcu_base}-cm4\"")
+            format!("\"{mcu}-cm4\"")
         } else {
-            mcu_base
+            format!("\"{mcu}\"")
         }
     };
 
     // The TOML quotation marks come from the already-quoted CSV strings.
-    format!(
+    let mut target = format!(
         r#"
-[target.'cfg(context = {mcu})'.dependencies]
+[target.'cfg(context = "{mcu}")'.dependencies]
 embassy-stm32 = {{ workspace = true, features = [{cargo_feature}] }}
 "#,
-    )
+    );
+
+    if SUPPORT_MEMORYX.iter().any(|prefix| mcu.starts_with(prefix)) {
+        target.push_str(r#"ariel-os-rt = { workspace = true, features = ["memory-x"] }"#);
+    }
+
+    target
 }
