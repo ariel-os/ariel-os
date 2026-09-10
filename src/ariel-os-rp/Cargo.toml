@@ -10,6 +10,7 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 ariel-os-utils = { workspace = true }
 defmt = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
