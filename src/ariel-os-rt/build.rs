@@ -323,6 +323,16 @@ fn gen_esp_partition_table() {
             .set_address_align(0x10000)
             .add_esp_metadata(Type::App, AppType::Factory),
     );
+    // TODO: size, location
+    #[cfg(feature = "storage")]
+    memory.add_section(
+        Section::new("storage")
+            .unwrap()
+            .set_size(0x10000)
+            .set_address_align(0x10000)
+            .add_esp_metadata(Type::Data, DataType::Undefined),
+    );
+
     let layout = memory.resolve_layout().unwrap();
     let partition_table = layout.into_esp_partition().to_csv().unwrap();
 

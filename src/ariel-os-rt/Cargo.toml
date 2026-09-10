@@ -65,6 +65,8 @@ single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory", "dep:memsolve"]
 
+storage = []
+
 embassy-boot-loader = []
 embassy-boot-application = []
 esp-partition = ["dep:esp-idf-part", "memsolve/esp"]

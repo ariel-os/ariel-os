@@ -42,5 +42,6 @@ esp-println = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6
 esp-radio = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }
 esp-radio-rtos-driver = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }
 esp-rom-sys = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }
+esp-storage = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }
 esp-sync = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }
 xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "ce9bcf390ab6b7abc8ae3bc4989360a493c354e7" }

@@ -47,6 +47,10 @@ pub mod spi;
 #[cfg(feature = "uart")]
 pub mod uart;
 
+#[cfg(feature = "storage")]
+#[doc(hidden)]
+pub mod storage;
+
 #[cfg(feature = "usb")]
 #[doc(hidden)]
 pub mod usb;
@@ -54,6 +58,9 @@ pub mod usb;
 #[cfg(feature = "wifi")]
 #[doc(hidden)]
 pub mod wifi;
+
+#[cfg(feature = "storage")]
+pub mod partition;
 
 #[doc(hidden)]
 pub mod peripheral {}

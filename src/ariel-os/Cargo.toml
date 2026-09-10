@@ -50,7 +50,11 @@ alloc = ["ariel-os-rt/alloc"]
 ## Enables GPIO interrupt support.
 external-interrupts = ["ariel-os-embassy/external-interrupts"]
 # Enables storage support.
-storage = ["dep:ariel-os-storage", "ariel-os-embassy/storage"]
+storage = [
+  "dep:ariel-os-storage",
+  "ariel-os-embassy/storage",
+  "ariel-os-rt/storage",
+]
 # Enables threading support, see the [`macro@thread`] attribute macro.
 threading = [
   "dep:ariel-os-threads",

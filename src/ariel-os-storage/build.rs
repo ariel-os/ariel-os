@@ -3,6 +3,10 @@ use std::{env, path::PathBuf};
 const KIBIBYTES: u32 = 1024;
 
 fn main() {
+    if is_in_current_contexts(&["esp"]) {
+        return;
+    }
+
     // NOTE(hal): values of `flash_page_size` from the datasheets, confirmed by HAL's constants.
     // Important: only homogeneous flash organizations are currently supported.
     // Trying to restrict the storage size to the subset of homogeneous flash would not work as it
