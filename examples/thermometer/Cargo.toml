@@ -14,7 +14,7 @@ ariel-os-boards = { path = "../../src/ariel-os-boards" }
 ariel-os-sensor-stts22h = { workspace = true }
 ariel-os-sensors = { workspace = true }
 
-stm32-lcd-driver = { git = "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git", rev = "7ebcb1624960047ec3a12b98c48c7c91575c8b74" }
+stm32-lcd-driver = { git = "https://codeberg.org/AudaciousAxiom/stm32-lcd-driver.git", rev = "96824d13ca" }
 
 embassy-sync = { workspace = true }
 once_cell = { workspace = true }

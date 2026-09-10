@@ -22,7 +22,7 @@ portable-atomic = { workspace = true }
 [dev-dependencies]
 critical-section = { workspace = true, features = ["std"] }
 embassy-executor = { workspace = true, features = [
-  "arch-std",
+  "platform-std",
   "executor-thread",
 ] }
 embassy-futures = { workspace = true }

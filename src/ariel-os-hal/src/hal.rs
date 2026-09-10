@@ -5,6 +5,7 @@
 //! | Manufacturer         | MCU family  | Docs rendered for | Items imported                                       |
 //! | -------------------- | ----------- | ----------------- | ---------------------------------------------------- |
 //! | Espressif            | ESP32       | ESP32-C6          | [`ariel-os-esp::*`](../../ariel_os_esp/index.html)     |
+//! | Infineon             | PSoC 6      | CY8C624ABZI-S2D44 | [`ariel-os-psoc::*`](../../ariel_os_psoc/index.html)   |
 //! | Nordic Semiconductor | nRF         | nRF52840          | [`ariel-os-nrf::*`](../../ariel_os_nrf/index.html)     |
 //! | Raspberry Pi         | RP          | RP2040            | [`ariel-os-rp::*`](../../ariel_os_rp/index.html)       |
 //! | STMicroelectronics   | STM32       | STM32WB55RG       | [`ariel-os-stm32::*`](../../ariel_os_stm32/index.html) |
@@ -40,6 +41,9 @@ cfg_select! {
     }
     context = "nrf" => {
         pub use ariel_os_nrf::*;
+    }
+    context = "psoc" => {
+        pub use ariel_os_psoc::*;
     }
     context = "rp" => {
         pub use ariel_os_rp::*;

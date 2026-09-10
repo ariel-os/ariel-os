@@ -22,6 +22,10 @@ Here is the list of supported chips in Ariel OS.
 - [ESP32-S3Fx8](./esp32s3fx8.md)
 - [ESP32-S3R8](./esp32s3r8.md)
 
+## Infineon
+  
+- [PSoC 62 (CY8C624ABZI-S2D44)](./cy8c624abzi-s2d44.md)
+
 ## Nordic Semiconductor
   
 - [nRF51822-xxAA](./nrf51822-xxaa.md)

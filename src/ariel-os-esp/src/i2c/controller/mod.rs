@@ -7,7 +7,7 @@ use portable_atomic::{AtomicBool, Ordering};
 use ariel_os_embassy_common::impl_async_i2c_for_driver_enum;
 use esp_hal::{
     Async,
-    gpio::interconnect::PeripheralOutput,
+    gpio::interconnect::{PeripheralInput, PeripheralOutput},
     i2c::master::{BusTimeout, I2c as EspI2c},
     peripherals,
 };
@@ -105,7 +105,7 @@ macro_rules! define_i2c_drivers {
                 /// I2C peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
-                pub fn new<SDA: PeripheralOutput<'static>, SCL: PeripheralOutput<'static>>(
+                pub fn new<SDA: PeripheralInput<'static> + PeripheralOutput<'static>, SCL: PeripheralInput<'static> + PeripheralOutput<'static>>(
                     sda_pin: impl $crate::IntoPeripheral<'static, SDA>,
                     scl_pin: impl $crate::IntoPeripheral<'static, SCL>,
                     config: Config,

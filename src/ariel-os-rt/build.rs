@@ -59,7 +59,12 @@ fn main() {
         println!("cargo:rerun-if-env-changed=CONFIG_ISR_STACKSIZE");
     }
 
-    std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
+    if context("psoc") {
+        std::fs::copy("linkme-psoc.x", out.join("linkme.x")).unwrap();
+        println!("cargo:rerun-if-changed=linkme-psoc.x");
+    } else {
+        std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
+    }
     std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
     std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
 

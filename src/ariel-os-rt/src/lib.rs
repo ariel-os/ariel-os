@@ -134,7 +134,7 @@ mod isr_stack {
 
 #[cfg(all(
     feature = "_panic-handler",
-    any(context = "esp", context = "nrf", context = "rp", context = "stm32"),
+    any(context = "esp", context = "nrf", context = "psoc", context = "rp", context = "stm32"),
 ))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {
