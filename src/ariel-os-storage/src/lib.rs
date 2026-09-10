@@ -12,10 +12,9 @@ mod postcard_value;
 mod storage;
 
 use ariel_os_hal::hal::{
+    storage::{init as flash_init, Flash, FlashError},
     OptionalPeripherals,
-    storage::{Flash, FlashError, init as flash_init},
 };
-use ariel_os_rt::memory::storage_range;
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex,
     mutex::{Mutex, MutexGuard},
@@ -31,7 +30,11 @@ const MARKER_VALUE: u8 = 0;
 
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_log::info;
-    let flash_range = storage_range();
+
+    let flash_range = cfg_select! {
+        context = "esp" => ariel_os_hal::hal::partition::storage_partition(p),
+        _ => ariel_os_rt::memory::storage_range(),
+    };
     info!("storage: using flash range {:?}", &flash_range);
 
     let flash = flash_init(p);

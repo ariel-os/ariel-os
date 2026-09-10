@@ -393,6 +393,7 @@ contexts:
     provides:
       - has_device_identity
       - has_hwrng
+      - has_storage_support
     env:
       esp_wifi_heapsize_required: $(72*1024)
       ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
