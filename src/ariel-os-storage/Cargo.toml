@@ -9,6 +9,7 @@ license.workspace = true
 [dependencies]
 ariel-os-hal = { workspace = true, features = ["storage"] }
 ariel-os-log = { workspace = true }
+ariel-os-rt = { workspace = true, features = ["memory-storage"] }
 arrayvec = { version = "0.7.4", default-features = false }
 embassy-sync = { workspace = true }
 embedded-storage-async = { workspace = true }

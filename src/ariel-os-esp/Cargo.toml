@@ -10,7 +10,7 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
-ariel-os-rt = { workspace = true, features = ["alloc"] }
+ariel-os-rt = { workspace = true, features = ["alloc", "esp-partition"] }
 ariel-os-threads = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
 critical-section = { workspace = true }
@@ -49,12 +49,16 @@ static_cell = { workspace = true }
 # BLE dependencies
 bt-hci = { workspace = true, optional = true }
 
+[build-dependencies]
+ariel-os-buildutils = { workspace = true }
+
 [target.'cfg(context = "esp32")'.dependencies]
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
 esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
@@ -63,6 +67,7 @@ esp-hal = { workspace = true, features = ["esp32c3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c3",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32c3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
@@ -71,6 +76,7 @@ esp-hal = { workspace = true, features = ["esp32c6"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32c6",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32c6"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
@@ -79,6 +85,7 @@ esp-hal = { workspace = true, features = ["esp32s2"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s2",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s2"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
@@ -87,6 +94,7 @@ esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-radio = { workspace = true, default-features = false, features = [
   "esp32s3",
 ], optional = true }
+esp-storage = { workspace = true, optional = true, features = ["esp32s3"] }
 esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
@@ -104,6 +112,9 @@ spi = ["dep:embassy-embedded-hal", "dep:fugit", "ariel-os-embassy-common/spi"]
 
 ## Enables UART support.
 uart = ["dep:embedded-io-async", "ariel-os-embassy-common/uart"]
+
+## Enables storage support.
+storage = ["dep:embassy-embedded-hal", "dep:esp-storage"]
 
 ## Enables threading support.
 threading = [

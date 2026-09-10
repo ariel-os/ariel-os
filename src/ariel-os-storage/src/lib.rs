@@ -5,18 +5,15 @@
 
 #![cfg_attr(not(test), no_std)]
 #![deny(missing_docs)]
-#![expect(unsafe_code)]
 // TODO: overhaul errors
 #![expect(clippy::missing_errors_doc)]
 
 mod postcard_value;
 mod storage;
 
-use core::ops::Range;
-
 use ariel_os_hal::hal::{
+    storage::{init as flash_init, Flash, FlashError},
     OptionalPeripherals,
-    storage::{Flash, FlashError, init as flash_init},
 };
 use embassy_sync::{
     blocking_mutex::raw::CriticalSectionRawMutex,
@@ -31,42 +28,13 @@ static STORAGE: OnceLock<Mutex<CriticalSectionRawMutex, Storage<Flash>>> = OnceL
 const MARKER_KEY: &str = "ARIEL_INIT_MARK";
 const MARKER_VALUE: u8 = 0;
 
-/// Gets a [`Range`] from the linker that can be used for a global [`Storage`].
-///
-/// This expects two symbols `__storage_start` and `__storage_end`.
-/// This function is also the place to configure a platform dependent `OFFSET`,
-/// which configures an offset between the linker flash address map and the
-/// flash driver address map.
-fn flash_range_from_linker() -> Range<u32> {
-    #[cfg(all(context = "nrf", not(context = "nrf5340-net")))]
-    const OFFSET: usize = 0x0;
-    #[cfg(context = "nrf5340-net")]
-    const OFFSET: usize = 0x0100_0000;
-    #[cfg(context = "rp")]
-    const OFFSET: usize = 0x1000_0000;
-    #[cfg(context = "stm32")]
-    const OFFSET: usize = 0x0800_0000;
-    // Default for platform-independent tooling.
-    #[cfg(not(context = "ariel-os"))]
-    const OFFSET: usize = 0x0;
-
-    unsafe extern "C" {
-        static __storage_start: u32;
-        static __storage_end: u32;
-    }
-
-    let start = &raw const __storage_start as usize - OFFSET;
-    let end = &raw const __storage_end as usize - OFFSET;
-
-    #[expect(clippy::cast_possible_truncation)]
-    let (start, end) = (start as u32, end as u32);
-
-    start..end
-}
-
 fn init_(p: &mut OptionalPeripherals) {
     use ariel_os_log::info;
-    let flash_range = flash_range_from_linker();
+
+    let flash_range = cfg_select! {
+        context = "esp" => ariel_os_hal::hal::partition::storage_partition(p),
+        _ => ariel_os_rt::memory::storage_range(),
+    };
     info!("storage: using flash range {:?}", &flash_range);
 
     let flash = flash_init(p);
