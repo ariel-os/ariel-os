@@ -10,3 +10,8 @@ targets:
     buttons:
       # button0
       - pin: PC13
+    i2c:
+      - sda_pin: PB9
+        scl_pin: PB8
+        possible_peripherals:
+          - I2C1

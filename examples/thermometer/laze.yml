@@ -2,3 +2,5 @@ apps:
   - name: thermometer
     context:
       - stm32u083c-dk
+    selects:
+      - has_i2c

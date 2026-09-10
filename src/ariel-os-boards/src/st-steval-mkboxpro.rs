@@ -7,6 +7,9 @@ pub mod pins {
     ariel_os_hal::define_peripherals!(
         ButtonPeripherals { button0 : PC13, button1 : PE0, }
     );
+    ariel_os_hal::define_i2c_buses![
+        { name : I2c0, peripheral : I2C1, sda : PB7, scl : PB6, aliases : [] },
+    ];
 }
 #[allow(unused_variables)]
 pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}
