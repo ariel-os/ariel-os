@@ -1,8 +1,7 @@
 use std::env;
-use std::fs::copy;
 use std::path::PathBuf;
 
-use ariel_os_buildutils::context;
+use ariel_os_buildutils::{context, copy_and_rerun_if_changed};
 
 fn main() {
     if !context("ariel-os") {
@@ -10,21 +9,11 @@ fn main() {
         return;
     }
 
-    // Put the linker script somewhere the linker can find it
-    let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    if context("rp235xa") {
+        // Put the extra linker script somewhere the linker can find it
+        copy_and_rerun_if_changed("memory-rp235xa.x");
 
-    let memory_script = if context("rp2040") {
-        "memory.x"
-    } else if context("rp235xa") {
-        "memory-rp235xa.x"
-    } else {
-        panic!("unsupported RP MCU");
-    };
-
-    copy(memory_script, out.join("memory.x")).unwrap();
-
-    println!("cargo:rustc-link-search={}", out.display());
-
-    println!("cargo:rerun-if-changed=memory.x");
-    println!("cargo:rerun-if-changed=build.rs");
+        let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
+        println!("cargo:rustc-link-search={}", out.display());
+    }
 }

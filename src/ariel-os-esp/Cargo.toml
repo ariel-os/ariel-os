@@ -10,7 +10,7 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
-ariel-os-rt = { workspace = true, features = ["alloc"] }
+ariel-os-rt = { workspace = true, features = ["alloc", "esp-partition"] }
 ariel-os-threads = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
 critical-section = { workspace = true }
@@ -48,6 +48,9 @@ static_cell = { workspace = true }
 
 # BLE dependencies
 bt-hci = { workspace = true, optional = true }
+
+[build-dependencies]
+ariel-os-buildutils = { workspace = true }
 
 [target.'cfg(context = "esp32")'.dependencies]
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
