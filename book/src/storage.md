@@ -54,12 +54,8 @@ where `N` is the number of flash pages allocated.
 > [!NOTE]
 > Currently storage is only supported on flash whose pages have a uniform size.
 
-These pages are allocated by Ariel OS after the `rodata` section in the flash
-when the module is enabled.
-
-> [!WARNING]
-> Updating the firmware can move and invalidate the storage pages
-  when the firmware size differs from the previous version.
+These pages are allocated by Ariel OS in the flash, most of the time after the
+application at the end of the flash, when the module is enabled.
 
 NOR flash has limited endurance.
 When writing applications using the storage module,

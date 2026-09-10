@@ -7,6 +7,7 @@
 #![allow(unsafe_code)]
 #![cfg_attr(context = "xtensa", feature(asm_experimental_arch))]
 
+pub mod memory;
 pub mod stack;
 
 #[cfg(feature = "threading")]
