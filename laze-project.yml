@@ -345,6 +345,7 @@ contexts:
     selects:
       - cortex-m33f
     provides:
+      - has_device_identity
       - has_multi_core_support
       - has_storage_support
     env:
