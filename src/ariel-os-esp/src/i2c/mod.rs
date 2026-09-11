@@ -11,11 +11,18 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.I2C0.take().unwrap();
             let _ = peripherals.I2C1.take().unwrap();
         }
+        context = "esp32c2" => {
+            let _ = peripherals.I2C0.take().unwrap();
+        }
         context = "esp32c3" => {
             let _ = peripherals.I2C0.take().unwrap();
         }
         context = "esp32c6" => {
             let _ = peripherals.I2C0.take().unwrap();
+        }
+        context = "esp32h2" => {
+            let _ = peripherals.I2C0.take().unwrap();
+            let _ = peripherals.I2C1.take().unwrap();
         }
         context = "esp32s2" => {
             let _ = peripherals.I2C0.take().unwrap();

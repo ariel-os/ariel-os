@@ -1,0 +1,25 @@
+version: 0.4.0
+targets:
+  espressif-esp8684-devkitc-02-h2:
+    chip: esp8684-wroom-02c-h2
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO9
+        active: low
+    leds:
+      # led0 (RGB red channel)
+      - pin: GPIO0
+        color: red
+        active: high
+
+  espressif-esp8684-devkitc-02-h4:
+    chip: esp8684-wroom-02c-h4
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO9
+        active: low
+    leds:
+      # led0 (RGB red channel)
+      - pin: GPIO0
+        color: red
+        active: high

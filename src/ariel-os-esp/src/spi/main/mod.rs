@@ -22,8 +22,10 @@ use esp_hal::{
 // NOTE(hal): values from the datasheets.
 #[cfg(any(
     context = "esp32",
+    context = "esp32c2",
     context = "esp32c3",
     context = "esp32c6",
+    context = "esp32h2",
     context = "esp32s2",
     context = "esp32s3"
 ))]
@@ -168,9 +170,13 @@ macro_rules! define_spi_drivers {
 // SPI0 and SPI1 exist but are not general-purpose SPI peripherals.
 #[cfg(context = "esp32")]
 define_spi_drivers!(SPI2, SPI3);
+#[cfg(context = "esp32c2")]
+define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c3")]
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c6")]
+define_spi_drivers!(SPI2);
+#[cfg(context = "esp32h2")]
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32s2")]
 define_spi_drivers!(SPI2, SPI3);
