@@ -37,6 +37,7 @@ laze build -b arduino-uno-q
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
+|Device Identity|<span title="supported">✅</span>|
 
 #### Additional Notes
 
