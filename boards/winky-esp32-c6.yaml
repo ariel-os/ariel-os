@@ -1,0 +1,24 @@
+version: 0.4.0
+targets:
+  winky-esp32-c6:
+    chip: esp32-c6-mini-1-x4
+    flags:
+      - has_usb_cdc_acm_port
+    buttons:
+      # B1
+      - pin: GPIO9
+        active: low
+    uarts:
+      - aliases:
+          - QWIIC_DEBUG
+        tx_pin: GPIO16
+        rx_pin: GPIO17
+        possible_peripherals: [UART0, UART1]
+        host_facing: true # Used to send debug info.
+
+      - aliases:
+          - TIC
+        tx_pin: GPIO15 # Not connected, this UART is only used for receiving.
+        rx_pin: GPIO4
+        possible_peripherals: [UART1, UART0] # UART1 preferred as UART0 is the default for logging.
+        host_facing: false

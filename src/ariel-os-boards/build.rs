@@ -92,4 +92,5 @@ pub fn main() {
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"waveshare-esp32-s3-matrix\"))"
     );
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"winky-esp32-c6\"))");
 }
