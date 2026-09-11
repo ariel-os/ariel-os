@@ -33,6 +33,12 @@ pub enum Label {
     Latitude,
     /// Longitude.
     Longitude,
+    /// Magnetic flux density along the X axis.
+    MagneticFluxDensityX,
+    /// Magnetic flux density along the Y axis.
+    MagneticFluxDensityY,
+    /// Magnetic flux density along the Z axis.
+    MagneticFluxDensityZ,
     /// Opaque channel: the associated sample is intended for the sensor driver only, and no guarantees are provided.
     Opaque,
     /// Opaque channel marker used by `GnssTimeExt`.
@@ -70,6 +76,9 @@ impl core::fmt::Display for Label {
             Self::Illuminance => write!(f, "Illuminance"),
             Self::Latitude => write!(f, "Latitude"),
             Self::Longitude => write!(f, "Longitude"),
+            Self::MagneticFluxDensityX => write!(f, "Magnetic flux density X"),
+            Self::MagneticFluxDensityY => write!(f, "Magnetic flux density Y"),
+            Self::MagneticFluxDensityZ => write!(f, "Magnetic flux density Z"),
             Self::Opaque | Self::OpaqueGnssTime => write!(f, "[opaque]"),
             Self::Pressure => write!(f, "Pressure"),
             Self::RelativeHumidity => write!(f, "Relative humidity"),
