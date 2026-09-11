@@ -10,9 +10,13 @@ Welcome and thanks for your interest in contributing to Ariel OS! We appreciate 
     - Please indicate a ready-for-review PR with the button in GitHub
     - We use [Conventional Commits](https://www.conventionalcommits.org/en)
     - We use [DCO](#Developer-Certificate-of-Origin) to sign off commits.
+    - Ariel OS is dual licensed under the [Apache-2.0](./LICENSE-APACHE) and [MIT](./LICENSE-MIT) licenses
 - Please check our [Coding Conventions](https://ariel-os.github.io/ariel-os/dev/docs/book/coding-conventions.html)
 - If you want to add support for a new board or a new chip, please check [the Developer Guide][adding-board-support]
-- Ariel OS is dual licensed under the [Apache-2.0](./LICENSE-APACHE) and [MIT](./LICENSE-MIT) licenses
+- If you want to add support for new functionality, please open a new issue or GitHub discussion beforehand, or reach out on Matrix, to avoid duplicate work and to plan implementation.
+  Additionally, if the new functionality concerns one specific HAL, please consider how it would fit and interact with the other HALs.
+  There is no need to come up with a complete plan, but it would help to look at how the same functionality works on other microcontroller families.
+- Small, focused PRs (which can be stacked upon each other) are preferred, as they are easier and faster to review.
 
 ## Developer Certificate of Origin
 
