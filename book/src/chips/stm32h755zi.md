@@ -14,7 +14,7 @@
 |I2C Controller Mode|<span title="supported">✅</span>|
 |SPI Main Mode|<span title="supported">✅</span>|
 |UART|<span title="supported">✅</span>|
-|Ethernet|<span title="supported with some caveats">☑️</span>[^currently-only-supported-on-a-limited-set-of-boards]|
+|Ethernet|<span title="supported with some caveats">☑️</span>[^the-pinout-of-the-rmii-is-currently-fixed-ethernet-md-using-microcontrollers-with-built-in-ethernet-mac]|
 |User USB|<span title="supported">✅</span>|
 |Ethernet over USB|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^usb-does-not-enumerate-https-github-com-embassy-rs-embassy-issues-2376-workaround-https-github-com-ariel-os-ariel-os-pull-1126]|
 |Wi-Fi|<span title="not available on this piece of hardware">–</span>|
@@ -169,14 +169,7 @@ dt, dd {
 </style>
 
 
-## Additional Notes
 
-### Ethernet Link
-
-The Ethernet MAC address is derived from the device identity using [`if_index` `0`](https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/identity/fn.interface_eui48.html).
-A different index should therefore be used to generate other EUI-48 identifiers.
-
-
-[^currently-only-supported-on-a-limited-set-of-boards]: Currently only supported on a limited set of boards.
+[^the-pinout-of-the-rmii-is-currently-fixed-ethernet-md-using-microcontrollers-with-built-in-ethernet-mac]: The pinout of [the RMII is currently fixed](../ethernet.md#using-microcontrollers-with-built-in-ethernet-mac).
 [^usb-does-not-enumerate-https-github-com-embassy-rs-embassy-issues-2376-workaround-https-github-com-ariel-os-ariel-os-pull-1126]: [USB does not enumerate](https://github.com/embassy-rs/embassy/issues/2376), [workaround](https://github.com/ariel-os/ariel-os/pull/1126).
 [^removing-items-not-supported]: Removing items not supported.
