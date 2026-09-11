@@ -37,6 +37,7 @@ laze build -b rpi-pico-w
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
+|Device Identity|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^the-flash-chip-features-a-unique-id-that-may-be-usable]|
 
 <p>Legend:</p>
 
@@ -65,3 +66,4 @@ dt, dd {
 
 
   
+[^the-flash-chip-features-a-unique-id-that-may-be-usable]: The flash chip features a unique ID that may be usable.

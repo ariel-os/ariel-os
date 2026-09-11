@@ -37,6 +37,7 @@ laze build -b makerdiary-nrf9151-connect-kit
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^only-available-through-the-cryptocell]|
 |Persistent Storage|<span title="supported">✅</span>|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 

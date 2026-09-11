@@ -21,6 +21,7 @@
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 
