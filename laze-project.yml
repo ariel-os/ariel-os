@@ -549,6 +549,10 @@ contexts:
     env:
       CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
+  - name: esp32-c6-mini-1-x4
+    help: 4MB flash version of the esp32-c6-mini-1, includes esp32-c6-mini-1-n4 and esp32-c6-mini-1-h4
+    parent: esp32c6fx4
+
   - name: esp32-c6-wroom-1
     parent: esp32c6
     env:
