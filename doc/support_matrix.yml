@@ -322,7 +322,10 @@ chips:
       uart: supported
       logging: supported
       storage: supported
-      device_identity: not_available
+      device_identity:
+        status: not_available
+        comments:
+          - this chip does not feature a factory-written unique ID
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -1202,7 +1205,7 @@ builders:
       device_identity:
         status: not_currently_supported
         comments:
-          - the flash chip features a unique ID that may be usable.
+          - the flash chip features a unique ID that may be usable
       user_usb: supported
       ethernet_over_usb: supported
 
@@ -1214,7 +1217,7 @@ builders:
       device_identity:
         status: not_currently_supported
         comments:
-          - the flash chip features a unique ID that may be usable.
+          - the flash chip features a unique ID that may be usable
       wifi: supported
       ble: supported
       ethernet_over_usb: supported

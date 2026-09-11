@@ -66,4 +66,4 @@ dt, dd {
 
 
   
-[^the-flash-chip-features-a-unique-id-that-may-be-usable]: The flash chip features a unique ID that may be usable..
+[^the-flash-chip-features-a-unique-id-that-may-be-usable]: The flash chip features a unique ID that may be usable.

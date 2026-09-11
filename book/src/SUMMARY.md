@@ -114,6 +114,7 @@
 - [Randomness and Entropy](./randomness.md)
 - [Multithreading](./multithreading.md)
 - [Persistent Storage](./storage.md)
+- [Device Identity](./device-identity.md)
 - [Native Target](./native-target.md)
 - [Testing](./testing.md)
 - [Tooling](./tooling/index.md)
