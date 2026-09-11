@@ -21,7 +21,8 @@ async fn i2c_scanner(peripherals: pins::Peripherals) {
     info!("Checking for I2C devices on the bus...");
 
     for addr in 1..=127 {
-        if i2c_bus.write(addr, &[]).await.is_ok() {
+        // The byte is unnecessary, but this otherwise always fails on RP.
+        if i2c_bus.read(addr, &mut [0]).await.is_ok() {
             info!("Found device at address 0x{:x}", addr);
         }
     }
