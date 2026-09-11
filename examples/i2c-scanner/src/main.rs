@@ -4,6 +4,7 @@
 mod pins;
 
 use ariel_os::{
+    debug::{ExitCode, exit},
     hal,
     i2c::controller::{Kilohertz, highest_freq_in},
     log::info,
@@ -28,4 +29,5 @@ async fn i2c_scanner(peripherals: pins::Peripherals) {
     }
 
     info!("Done checking. Have a great day!");
+    exit(ExitCode::SUCCESS);
 }
