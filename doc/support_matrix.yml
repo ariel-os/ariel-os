@@ -76,6 +76,10 @@ functionalities:
     title: Persistent Storage
     support_criteria: example-storage
     description:
+  - name: device_identity
+    title: Device Identity
+    support_criteria: device-metadata
+    description:
 
 note_snippets:
   - name: ethernet-identity-based-mac-address
@@ -139,6 +143,7 @@ chips:
       uart: not_currently_supported
       logging: supported
       storage: not_currently_supported
+      device_identity: supported
       wifi: not_currently_supported
       ble: not_currently_supported
       ethernet: not_available
@@ -157,6 +162,7 @@ chips:
       uart: not_currently_supported
       logging: supported
       storage: not_currently_supported
+      device_identity: supported
       wifi: not_available
       ble: not_currently_supported
       ethernet: not_available
@@ -175,6 +181,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: supported
       ethernet: not_available
@@ -194,6 +201,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: supported
       ethernet: not_available
@@ -211,6 +219,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: supported
       ethernet: not_available
@@ -230,6 +239,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -249,6 +259,7 @@ chips:
       uart: not_currently_supported
       logging: supported
       storage: not_currently_supported
+      device_identity: supported
       wifi: not_available
       ble: supported
       user_usb: not_available
@@ -270,6 +281,7 @@ chips:
       uart: needs_testing
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: not_available
@@ -291,6 +303,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: not_available
@@ -309,6 +322,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: not_available
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -328,6 +342,7 @@ chips:
           - "[uart-loopback test only works once after a power cycle](https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140)"
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -347,6 +362,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -369,6 +385,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -395,6 +412,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -420,6 +438,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -446,6 +465,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -471,6 +491,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -493,6 +514,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -515,6 +537,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -537,6 +560,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -558,6 +582,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -580,6 +605,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -602,6 +628,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -624,6 +651,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       user_usb: supported
       ethernet_over_usb: supported
       wifi: supported
@@ -646,6 +674,7 @@ chips:
         status: not_currently_supported
         comments:
           - would need to allocate some flash
+      device_identity: supported
       user_usb: not_available
       wifi: not_available
       ble: not_available
@@ -667,6 +696,7 @@ chips:
         status: not_currently_supported
         comments:
           - would need to allocate some flash
+      device_identity: supported
       user_usb: not_available
       wifi: not_available
       ble: not_available
@@ -688,6 +718,7 @@ chips:
         status: needs_testing # TODO: set to supported_with_caveats after testing
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: supported
@@ -709,6 +740,7 @@ chips:
         status: supported
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: needs_testing
@@ -730,6 +762,7 @@ chips:
         status: not_currently_supported
         comments:
           - unsupported heterogeneous flash organization
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: needs_testing
@@ -751,6 +784,7 @@ chips:
         status: not_currently_supported
         comments:
           - unsupported heterogeneous flash organization
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb:
@@ -772,6 +806,7 @@ chips:
       uart: supported
       logging: supported
       storage: supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: needs_testing
@@ -800,6 +835,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
     note_snippets:
@@ -828,6 +864,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
     note_snippets:
@@ -852,6 +889,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -872,6 +910,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -892,6 +931,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -915,6 +955,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       ethernet: not_available
@@ -934,6 +975,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_currently_supported
       ethernet: not_available
@@ -953,6 +995,7 @@ chips:
         status: not_currently_supported
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_currently_supported
       user_usb: not_available
@@ -974,6 +1017,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_currently_supported
       user_usb: needs_testing
@@ -995,6 +1039,7 @@ chips:
         status: supported_with_caveats
         comments:
           - removing items not supported
+      device_identity: supported
       wifi: not_available
       ble: not_available
       user_usb: not_available
@@ -1154,6 +1199,10 @@ builders:
     chip: rp2040
     tier: "1"
     support:
+      device_identity:
+        status: not_currently_supported
+        comments:
+          - the flash chip features a unique ID that may be usable.
       user_usb: supported
       ethernet_over_usb: supported
 
@@ -1162,6 +1211,10 @@ builders:
     tier: "1"
     support:
       user_usb: supported
+      device_identity:
+        status: not_currently_supported
+        comments:
+          - the flash chip features a unique ID that may be usable.
       wifi: supported
       ble: supported
       ethernet_over_usb: supported

@@ -37,6 +37,7 @@ laze build -b rpi-pico2-w
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 
