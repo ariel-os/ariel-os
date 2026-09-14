@@ -30,6 +30,7 @@ trybuild = "=1.0.116"
 
 [features]
 _test = []
+core-affinity = []
 
 [lints]
 workspace = true
