@@ -48,3 +48,4 @@
 - [Unihiker K10](./unihiker-k10.md)
 - [Waveshare ESP32-S3-ETH](./waveshare-esp32-s3-eth.md)
 - [Waveshare ESP32-S3-Matrix](./waveshare-esp32-s3-matrix.md)
+- [Winky ESP32-C6](./winky-esp32-c6.md)

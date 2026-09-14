@@ -1405,6 +1405,11 @@ builders:
     tier: "3"
     support:
 
+  winky-esp32-c6:
+    chip: esp32c6fx4
+    tier: "2"
+    support:
+
 # Boards are the logical entity that represents the hardware, which can have
 # one or multiple laze builders.
 boards:
@@ -1645,3 +1650,8 @@ boards:
     url: https://web.archive.org/web/20251121141909/https://www.waveshare.com/wiki/ESP32-S3-Matrix
     builders:
       - waveshare-esp32-s3-matrix
+
+  - name: Winky ESP32-C6
+    url: https://gricad-gitlab.univ-grenoble-alpes.fr/ferrarij/winky
+    builders:
+      - winky-esp32-c6

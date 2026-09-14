@@ -53,6 +53,7 @@
   - [Unihiker K10](./boards/unihiker-k10.md)
   - [Waveshare ESP32-S3-ETH](./boards/waveshare-esp32-s3-eth.md)
   - [Waveshare ESP32-S3-Matrix](./boards/waveshare-esp32-s3-matrix.md)
+  - [Winky ESP32-C6](./boards/winky-esp32-c6.md)
 - [Chips](./chips/index.md)
   - [ESP32-D0WD](./chips/esp32-d0wd.md)
   - [ESP32-C3](./chips/esp32c3.md)
