@@ -1642,6 +1642,12 @@ modules:
       global:
         FEATURES:
           - ariel-os/nrf91-modem
+        # 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
+        NRF91_MODEM_IPC_BYTES: "32768"
+        CARGO_ENV:
+          - CHIP_RAM_RESERVE_BYTES=${NRF91_MODEM_IPC_BYTES}
+        CHIP_EXTRA_SECTIONS:
+          - "MODEM:0x20000000:${NRF91_MODEM_IPC_BYTES}"
 
   - name: usb
     disables:
