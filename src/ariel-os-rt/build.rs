@@ -61,7 +61,7 @@ fn main() {
     copy_and_rerun_if_changed("keep-stack-sizes.x");
 
     #[cfg(feature = "memory-x")]
-    memoryx::write_memoryx();
+    memoryx::write_memoryx(&out.join("memory.x"));
 
     println!("cargo:rustc-link-search={}", out.display());
 }
@@ -76,7 +76,7 @@ mod memoryx {
     ///
     /// # Panics
     /// Panics if called outside of a known laze context.
-    pub fn write_memoryx() {
+    pub fn write_memoryx(path: &std::path::Path) {
         let nvm = Nvm::from_env();
         let ram = Ram::from_env();
         let chip = {
@@ -99,7 +99,10 @@ mod memoryx {
 
         memory = handle_extra_sections(memory);
 
-        memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
+        let mut memory_content = memory.to_ldmemory();
+        handle_ld_includes(&mut memory_content);
+
+        std::fs::write(path, &memory_content).unwrap();
     }
 
     /// Parses `CHIP_EXTRA_SECTIONS`.
@@ -117,6 +120,20 @@ mod memoryx {
             }
         }
         memory
+    }
+
+    /// Parses `CHIP_LD_INCLUDES`.
+    fn handle_ld_includes(memory_content: &mut String) {
+        use std::fmt::Write as _;
+        if let Ok(value) = &env_var_and_rerun_if_changed("CHIP_LD_INCLUDES") {
+            let split = value.split(',');
+            for entry in split {
+                if entry.is_empty() {
+                    continue;
+                }
+                write!(memory_content, "\nINCLUDE {entry}\n").unwrap();
+            }
+        }
     }
 
     /// Struct holding Non Volatile Memory info.
