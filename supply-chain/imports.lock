@@ -98,8 +98,8 @@ user-login = "dtolnay"
 user-name = "David Tolnay"
 
 [[publisher.ld-memory]]
-version = "0.2.9"
-when = "2023-06-29"
+version = "0.3.1"
+when = "2026-09-17"
 user-id = 4665
 user-login = "kaspar030"
 user-name = "Kaspar Schleiser"
@@ -152,8 +152,8 @@ user-login = "BurntSushi"
 user-name = "Andrew Gallant"
 
 [[publisher.memsolve]]
-version = "0.2.4"
-when = "2026-09-09"
+version = "0.3.0"
+when = "2026-09-15"
 user-id = 407161
 user-login = "bergzand"
 user-name = "Koen Zandberg"

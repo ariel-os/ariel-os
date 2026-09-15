@@ -389,6 +389,11 @@ who = "Koen Zandberg <koen@bergzand.net>"
 criteria = "safe-to-deploy"
 version = "0.2.1"
 
+[[audits.memsolve]]
+who = "Kaspar Schleiser <kaspar@schleiser.de>"
+criteria = "safe-to-deploy"
+delta = "0.3.0 -> 0.3.1"
+
 [[audits.minicbor-adapters]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
