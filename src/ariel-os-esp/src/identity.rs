@@ -11,7 +11,12 @@ impl identity::DeviceId for DeviceId {
         reason = "making this fallible would be a breaking API change for Ariel OS"
     )]
     fn get() -> Result<Self, core::convert::Infallible> {
-        Ok(Self(esp_hal::efuse::Efuse::read_base_mac_address()))
+        Ok(Self(
+            esp_hal::efuse::base_mac_address()
+                .as_bytes()
+                .try_into()
+                .expect("proper MAC address shape"),
+        ))
     }
 
     fn bytes(&self) -> Self::Bytes {

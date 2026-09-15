@@ -72,6 +72,6 @@ fn main(spawner: Spawner, peripherals: Peripherals) {
     let app = APP.init_with(|| routes::AppBuilder.build_app());
 
     for task_id in 0..WEB_TASK_POOL_SIZE {
-        spawner.spawn(web_task(task_id, app)).unwrap();
+        spawner.spawn(web_task(task_id, app).unwrap());
     }
 }
