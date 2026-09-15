@@ -110,6 +110,7 @@ esp-bootloader-esp-idf = { version = "0.4.0", features = ["esp-rom-sys"] }
 esp-hal = { version = "~1.0.0", default-features = false, features = [
   "unstable",
 ] }
+esp-idf-part = { version = "0.6.0" }
 esp-metadata-generated = { version = "0.3.0", default-features = false }
 esp-println = { version = "0.16.0", default-features = false }
 esp-radio = { version = "0.17.0", default-features = false }
@@ -170,6 +171,7 @@ heapless = { version = "0.9.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
 ld-memory = { version = "0.2.9" }
 log = { version = "0.4.20", default-features = false }
+memsolve = { version = "0.2.4", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }
