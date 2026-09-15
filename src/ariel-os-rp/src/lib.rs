@@ -13,9 +13,6 @@ pub mod peripheral {
 #[cfg(context = "rp235xa")]
 mod picotool;
 
-#[cfg(feature = "wifi")]
-mod wifi;
-
 #[cfg(feature = "ble")]
 #[doc(hidden)]
 pub mod ble;
