@@ -29,6 +29,7 @@ members = [
   "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
+  "src/ariel-os-update-transports",
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
@@ -159,6 +160,7 @@ ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-stm32-mapping = { path = "src/ariel-os-stm32-mapping" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
+ariel-os-update-transports = { path = "src/ariel-os-update-transports" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.

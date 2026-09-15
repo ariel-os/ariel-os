@@ -704,6 +704,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-update-transports"
+version = "0.5.0"
+dependencies = [
+ "featurecomb",
+]
+
+[[package]]
 name = "ariel-os-utils"
 version = "0.5.0"
 dependencies = [
