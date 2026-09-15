@@ -234,6 +234,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf51822_xxAA
       CHIP_NVM_SIZE_BYTES: "$(256*1024)"
+      CHIP_RAM_SIZE_BYTES: "$(16*1024)"
 
   - name: nrf52
     parent: nrf
@@ -256,6 +257,7 @@ contexts:
       PROBE_RS_CHIP: nrf52832_xxAA
       CHIP_NVM_PAGE_SIZE_BYTES: "512"
       CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
+      CHIP_RAM_SIZE_BYTES: "$(64*1024)"
 
   - name: nrf52833
     parent: nrf52
@@ -266,6 +268,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf52833_xxAA
       CHIP_NVM_SIZE_BYTES: "$(512 * 1024)"
+      CHIP_RAM_SIZE_BYTES: "$(128*1024)"
 
   - name: nrf52840
     parent: nrf52
@@ -276,6 +279,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
       CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
+      CHIP_RAM_SIZE_BYTES: "$(256*1024)"
 
   - name: nrf53
     parent: nrf
@@ -290,6 +294,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
       CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
+      CHIP_RAM_SIZE_BYTES: "$(512*1024)"
 
   - name: nrf5340-net
     parent: nrf53
@@ -308,6 +313,8 @@ contexts:
       CHIP_NVM_START_ADDRESS: "0x01000000"
       CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_RAM_SIZE_BYTES: "$(64*1024)"
+      CHIP_RAM_START_ADDRESS: "0x21000000"
     help: nRF5340 Network Core support
 
   - name: nrf91
@@ -320,6 +327,7 @@ contexts:
       - ?nrf91-modem
     env:
       CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
+      CHIP_RAM_SIZE_BYTES: "$(256 * 1024)"
 
   - name: nrf9160
     parent: nrf91

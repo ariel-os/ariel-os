@@ -68,7 +68,7 @@ fn main() {
 
 #[cfg(feature = "memory-x")]
 mod memoryx {
-    use ariel_os_buildutils::{context, context_any, env_var_and_rerun_if_changed};
+    use ariel_os_buildutils::env_var_and_rerun_if_changed;
     use ld_memory::MemorySection;
     use memsolve::section::Section;
 
@@ -78,7 +78,7 @@ mod memoryx {
     /// Panics if called outside of a known laze context.
     pub fn write_memoryx() {
         let nvm = Nvm::from_env();
-        let ram = Ram::get();
+        let ram = Ram::from_env();
         let chip = {
             memsolve::chip::Chip::new(nvm.page_size, nvm.start_address, nvm.total_size).unwrap()
         };
@@ -153,14 +153,6 @@ mod memoryx {
     }
 
     impl Ram {
-        pub fn get() -> Self {
-            if context("nrf") {
-                Ram::get_nrf()
-            } else {
-                Ram::from_env()
-            }
-        }
-
         /// Get RAM info from environment variables.
         /// # Panics
         /// Panics on invalid or missing `CHIP_RAM_*` values.
@@ -170,40 +162,6 @@ mod memoryx {
             Ram {
                 start_address,
                 size,
-            }
-        }
-
-        /// Get nrf RAM info.
-        /// # Panics
-        /// Panics on unhandled nrf context.
-        fn get_nrf() -> Self {
-            let size_kb = if context("nrf51822-xxaa") {
-                16
-            } else if context("nrf52832") {
-                64
-            } else if context("nrf52833") {
-                128
-            } else if context("nrf52840") {
-                256
-            } else if context("nrf5340-app") {
-                512
-            } else if context("nrf5340-net") {
-                64
-            } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
-                256
-            } else {
-                panic!("please set the MCU laze context");
-            };
-
-            let ram_base = if context("nrf5340-net") {
-                0x2100_0000
-            } else {
-                0x2000_0000
-            };
-
-            Self {
-                start_address: ram_base,
-                size: size_kb * 1024,
             }
         }
     }
