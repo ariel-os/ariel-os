@@ -57,6 +57,7 @@ contexts:
           CHIP_NVM_PAGE_COUNT=${CHIP_NVM_PAGE_COUNT}
           CHIP_NVM_START_ADDRESS=${CHIP_NVM_START_ADDRESS}
           CHIP_NVM_PAGE_SIZE_BYTES=${CHIP_NVM_PAGE_SIZE_BYTES}
+          CHIP_EXTRA_SECTIONS=${CHIP_EXTRA_SECTIONS}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       PROBE_RS_PROTOCOL: swd
@@ -87,6 +88,8 @@ contexts:
         #
         # This is typically used to source additional shell scripts that set up extra environment.
         suffix: " && "
+      CHIP_EXTRA_SECTIONS:
+        joiner: ","
       RUSTFLAGS_CONTEXTS:
         from: contexts
         prefix: --cfg context=\"

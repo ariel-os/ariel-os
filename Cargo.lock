@@ -3034,6 +3034,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "evalexpr"
+version = "11.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b6aff27af350e7b53e82aac3e5ab6389abd8f280640ac034508dff0608c4c7e5"
+
+[[package]]
 name = "example-alloc"
 version = "0.0.0"
 dependencies = [
@@ -4034,9 +4040,12 @@ dependencies = [
 
 [[package]]
 name = "ld-memory"
-version = "0.2.9"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16187c4751af0c33941a689f3e922132b165729cfaa73f592fe5cce7393e9f0c"
+checksum = "5c00bbd93ae68b27649a1d24a86bc1283a126dbca9720beefc605463620174d0"
+dependencies = [
+ "evalexpr",
+]
 
 [[package]]
 name = "libc"
@@ -4199,9 +4208,9 @@ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 
 [[package]]
 name = "memsolve"
-version = "0.2.4"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9613770670a70499e0a10a313f0a5010a0a21b038fd07dec258e67716c3ab865"
+checksum = "58ae959ac8e83a4c97133d3ca122b14ff9384545d284a1384193719114cbcd25"
 dependencies = [
  "conv",
  "ld-memory",

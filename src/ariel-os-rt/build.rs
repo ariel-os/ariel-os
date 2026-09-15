@@ -97,7 +97,26 @@ mod memoryx {
 
         memory = memory.add_section(ram_section);
 
+        memory = handle_extra_sections(memory);
+
         memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
+    }
+
+    /// Parses `CHIP_EXTRA_SECTIONS`.
+    /// # Panics
+    /// Panics on invalid format (as defined by `ld_memory::parse::parse_section()`).
+    fn handle_extra_sections(mut memory: ld_memory::Memory) -> ld_memory::Memory {
+        if let Ok(value) = &env_var_and_rerun_if_changed("CHIP_EXTRA_SECTIONS") {
+            let split = value.split(',');
+            for entry in split {
+                if entry.is_empty() {
+                    continue;
+                }
+                let section = ld_memory::parse::parse_section(entry).expect("Parsing section");
+                memory = memory.add_section(section);
+            }
+        }
+        memory
     }
 
     /// Struct holding Non Volatile Memory info.
