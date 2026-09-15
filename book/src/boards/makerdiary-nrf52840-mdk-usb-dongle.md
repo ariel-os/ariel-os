@@ -37,6 +37,7 @@ laze build -b makerdiary-nrf52840-mdk-usb-dongle
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 
