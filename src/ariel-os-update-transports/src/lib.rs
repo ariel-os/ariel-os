@@ -1,16 +1,24 @@
 #![cfg_attr(not(test), no_std)]
 // #![deny(missing_docs)]
 
+use core::ops::Range;
+
 mod transport;
+
+#[cfg(not(feature = "http"))]
+compile_error!("only HTTP is currently supported");
 
 use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
 
-pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize>(
+// TODO: check that N >= CHUNK_SIZE.
+// `N` needs to be at least `max(HTTP response headers size, chunk size)`.
+pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: usize>(
     tcp_client: &'a TcpClient<'a, { transport::MAX_CONCURRENT_TCP_CONNECTIONS }>,
     dns_client: &'a DnsSocket<'a>,
     uri: &'uri str,
     buf: &'buf mut [u8; N],
-) -> Result<FetchStream<'a, 'uri, 'buf, N>, Error> {
+) -> Result<FetchStream<'a, 'uri, 'buf, N, CHUNK_SIZE>, Error> {
+
     let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await;
 
     Ok(FetchStream {
@@ -21,17 +29,31 @@ pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize>(
     })
 }
 
-pub struct FetchStream<'a, 'uri, 'buf, const N: usize> {
+pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: usize> {
     uri: &'uri str, // TODO: remove this.
     chunk_index: u32,
     buf: &'buf mut [u8; N],
     client: transport::NetworkTransportClient<'a, 'uri>,
 }
 
-impl<'buf, 'tcp, const N: usize> FetchStream<'_, '_, 'buf, N> {
-    async fn next(&mut self) -> Option<Chunk<'buf>> {
-        // transport::get(self.uri)
-        todo!()
+impl<'buf, 'tcp, const N: usize, const CHUNK_SIZE: usize> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
+    async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
+        let range = Range {
+            start: self.chunk_index * CHUNK_SIZE,
+            end: (self.chunk_index + 1) * CHUNK_SIZE,
+        };
+
+        let buf = match self.client.get(range, self.buf).await {
+            Ok(buf) => buf,
+            Err(err) => {
+                return Some(Err(err));
+            }
+        };
+
+        let index = self.chunk_index;
+        self.chunk_index += 1;
+
+        Some(Ok(Chunk { index, bytes: buf }))
     }
 }
 
@@ -41,12 +63,12 @@ pub struct Chunk<'bytes> {
     bytes: &'bytes [u8],
 }
 
-impl Chunk<'_> {
+impl<'bytes> Chunk<'bytes> {
     pub fn index(&self) -> u32 {
         self.index
     }
 
-    pub fn bytes(&self) -> &[u8] {
+    pub fn bytes(&self) -> &'bytes [u8] {
         self.bytes
     }
 }
@@ -55,4 +77,6 @@ impl Chunk<'_> {
 pub enum Error {
     /// Fetch operation failed because of a transport error.
     Transport,
+    /// Fetch operation failed because of a requested range was invalid.
+    InvalidTransportRange,
 }
