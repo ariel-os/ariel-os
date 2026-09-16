@@ -1,24 +1,32 @@
 #![cfg_attr(not(test), no_std)]
 // #![deny(missing_docs)]
 
+mod transport;
+
 use core::ops::Range;
 
-mod transport;
+use embedded_nal_async::{Dns, TcpConnect};
 
 #[cfg(not(feature = "http"))]
 compile_error!("only HTTP is currently supported");
 
-use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
-
 /// Returns a stream that fetches a payload from a server.
 // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
 // N >= CHUNK_SIZE.
-pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
-    tcp_client: &'a TcpClient<'a, { transport::MAX_CONCURRENT_TCP_CONNECTIONS }>,
-    dns_client: &'a DnsSocket<'a>,
+pub async fn fetch_from_uri<
+    'a,
+    'uri,
+    'buf,
+    TCP: TcpConnect,
+    DNS: Dns,
+    const N: usize,
+    const CHUNK_SIZE: u32,
+>(
+    tcp_client: &'a TCP,
+    dns_client: &'a DNS,
     uri: &'uri str,
     buf: &'buf mut [u8; N],
-) -> Result<FetchStream<'a, 'uri, 'buf, N, CHUNK_SIZE>, Error> {
+) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
     const {
         assert!(N >= CHUNK_SIZE as usize);
     }
@@ -32,13 +40,23 @@ pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u3
     })
 }
 
-pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
+pub struct FetchStream<
+    'a,
+    'uri,
+    'buf,
+    TCP: TcpConnect,
+    DNS: Dns,
+    const N: usize,
+    const CHUNK_SIZE: u32,
+> {
     chunk_index: u32,
     buf: &'buf mut [u8; N],
-    client: transport::NetworkTransportClient<'a, 'uri>,
+    client: transport::NetworkTransportClient<'a, 'uri, TCP, DNS>,
 }
 
-impl<'buf, 'tcp, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
+impl<'buf, 'tcp, TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: u32>
+    FetchStream<'_, '_, 'buf, TCP, DNS, N, CHUNK_SIZE>
+{
     /// Fetches and returns the next chunk of the requested payload.
     async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
         let range = Range {

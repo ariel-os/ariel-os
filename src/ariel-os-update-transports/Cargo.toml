@@ -11,7 +11,7 @@ transport.xor = { features = ["http"] }
 [dependencies]
 ariel-os-embassy = { workspace = true, optional = true }
 ariel-os-log = { workspace = true }
-embassy-net = { workspace = true, optional = true }
+embedded-nal-async = { workspace = true }
 featurecomb = { workspace = true }
 reqwless = { workspace = true, optional = true }
 
@@ -19,11 +19,7 @@ reqwless = { workspace = true, optional = true }
 # Selects HTTP(S) as the update transport.
 http = [
   "dep:ariel-os-embassy",
-  "dep:embassy-net",
   "dep:reqwless",
-  "ariel-os-embassy?/net",
-  "embassy-net?/dns",
-  "embassy-net?/tcp",
 ]
 
 [lints]
