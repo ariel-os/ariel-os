@@ -11,14 +11,18 @@ compile_error!("only HTTP is currently supported");
 use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
 
 /// Returns a stream that fetches a payload from a server.
-// TODO: check that N >= CHUNK_SIZE.
 // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
+// N >= CHUNK_SIZE.
 pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
     tcp_client: &'a TcpClient<'a, { transport::MAX_CONCURRENT_TCP_CONNECTIONS }>,
     dns_client: &'a DnsSocket<'a>,
     uri: &'uri str,
     buf: &'buf mut [u8; N],
 ) -> Result<FetchStream<'a, 'uri, 'buf, N, CHUNK_SIZE>, Error> {
+    const {
+        assert!(N >= CHUNK_SIZE as usize);
+    }
+
     let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await;
 
     Ok(FetchStream {
