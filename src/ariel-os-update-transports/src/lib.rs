@@ -5,26 +5,29 @@ mod transport;
 
 pub async fn fetch_from_uri<'uri, 'buf, const N: usize>(
     uri: &'uri str,
-    buf: &'buf [u8; N],
-) -> Result<FetchIterator<'uri, 'buf, N>, Error> {
-    Ok(FetchIterator {
+    buf: &'buf mut [u8; N],
+) -> Result<FetchStream<'uri, 'buf, N>, Error> {
+    let client = transport::NetworkTransportClient::new(uri).await;
+
+    Ok(FetchStream {
         uri,
         chunk_index: 0,
         buf,
+        client,
     })
 }
 
 #[derive(Debug)]
-pub struct FetchIterator<'uri, 'buf, const N: usize> {
-    uri: &'uri str,
+pub struct FetchStream<'uri, 'buf, const N: usize> {
+    uri: &'uri str, // TODO: remove this.
     chunk_index: u32,
-    buf: &'buf [u8; N],
+    buf: &'buf mut [u8; N],
+    client: transport::NetworkTransportClient<'static>,
 }
 
-impl<'buf, const N: usize> Iterator for FetchIterator<'_, 'buf, N> {
-    type Item = Chunk<'buf>;
-
-    fn next(&mut self) -> Option<Self::Item> {
+impl<'buf, 'tcp, const N: usize> FetchStream<'_, 'buf, N> {
+    async fn next(&mut self) -> Option<Chunk<'buf>> {
+        // transport::get(self.uri)
         todo!()
     }
 }
