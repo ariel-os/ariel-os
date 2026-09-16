@@ -3840,6 +3840,7 @@ version = "0.0.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-update-transports",
  "der 0.8.0",
  "rand_core 0.9.3",
  "reqwless",

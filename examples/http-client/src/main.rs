@@ -45,54 +45,58 @@ async fn main() {
     let tcp_client = TcpClient::new(stack, &tcp_client_state);
     let dns_client = DnsSocket::new(stack);
 
-    let tls_seed: u64 = rand_core::RngCore::next_u64(&mut ariel_os::random::crypto_rng());
+    // let tls_seed: u64 = rand_core::RngCore::next_u64(&mut ariel_os::random::crypto_rng());
+    //
+    // let mut tls_rx_buffer = [0; TLS_READ_BUFFER_SIZE];
+    // let mut tls_tx_buffer = [0; TLS_WRITE_BUFFER_SIZE];
+    //
+    // // We do not authenticate the server in this example, as that would require setting up a PSK
+    // // with the server.
+    // let tls_verify = TlsVerify::None;
+    // let tls_config = TlsConfig::new(tls_seed, &mut tls_rx_buffer, &mut tls_tx_buffer, tls_verify);
 
-    let mut tls_rx_buffer = [0; TLS_READ_BUFFER_SIZE];
-    let mut tls_tx_buffer = [0; TLS_WRITE_BUFFER_SIZE];
+    // let mut client = HttpClient::new_with_tls(&tcp_client, &dns_client, tls_config);
 
-    // We do not authenticate the server in this example, as that would require setting up a PSK
-    // with the server.
-    let tls_verify = TlsVerify::None;
-    let tls_config = TlsConfig::new(tls_seed, &mut tls_rx_buffer, &mut tls_tx_buffer, tls_verify);
-
-    let mut client = HttpClient::new_with_tls(&tcp_client, &dns_client, tls_config);
+    let mut buf = [0; 1024];
+    let mut fetch_stream =
+        ariel_os_update_transport::fetch_from_uri(tcp_client, dns_client, ENDPOINT_URL, buf);
 
     stack.wait_config_up().await;
 
-    if let Err(err) = send_http_get_request(&mut client, ENDPOINT_URL).await {
-        error!(
-            "Error while sending an HTTP request: {:?}",
-            Debug2Format(&err)
-        );
-    }
+    // if let Err(err) = send_http_get_request(&mut client, ENDPOINT_URL).await {
+    //     error!(
+    //         "Error while sending an HTTP request: {:?}",
+    //         Debug2Format(&err)
+    //     );
+    // }
 
     exit(ExitCode::SUCCESS);
 }
 
-async fn send_http_get_request(
-    client: &mut HttpClient<'_, TcpClient<'_, MAX_CONCURRENT_CONNECTIONS>, DnsSocket<'_>>,
-    url: &str,
-) -> Result<(), reqwless::Error> {
-    let mut http_rx_buf = [0; HTTP_BUFFER_SIZE];
-
-    let mut handle = client.request(Method::GET, url).await?;
-    let response = handle.send(&mut http_rx_buf).await?;
-
-    info!("Response status: {}", response.status.0);
-
-    if let Some(ref content_type) = response.content_type {
-        info!("Response Content-Type: {}", content_type.as_str());
-    }
-
-    if let Ok(body) = response.body().read_to_end().await {
-        if let Ok(body) = core::str::from_utf8(&body) {
-            info!("Response body:\n{}", body);
-        } else {
-            info!("Received a response body, but it is not valid UTF-8");
-        }
-    } else {
-        info!("No response body");
-    }
-
-    Ok(())
-}
+// async fn send_http_get_request(
+//     client: &mut HttpClient<'_, TcpClient<'_, MAX_CONCURRENT_CONNECTIONS>, DnsSocket<'_>>,
+//     url: &str,
+// ) -> Result<(), reqwless::Error> {
+//     let mut http_rx_buf = [0; HTTP_BUFFER_SIZE];
+//
+//     let mut handle = client.request(Method::GET, url).await?;
+//     let response = handle.send(&mut http_rx_buf).await?;
+//
+//     info!("Response status: {}", response.status.0);
+//
+//     if let Some(ref content_type) = response.content_type {
+//         info!("Response Content-Type: {}", content_type.as_str());
+//     }
+//
+//     if let Ok(body) = response.body().read_to_end().await {
+//         if let Ok(body) = core::str::from_utf8(&body) {
+//             info!("Response body:\n{}", body);
+//         } else {
+//             info!("Received a response body, but it is not valid UTF-8");
+//         }
+//     } else {
+//         info!("No response body");
+//     }
+//
+//     Ok(())
+// }
