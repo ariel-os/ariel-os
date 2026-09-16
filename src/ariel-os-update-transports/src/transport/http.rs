@@ -1,7 +1,7 @@
 use core::ops::Range;
 
 use ariel_os_log::debug;
-use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
+use embedded_nal_async::{Dns, TcpConnect};
 use reqwless::{
     client::HttpClient,
     request::{Method, RequestBuilder as _},
@@ -9,25 +9,18 @@ use reqwless::{
 
 use crate::Error;
 
-pub const MAX_CONCURRENT_TCP_CONNECTIONS: usize = 1;
-
 // TODO: adjust these.
 const TCP_BUFFER_SIZE: usize = 1024;
 const HTTP_BUFFER_SIZE: usize = 1024;
 
-pub struct NetworkTransportClient<'stack, 'uri> {
-    client:
-        HttpClient<'stack, TcpClient<'stack, MAX_CONCURRENT_TCP_CONNECTIONS>, DnsSocket<'stack>>,
+pub struct NetworkTransportClient<'stack, 'uri, TCP: TcpConnect, DNS: Dns> {
+    client: HttpClient<'stack, TCP, DNS>,
     uri: &'uri str,
 }
 
-impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
+impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, DNS> {
     #[must_use]
-    pub async fn new(
-        tcp_client: &'a TcpClient<'a, MAX_CONCURRENT_TCP_CONNECTIONS>,
-        dns_client: &'a DnsSocket<'a>,
-        uri: &'uri str,
-    ) -> Self {
+    pub async fn new(tcp_client: &'a TCP, dns_client: &'a DNS, uri: &'uri str) -> Self {
         Self {
             client: HttpClient::new(tcp_client, dns_client),
             uri,
