@@ -98,8 +98,24 @@ impl ToHeaderHttpRange for Range<u32> {
         // Offset from Range's `bytes` are *inclusive*.
         let range_end_str = (self.end - 1).format_into(&mut num_buf);
         buf[len..len + range_end_str.len()].copy_from_slice(range_end_str.as_bytes());
+        len += range_end_str.len();
 
         // NOTE(no-panic): by construction.
-        str::from_utf8(buf).unwrap()
+        str::from_utf8(&buf[..len]).unwrap()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn range_to_http_header_range() {
+        let mut buf = [0; Range::<u32>::BUFFER_SIZE];
+        assert_eq!((0..42).to_header_http_range(&mut buf), "bytes=0-41");
+        assert_eq!(
+            (42..65_536).to_header_http_range(&mut buf),
+            "bytes=42-65535"
+        );
     }
 }
