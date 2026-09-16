@@ -1,5 +1,6 @@
 use core::ops::Range;
 
+use ariel_os_log::debug;
 use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
 use reqwless::{
     client::HttpClient,
@@ -50,11 +51,19 @@ impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
             .headers(headers);
         let response = handle.send(buf).await.map_err(|_| Error::Transport)?;
 
-        // FIXME: check status.
-        // info!("Response status: {}", response.status.0);
+        debug!("HTTP response status: {}", response.status.0);
 
-        // FIXME: check Content-Type.
-        if let Some(content_type) = &response.content_type {}
+        // Range Not Satisfiable.
+        if response.status.0 == 416 {
+            return Err(Error::InvalidTransportRange);
+        }
+
+        if !response.status.is_successful() {
+            return Err(Error::Transport);
+        }
+
+        // NOTE: Content-Type is not checked.
+        debug!("HTTP response Content-Type: {}", response.content_type);
 
         response
             .body()
@@ -92,7 +101,7 @@ impl ToHeaderHttpRange for Range<u32> {
         buf[len] = 0x2d; // Dash.
         len += 1;
 
-        // FIXME: handle the case where the range is empty.
+        // TODO: handle the case where the range is empty.
         // Offset from Range's `bytes` are *inclusive*.
         let range_end_str = (self.end - 1).format_into(&mut num_buf);
         buf[len..len + range_end_str.len()].copy_from_slice(range_end_str.as_bytes());
