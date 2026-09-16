@@ -1,12 +1,12 @@
 //! Provides HAL-agnostic GPIO-related types.
 
-/// Digital level of an input or output.
+/// Logic level of an input or output.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Level {
-    /// Digital low level.
+    /// Low logic level.
     Low,
-    /// Digital high level.
+    /// High logic level.
     High,
 }
 
