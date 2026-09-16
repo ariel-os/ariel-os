@@ -57,11 +57,33 @@ async fn main() {
 
     // let mut client = HttpClient::new_with_tls(&tcp_client, &dns_client, tls_config);
 
+    const CHUNK_SIZE: u32 = 32;
+    let payload_size = 313;
     let mut buf = [0; 1024];
-    let mut fetch_stream =
-        ariel_os_update_transport::fetch_from_uri(tcp_client, dns_client, ENDPOINT_URL, buf);
+    let mut fetch_stream = ariel_os_update_transports::fetch_from_uri::<_, _, _, CHUNK_SIZE>(
+        &tcp_client,
+        &dns_client,
+        ENDPOINT_URL,
+        &mut buf,
+        payload_size,
+    )
+    .await
+    .unwrap();
 
     stack.wait_config_up().await;
+
+    while let Some(chunk) = fetch_stream.next().await {
+        match chunk {
+            Ok(chunk) => {
+                if let Ok(chunk) = core::str::from_utf8(chunk.bytes()) {
+                    info!("Chunk:\n{}", chunk);
+                } else {
+                    info!("Received a response chunk, but it is not valid UTF-8");
+                }
+            }
+            Err(err) => error!("Err: {:?}", err),
+        }
+    }
 
     // if let Err(err) = send_http_get_request(&mut client, ENDPOINT_URL).await {
     //     error!(

@@ -10,11 +10,14 @@ transport.xor = { features = ["http"] }
 
 [dependencies]
 ariel-os-log = { workspace = true }
+defmt = { workspace = true, optional = true }
 embedded-nal-async = { workspace = true }
 featurecomb = { workspace = true }
 reqwless = { workspace = true, optional = true }
 
 [features]
+defmt = ["dep:defmt"]
+
 # Selects HTTP(S) as the update transport.
 http = ["dep:reqwless"]
 

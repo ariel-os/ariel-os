@@ -56,7 +56,7 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
         }
 
         // NOTE: Content-Type is not checked.
-        debug!("HTTP response Content-Type: {}", response.content_type);
+        // debug!("HTTP response Content-Type: {}", response.content_type);
 
         response
             .body()
