@@ -7,6 +7,7 @@
 #[cfg(feature = "_radio-esp")]
 extern crate alloc;
 
+#[cfg(not(feature = "custom-app-desc"))]
 mod app_desc {
     esp_bootloader_esp_idf::esp_app_desc!();
 }
