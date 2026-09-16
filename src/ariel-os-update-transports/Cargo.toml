@@ -12,7 +12,6 @@ transport.xor = { features = ["http"] }
 ariel-os-embassy = { workspace = true, optional = true }
 embassy-net = { workspace = true, optional = true }
 featurecomb = { workspace = true }
-ouroboros = { version = "0.18", default-features = false }
 reqwless = { workspace = true, optional = true }
 
 [features]
