@@ -12,13 +12,12 @@ use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
 
 // TODO: check that N >= CHUNK_SIZE.
 // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
-pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: usize>(
+pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
     tcp_client: &'a TcpClient<'a, { transport::MAX_CONCURRENT_TCP_CONNECTIONS }>,
     dns_client: &'a DnsSocket<'a>,
     uri: &'uri str,
     buf: &'buf mut [u8; N],
 ) -> Result<FetchStream<'a, 'uri, 'buf, N, CHUNK_SIZE>, Error> {
-
     let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await;
 
     Ok(FetchStream {
@@ -29,14 +28,14 @@ pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: us
     })
 }
 
-pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: usize> {
+pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
     uri: &'uri str, // TODO: remove this.
     chunk_index: u32,
     buf: &'buf mut [u8; N],
     client: transport::NetworkTransportClient<'a, 'uri>,
 }
 
-impl<'buf, 'tcp, const N: usize, const CHUNK_SIZE: usize> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
+impl<'buf, 'tcp, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
     async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
         let range = Range {
             start: self.chunk_index * CHUNK_SIZE,
