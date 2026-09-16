@@ -10,6 +10,7 @@ transport.xor = { features = ["http"] }
 
 [dependencies]
 ariel-os-embassy = { workspace = true, optional = true }
+ariel-os-log = { workspace = true }
 embassy-net = { workspace = true, optional = true }
 featurecomb = { workspace = true }
 reqwless = { workspace = true, optional = true }
