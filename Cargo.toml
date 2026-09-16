@@ -188,6 +188,7 @@ paste = { version = "1.0" }
 pin-project-lite = "0.2.16"
 rand = { version = "0.9.2", default-features = false }
 rand_core = { version = "0.9.3", default-features = false }
+reqwless = { version = "0.14", default-features = false }
 rtt-target = { version = "0.6.0" }
 
 bt-hci = { version = "0.6.0" }

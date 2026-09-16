@@ -9,11 +9,22 @@ license.workspace = true
 transport.xor = { features = ["http"] }
 
 [dependencies]
+ariel-os-embassy = { workspace = true, optional = true }
+embassy-net = { workspace = true, optional = true }
 featurecomb = { workspace = true }
+ouroboros = { version = "0.18", default-features = false }
+reqwless = { workspace = true, optional = true }
 
 [features]
 # Selects HTTP(S) as the update transport.
-http = []
+http = [
+  "dep:ariel-os-embassy",
+  "dep:embassy-net",
+  "dep:reqwless",
+  "ariel-os-embassy?/net",
+  "embassy-net?/dns",
+  "embassy-net?/tcp",
+]
 
 [lints]
 workspace = true
