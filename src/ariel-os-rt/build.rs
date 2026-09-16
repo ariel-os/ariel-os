@@ -61,7 +61,7 @@ fn main() {
     copy_and_rerun_if_changed("keep-stack-sizes.x");
 
     #[cfg(feature = "memory-x")]
-    memoryx::write_memoryx(&out.join("memory.x"));
+    memoryx::write_memoryx(&out);
 
     println!("cargo:rustc-link-search={}", out.display());
 }
@@ -76,7 +76,7 @@ mod memoryx {
     ///
     /// # Panics
     /// Panics if called outside of a known laze context.
-    pub fn write_memoryx(path: &std::path::Path) {
+    pub fn write_memoryx(out_dir: &std::path::Path) {
         // Gather chip NVM & RAM config
         let nvm = Nvm::from_env();
         let ram = Ram::from_env();
@@ -113,12 +113,50 @@ mod memoryx {
         // get & add extra sections from environment variable
         memory = handle_extra_sections(memory);
 
+        let section_range_constants = create_section_range_constants(&memory);
+        std::fs::write(out_dir.join("linker_sections.rs"), &section_range_constants).unwrap();
+
         let mut memory_content = memory.to_ldmemory();
 
         // get & add filenames to include in memory.x
         handle_ld_includes(&mut memory_content);
 
-        std::fs::write(path, &memory_content).unwrap();
+        std::fs::write(out_dir.join("memory.x"), &memory_content).unwrap();
+    }
+
+    /// Builds a `String` with Rust constants for each section in `memory`.
+    fn create_section_range_constants(memory: &ld_memory::Memory) -> String {
+        // So previously we've renamed these sections to "FLASH" using the memsolve `linker_name`
+        // mechanism (search `fix_linker_name()`.
+        // Then we create ld_memory sections.
+        // For exporting, having the previous names actually makes more sense, so we reverse the
+        // renaming here before generating the range constants.
+        fn fix_section_name(name: &str) -> &str {
+            #[cfg(feature = "embassy-boot-loader")]
+            if name == "FLASH" {
+                return "BOOTLOADER";
+            }
+            #[cfg(feature = "embassy-boot-application")]
+            if name == "FLASH" {
+                return "ACTIVE";
+            }
+            name
+        }
+
+        use std::fmt::Write as _;
+        let mut s = String::new();
+        for section in memory.sections() {
+            let (name, from, to) = (
+                fix_section_name(section.get_name()),
+                section.get_origin(),
+                section.get_origin() + section.get_length(),
+            );
+            let _ = write!(
+                s,
+                "pub const {name}: core::ops::Range<u32> = {from}..{to};\n"
+            );
+        }
+        s
     }
 
     /// Configures the default (no bootloader, all flash for application) layout.
