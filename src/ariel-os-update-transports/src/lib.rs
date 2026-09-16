@@ -1,6 +1,9 @@
 #![cfg_attr(not(test), no_std)]
 // #![deny(missing_docs)]
 
+#[featurecomb::comb]
+mod _featurecomb {}
+
 mod transport;
 
 use core::ops::Range;
