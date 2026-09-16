@@ -12,7 +12,7 @@ ariel-os = { path = "../../src/ariel-os", features = [
   "tcp",
 ] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
-ariel-os-update-transports = { workspace = true, features = ["http"] }
+ariel-os-update-transports = { workspace = true, features = ["defmt", "http"] }
 
 # A bug in embedded-tls 0.18.0, which reqwless 0.14.0 depends on, makes this
 # temporarily needed.
