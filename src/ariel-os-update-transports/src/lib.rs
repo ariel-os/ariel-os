@@ -10,6 +10,7 @@ compile_error!("only HTTP is currently supported");
 
 use embassy_net::{dns::DnsSocket, tcp::client::TcpClient};
 
+/// Returns a stream that fetches a payload from a server.
 // TODO: check that N >= CHUNK_SIZE.
 // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
 pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
@@ -21,7 +22,6 @@ pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u3
     let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await;
 
     Ok(FetchStream {
-        uri,
         chunk_index: 0,
         buf,
         client,
@@ -29,13 +29,13 @@ pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u3
 }
 
 pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
-    uri: &'uri str, // TODO: remove this.
     chunk_index: u32,
     buf: &'buf mut [u8; N],
     client: transport::NetworkTransportClient<'a, 'uri>,
 }
 
 impl<'buf, 'tcp, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
+    /// Fetches and returns the next chunk of the requested payload.
     async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
         let range = Range {
             start: self.chunk_index * CHUNK_SIZE,
