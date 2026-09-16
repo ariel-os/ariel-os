@@ -19,7 +19,10 @@ embedded-alloc = { version = "0.6.0", default-features = false, features = [
 ] }
 
 [target.'cfg(context = "esp")'.dependencies]
-esp-alloc = { workspace = true, default-features = false }
+esp-alloc = { workspace = true, default-features = false, features = [
+  "compat",
+  "global-allocator",
+] }
 esp-hal = { workspace = true, default-features = false }
 esp-metadata-generated = { workspace = true }
 

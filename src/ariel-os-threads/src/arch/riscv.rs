@@ -103,7 +103,7 @@ impl Arch for Cpu {
 
     /// Enable and trigger the appropriate software interrupt.
     fn start_threading() {
-        let handler = InterruptHandler::new_not_nested(sched, Priority::min());
+        let handler = InterruptHandler::new(sched, Priority::min());
 
         // SAFETY: This is the start of the threading so we shouldn't have any instance
         // of `SoftwareInterrupt::<0>` before that.
@@ -322,58 +322,62 @@ global_asm!(
 /// Panics when the scheduler returned no task to switch to, this means idle threads are not enabled.
 #[esp_hal::ram]
 extern "C" fn sched() {
-    // clear FROM_CPU_INTR0
-    // SAFETY: `steal().reset()` is safe on an initialized software interrupt
-    unsafe { SoftwareInterrupt::<0>::steal().reset() }
+    critical_section::with(|cs| {
+        // clear FROM_CPU_INTR0
+        // SAFETY: `steal().reset()` is safe on an initialized software interrupt
+        unsafe { SoftwareInterrupt::<0>::steal().reset() }
 
-    let mut mstatus = register::mstatus::read();
+        let mut mstatus = register::mstatus::read();
 
-    // Get the next thread to execute, if None is returned this means we don't have to do any
-    // switching and just go back to the previous thread.
-    if let Some((current_high_regs, next_high_regs)) = SCHEDULER.with_mut(|mut scheduler| {
-        #[cfg(feature = "multi-core")]
-        scheduler.add_current_thread_to_rq();
+        // Get the next thread to execute, if None is returned this means we don't have to do any
+        // switching and just go back to the previous thread.
+        if let Some((current_high_regs, next_high_regs)) =
+            SCHEDULER.with_mut_cs(cs, |mut scheduler| {
+                #[cfg(feature = "multi-core")]
+                scheduler.add_current_thread_to_rq();
 
-        let next_tid = scheduler.get_next_tid().expect(
-            "idle threads should be enabled, the scheduler should always have a thread ready",
-        );
+                let next_tid = scheduler.get_next_tid().expect(
+                    "idle threads should be enabled, the scheduler should always have a thread ready",
+                );
 
-        let mut current_high_regs = core::ptr::null_mut();
+                let mut current_high_regs = core::ptr::null_mut();
 
-        if let Some(current_tid_ref) = scheduler.current_tid_mut() {
-            if next_tid == *current_tid_ref {
-                return None;
+                if let Some(current_tid_ref) = scheduler.current_tid_mut() {
+                    if next_tid == *current_tid_ref {
+                        return None;
+                    }
+                    let current_tid = *current_tid_ref;
+                    *current_tid_ref = next_tid;
+                    let current = scheduler.get_unchecked_mut(current_tid);
+                    current.data.mepc = register::mepc::read();
+                    current_high_regs = &raw mut current.data;
+                } else {
+                    *scheduler.current_tid_mut() = Some(next_tid);
+                }
+                let next = scheduler.get_unchecked_mut(next_tid);
+                next.data.mstatus = mstatus.bits();
+                let next_high_regs = &raw mut next.data;
+                Some((current_high_regs, next_high_regs))
+            })
+        {
+            // Switch to the new task
+            _CURRENT_CTX_PTR.store(current_high_regs, Ordering::SeqCst);
+            _NEXT_CTX_PTR.store(next_high_regs, Ordering::SeqCst);
+
+            mstatus.set_mpie(false);
+
+            // SAFETY: setting register to a modified value, we changed the MPIE bit to 0.
+            unsafe {
+                // Set MPIE in MSTATUS to 0 to disable interrupts while task switching
+                register::mstatus::write(mstatus);
             }
-            let current_tid = *current_tid_ref;
-            *current_tid_ref = next_tid;
-            let current = scheduler.get_unchecked_mut(current_tid);
-            current.data.mepc = register::mepc::read();
-            current_high_regs = &raw mut current.data;
-        } else {
-            *scheduler.current_tid_mut() = Some(next_tid);
-        }
-        let next = scheduler.get_unchecked_mut(next_tid);
-        next.data.mstatus = mstatus.bits();
-        let next_high_regs = &raw mut next.data;
-        Some((current_high_regs, next_high_regs))
-    }) {
-        // Switch to the new task
-        _CURRENT_CTX_PTR.store(current_high_regs, Ordering::SeqCst);
-        _NEXT_CTX_PTR.store(next_high_regs, Ordering::SeqCst);
 
-        mstatus.set_mpie(false);
-
-        // SAFETY: setting register to a modified value, we changed the MPIE bit to 0.
-        unsafe {
-            // Set MPIE in MSTATUS to 0 to disable interrupts while task switching
-            register::mstatus::write(mstatus);
+            // SAFETY: Necessary to directly write the registers for task switching.
+            // sys_switch is a valid symbol pointing to the assembly defined in this file.
+            unsafe {
+                // Load address of sys_switch into MEPC - will run after all registers are restored
+                register::mepc::write(sys_switch as *const () as usize);
+            }
         }
-
-        // SAFETY: Necessary to directly write the registers for task switching.
-        // sys_switch is a valid symbol pointing to the assembly defined in this file.
-        unsafe {
-            // Load address of sys_switch into MEPC - will run after all registers are restored
-            register::mepc::write(sys_switch as *const () as usize);
-        }
-    }
+    });
 }
