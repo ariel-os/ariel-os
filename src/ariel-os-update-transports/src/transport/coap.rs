@@ -2,22 +2,22 @@ mod coap_ext;
 
 use ariel_os_log::error;
 use coap_request::Stack;
-use embedded_nal_coap::{CoAPRuntimeClient, RequestingCoAPClient};
+use embedded_nal_coap::RequestingCoAPClient;
 
 use crate::Error;
 use coap_ext::Block2Opt;
 
-const CONCURRENT_REQUESTS: usize = 1;
+const CONCURRENT_REQUESTS: usize = 3;
 
 // TODO: make this configurable.
 const COAP_BLOCK_SIZE: usize = 64;
 
 pub struct NetworkTransportClient<'uri> {
-    client: CoAPRuntimeClient<'static, CONCURRENT_REQUESTS>,
-    uri: &'uri nourl::Url<'uri>,
+    client: RequestingCoAPClient<'static, CONCURRENT_REQUESTS>,
+    uri: nourl::Url<'uri>,
 }
 
-impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
+impl<'uri> NetworkTransportClient<'uri> {
     #[must_use]
     pub async fn new(uri: &'uri str) -> Result<Self, Error> {
         let Ok(uri) = nourl::Url::parse(uri) else {
@@ -33,7 +33,7 @@ impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
         let client = ariel_os_coap::coap_client().await;
         let client = client.to(peer_socket_addr);
 
-        Self { client, uri }
+        Ok(Self { client, uri })
     }
 
     pub async fn get<'buf>(
@@ -42,13 +42,19 @@ impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
         buf: &'buf mut [u8],
     ) -> Result<&'buf mut [u8], Error> {
         let request = SuitPayloadRequest::new(self.uri.path()).set_blocknum(chunk_index);
-        let (_has_more, data) = self
+        let Some((_has_more, coap_chunk)) = self
             .client
             .request(request)
             .await
-            .map_err(|_| Error::Transport)?;
+            .map_err(|_| Error::Transport)?
+        else {
+            return Err(Error::Transport);
+        };
 
-        Ok(data)
+        let len = coap_chunk.len;
+        buf[..len].copy_from_slice(&coap_chunk.bytes);
+
+        Ok(&mut buf[..len])
     }
 }
 
@@ -73,16 +79,22 @@ impl<'a> SuitPayloadRequest<'a> {
     }
 }
 
-// FIXME: what's 3?
-impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayloadRequest<'a> {
+impl<'a> coap_request::Request<RequestingCoAPClient<'static, CONCURRENT_REQUESTS>>
+    for SuitPayloadRequest<'a>
+{
     type Output = Option<(bool, CoapChunk<COAP_BLOCK_SIZE>)>;
 
     type Carry = (u32, u8);
 
     async fn build_request(
         &mut self,
-        request: &mut <RequestingCoAPClient<'static, 3> as Stack>::RequestMessage<'_>,
-    ) -> Result<Self::Carry, <RequestingCoAPClient<'static, 3> as Stack>::RequestUnionError> {
+        request: &mut <RequestingCoAPClient<'static, CONCURRENT_REQUESTS> as Stack>::RequestMessage<
+            '_,
+        >,
+    ) -> Result<
+        Self::Carry,
+        <RequestingCoAPClient<'static, CONCURRENT_REQUESTS> as Stack>::RequestUnionError,
+    > {
         use coap_message::MinimalWritableMessage as _;
 
         use coap_ext::OptionMessageWriter as _;
@@ -96,7 +108,9 @@ impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayload
 
     async fn process_response(
         &mut self,
-        response: &<RequestingCoAPClient<'static, 3> as Stack>::ResponseMessage<'_>,
+        response: &<RequestingCoAPClient<'static, CONCURRENT_REQUESTS> as Stack>::ResponseMessage<
+            '_,
+        >,
         carry: Self::Carry,
     ) -> Self::Output {
         use coap_message::{MessageOption as _, ReadableMessage as _};
