@@ -9,10 +9,6 @@ use reqwless::{
 
 use crate::Error;
 
-// TODO: adjust these.
-const TCP_BUFFER_SIZE: usize = 1024;
-const HTTP_BUFFER_SIZE: usize = 1024;
-
 pub struct NetworkTransportClient<'stack, 'uri, TCP: TcpConnect, DNS: Dns> {
     client: HttpClient<'stack, TCP, DNS>,
     uri: &'uri str,
