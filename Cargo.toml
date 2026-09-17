@@ -30,6 +30,7 @@ members = [
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
   "src/ariel-os-update-transports",
+  "src/ariel-os-suit",
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
@@ -179,6 +180,7 @@ const_panic = { version = "0.2.8", default-features = false }
 defmt = { version = "1.0.0" }
 defmt-rtt = { version = "1.1.0" }
 document-features = "0.2.8"
+dress-up = { path = "../dress-up" }
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.9.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
