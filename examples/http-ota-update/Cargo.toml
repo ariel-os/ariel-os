@@ -1,0 +1,52 @@
+[package]
+name = "http-ota-software-update"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "time",
+  "random",
+  "csprng",
+  "dns",
+  "mdns",
+  "tcp",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+embassy-sync = { workspace = true }
+picoserve = { version = "0.18", default-features = false, features = [
+  "embassy",
+  "json",
+  "alloc",
+] }
+
+
+cose-nostd = {git = "https://codeberg.org/COLORADIO-Project/cose-nostd.git", version = "0.1.0", features = ["sign1", "p-256", "verify"]}
+
+dress-up = { git = "https://github.com/ariel-os/dress-up", branch = "main", features = ["async"] }
+
+cose_minicbor = {version = "0.1.1", default-features = false, features = ["es256", "sha256", "suit-sha256-es256"]}
+minicbor = {version = "2.2.1", default-features = false}
+minicbor-adapters = "0.0.8"
+generic-array = { version = "1.3.5", default-features = false, features = ["const-default"] }
+uuid = { version = "1.23.1", default-features = false, features = ["v5"] }
+
+
+# A bug in embedded-tls 0.18.0, which reqwless 0.14.0 depends on, makes this
+# temporarily needed.
+# The `heapless` feature is needed since 0.8.0-rc.2.
+der = { version = "0.8", default-features = false, features = ["heapless"] }
+
+rand_core = { workspace = true }
+reqwless = { version = "0.14.0", default-features = true, features = [
+  "embedded-tls",
+] }
+
+embedded-io = { workspace = true }
+
+[features]
+
+
+[lints]
+workspace = true
