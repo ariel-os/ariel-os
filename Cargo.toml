@@ -172,6 +172,9 @@ ariel-os-sensor-lps22df = { path = "src/sensors/ariel-os-sensor-lps22df" }
 ariel-os-sensor-nrf91-gnss = { path = "src/sensors/ariel-os-sensor-nrf91-gnss" }
 ariel-os-sensor-stts22h = { path = "src/sensors/ariel-os-sensor-stts22h" }
 
+coap-message = { version = "0.3.7", default-features = false }
+coap-numbers = { version = "0.2.11", default-features = false }
+coap-request = { version = "0.2.0-alpha.2", default-features = false }
 const-str = "1.0.0"
 const_panic = { version = "0.2.8", default-features = false }
 defmt = { version = "1.0.0" }
@@ -183,6 +186,7 @@ jiff = { version = "0.2", default-features = false }
 ld-memory = { version = "0.3.1" }
 log = { version = "0.4.20", default-features = false }
 memsolve = { version = "0.3.1", default-features = false }
+nourl = { version = "0.1.5", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }

@@ -16,11 +16,19 @@ pub struct NetworkTransportClient<'stack, 'uri, TCP: TcpConnect, DNS: Dns> {
 
 impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, DNS> {
     #[must_use]
-    pub async fn new(tcp_client: &'a TCP, dns_client: &'a DNS, uri: &'uri str) -> Self {
-        Self {
+    pub async fn new(
+        tcp_client: &'a TCP,
+        dns_client: &'a DNS,
+        uri: &'uri str,
+    ) -> Result<Self, Error> {
+        if nourl::Url::parse(uri).is_err() {
+            return Err(Error::InvalidUri);
+        }
+
+        Ok(Self {
             client: HttpClient::new(tcp_client, dns_client),
             uri,
-        }
+        })
     }
 
     pub async fn get<'buf>(
