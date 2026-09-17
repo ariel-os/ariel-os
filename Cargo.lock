@@ -709,10 +709,14 @@ version = "0.5.0"
 dependencies = [
  "ariel-os-coap",
  "ariel-os-log",
+ "coap-message",
+ "coap-numbers",
+ "coap-request",
  "defmt 1.1.1",
  "embedded-nal-async 0.9.0",
  "embedded-nal-coap",
  "featurecomb",
+ "nourl",
  "reqwless",
 ]
 
@@ -1291,9 +1295,9 @@ dependencies = [
 
 [[package]]
 name = "coap-message"
-version = "0.3.6"
+version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "185d26bfc9862ae17a065d361725e2301072125cb7200836d4b795285fded1f7"
+checksum = "5716ce4b1742dcb19c3a0afa4837a7052b4a7f13a2bd71cd28a05e90877377d4"
 dependencies = [
  "num-traits",
 ]
@@ -1342,9 +1346,9 @@ dependencies = [
 
 [[package]]
 name = "coap-numbers"
-version = "0.2.7"
+version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62940de3d016deb4c2e8bf5062435d69eba7f2c64b35537de4c56586db52231c"
+checksum = "e60f0209fce28bf33b5e1b2f99533739250b07787183c12c9a3ab9529d8b5b16"
 
 [[package]]
 name = "coap-request"
@@ -4427,9 +4431,9 @@ dependencies = [
 
 [[package]]
 name = "nourl"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
+checksum = "bdf177075516a2681d344b047633cd75893126f376469f05a346acf17431eadd"
 
 [[package]]
 name = "nrf-modem"

@@ -8,14 +8,10 @@ mod transport;
 
 #[cfg(feature = "coap")]
 mod coap {
+    use crate::{Chunk, Error, transport};
+
     /// Returns a stream that fetches a payload from a server.
-    pub async fn fetch_from_uri<
-        'a,
-        'uri,
-        'buf,
-        const N: usize,
-        const CHUNK_SIZE: u32,
-    >(
+    pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
         uri: &'uri str,
         buf: &'buf mut [u8; N],
         payload_size: u32,
@@ -24,7 +20,7 @@ mod coap {
             assert!(N >= CHUNK_SIZE as usize);
         }
 
-        let client = transport::NetworkTransportClient::new(uri).await;
+        let client = transport::NetworkTransportClient::new(uri).await?;
 
         Ok(FetchStream {
             chunk_index: 0,
@@ -35,13 +31,7 @@ mod coap {
         })
     }
 
-    pub struct FetchStream<
-        'a,
-        'uri,
-        'buf,
-        const N: usize,
-        const CHUNK_SIZE: u32,
-    > {
+    pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
         bytes_received: u32,
@@ -49,16 +39,14 @@ mod coap {
         client: transport::NetworkTransportClient<'a, 'uri>,
     }
 
-    impl<'buf, const N: usize, const CHUNK_SIZE: u32>
-        FetchStream<'_, '_, 'buf, N, CHUNK_SIZE>
-    {
+    impl<'buf, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
         /// Fetches and returns the next chunk of the requested payload.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
             if self.bytes_received >= self.payload_size {
                 return None;
             }
 
-            let buf = match self.client.get(chunk_index, self.buf).await {
+            let buf = match self.client.get(self.chunk_index, self.buf).await {
                 Ok(buf) => buf,
                 Err(err) => {
                     return Some(Err(err));
@@ -81,7 +69,7 @@ mod http {
 
     use embedded_nal_async::{Dns, TcpConnect};
 
-    use crate::{transport, Chunk, Error};
+    use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
     // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
@@ -105,7 +93,7 @@ mod http {
             assert!(N >= CHUNK_SIZE as usize);
         }
 
-        let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await;
+        let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await?;
 
         Ok(FetchStream {
             chunk_index: 0,
@@ -188,6 +176,8 @@ impl<'bytes> Chunk<'bytes> {
 #[derive(Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
+    /// The URI is invalid.
+    InvalidUri,
     /// Fetch operation failed because of a transport error.
     Transport,
     /// Fetch operation failed because of a requested range was invalid.

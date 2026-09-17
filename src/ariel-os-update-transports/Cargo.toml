@@ -11,17 +11,26 @@ transport.exactly-one = { features = ["coap", "http"] }
 [dependencies]
 ariel-os-coap = { workspace = true, optional = true }
 ariel-os-log = { workspace = true }
+coap-message = { workspace = true, optional = true }
+coap-numbers = { workspace = true, optional = true }
+coap-request = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
 embedded-nal-async = { workspace = true }
 embedded-nal-coap = { workspace = true }
 featurecomb = { workspace = true }
+nourl = { workspace = true }
 reqwless = { workspace = true, optional = true }
 
 [features]
 defmt = ["dep:defmt"]
 
 # Selects CoAP as the update transport.
-coap = ["dep:ariel-os-coap"]
+coap = [
+  "dep:ariel-os-coap",
+  "dep:coap-message",
+  "dep:coap-numbers",
+  "dep:coap-request",
+]
 # Selects HTTP(S) as the update transport.
 http = ["dep:reqwless"]
 
