@@ -5,8 +5,6 @@ apps:
         executor_stacksize_required:
           - "200000"
         CARGO_ENV:
-          - CONFIG_WIFI_PASSWORD='u2isdxm2'
-          - CONFIG_WIFI_NETWORK='realme GT Neo2 5G'
           - CONFIG_NETWORK_MAX_CONCURRENT_SOCKETS=5
     selects:
       - network
