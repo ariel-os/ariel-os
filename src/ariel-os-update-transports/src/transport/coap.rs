@@ -41,8 +41,14 @@ impl<'a, 'uri> NetworkTransportClient<'a, 'uri> {
         chunk_index: u32,
         buf: &'buf mut [u8],
     ) -> Result<&'buf mut [u8], Error> {
-        let cur_request = request.set_blocknum(chunk_index);
-        let req = self.client.request(cur_request).await;
+        let request = SuitPayloadRequest::new(self.uri.path()).set_blocknum(chunk_index);
+        let (_has_more, data) = self
+            .client
+            .request(request)
+            .await
+            .map_err(|_| Error::Transport)?;
+
+        Ok(data)
     }
 }
 
@@ -67,8 +73,9 @@ impl<'a> SuitPayloadRequest<'a> {
     }
 }
 
+// FIXME: what's 3?
 impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayloadRequest<'a> {
-    type Output = Option<(bool, CoapChunk)>;
+    type Output = Option<(bool, CoapChunk<COAP_BLOCK_SIZE>)>;
 
     type Carry = (u32, u8);
 
@@ -76,6 +83,10 @@ impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayload
         &mut self,
         request: &mut <RequestingCoAPClient<'static, 3> as Stack>::RequestMessage<'_>,
     ) -> Result<Self::Carry, <RequestingCoAPClient<'static, 3> as Stack>::RequestUnionError> {
+        use coap_message::MinimalWritableMessage as _;
+
+        use coap_ext::OptionMessageWriter as _;
+
         let szx = 2;
         request.set_code(coap_numbers::code::GET);
         request.add_option_uri_path(self.path)?;
@@ -88,6 +99,10 @@ impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayload
         response: &<RequestingCoAPClient<'static, 3> as Stack>::ResponseMessage<'_>,
         carry: Self::Carry,
     ) -> Self::Output {
+        use coap_message::{MessageOption as _, ReadableMessage as _};
+
+        use coap_ext::Block2RequestDataExt as _;
+
         let (blocknum, _szx) = carry;
         let Some(block2) = response.options().find(|o| {
             o.number() == coap_numbers::option::BLOCK2 && o.value_uint::<u32>().is_some()
@@ -97,7 +112,7 @@ impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayload
         };
         let block2: Block2Opt = block2.value_uint::<u32>().unwrap().into();
 
-        if block2.size() != COAP_BLOCK_SIZE && block2.blocknum() != blocknum {
+        if usize::from(block2.size()) != COAP_BLOCK_SIZE && block2.blocknum() != blocknum {
             error!(
                 "Unexpected block {} or size {}",
                 block2.blocknum(),
@@ -108,7 +123,7 @@ impl<'a> coap_request::Request<RequestingCoAPClient<'static, 3>> for SuitPayload
 
         let payload = response.payload();
         let mut bytes = [0u8; COAP_BLOCK_SIZE];
-        bytes[..payload.len()].copy_from_slices(payload);
+        bytes[..payload.len()].copy_from_slice(payload);
         let out = CoapChunk {
             bytes,
             len: payload.len(),
