@@ -1,7 +1,10 @@
 mod coap_ext;
 
+use core::net::SocketAddr;
+
 use ariel_os_log::error;
 use coap_request::Stack;
+use embedded_nal_async::Dns;
 use embedded_nal_coap::RequestingCoAPClient;
 
 use crate::Error;
@@ -19,7 +22,7 @@ pub struct NetworkTransportClient<'uri> {
 
 impl<'uri> NetworkTransportClient<'uri> {
     #[must_use]
-    pub async fn new(uri: &'uri str) -> Result<Self, Error> {
+    pub async fn new<DNS: Dns>(dns_client: &DNS, uri: &'uri str) -> Result<Self, Error> {
         let Ok(uri) = nourl::Url::parse(uri) else {
             return Err(Error::InvalidUri);
         };
@@ -27,7 +30,17 @@ impl<'uri> NetworkTransportClient<'uri> {
         let peer_socket_addr = if let Some(socket_addr) = uri.host_socket_address() {
             socket_addr
         } else {
-            todo!("DNS request");
+            // TODO: might want to restrict to one type of IP addresses.
+            if let Ok(ip_addr) = dns_client
+                .get_host_by_name(uri.host(), embedded_nal_async::AddrType::Either)
+                .await
+            {
+                // FIXME: requires patching nourl to support `coap://`.
+                SocketAddr::new(ip_addr, uri.port_or_default())
+            } else {
+                // TODO: could introduce an error for DNS.
+                return Err(Error::Transport);
+            }
         };
 
         let client = ariel_os_coap::coap_client().await;
