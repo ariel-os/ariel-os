@@ -11,11 +11,11 @@ mod coap {
     use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
-    pub async fn fetch_from_uri<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
+    pub async fn fetch_from_uri<'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
         uri: &'uri str,
         buf: &'buf mut [u8; N],
         payload_size: u32,
-    ) -> Result<FetchStream<'a, 'uri, 'buf, N, CHUNK_SIZE>, Error> {
+    ) -> Result<FetchStream<'uri, 'buf, N, CHUNK_SIZE>, Error> {
         const {
             assert!(N >= CHUNK_SIZE as usize);
         }
@@ -31,15 +31,15 @@ mod coap {
         })
     }
 
-    pub struct FetchStream<'a, 'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
+    pub struct FetchStream<'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
         bytes_received: u32,
         payload_size: u32,
-        client: transport::NetworkTransportClient<'a, 'uri>,
+        client: transport::NetworkTransportClient<'uri>,
     }
 
-    impl<'buf, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, '_, 'buf, N, CHUNK_SIZE> {
+    impl<'buf, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, 'buf, N, CHUNK_SIZE> {
         /// Fetches and returns the next chunk of the requested payload.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
             if self.bytes_received >= self.payload_size {
