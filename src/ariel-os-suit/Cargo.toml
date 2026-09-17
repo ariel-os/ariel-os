@@ -1,0 +1,12 @@
+[package]
+name = "ariel-os-suit"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+dress-up = { workspace = true, features = ["async"] }
+
+[lints]
+workspace = true
