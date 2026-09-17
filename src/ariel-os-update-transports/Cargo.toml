@@ -6,18 +6,22 @@ rust-version.workspace = true
 license.workspace = true
 
 [package.metadata.feature-groups]
-transport.xor = { features = ["http"] }
+transport.exactly-one = { features = ["coap", "http"] }
 
 [dependencies]
+ariel-os-coap = { workspace = true, optional = true }
 ariel-os-log = { workspace = true }
 defmt = { workspace = true, optional = true }
 embedded-nal-async = { workspace = true }
+embedded-nal-coap = { workspace = true }
 featurecomb = { workspace = true }
 reqwless = { workspace = true, optional = true }
 
 [features]
 defmt = ["dep:defmt"]
 
+# Selects CoAP as the update transport.
+coap = ["dep:ariel-os-coap"]
 # Selects HTTP(S) as the update transport.
 http = ["dep:reqwless"]
 
