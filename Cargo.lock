@@ -707,9 +707,11 @@ dependencies = [
 name = "ariel-os-update-transports"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-coap",
  "ariel-os-log",
  "defmt 1.1.1",
  "embedded-nal-async 0.9.0",
+ "embedded-nal-coap",
  "featurecomb",
  "reqwless",
 ]

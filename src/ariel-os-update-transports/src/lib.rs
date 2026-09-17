@@ -10,12 +10,10 @@ use core::ops::Range;
 
 use embedded_nal_async::{Dns, TcpConnect};
 
-#[cfg(not(feature = "http"))]
-compile_error!("only HTTP is currently supported");
-
 /// Returns a stream that fetches a payload from a server.
 // `N` needs to be at least `max(HTTP response headers size, chunk size)`.
 // N >= CHUNK_SIZE.
+#[cfg(feature = "http")]
 pub async fn fetch_from_uri<
     'a,
     'uri,
@@ -46,6 +44,7 @@ pub async fn fetch_from_uri<
     })
 }
 
+#[cfg(feature = "http")]
 pub struct FetchStream<
     'a,
     'uri,
@@ -62,6 +61,7 @@ pub struct FetchStream<
     client: transport::NetworkTransportClient<'a, 'uri, TCP, DNS>,
 }
 
+#[cfg(feature = "http")]
 impl<'buf, 'tcp, TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: u32>
     FetchStream<'_, '_, 'buf, TCP, DNS, N, CHUNK_SIZE>
 {
