@@ -8,10 +8,13 @@ mod transport;
 
 #[cfg(feature = "coap")]
 mod coap {
+    use embedded_nal_async::Dns;
+
     use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
-    pub async fn fetch_from_uri<'uri, 'buf, const N: usize, const CHUNK_SIZE: u32>(
+    pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: u32>(
+        dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
         payload_size: u32,
@@ -20,7 +23,7 @@ mod coap {
             assert!(N >= CHUNK_SIZE as usize);
         }
 
-        let client = transport::NetworkTransportClient::new(uri).await?;
+        let client = transport::NetworkTransportClient::new(dns_client, uri).await?;
 
         Ok(FetchStream {
             chunk_index: 0,
