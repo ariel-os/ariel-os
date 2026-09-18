@@ -6,7 +6,11 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os = { workspace = true }
+ariel-os-update-storage = { workspace = true }
 dress-up = { workspace = true, features = ["async"] }
+cose_minicbor = { workspace = true, features = ["es256", "sha256", "suit-sha256-es256"] }
+minicbor = { workspace = true }
 
 [lints]
 workspace = true
