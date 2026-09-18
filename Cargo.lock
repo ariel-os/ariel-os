@@ -392,6 +392,7 @@ dependencies = [
  "ariel-os-rt",
  "cortex-m",
  "defmt 1.1.1",
+ "embassy-boot",
  "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-futures",
