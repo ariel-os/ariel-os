@@ -79,9 +79,11 @@ version = "0.6.0"
 dependencies = [
  "ariel-os-bench",
  "ariel-os-boards",
+ "ariel-os-bootloader-common",
  "ariel-os-buildinfo",
  "ariel-os-coap",
  "ariel-os-debug",
+ "ariel-os-device-update",
  "ariel-os-embassy",
  "ariel-os-hal",
  "ariel-os-identity",
@@ -152,11 +154,13 @@ dependencies = [
 name = "ariel-os-bootloader-common"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-device-update",
  "ariel-os-embassy-common",
  "ariel-os-hal",
  "ariel-os-power",
  "ariel-os-rt",
  "embassy-boot",
+ "embedded-storage",
 ]
 
 [[package]]
@@ -211,6 +215,14 @@ dependencies = [
  "featurecomb",
  "rtt-target",
  "semihosting",
+]
+
+[[package]]
+name = "ariel-os-device-update"
+version = "0.5.0"
+dependencies = [
+ "defmt 1.1.1",
+ "embedded-io-async 0.6.1",
 ]
 
 [[package]]
