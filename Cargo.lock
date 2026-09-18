@@ -140,9 +140,23 @@ version = "0.5.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-bootloader-common",
  "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-rt",
  "embassy-boot",
  "embedded-storage",
+]
+
+[[package]]
+name = "ariel-os-bootloader-common"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-power",
+ "ariel-os-rt",
+ "embassy-boot",
 ]
 
 [[package]]

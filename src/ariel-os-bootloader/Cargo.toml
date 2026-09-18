@@ -12,12 +12,12 @@ ariel-os = { workspace = true, default-features = true, features = [
   "embassy-boot-loader",
 ] }
 ariel-os-boards = { workspace = true }
+ariel-os-bootloader-common = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
+ariel-os-hal = { workspace = true }
+ariel-os-rt = { workspace = true }
 embassy-boot = { workspace = true }
 embedded-storage = { workspace = true }
-
-
-[features]
 
 [lints]
 workspace = true
