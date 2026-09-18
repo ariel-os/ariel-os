@@ -1,18 +1,27 @@
 #![cfg_attr(not(test), no_std)]
 
-use ariel_os::log::*;
 use uuid::Uuid;
 
 use dress_up::component::Component;
-use dress_up::manifest::Manifest;
 use dress_up::{AsyncOperatingHooks, AuthState, Authenticated, New, SuitManifest};
 
 const KEYS: &[u8] = include_bytes!("../key_cose_minicbor.cbor");
 const MAX_ID_LENGTH: usize = 16;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 enum Error {
     AuthenticationFailure,
+    InvalidManifestStructure,
+    InvalidManifestSequence { position: usize },
+    ConditionMatchFail { position: usize },
+    MissingCommandSection { section: i16 },
+    ManifestProcessingError,
+    MissingParameter { position: usize },
+    InvalidDirective { identifier: u32 },
+    UnsupportedDigestAlgorithm { algorithm: i32 },
+    UnsupportedComponent { identifier: i64 },
+    UnsupportedParameter { parameter: i32 },
 }
 
 impl core::fmt::Display for Error {
@@ -24,6 +33,65 @@ impl core::fmt::Display for Error {
 }
 
 impl core::error::Error for Error {}
+
+impl From<dress_up::error::Error> for Error {
+    fn from(value: dress_up::error::Error) -> Self {
+        match value {
+            dress_up::error::Error::AuthenticationFailure => Self::AuthenticationFailure,
+            dress_up::error::Error::CapacityError => Self::ManifestProcessingError,
+            dress_up::error::Error::ConditionMatchFail { position } => {
+                Self::ConditionMatchFail { position }
+            }
+            dress_up::error::Error::TryEachFail { position } => {
+                Self::ConditionMatchFail { position }
+            }
+            dress_up::error::Error::EndOfInput => Self::ManifestProcessingError,
+            dress_up::error::Error::InvalidAuthenticationStructure => Self::ManifestProcessingError,
+            dress_up::error::Error::InvalidCommandSequence { position } => {
+                Self::InvalidManifestSequence { position }
+            }
+            dress_up::error::Error::InvalidCommonSection => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoAuthObject => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoCommonSection => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoCommandSection { section } => {
+                Self::MissingCommandSection { section }
+            }
+            dress_up::error::Error::NoComponentList => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoManifestObject => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoManifestVersion => Self::InvalidManifestStructure,
+            dress_up::error::Error::NoSequenceNumber => Self::InvalidManifestStructure,
+            dress_up::error::Error::ParameterNotSet { position } => {
+                Self::MissingParameter { position }
+            }
+            dress_up::error::Error::SameSourceAndTarget { identifier } => {
+                Self::InvalidDirective { identifier }
+            }
+            dress_up::error::Error::InvalidSourceComponent { identifier } => {
+                Self::InvalidDirective { identifier }
+            }
+            dress_up::error::Error::UnexpectedCbor { .. } => Self::InvalidManifestStructure,
+            dress_up::error::Error::UnexpectedIndefiniteLength { .. } => {
+                Self::InvalidManifestStructure
+            }
+            dress_up::error::Error::UnsupportedCommand { command } => Self::InvalidDirective {
+                identifier: command as u32,
+            },
+            dress_up::error::Error::UnsupportedComponentIdentifier { identifier } => {
+                Self::UnsupportedComponent { identifier }
+            }
+            dress_up::error::Error::UnsupportedDigestAlgo { algorithm } => {
+                Self::UnsupportedDigestAlgorithm {
+                    algorithm: algorithm as i32,
+                }
+            }
+            dress_up::error::Error::UnsupportedManifestVersion => Self::InvalidManifestStructure,
+            dress_up::error::Error::UnsupportedParameter { parameter } => {
+                Self::UnsupportedParameter { parameter }
+            }
+            dress_up::error::Error::Utf8Error { .. } => Self::InvalidManifestStructure,
+        }
+    }
+}
 
 struct SuitProcessor<'a, STATE: AuthState> {
     manifest: SuitManifest<'a, STATE>,
@@ -52,7 +120,6 @@ impl<'a> SuitProcessor<'a, New> {
                 //let key = CoseKey::from_bytes(KEY).unwrap();
                 //let res = sign1.verify_detached(payload, &key, Some(Algorithm::Esp256), None);
                 if let Err(e) = res {
-                    error!("Cose error: {:?} ", e);
                     return Err(dress_up::error::Error::AuthenticationFailure);
                 }
                 Ok(true)
@@ -66,18 +133,9 @@ impl<'a> SuitProcessor<'a, Authenticated> {
         let envelope = self.manifest.envelope()?;
         let manifest = envelope.manifest()?;
 
-        // check sequence number
-        info!(
-            "manifest version {}, sequence number {}",
-            manifest.version()?,
-            manifest.sequence_number()?
-        );
-
         if let Err(e) = manifest.async_execute_full(self).await {
-            error!("Could not process manifest: {}", e);
             return Err(e.into());
         }
-        debug!("Completed manifest processing");
         Ok(())
     }
 }
@@ -108,7 +166,6 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
-        todo!()
     }
 
     async fn component_write(
@@ -136,18 +193,39 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
     }
 }
 
-fn storage_backend(component: Component) -> Option<ariel_os_update_storage::StorageBackend> {
-    let Some(first) = component.iter_segments().next() else {
-        return None;
+fn storage_backend(
+    component: Component<'_>,
+) -> Result<ariel_os_update_storage::StorageBackend, Error> {
+    let Some(Ok(first)) = component.iter_segments()?.next() else {
+        return Err(Error::ManifestProcessingError);
     };
     const NVM: &[u8] = "nvm".as_bytes();
     match first {
-        NVM => ariel_os_update_storage::StorageBackend::nvm,
+        NVM => Ok(ariel_os_update_storage::StorageBackend::Nvm),
+        _ => Err(Error::ManifestProcessingError),
     }
 }
 
-fn build_id(component: Component, slot: Option<u64>) -> heapless::Vec<u8, MAX_ID_LENGTH> {
-    let slot_num = u8::try_from(slot);
-    let name = component.iter_segments()?.skip();
-    heapless::Vec::new()
+fn build_id(
+    component: Component<'_>,
+    slot: Option<u64>,
+) -> Result<heapless::Vec<u8, MAX_ID_LENGTH>, Error> {
+    let slot_num = match slot {
+        Some(slot) => Some(
+            u8::try_from(slot)
+                .map_err(|_| Error::InvalidManifestStructure)?
+                .to_be_bytes(),
+        ),
+        None => None,
+    };
+    let mut id = heapless::Vec::new();
+    // skip the backend type
+    for segment in component.iter_segments()?.skip(1) {
+        id.extend_from_slice(segment?)
+            .map_err(|_| Error::InvalidManifestStructure)?; // todo: needs a separate error
+    }
+    if let Some(slot_num) = slot_num {
+        id.extend_from_slice(&slot_num);
+    }
+    Ok(id)
 }
