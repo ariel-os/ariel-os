@@ -360,3 +360,9 @@ builders:
   provides:
   - has_usb_cdc_acm_port
   - has_usb_device_port
+- name: winky-esp32-c6
+  parent: esp32-c6-mini-1-x4
+  provides:
+  - has_buttons
+  - has_host_facing_uart
+  - has_usb_cdc_acm_port

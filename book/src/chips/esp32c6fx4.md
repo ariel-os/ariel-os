@@ -125,6 +125,28 @@ Boards using this chip.
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
       </tr>
 	  </tbody>
+	<tbody class="odd">
+      <tr>
+	    <td rowspan="2"><a href="../boards/winky-esp32-c6.html">Winky ESP32-C6</a></td>
+	  </tr>
+	  <tr>
+	    <td><code>winky-esp32-c6</code></td>
+		<td style="text-align: center;">2</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="not available on this piece of hardware">–</td>
+		  <td class="support-cell" title="not available on this piece of hardware">–</td>
+		  <td class="support-cell" title="not available on this piece of hardware">–</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
+      </tr>
+	  </tbody>
   </tbody>
 </table>
 </div>

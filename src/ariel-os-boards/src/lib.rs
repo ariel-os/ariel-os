@@ -66,5 +66,6 @@ cfg_if::cfg_if! {
     #[cfg(context = "unihiker-k10")] { include!("unihiker-k10.rs"); } else if
     #[cfg(context = "waveshare-esp32-s3-eth")] { include!("waveshare-esp32-s3-eth.rs"); }
     else if #[cfg(context = "waveshare-esp32-s3-matrix")] {
-    include!("waveshare-esp32-s3-matrix.rs"); } else {}
+    include!("waveshare-esp32-s3-matrix.rs"); } else if #[cfg(context =
+    "winky-esp32-c6")] { include!("winky-esp32-c6.rs"); } else {}
 }
