@@ -1,11 +1,14 @@
 #![cfg_attr(not(test), no_std)]
 
 use ariel_os::log::*;
+use uuid::Uuid;
 
+use dress_up::component::Component;
 use dress_up::manifest::Manifest;
 use dress_up::{AsyncOperatingHooks, AuthState, Authenticated, New, SuitManifest};
 
 const KEYS: &[u8] = include_bytes!("../key_cose_minicbor.cbor");
+const MAX_ID_LENGTH: usize = 16;
 
 #[derive(Debug)]
 enum Error {
@@ -79,13 +82,13 @@ impl<'a> SuitProcessor<'a, Authenticated> {
     }
 }
 
-impl AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
+impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
     type ReadWriteBufferSize = generic_array::typenum::U64;
 
     async fn match_vendor_id(
         &self,
         uuid: Uuid,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
     ) -> Result<bool, dress_up::error::Error> {
         todo!()
     }
@@ -93,14 +96,14 @@ impl AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
     async fn match_class_id(
         &self,
         uuid: Uuid,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
     ) -> Result<bool, dress_up::error::Error> {
         todo!()
     }
 
     async fn component_read(
         &self,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
         slot: Option<u64>,
         offset: usize,
         bytes: &mut [u8],
@@ -110,7 +113,7 @@ impl AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
 
     async fn component_write(
         &self,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
         slot: Option<u64>,
         offset: usize,
         bytes: &[u8],
@@ -120,15 +123,31 @@ impl AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
 
     async fn component_size(
         &self,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
     ) -> Result<usize, dress_up::error::Error> {
         todo!()
     }
 
     async fn component_capacity(
         &self,
-        component: &dress_up::component::Component,
+        component: &dress_up::component::Component<'_>,
     ) -> Result<usize, dress_up::error::Error> {
         todo!()
     }
+}
+
+fn storage_backend(component: Component) -> Option<ariel_os_update_storage::StorageBackend> {
+    let Some(first) = component.iter_segments().next() else {
+        return None;
+    };
+    const NVM: &[u8] = "nvm".as_bytes();
+    match first {
+        NVM => ariel_os_update_storage::StorageBackend::nvm,
+    }
+}
+
+fn build_id(component: Component, slot: Option<u64>) -> heapless::Vec<u8, MAX_ID_LENGTH> {
+    let slot_num = u8::try_from(slot);
+    let name = component.iter_segments()?.skip();
+    heapless::Vec::new()
 }
