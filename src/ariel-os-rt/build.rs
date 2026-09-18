@@ -77,6 +77,19 @@ mod memoryx {
     /// # Panics
     /// Panics if called outside of a known laze context.
     pub fn write_memoryx(out_dir: &std::path::Path) {
+        // preflight
+        if cfg!(all(
+            feature = "embassy-boot",
+            not(any(
+                feature = "embassy-boot-loader",
+                feature = "embassy-boot-application"
+            ))
+        )) {
+            panic!(
+                "feature \"embassy-boot\" selected but not any of [\"embassy-boot-loader\", \"embassy-boot-application\"]"
+            );
+        }
+
         // Gather chip NVM & RAM config
         let nvm = Nvm::from_env();
         let ram = Ram::from_env();
@@ -92,10 +105,10 @@ mod memoryx {
         // define NVM layout
         let mut layout = memsolve::Memory::new(chip);
 
-        #[cfg(not(any(feature = "embassy-boot-loader", feature = "embassy-boot-application")))]
+        #[cfg(not(feature = "embassy-boot"))]
         layout_default(&mut layout);
 
-        #[cfg(any(feature = "embassy-boot-loader", feature = "embassy-boot-application"))]
+        #[cfg(feature = "embassy-boot")]
         layout_embassy_boot(&mut layout);
 
         let mut memory = layout
@@ -172,7 +185,7 @@ mod memoryx {
         );
     }
 
-    /// Configures the embassy-boot compatible layout.
+    /// Configures the ariel-os-bootloader / embassy-boot compatible layout.
     #[allow(
         clippy::missing_panics_doc,
         reason = "constant names are always correct"
@@ -190,8 +203,6 @@ mod memoryx {
             }
             section
         }
-
-        println!("embassy memsolve layout");
 
         layout.add_section(fix_linker_name(
             Section::new("BOOTLOADER")
