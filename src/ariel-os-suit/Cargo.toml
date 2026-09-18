@@ -8,9 +8,12 @@ license.workspace = true
 [dependencies]
 ariel-os = { workspace = true }
 ariel-os-update-storage = { workspace = true }
-dress-up = { workspace = true, features = ["async"] }
 cose_minicbor = { workspace = true, features = ["es256", "sha256", "suit-sha256-es256"] }
+dress-up = { workspace = true, features = ["async"] }
+generic-array = { workspace = true, features = ["const-default"] }
+heapless = { workspace = true }
 minicbor = { workspace = true }
+uuid = { workspace = true }
 
 [lints]
 workspace = true
