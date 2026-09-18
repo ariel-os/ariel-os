@@ -11,15 +11,20 @@ ariel-os-buildinfo = { workspace = true }
 ariel-os-utils = { workspace = true }
 const-sha1 = { version = "0.3.0", default-features = false }
 defmt = { workspace = true, optional = true }
+embassy-boot = { workspace = true, optional = true }
 embassy-executor = { workspace = true }
 embassy-time = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
+embedded-storage = { workspace = true, optional = true }
 fugit = { workspace = true, optional = true }
 static_cell = { workspace = true, optional = true }
 trouble-host = { workspace = true, optional = true }
 
 [features]
+## Enables access to bootloader types
+bootloader = ["dep:embassy-boot", "dep:embedded-storage"]
+
 ## Enables GPIO interrupt support.
 external-interrupts = []
 

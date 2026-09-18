@@ -217,7 +217,7 @@ dependencies = [
  "const_panic",
  "critical-section",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-futures",
  "embassy-hal-internal",
  "embassy-net",
@@ -250,10 +250,12 @@ dependencies = [
  "ariel-os-utils",
  "const-sha1",
  "defmt 1.1.1",
- "embassy-executor",
+ "embassy-boot",
+ "embassy-executor 0.10.0",
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
+ "embedded-storage",
  "fugit",
  "static_cell",
  "trouble-host",
@@ -273,7 +275,7 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-time",
  "embassy-time-driver",
  "embassy-time-queue-utils",
@@ -306,7 +308,7 @@ dependencies = [
  "bt-hci",
  "const_panic",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-hal-internal",
  "embassy-sync 0.8.0",
  "embassy-usb",
@@ -366,7 +368,7 @@ dependencies = [
  "ariel-os-random",
  "defmt 1.1.1",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-net-tuntap",
  "embassy-time",
  "embedded-hal-async",
@@ -387,7 +389,7 @@ dependencies = [
  "cortex-m",
  "defmt 1.1.1",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-futures",
  "embassy-net",
  "embassy-net-driver-channel",
@@ -448,7 +450,7 @@ dependencies = [
  "cyw43-pio",
  "defmt 1.1.1",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-net-driver-channel",
  "embassy-rp",
  "embedded-hal-async",
@@ -500,7 +502,7 @@ dependencies = [
  "ariel-os-sensors-utils",
  "crc",
  "critical-section",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-futures",
  "embassy-sync 0.8.0",
  "embassy-time",
@@ -560,7 +562,7 @@ dependencies = [
  "ariel-os-sensors",
  "ariel-os-sensors-utils",
  "critical-section",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-futures",
  "embassy-sync 0.8.0",
  "embassy-time",
@@ -617,7 +619,7 @@ dependencies = [
  "ariel-os-utils",
  "defmt 1.1.1",
  "embassy-embedded-hal",
- "embassy-executor",
+ "embassy-executor 0.10.0",
  "embassy-stm32",
  "embedded-hal-async",
  "embedded-io-async 0.7.0",
@@ -2122,6 +2124,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "embassy-boot"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73bfc955c9238df2ce9fecc6f18a64b13ecaa41a3cd42d940a09f304765d10db"
+dependencies = [
+ "digest",
+ "document-features",
+ "embassy-embedded-hal",
+ "embassy-sync 0.8.0",
+ "embedded-storage",
+ "embedded-storage-async",
+ "signature",
+]
+
+[[package]]
 name = "embassy-embedded-hal"
 version = "0.6.0"
 source = "git+https://github.com/ariel-os/embassy?rev=35b4b7a7f612c4d9bfe13c595d52172a5f8b9bbb#35b4b7a7f612c4d9bfe13c595d52172a5f8b9bbb"
@@ -2141,6 +2158,18 @@ dependencies = [
 
 [[package]]
 name = "embassy-executor"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06070468370195e0e86f241c8e5004356d696590a678d47d6676795b2e439c6b"
+dependencies = [
+ "critical-section",
+ "document-features",
+ "embassy-executor-macros 0.7.0",
+ "embassy-executor-timer-queue",
+]
+
+[[package]]
+name = "embassy-executor"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d0d3b15c9d7dc4fec1d8cb77112472fb008b3b28c51ad23838d83587a6d2f1e"
@@ -2150,8 +2179,20 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "document-features",
- "embassy-executor-macros",
+ "embassy-executor-macros 0.8.0",
  "embassy-executor-timer-queue",
+]
+
+[[package]]
+name = "embassy-executor-macros"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfdddc3a04226828316bf31393b6903ee162238576b1584ee2669af215d55472"
+dependencies = [
+ "darling 0.20.11",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.114",
 ]
 
 [[package]]
@@ -2696,7 +2737,8 @@ version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2cfbacda78e52f6f53ccd0d6f6f6a41a21b722c3a2d6bbc547aa2500d86521f"
 dependencies = [
- "embassy-executor",
+ "embassy-executor 0.10.0",
+ "embassy-executor 0.9.1",
  "embedded-test-linker-script",
  "embedded-test-macros",
 ]
