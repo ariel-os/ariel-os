@@ -7,6 +7,9 @@
 pub mod cell;
 pub mod gpio;
 
+#[cfg(feature = "bootloader")]
+pub mod bootloader;
+
 #[cfg(context = "cortex-m")]
 pub mod executor_swi;
 
