@@ -106,7 +106,7 @@ impl<'a> SuitProcessor<'a, New> {
     }
 
     /// Authenticate a new Suit Manifest.
-    pub fn authenticate(&self) -> Result<SuitProcessor<'a, Authenticated>, Error> {
+    pub fn authenticate(self) -> Result<SuitProcessor<'a, Authenticated>, Error> {
         Ok(SuitProcessor {
             manifest: self.manifest.authenticate(|cose, payload| {
                 let cose_untagged = cose
@@ -166,6 +166,7 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
+        todo!()
     }
 
     async fn component_write(
@@ -225,7 +226,8 @@ fn build_id(
             .map_err(|_| Error::InvalidManifestStructure)?; // todo: needs a separate error
     }
     if let Some(slot_num) = slot_num {
-        id.extend_from_slice(&slot_num);
+        id.extend_from_slice(&slot_num)
+            .map_err(|_| Error::InvalidManifestStructure)?; // todo: needs a separate error
     }
     Ok(id)
 }
