@@ -7,11 +7,13 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-device-update = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-hal = { workspace = true }
 ariel-os-power = { workspace = true }
 ariel-os-rt = { workspace = true }
 embassy-boot = { workspace = true }
+embedded-storage = { workspace = true }
 
 [lints]
 workspace = true
