@@ -200,7 +200,7 @@ mod memoryx {
                 .set_boot(true),
         ));
 
-        layout.add_section(Section::new("BOOTLOADER_STATE").unwrap().set_pages(1));
+        layout.add_section(Section::new("BOOTLOADER_STATE").unwrap().set_pages(2));
         layout.add_section(fix_linker_name(
             Section::new("ACTIVE").unwrap().set_maximize(true),
         ));
