@@ -76,6 +76,10 @@ pub mod api {
         };
     }
 
+    #[cfg(feature = "bootloader")]
+    pub mod bootloader {
+        pub use ariel_os_hal::hal::bootloader::HalBootLoaderBackend;
+    }
     #[cfg(feature = "ble")]
     pub use crate::ble;
     #[cfg(feature = "net")]
@@ -211,6 +215,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     // gated so doc builds pass
     #[cfg(all(not(feature = "no-boards"), context = "ariel-os"))]
     ariel_os_boards::init(&mut peripherals);
+
+    #[cfg(feature = "bootloader")]
+    hal::bootloader::init(&mut peripherals);
 
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);

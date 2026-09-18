@@ -299,6 +299,7 @@ dependencies = [
  "ariel-os-stm32",
  "bt-hci",
  "const_panic",
+ "embassy-boot",
  "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-hal-internal 0.3.0",
@@ -307,6 +308,7 @@ dependencies = [
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-io 0.6.1",
+ "embedded-storage",
  "embedded-storage-async",
 ]
 
