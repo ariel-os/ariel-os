@@ -179,6 +179,7 @@ bootloader = [
   "ariel-os-embassy-common/bootloader",
   "ariel-os-nrf/bootloader",
   "ariel-os-rp/bootloader",
+  "ariel-os-stm32/bootloader",
 ]
 
 rcc-config-override = ["ariel-os-stm32/rcc-config-override"]

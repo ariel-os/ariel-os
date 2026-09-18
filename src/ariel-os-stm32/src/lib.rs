@@ -14,6 +14,10 @@ pub mod peripheral {
     pub use embassy_stm32::Peri;
 }
 
+#[cfg(feature = "bootloader")]
+#[doc(hidden)]
+pub mod bootloader;
+
 #[cfg(feature = "external-interrupts")]
 #[doc(hidden)]
 pub mod extint_registry;
