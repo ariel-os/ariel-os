@@ -9,43 +9,43 @@ license.workspace = true
 # BEGIN AUTO-GENERATED STM32 MAPPING
 [target.'cfg(context = "stm32c011d6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c011d6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c011f4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c011f4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c011f6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c011f6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c011j4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c011j4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c011j6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c011j6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031c4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031c4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031f4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031f4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031f6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031f6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031g4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031g4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031g6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031g6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031k4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031k4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32c031k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32c031k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f030c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f030c6"] }
 
@@ -666,211 +666,211 @@ embassy-stm32 = { workspace = true, features = ["stm32f217zg"] }
 
 [target.'cfg(context = "stm32f301c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f301c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f301k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f301k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f301r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f301r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f301r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302rd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302rd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302vd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302vd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302zd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302zd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f302ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f302ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303rd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303rd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303vd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303vd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303zd")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303zd"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f303ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f303ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f318c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f318c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f318k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f318k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f328c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f328c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334c4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334c4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334k4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334k4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f334r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f334r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f358cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f358cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f358rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f358rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f358vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f358vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373v8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373v8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f373vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f373vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f378cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f378cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f378rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f378rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f378vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f378vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f398ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f398ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32f401cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32f401cb"] }
 
@@ -1896,283 +1896,283 @@ embassy-stm32 = { workspace = true, features = ["stm32g0c1ve"] }
 
 [target.'cfg(context = "stm32g431c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431m6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431m6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431m8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431m8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431mb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431mb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431v6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431v6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431v8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431v8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g431vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g431vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g441cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g441cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g441kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g441kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g441mb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g441mb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g441rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g441rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g441vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g441vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471qc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471qc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g471ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g471ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473mb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473mb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473pb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473pb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473pc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473pc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473pe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473pe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473qb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473qb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473qc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473qc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g473ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g473ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474mb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474mb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474pb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474pb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474pc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474pc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474pe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474pe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474qb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474qb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474qc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474qc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g474ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g474ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483pe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483pe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g483ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g483ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484pe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484pe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g484ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g484ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491ke")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491ke"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g491ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g491ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g4a1ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g4a1ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g4a1ke")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g4a1ke"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g4a1me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g4a1me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g4a1re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g4a1re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32g4a1ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32g4a1ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h503cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h503cb"] }
 
@@ -2310,403 +2310,403 @@ embassy-stm32 = { workspace = true, features = ["stm32h573zi"] }
 
 [target.'cfg(context = "stm32h723ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h723ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h723vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h723vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h723ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h723ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h723zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h723zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ae")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ae"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ie")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ie"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ig"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h725zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h725zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h730ab")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h730ab"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h730ib")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h730ib"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h730vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h730vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h730zb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h730zb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h733vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h733vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h733zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h733zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h735ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h735ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h735ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h735ig"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h735rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h735rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h735vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h735vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h735zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h735zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742bg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742bg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742bi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742ig"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742ii"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742xg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742xg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742xi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h742zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h742zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743bg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743bg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743bi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743ig"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743ii"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743xg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743xg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743xi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h743zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h743zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745bg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745bg-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745bi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745ig-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745ii-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745xg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745xg-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745xi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745zg-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h745zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h745zi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747ag-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747ai-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747bg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747bg-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747bi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747ig-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747ii-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747xg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747xg-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747xi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h747zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h747zi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h750ib")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h750ib"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h750vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h750vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h750xb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h750xb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h750zb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h750zb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753bi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753ii"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753xi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h753zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h753zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h755bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h755bi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h755ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h755ii-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h755xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h755xi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h755zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h755zi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h757ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h757ai-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h757bi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h757bi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h757ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h757ii-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h757xi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h757xi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h757zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h757zi-cm7"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ig")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ig"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ii"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3lg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3lg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3li")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3li"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ng")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ng"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ni")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ni"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7a3zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7a3zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b0ab")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b0ab"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b0ib")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b0ib"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b0rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b0rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b0vb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b0vb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b0zb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b0zb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3ii")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3ii"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3li")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3li"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3ni")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3ni"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7b3zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7b3zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3a8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3a8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3i8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3i8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3l8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3l8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3v8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3v8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r3z8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r3z8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r7a8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r7a8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r7i8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r7i8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r7l8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r7l8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7r7z8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7r7z8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3a8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3a8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3i8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3i8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3l8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3l8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3v8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3v8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s3z8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s3z8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s7a8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s7a8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s7i8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s7i8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s7l8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s7l8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32h7s7z8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32h7s7z8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l010c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l010c6"] }
 
@@ -3270,421 +3270,421 @@ embassy-stm32 = { workspace = true, features = ["stm32l162ze"] }
 
 [target.'cfg(context = "stm32l412c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412t8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412t8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l412tb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l412tb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l422cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l422cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l422kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l422kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l422rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l422rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l422tb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l422tb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l431vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l431vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l432kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l432kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l432kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l432kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l433cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l433cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l433cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l433cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l433rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l433rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l433rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l433rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l433vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l433vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l442kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l442kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l443cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l443cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l443rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l443rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l443vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l443vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l451ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l451ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l452ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l452ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l462ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l462ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l462re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l462re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l462ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l462ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l471zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l471zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l475vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l475vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476je")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476je"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476jg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476jg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476me")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476me"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476mg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476mg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l476zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l476zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l486jg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l486jg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l486qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l486qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l486rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l486rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l486vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l486vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l486zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l486zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496ae")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496ae"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496wg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496wg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l496zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l496zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4a6ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4a6ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4a6qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4a6qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4a6rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4a6rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4a6vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4a6vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4a6zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4a6zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5ae")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5ae"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5qe")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5qe"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5ze")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5ze"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4p5zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4p5zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4q5zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4q5zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r5zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r5zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r7ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r7ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r7vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r7vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r7zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r7zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4r9zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4r9zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s5ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s5ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s5qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s5qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s5vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s5vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s5zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s5zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s7ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s7ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s7vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s7vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s7zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s7zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s9ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s9ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s9vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s9vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l4s9zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l4s9zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32l552cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32l552cc"] }
 
@@ -3738,528 +3738,528 @@ embassy-stm32 = { workspace = true, features = ["stm32l562ze"] }
 
 [target.'cfg(context = "stm32u031c6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031c6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031f4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031f4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031f6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031f6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031f8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031f8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031g6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031g6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031g8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031g8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031k4")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031k4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031k6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031k6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031r6")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031r6"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u031r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u031r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073h8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073h8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073hb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073hb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073hc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073hc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073k8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073k8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073kb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073kb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073m8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073m8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073mb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073mb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073r8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073r8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u073rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u073rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u083cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u083cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u083hc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u083hc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u083kc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u083kc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u083mc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u083mc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u083rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u083rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535je")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535je"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535nc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535nc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535ne")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535ne"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535rb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535rb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u535ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u535ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u545ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u545ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u545je")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u545je"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u545ne")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u545ne"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u545re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u545re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u545ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u545ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575ag")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575ag"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575og")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575og"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575oi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575oi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575qg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575qg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575zg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575zg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u575zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u575zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585oi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585oi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u585zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u585zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595ai")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595ai"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595aj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595aj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595qj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595qj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595rj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595rj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u595zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u595zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599bj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599bj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599ni")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599ni"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599nj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599nj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u599zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u599zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5aj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5aj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5qi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5qi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5qj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5qj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5rj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5rj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a5zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a5zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a9bj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a9bj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a9nj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a9nj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a9vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a9vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5a9zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5a9zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f7vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f7vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f7vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f7vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9bj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9bj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9nj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9nj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9vi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9vi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9zi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9zi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5f9zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5f9zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5g7vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5g7vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5g9bj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5g9bj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5g9nj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5g9nj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5g9vj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5g9vj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32u5g9zj")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32u5g9zj"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb10cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb10cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb15cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb15cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb30ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb30ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb35cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb35cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb35ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb35ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb50cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb50cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55rc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55rc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55re")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55re"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55vc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55vc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55ve")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55ve"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55vg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55vg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wb55vy")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wb55vy"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba50ke")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba50ke"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba50kg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba50kg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba52ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba52ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba52cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba52cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba52ke")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba52ke"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba52kg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba52kg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba54ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba54ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba54cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba54cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba54ke")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba54ke"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba54kg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba54kg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55ce")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55ce"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55he")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55he"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55hg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55hg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55ue")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55ue"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba55ug")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba55ug"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62mg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62mg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62mi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62mi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62pg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62pg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba62pi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba62pi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba63cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba63cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba63ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba63ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba64cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba64cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba64ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba64ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65cg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65cg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65ci")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65ci"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65mg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65mg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65mi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65mi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65pg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65pg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65pi")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65pi"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65rg")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65rg"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wba65ri")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wba65ri"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wl54cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wl54cc-cm4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wl54jc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wl54jc-cm4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wl55cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wl55cc-cm4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wl55jc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wl55jc-cm4"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4j8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4j8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4jb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4jb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle4jc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle4jc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5c8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5c8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5cb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5cb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5cc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5cc"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5j8")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5j8"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5jb")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5jb"] }
-
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 [target.'cfg(context = "stm32wle5jc")'.dependencies]
 embassy-stm32 = { workspace = true, features = ["stm32wle5jc"] }
-# END AUTO-GENERATED STM32 MAPPING
+ariel-os-rt = { workspace = true, features = ["memory-x"] }# END AUTO-GENERATED STM32 MAPPING
 
 [lints]
