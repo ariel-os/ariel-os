@@ -54,6 +54,10 @@ contexts:
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
           CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
+          CHIP_NVM_PAGE_COUNT=${CHIP_NVM_PAGE_COUNT}
+          CHIP_NVM_START_ADDRESS=${CHIP_NVM_START_ADDRESS}
+          CHIP_NVM_PAGE_SIZE_BYTES=${CHIP_NVM_PAGE_SIZE_BYTES}
+          ESP_PARTITION_FILE=${ESP_PARTITION_FILE}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       PROBE_RS_PROTOCOL: swd
@@ -204,6 +208,11 @@ contexts:
       - has_device_identity
       - has_swi
       - sw/benchmark
+    env:
+      # Most common flash page size
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_START_ADDRESS: "0x0"
+
 
   - name: nrf51
     parent: nrf
@@ -211,6 +220,8 @@ contexts:
       - cortex-m0
     provides:
       - has_hwrng
+    env:
+      CHIP_NVM_PAGE_SIZE_BYTES: "1024"
 
   - name: nrf51822-xxaa
     parent: nrf51
@@ -218,6 +229,7 @@ contexts:
       - ram-tiny
     env:
       PROBE_RS_CHIP: nrf51822_xxAA
+      CHIP_NVM_PAGE_COUNT: "256"
 
   - name: nrf52
     parent: nrf
@@ -238,6 +250,7 @@ contexts:
       - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: nrf52833
     parent: nrf52
@@ -247,6 +260,7 @@ contexts:
       - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52833_xxAA
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: nrf52840
     parent: nrf52
@@ -256,6 +270,7 @@ contexts:
       - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
+      CHIP_NVM_PAGE_COUNT: "256"
 
   - name: nrf53
     parent: nrf
@@ -268,6 +283,7 @@ contexts:
       - has_storage_support
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: nrf5340-net
     parent: nrf53
@@ -283,6 +299,9 @@ contexts:
       - usb
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
+      CHIP_NVM_START_ADDRESS: "0x01000000"
+      CHIP_NVM_PAGE_COUNT: "128"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
     help: nRF5340 Network Core support
 
   - name: nrf91
@@ -293,6 +312,8 @@ contexts:
       # For blinky the measured consumption is ~3milliAmps without nrf91-modem to ~4 microAmps with nrf91-modem.
       # Tested using the ppk2 in ampere mode on the Thingy:91 X and nrf9160dk.
       - ?nrf91-modem
+    env:
+      CHIP_NVM_PAGE_COUNT: "256"
 
   - name: nrf9160
     parent: nrf91
@@ -319,6 +340,10 @@ contexts:
       - has_hwrng
       - has_swi
       - sw/benchmark
+    env:
+      CHIP_NVM_START_ADDRESS: "0x10000000"
+      CHIP_NVM_PAGE_COUNT: "8192"
+      CHIP_NVM_PAGE_SIZE_BYTES: "256"
 
   - name: rp2040
     parent: rp
@@ -353,6 +378,9 @@ contexts:
         - ${SCRIPTS}/debug-openocd.sh
       OPENOCD_ARGS:
         - "-f interface/cmsis-dap.cfg -f target/rp2040.cfg"
+      RUSTFLAGS:
+        # Extra rp235xa link bits
+        - -Clink-arg=-Tmemory-rp235xa.x
     tasks:
       flash:
         cmd:
@@ -365,11 +393,16 @@ contexts:
     provides:
       - has_device_identity
       - has_hwrng
+      - has_storage_support
     env:
       esp_wifi_heapsize_required: $(72*1024)
+      ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_START_ADDRESS: "0x9000" # skips the bootloader and partition table space.
+      CHIP_NVM_PAGE_COUNT: "1015"
 
   - name: esp32
     parent: esp
@@ -539,6 +572,7 @@ contexts:
       - sw/benchmark
     env:
       OPENOCD_ARGS: foo
+      CHIP_NVM_START_ADDRESS: "0x08000000"
     tasks:
       flash-dfuse:
         cmd:
@@ -554,6 +588,8 @@ contexts:
       isr_stacksize_required_default: "1024"
       executor_stacksize_required_default: "3072"
       PROBE_RS_CHIP: STM32C031C6
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "16"
 
   - name: stm32f042k6
     parent: stm32
@@ -576,6 +612,8 @@ contexts:
       PROBE_RS_CHIP: STM32F303CB
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-usb-lp-can-rx0\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: stm32f303re
     parent: stm32
@@ -587,6 +625,8 @@ contexts:
       PROBE_RS_CHIP: STM32F303RE
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-usb-lp-can-rx0\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "256"
 
   - name: stm32f401re
     parent: stm32
@@ -616,6 +656,8 @@ contexts:
       PROBE_RS_CHIP: STM32G431RB
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "64"
 
   - name: stm32f767zi
     parent: stm32
@@ -643,6 +685,8 @@ contexts:
         - --cfg capability=\"hw/stm32-dual-core\"
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "0x20000" # 128 KiB
+      CHIP_NVM_PAGE_COUNT: "16"
 
   - name: stm32h753zi
     parent: stm32
@@ -656,6 +700,8 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "0x20000" # 128 KiB
+      CHIP_NVM_PAGE_COUNT: "16"
 
   - name: stm32l475vg
     parent: stm32
@@ -669,6 +715,8 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\" # Needs an external 32.768 kHz crystal to have a stable clock
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "512"
 
   - name: stm32u073kc
     parent: stm32
@@ -683,6 +731,8 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-cryp\"
         - --cfg capability=\"hw/stm32-usb-drd-fs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: stm32u083mc
     parent: stm32
@@ -697,6 +747,8 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-cryp\"
         - --cfg capability=\"hw/stm32-usb-drd-fs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: stm32u585ai
     parent: stm32
@@ -710,6 +762,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_PAGE_COUNT: "256"
+      # 768KB RAM
 
   - name: stm32wb55rg
     parent: stm32
@@ -723,6 +778,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-lp\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_PAGE_COUNT: "256"
+      # 192 KB
 
   - name: stm32wba55cg
     parent: stm32
@@ -734,6 +792,8 @@ contexts:
       PROBE_RS_CHIP: STM32WBA55CG
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_PAGE_COUNT: "128"
 
   - name: stm32wba65ri
     parent: stm32
@@ -747,6 +807,8 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys-hs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_PAGE_COUNT: "256"
 
   - name: stm32wle5jc
     parent: stm32
@@ -759,6 +821,9 @@ contexts:
       PROBE_RS_CHIP: STM32WLE5JC
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_PAGE_COUNT: "128"
+      # 64KB RAM
 
 modules:
   - name: thumbv6m-none-eabi
@@ -1119,12 +1184,12 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor"'
+        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${ESP_PARTITION_FILE}"'
     tasks:
       flash:
         help: flash the target using `espflash`
         cmd:
-          - espflash flash --after hard-reset ${out} $@
+          - espflash flash --partition-table ${ESP_PARTITION_FILE} --after hard-reset ${out} $@
 
       attach:
         help: attach `espflash` to a running target
@@ -1323,8 +1388,6 @@ modules:
       global:
         FEATURES:
           - ariel-os/storage
-        RUSTFLAGS:
-          - -Clink-arg=-Tstorage.x
 
   - name: has_storage_support
     selects:
