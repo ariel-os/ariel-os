@@ -1,0 +1,4 @@
+apps:
+  - name: ariel-os-bootloader
+    conflicts:
+      - esp # They have their own bootloader
