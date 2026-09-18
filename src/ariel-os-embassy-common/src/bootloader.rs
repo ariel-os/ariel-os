@@ -1,7 +1,7 @@
 //! Common traits for implementin and using the bootloader infrastructure.
 use core::ops::Range;
 
-use embassy_boot::BootLoaderConfig;
+use embassy_boot::{BootLoaderConfig, FirmwareUpdaterConfig};
 use embedded_storage::nor_flash::NorFlash;
 
 const fn max(a: usize, b: usize) -> usize {
@@ -51,6 +51,11 @@ pub trait BootLoaderBackend {
     // how would different flashes for active,dfu and state be handled in terms of configurations given to this function ?
     fn config(flash_config: &FlashConfig)
     -> BootLoaderConfig<Self::ACTIVE, Self::DFU, Self::STATE>;
+
+    /// Creates the firmware updater config.
+    fn config_firmware_updater(
+        flash_config: &FlashConfig,
+    ) -> FirmwareUpdaterConfig<Self::DFU, Self::STATE>;
 
     /// Start execution of the active partition.
     fn load_active(flash_config: &FlashConfig);

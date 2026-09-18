@@ -7,6 +7,7 @@ members = [
   "src/ariel-os-bench",
   "src/ariel-os-boards",
   "src/ariel-os-bootloader",
+  "src/ariel-os-bootloader-common",
   "src/ariel-os-buildinfo",
   "src/ariel-os-buildutils",
   "src/ariel-os-coap",
@@ -128,6 +129,7 @@ ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
 ariel-os-bench = { path = "src/ariel-os-bench", default-features = false }
 ariel-os-boards = { path = "src/ariel-os-boards", default-features = false }
+ariel-os-bootloader-common = { path = "src/ariel-os-bootloader-common", default-features = false }
 ariel-os-buildinfo = { path = "src/ariel-os-buildinfo", default-features = false }
 ariel-os-buildutils = { path = "src/ariel-os-buildutils", default-features = false }
 ariel-os-coap = { path = "src/ariel-os-coap", default-features = false }
