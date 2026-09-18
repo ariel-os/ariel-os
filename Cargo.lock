@@ -249,10 +249,14 @@ dependencies = [
  "ariel-os-utils",
  "const-sha1",
  "defmt 1.1.1",
+ "embassy-boot",
+ "embassy-embedded-hal",
  "embassy-executor",
+ "embassy-sync 0.8.0",
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
+ "embedded-storage",
  "fugit",
  "static_cell",
  "trouble-host",
@@ -2118,6 +2122,21 @@ dependencies = [
  "sec1",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "embassy-boot"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73bfc955c9238df2ce9fecc6f18a64b13ecaa41a3cd42d940a09f304765d10db"
+dependencies = [
+ "digest",
+ "document-features",
+ "embassy-embedded-hal",
+ "embassy-sync 0.8.0",
+ "embedded-storage",
+ "embedded-storage-async",
+ "signature",
 ]
 
 [[package]]
