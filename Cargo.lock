@@ -135,6 +135,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-bootloader"
+version = "0.5.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-embassy-common",
+ "embassy-boot",
+ "embedded-storage",
+]
+
+[[package]]
 name = "ariel-os-buildinfo"
 version = "0.5.0"
 dependencies = [
