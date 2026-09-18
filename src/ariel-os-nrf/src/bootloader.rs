@@ -2,7 +2,7 @@
 use core::cell::RefCell;
 
 use ariel_os_embassy_common::bootloader::{BootLoaderBackend, FlashConfig};
-use embassy_boot::BootLoaderConfig;
+use embassy_boot::{BootLoaderConfig, FirmwareUpdaterConfig};
 use embassy_embedded_hal::flash::partition::BlockingPartition;
 use embassy_nrf::{OptionalPeripherals, nvmc::Nvmc};
 use embassy_sync::{
@@ -65,6 +65,30 @@ impl BootLoaderBackend for HalBootLoaderBackend {
         }
     }
 
+    fn config_firmware_updater(
+        flash_config: &FlashConfig,
+    ) -> FirmwareUpdaterConfig<Self::DFU, Self::STATE> {
+        // TODO: implement flash watchdog to avoid hangs ?
+
+        let nvmc = NVMC.try_get().expect("obtaining initialized NVMC");
+
+        let dfu_partition = BlockingPartition::new(
+            nvmc,
+            flash_config.dfu.start - FLASH_OFFSET,
+            flash_config.dfu.len() as u32,
+        );
+        let state_partition = BlockingPartition::new(
+            nvmc,
+            flash_config.bootloader_state.start - FLASH_OFFSET,
+            flash_config.bootloader_state.len() as u32,
+        );
+
+        FirmwareUpdaterConfig {
+            dfu: dfu_partition,
+            state: state_partition,
+        }
+    }
+
     // from [embassy-boot-nrf](https://github.com/embassy-rs/embassy/blob/4c9a8998805b95d472b5e8137b16588369c2a8b6/embassy-boot-nrf/src/lib.rs#L48), license MIT OR Apache-2.0
     fn load_active(flash_config: &FlashConfig) {
         let start = flash_config.active.start;
@@ -76,6 +100,7 @@ impl BootLoaderBackend for HalBootLoaderBackend {
             cortex_m::asm::bootload(start as *const u32)
         }
     }
+
     fn enable_watchdog() {
         unimplemented!()
     }
