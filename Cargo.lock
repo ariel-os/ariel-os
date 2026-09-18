@@ -6139,6 +6139,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "test-device-update"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+]
+
+[[package]]
 name = "test-random-getrandom"
 version = "0.0.0"
 dependencies = [

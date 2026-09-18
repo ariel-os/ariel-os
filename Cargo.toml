@@ -41,6 +41,7 @@ members = [
   "tests/benchmarks/bench-sched-yield",
   "tests/coap",
   "tests/coap-blinky",
+  "tests/device-update",
   "tests/gpio",
   "tests/gpio-interrupt-nrf",
   "tests/gpio-interrupt-stm32",
