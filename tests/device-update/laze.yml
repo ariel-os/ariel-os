@@ -1,0 +1,5 @@
+apps:
+  - name: test-device-update
+    selects:
+      - has_buttons
+      - device-update
