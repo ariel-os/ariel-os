@@ -2,6 +2,7 @@ subdirs:
   - benchmarks
   - coap
   - coap-blinky
+  - device-update
   - gpio
   - gpio-interrupt-nrf
   - gpio-interrupt-stm32
