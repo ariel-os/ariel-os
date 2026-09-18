@@ -1569,6 +1569,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "cose_minicbor"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9ec26940b5faee22a6a5802087cc1d0eb90d0f0d7dfecdd8232159b012f21d4"
+dependencies = [
+ "heapless 0.9.3",
+ "hkdf",
+ "minicbor",
+ "minicbor-adapters",
+ "p256",
+ "sha2",
+ "sha3",
+ "suit_cbor",
+ "thiserror",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
