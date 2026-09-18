@@ -1,7 +1,7 @@
 //! Common traits for implementin and using the bootloader infrastructure.
 use core::{cell::RefCell, ops::Range};
 
-use embassy_boot::BootLoaderConfig;
+use embassy_boot::{BootLoaderConfig, FirmwareUpdaterConfig};
 use embassy_embedded_hal::flash::partition::BlockingPartition;
 use embassy_sync::blocking_mutex::{Mutex, raw::CriticalSectionRawMutex};
 use embedded_storage::nor_flash::NorFlash;
@@ -137,6 +137,32 @@ pub trait BootLoaderBackend {
 
     /// Return the storage configuration of the platform.
     fn storage_config<'a>() -> BootLoaderStorage<'a, Self::ACTIVE, Self::DFU, Self::STATE>;
+
+    /// Creates the firmware updater config.
+    fn config_firmware_updater(
+        flash_config: &FlashConfig,
+    ) -> FirmwareUpdaterConfig<
+        BlockingPartition<'_, CriticalSectionRawMutex, Self::DFU>,
+        BlockingPartition<'_, CriticalSectionRawMutex, Self::STATE>,
+    > {
+        let storage = Self::storage_config();
+
+        let dfu_partition = BlockingPartition::new(
+            storage.dfu_flash_controller,
+            flash_config.dfu.start - storage.dfu_flash_offset,
+            flash_config.dfu.len() as u32,
+        );
+        let state_partition = BlockingPartition::new(
+            storage.state_flash_controller,
+            flash_config.bootloader_state.start - storage.state_flash_offset,
+            flash_config.bootloader_state.len() as u32,
+        );
+
+        FirmwareUpdaterConfig {
+            dfu: dfu_partition,
+            state: state_partition,
+        }
+    }
 
     /// Enable the watchdog, starting it.
     // Currently not used.
