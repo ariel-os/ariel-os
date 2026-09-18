@@ -244,6 +244,8 @@ defmt = [
 ]
 log = ["ariel-os-hal/log"]
 
+bootloader = ["ariel-os-embassy-common/bootloader", "ariel-os-hal/bootloader"]
+
 _test = ["dhcpv4", "external-interrupts", "i2c", "spi", "time"]
 
 [lints]

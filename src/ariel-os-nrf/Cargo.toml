@@ -13,6 +13,7 @@ ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true, features = ["memory-x"] }
 cortex-m = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
+embassy-boot = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
@@ -134,6 +135,14 @@ executor-interrupt = [
   "embassy-executor/executor-interrupt",
   # Allows for setting which interrupt the library will consider as the executor interrupt.
   "nrf-modem?/os-irq",
+]
+
+## Access to bootloader backend.
+bootloader = [
+  "ariel-os-embassy-common/bootloader",
+  "dep:cortex-m",
+  "dep:embassy-boot",
+  "dep:embassy-embedded-hal",
 ]
 
 _test = ["embassy-nrf/nrf52840", "external-interrupts", "i2c", "spi"]

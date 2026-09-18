@@ -10,8 +10,11 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
 ariel-os-utils = { workspace = true }
+cortex-m = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
+embassy-boot = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-net-driver-channel = { workspace = true, optional = true }
 embassy-rp = { workspace = true, default-features = false, features = [
@@ -20,6 +23,7 @@ embassy-rp = { workspace = true, default-features = false, features = [
   "unstable-pac",
   # "unstable-traits",
 ] }
+embassy-sync = { workspace = true, optional = true }
 embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
@@ -105,6 +109,15 @@ wifi-cyw43 = ["_cyw43", "cyw43-firmware?/wifi", "wifi"]
 
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
+
+## Access to bootloader backend.
+bootloader = [
+  "ariel-os-embassy-common/bootloader",
+  "dep:cortex-m",
+  "dep:embassy-boot",
+  "dep:embassy-embedded-hal",
+  "dep:embassy-sync",
+]
 
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
 
