@@ -20,6 +20,7 @@ pre-release-replacements = [
 [dependencies]
 ariel-os-bench = { workspace = true, optional = true }
 ariel-os-boards = { workspace = true }
+ariel-os-bootloader-common = { workspace = true, optional = true }
 ariel-os-buildinfo = { workspace = true }
 ariel-os-coap = { workspace = true, optional = true }
 ariel-os-debug = { workspace = true }
@@ -289,7 +290,10 @@ ariel-os-bootloader-loader = [
 ]
 
 # ariel-os-bootloader shared by bootloader / updater
-ariel-os-bootloader = ["ariel-os-embassy/bootloader"]
+ariel-os-bootloader = [
+  "dep:ariel-os-bootloader-common",
+  "ariel-os-embassy/bootloader",
+]
 
 # features needed for `cargo test`
 _test = [

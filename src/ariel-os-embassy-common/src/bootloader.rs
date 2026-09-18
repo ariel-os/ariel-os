@@ -1,7 +1,7 @@
 //! Common traits for implementing and using the ariel-os-bootloader infrastructure.
 use core::{cell::RefCell, ops::Range};
 
-use embassy_boot::BootLoaderConfig;
+use embassy_boot::{BootLoaderConfig, FirmwareUpdaterConfig};
 use embassy_embedded_hal::flash::partition::BlockingPartition;
 use embassy_sync::blocking_mutex::{Mutex, raw::CriticalSectionRawMutex};
 use embedded_storage::nor_flash::NorFlash;
@@ -131,6 +131,35 @@ pub trait BootLoaderBackend {
 
         BootLoaderConfig {
             active: active_partition,
+            dfu: dfu_partition,
+            state: state_partition,
+        }
+    }
+
+    /// Creates the firmware updater config.
+    fn config_firmware_updater<'a>(
+        flash_config: &FlashConfig,
+    ) -> FirmwareUpdaterConfig<
+        BlockingPartition<'a, CriticalSectionRawMutex, Self::DFU>,
+        BlockingPartition<'a, CriticalSectionRawMutex, Self::STATE>,
+    >
+    where
+        <Self as BootLoaderBackend>::ACTIVE: 'a,
+    {
+        let storage = Self::storage_config();
+
+        let dfu_partition = BlockingPartition::new(
+            storage.dfu_flash_controller,
+            flash_config.dfu.start - storage.dfu_flash_offset,
+            flash_config.dfu.len() as u32,
+        );
+        let state_partition = BlockingPartition::new(
+            storage.state_flash_controller,
+            flash_config.bootloader_state.start - storage.state_flash_offset,
+            flash_config.bootloader_state.len() as u32,
+        );
+
+        FirmwareUpdaterConfig {
             dfu: dfu_partition,
             state: state_partition,
         }
