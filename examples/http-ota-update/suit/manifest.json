@@ -1,0 +1,13 @@
+{
+    "components" : [
+        {
+            "install-id" : ["01"],
+            "file": "new-version.txt",
+            "uri": "http://10.105.8.90:5683/new-version.txt",
+            "vendor-id": "debfbdc9-19f1-5826-8c01-66bd51ec8920",
+            "class-id": "ab242551-46fe-5656-9a7a-8b21542ba90e"
+        }
+    ],
+    "manifest-version": 1,
+    "manifest-sequence-number": 3
+}

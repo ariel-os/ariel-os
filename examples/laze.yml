@@ -17,6 +17,7 @@ subdirs:
   - hello-world
   - hello-world-threading
   - http-client
+  - http-ota-update
   - http-server
   - i2c-scanner
   - log

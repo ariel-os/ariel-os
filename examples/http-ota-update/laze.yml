@@ -1,0 +1,18 @@
+apps:
+  - name: http-ota-software-update
+    env:
+      global:
+        executor_stacksize_required:
+          - "200000"
+        CARGO_ENV:
+          - CONFIG_NETWORK_MAX_CONCURRENT_SOCKETS=5
+    selects:
+      - network
+      - random
+      - hwrng
+      - alloc
+
+    conflicts:
+      - ram-small
+      # needs `feature(impl_trait_in_assoc_type)`
+      - stable
