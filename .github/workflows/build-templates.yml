@@ -44,7 +44,7 @@ jobs:
           espup install
 
       - name: Install cargo-generate
-        uses: taiki-e/install-action@fa23953489c080190314742a9b907f8e97c6767c # v2
+        uses: taiki-e/install-action@9114bf4d891761788c546334fd37538eae1bf8b3 # v2
         with:
           tool: cargo-generate
 
