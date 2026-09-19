@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: "Check that a changelog label exists"
-        uses: agilepathway/label-checker@4481ce6032d5a7b2ff62e48ec60a1a3bf37f4ca1 # v1.6.74
+        uses: agilepathway/label-checker@7148168468e06b643b9a6acc0cd9ff03893d7ded # v1.6.113
         with:
           prefix_mode: true
           one_of: "changelog:"
