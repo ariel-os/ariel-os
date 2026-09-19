@@ -26,6 +26,7 @@ members = [
   "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
+  "src/ariel-os-update-storage",
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
@@ -151,6 +152,7 @@ ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-stm32-mapping = { path = "src/ariel-os-stm32-mapping" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
+ariel-os-update-storage = { path = "src/ariel-os-update-storage" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.
@@ -168,8 +170,9 @@ document-features = "0.2.8"
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.9.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
-ld-memory = { version = "0.2.9" }
+ld-memory = { version = "0.3.1" }
 log = { version = "0.4.20", default-features = false }
+memsolve = { version = "0.3.1", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }
