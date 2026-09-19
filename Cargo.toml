@@ -26,6 +26,8 @@ members = [
   "src/ariel-os-sensors-utils",
   "src/ariel-os-stm32",
   "src/ariel-os-storage",
+  "src/ariel-os-suit",
+  "src/ariel-os-update-storage",
   "src/lib/coapcore",
   "src/lib/rbi",
   "src/lib/ringbuffer",
@@ -69,6 +71,7 @@ cortex-m = { version = "0.7", default-features = false, features = [
   "inline-asm",
 ] }
 cortex-m-rt = { version = "0.7.5" }
+cose_minicbor = {version = "0.1.1", default-features = false }
 critical-section = { version = "1.2.0" }
 featurecomb = "0.2.0"
 # Disabling default features may reduce the code size by not providing atomics
@@ -151,6 +154,7 @@ ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-stm32-mapping = { path = "src/ariel-os-stm32-mapping" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
+ariel-os-update-storage = { path = "src/ariel-os-update-storage" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.
@@ -165,11 +169,14 @@ const_panic = { version = "0.2.8", default-features = false }
 defmt = { version = "1.0.0" }
 defmt-rtt = { version = "1.1.0" }
 document-features = "0.2.8"
+dress-up = { path = "../dress-up" }
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.9.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
-ld-memory = { version = "0.2.9" }
+ld-memory = { version = "0.3.1" }
 log = { version = "0.4.20", default-features = false }
+memsolve = { version = "0.3.1", default-features = false }
+minicbor = { version = "2.3.0", default-features = false }
 once_cell = { version = "1.21.3", default-features = false, features = [
   "critical-section",
 ] }
