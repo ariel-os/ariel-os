@@ -5,4 +5,6 @@
 
 mod reset;
 
+pub mod stop_mode;
+
 pub use reset::*;
