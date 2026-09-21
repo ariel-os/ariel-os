@@ -106,6 +106,9 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32s3"] }
 
 [features]
+## Suppresses the built-in ESP app descriptor so the application can emit its own.
+custom-app-desc = []
+
 ## Enables GPIO interrupt support.
 external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
 

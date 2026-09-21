@@ -2263,6 +2263,14 @@ modules:
     selects:
       - single-core
 
+  - name: custom-app-desc
+    help: let the application emit its own ESP app descriptor
+    context: esp
+    env:
+      global:
+        FEATURES:
+          - ariel-os/custom-app-desc
+
   - name: embedded-test-only
     help: This application produces no .elf (it only has *embedded* tests)
     selects:

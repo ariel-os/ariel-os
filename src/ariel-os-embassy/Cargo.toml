@@ -219,6 +219,7 @@ network-config-ipv4-static = []
 network-config-ipv6-static = []
 network-config-override = []
 override-usb-config = []
+custom-app-desc = ["ariel-os-hal/custom-app-desc"]
 rcc-config-override = ["ariel-os-hal/rcc-config-override"]
 
 executor-interrupt = ["ariel-os-hal/executor-interrupt"]
