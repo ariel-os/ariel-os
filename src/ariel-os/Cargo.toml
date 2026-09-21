@@ -30,6 +30,7 @@ ariel-os-log = { workspace = true }
 ariel-os-macros = { workspace = true }
 ariel-os-nrf = { workspace = true, optional = true }
 ariel-os-power = { workspace = true }
+ariel-os-log-transport-driver = { workspace = true, optional = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-rt = { workspace = true }
 ariel-os-sensors = { workspace = true, optional = true }
@@ -247,6 +248,12 @@ semihosting = ["ariel-os-debug/semihosting"]
 custom-logging-transport = ["ariel-os-log/custom-transport-driver"]
 # Logging over stdout (only available on native).
 logging-over-stdout = ["ariel-os-log/logging-over-stdout"]
+
+# Use an Ariel OS log transport driver.
+log-transport-driver = [
+  "dep:ariel-os-log-transport-driver",
+  "ariel-os-embassy/log-transport-driver",
+]
 
 net = ["ariel-os-embassy/net"]
 

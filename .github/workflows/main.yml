@@ -123,6 +123,7 @@ jobs:
             --locked
             --features "
                 ariel-os-sensors/max-sample-min-count-12,
+                ariel-os-log-transport-driver/dummy,
                 ble,
                 coap,
                 coap-transport-udp,
@@ -155,6 +156,7 @@ jobs:
             -p ariel-os-hal
             -p ariel-os-identity
             -p ariel-os-log
+            -p ariel-os-log-transport-driver
             -p ariel-os-macros
             -p ariel-os-native
             -p ariel-os-power
