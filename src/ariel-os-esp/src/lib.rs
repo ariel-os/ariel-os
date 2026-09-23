@@ -46,6 +46,10 @@ pub mod spi;
 #[cfg(feature = "uart")]
 pub mod uart;
 
+#[cfg(feature = "storage")]
+#[doc(hidden)]
+pub mod storage;
+
 #[cfg(feature = "usb")]
 #[doc(hidden)]
 pub mod usb;
@@ -53,6 +57,8 @@ pub mod usb;
 #[cfg(feature = "wifi")]
 #[doc(hidden)]
 pub mod wifi;
+
+pub mod partition;
 
 #[doc(hidden)]
 pub mod peripheral {}
@@ -105,7 +111,7 @@ pub fn init() -> OptionalPeripherals {
                     TimerGroup::new(peripherals.TIMG1.take().unwrap()).timer0
                 }
                 _ => {
-                    use esp_hal::timer::systimer::{SystemTimer};
+                    use esp_hal::timer::systimer::SystemTimer;
                     SystemTimer::new(peripherals.SYSTIMER.take().unwrap()).alarm0
                 }
             }
