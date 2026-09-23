@@ -288,7 +288,6 @@ macro_rules! define_i2c_alias {
     };
 }
 
-
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;
