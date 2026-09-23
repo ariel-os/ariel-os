@@ -1,0 +1,16 @@
+[package]
+name = "ariel-os-update-storage"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-hal = { workspace = true, features = ["storage"] }
+ariel-os-rt = { workspace = true, features = ["memory-x"] }
+embassy-sync = { workspace = true }
+embedded-storage-async = { workspace = true }
+portable-atomic = { workspace = true }
+
+[lints]
+workspace = true
