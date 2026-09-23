@@ -2,6 +2,7 @@ subdirs:
   - ariel-os
   - ariel-os-alloc
   - ariel-os-boards
+  - ariel-os-bootloader
   - ariel-os-embassy
   - ariel-os-embassy-common
   - ariel-os-identity

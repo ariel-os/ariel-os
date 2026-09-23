@@ -1,0 +1,7 @@
+apps:
+  - name: ariel-os-bootloader
+    selects:
+      # At least on cortex-m, the chain loading to application image doesn't work when called from SWI (interrupt executor).
+      - executor-thread
+    conflicts:
+      - esp # They have their own bootloader

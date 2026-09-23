@@ -192,7 +192,7 @@ ble-peripheral = ["ariel-os-embassy/ble-peripheral", "ble"]
 ble-config-static-address = ["ariel-os-embassy/ble-config-static-address"]
 
 # ## Enables support for the nRF91xx SiP modem.
-nrf91-modem = ["ariel-os-embassy/nrf91-modem", "ariel-os-rt/nrf91-modem"]
+nrf91-modem = ["ariel-os-embassy/nrf91-modem"]
 # Adjusts nRF modem (or related components) to assume that there is the DECT firmware running on the radio core.
 nrf-radiocore-firmware-dect = ["ariel-os-nrf/radiocore-firmware-dect"]
 
@@ -265,6 +265,13 @@ embedded-test = ["ariel-os-rt/embedded-test"]
 
 # Enables idle threads. Selected by laze if needed.
 idle-threads = ["ariel-os-threads/idle-threads"]
+
+# ## Boot loader / OTA related features
+embassy-boot-loader = ["ariel-os-rt/embassy-boot-loader"]
+embassy-boot-application = ["ariel-os-rt/embassy-boot-application"]
+
+# Bootloader backend implementation
+bootloader = ["ariel-os-embassy/bootloader"]
 
 # features needed for `cargo test`
 _test = [
