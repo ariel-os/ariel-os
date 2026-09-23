@@ -37,7 +37,7 @@ laze build -b rpi-pico2
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
-|Device Identity|<span title="supported">✅</span>|
+|Device Identity|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 
 <p>Legend:</p>
 

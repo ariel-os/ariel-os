@@ -345,7 +345,7 @@ chips:
           - "[uart-loopback test only works once after a power cycle](https://github.com/ariel-os/ariel-os/pull/1368#issuecomment-3406073140)"
       logging: supported
       storage: supported
-      device_identity: supported
+      device_identity: not_currently_supported
       wifi: not_available
       ble: not_available
       ethernet: not_available

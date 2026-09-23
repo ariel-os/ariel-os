@@ -21,7 +21,7 @@
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported">✅</span>|
-|Device Identity|<span title="supported">✅</span>|
+|Device Identity|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 
 <p>Legend:</p>
 
@@ -103,7 +103,7 @@ Boards using this chip.
 		  <td class="support-cell" title="not available on this piece of hardware">–</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
-		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
       </tr>
 	  </tbody>
 	<tbody class="even">
@@ -126,7 +126,7 @@ Boards using this chip.
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>
-		  <td class="support-cell" title="supported">✅</td>
+		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
       </tr>
 	  </tbody>
   </tbody>
