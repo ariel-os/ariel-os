@@ -1,7 +1,14 @@
 use std::env;
 use std::path::PathBuf;
 
-use ariel_os_buildutils::{context, context_any};
+use ariel_os_buildutils::{
+    context, context_any, copy_and_rerun_if_changed, env_var_and_rerun_if_changed,
+};
+
+#[cfg(feature = "memory-x")]
+use ld_memory::MemorySection;
+#[cfg(feature = "memory-x")]
+use memsolve::section::Section;
 
 // 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
 #[allow(dead_code, reason = "only used when the feature is enabled")]
@@ -49,26 +56,21 @@ fn main() {
     }
 
     if context("xtensa") {
-        let isr_stacksize =
-            std::env::var("CONFIG_ISR_STACKSIZE").expect("CONFIG_ISR_STACKSIZE env var not set");
+        let isr_stacksize = env_var_and_rerun_if_changed("CONFIG_ISR_STACKSIZE")
+            .expect("CONFIG_ISR_STACKSIZE env var not set");
         let template = std::fs::read_to_string("isr_stack_xtensa.ld.in")
             .unwrap()
             .replace("${ISR_STACKSIZE}", &isr_stacksize);
         std::fs::write(out.join("isr_stack_xtensa.x"), &template).unwrap();
         println!("cargo:rerun-if-changed=isr_stack_xtensa.ld.in");
-        println!("cargo:rerun-if-env-changed=CONFIG_ISR_STACKSIZE");
     }
 
-    std::fs::copy("linkme.x", out.join("linkme.x")).unwrap();
-    std::fs::copy("eheap.x", out.join("eheap.x")).unwrap();
-    std::fs::copy("keep-stack-sizes.x", out.join("keep-stack-sizes.x")).unwrap();
+    copy_and_rerun_if_changed("linkme.x");
+    copy_and_rerun_if_changed("eheap.x");
+    copy_and_rerun_if_changed("keep-stack-sizes.x");
 
     #[cfg(feature = "memory-x")]
-    write_memoryx();
-
-    println!("cargo:rerun-if-changed=linkme.x");
-    println!("cargo:rerun-if-changed=eheap.x");
-    println!("cargo:rerun-if-changed=keep-stack-sizes.x");
+    memoryx();
 
     println!("cargo:rustc-link-search={}", out.display());
 }
@@ -78,48 +80,102 @@ fn main() {
 /// # Panics
 /// Panics if called outside of a known laze context.
 #[cfg(feature = "memory-x")]
-fn write_memoryx() {
-    use ld_memory::{Memory, MemorySection};
-    let (ram, flash) = if context("nrf51822-xxaa") {
-        (16, 256)
+fn memoryx() {
+    let nvm_start = parse_dec_or_hex(
+        &env_var_and_rerun_if_changed("CHIP_NVM_START_ADDRESS")
+            .expect("CHIP_NVM_START_ADDRESS env var not set"),
+    )
+    .expect("CHIP_NVM_START_ADDRESS is not a decimal or hex value");
+    let nvm_page_size = parse_dec_or_hex(
+        &env_var_and_rerun_if_changed("CHIP_NVM_PAGE_SIZE_BYTES")
+            .expect("CHIP_NVM_PAGE_SIZE_BYTES env var not set"),
+    )
+    .expect("CHIP_NVM_PAGE_SIZE_BYTES is not a decimal or hex value");
+    let nvm_page_count = env_var_and_rerun_if_changed("CHIP_NVM_PAGE_COUNT")
+        .expect("CHIP_NVM_PAGE_COUNT env var not set")
+        .parse::<u64>()
+        .expect("CHIP_NVM_PAGE_COUNT is not a decimal number");
+
+    let chip = memsolve::chip::Chip::new(nvm_page_size, nvm_start, nvm_page_size * nvm_page_count)
+        .unwrap();
+    let layout = memsolve::Memory::new(chip);
+    if context("esp") {
+        #[cfg(feature = "esp-partition")]
+        gen_esp_partition_table(layout.with_esp_metadata());
+        return;
+    }
+
+    let layout = if context("nrf") {
+        layout_nrf(layout)
+    } else if context("rp") {
+        layout_rp(layout)
+    } else if context("stm32") {
+        layout_stm32(layout)
+    } else {
+        panic!("unknown MCU laze context");
+    };
+    let memory = layout
+        .resolve_layout()
+        .expect("Unable to resolve nvm layout")
+        .into_memory();
+    let memory = if context("nrf") {
+        memory_nrf(memory)
+    } else if context("rp") {
+        memory_rp(memory)
+    } else if context("stm32") {
+        memory_stm32(memory)
+    } else {
+        panic!("unknown MCU laze context");
+    };
+    memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
+}
+
+/// Generates the nrf nvm layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn layout_nrf(mut layout: memsolve::Memory<()>) -> memsolve::Memory<()> {
+    layout.add_section(flash_section().set_boot(true));
+    layout
+}
+
+/// Adds the nrf memory sections to the generated layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn memory_nrf(memory: ld_memory::Memory) -> ld_memory::Memory {
+    let ram = if context("nrf51822-xxaa") {
+        16
     } else if context("nrf52832") {
-        (64, 256)
+        64
     } else if context("nrf52833") {
-        (128, 512)
+        128
     } else if context("nrf52840") {
-        (256, 1024)
+        256
     } else if context("nrf5340-app") {
-        (512, 1024)
+        512
     } else if context("nrf5340-net") {
-        (64, 256)
+        64
     } else if context_any(&["nrf9151", "nrf9160"]).is_some() {
         let ram = 256;
-        let flash = 1024;
         if cfg!(feature = "nrf91-modem") {
-            (ram - NRF91_MODEM_IPC_KB, flash)
+            ram - NRF91_MODEM_IPC_KB
         } else {
-            (ram, flash)
+            ram
         }
     } else {
         panic!("please set the MCU laze context");
     };
 
-    let (pagesize, ram_base, flash_base) = if context("nrf5340-net") {
-        (2048, 0x2100_0000, 0x0100_0000)
+    let ram_base = if context("nrf5340-net") {
+        0x2100_0000
     } else if cfg!(feature = "nrf91-modem") {
-        (4096, 0x2000_0000 + NRF91_MODEM_IPC_KB * 1024, 0)
+        0x2000_0000 + NRF91_MODEM_IPC_KB * 1024
     } else {
-        (4096, 0x2000_0000, 0)
+        0x2000_0000
     };
-
-    // generate linker script
-    let memory = Memory::new()
-        .add_section(MemorySection::new("RAM", ram_base, ram * 1024))
-        .add_section(
-            MemorySection::new("FLASH", flash_base, flash * 1024)
-                .pagesize(pagesize)
-                .from_env(),
-        );
 
     #[cfg(feature = "nrf91-modem")]
     let memory = memory.add_section(MemorySection::new(
@@ -128,5 +184,152 @@ fn write_memoryx() {
         NRF91_MODEM_IPC_KB * 1024,
     ));
 
-    memory.to_cargo_outdir("memory.x").expect("wrote memory.x");
+    memory.add_section(MemorySection::new("RAM", ram_base, ram * 1024))
+}
+
+/// Generates the rp nvm layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn layout_rp(mut layout: memsolve::Memory<()>) -> memsolve::Memory<()> {
+    if context("rp2040") {
+        let boot = Section::new("BOOT2").unwrap().set_size(256).set_boot(true);
+        layout.add_section(boot);
+        layout.add_section(flash_section().set_address(0x1000_0100));
+    } else {
+        layout.add_section(flash_section().set_boot(true));
+    }
+    layout
+}
+
+/// Adds the rp memory sections to the generated layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn memory_rp(memory: ld_memory::Memory) -> ld_memory::Memory {
+    let ram = if context("rp2040") {
+        256
+    } else if context("rp235xa") {
+        512
+    } else {
+        panic!("unknown rp MCU laze context");
+    };
+
+    let memory = memory.add_section(MemorySection::new("RAM", 0x2000_0000, ram * 1024));
+    if context("rp2040") {
+        memory
+            .add_section(MemorySection::new("SRAM4", 0x2004_0000, 4096))
+            .add_section(MemorySection::new("SRAM5", 0x2004_1000, 4096))
+    } else if context("rp235xa") {
+        memory
+            .add_section(MemorySection::new("SRAM4", 0x2008_0000, 4096))
+            .add_section(MemorySection::new("SRAM5", 0x2008_1000, 4096))
+    } else {
+        panic!("unknown rp MCU laze context");
+    }
+}
+
+/// Generates the stm32 nvm layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn layout_stm32(mut layout: memsolve::Memory<()>) -> memsolve::Memory<()> {
+    layout.add_section(flash_section().set_boot(true));
+    layout
+}
+
+/// Adds the stm32 memory sections to the generated layout.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "memory-x")]
+fn memory_stm32(memory: ld_memory::Memory) -> ld_memory::Memory {
+    // Sorted by ram size
+    let (ram, ram_base) = if context("stm32c031c6") {
+        (12, 0x2000_0000)
+    } else if context("stm32g431rb") {
+        (32, 0x2000_0000)
+    } else if context_any(&["stm32u073kc", "stm32u083mc", "stm32f303cb"]).is_some() {
+        (40, 0x2000_0000)
+    } else if context_any(&["stm32f303re", "stm32wle5jc"]).is_some() {
+        (64, 0x2000_0000)
+    } else if context("stm32l475vg") {
+        (96, 0x2000_0000)
+    } else if context("stm32wba55cg") {
+        (128, 0x2000_0000)
+    } else if context("stm32wb55rg") {
+        (192, 0x2000_0000)
+    } else if context_any(&["stm32h755zi", "stm32h753zi"]).is_some() {
+        (512, 0x2400_0000)
+    } else if context("stm32wba65ri") {
+        (512, 0x2000_0000)
+    } else if context("stm32u585ai") {
+        (768, 0x2000_0000)
+    } else {
+        panic!("please set the MCU laze context");
+    };
+    memory.add_section(MemorySection::new("RAM", ram_base, ram * 1024))
+}
+
+/// Generate the esp32 partition table.
+///
+/// # Panics
+/// Panics if called outside of a known laze context.
+#[cfg(feature = "esp-partition")]
+fn gen_esp_partition_table(mut memory: memsolve::esp::EspMemory) {
+    use ariel_os_buildutils::rerun_if_changed;
+    use esp_idf_part::{AppType, DataType, Type};
+    memory.add_section(
+        Section::new("nvs")
+            .unwrap()
+            .set_size(0x6000)
+            .set_address(0x9000)
+            .add_esp_metadata(Type::Data, DataType::Nvs),
+    );
+    memory.add_section(
+        Section::new("phy_init")
+            .unwrap()
+            .set_size(0x1000)
+            .set_address(0xf000)
+            .add_esp_metadata(Type::Data, DataType::Phy),
+    );
+    memory.add_section(
+        Section::new("factory")
+            .unwrap()
+            .set_maximize(true)
+            .set_address_align(0x10000)
+            .add_esp_metadata(Type::App, AppType::Factory),
+    );
+    let layout = memory.resolve_layout().unwrap();
+    let partition_table = layout.into_esp_partition().to_csv().unwrap();
+    let path = &PathBuf::from(env::var_os("ESP_PARTITION_FILE").unwrap());
+    std::fs::write(path, partition_table).unwrap();
+    rerun_if_changed(path.to_str().unwrap());
+}
+
+/// Parses a number, supporting hexadecimal and decimal format.
+///
+/// # Errors
+///
+/// Returns ``std::num::ParseIntError`` when the number is neither decimal, nor hexadecimal.
+#[cfg(feature = "memory-x")]
+fn parse_dec_or_hex(input: &str) -> Result<u64, std::num::ParseIntError> {
+    if let Some(hex) = input.strip_prefix("0x") {
+        u64::from_str_radix(hex, 16)
+    } else {
+        input.parse::<u64>()
+    }
+}
+
+/// Creates the flash section for memsolve.
+#[cfg(feature = "memory-x")]
+#[allow(
+    clippy::missing_panics_doc,
+    reason = "Panic only happens with incorrect section names"
+)]
+fn flash_section() -> Section<()> {
+    Section::new("FLASH").unwrap().set_maximize(true)
 }
