@@ -3,4 +3,4 @@ apps:
     context:
       - stm32u083c-dk
     selects:
-      - has_i2c
+      - has_i2c_bus
