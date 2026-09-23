@@ -388,6 +388,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -411,6 +412,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -434,6 +436,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi:
         status: supported
       ble: supported
@@ -562,6 +565,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi: not_available
       ble: supported
       user_usb:
@@ -587,6 +591,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi: not_available
       ble: supported
       user_usb:
@@ -612,6 +617,7 @@ chips:
         status: not_currently_supported
         comments:
           - requires partitioning support
+      device_identity: supported
       wifi: not_available
       ble: supported
       user_usb:
