@@ -1,12 +1,8 @@
-use ariel_os::hal::i2c;
-
 ariel_os::hal::group_peripherals!(Peripherals {
     lcd: LcdPeripherals,
     pins: Pins,
-    i2c: I2CPins,
+    i2c: ariel_os_boards::pins::I2c0,
 });
-
-pub type SensorI2c = i2c::controller::I2C1;
 
 ariel_os::hal::define_peripherals!(LcdPeripherals { lcd: LCD });
 ariel_os::hal::define_peripherals!(Pins {
@@ -38,11 +34,6 @@ ariel_os::hal::define_peripherals!(Pins {
     pd5: PD5,
     pd6: PD6,
     pc11: PC11,
-});
-
-ariel_os::hal::define_peripherals!(I2CPins {
-    i2c_sda: PB7,
-    i2c_scl: PB8,
 });
 
 impl Pins {

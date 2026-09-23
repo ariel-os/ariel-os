@@ -11,3 +11,8 @@ targets:
       # button0
       - pin: GPIO0
         active: low
+    i2c:
+      - sda_pin: GPIO17
+        scl_pin: GPIO18
+        possible_peripherals:
+          - I2C1
