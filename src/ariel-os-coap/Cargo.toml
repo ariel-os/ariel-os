@@ -27,7 +27,7 @@ embassy-net = { workspace = true, features = [
   "udp",
 ], optional = true }
 embassy-sync = { workspace = true }
-embedded-nal-async = { version = "0.8", optional = true }
+embedded-nal-async = { version = "0.9", optional = true }
 embedded-nal-coap = { workspace = true }
 lakers = { version = "0.8.0", default-features = false }
 lakers-crypto-rustcrypto = "0.8.0"
