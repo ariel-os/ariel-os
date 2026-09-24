@@ -15,5 +15,6 @@ subdirs:
   - ariel-os-sensors-utils
   - ariel-os-stm32
   - ariel-os-threads
+  - ariel-os-mpu
   - lib
   - sensors
