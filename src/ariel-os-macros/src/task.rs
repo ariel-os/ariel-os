@@ -104,7 +104,7 @@ pub fn task(args: TokenStream, item: TokenStream) -> TokenStream {
             ) {
                 use #ariel_os_crate::hal::TakePeripherals;
                 let task = #task_function_name(#peripheral_param);
-                spawner.spawn(task).unwrap();
+                spawner.spawn(task.unwrap());
             }
 
             #[#ariel_os_crate::reexports::embassy_executor::task(embassy_executor = #ariel_os_crate::reexports::embassy_executor)]

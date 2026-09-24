@@ -64,9 +64,7 @@ impl Arch for Cpu {
     fn start_threading() {
         interrupt::disable(esp_hal::system::Cpu::ProCpu, Interrupt::FROM_CPU_INTR0);
         Self::schedule();
-        // Panics if `FROM_CPU_INTR0` is among `esp_hal::interrupt::RESERVED_INTERRUPTS`,
-        // which isn't the case.
-        interrupt::enable(Interrupt::FROM_CPU_INTR0, interrupt::Priority::min()).unwrap();
+        interrupt::enable(Interrupt::FROM_CPU_INTR0, interrupt::Priority::min());
     }
 
     fn wfi() {
