@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   check-labels:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       label: ${{ fromJSON(steps.get-pr-labels.outputs.result).buildLabel }}
       runnerLabel: ${{ fromJSON(steps.get-pr-labels.outputs.result).runnerLabel }}
