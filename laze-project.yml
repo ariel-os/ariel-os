@@ -1421,10 +1421,17 @@ modules:
     selects:
       - doc-only
 
+  - name: ethernet
+    help: private
+    selects:
+      # Needed for MAC address generation.
+      - hw/device-identity
+      - network
+
   - name: ethernet-stm32
     selects:
+      - ethernet
       - has_ethernet_stm32
-      - network
     provides_unique:
       - network_device
     env:
@@ -1440,8 +1447,8 @@ modules:
 
   - name: ethernet-wiznet-w5500
     selects:
+      - ethernet
       - has_ethernet_w5500
-      - network
     provides_unique:
       - network_device
       - wiznet_chip
@@ -1456,8 +1463,8 @@ modules:
 
   - name: ethernet-wiznet-w5100s
     selects:
+      - ethernet
       - has_ethernet_w5100s
-      - network
     provides_unique:
       - network_device
       - wiznet_chip
@@ -1472,8 +1479,8 @@ modules:
 
   - name: ethernet-wiznet-w6100
     selects:
+      - ethernet
       - has_ethernet_w6100
-      - network
     provides_unique:
       - network_device
       - wiznet_chip
@@ -1488,8 +1495,8 @@ modules:
 
   - name: ethernet-wiznet-w6300
     selects:
+      - ethernet
       - has_ethernet_w6300
-      - network
     provides_unique:
       - network_device
       - wiznet_chip
