@@ -168,7 +168,7 @@ dependencies = [
  "embedded-io-async 0.6.1",
  "embedded-nal-async 0.8.0",
  "embedded-nal-coap",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "hexlit",
  "lakers",
  "lakers-crypto-rustcrypto",
@@ -339,7 +339,7 @@ name = "ariel-os-macros"
 version = "0.5.0"
 dependencies = [
  "ariel-os",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "proc-macro-crate",
  "proc-macro2",
  "quote",
@@ -381,13 +381,12 @@ dependencies = [
  "embassy-executor",
  "embassy-futures",
  "embassy-net",
- "embassy-net-driver-channel 0.3.2",
+ "embassy-net-driver-channel 0.4.0",
  "embassy-nrf",
  "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
- "heapless 0.8.0",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "nrf-modem",
  "nrf-sdc",
  "paste",
@@ -918,7 +917,7 @@ dependencies = [
  "ariel-os",
  "ariel-os-boards",
  "embassy-futures",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "trouble-host",
 ]
 
@@ -969,7 +968,7 @@ dependencies = [
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
  "futures-intrusive",
- "heapless 0.9.1",
+ "heapless 0.8.0",
 ]
 
 [[package]]
@@ -1242,7 +1241,7 @@ dependencies = [
  "coap-message-utils",
  "coap-numbers",
  "coap-request",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "minicbor",
  "minicbor-adapters",
 ]
@@ -1327,7 +1326,7 @@ dependencies = [
  "defmt 1.1.1",
  "defmt-or-log",
  "document-features",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "lakers",
  "lakers-crypto-rustcrypto",
  "liboscore",
@@ -1793,7 +1792,7 @@ checksum = "71fd89660b2dc699704064e59e9dba0147b903e85319429e131620d022be411b"
 dependencies = [
  "const-oid 0.10.2",
  "der_derive",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "time",
 ]
 
@@ -2009,7 +2008,7 @@ dependencies = [
  "embassy-time",
  "embedded-io-async 0.7.0",
  "embedded-nal-async 0.9.0",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "managed",
  "smoltcp 0.13.1",
 ]
@@ -2235,7 +2234,7 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "futures-core",
  "futures-sink",
- "heapless 0.9.1",
+ "heapless 0.9.3",
 ]
 
 [[package]]
@@ -2288,7 +2287,7 @@ dependencies = [
  "embassy-time",
  "embassy-usb-driver",
  "embedded-io-async 0.7.0",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "ssmarshal",
  "usbd-hid",
 ]
@@ -2472,7 +2471,7 @@ dependencies = [
  "embassy-futures",
  "embassy-sync 0.7.2",
  "embedded-nal-async 0.8.0",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "rand_core 0.9.3",
 ]
 
@@ -2537,7 +2536,7 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "generic-array 0.14.7",
  "heapless 0.6.1",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "hkdf",
  "hmac",
  "p256",
@@ -2799,7 +2798,7 @@ dependencies = [
  "esp-wifi-sys-esp32h2",
  "esp-wifi-sys-esp32s2",
  "esp-wifi-sys-esp32s3",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "instability",
  "log",
  "num-derive",
@@ -3085,7 +3084,7 @@ dependencies = [
  "ariel-os-boards",
  "arrayvec",
  "defmt 1.1.1",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "serde",
 ]
 
@@ -3588,13 +3587,13 @@ dependencies = [
 
 [[package]]
 name = "heapless"
-version = "0.9.1"
+version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1edcd5a338e64688fbdcb7531a846cfd3476a54784dcb918a0844682bc7ada5"
+checksum = "25ba4bd83f9415b58b4ed8dc5714c76e626a105be4646c02630ad730ad3b5aa4"
 dependencies = [
  "defmt 1.1.1",
  "hash32 0.3.1",
- "serde",
+ "serde_core",
  "stable_deref_trait",
 ]
 
@@ -4054,7 +4053,7 @@ dependencies = [
  "aes-gcm",
  "ccm",
  "chacha20poly1305",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "hkdf",
  "hmac",
  "sha2",
@@ -4170,7 +4169,7 @@ checksum = "d3658ff955d05287ab2d54356081d34ecfbd0c02c3b319f8561d95cb79d43021"
 dependencies = [
  "cboritem",
  "embedded-io 0.7.1",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "minicbor",
 ]
 
@@ -4238,9 +4237,9 @@ checksum = "aa07b0722c63805057dec824444fdc814bdfd30d1c782a3a8f63bbcf67c4ed1c"
 
 [[package]]
 name = "nrf-modem"
-version = "0.10.2"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4726c9f304d5e28867cd13e37c1d9c37496ee3959e2d1e2e6283401c3943c5e"
+checksum = "a8ef6bd00afd1c3a4587e13b718a99faa49d408674de39840135cbd6001eaf6e"
 dependencies = [
  "arrayvec",
  "at-commands",
@@ -4249,13 +4248,13 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "embassy-futures",
- "embassy-net-driver-channel 0.3.2",
- "embassy-sync 0.7.2",
+ "embassy-net-driver-channel 0.4.0",
+ "embassy-sync 0.8.0",
  "embassy-time",
  "embedded-io-async 0.7.0",
  "futures",
  "grounded",
- "heapless 0.8.0",
+ "heapless 0.9.3",
  "linked_list_allocator",
  "nrf9120-pac",
  "nrf9160-pac",
@@ -4348,9 +4347,9 @@ dependencies = [
 
 [[package]]
 name = "nrfxlib-sys"
-version = "3.1.0+3.3.0"
+version = "4.0.0+3.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d024684e50e75bf8fb8d9e735b8cf5f213d615f1818825db79d6ffe6d3a12af3"
+checksum = "75d69730945848bf3bbd234f503502e208aa593a94b8c2f1737d50b0fcf23a82"
 dependencies = [
  "bindgen 0.70.1",
  "llvm-tools",
@@ -5084,7 +5083,7 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "embedded-nal-async 0.9.0",
  "embedded-tls",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "hex",
  "httparse",
  "nourl",
@@ -5143,7 +5142,7 @@ dependencies = [
  "embedded-graphics",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "minicbor",
  "minicbor-adapters",
  "switch-hal",
@@ -5607,7 +5606,7 @@ dependencies = [
  "byteorder",
  "cfg-if",
  "defmt 0.3.100",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "managed",
 ]
 
@@ -6179,7 +6178,7 @@ dependencies = [
  "embassy-time",
  "embedded-io 0.6.1",
  "futures",
- "heapless 0.9.1",
+ "heapless 0.9.3",
  "rand_core 0.6.4",
  "static_cell",
  "trouble-host-macros",
