@@ -37,6 +37,7 @@ laze build -b espressif-esp32-h2-devkitm-1-h2s
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Device Identity|<span title="supported">✅</span>|
 
 #### Additional Notes
 
@@ -82,6 +83,7 @@ laze build -b espressif-esp32-h2-devkitm-1-h4s
 |Bluetooth Low Energy|<span title="supported">✅</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>[^requires-partitioning-support]|
+|Device Identity|<span title="supported">✅</span>|
 
 #### Additional Notes
 

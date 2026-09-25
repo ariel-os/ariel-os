@@ -37,6 +37,7 @@ laze build -b st-steval-mkboxpro
 |Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="supported with some caveats">☑️</span>[^removing-items-not-supported]|
+|Device Identity|<span title="supported">✅</span>|
 
 #### Additional Notes
 
