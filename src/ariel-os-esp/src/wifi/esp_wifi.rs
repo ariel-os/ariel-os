@@ -5,21 +5,23 @@ use esp_radio::wifi::{
     Config, ModeConfig, WifiController, WifiDevice, WifiEvent, WifiStationState, sta::StationConfig,
 };
 
+use ariel_os_embassy_common::wifi::StationConfig as ArielStationConfig;
+
 pub type NetworkDevice = WifiDevice<'static>;
 
-pub fn init(peripherals: &mut crate::OptionalPeripherals, spawner: Spawner) -> NetworkDevice {
+pub fn init(
+    peripherals: &mut crate::OptionalPeripherals,
+) -> (NetworkDevice, WifiController<'static>) {
     let config = Config::default();
     let wifi = peripherals.WIFI.take().unwrap();
 
     let (controller, interfaces) = esp_radio::wifi::new(wifi, config).unwrap();
 
-    spawner.spawn(connection(controller)).ok();
-
-    interfaces.station
+    (interfaces.station, controller)
 }
 
 #[embassy_executor::task]
-async fn connection(mut controller: WifiController<'static>) {
+pub async fn join(mut controller: WifiController<'static>, config: ArielStationConfig) {
     debug!("start connection task");
 
     #[cfg(not(feature = "defmt"))]
@@ -40,8 +42,8 @@ async fn connection(mut controller: WifiController<'static>) {
             debug!("Configuring Wi-Fi");
             let client_config = ModeConfig::Station(
                 StationConfig::default()
-                    .with_ssid(crate::wifi::WIFI_NETWORK.try_into().unwrap())
-                    .with_password(crate::wifi::WIFI_PASSWORD.try_into().unwrap()),
+                    .with_ssid(config.ssid.try_into().unwrap())
+                    .with_password(config.password.try_into().unwrap()),
             );
             controller.set_config(&client_config).unwrap();
             debug!("Starting Wi-Fi");
