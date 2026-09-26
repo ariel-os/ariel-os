@@ -124,15 +124,15 @@ pub async fn control_task(
 }
 
 fn can_contain<TContained, TContainer, const N_CONTAINED: usize, const N_CONTAINER: usize>(
-    _: &heapless_for_nrfmodem::Vec<TContained, N_CONTAINED>,
-) -> heapless_for_embassy::Vec<TContainer, N_CONTAINER> {
+    _: &heapless::Vec<TContained, N_CONTAINED>,
+) -> heapless::Vec<TContainer, N_CONTAINER> {
     const {
         assert!(
             N_CONTAINER >= N_CONTAINED,
             "embassy config cannot contain the maximum number of DNS servers"
         );
     };
-    heapless_for_embassy::vec::Vec::new()
+    heapless::vec::Vec::new()
 }
 
 /// Creates an embassy-net config from a modem status update.

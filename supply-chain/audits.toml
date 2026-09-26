@@ -361,6 +361,12 @@ who = "Nils Ponsard <nils.ponsard@inria.fr>"
 criteria = "safe-to-deploy"
 delta = "0.3.31 -> 0.3.32"
 
+[[audits.heapless]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "0.9.1 -> 0.9.3"
+notes = "Newly introduced unsafe code was checked more carefully; changes of fixing unsoundness (e.g. by making functions unsafe and adding safety comments) were checked for rough consistency."
+
 [[audits.litrs]]
 who = "Antoine Lavandier <antoine.lavandier@inria.fr>"
 criteria = "safe-to-deploy"
@@ -382,6 +388,12 @@ who = "Nils Ponsard <nils.ponsard@inria.fr>"
 criteria = "safe-to-deploy"
 delta = "0.10.1 -> 0.10.2"
 
+[[audits.nrf-modem]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "0.10.2 -> 0.11.0"
+notes = "Changes look bigger than they are, and are best viewed with --ignore-all-space (as the latest version follows the new edition style of unsafe functions not automatically being unsafe inside, some attributes being unsafe that did not require annotation before, and more regular code formatting)."
+
 [[audits.nrfxlib-sys]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
@@ -392,6 +404,12 @@ notes = "Review extends to the source of nrfxlib-sys only. The library ships als
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
 delta = "3.0.3+3.0.2 -> 3.1.0+3.3.0"
+notes = "Review extends to the source of nrfxlib-sys only. The library ships also proprietary C components, which were not (and, due to being closed source, can not) be reviewed."
+
+[[audits.nrfxlib-sys]]
+who = "chrysn <chrysn@fsfe.org>"
+criteria = "safe-to-deploy"
+delta = "3.1.0+3.3.0 -> 4.0.0+3.4.0"
 notes = "Review extends to the source of nrfxlib-sys only. The library ships also proprietary C components, which were not (and, due to being closed source, can not) be reviewed."
 
 [[audits.num-conv]]

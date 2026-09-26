@@ -84,7 +84,6 @@ embassy-executor = { version = "0.9.1", default-features = false }
 embassy-futures = { version = "0.1.2", default-features = false }
 embassy-hal-internal = { version = "0.3.0", default-features = false }
 embassy-net = { version = "0.9.1", default-features = false }
-embassy-net-driver-channel = { version = "0.3.2", default-features = false }
 embassy-net-wiznet = { version = "0.3.0", default-features = false }
 embassy-nrf = { version = "0.8.0", default-features = false }
 embassy-rp = { version = "0.8", default-features = false }
@@ -190,7 +189,7 @@ trouble-host = { version = "0.5.0" }
 nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "e64ad081a6948b3439d1e811da36d39a5785dbda" }
 
 futures-util = { version = "0.3.32", default-features = false }
-nrf-modem = { version = "0.10.2" }
+nrf-modem = { version = "0.11.0" }
 tinyrlibc = "0.5.0"
 
 [workspace.lints.rust]
