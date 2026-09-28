@@ -16,3 +16,9 @@ targets:
         active: low # … and no built-in pull-up.
         aliases:
           - USR
+    uarts:
+      - tx_pin: P0_11
+        rx_pin: P0_12
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [SERIAL3]
+        host_facing: true
