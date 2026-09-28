@@ -1319,6 +1319,11 @@ builders:
     tier: "2"
     support:
 
+  dwm1001:
+    chip: nrf52832
+    tier: "3"
+    support:
+
   espressif-esp32-c3-devkit-rust-1:
     chip: esp32c3
     tier: "3"
@@ -1636,6 +1641,11 @@ boards:
     url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
     builders:
       - nrf9160dk-nrf9160
+
+  - name: Qorvo DWM1001-DEV
+    url: https://www.qorvo.com/products/p/DWM1001-DEV
+    builders:
+      - dwm1001
 
   - name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/

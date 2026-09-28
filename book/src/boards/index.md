@@ -15,6 +15,7 @@
 - [nRF5340-DK](./nrf5340-dk.md)
 - [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160-dk.md)
+- [Qorvo DWM1001-DEV](./qorvo-dwm1001-dev.md)
 - [Raspberry Pi Pico](./raspberry-pi-pico.md)
 - [Raspberry Pi Pico W](./raspberry-pi-pico-w.md)
 - [Raspberry Pi Pico 2](./raspberry-pi-pico-2.md)
