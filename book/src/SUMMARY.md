@@ -29,6 +29,8 @@
   - [nRF5340-DK](./boards/nrf5340-dk.md)
   - [nRF9151-DK](./boards/nrf9151-dk.md)
   - [nRF9160-DK](./boards/nrf9160-dk.md)
+  - [Qorvo DWM1001-DEV](./boards/qorvo-dwm1001-dev.md)
+  - [Qorvo DWM3001CDK](./boards/qorvo-dwm3001cdk.md)
   - [Raspberry Pi Pico](./boards/raspberry-pi-pico.md)
   - [Raspberry Pi Pico 2](./boards/raspberry-pi-pico-2.md)
   - [Raspberry Pi Pico 2 W](./boards/raspberry-pi-pico-2-w.md)
