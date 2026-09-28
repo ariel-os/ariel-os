@@ -42,6 +42,12 @@ builders:
   provides:
   - has_buttons
   - has_leds
+- name: dwm3001cdk
+  parent: nrf52833
+  provides:
+  - has_buttons
+  - has_leds
+  - has_usb_device_port
 - name: espressif-esp32-c3-devkit-rust-1
   parent: esp32-c3-mini-1
   provides:

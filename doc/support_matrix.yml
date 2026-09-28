@@ -1324,6 +1324,11 @@ builders:
     tier: "3"
     support:
 
+  dwm3001cdk:
+    chip: nrf52833
+    tier: "3"
+    support:
+
   espressif-esp32-c3-devkit-rust-1:
     chip: esp32c3
     tier: "3"
@@ -1646,6 +1651,11 @@ boards:
     url: https://www.qorvo.com/products/p/DWM1001-DEV
     builders:
       - dwm1001
+
+  - name: Qorvo DWM3001CDK
+    url: https://www.qorvo.com/products/p/DWM3001CDK
+    builders:
+      - dwm3001cdk
 
   - name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
