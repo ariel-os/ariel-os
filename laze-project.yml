@@ -2094,6 +2094,7 @@ modules:
     # Temporarily restricted to ESP and boards that have ad hoc support.
     context:
       - dwm1001
+      - dwm3001cdk
       - esp
       - nrf52840dk
       - nrf52dk
@@ -2115,6 +2116,7 @@ modules:
     help: private
     context:
       - dwm1001
+      - dwm3001cdk
       - nrf52840dk
       - nrf52dk
       - rp2040
