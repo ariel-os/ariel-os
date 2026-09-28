@@ -31,6 +31,13 @@ async fn main(peripherals: pins::Peripherals) {
         Mode::Mode0
     };
 
+    // The PMOD pins are routed through an analog switch, which must be kept in its SPI position.
+    #[cfg(context = "stm32f723e-disco")]
+    let _pmod_sel = (
+        gpio::Output::new(peripherals.pmod_sel_0, gpio::Level::Low),
+        gpio::Output::new(peripherals.pmod_sel_1, gpio::Level::Low),
+    );
+
     let spi_bus = pins::SensorSpi::new(
         peripherals.spi_sck,
         peripherals.spi_miso,

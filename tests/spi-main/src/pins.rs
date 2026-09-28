@@ -151,6 +151,9 @@ ariel_os::hal::define_peripherals!(Peripherals {
     spi_miso: PI2,
     spi_mosi: PI3,
     spi_cs: PI0,
+    // Select SPI instead of UART on the PMOD pins (UM2140, table 7).
+    pmod_sel_0: PH15,
+    pmod_sel_1: PI10,
 });
 
 #[cfg(any(context = "stm32f401re", context = "stm32f411re"))]
