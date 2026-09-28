@@ -8,7 +8,7 @@
 
 For more information on laze builders, check out [this page](../build-system.md#laze-builders).
 
-### `dwm1001`
+### `dwm1001-dev`
 
 - **Tier:** 3
 - **Chip:** [nRF52832](../chips/nrf52832.md)
@@ -17,7 +17,7 @@ For more information on laze builders, check out [this page](../build-system.md#
 To target this laze builder, run the following command in the root of your Ariel OS app:
 
 ```bash
-laze build -b dwm1001
+laze build -b dwm1001-dev
 ```
 
 #### Support Matrix

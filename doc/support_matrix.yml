@@ -1319,7 +1319,7 @@ builders:
     tier: "2"
     support:
 
-  dwm1001:
+  dwm1001-dev:
     chip: nrf52832
     tier: "3"
     support:
@@ -1650,7 +1650,7 @@ boards:
   - name: Qorvo DWM1001-DEV
     url: https://www.qorvo.com/products/p/DWM1001-DEV
     builders:
-      - dwm1001
+      - dwm1001-dev
 
   - name: Qorvo DWM3001CDK
     url: https://www.qorvo.com/products/p/DWM3001CDK

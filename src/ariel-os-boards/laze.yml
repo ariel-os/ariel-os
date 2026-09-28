@@ -37,7 +37,7 @@ builders:
   - has_buttons
   - has_leds
   - has_usb_cdc_acm_port
-- name: dwm1001
+- name: dwm1001-dev
   parent: nrf52832
   provides:
   - has_buttons
