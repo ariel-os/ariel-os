@@ -673,6 +673,18 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
 
+  - name: stm32f723ie
+    parent: stm32
+    selects:
+      - cortex-m7f
+    provides:
+      - has_hwrng
+    env:
+      PROBE_RS_CHIP: STM32F723IE
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsys\"
+
   - name: stm32f767zi
     parent: stm32
     selects:
@@ -2097,6 +2109,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
     selects:
       - context::esp:
@@ -2116,6 +2129,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
     selects:
       - log # We could later support defmt as well

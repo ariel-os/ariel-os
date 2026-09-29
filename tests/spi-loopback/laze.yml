@@ -17,4 +17,5 @@ apps:
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
       - st-steval-mkboxpro
+      - stm32f723e-disco
       - stm32u083c-dk

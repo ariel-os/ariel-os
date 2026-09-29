@@ -7,3 +7,4 @@ apps:
       - st-nucleo-f042k6
       - st-nucleo-f303re
       - st-steval-mkboxpro
+      - stm32f723e-disco

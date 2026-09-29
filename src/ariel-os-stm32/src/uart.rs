@@ -324,6 +324,17 @@ define_uart_drivers!(
    USART3 => USART3,
    UART4 => UART4,
 );
+#[cfg(context = "stm32f723ie")]
+define_uart_drivers!(
+   USART1 => USART1,
+   USART2 => USART2,
+   // USART3 => USART3, // Often used as SWI
+   UART4 => UART4,
+   UART5 => UART5,
+   USART6 => USART6,
+   UART7 => UART7,
+   UART8 => UART8,
+);
 #[cfg(context = "stm32f767zi")]
 define_uart_drivers!(
    USART1 => USART1,
@@ -429,6 +440,16 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
             let _ = peripherals.UART4.take().unwrap();
+        }
+        context = "stm32f723ie" => {
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
+            let _ = peripherals.USART3.take().unwrap();
+            let _ = peripherals.UART4.take().unwrap();
+            let _ = peripherals.UART5.take().unwrap();
+            let _ = peripherals.USART6.take().unwrap();
+            let _ = peripherals.UART7.take().unwrap();
+            let _ = peripherals.UART8.take().unwrap();
         }
         context = "stm32f767zi" => {
             let _ = peripherals.USART1.take().unwrap();
