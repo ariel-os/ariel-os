@@ -97,6 +97,22 @@ builders:
   provides:
   - has_buttons
   - has_leds
+- name: iotlab-a8-m3
+  parent: stm32f103re
+  provides:
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=UART5
+- name: iotlab-m3
+  parent: stm32f103re
+  provides:
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=UART5
 - name: makerdiary-nrf52840-mdk-usb-dongle
   parent: nrf52840
   provides:

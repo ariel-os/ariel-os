@@ -28,7 +28,9 @@ cfg_if::cfg_if! {
     } else if #[cfg(context = "espressif-esp8684-devkitc-02-h4")] {
     include!("espressif-esp8684-devkitc-02-h4.rs"); } else if #[cfg(context =
     "heltec-wifi-lora-32-v3")] { include!("heltec-wifi-lora-32-v3.rs"); } else if
-    #[cfg(context = "makerdiary-nrf52840-mdk-usb-dongle")] {
+    #[cfg(context = "iotlab-a8-m3")] { include!("iotlab-a8-m3.rs"); } else if
+    #[cfg(context = "iotlab-m3")] { include!("iotlab-m3.rs"); } else if #[cfg(context =
+    "makerdiary-nrf52840-mdk-usb-dongle")] {
     include!("makerdiary-nrf52840-mdk-usb-dongle.rs"); } else if #[cfg(context =
     "makerdiary-nrf9151-connect-kit")] { include!("makerdiary-nrf9151-connect-kit.rs"); }
     else if #[cfg(context = "native")] { include!("native.rs"); } else if #[cfg(context =

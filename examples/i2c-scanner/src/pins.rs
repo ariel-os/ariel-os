@@ -8,6 +8,15 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: P0_08,
 });
 
+// This is the I2C bus that the onboard sensors are connected to.
+#[cfg(any(context = "iotlab-m3", context = "iotlab-a8-m3"))]
+pub type SensorI2c = i2c::controller::I2C1;
+#[cfg(any(context = "iotlab-m3", context = "iotlab-a8-m3"))]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_scl: PB6,
+    i2c_sda: PB7
+});
+
 #[cfg(context = "st-nucleo-f042k6")]
 pub type SensorI2c = i2c::controller::I2C1;
 #[cfg(context = "st-nucleo-f042k6")]

@@ -273,6 +273,26 @@ fn default() -> embassy_stm32::rcc::Config {
         });
     }
 
+    #[cfg(context = "stm32f103re")]
+    {
+        use embassy_stm32::rcc::*;
+
+        // The IoT-LAB nodes have a 16 MHz HSE crystal.
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(16_000_000),
+            mode: HseMode::Oscillator,
+        });
+        rcc.pll = Some(Pll {
+            src: PllSource::HSE,
+            prediv: PllPreDiv::DIV2,
+            mul: PllMul::MUL9, // sysclk 72 MHz (16 / 2 * 9)
+        });
+        rcc.sys = Sysclk::PLL1_P;
+        rcc.ahb_pre = AHBPrescaler::DIV1;
+        rcc.apb1_pre = APBPrescaler::DIV2;
+        rcc.apb2_pre = APBPrescaler::DIV1;
+    }
+
     #[cfg(context = "seeedstudio-lora-e5-mini")]
     {
         use embassy_stm32::rcc::*;

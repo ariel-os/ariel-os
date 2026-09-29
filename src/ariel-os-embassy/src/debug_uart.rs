@@ -111,6 +111,19 @@ mod iot_lab {
     pub fn get_uart_driver(peripherals: &mut crate::hal::OptionalPeripherals) -> super::UartDriver {
         let mut config = embassy_stm32::usart::Config::default();
 
+        // USART1 is wired to the on-board FT2232H USB <-> UART/JTAG interface.
+        #[cfg(any(context = "iotlab-m3", context = "iotlab-a8-m3"))]
+        let (p, uart_rx, uart_tx) = {
+            // https://www.iot-lab.info/docs/boards/iot-lab-m3/
+            // The IoT-LAB serial infrastructure expects 500 kBd on these nodes.
+            config.baudrate = 500_000;
+            (
+                peripherals.USART1.take().unwrap(),
+                peripherals.PA10.take().unwrap(),
+                peripherals.PA9.take().unwrap(),
+            )
+        };
+
         #[cfg(any(context = "st-b-l475e-iot01a", context = "st-nucleo-wb55"))]
         let (p, uart_rx, uart_tx) = {
             // https://www.iot-lab.info/docs/boards/st-b-l475e-iot01a/
