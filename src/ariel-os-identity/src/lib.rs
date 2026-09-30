@@ -22,8 +22,10 @@
 //! It is considered a breaking change in Ariel OS if a device's identifier changes or becomes an
 //! error. Errors changing to valid identifiers is a compatible change.
 //!
-//! Other identifiers, such as the EUI-48 addresses provided by [`interface_eui48()`], are usually
-//! derived from the main identity, but have different properties.
+//! A device can have more identifying properties that are also handled through this module, such
+//! as the EUI-48 addresses provided by [`interface_eui48()`], or (as examples of future
+//! development) per-device UUIDs or an IDevID. Those identifiers might have different stability
+//! guarantees, and may be filled with identifiers generated based on the [`device_id_bytes()`].
 #![no_std]
 #![deny(missing_docs)]
 // required for tests:
