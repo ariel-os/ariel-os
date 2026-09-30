@@ -923,7 +923,7 @@ modules:
           # the shell to see just ${ESPUP_...
           - . $\\${ESPUP_EXPORT_FILE:-~/export-esp.sh}
         CARGO_ENV:
-          # liboscore's bindgen needs the Xtensa sysroot to find relevant headers
+          # bindgen (currently used in liboscore) needs the Xtensa sysroot to find relevant headers
           - BINDGEN_EXTRA_CLANG_ARGS=--sysroot=$$(${CC} -print-sysroot)
 
   - name: riscv
