@@ -149,16 +149,16 @@ fn generate_aai_mac_address(
     device_id_bytes: impl AsRef<[u8]>,
     if_index: u32,
 ) -> Eui48 {
-    // This alternative algorithm is identical (as easily evidenced by running both on
-    // arbitrary inputs) but rustc doesn't optimize this simple version:
+    let mut eui48 = truncated_board_hash;
+
+    // This alternative algorithm is identical to the next paragraph (as easily evidenced by
+    // running both on arbitrary inputs) but rustc doesn't optimize this simple version:
     //
     // ```
     // for (index, byte) in device_id_bytes.as_ref().into_iter().enumerate() {
     //     eui48[1 + index % 4] ^= byte;
     // }
     // ```
-
-    let mut eui48 = truncated_board_hash;
 
     // This would work the same in either little and big endian, but most machines are little
     // these days (and Rust has no simple and safe host-endianness conversion).
