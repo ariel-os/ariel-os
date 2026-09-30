@@ -90,6 +90,7 @@ pub fn interface_eui48(if_index: u32) -> Result<Eui48, impl core::error::Error> 
     Ok(generate_fallback_eui48(&devid, if_index))
 }
 
+/// Generates a fallback EUI-48 out of a board name, a [`DeviceId`], and an interface index.
 fn generate_fallback_eui48(
     devid: &impl ariel_os_embassy_common::identity::DeviceId,
     if_index: u32,
@@ -131,6 +132,14 @@ fn generate_fallback_eui48(
     generate_aai_mac_address(truncated_board_hash, device_id_bytes, if_index)
 }
 
+/// Assembles an EUI-48 by XOR'ing pieces.
+///
+/// Pieces that go in are:
+/// - an adequately sized base value (in practice: a truncated hash of the board name),
+/// - device ID bytes that are completely spread into some of the base value, and
+/// - an interface index that gets added into it in the last bytes.
+// To test how this optimizes, replace the device_id_bytes type with [u8; 10],
+// and put it through godbolt.org with `-O --target thumbv8m.main-none-eabihf`. Only for [u8; 4]
 #[expect(
     clippy::missing_panics_doc,
     reason = "False positive. Clippy does not see that `u32::from_le_bytes(eui48[1..5].try_into().unwrap())` can not panic, even though the compiler produces panic free code."
