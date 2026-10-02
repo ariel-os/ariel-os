@@ -37,6 +37,7 @@ laze build -b st-nucleo-f303re
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="not available on this piece of hardware">–</span>|
 |Persistent Storage|<span title="supported">✅</span>[^removing-items-not-supported]|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 

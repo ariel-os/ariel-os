@@ -21,6 +21,7 @@
 |Bluetooth Low Energy|<span title="not available on this piece of hardware">–</span>|
 |Hardware Random Number Generator|<span title="not available on this piece of hardware">–</span>|
 |Persistent Storage|<span title="needs testing">🚦</span>[^removing-items-not-supported]|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 

@@ -37,6 +37,7 @@ laze build -b bbc-microbit-v1
 |Bluetooth Low Energy|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |Hardware Random Number Generator|<span title="supported">✅</span>|
 |Persistent Storage|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|Device Identity|<span title="supported">✅</span>|
 
 <p>Legend:</p>
 
