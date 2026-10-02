@@ -146,18 +146,22 @@ macro_rules! group_peripherals {
 #[cfg(feature = "uart")]
 #[macro_export]
 macro_rules! define_uarts {
+    ( $($args:tt)+ ) => {
+        $crate::_define_uarts!{
+            $($args)+
+        }
+
+        $crate::_define_host_facing_uarts!{ 1, $($args)+ }
+    }
+}
+
+#[cfg(feature = "uart")]
+#[macro_export]
+macro_rules! _define_uarts {
     ( $( { $($args:tt)+ } ),* $(,)? ) => {
         $(
             $crate::define_uart!{ $($args)+ }
         )*
-
-        $crate::_define_host_facing_uarts!{
-            // Note that this does *not* create an outer separator; instead, the inner macro
-            // creates a trailing comma for each item.
-            $(
-                $crate::_uart_get_host_facing_names!{ $($args)+ }
-            ),*
-        }
     }
 }
 
@@ -217,29 +221,38 @@ macro_rules! define_uart {
     ( $($_:tt)+ ) => {};
 }
 
-#[macro_export]
-macro_rules! _uart_get_host_facing_names {
-    ( name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true ) => {
-        $name
-    };
-    ( name: $_name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: false ) => {};
-}
-
+// Need to do some recursive with counters in order to ignore non host-facing UARTs.
+// Increment the first argument when adding an host-facing UART, otherwise leave it as-is.
 #[macro_export]
 macro_rules! _define_host_facing_uarts {
-    () => {};
-    ( $name:ty ) => {
+
+    // Non host-facing.
+    ( $count:literal, {name: $_name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: false } $(,)? ) => {};
+    ( $count:literal, {name: $_name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: false}, $($args:tt)+  ) => {
+        $crate::_define_host_facing_uarts!{$count, $($args)+}
+    };
+
+    // First host-facing UART and last UART definition.
+    ( 1, {name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true} $(,)? ) => {
         pub type HOST_FACING_UART = $name;
     };
-    ( $name:ty, $name2:ty $(, $($_:ty),+)? ) => {
+    // First host-facing UART we encounter.
+    ( 1, {name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true}, $($args:tt)+  ) => {
         pub type HOST_FACING_UART = $name;
-        // FIXME: This can only be accessed by application that have some prior knowledge of
-        // multiple UARTs being available, and, more importantly, has negotiated between its
-        // components which one takes which. Once any future mechanism enables that negotiation,
-        // these types will need to be advertised to this mechanism.
-        pub type HOST_FACING_UART_2 = $name2;
+        $crate::_define_host_facing_uarts!{2, $($args)+}
     };
-    ( $name:ty, $name2:ty $(, $($_:ty),+)? ) => {
+
+    // Second host-facing UART and last UART definition.
+    ( 2, {name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true} $(,)? ) => {
+        pub type HOST_FACING_UART_2 = $name;
+    };
+    // Second host-facing UART definition.
+    ( 2, {name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true}, $($args:tt)+  ) => {
+        pub type HOST_FACING_UART_2 = $name;
+        $crate::_define_host_facing_uarts!{3, $($args)+}
+    };
+
+    ( 3, {name: $name:ident, device: $_device:ident, tx: $_tx:ident, rx: $_rx:ident, host_facing: true}, $($args:tt)* ) => {
         compile_error!(
             "Larger numbers of host facing UARTs can be supported by expanding the `_define_host_facing_uarts` macro of ariel-os-hal to more cases."
         );
