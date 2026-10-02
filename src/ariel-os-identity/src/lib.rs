@@ -87,11 +87,11 @@ pub fn interface_eui48(if_index: u32) -> Result<Eui48, impl core::error::Error> 
         return Ok(eui);
     }
 
-    Ok(generate_fallback_eui48(devid, if_index))
+    Ok(generate_fallback_eui48(&devid, if_index))
 }
 
 fn generate_fallback_eui48(
-    devid: impl ariel_os_embassy_common::identity::DeviceId,
+    devid: &impl ariel_os_embassy_common::identity::DeviceId,
     if_index: u32,
 ) -> Eui48 {
     // Not even trying to hash for privacy: Many CPU IDs just have 32 variable bits (eg. EFM32
