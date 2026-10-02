@@ -123,6 +123,7 @@
 - [I2C](./i2c.md)
 - [SPI](./spi.md)
 - [UART](./uart.md)
+- [Sensors](./sensors.md)
 - [Global Allocator](./global-allocator.md)
 - [Networking](./networking.md)
 - [Ethernet](./ethernet.md)
