@@ -683,7 +683,13 @@ dependencies = [
 name = "ariel-os-suit"
 version = "0.5.0"
 dependencies = [
+ "cose_minicbor",
+ "defmt 1.1.1",
  "dress-up",
+ "generic-array 1.4.5",
+ "heapless 0.9.3",
+ "minicbor",
+ "uuid",
 ]
 
 [[package]]
@@ -6103,6 +6109,16 @@ name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
+
+[[package]]
+name = "suit_cbor"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8dd16ad3caa7dc09d4a4c0c585968494ef61d260600119ba79094c047863552e"
+dependencies = [
+ "minicbor",
+ "thiserror",
+]
 
 [[package]]
 name = "switch-hal"

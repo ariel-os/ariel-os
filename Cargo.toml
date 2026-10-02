@@ -184,6 +184,7 @@ document-features = "0.2.8"
 dress-up = { path = "../dress-up" }
 fugit = { version = "0.3.7", default-features = false }
 heapless = { version = "0.9.1", default-features = false }
+generic-array = { version = "1.4.1", default-features = false }
 jiff = { version = "0.2", default-features = false }
 ld-memory = { version = "0.3.1" }
 log = { version = "0.4.20", default-features = false }
@@ -205,6 +206,7 @@ rp-pac = { version = "7.0", default-features = false }
 serde = { version = "1.0.197", default-features = false }
 static_cell = { version = "2.1.1", default-features = false }
 trouble-host = { version = "0.5.0" }
+uuid = { version = "1.23.1", default-features = false }
 
 # nrf-sdc 0.4.0 has not been released, yet. need it for bt-hci 0.6 bump
 #nrf-sdc = { version = "0.4.0" }
