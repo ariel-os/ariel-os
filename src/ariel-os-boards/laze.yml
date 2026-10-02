@@ -107,12 +107,14 @@ builders:
   parent: nrf9151
   provides:
   - has_buttons
+  - has_host_facing_uart
 - name: native
   parent: native-chip
 - name: nordic-thingy-91-x-nrf9151
   parent: nrf9151
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: nordic-thingy-91-x-nrf5340-app
   parent: nrf5340-app

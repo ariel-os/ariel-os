@@ -15,6 +15,23 @@ targets:
     buttons:
       # button0
       - pin: P0_26
+    uarts:
+      - aliases:
+          - VCOM0
+        # Note that the vendor's schematic file is labeled from the nRF53's perspective
+        tx_pin: P0_01
+        rx_pin: P0_00
+        # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+        possible_peripherals: [SERIAL3]
+        host_facing: true
+      # Pins are correct, but SERIAL3 is already taken
+      # - aliases:
+      #   - VCOM1
+      #   tx_pin: P0_05
+      #   rx_pin: P0_04
+      #   # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
+      #   possible_peripherals: [SERIAL3]
+      #   host_facing: true
 
   nordic-thingy-91-x-nrf5340-app:
     chip: nrf5340-app
