@@ -7,9 +7,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-ariel-os-buildinfo = { workspace = true }
 ariel-os-utils = { workspace = true }
-const-sha1 = { version = "0.3.0", default-features = false }
 defmt = { workspace = true, optional = true }
 embassy-executor = { workspace = true }
 embassy-time = { workspace = true, optional = true }

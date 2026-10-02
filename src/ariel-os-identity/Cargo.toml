@@ -10,8 +10,10 @@ license.workspace = true
 harness = false
 
 [dependencies]
+ariel-os-buildinfo = { workspace = true }
 ariel-os-embassy-common = { workspace = true }
 ariel-os-hal = { workspace = true }
+const-sha1 = { version = "0.3.0", default-features = false }
 
 [target.'cfg(context = "ariel-os")'.dev-dependencies]
 ariel-os = { workspace = true }
