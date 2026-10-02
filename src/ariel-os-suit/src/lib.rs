@@ -93,7 +93,14 @@ impl From<dress_up::error::Error> for Error {
     }
 }
 
+
+/// Entry point for the SUIT update procedure.
+///
+/// This struct receives the bytes that make up the manifest,
+/// authenticates the manifest and then processes it,
+/// including fetching the payload and writing it of a storage backend (only NVM at this point)
 struct SuitProcessor<'a, STATE: AuthState> {
+    /// The SUIT manifest
     manifest: SuitManifest<'a, STATE>,
 }
 
@@ -129,6 +136,7 @@ impl<'a> SuitProcessor<'a, New> {
 }
 
 impl<'a> SuitProcessor<'a, Authenticated> {
+    /// Process the manifest, including the fetching and writing into a storage backend.
     pub async fn process_full_manifest(&self) -> Result<(), Error> {
         let envelope = self.manifest.envelope()?;
         let manifest = envelope.manifest()?;
@@ -192,18 +200,15 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
     ) -> Result<usize, dress_up::error::Error> {
         todo!()
     }
-}
 
-fn storage_backend(
-    component: Component<'_>,
-) -> Result<ariel_os_update_storage::StorageBackend, Error> {
-    let Some(Ok(first)) = component.iter_segments()?.next() else {
-        return Err(Error::ManifestProcessingError);
-    };
-    const NVM: &[u8] = "nvm".as_bytes();
-    match first {
-        NVM => Ok(ariel_os_update_storage::StorageBackend::Nvm),
-        _ => Err(Error::ManifestProcessingError),
+    async fn fetch(
+        &self,
+        _component: &Component<'_>,
+        _slot: Option<u64>,
+        _uri: &str,
+    ) -> Result<(), dress_up::error::Error>
+    {
+        todo!()
     }
 }
 
