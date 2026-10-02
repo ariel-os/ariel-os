@@ -23,6 +23,11 @@ targets:
         rx_pin: P0_00
         # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
         possible_peripherals: [SERIAL3]
+        # While this UART's existence is official at least in the sense that
+        # the schematic labels those pins VCOM0 TX/RX, that this is actually
+        # forwarded to the host is more of a convention upheld by the default
+        # firmware; sbd is not yet experessive enough to capture this in a
+        # machine-readable fashion.
         host_facing: true
       # Pins are correct, but SERIAL3 is already taken
       # - aliases:
@@ -31,6 +36,11 @@ targets:
       #   rx_pin: P0_04
       #   # FIXME: Is this exhaustive? (Seems those are all we have in Ariel right now)
       #   possible_peripherals: [SERIAL3]
+      #   # While this UART's existence is official at least in the sense that
+      #   # the schematic labels those pins VCOM0 TX/RX, that this is actually
+      #   # forwarded to the host is more of a convention upheld by the default
+      #   # firmware; sbd is not yet experessive enough to capture this in a
+      #   # machine-readable fashion.
       #   host_facing: true
 
   nordic-thingy-91-x-nrf5340-app:
