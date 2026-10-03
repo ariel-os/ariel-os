@@ -17,6 +17,10 @@ pub mod peripheral {
 #[doc(hidden)]
 pub mod ble;
 
+#[cfg(feature = "bootloader")]
+#[doc(hidden)]
+pub mod bootloader;
+
 #[cfg(feature = "external-interrupts")]
 #[doc(hidden)]
 pub mod extint_registry;

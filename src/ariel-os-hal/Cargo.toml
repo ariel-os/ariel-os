@@ -44,6 +44,9 @@ ariel-os-embassy-common = { workspace = true }
 bt-hci = { workspace = true, optional = true }
 embedded-io = { workspace = true, optional = true }
 
+embassy-boot = {workspace=true, optional =true}
+embedded-storage = {workspace = true, optional =true}
+
 [features]
 external-interrupts = [
   "ariel-os-embassy-common/external-interrupts",
@@ -166,6 +169,15 @@ defmt = [
   "embedded-io?/defmt-03",
 ]
 log = ["ariel-os-esp/log"]
+
+bootloader = [
+  "dep:embassy-boot",
+  "dep:embedded-storage",
+  "ariel-os-embassy-common/bootloader",
+  "ariel-os-nrf/bootloader",
+  "ariel-os-rp/bootloader",
+  "ariel-os-stm32/bootloader",
+]
 
 rcc-config-override = ["ariel-os-stm32/rcc-config-override"]
 

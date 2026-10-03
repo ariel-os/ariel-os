@@ -17,6 +17,10 @@
 mod executor;
 
 #[doc(hidden)]
+#[cfg(feature = "bootloader")]
+pub mod bootloader;
+
+#[doc(hidden)]
 pub mod gpio;
 
 #[doc(hidden)]
