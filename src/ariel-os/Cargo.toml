@@ -133,6 +133,8 @@ network-config-override = ["ariel-os-embassy/network-config-override"]
 rcc-config-override = ["ariel-os-embassy/rcc-config-override"]
 ## Enables custom USB configuration.
 override-usb-config = ["ariel-os-embassy/override-usb-config"]
+## Suppresses the built-in ESP app descriptor so the application can emit its own.
+custom-app-desc = ["ariel-os-embassy/custom-app-desc"]
 
 #! ## Multicore functionality
 ## Enables support for core affinities (restricting threads to specific cores).
