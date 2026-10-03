@@ -292,7 +292,7 @@ jobs:
       - name: Install Rust for Xtensa
         if: steps.should-skip.outputs.result != 'true' && (github.event_name == 'schedule' || env.NEEDS_XTENSA_TOOLCHAIN == '1') && runner.environment != 'self-hosted'
         # No tag yet after https://github.com/esp-rs/xtensa-toolchain/pull/38 (will probably be @v1.5.5)
-        uses: esp-rs/xtensa-toolchain@ec6d36527049a7f4fb2cb0c1a644668c1bb8a2a4 # main
+        uses: esp-rs/xtensa-toolchain@80f7c16ecaba9b34ac13b4cadf18e976ee9198ef # main
         with:
           version: "1.95.0.0"
           buildtargets: esp32,esp32s2,esp32s3
