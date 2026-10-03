@@ -1,0 +1,35 @@
+version: 0.4.0
+targets:
+  st-nucleo-wl55jc:
+    chip: stm32wl55jc
+    ariel:
+      swi: USART2
+    leds:
+      # led0
+      - pin: PB15
+        color: blue
+        aliases:
+          - LED1
+      # led1
+      - pin: PB9
+        color: green
+        aliases:
+          - LED2
+      # led2
+      - pin: PB11
+        color: red
+        aliases:
+          - LED3
+    buttons:
+      # button0
+      - pin: PA0
+        aliases:
+          - B1
+      # button1
+      - pin: PA1
+        aliases:
+          - B2
+      # button2
+      - pin: PC6
+        aliases:
+          - B3

@@ -45,6 +45,7 @@
 - [ST NUCLEO-WB55RG](./st-nucleo-wb55rg.md)
 - [ST NUCLEO-WBA55CG](./st-nucleo-wba55cg.md)
 - [ST NUCLEO-WBA65RI](./st-nucleo-wba65ri.md)
+- [ST NUCLEO-WL55JC](./st-nucleo-wl55jc.md)
 - [ST STEVAL-MKBOXPRO](./st-steval-mkboxpro.md)
 - [STM32U083C-DK](./stm32u083c-dk.md)
 - [Ulanzi TC001](./ulanzi-tc001.md)

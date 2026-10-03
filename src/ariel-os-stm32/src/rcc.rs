@@ -332,6 +332,30 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.mux.sai1sel = mux::Sai1sel::HSI;
     }
 
+    #[cfg(context = "st-nucleo-wl55jc")]
+    {
+        use embassy_stm32::rcc::*;
+
+        // The NUCLEO-WL55JC provides a 32 MHz TCXO wired to the radio and used as HSE.
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(32_000_000),
+            mode: HseMode::Bypass,
+            prescaler: HsePrescaler::DIV1,
+        });
+        rcc.ls = LsConfig::default_lse();
+        rcc.msi = None;
+        rcc.pll = Some(Pll {
+            source: PllSource::HSE,
+            prediv: PllPreDiv::DIV2,
+            mul: PllMul::MUL6,
+            divp: None,
+            divq: Some(PllQDiv::DIV2), // PLL1_Q clock (32 / 2 * 6 / 2), used for RNG
+            divr: Some(PllRDiv::DIV2), // sysclk 48Mhz clock (32 / 2 * 6 / 2)
+        });
+
+        rcc.sys = Sysclk::PLL1_R;
+    }
+
     #[cfg(context = "st-nucleo-wba65ri")]
     {
         use embassy_stm32::rcc::*;

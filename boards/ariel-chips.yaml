@@ -62,4 +62,5 @@ ariel:
     - stm32wb55rg
     - stm32wba55cg
     - stm32wba65ri
+    - stm32wl55jc
     - stm32wle5jc
