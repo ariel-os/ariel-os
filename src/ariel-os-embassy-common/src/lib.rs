@@ -5,6 +5,7 @@
 #![deny(missing_docs)]
 
 pub mod cell;
+pub mod ethernet;
 pub mod gpio;
 
 #[cfg(context = "cortex-m")]
