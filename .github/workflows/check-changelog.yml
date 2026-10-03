@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   check-changelog:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: "Check that a changelog label exists"
         uses: agilepathway/label-checker@4481ce6032d5a7b2ff62e48ec60a1a3bf37f4ca1 # v1.6.74
