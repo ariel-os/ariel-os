@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
 
       - name: Install committed
-        uses: taiki-e/install-action@fa23953489c080190314742a9b907f8e97c6767c # v2
+        uses: taiki-e/install-action@861a07ce7084f55488e375df125cdc99bba60eb7 # v2
         with:
           tool: committed
 

@@ -22,7 +22,7 @@ jobs:
           toolchain: 1.95
 
       - name: Install cargo-vet
-        uses: taiki-e/install-action@fa23953489c080190314742a9b907f8e97c6767c # v2
+        uses: taiki-e/install-action@861a07ce7084f55488e375df125cdc99bba60eb7 # v2
         with:
           tool: cargo-vet@0.10.2
 
