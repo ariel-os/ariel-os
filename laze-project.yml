@@ -54,7 +54,7 @@ contexts:
           CARGO_TARGET_DIR=${relroot}/${build-dir}/bin/${builder}/cargo
           CONFIG_EXECUTOR_STACKSIZE=${CONFIG_EXECUTOR_STACKSIZE}
           CONFIG_ISR_STACKSIZE=${CONFIG_ISR_STACKSIZE}
-          CHIP_NVM_PAGE_COUNT=${CHIP_NVM_PAGE_COUNT}
+          CHIP_NVM_SIZE_BYTES=${CHIP_NVM_SIZE_BYTES}
           CHIP_NVM_START_ADDRESS=${CHIP_NVM_START_ADDRESS}
           CHIP_NVM_PAGE_SIZE_BYTES=${CHIP_NVM_PAGE_SIZE_BYTES}
           CHIP_EXTRA_SECTIONS=${CHIP_EXTRA_SECTIONS}
@@ -231,7 +231,7 @@ contexts:
       - ram-tiny
     env:
       PROBE_RS_CHIP: nrf51822_xxAA
-      CHIP_NVM_PAGE_COUNT: "256"
+      CHIP_NVM_SIZE_BYTES: "$(256*1024)"
 
   - name: nrf52
     parent: nrf
@@ -253,7 +253,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
       CHIP_NVM_PAGE_SIZE_BYTES: "512"
-      CHIP_NVM_PAGE_COUNT: "128"
+      CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
 
   - name: nrf52833
     parent: nrf52
@@ -263,7 +263,7 @@ contexts:
       - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52833_xxAA
-      CHIP_NVM_PAGE_COUNT: "128"
+      CHIP_NVM_SIZE_BYTES: "$(512 * 1024)"
 
   - name: nrf52840
     parent: nrf52
@@ -273,7 +273,7 @@ contexts:
       - has_ble_nrf
     env:
       PROBE_RS_CHIP: nrf52840_xxAA
-      CHIP_NVM_PAGE_COUNT: "256"
+      CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
 
   - name: nrf53
     parent: nrf
@@ -287,7 +287,7 @@ contexts:
       - has_hwrng
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
-      CHIP_NVM_PAGE_COUNT: "128"
+      CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
 
   - name: nrf5340-net
     parent: nrf53
@@ -304,7 +304,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf5340_xxAA
       CHIP_NVM_START_ADDRESS: "0x01000000"
-      CHIP_NVM_PAGE_COUNT: "128"
+      CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
     help: nRF5340 Network Core support
 
@@ -317,7 +317,7 @@ contexts:
       # Tested using the ppk2 in ampere mode on the Thingy:91 X and nrf9160dk.
       - ?nrf91-modem
     env:
-      CHIP_NVM_PAGE_COUNT: "256"
+      CHIP_NVM_SIZE_BYTES: "$(1024 * 1024)"
 
   - name: nrf9160
     parent: nrf91

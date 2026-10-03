@@ -130,14 +130,17 @@ mod memoryx {
         /// Get NVM info from environment variables.
         /// # Panics
         /// Panics on invalid or missing `CHIP_NVM_*` values.
+        /// Panic if total nvm size is not page aligned.
         pub fn from_env() -> Nvm {
             let nvm_start = u64_from_env("CHIP_NVM_START_ADDRESS");
-            let nvm_page_count = u64_from_env("CHIP_NVM_PAGE_COUNT");
+            let nvm_size = u64_from_env("CHIP_NVM_SIZE_BYTES");
             let nvm_page_size = u64_from_env("CHIP_NVM_PAGE_SIZE_BYTES");
+            assert!(nvm_page_size != 0 && nvm_size.is_multiple_of(nvm_page_size));
+
             Nvm {
                 start_address: nvm_start,
                 page_size: nvm_page_size,
-                total_size: nvm_page_count * nvm_page_size,
+                total_size: nvm_size,
             }
         }
     }
