@@ -90,8 +90,9 @@ impl<const CHUNK_SIZE: usize> NetworkTransportClient<'_, CHUNK_SIZE> {
 
         // NOTE: len <= CHUNK_SIZE by construction
         let len = coap_chunk.len;
-        buf[..len].copy_from_slice(&coap_chunk.bytes[..len]);
-        Ok((&mut buf[..len], has_more))
+        buf[..len].copy_from_slice(&coap_chunk.bytes);
+
+        Ok(&mut buf[..len], has_more)
     }
 }
 
