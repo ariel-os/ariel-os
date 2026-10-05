@@ -1,5 +1,8 @@
 #![cfg_attr(not(test), no_std)]
 
+#[featurecomb::comb]
+mod _featurecomb {}
+
 use uuid::Uuid;
 
 use dress_up::component::Component;
@@ -22,6 +25,7 @@ enum Error {
     UnsupportedDigestAlgorithm { algorithm: i32 },
     UnsupportedComponent { identifier: i64 },
     UnsupportedParameter { parameter: i32 },
+    TransportError,
 }
 
 impl core::fmt::Display for Error {
@@ -93,18 +97,30 @@ impl From<dress_up::error::Error> for Error {
     }
 }
 
+impl From<ariel_os_update_transports::Error> for Error {
+    fn from(value: ariel_os_update_transports::Error) -> Self {
+        match value {
+            ariel_os_update_transports::Error::InvalidTransportRange => Self::TransportError,
+            ariel_os_update_transports::Error::InvalidUri => Self::TransportError,
+            ariel_os_update_transports::Error::Transport => Self::TransportError,
+        }
+    }
+}
+
 
 /// Entry point for the SUIT update procedure.
 ///
 /// This struct receives the bytes that make up the manifest,
 /// authenticates the manifest and then processes it,
 /// including fetching the payload and writing it of a storage backend (only NVM at this point)
-struct SuitProcessor<'a, STATE: AuthState> {
+struct SuitProcessor<'a, STATE: AuthState, const CHUNK_SIZE: usize, F>
+where F: for<'uri> AsyncFn(&'uri str) -> Option<Result<ariel_os_update_transports::Chunk>, ariel_os_update_transports::Error>
+{
     /// The SUIT manifest
     manifest: SuitManifest<'a, STATE>,
 }
 
-impl<'a> SuitProcessor<'a, New> {
+impl<'a, const CHUNK_SIZE: usize> SuitProcessor<'a, New, CHUNK_SIZE> {
     /// Create a new Suit Manifest processor from a cbor-encoded SUIT manifest.
     pub fn new(cbor: &'a impl AsRef<[u8]>) -> Self {
         Self {
@@ -148,7 +164,7 @@ impl<'a> SuitProcessor<'a, Authenticated> {
     }
 }
 
-impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
+impl<'a, const CHUNK_SIZE: usize> AsyncOperatingHooks for SuitProcessor<'a, Authenticated, CHUNK_SIZE> {
     type ReadWriteBufferSize = generic_array::typenum::U64;
 
     async fn match_vendor_id(
@@ -156,7 +172,8 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         uuid: Uuid,
         component: &dress_up::component::Component<'_>,
     ) -> Result<bool, dress_up::error::Error> {
-        todo!()
+        Ok(true)
+        // todo!()
     }
 
     async fn match_class_id(
@@ -164,7 +181,8 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         uuid: Uuid,
         component: &dress_up::component::Component<'_>,
     ) -> Result<bool, dress_up::error::Error> {
-        todo!()
+        Ok(true)
+        // todo!()
     }
 
     async fn component_read(
@@ -174,7 +192,8 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
-        todo!()
+        Ok(())
+        // todo!()
     }
 
     async fn component_write(
@@ -205,9 +224,47 @@ impl<'a> AsyncOperatingHooks for SuitProcessor<'a, Authenticated> {
         &self,
         _component: &Component<'_>,
         _slot: Option<u64>,
-        _uri: &str,
+        uri: &str,
     ) -> Result<(), dress_up::error::Error>
     {
+        #[cfg(feature = "http")]
+        {
+            let stack = net::network_stack().await.unwrap();
+            let mut payload_buffer = [0; CHUNK_SIZE];
+
+            let tcp_state = embassy_net::tcp::client::TcpClientState::<1, CHUNK_SIZE, CHUNK_SIZE>::new();
+            let tcp_client = embassy_net::tcp::client::TcpClient::new(stack, &tcp_state);
+
+            let dns_client = embassy_net::dns::DnsSocket::new(stack);
+
+            let stream = ariel_os_update_transports::fetch_from_uri(
+                &tcp_client,
+                &dns_client,
+                uri,
+                &mut payload_buffer,
+                CHUNK_SIZE as u32
+            ).await.map_err(Error::from)?;
+
+            while let Some(maybe_chunk) = stream.next().await {
+                let _chunk = maybe_chunk.map_err(Error::from)?;
+            }
+        }
+        #[cfg(feature = "coap")]
+        {
+            let mut payload_buffer = [0; CHUNK_SIZE];
+
+            let dns_client = embassy_net::dns::DnsSocket::new(stack);
+
+            let stream = ariel_os_update_transports::fetch_from_uri(
+                &dns_client,
+                uri,
+                &mut payload_buffer,
+            ).await.map_err(Error::from)?;
+
+            while let Some(maybe_chunk) = stream.next().await {
+                let _chunk = maybe_chunk.map_err(Error::from)?;
+            }
+        }
         todo!()
     }
 }

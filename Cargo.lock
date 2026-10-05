@@ -697,9 +697,11 @@ dependencies = [
 name = "ariel-os-suit"
 version = "0.5.0"
 dependencies = [
+ "ariel-os-update-transports",
  "cose_minicbor",
  "defmt 1.1.1",
  "dress-up",
+ "embassy-net",
  "generic-array 1.4.5",
  "heapless 0.9.3",
  "minicbor",
