@@ -287,7 +287,7 @@ ariel-os-bootloader-loader = [
   "ariel-os-bootloader",
 ]
 
-# ariel-os-bootloader shared by bootloader / application
+# ariel-os-bootloader shared by bootloader / updater
 ariel-os-bootloader = [
   "dep:ariel-os-bootloader-common",
   "ariel-os-embassy/bootloader",
