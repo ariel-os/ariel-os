@@ -53,9 +53,9 @@ impl<'uri> NetworkTransportClient<'uri> {
         &mut self,
         chunk_index: u32,
         buf: &'buf mut [u8],
-    ) -> Result<&'buf mut [u8], Error> {
+    ) -> Result<(&'buf mut [u8], bool), Error> {
         let request = SuitPayloadRequest::new(self.uri.path()).set_blocknum(chunk_index);
-        let Some((_has_more, coap_chunk)) = self
+        let Some((has_more, coap_chunk)) = self
             .client
             .request(request)
             .await
@@ -67,7 +67,7 @@ impl<'uri> NetworkTransportClient<'uri> {
         let len = coap_chunk.len;
         buf[..len].copy_from_slice(&coap_chunk.bytes);
 
-        Ok(&mut buf[..len])
+        Ok(&mut buf[..len], has_more)
     }
 }
 
