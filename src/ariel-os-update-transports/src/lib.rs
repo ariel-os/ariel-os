@@ -17,7 +17,6 @@ mod coap {
         dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
-        payload_size: u32,
     ) -> Result<FetchStream<'uri, 'buf, N, CHUNK_SIZE>, Error> {
         const {
             assert!(N >= CHUNK_SIZE as usize);
@@ -29,8 +28,8 @@ mod coap {
             chunk_index: 0,
             buf,
             bytes_received: 0,
-            payload_size,
             client,
+            has_more: true,
         })
     }
 
@@ -38,24 +37,23 @@ mod coap {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
         bytes_received: u32,
-        payload_size: u32,
+        has_more: bool,
         client: transport::NetworkTransportClient<'uri>,
     }
 
     impl<'buf, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, 'buf, N, CHUNK_SIZE> {
         /// Fetches and returns the next chunk of the requested payload.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
-            if self.bytes_received >= self.payload_size {
+            if !self.has_more {
                 return None;
             }
 
             let buf = match self.client.get(self.chunk_index, self.buf).await {
-                Ok(buf) => buf,
+                Ok(buf, has_more) => buf,
                 Err(err) => {
                     return Some(Err(err));
                 }
             };
-
             self.bytes_received += u32::try_from(buf.len()).unwrap();
 
             let index = self.chunk_index;
