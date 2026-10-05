@@ -5,6 +5,9 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 
+[package.metadata.feature-groups]
+transport.exactly-one = { features = ["coap", "http"] }
+
 [dependencies]
 cose_minicbor = { workspace = true, features = ["es256", "sha256", "suit-sha256-es256"] }
 defmt = { workspace = true, optional = true }
@@ -14,8 +17,19 @@ heapless = { workspace = true }
 minicbor = { workspace = true }
 uuid = { workspace = true }
 
+ariel-os-update-transports = { workspace = true }
+embassy-net = { workspace = true, optional = true, features = ["tcp", "dns"]}
+
 [features]
 defmt = ["dep:defmt"]
+
+http = [
+    "ariel-os-update-transports/http",
+    "dep:embassy-net",
+]
+coap = ["ariel-os-update-transports/coap"]
+
+default = ["http"]
 
 [lints]
 workspace = true
