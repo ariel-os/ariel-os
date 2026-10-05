@@ -55,16 +55,45 @@ pub struct EmbassyBootDeviceUpdater<'a> {
 }
 
 impl<'a> DeviceUpdater for EmbassyBootDeviceUpdater<'a> {
-    const CHUNK_SIZE: usize = 4096;
+    type InnerError = embassy_boot::FirmwareUpdaterError;
+
+    // Sometimes the minimum write size can be a bit small.
+    const CHUNK_SIZE: usize = WRITE_SIZE * 4;
+
     async fn write_firmware(
         &mut self,
-        offset: usize,
+        offset: u32,
         data: &[u8],
-    ) -> Result<(), DeviceUpdaterError> {
-        Ok(self.updater.write_firmware(offset, data).unwrap())
+    ) -> Result<(), DeviceUpdaterError<Self::InnerError>> {
+        self.updater
+            .write_firmware(offset as usize, data)
+            .map_err(|e| {
+                if matches!(e, embassy_boot::FirmwareUpdaterError::BadState) {
+                    DeviceUpdaterError::BadState
+                } else {
+                    DeviceUpdaterError::Inner(e)
+                }
+            })
+    }
+    async fn read_firmware(
+        &mut self,
+        offset: u32,
+        buffer: &mut [u8],
+    ) -> Result<(), DeviceUpdaterError<Self::InnerError>> {
+        self.updater
+            .read_dfu(offset, buffer)
+            .map_err(DeviceUpdaterError::Inner)
     }
 
-    async fn mark_updated(&mut self) -> Result<(), DeviceUpdaterError> {
-        Ok(self.updater.mark_updated().unwrap())
+    async fn mark_updated(&mut self) -> Result<(), DeviceUpdaterError<Self::InnerError>> {
+        self.updater
+            .mark_updated()
+            .map_err(DeviceUpdaterError::Inner)
+    }
+
+    async fn mark_booted(&mut self) -> Result<(), DeviceUpdaterError<Self::InnerError>> {
+        self.updater
+            .mark_booted()
+            .map_err(DeviceUpdaterError::Inner)
     }
 }

@@ -39,7 +39,7 @@ async fn main(peripherals: pins::ButtonPeripherals) {
         let mut buf = [0; 4096];
         buf[..chunk.len()].copy_from_slice(chunk);
         updater.write_firmware(offset, &buf).await.unwrap();
-        offset += chunk.len();
+        offset += chunk.len() as u32;
     }
 
     updater.mark_updated().await.unwrap();
