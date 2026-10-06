@@ -17,19 +17,23 @@ heapless = { workspace = true }
 minicbor = { workspace = true }
 uuid = { workspace = true }
 
+
+featurecomb = { workspace = true }
+
+ariel-os-bootloader-common = { workspace = true }
+ariel-os-device-update = { workspace = true }
 ariel-os-update-transports = { workspace = true }
-embassy-net = { workspace = true, optional = true, features = ["tcp", "dns"]}
+ariel-os-embassy = { workspace = true, features = ["net"] }
+embassy-net = { workspace = true, optional = true }
 
 [features]
 defmt = ["dep:defmt"]
 
 http = [
     "ariel-os-update-transports/http",
-    "dep:embassy-net",
+    "embassy-net/tcp","embassy-net/dns"
 ]
-coap = ["ariel-os-update-transports/coap"]
-
-default = ["http"]
+coap = ["ariel-os-update-transports/coap", "embassy-net/dns"]
 
 [lints]
 workspace = true

@@ -8,12 +8,18 @@ use uuid::Uuid;
 use dress_up::component::Component;
 use dress_up::{AsyncOperatingHooks, AuthState, Authenticated, New, SuitManifest};
 
+use ariel_os_device_update::{DeviceUpdater, DeviceUpdaterError, DeviceUpdaterState};
+
+use ariel_os_bootloader_common::{HalDeviceUpdater, HalDeviceUpdaterState};
+
+use ariel_os_embassy::api::net;
+
 const KEYS: &[u8] = include_bytes!("../key_cose_minicbor.cbor");
 const MAX_ID_LENGTH: usize = 16;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-enum Error {
+pub enum Error {
     AuthenticationFailure,
     InvalidManifestStructure,
     InvalidManifestSequence { position: usize },
@@ -113,45 +119,39 @@ impl From<ariel_os_update_transports::Error> for Error {
 /// This struct receives the bytes that make up the manifest,
 /// authenticates the manifest and then processes it,
 /// including fetching the payload and writing it of a storage backend (only NVM at this point)
-struct SuitProcessor<'a, STATE: AuthState, const CHUNK_SIZE: usize, F>
-where F: for<'uri> AsyncFn(&'uri str) -> Option<Result<ariel_os_update_transports::Chunk>, ariel_os_update_transports::Error>
+pub struct SuitProcessor<'a, STATE: AuthState, const CHUNK_SIZE: usize, U: DeviceUpdater>
 {
     /// The SUIT manifest
     manifest: SuitManifest<'a, STATE>,
+
+    ///
+    updater: core::cell::RefCell<U>,
 }
 
-impl<'a, const CHUNK_SIZE: usize> SuitProcessor<'a, New, CHUNK_SIZE> {
+impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> SuitProcessor<'a, New, CHUNK_SIZE, U> {
     /// Create a new Suit Manifest processor from a cbor-encoded SUIT manifest.
-    pub fn new(cbor: &'a impl AsRef<[u8]>) -> Self {
+    pub fn new(cbor: &'a impl AsRef<[u8]>, updater: U) -> Self {
         Self {
             manifest: SuitManifest::from_bytes(cbor),
+            updater: core::cell::RefCell::new(updater),
         }
     }
 
     /// Authenticate a new Suit Manifest.
-    pub fn authenticate(self) -> Result<SuitProcessor<'a, Authenticated>, Error> {
+    pub fn authenticate<F, E>(self, authenticate: F) -> Result<SuitProcessor<'a, Authenticated, CHUNK_SIZE, U>, Error>
+    where
+        F: Fn(&[u8], &[u8]) -> Result<bool, E>
+    {
         Ok(SuitProcessor {
             manifest: self.manifest.authenticate(|cose, payload| {
-                let cose_untagged = cose
-                    .get(1..)
-                    .ok_or(dress_up::error::Error::UnexpectedCbor { position: 0 })?;
-                let sign1: cose_minicbor::cose::CoseSign1<'_> = minicbor::decode(cose_untagged)
-                    .map_err(|_| dress_up::error::Error::UnexpectedCbor { position: 0 })?;
-                let res = sign1.suit_verify_cose_sign1(Some(payload), KEYS);
-
-                //let sign1 = CoseSign1::from_bytes(cs).unwrap();
-                //let key = CoseKey::from_bytes(KEY).unwrap();
-                //let res = sign1.verify_detached(payload, &key, Some(Algorithm::Esp256), None);
-                if let Err(e) = res {
-                    return Err(dress_up::error::Error::AuthenticationFailure);
-                }
-                Ok(true)
+                authenticate(cose, payload).map_err(|_e| dress_up::error::Error::AuthenticationFailure)
             })?,
+            updater: self.updater,
         })
     }
 }
 
-impl<'a> SuitProcessor<'a, Authenticated> {
+impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> SuitProcessor<'a, Authenticated, CHUNK_SIZE, U> {
     /// Process the manifest, including the fetching and writing into a storage backend.
     pub async fn process_full_manifest(&self) -> Result<(), Error> {
         let envelope = self.manifest.envelope()?;
@@ -162,9 +162,13 @@ impl<'a> SuitProcessor<'a, Authenticated> {
         }
         Ok(())
     }
+
+    pub fn into_updater(self) -> U {
+        self.updater.into_inner()
+    }
 }
 
-impl<'a, const CHUNK_SIZE: usize> AsyncOperatingHooks for SuitProcessor<'a, Authenticated, CHUNK_SIZE> {
+impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks for SuitProcessor<'a, Authenticated, CHUNK_SIZE, U> {
     type ReadWriteBufferSize = generic_array::typenum::U64;
 
     async fn match_vendor_id(
@@ -192,8 +196,8 @@ impl<'a, const CHUNK_SIZE: usize> AsyncOperatingHooks for SuitProcessor<'a, Auth
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
-        Ok(())
-        // todo!()
+        todo!();
+        // Ok(())
     }
 
     async fn component_write(
@@ -243,26 +247,38 @@ impl<'a, const CHUNK_SIZE: usize> AsyncOperatingHooks for SuitProcessor<'a, Auth
                 uri,
                 &mut payload_buffer,
                 CHUNK_SIZE as u32
-            ).await.map_err(Error::from)?;
-
+            ).await.map_err(|_| dress_up::error::Error::ConditionMatchFail { position: 0 })?;
+            let mut offset = 0;
             while let Some(maybe_chunk) = stream.next().await {
-                let _chunk = maybe_chunk.map_err(Error::from)?;
+                let chunk = maybe_chunk.map_err(|_| dress_up::error::Error::ConditionMatchFail { position: 1 })?;
+                self.updater.write_firmware(offset, chunk.bytes()).await.map_err(
+                    dress_up::error::Error::ConditionMatchFail { position: 2 }
+                );
+                offset += chunk.bytes().len();
             }
         }
         #[cfg(feature = "coap")]
         {
+            let stack = net::network_stack().await.unwrap();
             let mut payload_buffer = [0; CHUNK_SIZE];
 
             let dns_client = embassy_net::dns::DnsSocket::new(stack);
 
-            let stream = ariel_os_update_transports::fetch_from_uri(
+            let mut stream: ariel_os_update_transports::FetchStream<'_, '_, CHUNK_SIZE, 64> = ariel_os_update_transports::fetch_from_uri(
                 &dns_client,
                 uri,
                 &mut payload_buffer,
-            ).await.map_err(Error::from)?;
+            ).await.map_err(|_| dress_up::error::Error::ConditionMatchFail { position: 0 })?;
 
+            let mut offset = 0;
             while let Some(maybe_chunk) = stream.next().await {
-                let _chunk = maybe_chunk.map_err(Error::from)?;
+                let chunk = maybe_chunk.map_err(|_|
+                    dress_up::error::Error::ConditionMatchFail { position: 1 }
+                )?;
+                self.updater.borrow_mut().write_firmware(offset, chunk.bytes()).await.map_err(|_|
+                    dress_up::error::Error::ConditionMatchFail { position: 2 }
+                )?;
+                offset += chunk.bytes().len();
             }
         }
         todo!()
