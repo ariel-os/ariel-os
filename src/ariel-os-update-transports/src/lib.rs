@@ -57,7 +57,11 @@ mod coap {
                 return None;
             }
 
+<<<<<<< HEAD
             let buf = match self.client.get(self.buf).await {
+=======
+            let buf = match self.client.get(self.chunk_index, self.buf).await {
+>>>>>>> 9606c889 (fix: minor fix)
                 Ok((buf, has_more)) => {
                     self.has_more = has_more;
                     buf
