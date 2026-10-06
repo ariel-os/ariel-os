@@ -49,7 +49,10 @@ mod coap {
             }
 
             let buf = match self.client.get(self.chunk_index, self.buf).await {
-                Ok(buf, has_more) => buf,
+                Ok((buf, has_more)) => {
+                    self.has_more = has_more;
+                    buf
+                }
                 Err(err) => {
                     return Some(Err(err));
                 }
