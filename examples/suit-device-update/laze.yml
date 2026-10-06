@@ -1,0 +1,7 @@
+apps:
+  - name: suit-device-update
+    selects:
+      - device-update
+      - network
+      - coap-server-config-unprotected
+      - has_buttons

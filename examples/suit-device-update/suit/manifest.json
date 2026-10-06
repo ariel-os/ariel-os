@@ -1,0 +1,13 @@
+{
+    "components" : [
+        {
+            "install-id" : ["01"],
+            "file": "bins/hello-world.bin",
+            "uri": "coap://:5683/hello-world.bin",
+            "vendor-id": "cfbff0d1-9375-5685-968c-48ce8b15ae17",
+            "class-id": "2ecbf570-9780-5c2a-bef7-4da60942464e"
+        }
+    ],
+    "manifest-version": 1,
+    "manifest-sequence-number": 1
+}

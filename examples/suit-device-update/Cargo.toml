@@ -1,0 +1,24 @@
+[package]
+name = "suit-device-update"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "device-update",
+  "coap",
+  "external-interrupts"
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+ariel-os-suit = { path = "../../src/ariel-os-suit", features = ["coap"] }
+
+cose-nostd = { git = "https://codeberg.org/COLORADIO-Project/cose-nostd.git", rev = "59053ef78916ff038858b45fdd73ed9389c303f1", features = [
+  "p-256",
+  "sign1",
+  "verify",
+] }
+dress-up = { git = "https://github.com/ariel-os/dress-up", rev = "52c06ec6847fb9e60e09cb6a91cab73702db953b" }
+
+[lints]
+workspace = true
