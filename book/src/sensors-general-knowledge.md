@@ -136,6 +136,6 @@ A better term for this meaning of sensitivity would be *responsivity*.
 Trueness has been introduced by ISO 5725-1 to refer to how close the mean of measurement results of a sensor is to the true value.
 It characterizes systematic errors and is generally described as an offset in datasheets.
 Trueness is also commonly referred to as accuracy.
-However, in ISO 5725-1, accuracy instead encompasses *both* trueness and [precision].
+However, in ISO 5725-1, accuracy instead encompasses *both* trueness and [precision](#precision-effective-resolution-and-oversampling).
 Repeating the measurement does not help improve the trueness, but some systematic errors may be eliminated through calibration.
-In the context of sensors, a common source of inaccuracy is temperature: that is why [many IC sensors embed temperature sensing elements] to allow for temperature compensation, either in the sensor itself or in software.
+In the context of sensors, a common source of inaccuracy is temperature: that is why [many IC sensors embed temperature sensing elements](#digital-output-ic-sensors) to allow for temperature compensation, either in the sensor itself or in software.
