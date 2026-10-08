@@ -283,23 +283,23 @@ macro_rules! define_uart_drivers {
 #[cfg(context = "stm32c031c6")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
 );
 #[cfg(context = "stm32f042k6")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
 );
 #[cfg(context = "stm32f303cb")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART3 => USART3,
 );
 #[cfg(context = "stm32f303re")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
    UART5 => UART5,
@@ -307,20 +307,20 @@ define_uart_drivers!(
 #[cfg(context = "stm32f401re")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART6 => USART6,
 );
 #[cfg(context = "stm32f411re")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART6 => USART6,
 );
 #[cfg(context = "stm32g431rb")]
 define_uart_drivers!(
    LPUART1 => LPUART1,
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
 );
@@ -330,7 +330,7 @@ define_uart_drivers!(
    USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
-   // UART5 => UART5, // Often used as SWI
+   UART5 => UART5,
    USART6 => USART6,
    UART7 => UART7,
    UART8 => UART8,
@@ -342,7 +342,7 @@ define_uart_drivers!(
    USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
-   // UART5 => UART5, // Often used as SWI
+   UART5 => UART5,
    USART6 => USART6,
    UART7 => UART7,
    UART8 => UART8,
@@ -350,7 +350,7 @@ define_uart_drivers!(
 #[cfg(context = "stm32l072cz")]
 define_uart_drivers!(
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART4_5 => USART4,
    // USART5 shares the USART4_5 interrupt with USART4
    // LPUART1 shares the RNG_LPUART1 interrupt with the RNG
@@ -362,7 +362,7 @@ define_uart_drivers!(
    USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
-   // UART5 => UART5, // Often used as SWI
+   UART5 => UART5,
 );
 #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 define_uart_drivers!(
@@ -375,7 +375,7 @@ define_uart_drivers!(
 define_uart_drivers!(
    LPUART1 => LPUART1,
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
    USART3 => USART3,
    UART4 => UART4,
    UART5 => UART5,
@@ -383,13 +383,13 @@ define_uart_drivers!(
 #[cfg(context = "stm32wb55rg")]
 define_uart_drivers!(
    LPUART1 => LPUART1,
-   // USART1 => USART1, // Often used as SWI
+   USART1 => USART1,
 );
 #[cfg(context = "stm32wba55cg")]
 define_uart_drivers!(
    LPUART1 => LPUART1,
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
 );
 #[cfg(context = "stm32wba65ri")]
 define_uart_drivers!(
@@ -402,7 +402,7 @@ define_uart_drivers!(
 define_uart_drivers!(
    LPUART1 => LPUART1,
    USART1 => USART1,
-   // USART2 => USART2, // Often used as SWI
+   USART2 => USART2,
 );
 
 #[doc(hidden)]
@@ -411,6 +411,7 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
     cfg_select! {
         context = "stm32c031c6" => {
             let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
         }
         context = "stm32f042k6" => {
             let _ = peripherals.USART1.take().unwrap();
