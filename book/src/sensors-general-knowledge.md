@@ -43,8 +43,9 @@ In addition, if there is a digital downsampler, that reduces the rate of digital
 > A downsampler is also called a decimator, which may or may not also include an anti-aliasing filter.
 
 The anti-aliasing filters (AAF) are required because, if the signal contains frequencies higher than half the sampling rate (i.e., higher than the Nyquist frequency), aliases of these will appear as extraneous low frequencies in the output.
+AAFs are low-pass filters whose function is to suppress the signal's frequencies higher than the Nyquist frequency, to prevent aliases from appaearing.
 
-Being low-pass filters, these filters also remove high-frequency components, which may be desired if they constitute noise.
+Being low-pass filters, these filters remove high-frequency components, which may be desired if they constitute noise.
 On the other hand, if the signal is high bandwidth, i.e., if high frequencies are actually desired, both the cutoff frequencies of these filters and the sampling rate must be kept high enough, to preserve these high frequencies through the chain, according to the Nyquist–Shannon sampling theorem.
 
 ### Precision, Effective Resolution, and Oversampling
