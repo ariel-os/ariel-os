@@ -42,7 +42,8 @@ Here is the list of supported chips in Ariel OS.
 ## Raspberry Pi
   
 - [RP2040](./rp2040.md)
-- [RP235xA](./rp235xa.md)
+- [RP2350A](./rp2350a.md)
+- [RP2354A](./rp2354a.md)
 
 ## STMicroelectronics
   
