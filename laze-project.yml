@@ -436,6 +436,12 @@ contexts:
   - name: rp2350a
     parent: rp235xa
 
+  # The RP2354A contains a Winbond flash chip stacked on an RP2350A.
+  - name: rp2354a
+    parent: rp2350a
+    env:
+      CHIP_NVM_SIZE_BYTES: $(2048 * 1024)
+
   - name: esp
     parent: ariel-os
     selects:
