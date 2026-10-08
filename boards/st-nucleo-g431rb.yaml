@@ -13,3 +13,10 @@ targets:
       # button0
       - pin: PC13
         active: high
+    uarts:
+      - aliases:
+          - VCP
+        tx_pin: PA2
+        rx_pin: PA3
+        possible_peripherals: [LPUART1]
+        host_facing: true

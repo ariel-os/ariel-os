@@ -32,3 +32,10 @@ targets:
         scl_pin: PB10
         possible_peripherals:
           - I2C2
+    uarts:
+      - aliases:
+          - VCP
+        tx_pin: PB6
+        rx_pin: PB7
+        possible_peripherals: [USART1]
+        host_facing: true

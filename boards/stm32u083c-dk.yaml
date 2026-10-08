@@ -25,3 +25,8 @@ targets:
         scl_pin: PB8
         possible_peripherals:
           - I2C1
+    uarts:
+      - tx_pin: PA2
+        rx_pin: PA3
+        possible_peripherals: [USART2]
+        host_facing: true

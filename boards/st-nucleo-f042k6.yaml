@@ -7,3 +7,8 @@ targets:
     leds:
       # led0
       - pin: PA5
+    uarts:
+      - tx_pin: PA2
+        rx_pin: PA15
+        possible_peripherals: [USART2]
+        host_facing: true

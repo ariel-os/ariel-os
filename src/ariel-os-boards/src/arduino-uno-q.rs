@@ -10,6 +10,9 @@ pub mod pins {
         }, { name : I2c1, peripheral : I2C4, sda : PD13, scl : PD12, aliases :
         [QwiicI2c,] },
     ];
+    ariel_os_hal::define_uarts![
+        { name : Uart0, device : LPUART1, tx : PG7, rx : PG8, host_facing : true },
+    ];
 }
 #[allow(unused_variables)]
 pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}

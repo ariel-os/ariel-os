@@ -10,3 +10,8 @@ targets:
     buttons:
       # button0
       - pin: PC13
+    uarts:
+      - tx_pin: PA2
+        rx_pin: PA3
+        possible_peripherals: [USART2]
+        host_facing: true

@@ -7,6 +7,9 @@ pub mod pins {
     ariel_os_hal::define_peripherals!(
         ButtonPeripherals { button0 : PC13, button1 : PC5, button2 : PB4, }
     );
+    ariel_os_hal::define_uarts![
+        { name : Uart0, device : USART1, tx : PB12, rx : PA8, host_facing : true },
+    ];
 }
 #[allow(unused_variables)]
 pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}

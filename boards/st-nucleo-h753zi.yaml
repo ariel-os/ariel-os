@@ -29,3 +29,10 @@ targets:
     buttons:
       # button0
       - pin: PC13
+    uarts:
+      - aliases:
+          - VCP
+        tx_pin: PD8
+        rx_pin: PD9
+        possible_peripherals: [USART3]
+        host_facing: true
