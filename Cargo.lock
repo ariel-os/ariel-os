@@ -343,7 +343,7 @@ dependencies = [
  "proc-macro-crate",
  "proc-macro2",
  "quote",
- "syn 2.0.114",
+ "syn 3.0.6",
  "trybuild",
 ]
 
