@@ -13,3 +13,10 @@ targets:
     buttons:
       # button0
       - pin: PB13
+    uarts:
+      - aliases:
+          - VCP
+        tx_pin: PB6
+        rx_pin: PB7
+        possible_peripherals: [USART1]
+        host_facing: true

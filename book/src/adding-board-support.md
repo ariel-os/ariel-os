@@ -36,6 +36,9 @@ Boards having multiple MCUs, or MCUs with multiple compilation targets, still re
     Some aliases should use the following conventions:
       - `ArduinoI2c`: The I2C bus is exposed on Arduino headers.
       - `QwiicI2c`: The I2C bus is exposed on a Qwiic connector.
+  - `uarts`: UART RX/TX present on the board.
+    Currently only host-facing UARTs should be added.
+    Host-facing UARTs are UARTs exposed through a USB ⟷ UART adapter present on the board (or an interface MCU or equivalent acting as such adapter).
 - In `doc/support_matrix.yml`:
   - Add an entry under `builders`.
   - Add an entry under `boards`, that references that new builder.

@@ -33,3 +33,10 @@ targets:
       - pin: PB7
         aliases:
           - B3
+    uarts:
+      - aliases:
+          - VCP1
+        tx_pin: PB12
+        rx_pin: PA8
+        possible_peripherals: [USART1]
+        host_facing: true

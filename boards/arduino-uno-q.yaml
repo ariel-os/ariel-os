@@ -50,3 +50,11 @@ targets:
       #     - I2C4
       #   aliases:
       #     - JmiscI2c
+    uarts:
+      # Wired to the SoC.
+      - tx_pin: PG7
+        rx_pin: PG8
+        rts_pin: PG6
+        cts_pin: PG5
+        possible_peripherals: [LPUART1]
+        host_facing: true
