@@ -42,5 +42,7 @@ ble = ["dep:static_cell", "dep:trouble-host"]
 
 cellular-networking = []
 
+wifi = []
+
 [lints]
 workspace = true

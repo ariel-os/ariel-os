@@ -30,6 +30,9 @@ pub mod spi;
 #[cfg(feature = "uart")]
 pub mod uart;
 
+#[cfg(feature = "wifi")]
+pub mod wifi;
+
 pub mod reexports {
     //! Crate re-exports.
 
