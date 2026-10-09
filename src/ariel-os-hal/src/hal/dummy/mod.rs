@@ -23,6 +23,9 @@ pub mod gpio;
 pub mod peripheral;
 
 #[doc(hidden)]
+pub mod power;
+
+#[doc(hidden)]
 #[cfg(feature = "ble")]
 pub mod ble;
 
