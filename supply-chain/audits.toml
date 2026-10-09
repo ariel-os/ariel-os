@@ -367,6 +367,11 @@ criteria = "safe-to-deploy"
 delta = "0.9.1 -> 0.9.3"
 notes = "Newly introduced unsafe code was checked more carefully; changes of fixing unsoundness (e.g. by making functions unsafe and adding safety comments) were checked for rough consistency."
 
+[[audits.ld-memory]]
+who = "Kaspar Schleiser <kaspar@schleiser.de>"
+criteria = "safe-to-deploy"
+version = "0.3.2"
+
 [[audits.litrs]]
 who = "Antoine Lavandier <antoine.lavandier@inria.fr>"
 criteria = "safe-to-deploy"

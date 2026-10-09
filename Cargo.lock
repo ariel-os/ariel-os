@@ -4041,9 +4041,9 @@ dependencies = [
 
 [[package]]
 name = "ld-memory"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c00bbd93ae68b27649a1d24a86bc1283a126dbca9720beefc605463620174d0"
+checksum = "164337465bc55df87bf191b9ca49a831e4ef64b78d60dcf252026f537ab207fe"
 dependencies = [
  "evalexpr",
 ]

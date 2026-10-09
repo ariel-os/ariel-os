@@ -69,7 +69,7 @@ fn main() {
 #[cfg(feature = "memory-x")]
 mod memoryx {
     use ariel_os_buildutils::env_var_and_rerun_if_changed;
-    use ld_memory::MemorySection;
+    use ld_memory::{MemorySection, Whence};
     use memsolve::section::Section;
 
     /// Writes `memory.x` based on `CHIP_[RAM|NVM]_` (or hardcoded) to `$OUTDIR`.
@@ -91,13 +91,12 @@ mod memoryx {
             .expect("Unable to resolve nvm layout")
             .into_memory();
 
-        let ram_section = MemorySection::new("RAM", ram.start_address, ram.size)
-            .attrs("rwx")
-            .offset(u64_from_env_maybe("CHIP_RAM_RESERVE_BYTES").unwrap_or_default());
+        let ram_section = MemorySection::new("RAM", ram.start_address, ram.size).attrs("rwx");
 
         memory = memory.add_section(ram_section);
 
         memory = handle_extra_sections(memory);
+        memory = handle_reserve_bytes(memory);
 
         let mut memory_content = memory.to_ldmemory();
         handle_ld_includes(&mut memory_content);
@@ -117,6 +116,40 @@ mod memoryx {
                 }
                 let section = ld_memory::parse::parse_section(entry).expect("Parsing section");
                 memory = memory.add_section(section);
+            }
+        }
+        memory
+    }
+
+    /// Parses `CHIP_SECTION_RESERVE_BYTES`.
+    ///
+    /// Format is
+    /// `CHIP_SECTION_RESERVE_BYTES="<section_name>:<new_section_name>:<len_in_bytes>"`.
+    /// Multiple entries (comma separated) are supported.
+    ///
+    /// # Panics
+    /// Panics on invalid format.
+    fn handle_reserve_bytes(mut memory: ld_memory::Memory) -> ld_memory::Memory {
+        if let Ok(value) = &env_var_and_rerun_if_changed("CHIP_SECTION_RESERVE_BYTES") {
+            let split = value.split(',');
+            for entry in split {
+                if entry.is_empty() {
+                    continue;
+                }
+                let mut parts = entry.splitn(3, ':');
+                assert!(
+                    parts.clone().count() == 3,
+                    "CHIP_SECTION_RESERVE_BYTES format mismatch, expected \"<section_name>:<new_section_name>:<len_in_bytes>\""
+                );
+                let section_name = parts.next().unwrap();
+                let new_section_name = parts.next().unwrap();
+                let len_str = parts.next().unwrap();
+
+                let len: u64 = len_str.parse().expect("len does not parse as u64");
+
+                memory = memory
+                    .split_section(section_name, new_section_name, len, Whence::Beginning)
+                    .unwrap();
             }
         }
         memory
@@ -204,20 +237,6 @@ mod memoryx {
             &env_var_and_rerun_if_changed(key).unwrap_or_else(|_| panic!("{key} env var not set")),
         )
         .unwrap_or_else(|_| panic!("{key} is not a decimal or hex value"))
-    }
-
-    /// Get an u64 value (hex or dec) from env, if set and it parses correctly.
-    /// # Panics
-    /// Panics then `key` is in env but does not parse as `u64` in hex or decimal.
-    fn u64_from_env_maybe(key: &'static str) -> Option<u64> {
-        if let Ok(value) = &env_var_and_rerun_if_changed(key) {
-            Some(
-                parse_dec_or_hex(value)
-                    .unwrap_or_else(|_| panic!("{key} is not a decimal or hex value")),
-            )
-        } else {
-            None
-        }
     }
 
     /// Creates the flash section for memsolve.

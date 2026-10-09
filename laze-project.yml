@@ -61,6 +61,7 @@ contexts:
           CHIP_RAM_START_ADDRESS=${CHIP_RAM_START_ADDRESS}
           CHIP_RAM_SIZE_BYTES=${CHIP_RAM_SIZE_BYTES}
           CHIP_LD_INCLUDES=${CHIP_LD_INCLUDES}
+          CHIP_SECTION_RESERVE_BYTES=${CHIP_SECTION_RESERVE_BYTES}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       PROBE_RS_PROTOCOL: swd
@@ -94,6 +95,8 @@ contexts:
       CHIP_EXTRA_SECTIONS:
         joiner: ","
       CHIP_LD_INCLUDES:
+        joiner: ","
+      CHIP_SECTION_RESERVE_BYTES:
         joiner: ","
       RUSTFLAGS_CONTEXTS:
         from: contexts
@@ -373,10 +376,9 @@ contexts:
       - has_multi_core_support
       - has_storage_support
     env:
-      CHIP_NVM_START_ADDRESS: "0x10000100"
-      CHIP_NVM_PAGE_SIZE_BYTES: "256" # This is actually 4096! fix when doing ariel-os-boot
-      # The first page is taken by the second-stage bootloader.
-      CHIP_NVM_SIZE_BYTES: $((2048 * 1024) - 256)
+      CHIP_NVM_START_ADDRESS: "0x10000000"
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_SIZE_BYTES: "$(2048 * 1024)"
       # Regular RAM (256KiB) consists of 4 banks, SRAM0-SRAM3, with a striped
       # mapping. This is usually good for performance, as it distributes load
       # on those banks evenly.
@@ -384,9 +386,11 @@ contexts:
       # memory areas dedicated for some specific job, improving predictability.
       CHIP_RAM_SIZE_BYTES: $(256 * 1024)
       CHIP_EXTRA_SECTIONS:
-        - "BOOT2:0x10000000:256"
         - "SRAM4:0x20040000:4096"
         - "SRAM5:0x20041000:4096"
+      CHIP_SECTION_RESERVE_BYTES:
+        # The rp2040 stage2 bootloader needs this.
+        - "FLASH:BOOT2:256"
       PROBE_RS_CHIP: RP2040
       CARGO_RUNNER:
         - ${SCRIPTS}/debug-openocd.sh
@@ -1689,10 +1693,8 @@ modules:
           - ariel-os/nrf91-modem
         # 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
         NRF91_MODEM_IPC_BYTES: "32768"
-        CARGO_ENV:
-          - CHIP_RAM_RESERVE_BYTES=${NRF91_MODEM_IPC_BYTES}
-        CHIP_EXTRA_SECTIONS:
-          - "MODEM:0x20000000:${NRF91_MODEM_IPC_BYTES}"
+        CHIP_SECTION_RESERVE_BYTES:
+          - "RAM:MODEM:${NRF91_MODEM_IPC_BYTES}"
 
   - name: usb
     disables:
