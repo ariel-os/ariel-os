@@ -2,7 +2,7 @@
 use core::cell::RefCell;
 
 use ariel_os_embassy_common::bootloader::{BootLoaderBackend, FlashConfig};
-use embassy_boot::BootLoaderConfig;
+use embassy_boot::{BootLoaderConfig, FirmwareUpdaterConfig};
 use embassy_embedded_hal::flash::partition::BlockingPartition;
 use embassy_stm32::{OptionalPeripherals, flash::Blocking};
 use embassy_sync::{
