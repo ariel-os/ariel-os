@@ -61,6 +61,7 @@ contexts:
           CHIP_RAM_START_ADDRESS=${CHIP_RAM_START_ADDRESS}
           CHIP_RAM_SIZE_BYTES=${CHIP_RAM_SIZE_BYTES}
           CHIP_LD_INCLUDES=${CHIP_LD_INCLUDES}
+          CHIP_SECTION_RESERVE_BYTES=${CHIP_SECTION_RESERVE_BYTES}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       PROBE_RS_PROTOCOL: swd
@@ -94,6 +95,8 @@ contexts:
       CHIP_EXTRA_SECTIONS:
         joiner: ","
       CHIP_LD_INCLUDES:
+        joiner: ","
+      CHIP_SECTION_RESERVE_BYTES:
         joiner: ","
       RUSTFLAGS_CONTEXTS:
         from: contexts
@@ -1689,10 +1692,8 @@ modules:
           - ariel-os/nrf91-modem
         # 32 KiB recommended by [nrf-modem](https://github.com/diondokter/nrf-modem?tab=readme-ov-file#memory)
         NRF91_MODEM_IPC_BYTES: "32768"
-        CARGO_ENV:
-          - CHIP_RAM_RESERVE_BYTES=${NRF91_MODEM_IPC_BYTES}
-        CHIP_EXTRA_SECTIONS:
-          - "MODEM:0x20000000:${NRF91_MODEM_IPC_BYTES}"
+        CHIP_SECTION_RESERVE_BYTES:
+          - "RAM:MODEM:${NRF91_MODEM_IPC_BYTES}"
 
   - name: usb
     disables:
