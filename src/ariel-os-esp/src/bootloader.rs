@@ -56,22 +56,6 @@ pub struct EspDeviceUpdater<'a> {
     updater: OtaUpdater<'a, FlashStorage<'static>>,
 }
 
-// impl EspDeviceUpdater {
-//     pub fn new(flash_storage: &'static mut FlashStorage<'static>) -> Self {
-//         static ALIGNED_BUFFER_STATIC_CELL: ConstStaticCell<[u8; PARTITION_TABLE_MAX_LEN]> =
-//             ConstStaticCell::new([0; PARTITION_TABLE_MAX_LEN]);
-
-//         let buffer = ALIGNED_BUFFER_STATIC_CELL.take();
-
-//         let updater = OtaUpdater::new(flash_storage, buffer).unwrap();
-
-//         Self {
-//             updater,
-//             flash_region: None,
-//         }
-//     }
-// }
-
 impl<'a> DeviceUpdater for EspDeviceUpdater<'a> {
     type InnerError = esp_bootloader_esp_idf::partitions::Error;
 
