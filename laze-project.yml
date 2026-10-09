@@ -894,6 +894,21 @@ contexts:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys-hs\"
 
+  - name: stm32wl55jc
+    parent: stm32
+    selects:
+      # The STM32WL55JC is dual-core; Ariel OS runs on the Cortex-M4 application core.
+      - cortex-m4
+    provides:
+      - has_hwrng
+      - has_storage_support
+    env:
+      PROBE_RS_CHIP: STM32WL55JC
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        # The STM32WL55JC is dual-core; embassy-stm32 requires `init_primary()`.
+        - --cfg capability=\"hw/stm32-dual-core\"
+
   - name: stm32wle5jc
     parent: stm32
     selects:
@@ -2193,6 +2208,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - st-nucleo-wl55jc
       - stm32u083c-dk
       - st-b-l072z-lrwan1
     selects:
@@ -2213,6 +2229,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - st-nucleo-wl55jc
       - stm32u083c-dk
       - st-b-l072z-lrwan1
     selects:

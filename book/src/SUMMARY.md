@@ -50,6 +50,7 @@
   - [ST NUCLEO-WB55RG](./boards/st-nucleo-wb55rg.md)
   - [ST NUCLEO-WBA55CG](./boards/st-nucleo-wba55cg.md)
   - [ST NUCLEO-WBA65RI](./boards/st-nucleo-wba65ri.md)
+  - [ST NUCLEO-WL55JC](./boards/st-nucleo-wl55jc.md)
   - [ST STEVAL-MKBOXPRO](./boards/st-steval-mkboxpro.md)
   - [STM32U083C-DK](./boards/stm32u083c-dk.md)
   - [Ulanzi TC001](./boards/ulanzi-tc001.md)
@@ -104,6 +105,7 @@
   - [STM32WB55RG](./chips/stm32wb55rg.md)
   - [STM32WBA55CG](./chips/stm32wba55cg.md)
   - [STM32WBA65RI](./chips/stm32wba65ri.md)
+  - [STM32WL55JC](./chips/stm32wl55jc.md)
   - [STM32WLE5JC](./chips/stm32wle5jc.md)
 
 # User Guide
