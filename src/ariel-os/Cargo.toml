@@ -20,9 +20,11 @@ pre-release-replacements = [
 [dependencies]
 ariel-os-bench = { workspace = true, optional = true }
 ariel-os-boards = { workspace = true }
+ariel-os-bootloader-common = { workspace = true, optional = true }
 ariel-os-buildinfo = { workspace = true }
 ariel-os-coap = { workspace = true, optional = true }
 ariel-os-debug = { workspace = true }
+ariel-os-device-update = { workspace = true, optional = true }
 ariel-os-embassy = { workspace = true }
 ariel-os-hal = { workspace = true }
 ariel-os-identity = { workspace = true }
@@ -224,6 +226,7 @@ logging-over-debug-channel = [
 defmt = [
   "ariel-os-bench?/defmt",
   "ariel-os-coap?/defmt",
+  "ariel-os-device-update?/defmt",
   "ariel-os-embassy/defmt",
   "ariel-os-log/defmt",
   "ariel-os-sensors?/defmt",
@@ -268,6 +271,32 @@ embedded-test = ["ariel-os-rt/embedded-test"]
 
 # Enables idle threads. Selected by laze if needed.
 idle-threads = ["ariel-os-threads/idle-threads"]
+
+# ## Boot loader / OTA related features
+device-update = ["dep:ariel-os-device-update"]
+
+# ariel-os-bootloader *application mode* (chosen by laze)
+ariel-os-bootloader-application = [
+  "ariel-os-rt/embassy-boot-application",
+  "ariel-os-bootloader",
+]
+
+# ariel-os-bootloader *bootloader mode* (chosen by laze)
+ariel-os-bootloader-loader = [
+  "ariel-os-rt/embassy-boot-loader",
+  "ariel-os-bootloader",
+]
+
+# ariel-os-bootloader shared by bootloader / updater
+ariel-os-bootloader = [
+  "dep:ariel-os-bootloader-common",
+  "ariel-os-embassy/bootloader",
+]
+
+esp-bootloader-application = [
+  "ariel-os-embassy/bootloader",
+  "ariel-os-hal/bootloader",
+]
 
 # features needed for `cargo test`
 _test = [

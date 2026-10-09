@@ -79,9 +79,11 @@ version = "0.6.0"
 dependencies = [
  "ariel-os-bench",
  "ariel-os-boards",
+ "ariel-os-bootloader-common",
  "ariel-os-buildinfo",
  "ariel-os-coap",
  "ariel-os-debug",
+ "ariel-os-device-update",
  "ariel-os-embassy",
  "ariel-os-hal",
  "ariel-os-identity",
@@ -132,6 +134,33 @@ dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-hal",
  "cfg-if",
+]
+
+[[package]]
+name = "ariel-os-bootloader"
+version = "0.5.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-bootloader-common",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-rt",
+ "embassy-boot",
+ "embedded-storage",
+]
+
+[[package]]
+name = "ariel-os-bootloader-common"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-device-update",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-power",
+ "ariel-os-rt",
+ "embassy-boot",
+ "embedded-storage",
 ]
 
 [[package]]
@@ -189,6 +218,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-device-update"
+version = "0.5.0"
+dependencies = [
+ "defmt 1.1.1",
+ "embedded-io-async 0.6.1",
+]
+
+[[package]]
 name = "ariel-os-embassy"
 version = "0.6.0"
 dependencies = [
@@ -208,10 +245,10 @@ dependencies = [
  "const-str",
  "const_panic",
  "critical-section",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-futures",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-net",
  "embassy-net-wiznet",
  "embassy-nrf",
@@ -242,10 +279,12 @@ dependencies = [
  "ariel-os-utils",
  "const-sha1",
  "defmt 1.1.1",
+ "embassy-boot",
  "embassy-executor",
  "embassy-time",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
+ "embedded-storage",
  "fugit",
  "static_cell",
  "trouble-host",
@@ -255,6 +294,7 @@ dependencies = [
 name = "ariel-os-esp"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-device-update",
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
@@ -264,20 +304,23 @@ dependencies = [
  "bt-hci",
  "critical-section",
  "defmt 1.1.1",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
+ "embassy-sync 0.7.2",
  "embassy-time",
  "embassy-time-driver",
  "embassy-time-queue-utils",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
+ "embedded-storage",
  "esp-alloc",
  "esp-bootloader-esp-idf",
  "esp-hal",
  "esp-radio",
  "esp-radio-rtos-driver",
  "esp-rom-sys",
+ "esp-storage",
  "esp-sync",
  "fugit",
  "paste",
@@ -297,14 +340,16 @@ dependencies = [
  "ariel-os-stm32",
  "bt-hci",
  "const_panic",
- "embassy-embedded-hal",
+ "embassy-boot",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-sync 0.7.2",
  "embassy-usb",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-io 0.6.1",
+ "embedded-storage",
  "embedded-storage-async",
 ]
 
@@ -357,7 +402,7 @@ dependencies = [
  "ariel-os-log",
  "ariel-os-random",
  "defmt 1.1.1",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-net-tuntap",
  "embassy-time",
@@ -377,7 +422,8 @@ dependencies = [
  "ariel-os-rt",
  "cortex-m",
  "defmt 1.1.1",
- "embassy-embedded-hal",
+ "embassy-boot",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-futures",
  "embassy-net",
@@ -426,15 +472,18 @@ dependencies = [
  "ariel-os-rt",
  "ariel-os-utils",
  "bt-hci",
+ "cortex-m",
  "critical-section",
  "cyw43",
  "cyw43-firmware",
  "cyw43-pio",
  "defmt 1.1.1",
- "embassy-embedded-hal",
+ "embassy-boot",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-net-driver-channel 0.3.2",
  "embassy-rp",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
  "paste",
@@ -598,10 +647,13 @@ dependencies = [
  "ariel-os-random",
  "ariel-os-stm32-mapping",
  "ariel-os-utils",
+ "cortex-m",
  "defmt 1.1.1",
- "embassy-embedded-hal",
+ "embassy-boot",
+ "embassy-embedded-hal 0.5.0",
  "embassy-executor",
  "embassy-stm32",
+ "embassy-sync 0.7.2",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
  "paste",
@@ -614,6 +666,7 @@ dependencies = [
 name = "ariel-os-stm32-mapping"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-rt",
  "embassy-stm32",
 ]
 
@@ -1950,15 +2003,47 @@ dependencies = [
 ]
 
 [[package]]
+name = "embassy-boot"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73bfc955c9238df2ce9fecc6f18a64b13ecaa41a3cd42d940a09f304765d10db"
+dependencies = [
+ "digest",
+ "document-features",
+ "embassy-embedded-hal 0.6.0",
+ "embassy-sync 0.8.0",
+ "embedded-storage",
+ "embedded-storage-async",
+ "signature",
+]
+
+[[package]]
 name = "embassy-embedded-hal"
 version = "0.5.0"
 source = "git+https://github.com/ariel-os/embassy?rev=5211daf214eecd64c6754b760fecdb1f16622312#5211daf214eecd64c6754b760fecdb1f16622312"
 dependencies = [
  "defmt 1.1.1",
  "embassy-futures",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-sync 0.7.2",
  "embassy-time",
+ "embedded-hal 0.2.7",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
+ "embedded-storage",
+ "embedded-storage-async",
+ "nb 1.1.0",
+]
+
+[[package]]
+name = "embassy-embedded-hal"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0641612053b2f34fc250bb63f6630ae75de46e02ade7f457268447081d709ce"
+dependencies = [
+ "embassy-futures",
+ "embassy-hal-internal 0.4.0",
+ "embassy-sync 0.8.0",
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -2016,6 +2101,15 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "defmt 1.1.1",
+ "num-traits",
+]
+
+[[package]]
+name = "embassy-hal-internal"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f10ce10a4dfdf6402d8e9bd63128986b96a736b1a0a6680547ed2ac55d55dba"
+dependencies = [
  "num-traits",
 ]
 
@@ -2106,9 +2200,9 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "document-features",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-futures",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-sync 0.7.2",
  "embassy-time",
  "embassy-time-driver",
@@ -2140,9 +2234,9 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "document-features",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-futures",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-sync 0.7.2",
  "embassy-time",
  "embassy-time-driver",
@@ -2184,9 +2278,9 @@ dependencies = [
  "critical-section",
  "defmt 1.1.1",
  "document-features",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-futures",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-net-driver",
  "embassy-sync 0.7.2",
  "embassy-time",
@@ -2658,7 +2752,7 @@ dependencies = [
  "document-features",
  "embedded-storage",
  "esp-config",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-rom-sys",
  "jiff",
@@ -2691,7 +2785,7 @@ dependencies = [
  "delegate",
  "digest",
  "document-features",
- "embassy-embedded-hal",
+ "embassy-embedded-hal 0.5.0",
  "embassy-futures",
  "embassy-sync 0.7.2",
  "embassy-usb-driver",
@@ -2705,7 +2799,7 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "enumset",
  "esp-config",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-riscv-rt",
  "esp-rom-sys",
@@ -2734,6 +2828,20 @@ dependencies = [
  "ufmt-write",
  "xtensa-lx",
  "xtensa-lx-rt",
+]
+
+[[package]]
+name = "esp-hal-procmacros"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e025a7a7a0affdb4ff913b5c4494aef96ee03d085bf83c27453ae3a71d50da6"
+dependencies = [
+ "document-features",
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.114",
+ "termcolor",
 ]
 
 [[package]]
@@ -2810,7 +2918,7 @@ dependencies = [
  "esp-alloc",
  "esp-config",
  "esp-hal",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-phy",
  "esp-radio-rtos-driver",
@@ -2864,6 +2972,21 @@ dependencies = [
  "cfg-if",
  "document-features",
  "esp-metadata-generated",
+]
+
+[[package]]
+name = "esp-storage"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1495fc1f5549bdd840b52d9ceb201746200e1620d2636f46958c11e765623b80"
+dependencies = [
+ "document-features",
+ "embedded-storage",
+ "esp-hal",
+ "esp-hal-procmacros 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "esp-metadata-generated",
+ "esp-rom-sys",
+ "esp-sync",
 ]
 
 [[package]]
@@ -4397,7 +4520,7 @@ dependencies = [
  "bt-hci",
  "critical-section",
  "defmt 1.1.1",
- "embassy-hal-internal",
+ "embassy-hal-internal 0.3.0",
  "embassy-nrf",
  "embassy-sync 0.7.2",
  "embedded-io 0.6.1",
@@ -6047,6 +6170,14 @@ dependencies = [
  "embassy-sync 0.7.2",
  "embedded-nal-coap",
  "scroll-ring",
+]
+
+[[package]]
+name = "test-device-update"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
 ]
 
 [[package]]

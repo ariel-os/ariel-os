@@ -64,6 +64,10 @@ single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory", "dep:memsolve"]
 
+embassy-boot-loader = ["embassy-boot"]
+embassy-boot-application = ["embassy-boot"]
+embassy-boot = []
+
 # features needed for `cargo test`
 _test = []
 

@@ -27,6 +27,10 @@ pub mod gpio;
 #[doc(hidden)]
 pub mod ble;
 
+#[cfg(feature = "bootloader")]
+#[doc(hidden)]
+pub mod bootloader;
+
 #[cfg(feature = "hwrng")]
 #[doc(hidden)]
 pub mod hwrng {

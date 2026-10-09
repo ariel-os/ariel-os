@@ -6,10 +6,13 @@ members = [
   "src/ariel-os-alloc",
   "src/ariel-os-bench",
   "src/ariel-os-boards",
+  "src/ariel-os-bootloader",
+  "src/ariel-os-bootloader-common",
   "src/ariel-os-buildinfo",
   "src/ariel-os-buildutils",
   "src/ariel-os-coap",
   "src/ariel-os-debug",
+  "src/ariel-os-device-update",
   "src/ariel-os-embassy-common",
   "src/ariel-os-esp",
   "src/ariel-os-hal",
@@ -38,6 +41,7 @@ members = [
   "tests/benchmarks/bench-sched-yield",
   "tests/coap",
   "tests/coap-blinky",
+  "tests/device-update",
   "tests/gpio",
   "tests/gpio-interrupt-nrf",
   "tests/gpio-interrupt-stm32",
@@ -79,6 +83,7 @@ portable-atomic = { version = "1.11.0", default-features = false, features = [
 riscv = { version = "0.15.0", default-features = false }
 semihosting = { version = "0.1.24", default-features = false }
 
+embassy-boot = { version = "0.7.0", default-features = false }
 embassy-embedded-hal = { version = "0.5.0", default-features = false }
 embassy-executor = { version = "0.9.1", default-features = false }
 embassy-futures = { version = "0.1.2", default-features = false }
@@ -101,6 +106,7 @@ embedded-io = { version = "0.6.1", default-features = false }
 embedded-io-async = { version = "0.6.1", default-features = false }
 embedded-nal-coap = "=0.1.0-alpha.5"
 embedded-storage-async = { version = "0.4.1" }
+embedded-storage = { version = "0.3.1" }
 embedded-test = { version = "0.7.1", default-features = false, features = [
   "ariel-os-09",
 ] }
@@ -115,6 +121,7 @@ esp-println = { version = "0.16.0", default-features = false }
 esp-radio = { version = "0.17.0", default-features = false }
 esp-radio-rtos-driver = { version = "0.2.0", default-features = false }
 esp-rom-sys = { version = "0.1.2", default-features = false }
+esp-storage = { version = "0.8.0", default-features = false }
 esp-sync = { version = "0.1.0", default-features = false }
 
 xtensa-lx-rt = { version = "0.21.0", default-features = false }
@@ -125,10 +132,12 @@ ariel-os = { path = "src/ariel-os", default-features = false }
 ariel-os-alloc = { path = "src/ariel-os-alloc", default-features = false }
 ariel-os-bench = { path = "src/ariel-os-bench", default-features = false }
 ariel-os-boards = { path = "src/ariel-os-boards", default-features = false }
+ariel-os-bootloader-common = { path = "src/ariel-os-bootloader-common", default-features = false }
 ariel-os-buildinfo = { path = "src/ariel-os-buildinfo", default-features = false }
 ariel-os-buildutils = { path = "src/ariel-os-buildutils", default-features = false }
 ariel-os-coap = { path = "src/ariel-os-coap", default-features = false }
 ariel-os-debug = { path = "src/ariel-os-debug", default-features = false }
+ariel-os-device-update = { path = "src/ariel-os-device-update", default-features = false }
 ariel-os-embassy = { path = "src/ariel-os-embassy", default-features = false }
 ariel-os-embassy-common = { path = "src/ariel-os-embassy-common" }
 ariel-os-esp = { path = "src/ariel-os-esp" }

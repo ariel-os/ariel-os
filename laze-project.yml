@@ -667,6 +667,8 @@ contexts:
       - sw/benchmark
     env:
       OPENOCD_ARGS: foo
+      CHIP_NVM_START_ADDRESS: "0x08000000"
+      CHIP_RAM_START_ADDRESS: "0x20000000"
     tasks:
       flash-dfuse:
         cmd:
@@ -682,6 +684,9 @@ contexts:
       isr_stacksize_required_default: "1024"
       executor_stacksize_required_default: "3072"
       PROBE_RS_CHIP: STM32C031C6
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(32 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(12 * 1024)
 
   - name: stm32f042k6
     parent: stm32
@@ -704,6 +709,9 @@ contexts:
       PROBE_RS_CHIP: STM32F303CB
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-usb-lp-can-rx0\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(256 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(40 * 1024)
 
   - name: stm32f303re
     parent: stm32
@@ -715,6 +723,9 @@ contexts:
       PROBE_RS_CHIP: STM32F303RE
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-usb-lp-can-rx0\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(512 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(64 * 1024)
 
   - name: stm32f401re
     parent: stm32
@@ -744,6 +755,9 @@ contexts:
       PROBE_RS_CHIP: STM32G431RB
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(128 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(32 * 1024)
 
   - name: stm32f767zi
     parent: stm32
@@ -771,6 +785,10 @@ contexts:
         - --cfg capability=\"hw/stm32-dual-core\"
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "0x20000" # 128 KiB
+      CHIP_NVM_SIZE_BYTES: $(1536 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(512 * 1024)
+      CHIP_RAM_START_ADDRESS: "0x24000000"
 
   - name: stm32h753zi
     parent: stm32
@@ -784,6 +802,10 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "0x20000" # 128 KiB
+      CHIP_NVM_SIZE_BYTES: $(1536 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(512 * 1024)
+      CHIP_RAM_START_ADDRESS: "0x24000000"
 
   - name: stm32l072cz
     parent: stm32
@@ -815,6 +837,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\" # Needs an external 32.768 kHz crystal to have a stable clock
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(1024 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(96 * 1024)
 
   - name: stm32u073kc
     parent: stm32
@@ -829,6 +854,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-cryp\"
         - --cfg capability=\"hw/stm32-usb-drd-fs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(256 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(40 * 1024)
 
   - name: stm32u083mc
     parent: stm32
@@ -843,6 +871,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-cryp\"
         - --cfg capability=\"hw/stm32-usb-drd-fs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(256 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(40 * 1024)
 
   - name: stm32u585ai
     parent: stm32
@@ -856,6 +887,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_SIZE_BYTES: $(2048 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(768 * 1024)
 
   - name: stm32wb55rg
     parent: stm32
@@ -869,6 +903,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-lp\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_SIZE_BYTES: $(1024 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(192 * 1024)
 
   - name: stm32wba55cg
     parent: stm32
@@ -880,6 +917,9 @@ contexts:
       PROBE_RS_CHIP: STM32WBA55CG
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_SIZE_BYTES: $(1024 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(128 * 1024)
 
   - name: stm32wba65ri
     parent: stm32
@@ -893,6 +933,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys-hs\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_SIZE_BYTES: $(2048 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(512 * 1024)
 
   - name: stm32wle5jc
     parent: stm32
@@ -905,6 +948,9 @@ contexts:
       PROBE_RS_CHIP: STM32WLE5JC
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "2048"
+      CHIP_NVM_SIZE_BYTES: $(256 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(64 * 1024)
 
 modules:
   - name: thumbv6m-none-eabi
@@ -1123,6 +1169,37 @@ modules:
         CARGO_ENV:
           - CC="${CC}"
           - CFLAGS="${CFLAGS}"
+
+  - name: device-update
+    help: Enables device updates & bootloader support.
+    context:
+      - ariel-os
+    selects:
+      - device-update-impl
+
+  - name: device-update-ariel-os-bootloader
+    help: Provides ariel-os-boot / embassy-boot based device update.
+    provides_unique:
+      - device-update-impl
+    context:
+      - nrf
+      - stm32
+      - rp
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ariel-os-bootloader-application
+
+  - name: device-update-esp-bootloader
+    help: Provides esp bootloader based device update.
+    provides_unique:
+      - device-update-impl
+    context:
+      - esp
+    env:
+      global:
+        FEATURES:
+          - ariel-os/esp-bootloader-application
 
   - name: emit-stack-sizes
     conflicts:

@@ -11,7 +11,9 @@ ariel-os-embassy-common = { workspace = true }
 ariel-os-random = { workspace = true, optional = true }
 ariel-os-stm32-mapping = { workspace = true }
 ariel-os-utils = { workspace = true }
+cortex-m = { workspace = true, optional = true }
 defmt = { workspace = true, optional = true }
+embassy-boot = { workspace = true, optional = true }
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-executor = { workspace = true, default-features = false, features = [
   "arch-cortex-m",
@@ -22,6 +24,7 @@ embassy-stm32 = { workspace = true, default-features = false, features = [
   "rt",
   "unstable-pac",
 ] }
+embassy-sync = { workspace = true, optional = true }
 embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
@@ -87,6 +90,15 @@ defmt = ["dep:defmt", "embassy-stm32/defmt"]
 executor-interrupt = ["embassy-executor/executor-interrupt"]
 
 rcc-config-override = []
+
+## Access to bootloader backend.
+bootloader = [
+  "ariel-os-embassy-common/bootloader",
+  "dep:cortex-m",
+  "dep:embassy-boot",
+  "dep:embassy-embedded-hal",
+  "dep:embassy-sync",
+]
 
 _test = ["embassy-stm32/stm32wb55rg", "external-interrupts", "i2c", "spi"]
 

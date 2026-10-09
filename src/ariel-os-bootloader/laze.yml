@@ -1,0 +1,9 @@
+apps:
+  - name: ariel-os-bootloader
+    context:
+      - nrf
+      - stm32
+      - rp
+    selects:
+      # At least on cortex-m, the chain loading to application image doesn't work when called from SWI (interrupt executor).
+      - executor-thread
