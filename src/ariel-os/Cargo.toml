@@ -293,6 +293,10 @@ ariel-os-bootloader = [
   "ariel-os-embassy/bootloader",
 ]
 
+esp-bootloader-application = [
+  "ariel-os-embassy/bootloader",
+  "ariel-os-hal/bootloader",
+]
 
 # features needed for `cargo test`
 _test = [

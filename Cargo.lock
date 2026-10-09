@@ -294,6 +294,7 @@ dependencies = [
 name = "ariel-os-esp"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-device-update",
  "ariel-os-embassy-common",
  "ariel-os-log",
  "ariel-os-random",
@@ -305,18 +306,21 @@ dependencies = [
  "defmt 1.1.1",
  "embassy-embedded-hal 0.5.0",
  "embassy-executor",
+ "embassy-sync 0.7.2",
  "embassy-time",
  "embassy-time-driver",
  "embassy-time-queue-utils",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-io-async 0.6.1",
+ "embedded-storage",
  "esp-alloc",
  "esp-bootloader-esp-idf",
  "esp-hal",
  "esp-radio",
  "esp-radio-rtos-driver",
  "esp-rom-sys",
+ "esp-storage",
  "esp-sync",
  "fugit",
  "paste",
@@ -2787,7 +2791,7 @@ dependencies = [
  "document-features",
  "embedded-storage",
  "esp-config",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-rom-sys",
  "jiff",
@@ -2834,7 +2838,7 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "enumset",
  "esp-config",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-riscv-rt",
  "esp-rom-sys",
@@ -2863,6 +2867,20 @@ dependencies = [
  "ufmt-write",
  "xtensa-lx",
  "xtensa-lx-rt",
+]
+
+[[package]]
+name = "esp-hal-procmacros"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e025a7a7a0affdb4ff913b5c4494aef96ee03d085bf83c27453ae3a71d50da6"
+dependencies = [
+ "document-features",
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.114",
+ "termcolor",
 ]
 
 [[package]]
@@ -2939,7 +2957,7 @@ dependencies = [
  "esp-alloc",
  "esp-config",
  "esp-hal",
- "esp-hal-procmacros",
+ "esp-hal-procmacros 0.21.0 (git+https://github.com/ariel-os/esp-hal?rev=531c629afdd80ea464682ce7f4db8baed97967a6)",
  "esp-metadata-generated",
  "esp-phy",
  "esp-radio-rtos-driver",
@@ -2993,6 +3011,21 @@ dependencies = [
  "cfg-if",
  "document-features",
  "esp-metadata-generated",
+]
+
+[[package]]
+name = "esp-storage"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1495fc1f5549bdd840b52d9ceb201746200e1620d2636f46958c11e765623b80"
+dependencies = [
+ "document-features",
+ "embedded-storage",
+ "esp-hal",
+ "esp-hal-procmacros 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "esp-metadata-generated",
+ "esp-rom-sys",
+ "esp-sync",
 ]
 
 [[package]]

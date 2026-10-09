@@ -1213,6 +1213,17 @@ modules:
         FEATURES:
           - ariel-os/ariel-os-bootloader-application
 
+  - name: device-update-esp-bootloader
+    help: Provides esp bootloader based device update.
+    provides_unique:
+      - device-update-impl
+    context:
+      - esp
+    env:
+      global:
+        FEATURES:
+          - ariel-os/esp-bootloader-application
+
   - name: emit-stack-sizes
     conflicts:
       - stable
