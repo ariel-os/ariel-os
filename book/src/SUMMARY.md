@@ -124,6 +124,7 @@
 - [SPI](./spi.md)
 - [UART](./uart.md)
 - [Sensors](./sensors.md)
+  - [General Knowledge on Sensors](./sensors-general-knowledge.md)
 - [Global Allocator](./global-allocator.md)
 - [Networking](./networking.md)
 - [Ethernet](./ethernet.md)
