@@ -1349,6 +1349,8 @@ modules:
       - device-update-impl
     context:
       - nrf
+      - stm32
+      - rp
     env:
       global:
         FEATURES:
