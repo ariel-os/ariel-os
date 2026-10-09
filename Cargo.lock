@@ -238,9 +238,7 @@ dependencies = [
 name = "ariel-os-embassy-common"
 version = "0.6.0"
 dependencies = [
- "ariel-os-buildinfo",
  "ariel-os-utils",
- "const-sha1",
  "defmt 1.1.1",
  "embassy-executor",
  "embassy-time",
@@ -314,8 +312,10 @@ version = "0.6.0"
 dependencies = [
  "ariel-os",
  "ariel-os-boards",
+ "ariel-os-buildinfo",
  "ariel-os-embassy-common",
  "ariel-os-hal",
+ "const-sha1",
  "embedded-test",
 ]
 
