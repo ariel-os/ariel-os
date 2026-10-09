@@ -269,6 +269,10 @@ embedded-test = ["ariel-os-rt/embedded-test"]
 # Enables idle threads. Selected by laze if needed.
 idle-threads = ["ariel-os-threads/idle-threads"]
 
+# ## Boot loader / OTA related features
+embassy-boot-loader = ["ariel-os-rt/embassy-boot-loader"]
+embassy-boot-application = ["ariel-os-rt/embassy-boot-application"]
+
 # features needed for `cargo test`
 _test = [
   "ariel-os-rt/_test",
