@@ -13,7 +13,7 @@
 |GPIO|<span title="supported">✅</span>|
 |I2C Controller Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
 |SPI Main Mode|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
-|UART|<span title="available in hardware, but not currently supported by Ariel OS">❌</span>|
+|UART|<span title="needs testing">🚦</span>|
 |Ethernet|<span title="not available on this piece of hardware">–</span>|
 |User USB|<span title="needs testing">🚦</span>|
 |Ethernet over USB|<span title="needs testing">🚦</span>|
@@ -93,7 +93,7 @@ Boards using this chip.
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
 		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
-		  <td class="support-cell" title="available in hardware, but not currently supported by Ariel OS">❌</td>
+		  <td class="support-cell" title="needs testing">🚦</td>
 		  <td class="support-cell" title="not available on this piece of hardware">–</td>
 		  <td class="support-cell" title="needs testing">🚦</td>
 		  <td class="support-cell" title="needs testing">🚦</td>
