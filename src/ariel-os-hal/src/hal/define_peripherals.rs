@@ -5,6 +5,45 @@
 /// the [`cfg`
 /// attribute](https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-attribute)),
 /// to define different setups for different boards.
+///
+/// # Examples
+///
+/// Basic usage for defining a peripheral struct holding two LED pins:
+///
+/// ```ignore
+/// ariel_os::hal::define_peripherals!(LedPeripherals {
+///     led0: P0_13,
+///     led1: P0_14,
+/// });
+///
+/// #[ariel_os::task(autostart, peripherals)]
+/// async fn blinky(peripherals: LedPeripherals) {
+///     let led = Output::new(peripherals.led0, Level::Low);
+///     // ...
+/// }
+/// ```
+///
+/// Using `cfg` attributes to define the same struct with a different pin on each board:
+///
+/// ```ignore
+/// #[cfg(context = "nrf52840dk")]
+/// ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_13 });
+///
+/// #[cfg(context = "rpi-pico")]
+/// ariel_os::hal::define_peripherals!(LedPeripherals { led: PIN_25 });
+/// ```
+///
+/// Defining a `LedPin` type alias, so the type of the LED's peripheral can be named
+/// the same way on every board:
+///
+/// ```ignore
+/// #[cfg(context = "nrf52840dk")]
+/// ariel_os::hal::define_peripherals!(LedPeripherals { led: P0_13 = LedPin });
+///
+/// #[cfg(context = "rpi-pico")]
+/// ariel_os::hal::define_peripherals!(LedPeripherals { led: PIN_25 = LedPin });
+/// ```
+///
 // Inspired by https://github.com/adamgreig/assign-resources/tree/94ad10e2729afdf0fd5a77cd12e68409a982f58a
 // under MIT license
 #[macro_export]
