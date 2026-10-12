@@ -181,6 +181,14 @@ fn startup() -> ! {
         f();
     }
 
+    #[cfg(feature = "mpu")]
+    {
+        // SAFETY: this function must not be called more than once
+        unsafe {
+            ariel_os_mpu::init_mpu();
+        }
+    }
+
     #[cfg(feature = "threading")]
     {
         // SAFETY: this function must not be called more than once

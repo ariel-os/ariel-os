@@ -1,7 +1,9 @@
 #![expect(unsafe_code)]
 
-use cortex_m as _;
-use cortex_m_rt::{__RESET_VECTOR, ExceptionFrame, entry, exception};
+use ariel_os_debug::ExitCodeCoeeCo;
+
+use cortex_m::{self as _, Peripherals};
+use cortex_m_rt::{__RESET_VECTORETEVECTORETFrame, entry, exception};
 
 use crate::stack::Stack;
 
@@ -25,6 +27,43 @@ pub fn ipsr_isr_number_to_str(isr_number: usize) -> &'static str {
         16..=255 => "IRQn",
         _ => "(Unknown! Illegal value?)",
     }
+}
+
+#[allow(non_snake_case)]
+#[allow(unsafe_op_in_unsafe_fn)]
+#[exception]
+unsafe fn MemoryManagement() {
+    // info!("Memory protection unit has called the MemoryManagement handler, reason: ");
+    // let peripherals = unsafe { Peripherals::steal() };
+
+    // let cfsr: u32 = peripherals.SCB.cfsr.read();
+
+    // let mmfsr = (cfsr & 0xFF) as u8;
+
+    // if mmfsr & (1 << 0) != 0 {
+    //     info!("Instruction Access Violation (IACCVIOL)");
+    // }
+    // if mmfsr & (1 << 1) != 0 {
+    //     info!("Data Access Violation (DACCVIOL)");
+    // }
+    // if mmfsr & (1 << 3) != 0 {
+    //     info!("Fault on Unstacking (MUNSTKERR)");
+    // }
+    // if mmfsr & (1 << 4) != 0 {
+    //     info!("Fault on Stacking (MSTKERR)");
+    // }
+    // if mmfsr & (1 << 5) != 0 {
+    //     info!("Fault on Lazy FP State Preservation (MLSPERR)");
+    // }
+
+    // if mmfsr & (1 << 7) != 0 {
+    //     let fault_addr = peripherals.SCB.mmfar.read();
+    //     info!("Fault Address (MMFAR): 0x{:08X}", fault_addr);
+    // } else {
+    //     info!("MMFAR not available");
+    // }
+
+    exit(ExitCode::FAILURE);
 }
 
 /// Extra verbose Cortex-M HardFault handler
