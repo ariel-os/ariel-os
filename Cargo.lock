@@ -697,13 +697,13 @@ dependencies = [
 name = "ariel-os-suit"
 version = "0.5.0"
 dependencies = [
- "ariel-os-bootloader-common",
  "ariel-os-device-update",
  "ariel-os-embassy",
+ "ariel-os-log",
  "ariel-os-update-transports",
  "cose_minicbor",
  "defmt 1.1.1",
- "dress-up 0.1.1",
+ "dress-up 0.1.1 (git+https://github.com/anlavandier/dress-up/?rev=a9d67a36ee7873053a5588dcc0877c439301a480)",
  "embassy-net",
  "featurecomb",
  "generic-array 1.4.5",
@@ -2063,7 +2063,7 @@ dependencies = [
 [[package]]
 name = "dress-up"
 version = "0.1.1"
-source = "git+https://github.com/ariel-os/dress-up?rev=52c06ec6847fb9e60e09cb6a91cab73702db953b#52c06ec6847fb9e60e09cb6a91cab73702db953b"
+source = "git+https://github.com/anlavandier/dress-up/?rev=a9d67a36ee7873053a5588dcc0877c439301a480#a9d67a36ee7873053a5588dcc0877c439301a480"
 dependencies = [
  "bitflags 2.13.2",
  "ctutils",
@@ -2074,7 +2074,6 @@ dependencies = [
  "minicbor",
  "num_enum 0.7.6",
  "sha2",
- "sha3",
  "uuid",
 ]
 
@@ -6287,7 +6286,7 @@ dependencies = [
  "ariel-os-boards",
  "ariel-os-suit",
  "cose-nostd",
- "dress-up 0.1.1 (git+https://github.com/ariel-os/dress-up?rev=52c06ec6847fb9e60e09cb6a91cab73702db953b)",
+ "dress-up 0.1.1",
 ]
 
 [[package]]
