@@ -45,6 +45,7 @@ builders:
   parent: nrf52832
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: espressif-esp32-c3-devkit-rust-1
   parent: esp32-c3-mini-1
@@ -108,6 +109,7 @@ builders:
   parent: nrf52840
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: makerdiary-nrf9151-connect-kit
   parent: nrf9151
@@ -146,11 +148,13 @@ builders:
   parent: nrf52832
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: nrf5340dk-app
   parent: nrf5340-app
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
   - has_leds
   - has_usb_device_port
@@ -172,6 +176,7 @@ builders:
   parent: nrf9160
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
   - has_leds
 - name: particle-xenon

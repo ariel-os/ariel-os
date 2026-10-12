@@ -40,3 +40,12 @@ targets:
     #     possible_peripherals:
     #       - TWISPI0
     #       - TWISPI1
+    uarts:
+      - aliases:
+          - VCOM0
+        tx_pin: P0_06
+        rx_pin: P0_08
+        rts_pin: P0_05
+        cts_pin: P0_07
+        possible_peripherals: [UARTE0, UARTE1]
+        host_facing: true

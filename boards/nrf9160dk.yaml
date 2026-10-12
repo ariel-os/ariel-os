@@ -16,3 +16,21 @@ targets:
         possible_peripherals:
           - SERIAL0
           - SERIAL1
+    uarts:
+      - aliases:
+          - VCOM0
+        tx_pin: P0_29
+        rx_pin: P0_28
+        rts_pin: P0_27
+        cts_pin: P0_26
+        possible_peripherals: [SERIAL3]
+        host_facing: true
+      # TODO: enable when multiple peripherals can be used for UART in Ariel OS.
+      # - aliases:
+      #     - VCOM2
+      #   tx_pin: P0_01
+      #   rx_pin: P0_00
+      #   rts_pin: P0_15
+      #   cts_pin: P0_14
+      #   possible_peripherals: [SERIAL3]
+      #   host_facing: true

@@ -21,3 +21,8 @@ targets:
     buttons:
       # button0
       - pin: P1_00
+    uarts:
+      - tx_pin: P0_20
+        rx_pin: P0_19
+        possible_peripherals: [UARTE0, UARTE1]
+        host_facing: true
