@@ -11,7 +11,7 @@ transport.exactly-one = { features = ["coap", "http"] }
 [dependencies]
 cose_minicbor = { workspace = true, features = ["es256", "sha256", "suit-sha256-es256"] }
 defmt = { workspace = true, optional = true }
-dress-up = { workspace = true, features = ["async"] }
+dress-up = { git = "https://github.com/anlavandier/dress-up/", rev = "a9d67a36ee7873053a5588dcc0877c439301a480", features = ["async"], default-features = false}
 generic-array = { workspace = true, features = ["const-default"] }
 heapless = { workspace = true }
 minicbor = { workspace = true }
@@ -20,14 +20,14 @@ uuid = { workspace = true }
 
 featurecomb = { workspace = true }
 
-ariel-os-bootloader-common = { workspace = true }
+ariel-os-log = { workspace = true }
 ariel-os-device-update = { workspace = true }
-ariel-os-update-transports = { workspace = true }
+ariel-os-update-transports = { workspace = true, optional = true }
 ariel-os-embassy = { workspace = true, features = ["net"] }
 embassy-net = { workspace = true, optional = true }
 
 [features]
-defmt = ["dep:defmt"]
+defmt = ["dep:defmt", "ariel-os-update-transports/defmt"]
 
 http = [
     "ariel-os-update-transports/http",
