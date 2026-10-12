@@ -18,39 +18,57 @@ use cose_nostd::{
 
 use ariel_os_boards::pins;
 
-static SUIT_MANIFEST: &[u8] = include_bytes!("../suit/manifest.signed.suit");
+static SUIT_MANIFEST: &[u8] = include_bytes!("../manifest-ariel.cbor");
+
 
 // --- snip
 // --- snip
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: pins::ButtonPeripherals) {
+    info!("Wait for button to start update");
+    let pull = Pull::Up;
+    let mut btn0 = Input::builder(peripherals.button0, pull)
+        .build_with_interrupt()
+        .unwrap();
+
+    let _ = btn0.wait_for_falling_edge().await;
     info!("Button pressed, initiating update...");
-    panic!("Test");
+
     let mut updater_state = HalDeviceUpdaterState::new();
-    let mut updater = updater_state.updater();
+    let updater = updater_state.updater();
 
-    let suit_processor = SuitProcessor::<_,1024, _>::new(&SUIT_MANIFEST, updater);
+    let suit_processor = SuitProcessor::<_,512, _>::new(&SUIT_MANIFEST, updater);
 
-    let suit_processor = suit_processor.authenticate(verify_cose_signature).unwrap();
-    // suit_processor.process_full_manifest().await.unwrap();
+    let updater = match suit_processor.authenticate(verify_cose_signature) {
+        Ok(suit_processor) => {
+            match suit_processor.process_full_manifest().await {
+                Ok(_) => {
+                    Some(suit_processor.into_updater())
+                },
+                Err(e) => {
+                    info!("[SUIT] Manifest Processing failed : {:?}", Debug2Format(&e));
+                    None
+                }
+            }
+        },
+        Err(e) => {
+            info!("[SUIT] Authenticate failed : {:?}", Debug2Format(&e));
+            None
+        }
+    };
 
+    info!("Testing");
+    if let Some(mut updater) = updater {
 
-    // let mut updater = suit_processor.into_updater();
+        updater.mark_updated().await.unwrap();
 
-    // updater.mark_updated().await.unwrap();
-
-    // info!("Updater done.");
-    // info!("Wait for button to reboot");
-    // let pull = Pull::Up;
-    // let mut btn0 = Input::builder(peripherals.button0, pull)
-    //     .build_with_interrupt()
-    //     .unwrap();
-
-    // let _ = btn0.wait_for_falling_edge().await;
-    // ariel_os::power::reboot();
+        info!("Updater done.");
+        info!("Waiting for another button press to update");
+        let _ = btn0.wait_for_falling_edge().await;
+        ariel_os::power::reboot();
+    }
 }
-
 
 
 pub const PUBKEY_P256: &[u8; 65] = include_bytes!("../suit/demo-public-key-p256.bin");
