@@ -14,6 +14,7 @@ ariel-os-log = { workspace = true }
 coap-message = { workspace = true, optional = true }
 coap-numbers = { workspace = true, optional = true }
 coap-request = { workspace = true, optional = true }
+coap-request-implementations = { version = "0.1.0-alpha.4", optional = true }
 defmt = { workspace = true, optional = true }
 embedded-nal-async = { workspace = true }
 embedded-nal-coap = { workspace = true }
@@ -30,6 +31,7 @@ coap = [
   "dep:coap-message",
   "dep:coap-numbers",
   "dep:coap-request",
+  "dep:coap-request-implementations",
 ]
 # Selects HTTP(S) as the update transport.
 http = ["dep:reqwless"]
