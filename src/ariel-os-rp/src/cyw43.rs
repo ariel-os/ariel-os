@@ -15,6 +15,9 @@ use static_cell::StaticCell;
 
 #[cfg(feature = "ble-cyw43")]
 use bt_hci::controller::ExternalController;
+
+#[cfg(feature = "wifi")]
+use ariel_os_embassy_common::wifi::StationConfig;
 #[cfg(feature = "wifi")]
 use cyw43::JoinOptions;
 
@@ -23,15 +26,12 @@ pub type NetworkDevice = cyw43::NetDriver<'static>;
 static STATE: StaticCell<cyw43::State> = StaticCell::new();
 
 #[cfg(feature = "wifi")]
-pub async fn join(mut control: cyw43::Control<'static>) {
+pub async fn join(mut control: cyw43::Control<'static>, config: StationConfig) {
     use ariel_os_log::info;
     loop {
         //control.join_open(WIFI_NETWORK).await;
         match control
-            .join(
-                crate::wifi::WIFI_NETWORK,
-                JoinOptions::new(crate::wifi::WIFI_PASSWORD.as_bytes()),
-            )
+            .join(config.ssid, JoinOptions::new(config.password.as_bytes()))
             .await
         {
             Ok(_) => {
