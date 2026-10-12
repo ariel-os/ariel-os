@@ -13,16 +13,16 @@ mod coap {
     use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
-    pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: u32>(
+    pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>(
         dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
     ) -> Result<FetchStream<'uri, 'buf, N, CHUNK_SIZE>, Error> {
         const {
-            assert!(N >= CHUNK_SIZE as usize);
+            assert!(N >= CHUNK_SIZE);
         }
 
-        let client = transport::NetworkTransportClient::new(dns_client, uri).await?;
+        let client = transport::new_client::<_, CHUNK_SIZE >(dns_client, uri).await?;
 
         Ok(FetchStream {
             chunk_index: 0,
@@ -33,15 +33,15 @@ mod coap {
         })
     }
 
-    pub struct FetchStream<'uri, 'buf, const N: usize, const CHUNK_SIZE: u32> {
+    pub struct FetchStream<'uri, 'buf, const N: usize, const CHUNK_SIZE: usize> {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
         bytes_received: u32,
         has_more: bool,
-        client: transport::NetworkTransportClient<'uri>,
+        client: transport::NetworkTransportClient<'uri, CHUNK_SIZE>,
     }
 
-    impl<'buf, const N: usize, const CHUNK_SIZE: u32> FetchStream<'_, 'buf, N, CHUNK_SIZE> {
+    impl<'buf, const N: usize, const CHUNK_SIZE: usize> FetchStream<'_, 'buf, N, CHUNK_SIZE> {
         /// Fetches and returns the next chunk of the requested payload.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
             if !self.has_more {
@@ -85,7 +85,7 @@ mod http {
         TCP: TcpConnect,
         DNS: Dns,
         const N: usize,
-        const CHUNK_SIZE: u32,
+        const CHUNK_SIZE: usize,
     >(
         tcp_client: &'a TCP,
         dns_client: &'a DNS,
@@ -94,7 +94,7 @@ mod http {
         payload_size: u32,
     ) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
         const {
-            assert!(N >= CHUNK_SIZE as usize);
+            assert!(N >= CHUNK_SIZE);
         }
 
         let client = transport::NetworkTransportClient::new(tcp_client, dns_client, uri).await?;
@@ -115,7 +115,7 @@ mod http {
         TCP: TcpConnect,
         DNS: Dns,
         const N: usize,
-        const CHUNK_SIZE: u32,
+        const CHUNK_SIZE: usize,
     > {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
@@ -124,7 +124,7 @@ mod http {
         client: transport::NetworkTransportClient<'a, 'uri, TCP, DNS>,
     }
 
-    impl<'buf, 'tcp, TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: u32>
+    impl<'buf, 'tcp, TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>
         FetchStream<'_, '_, 'buf, TCP, DNS, N, CHUNK_SIZE>
     {
         /// Fetches and returns the next chunk of the requested payload.
@@ -135,9 +135,10 @@ mod http {
 
             let range = Range {
                 start: self.bytes_received,
-                end: self.bytes_received + CHUNK_SIZE,
+                end: self.bytes_received + CHUNK_SIZE as u32,
             };
 
+            ariel_os_log::trace!("GET-ing range: {:?} of the payload file", range);
             let buf = match self.client.get(range, self.buf).await {
                 Ok(buf) => buf,
                 Err(err) => {
