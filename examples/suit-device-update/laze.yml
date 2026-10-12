@@ -3,5 +3,5 @@ apps:
     selects:
       - device-update
       - network
-      - coap-server-config-unprotected
+      # - coap-server-config-unprotected
       - has_buttons
