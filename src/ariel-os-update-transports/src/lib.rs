@@ -13,12 +13,17 @@ mod coap {
     use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
+<<<<<<< HEAD
     ///
     /// # Errors
     ///
     /// See `transport::new_client`.
     pub async fn fetch_from_uri<'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>(
         dns_client: &'_ DNS,
+=======
+    pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>(
+        dns_client: &'a DNS,
+>>>>>>> b5d21f19 (wip)
         uri: &'uri str,
         buf: &'buf mut [u8; N],
         payload_capacity: u32,
@@ -27,7 +32,11 @@ mod coap {
             assert!(N >= CHUNK_SIZE);
         }
 
+<<<<<<< HEAD
         let client = transport::new_client::<_, CHUNK_SIZE>(dns_client, uri).await?;
+=======
+        let client = transport::new_client::<_, CHUNK_SIZE >(dns_client, uri).await?;
+>>>>>>> b5d21f19 (wip)
 
         Ok(FetchStream {
             buf,
@@ -39,14 +48,24 @@ mod coap {
     }
 
     pub struct FetchStream<'uri, 'buf, const N: usize, const CHUNK_SIZE: usize> {
+<<<<<<< HEAD
+=======
+        chunk_index: u32,
+>>>>>>> b5d21f19 (wip)
         buf: &'buf mut [u8; N],
         bytes_received: u32,
         has_more: bool,
         client: transport::NetworkTransportClient<'uri, CHUNK_SIZE>,
+<<<<<<< HEAD
         payload_capacity: u32,
     }
 
     impl<const N: usize, const CHUNK_SIZE: usize> FetchStream<'_, '_, N, CHUNK_SIZE> {
+=======
+    }
+
+    impl<'buf, const N: usize, const CHUNK_SIZE: usize> FetchStream<'_, 'buf, N, CHUNK_SIZE> {
+>>>>>>> b5d21f19 (wip)
         /// Fetches and returns the next chunk of the requested payload.
         ///
         /// # Panics
@@ -147,8 +166,13 @@ mod http {
         is_done: bool,
     }
 
+<<<<<<< HEAD
     impl<TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>
         FetchStream<'_, '_, '_, TCP, DNS, N, CHUNK_SIZE>
+=======
+    impl<'buf, 'tcp, TCP: TcpConnect, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>
+        FetchStream<'_, '_, 'buf, TCP, DNS, N, CHUNK_SIZE>
+>>>>>>> b5d21f19 (wip)
     {
         /// Fetches and returns the next chunk of the requested payload.
         ///
@@ -162,6 +186,7 @@ mod http {
             }
             let range = Range {
                 start: self.bytes_received,
+<<<<<<< HEAD
                 end: self.bytes_received + u32::try_from(CHUNK_SIZE).unwrap(),
             };
 
@@ -171,6 +196,12 @@ mod http {
             // start is outside of the file leads to 416 Error which is caught below as
             // Error::InvalidTransportRange. If this occurs after receiving at least one
             // valid chunk, we consider the fetch to be done.
+=======
+                end: self.bytes_received + CHUNK_SIZE as u32,
+            };
+
+            ariel_os_log::trace!("GET-ing range: {:?} of the payload file", range);
+>>>>>>> b5d21f19 (wip)
             let buf = match self.client.get(range, self.buf).await {
                 Ok(buf) => buf,
                 Err(Error::InvalidTransportRange) => {

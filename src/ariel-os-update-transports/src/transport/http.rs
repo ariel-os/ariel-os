@@ -43,28 +43,40 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
     ) -> Result<&'buf mut [u8], Error> {
         let mut range_buf = [0; Range::<u32>::BUFFER_SIZE];
         let range = range.to_header_http_range(&mut range_buf);
-
+// ("Transfer-Encoding", "chunked"),
         let headers = &[("Range", range)];
         #[allow(unused_variables, reason = "conditional compilation")]
         let mut handle = self
             .client
             .request(Method::GET, self.uri)
             .await
+<<<<<<< HEAD
             .map_err(|e| {
                 error!(
                     "Error in building the request {:?}",
                     ariel_os_log::Debug2Format(&e)
                 );
+=======
+            .map_err(|e|{
+                error!("Error in building the request {:?}", ariel_os_log::Debug2Format(&e));
+>>>>>>> b5d21f19 (wip)
                 Error::Transport
             })?
             .headers(headers);
 
+<<<<<<< HEAD
         #[allow(unused_variables, reason = "conditional compilation")]
         let response = handle.send(buf).await.map_err(|e| {
             error!(
                 "Error in receiving the response {:?}",
                 ariel_os_log::Debug2Format(&e)
             );
+=======
+        trace!("Trying to receive response in a buffer of size {:?}", buf.len());
+
+        let response = handle.send(buf).await.map_err(|e|{
+            error!("Error in the response {:?}", ariel_os_log::Debug2Format(&e));
+>>>>>>> b5d21f19 (wip)
             Error::Transport
         })?;
 
@@ -92,6 +104,7 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
             .map_err(|_| Error::Transport)
     }
 }
+
 
 const HTTP_RANGE_BYTES_VALUE_PREFIX: &str = "bytes=";
 

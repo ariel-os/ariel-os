@@ -15,7 +15,11 @@ coap-message = { workspace = true, optional = true }
 coap-message-utils = { version = "0.3.12", optional = true }
 coap-numbers = { workspace = true, optional = true }
 coap-request = { workspace = true, optional = true }
+<<<<<<< HEAD
 coap-request-implementations = { workspace = true, optional = true }
+=======
+coap-request-implementations = { version = "0.1.0-alpha.4", optional = true }
+>>>>>>> b5d21f19 (wip)
 defmt = { workspace = true, optional = true }
 embedded-nal-async = { workspace = true }
 embedded-nal-coap = { workspace = true, optional = true }
@@ -34,7 +38,10 @@ coap = [
   "dep:coap-numbers",
   "dep:coap-request",
   "dep:coap-request-implementations",
+<<<<<<< HEAD
   "dep:embedded-nal-coap",
+=======
+>>>>>>> b5d21f19 (wip)
 ]
 # Selects HTTP(S) as the update transport.
 http = ["dep:reqwless"]
