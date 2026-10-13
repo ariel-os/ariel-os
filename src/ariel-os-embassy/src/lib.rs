@@ -158,6 +158,8 @@ compile_error!(r#"must select only one of "executor-interrupt", "executor-thread
 pub(crate) fn init() {
     debug!("ariel-os-embassy::init(): using interrupt mode executor");
     let p = hal::init();
+    debug!("hal init done");
+
 
     #[cfg(any(context = "nrf", context = "stm32"))]
     {
@@ -167,7 +169,10 @@ pub(crate) fn init() {
 
     #[cfg(any(context = "nrf", context = "rp", context = "stm32"))]
     {
+        debug!("starting executor");
         hal::EXECUTOR.start(hal::SWI);
+
+        debug!("spawing task");
         hal::EXECUTOR.spawner().must_spawn(init_task(p));
     }
 
