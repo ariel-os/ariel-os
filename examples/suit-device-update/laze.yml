@@ -3,5 +3,19 @@ apps:
     selects:
       - device-update
       - network
-      # - coap-server-config-unprotected
       - has_buttons
+
+
+modules:
+  - name: update-over-coap
+    selects:
+      - coap-client
+    env:
+      global:
+        FEATURES:
+          - coap
+  - name: update-over-http
+    env:
+      global:
+        FEATURES:
+          - http
