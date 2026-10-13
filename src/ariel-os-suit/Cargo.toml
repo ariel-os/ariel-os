@@ -9,9 +9,15 @@ license.workspace = true
 transport.exactly-one = { features = ["coap", "http"] }
 
 [dependencies]
-cose_minicbor = { workspace = true, features = ["es256", "sha256", "suit-sha256-es256"] }
+cose_minicbor = { workspace = true, features = [
+  "es256",
+  "sha256",
+  "suit-sha256-es256",
+] }
 defmt = { workspace = true, optional = true }
-dress-up = { git = "https://github.com/anlavandier/dress-up/", rev = "a9d67a36ee7873053a5588dcc0877c439301a480", features = ["async"], default-features = false}
+dress-up = { git = "https://github.com/anlavandier/dress-up/", rev = "a9d67a36ee7873053a5588dcc0877c439301a480", features = [
+  "async",
+], default-features = false }
 generic-array = { workspace = true, features = ["const-default"] }
 heapless = { workspace = true }
 minicbor = { workspace = true }
@@ -29,10 +35,7 @@ embassy-net = { workspace = true, optional = true }
 [features]
 defmt = ["dep:defmt", "ariel-os-update-transports/defmt"]
 
-http = [
-    "ariel-os-update-transports/http",
-    "embassy-net/tcp","embassy-net/dns"
-]
+http = ["ariel-os-update-transports/http", "embassy-net/tcp", "embassy-net/dns"]
 coap = ["ariel-os-update-transports/coap", "embassy-net/dns"]
 
 [lints]
