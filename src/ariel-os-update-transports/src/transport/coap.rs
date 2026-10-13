@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 use core::net::SocketAddr;
 =======
 
+=======
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
 use core::{net::SocketAddr, str::FromStr};
 >>>>>>> b5d21f19 (wip)
 
@@ -93,7 +96,6 @@ pub(crate) const fn chunk_size_to_block2szx(chunk_size: usize) -> Result<u8, ()>
     }
 }
 
-
 pub struct NetworkTransportClient<'uri, const CHUNK_SIZE: usize> {
     pub(crate) client: RequestingCoAPClient<'static, CONCURRENT_REQUESTS>,
     pub(crate) path: &'uri str,
@@ -102,68 +104,70 @@ pub struct NetworkTransportClient<'uri, const CHUNK_SIZE: usize> {
 #[must_use]
 pub(crate) async fn new_client<'uri, DNS: Dns, const CHUNK_SIZE: usize>(
     dns_client: &DNS,
-    uri: &'uri str
+    uri: &'uri str,
 ) -> Result<NetworkTransportClient<'uri, CHUNK_SIZE>, Error> {
-        // let Ok(uri) = nourl::Url::parse(uri) else {
-        //     return Err(Error::InvalidUri);
-        // };
-        const {
-            assert!(
-                chunk_size_to_block2szx(CHUNK_SIZE).is_ok(),
-                "CoAP only supports chunk sizes of the form 2 **(x + 4) with 0<= x <= 6"
-            );
-        }
-
-        let path = uri
-            .strip_prefix("coap://")
-            .ok_or(Error::InvalidUri)?;
-
-        let slash_idx = path
-            .find('/')
-            .ok_or(Error::InvalidUri)?;
-        let (addr_str, path) = path.split_at(slash_idx);
-
-        let peer_socket_addr = if let Ok(socket_addr) = SocketAddr::from_str(addr_str) {
-            socket_addr
-        } else {
-            let (host, port) = if let Some(colon_index) = addr_str.find(':') {
-                let (host_str, port_plus_colon) = addr_str.split_at(colon_index);
-
-                (host_str, port_plus_colon.split_at(1).1.parse::<u16>().map_err(|_e| Error::InvalidUri)?)
-            } else {
-                (addr_str, 5683)
-            };
-            let host = dns_client
-                .get_host_by_name(host, embedded_nal_async::AddrType::Either).await.map_err(
-                    |_e| Error::InvalidUri
-                )?;
-            SocketAddr::new(host, port)
-        };
-
-        // let peer_socket_addr = if let Some(socket_addr) = uri.host_socket_address() {
-        //     socket_addr
-        // } else {
-        //     // TODO: might want to restrict to one type of IP addresses.
-        //     if let Ok(ip_addr) = dns_client
-        //         .get_host_by_name(uri.host(), embedded_nal_async::AddrType::Either)
-        //         .await
-        //     {
-        //         // FIXME: requires patching nourl to support `coap://`.
-        //         SocketAddr::new(ip_addr, uri.port_or_default())
-        //     } else {
-        //         // TODO: could introduce an error for DNS.
-        //         return Err(Error::Transport);
-        //     }
-        // };
-
-        let client = ariel_os_coap::coap_client().await;
-        let client = client.to(peer_socket_addr);
-
-        ariel_os_log::trace!("Addr: {}, path: {}", &peer_socket_addr, path);
-
-        Ok(NetworkTransportClient { client, path})
+    // let Ok(uri) = nourl::Url::parse(uri) else {
+    //     return Err(Error::InvalidUri);
+    // };
+    const {
+        assert!(
+            chunk_size_to_block2szx(CHUNK_SIZE).is_ok(),
+            "CoAP only supports chunk sizes of the form 2 **(x + 4) with 0<= x <= 6"
+        );
     }
 
+    let path = uri.strip_prefix("coap://").ok_or(Error::InvalidUri)?;
+
+    let slash_idx = path.find('/').ok_or(Error::InvalidUri)?;
+    let (addr_str, path) = path.split_at(slash_idx);
+
+    let peer_socket_addr = if let Ok(socket_addr) = SocketAddr::from_str(addr_str) {
+        socket_addr
+    } else {
+        let (host, port) = if let Some(colon_index) = addr_str.find(':') {
+            let (host_str, port_plus_colon) = addr_str.split_at(colon_index);
+
+            (
+                host_str,
+                port_plus_colon
+                    .split_at(1)
+                    .1
+                    .parse::<u16>()
+                    .map_err(|_e| Error::InvalidUri)?,
+            )
+        } else {
+            (addr_str, 5683)
+        };
+        let host = dns_client
+            .get_host_by_name(host, embedded_nal_async::AddrType::Either)
+            .await
+            .map_err(|_e| Error::InvalidUri)?;
+        SocketAddr::new(host, port)
+    };
+
+    // let peer_socket_addr = if let Some(socket_addr) = uri.host_socket_address() {
+    //     socket_addr
+    // } else {
+    //     // TODO: might want to restrict to one type of IP addresses.
+    //     if let Ok(ip_addr) = dns_client
+    //         .get_host_by_name(uri.host(), embedded_nal_async::AddrType::Either)
+    //         .await
+    //     {
+    //         // FIXME: requires patching nourl to support `coap://`.
+    //         SocketAddr::new(ip_addr, uri.port_or_default())
+    //     } else {
+    //         // TODO: could introduce an error for DNS.
+    //         return Err(Error::Transport);
+    //     }
+    // };
+
+    let client = ariel_os_coap::coap_client().await;
+    let client = client.to(peer_socket_addr);
+
+    ariel_os_log::trace!("Addr: {}, path: {}", &peer_socket_addr, path);
+
+    Ok(NetworkTransportClient { client, path })
+}
 
 impl<'uri, const CHUNK_SIZE: usize> NetworkTransportClient<'uri, CHUNK_SIZE> {
     pub async fn get<'buf>(
@@ -218,11 +222,16 @@ impl<'a, const CHUNK_SIZE: usize> SuitPayloadRequest<'a, CHUNK_SIZE> {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 impl<const CHUNK_SIZE: usize>
     coap_request::Request<RequestingCoAPClient<'static, CONCURRENT_REQUESTS>>
     for &mut SuitPayloadRequest<'_, CHUNK_SIZE>
 =======
 impl<'a, const CHUNK_SIZE: usize> coap_request::Request<RequestingCoAPClient<'static, CONCURRENT_REQUESTS>>
+=======
+impl<'a, const CHUNK_SIZE: usize>
+    coap_request::Request<RequestingCoAPClient<'static, CONCURRENT_REQUESTS>>
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
     for SuitPayloadRequest<'a, CHUNK_SIZE>
 >>>>>>> b5d21f19 (wip)
 {
@@ -270,7 +279,8 @@ impl<'a, const CHUNK_SIZE: usize> coap_request::Request<RequestingCoAPClient<'st
 
         let block2szx = chunk_size_to_block2szx(CHUNK_SIZE).unwrap();
 
-        type Request<'a> = <RequestingCoAPClient<'static, CONCURRENT_REQUESTS> as Stack>::RequestMessage<'a>;
+        type Request<'a> =
+            <RequestingCoAPClient<'static, CONCURRENT_REQUESTS> as Stack>::RequestMessage<'a>;
         type OptionNum<'a> = <Request<'a> as MinimalWritableMessage>::OptionNumber;
         request.set_code(coap_numbers::code::GET);
         for part in self.path.as_uri_path() {
@@ -281,9 +291,9 @@ impl<'a, const CHUNK_SIZE: usize> coap_request::Request<RequestingCoAPClient<'st
         }
         request.add_option_uint(
             OptionNum::new(coap_numbers::option::BLOCK2)?,
-                // NUM | M = 0 | szx (3 bits)
-                self.block_num << 4 | u32::from(block2szx)
-            )?;
+            // NUM | M = 0 | szx (3 bits)
+            self.block_num << 4 | u32::from(block2szx),
+        )?;
         Ok(())
 >>>>>>> b5d21f19 (wip)
     }
@@ -333,6 +343,7 @@ impl<'a, const CHUNK_SIZE: usize> coap_request::Request<RequestingCoAPClient<'st
         let (blocknum, more, size) = parse_block2(block2.value_uint::<u32>().unwrap());
 
         if usize::from(size) != CHUNK_SIZE && blocknum != self.block_num {
+<<<<<<< HEAD
             error!(
                 "Unexpected block {} of size {}",
                 blocknum,
@@ -340,6 +351,10 @@ impl<'a, const CHUNK_SIZE: usize> coap_request::Request<RequestingCoAPClient<'st
 >>>>>>> b5d21f19 (wip)
             );
             return core::future::ready(None);
+=======
+            error!("Unexpected block {} of size {}", blocknum, size);
+            return None;
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
         }
 
         let payload = response.payload();
@@ -383,12 +398,11 @@ struct CoapChunk<const N: usize> {
     len: usize,
 }
 
-
 fn parse_block2(block2: u32) -> (u32, bool, u16) {
     let szx = block2 & 0x7;
 
     let num = block2 >> 4;
     let more = (block2 & 0x8) != 0;
     let size = 1 << (4 + szx);
-    return (num, more, size)
+    return (num, more, size);
 }

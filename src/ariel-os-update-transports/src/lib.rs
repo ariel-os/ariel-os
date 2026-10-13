@@ -14,6 +14,7 @@ mod coap {
 
     /// Returns a stream that fetches a payload from a server.
 <<<<<<< HEAD
+<<<<<<< HEAD
     ///
     /// # Errors
     ///
@@ -22,6 +23,16 @@ mod coap {
         dns_client: &'_ DNS,
 =======
     pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>(
+=======
+    pub async fn fetch_from_uri<
+        'a,
+        'uri,
+        'buf,
+        DNS: Dns,
+        const N: usize,
+        const CHUNK_SIZE: usize,
+    >(
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
         dns_client: &'a DNS,
 >>>>>>> b5d21f19 (wip)
         uri: &'uri str,
@@ -33,10 +44,14 @@ mod coap {
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         let client = transport::new_client::<_, CHUNK_SIZE>(dns_client, uri).await?;
 =======
         let client = transport::new_client::<_, CHUNK_SIZE >(dns_client, uri).await?;
 >>>>>>> b5d21f19 (wip)
+=======
+        let client = transport::new_client::<_, CHUNK_SIZE>(dns_client, uri).await?;
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
 
         Ok(FetchStream {
             buf,
@@ -131,7 +146,10 @@ mod http {
         dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
+<<<<<<< HEAD
         payload_capacity: u32,
+=======
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
     ) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
         const {
             assert!(N >= CHUNK_SIZE);
@@ -180,10 +198,13 @@ mod http {
         ///
         /// If the received buffer length or `CHUNK_SIZE` are bigger than `u32::MAX`.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
+<<<<<<< HEAD
             // Early exit to prevent extra request after the fetching is done.
             if self.is_done {
                 return None;
             }
+=======
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
             let range = Range {
                 start: self.bytes_received,
 <<<<<<< HEAD
@@ -205,11 +226,17 @@ mod http {
             let buf = match self.client.get(range, self.buf).await {
                 Ok(buf) => buf,
                 Err(Error::InvalidTransportRange) => {
+<<<<<<< HEAD
                     self.is_done = true;
                     if self.received_any {
                         return None;
                     }
 
+=======
+                    if self.received_any {
+                        return None;
+                    }
+>>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
                     return Some(Err(Error::InvalidTransportRange));
                 }
                 Err(err) => {
