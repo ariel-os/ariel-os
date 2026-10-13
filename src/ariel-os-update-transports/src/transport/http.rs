@@ -1,6 +1,6 @@
 use core::ops::Range;
 
-use ariel_os_log::{debug, error, trace};
+use ariel_os_log::{debug, error};
 use embedded_nal_async::{Dns, TcpConnect};
 use reqwless::{
     client::HttpClient,
@@ -38,22 +38,26 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
     ) -> Result<&'buf mut [u8], Error> {
         let mut range_buf = [0; Range::<u32>::BUFFER_SIZE];
         let range = range.to_header_http_range(&mut range_buf);
-// ("Transfer-Encoding", "chunked"),
+
         let headers = &[("Range", range)];
         let mut handle = self
             .client
             .request(Method::GET, self.uri)
             .await
-            .map_err(|e|{
-                error!("Error in building the request {:?}", ariel_os_log::Debug2Format(&e));
+            .map_err(|e| {
+                error!(
+                    "Error in building the request {:?}",
+                    ariel_os_log::Debug2Format(&e)
+                );
                 Error::Transport
             })?
             .headers(headers);
 
-        trace!("Trying to receive response in a buffer of size {:?}", buf.len());
-
-        let response = handle.send(buf).await.map_err(|e|{
-            error!("Error in the response {:?}", ariel_os_log::Debug2Format(&e));
+        let response = handle.send(buf).await.map_err(|e| {
+            error!(
+                "Error in receiving the response {:?}",
+                ariel_os_log::Debug2Format(&e)
+            );
             Error::Transport
         })?;
 
@@ -78,7 +82,6 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
             .map_err(|_| Error::Transport)
     }
 }
-
 
 const HTTP_RANGE_BYTES_VALUE_PREFIX: &str = "bytes=";
 
