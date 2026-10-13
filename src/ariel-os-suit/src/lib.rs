@@ -13,7 +13,6 @@ use ariel_os_device_update::DeviceUpdater;
 
 use ariel_os_embassy::api::net;
 
-// const KEYS: &[u8] = include_bytes!("../key_cose_minicbor.cbor");
 // const MAX_ID_LENGTH: usize = 16;
 
 /// Entry point for the SUIT update procedure.
