@@ -15,11 +15,9 @@ use cose_nostd::{
     signature::sign1::CoseSign1,
 };
 
-
 use ariel_os_boards::pins;
 
 static SUIT_MANIFEST: &[u8] = include_bytes!("../manifest-ariel.cbor");
-
 
 // --- snip
 // --- snip
@@ -38,18 +36,14 @@ async fn main(peripherals: pins::ButtonPeripherals) {
     let mut updater_state = HalDeviceUpdaterState::new();
     let updater = updater_state.updater();
 
-    let suit_processor = SuitProcessor::<_,512, _>::new(&SUIT_MANIFEST, updater);
+    let suit_processor = SuitProcessor::<_, 512, _>::new(&SUIT_MANIFEST, updater);
 
     let updater = match suit_processor.authenticate(verify_cose_signature) {
-        Ok(suit_processor) => {
-            match suit_processor.process_full_manifest().await {
-                Ok(_) => {
-                    Some(suit_processor.into_updater())
-                },
-                Err(e) => {
-                    info!("[SUIT] Manifest Processing failed : {:?}", Debug2Format(&e));
-                    None
-                }
+        Ok(suit_processor) => match suit_processor.process_full_manifest().await {
+            Ok(_) => Some(suit_processor.into_updater()),
+            Err(e) => {
+                info!("[SUIT] Manifest Processing failed : {:?}", Debug2Format(&e));
+                None
             }
         },
         Err(e) => {
@@ -60,7 +54,6 @@ async fn main(peripherals: pins::ButtonPeripherals) {
 
     info!("Testing");
     if let Some(mut updater) = updater {
-
         updater.mark_updated().await.unwrap();
 
         info!("Updater done.");
@@ -70,9 +63,7 @@ async fn main(peripherals: pins::ButtonPeripherals) {
     }
 }
 
-
 pub const PUBKEY_P256: &[u8; 65] = include_bytes!("../suit/demo-public-key-p256.bin");
-
 
 fn verify_cose_signature(
     cose_sign1: &[u8],
@@ -80,7 +71,6 @@ fn verify_cose_signature(
 ) -> Result<bool, dress_up::error::Error> {
     // Expected SEC1 uncompressed form (as in the const above):
     // 0x04 || x[32] || y[32]
-
 
     if PUBKEY_P256.len() != 65 || PUBKEY_P256[0] != 0x04 {
         error!("P-256 public key is not uncompressed SEC1 format");
