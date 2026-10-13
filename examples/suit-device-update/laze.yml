@@ -1,0 +1,21 @@
+apps:
+  - name: suit-device-update
+    selects:
+      - device-update
+      - network
+      - has_buttons
+
+
+modules:
+  - name: update-over-coap
+    selects:
+      - coap-client
+    env:
+      global:
+        FEATURES:
+          - coap
+  - name: update-over-http
+    env:
+      global:
+        FEATURES:
+          - http

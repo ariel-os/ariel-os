@@ -76,6 +76,10 @@ pub mod api {
         };
     }
 
+    #[cfg(feature = "bootloader")]
+    pub mod bootloader {
+        pub use ariel_os_hal::hal::bootloader::HalBootLoaderBackend;
+    }
     #[cfg(feature = "ble")]
     pub use crate::ble;
     #[cfg(feature = "net")]

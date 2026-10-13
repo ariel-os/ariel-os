@@ -165,6 +165,33 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-buildinfo"
+version = "0.5.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "ariel-os-bootloader-common",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-rt",
+ "embassy-boot",
+ "embedded-storage",
+]
+
+[[package]]
+name = "ariel-os-bootloader-common"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-device-update",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-power",
+ "ariel-os-rt",
+ "embassy-boot",
+ "embedded-storage",
+]
+
+[[package]]
+name = "ariel-os-buildinfo"
 version = "0.6.0"
 dependencies = [
  "ariel-os-utils",
@@ -219,6 +246,14 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-device-update"
+version = "0.5.0"
+dependencies = [
+ "defmt 1.1.1",
+ "embedded-io-async 0.6.1",
+]
+
+[[package]]
+name = "ariel-os-embassy"
 version = "0.5.0"
 dependencies = [
  "defmt 1.1.1",
@@ -706,6 +741,25 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-threads"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-device-update",
+ "ariel-os-embassy",
+ "ariel-os-log",
+ "ariel-os-update-transports",
+ "cose_minicbor",
+ "defmt 1.1.1",
+ "dress-up",
+ "embassy-net",
+ "featurecomb",
+ "generic-array 1.4.5",
+ "heapless 0.9.3",
+ "minicbor",
+ "uuid",
+]
+
+[[package]]
+name = "ariel-os-threads"
 version = "0.6.0"
 dependencies = [
  "ariel-os-log",
@@ -730,6 +784,24 @@ dependencies = [
 
 [[package]]
 name = "ariel-os-update-transports"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-coap",
+ "ariel-os-log",
+ "coap-message",
+ "coap-numbers",
+ "coap-request",
+ "coap-request-implementations",
+ "defmt 1.1.1",
+ "embedded-nal-async 0.9.0",
+ "embedded-nal-coap",
+ "featurecomb",
+ "nourl",
+ "reqwless",
+]
+
+[[package]]
+name = "ariel-os-utils"
 version = "0.5.0"
 dependencies = [
  "ariel-os-coap",
@@ -1558,6 +1630,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.114",
+]
+
+[[package]]
+name = "cose-nostd"
+version = "0.1.0"
+source = "git+https://codeberg.org/COLORADIO-Project/cose-nostd.git?rev=59053ef78916ff038858b45fdd73ed9389c303f1#59053ef78916ff038858b45fdd73ed9389c303f1"
+dependencies = [
+ "hex-literal",
+ "minicbor",
+ "p256",
+ "sha2",
 ]
 
 [[package]]
@@ -3892,6 +3975,12 @@ name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
+
+[[package]]
+name = "hex-literal"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e712f64ec3850b98572bffac52e2c6f282b29fe6c5fa6d42334b30be438d95c1"
 
 [[package]]
 name = "hexfloat2"

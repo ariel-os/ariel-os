@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "sequence-number": {{ sequence_number | tojson }},
+    "suit-common": {
+
+        "suit-components": [
+            ["01"]
+        ],
+
+        "suit-shared-sequence": [
+            {"suit-directive-set-component-index": 0},
+            {"suit-directive-override-parameters": {
+                "vendor-id": {{ vendor_id | tojson }},
+                "class-id": {{ class_id | tojson }},
+                "uri": {{ uri | tojson }},
+                "image-digest": {
+                    "algorithm": "sha256",
+                    "digest": {{ digest | tojson }}
+                }
+            }},
+
+            {"suit-condition-vendor-identifier": 15},
+            {"suit-condition-class-identifier": 15}
+        ]
+    },
+
+    "sequence": {
+        "payload-installation": [
+            {"suit-directive-set-component-index": 0}
+        ],
+        "payload-fetch": [
+            {"suit-directive-set-component-index": 0},
+            {"suit-directive-fetch": 15}
+        ],
+        "image-validation": [
+            {"suit-directive-set-component-index": 0},
+            {"suit-condition-image-match": 15}
+        ]
+    }
+}

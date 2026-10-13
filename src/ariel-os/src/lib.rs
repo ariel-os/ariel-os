@@ -78,6 +78,7 @@ pub mod device_update {
 
     #[doc(inline)]
     pub use ariel_os_device_update::{DeviceUpdater, DeviceUpdaterError, DeviceUpdaterState};
+<<<<<<< HEAD
     cfg_select! {
         feature = "ariel-os-bootloader-application" => {
             pub use ariel_os_bootloader_common::{HalDeviceUpdater, HalDeviceUpdaterState};
@@ -89,6 +90,10 @@ pub mod device_update {
             compile_error!("Unsupported device-update platform");
         }
     }
+=======
+
+    pub use ariel_os_bootloader_common::{HalDeviceUpdater, HalDeviceUpdaterState};
+>>>>>>> 422bdd277f7ecfc93f7fa42f33c97bbfdabef043
 }
 
 /// This module contains all third party crates as used by Ariel OS.
