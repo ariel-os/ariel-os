@@ -9,7 +9,10 @@ use ariel_os::{
 
 use ariel_os_boards::pins;
 
-static APP_B: &[u8] = include_bytes!("../bins/esp-blinky.bin");
+#[cfg(context = "stm32u083mc")]
+static APP_B: &[u8] = include_bytes!("../bins/stm-blinky.bin");
+#[cfg(context = "nrf52840")]
+static APP_B: &[u8] = include_bytes!("../bins/hello-world.bin");
 
 // --- snip
 // --- snip
