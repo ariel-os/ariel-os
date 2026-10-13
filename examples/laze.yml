@@ -25,7 +25,6 @@ subdirs:
   - random
   - sensors-debug
   - storage
-  - suit-device-update
   - tcp-client
   - tcp-echo
   - testing
