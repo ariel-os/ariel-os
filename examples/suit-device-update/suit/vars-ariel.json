@@ -1,7 +1,0 @@
-{
-    "sequence_number": 1,
-    "vendor_id": "cfbff0d1-9375-5685-968c-48ce8b15ae17",
-    "class_id": "2ecbf570-9780-5c2a-bef7-4da60942464e",
-    "uri": "http://10.42.0.62:8080/gpio.bin",
-    "digest": "388ae5491f157f57c37163b9a551a258c531e4ed6e4610d909fa498a7a02fb93"
-}
