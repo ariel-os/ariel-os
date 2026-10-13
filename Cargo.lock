@@ -689,7 +689,7 @@ dependencies = [
  "ariel-os-update-transports",
  "cose_minicbor",
  "defmt 1.1.1",
- "dress-up 0.1.1 (git+https://github.com/anlavandier/dress-up/?rev=a9d67a36ee7873053a5588dcc0877c439301a480)",
+ "dress-up",
  "embassy-net",
  "featurecomb",
  "generic-array 1.4.5",
@@ -2015,23 +2015,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "415b6ec780d34dcf624666747194393603d0373b7141eef01d12ee58881507d9"
 dependencies = [
  "phf",
-]
-
-[[package]]
-name = "dress-up"
-version = "0.1.1"
-dependencies = [
- "bitflags 2.13.2",
- "ctutils",
- "digest",
- "generic-array 1.4.5",
- "heapless 0.9.3",
- "itertools 0.14.0",
- "minicbor",
- "num_enum 0.7.6",
- "sha2",
- "sha3",
- "uuid",
 ]
 
 [[package]]
@@ -6159,7 +6142,7 @@ dependencies = [
  "ariel-os-boards",
  "ariel-os-suit",
  "cose-nostd",
- "dress-up 0.1.1",
+ "dress-up",
 ]
 
 [[package]]
