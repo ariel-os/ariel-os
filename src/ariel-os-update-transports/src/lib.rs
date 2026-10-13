@@ -13,7 +13,14 @@ mod coap {
     use crate::{Chunk, Error, transport};
 
     /// Returns a stream that fetches a payload from a server.
-    pub async fn fetch_from_uri<'a, 'uri, 'buf, DNS: Dns, const N: usize, const CHUNK_SIZE: usize>(
+    pub async fn fetch_from_uri<
+        'a,
+        'uri,
+        'buf,
+        DNS: Dns,
+        const N: usize,
+        const CHUNK_SIZE: usize,
+    >(
         dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
@@ -22,7 +29,7 @@ mod coap {
             assert!(N >= CHUNK_SIZE);
         }
 
-        let client = transport::new_client::<_, CHUNK_SIZE >(dns_client, uri).await?;
+        let client = transport::new_client::<_, CHUNK_SIZE>(dns_client, uri).await?;
 
         Ok(FetchStream {
             chunk_index: 0,
@@ -91,7 +98,6 @@ mod http {
         dns_client: &'a DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
-        payload_size: u32,
     ) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
         const {
             assert!(N >= CHUNK_SIZE);
@@ -103,7 +109,7 @@ mod http {
             chunk_index: 0,
             buf,
             bytes_received: 0,
-            payload_size,
+            received_any: false,
             client,
         })
     }
@@ -120,7 +126,7 @@ mod http {
         chunk_index: u32,
         buf: &'buf mut [u8; N],
         bytes_received: u32,
-        payload_size: u32,
+        received_any: bool,
         client: transport::NetworkTransportClient<'a, 'uri, TCP, DNS>,
     }
 
@@ -129,10 +135,6 @@ mod http {
     {
         /// Fetches and returns the next chunk of the requested payload.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
-            if self.bytes_received >= self.payload_size {
-                return None;
-            }
-
             let range = Range {
                 start: self.bytes_received,
                 end: self.bytes_received + CHUNK_SIZE as u32,
@@ -141,11 +143,17 @@ mod http {
             ariel_os_log::trace!("GET-ing range: {:?} of the payload file", range);
             let buf = match self.client.get(range, self.buf).await {
                 Ok(buf) => buf,
+                Err(Error::InvalidTransportRange) => {
+                    if self.received_any {
+                        return None;
+                    }
+                    return Some(Err(Error::InvalidTransportRange));
+                }
                 Err(err) => {
                     return Some(Err(err));
                 }
             };
-
+            self.received_any = true;
             self.bytes_received += u32::try_from(buf.len()).unwrap();
 
             let index = self.chunk_index;
