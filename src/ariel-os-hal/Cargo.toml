@@ -181,6 +181,10 @@ bootloader = [
   "ariel-os-stm32/bootloader",
 ]
 
+bootloader-application = [
+  "ariel-os-rp/bootloader-application",
+]
+
 rcc-config-override = ["ariel-os-stm32/rcc-config-override"]
 
 [lints]
