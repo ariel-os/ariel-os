@@ -384,9 +384,10 @@ contexts:
     parent: rp
     selects:
       # This module must stay before `cortex-m0-plus` to keep correct linker settings order.
-      - rp-link-arg
+      # It is not needed when building an application meant to work with ariel-os-bootloader.
+      - ?rp-link-arg
       - cortex-m0-plus
-      - ?rp2040-bootloader-boot2
+      - ?rp2040-boot2
     provides:
       - has_device_identity # Currently requires a Winbond memory chip to be used.
       - has_multi_core_support
@@ -1158,6 +1159,8 @@ modules:
 
   - name: rp-link-arg
     help: helper module that ensures link-rp.x is added behind cortex-m ld scripts
+    conflicts:
+      - device-update-ariel-os-bootloader
     env:
       global:
         RUSTFLAGS:
@@ -1227,7 +1230,7 @@ modules:
           - ariel-os/esp-bootloader-application
 
   # First 256 bytes of the flash are dedicated to boot2, populated by embassy-rp.
-  - name: rp2040-bootloader-boot2
+  - name: rp2040-boot2
     context:
       rp2040
     conflicts:
@@ -1237,20 +1240,6 @@ modules:
         CHIP_MEMORY_SECTION_RESERVE_BYTES:
           # The rp2040 stage2 bootloader needs this.
           - "FLASH:BOOT2:256"
-
-  # embassy-rp includes a linker file that expects a BOOT2 section to be present.
-  # Place it at the start of the flash.
-  - name: rp2040-application-boot2
-    context:
-      rp2040
-    selects:
-      - device-update-ariel-os-bootloader
-    env:
-      global:
-        CHIP_MEMORY_SECTION_RESERVE_BYTES:
-          # The rp2040 stage2 bootloader needs this.
-          - "BOOTLOADER:BOOT2:256"
-
 
   - name: emit-stack-sizes
     conflicts:
