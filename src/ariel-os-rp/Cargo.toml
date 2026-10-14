@@ -123,6 +123,10 @@ bootloader = [
   "dep:embassy-sync",
 ]
 
+bootloader-application = [
+  "embassy-rp/boot2-none"
+]
+
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
 
 _cyw43 = [
