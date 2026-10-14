@@ -277,6 +277,7 @@ device-update = ["dep:ariel-os-device-update"]
 
 # ariel-os-bootloader *application mode* (chosen by laze)
 ariel-os-bootloader-application = [
+  "ariel-os-hal/bootloader-application",
   "ariel-os-rt/embassy-boot-application",
   "ariel-os-bootloader",
 ]
