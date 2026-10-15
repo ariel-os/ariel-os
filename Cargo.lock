@@ -1838,7 +1838,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 2.0.114",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -3868,6 +3868,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "25ba4bd83f9415b58b4ed8dc5714c76e626a105be4646c02630ad730ad3b5aa4"
 dependencies = [
  "defmt 1.1.1",
+ "embedded-io 0.7.1",
  "hash32 0.3.1",
  "serde_core",
  "stable_deref_trait",
@@ -5987,9 +5988,9 @@ checksum = "7a2ae44ef20feb57a68b23d846850f861394c2e02dc425a50098ae8c90267589"
 [[package]]
 name = "slipmux"
 version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae2bb4f63c655de315c655a88e652d4133262be96d2ddb2c96ec54e559701412"
+source = "git+https://github.com/chrysn-pull-requests/slipmux?branch=fix-owned-latest-frame#0737376718a4d8cbdb86c90519282ea54d110276"
 dependencies = [
+ "embedded-io 0.7.1",
  "serial-line-ip",
 ]
 

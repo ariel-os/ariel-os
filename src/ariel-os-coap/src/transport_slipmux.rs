@@ -4,6 +4,10 @@
 use ariel_os_log::{Hex, debug, warn};
 use embassy_sync::signal::Signal;
 
+// See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
+type SingleBuffer = heapless::Vec<u8, 1280>;
+type SingleFrameDecoder = slipmux::SingleBufferHandler<SingleBuffer>;
+
 #[cfg(feature = "coap-transport-slipmux-usb")]
 mod usb_serial {
     use static_cell::StaticCell;
@@ -161,14 +165,16 @@ mod over_uart {
 /// As there is only a single `&'static mut SingleFrameDecoder`, Signal's overwrite semantics don't
 /// concern us: We don't have anything to overwrite the latest value with, unless it was taken out
 /// and returned before.
+// BIG FIXME: dressing those as &'static mut rathern than *mut is a quick and easy way to get it to
+// build; really this should send the *mut in some wrapper that declares the operation safe.
 static SLIPMUX2COAP: Signal<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleFrameDecoder,
+    &'static mut SingleBuffer,
 > = Signal::new();
 /// See [`SLIPMUX2COAP`]; this works the same, just in the opposite direction.
 static COAP2SLIPMUX: Signal<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleFrameDecoder,
+    &'static mut SingleBuffer,
 > = Signal::new();
 
 /// Decodes frames from a slipmux peer, and sends them to the relevant tasks for further
@@ -248,12 +254,12 @@ where
             }
             Ok(DecodeStatus::FrameCompleteDiagnostic) => {
                 // Use up to the cursor, and silently ignore overflows.
-                let (Ok(buffer) | Err(buffer)) = slipmux.data();
+                let (buffer, error) = slipmux.read_diagnostic_and_error();
                 let text = core::str::from_utf8(buffer);
                 warn!(
                     "Peer sent diagnostic data. This will no be forwarded; content was {:?}{}",
-                    text.map_err(|_| &buffer),
-                    if slipmux.data().is_err() { "..." } else { "" },
+                    text.map_err(|_| buffer.as_slice()),
+                    if error.is_some() { "..." } else { "" },
                 );
                 //BR break;
             }
@@ -280,10 +286,27 @@ where
             // networking), this might start issuing RSTs (meh: peer might think they're permanent)
             // or 5.03 Max-Age: 1 responses.
 
-            SLIPMUX2COAP.signal(slipmux);
-            slipmux = COAP2SLIPMUX.wait().await;
+            let (buffer, error) = slipmux.read_configuration_and_error();
 
-            let buffer = &slipmux.buffer;
+            if error.is_some() {
+                warn!("Ignoring overly long CoAP request.");
+                // FIXME: Respond accordingly (Request Entity Too Large and size1)
+                continue;
+            };
+
+            // Compensate for checksum that was already checked inside slipmux
+            let Some(actual_length) = buffer.len().checked_sub(2) else {
+                warn!("Ignoring overly short CoAP request.");
+                continue;
+            };
+            buffer.truncate(actual_length);
+
+            let raw = buffer as *mut _;
+            #[allow(unsafe_code)]
+            let raw_evil = unsafe { &mut *raw };
+            SLIPMUX2COAP.signal(raw_evil);
+            let returned = COAP2SLIPMUX.wait().await;
+            assert!(returned as *mut _ == raw);
 
             if buffer.len() == 0 {
                 // FIXME: Send RST if parsable to that point (or make
@@ -307,22 +330,8 @@ where
 
 pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) -> ! {
     loop {
-        let slipmux: &'static mut SingleFrameDecoder = SLIPMUX2COAP.wait().await;
-
-        if slipmux.data().is_err() {
-            warn!("Ignoring overly long CoAP request.");
-            // FIXME: Respond accordingly (Request Entity Too Large and size1)
-            continue;
-        };
-        // Reaching into raw value rather than through accessor because we need it mutable for
-        // the pseudostack.
-        let buffer = &mut slipmux.buffer;
-        // Compensate for checksum -- FIXME: where should this best be done?
-        let Some(actual_length) = buffer.len().checked_sub(2) else {
-            warn!("Ignoring overly short CoAP request.");
-            continue;
-        };
-        buffer.truncate(actual_length);
+        let buffer = SLIPMUX2COAP.wait().await;
+        // FIXME: Needs drop guard, exploring https://github.com/ariel-os/ariel-os/issues/2384
 
         debug!("Sending into CoAP stack: {}", Hex(&buffer));
         let mut pseudostack = PseudoStack(buffer);
@@ -332,51 +341,8 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
 
         debug!("Taking out of CoAP stack: {}", Hex(&buffer));
 
-        COAP2SLIPMUX.signal(slipmux);
+        COAP2SLIPMUX.signal(buffer);
     }
-}
-
-struct SingleFrameDecoder {
-    // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
-    buffer: heapless::Vec<u8, 1280>,
-    overflow: bool,
-}
-
-impl SingleFrameDecoder {
-    /// Returns the decoded data if complete.
-    ///
-    /// # Errors
-    ///
-    /// If the buffer overflew, it returns the initial decoded bytes.
-    fn data(&self) -> Result<&[u8], &[u8]> {
-        if self.overflow {
-            Err(&self.buffer)
-        } else {
-            Ok(&self.buffer)
-        }
-    }
-}
-
-impl Default for SingleFrameDecoder {
-    fn default() -> Self {
-        SingleFrameDecoder {
-            buffer: Default::default(),
-            overflow: false,
-        }
-    }
-}
-
-impl slipmux::FrameHandler for SingleFrameDecoder {
-    fn begin_frame(&mut self, _: slipmux::FrameType) {
-        self.buffer.clear();
-        self.overflow = false;
-    }
-    fn write_byte(&mut self, byte: u8) {
-        if self.buffer.push(byte).is_err() {
-            self.overflow = true;
-        }
-    }
-    fn end_frame(&mut self, _: Option<slipmux::Error>) {}
 }
 
 /// The CoAP items in slipmux behave 1:1 like in CoAP-over-UDP. Emulating an embedded-nal stack to
@@ -384,7 +350,7 @@ impl slipmux::FrameHandler for SingleFrameDecoder {
 ///
 /// As CoAP is currently not async and we don't send messages on our own, this now goes into the
 /// simpler embedded-nal rather than embedded-nal-async.
-struct PseudoStack<'a>(&'a mut heapless::Vec<u8, 1280>);
+struct PseudoStack<'a>(&'a mut SingleBuffer);
 
 struct PseudoSocket;
 
