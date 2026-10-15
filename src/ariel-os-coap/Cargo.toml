@@ -37,13 +37,15 @@ embedded-nal-minimal-coapserver = { version = "0.5.0", optional = true }
 lakers = { version = "0.8.0", default-features = false }
 lakers-crypto-rustcrypto = "0.8.0"
 once_cell = { workspace = true }
-slipmux = { version = "0.4.0", optional = true, default-features = false }
+# anything newer than 0.4.1 will have SingleBufferHandler
+slipmux = { git = "https://github.com/chrysn-pull-requests/slipmux", branch = "fix-owned-latest-frame", optional = true, default-features = false }
 static_cell = { workspace = true }
 
 # Used for constructing credentials
 cbor-macro = "0.1.0"
 cboritem = "0.1.2"
-heapless = { workspace = true, features = ["serde"] }
+# embedded-io for slipmux
+heapless = { workspace = true, features = ["embedded-io-v0.7", "serde"] }
 
 # FIXME: Should go out eventually
 hexlit = "0.5.5"
