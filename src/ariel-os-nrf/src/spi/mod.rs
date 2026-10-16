@@ -16,8 +16,8 @@ fn from_mode(mode: Mode) -> embassy_nrf::spim::Mode {
 
 fn from_bit_order(bit_order: BitOrder) -> embassy_nrf::spim::BitOrder {
     match bit_order {
-        BitOrder::MsbFirst => embassy_nrf::spim::BitOrder::MSB_FIRST,
-        BitOrder::LsbFirst => embassy_nrf::spim::BitOrder::LSB_FIRST,
+        BitOrder::MsbFirst => embassy_nrf::spim::BitOrder::MsbFirst,
+        BitOrder::LsbFirst => embassy_nrf::spim::BitOrder::LsbFirst,
     }
 }
 

@@ -244,13 +244,13 @@ fn build_sdc<'d, const N: usize>(
     // Order matters here if we want multirole to work.
 
     #[cfg(feature = "ble-peripheral")]
-    let builder = builder.support_adv()?;
+    let builder = builder.support_adv();
     #[cfg(feature = "ble-central")]
-    let builder = builder.support_scan()?;
+    let builder = builder.support_scan();
     #[cfg(feature = "ble-peripheral")]
-    let builder = builder.support_peripheral()?;
+    let builder = builder.support_peripheral();
     #[cfg(feature = "ble-central")]
-    let builder = builder.support_central()?;
+    let builder = builder.support_central();
     #[cfg(feature = "ble-peripheral")]
     let builder = builder.peripheral_count(1)?;
     #[cfg(feature = "ble-central")]

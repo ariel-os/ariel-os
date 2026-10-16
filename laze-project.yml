@@ -1575,6 +1575,10 @@ modules:
       global:
         FEATURES:
           - ariel-os/wifi-cyw43
+        executor_stacksize_required:
+          # This needs a bit more than tcp-echo/http-client defaults,
+          # which are ~18k (2048 + 16k) on rp.
+          - "24576"
 
   - name: has_wifi_cyw43
     selects:
@@ -1699,6 +1703,10 @@ modules:
       global:
         FEATURES:
           - ariel-os/ble-cyw43
+        executor_stacksize_required:
+          # This needs a bit more than ble-advertizer defaults,
+          # which are ~18k (2048 + 16k) on rp.
+          - "24576"
 
   - name: has_ble_cyw43
     selects:

@@ -23,6 +23,14 @@ pub struct DummyController {}
 #[derive(Debug)]
 pub struct DummyError {}
 
+impl core::fmt::Display for DummyError {
+    fn fmt(&self, _f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        unimplemented!()
+    }
+}
+
+impl core::error::Error for DummyError {}
+
 impl embedded_io::Error for DummyError {
     fn kind(&self) -> embedded_io::ErrorKind {
         unimplemented!()
