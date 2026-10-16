@@ -11,3 +11,8 @@ targets:
       - pin: GPIO0
         color: red
         active: high
+    uarts:
+      - tx_pin: GPIO20
+        rx_pin: GPIO19
+        possible_peripherals: [UART0]
+        host_facing: true

@@ -29,3 +29,8 @@ targets:
         possible_peripherals:
           - I2C0
           - I2C1
+    uarts:
+      - tx_pin: GPIO1
+        rx_pin: GPIO3
+        possible_peripherals: [UART0]
+        host_facing: true
