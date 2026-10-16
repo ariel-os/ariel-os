@@ -15,3 +15,11 @@ targets:
     #       # TODO: not currently supported by Embassy/Ariel OS.
     #       # - TWI0
     #       # - TWI1
+    # TODO: support for the UART peripheral needs to be added to Ariel OS first.
+    # uarts:
+    #   - aliases:
+    #       - UART_INT
+    #     rx_pin: P0_24 # UART_INT_TX
+    #     tx_pin: P0_25 # UART_INT_RX
+    #     possible_peripherals: [UARTE0]
+    #     host_facing: true

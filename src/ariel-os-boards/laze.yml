@@ -45,6 +45,7 @@ builders:
   parent: nrf52832
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: espressif-esp32-c3-devkit-rust-1
   parent: esp32-c3-mini-1
@@ -61,36 +62,43 @@ builders:
   parent: esp32-c6-wroom-1
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_usb_cdc_acm_port
 - name: espressif-esp32-devkitc
   parent: esp-wroom-32
   provides:
   - has_buttons
+  - has_host_facing_uart
 - name: espressif-esp32-h2-devkitm-1
   parent: esp32-h2-mini-1-h4s
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_usb_cdc_acm_port
 - name: espressif-esp32-s2-devkitc-1
   parent: esp32-s2-solo-2
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_usb_device_port
 - name: espressif-esp32-s3-devkitc-1
   parent: esp32-s3-wroom-1
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: espressif-esp8684-devkitc-02
   parent: esp8684-wroom-02c-h4
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
   - has_leds
 - name: makerdiary-nrf52840-mdk-usb-dongle
@@ -101,6 +109,7 @@ builders:
   parent: nrf52840
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: makerdiary-nrf9151-connect-kit
   parent: nrf9151
@@ -139,11 +148,13 @@ builders:
   parent: nrf52832
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_leds
 - name: nrf5340dk-app
   parent: nrf5340-app
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
   - has_leds
   - has_usb_device_port
@@ -165,6 +176,7 @@ builders:
   parent: nrf9160
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
   - has_leds
 - name: particle-xenon
@@ -409,6 +421,7 @@ builders:
   parent: esp32-wroom-32d
   provides:
   - has_buttons
+  - has_host_facing_uart
   - has_i2c_bus
 - name: unihiker-k10
   parent: esp32-s3-wroom-1

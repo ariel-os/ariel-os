@@ -7,6 +7,12 @@ targets:
       - pin: P0_14
       # button1
       - pin: P0_23
+    i2c:
+      - sda_pin: P0_16
+        scl_pin: P0_08
+        possible_peripherals:
+          - TWISPI0
+          - TWISPI1
     uarts:
       - aliases:
           - UART_INT
@@ -16,9 +22,3 @@ targets:
         tx_pin: P0_06 # UART_INT_RX
         possible_peripherals: [UARTE0, UARTE1]
         host_facing: true
-    i2c:
-      - sda_pin: P0_16
-        scl_pin: P0_08
-        possible_peripherals:
-          - TWISPI0
-          - TWISPI1

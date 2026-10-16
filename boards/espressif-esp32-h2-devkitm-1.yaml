@@ -8,3 +8,8 @@ targets:
       # button0 (BOOT)
       - pin: GPIO9
         active: low
+    uarts:
+      - tx_pin: GPIO24
+        rx_pin: GPIO23
+        possible_peripherals: [UART0]
+        host_facing: true

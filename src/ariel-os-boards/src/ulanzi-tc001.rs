@@ -7,6 +7,9 @@ pub mod pins {
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : I2C0, sda : GPIO21, scl : GPIO22, aliases : [] },
     ];
+    ariel_os_hal::define_uarts![
+        { name : Uart0, device : UART0, tx : GPIO1, rx : GPIO3, host_facing : true },
+    ];
 }
 #[allow(unused_variables)]
 pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {

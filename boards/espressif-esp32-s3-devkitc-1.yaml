@@ -9,3 +9,8 @@ targets:
       # button0
       - pin: GPIO0
         active: low
+    uarts:
+      - tx_pin: GPIO43
+        rx_pin: GPIO44
+        possible_peripherals: [UART0]
+        host_facing: true

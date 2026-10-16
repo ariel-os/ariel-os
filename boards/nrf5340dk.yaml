@@ -43,5 +43,25 @@ targets:
           - SERIAL0
           - SERIAL1
 
+    uarts:
+      - aliases:
+          - VCOM0
+        tx_pin: P1_01
+        rx_pin: P1_00
+        rts_pin: P0_11
+        cts_pin: P0_10
+        possible_peripherals: [SERIAL3]
+        host_facing: true
+      # TODO: enable when multiple peripherals can be used for UART in Ariel OS.
+      # - aliases:
+      #     # There is no VCOM1.
+      #     - VCOM2
+      #   tx_pin: P0_20
+      #   rx_pin: P0_22
+      #   rts_pin: P0_19
+      #   cts_pin: P0_21
+      #   possible_peripherals: [SERIAL3]
+      #   host_facing: true
+
   nrf5340dk-net:
     chip: nrf5340-net
