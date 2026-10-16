@@ -86,3 +86,12 @@ impl<T> SameExecutorCell<T> {
         self.get_mut(spawner)
     }
 }
+
+impl<T> Drop for SameExecutorCell<T> {
+    fn drop(&mut self) {
+        assert!(
+            !core::mem::needs_drop::<T>(),
+            "SameExecutorCell can not be dropped if T's drop handler matters"
+        );
+    }
+}
