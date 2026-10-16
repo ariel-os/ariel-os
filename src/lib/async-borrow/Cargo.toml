@@ -1,0 +1,15 @@
+[package]
+name = "async-borrow"
+version = "0.0.0"
+edition.workspace = true
+description = "A tool for borrowing in async"
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+categories = ["no-std", "no-std::no-alloc"]
+
+[dependencies]
+embassy-sync.workspace = true
+
+[lints]
+workspace = true
