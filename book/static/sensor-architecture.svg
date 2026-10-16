@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="704" height="80" class="svgbob"><style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+.svgbob text {
+    white-space: pre;
+    fill: black;
+    font-family: Iosevka Fixed, monospace;
+    font-size: 14px;
+}
+.svgbob rect.backdrop {
+    stroke: none;
+    fill: white;
+}
+.svgbob .broken {
+    stroke-dasharray: 8;
+}
+.svgbob .filled {
+    fill: black;
+}
+.svgbob .bg_filled {
+    fill: white;
+    stroke-width: 1;
+}
+.svgbob .nofill {
+    fill: white;
+}
+.svgbob .end_marked_arrow {
+    marker-end: url(#arrow);
+}
+.svgbob .start_marked_arrow {
+    marker-start: url(#arrow);
+}
+.svgbob .end_marked_diamond {
+    marker-end: url(#diamond);
+}
+.svgbob .start_marked_diamond {
+    marker-start: url(#diamond);
+}
+.svgbob .end_marked_circle {
+    marker-end: url(#circle);
+}
+.svgbob .start_marked_circle {
+    marker-start: url(#circle);
+}
+.svgbob .end_marked_open_circle {
+    marker-end: url(#open_circle);
+}
+.svgbob .start_marked_open_circle {
+    marker-start: url(#open_circle);
+}
+.svgbob .end_marked_big_open_circle {
+    marker-end: url(#big_open_circle);
+}
+.svgbob .start_marked_big_open_circle {
+    marker-start: url(#big_open_circle);
+}<!--separator--></style><defs><marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,0 0,4 4,2 0,0"></polygon></marker><marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,2 2,0 4,2 2,4 0,2"></polygon></marker><marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="2" class="filled"></circle></marker><marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="2" class="bg_filled"></circle></marker><marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="3" class="bg_filled"></circle></marker></defs><rect class="backdrop" x="0" y="0" width="704" height="80"></rect><rect x="4" y="8" width="80" height="48" class="solid nofill" rx="4"></rect><text x="18" y="28" >Sensing</text><text x="18" y="44" >element</text><rect x="124" y="8" width="72" height="48" class="solid nofill" rx="4"></rect><text x="138" y="28" >Analog</text><text x="146" y="44" >AAF</text><rect x="236" y="8" width="48" height="48" class="solid nofill" rx="4"></rect><text x="250" y="28" >ADC</text><rect x="324" y="8" width="80" height="48" class="solid nofill" rx="4"></rect><text x="338" y="28" >Digital</text><text x="354" y="44" >AAF</text><rect x="444" y="8" width="112" height="48" class="solid nofill" rx="4"></rect><text x="458" y="28" >Downsampler</text><rect x="596" y="8" width="96" height="48" class="solid nofill" rx="4"></rect><text x="618" y="28" >Digital</text><text x="610" y="44" >interface</text><line x1="96" y1="24" x2="104" y2="24" class="solid"></line><polygon points="104,20 112,24 104,28" class="filled"></polygon><line x1="208" y1="24" x2="216" y2="24" class="solid"></line><polygon points="216,20 224,24 216,28" class="filled"></polygon><line x1="296" y1="24" x2="304" y2="24" class="solid"></line><polygon points="304,20 312,24 304,28" class="filled"></polygon><line x1="416" y1="24" x2="424" y2="24" class="solid"></line><polygon points="424,20 432,24 424,28" class="filled"></polygon><line x1="568" y1="24" x2="576" y2="24" class="solid"></line><polygon points="576,20 584,24 576,28" class="filled"></polygon></svg>
