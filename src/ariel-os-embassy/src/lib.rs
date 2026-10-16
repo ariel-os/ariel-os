@@ -40,7 +40,7 @@ use linkme::distributed_slice;
 
 // All items of this module are re-exported at the root of `ariel_os`.
 pub mod api {
-    pub use crate::{EMBASSY_TASKS, asynch, delegate};
+    pub use crate::{EMBASSY_TASKS, asynch};
 
     pub mod cell {
         //! Shareable containers.
@@ -133,7 +133,6 @@ cfg_select! {
 pub use net::NetworkStack;
 
 pub mod asynch;
-pub mod delegate;
 
 #[cfg(feature = "executor-thread")]
 pub mod thread_executor;
