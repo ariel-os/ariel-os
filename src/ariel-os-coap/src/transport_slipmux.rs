@@ -2,7 +2,6 @@
 // address semantics).
 
 use ariel_os_log::{Hex, debug, warn};
-use embassy_sync::signal::Signal;
 
 // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
 type SingleBuffer = heapless::Vec<u8, 1280>;
@@ -39,6 +38,8 @@ mod usb_serial {
 
     #[ariel_os_macros::task(autostart, usb_builder_hook)]
     async fn usb_main() {
+        let mut coap_lender = setup_slipmux_borrowacrosstasks();
+
         static STATE: StaticCell<cdc_acm::State<'_>> = StaticCell::new();
 
         let class = USB_BUILDER_HOOK
@@ -68,7 +69,7 @@ mod usb_serial {
             as_io.rx.wait_connection().await;
             debug!("Connected");
 
-            let Err((_e, returned_slipmux)) = serve_slipmux(&mut as_io, slipmux).await;
+            let Err((_e, returned_slipmux)) = serve_slipmux(&mut as_io, slipmux, coap_lender).await;
             // FIXME: Could there be any *other* errors but disconnect errors that need to be
             // handled differently (i.e., that needs another action than just doing wait_connection
             // again)?
@@ -125,6 +126,8 @@ mod over_uart {
 
     #[ariel_os_macros::task(autostart, peripherals)]
     async fn pass_on_uart(peripherals: UartPeripherals) -> ! {
+        let mut coap_lender = setup_slipmux_borrowacrosstasks();
+
         static RX_BUF: ConstStaticCell<[u8; 16]> = ConstStaticCell::new([0; 16]);
         static TX_BUF: ConstStaticCell<[u8; 16]> = ConstStaticCell::new([0; 16]);
         let rx_buf = RX_BUF.take();
@@ -142,7 +145,8 @@ mod over_uart {
         let mut slipmux = SLIPMUX.init_with(Default::default);
 
         loop {
-            let Err((_e, returned_slipmux)) = serve_slipmux(&mut uart, slipmux).await;
+            let Err((_e, returned_slipmux)) =
+                serve_slipmux(&mut uart, slipmux, &mut coap_lender).await;
             slipmux = returned_slipmux;
             warn!("UART error, restarting Slipmux engine.");
         }
@@ -150,27 +154,37 @@ mod over_uart {
 }
 
 /// Signal in which [`server_slipmux`] places the decoder buffer if it contains anything which CoAP
-/// should process. The buffer is returned through `COAP2SLIPMUX` to avoid that the task that
-/// places the buffer takes it back immediately without waiting for the other task.
+/// should process.
+// FIXME: Can we be sure that there is no wait time? If so, we get away with only the mutex.
+// (That's the easiest solution to the mutex being overkill here).
+static SLIPMUX_BORROWER: embassy_sync::once_lock::OnceLock<
+    embassy_sync::mutex::Mutex<
+        embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
+        crate::syncext::Borrower<SingleBuffer>,
+    >,
+> = embassy_sync::once_lock::OnceLock::new();
+
+/// Creates a `crate::syncext::AsyncBorrowExchange` in a static location, opulates the `SLIPMUX_BORROWER`
+/// item, creates a lender
 ///
-/// For optimization, we could look into whether there is a way to yield to that other task, but
-/// then we'd have to handle the case when that other task is not active yet, and just
-/// yielding-for-everyone-else still returns us the unmodified buffer.
+/// # Panics
 ///
-/// As there is only a single `&'static mut SingleFrameDecoder`, Signal's overwrite semantics don't
-/// concern us: We don't have anything to overwrite the latest value with, unless it was taken out
-/// and returned before.
-// BIG FIXME: dressing those as &'static mut rathern than *mut is a quick and easy way to get it to
-// build; really this should send the *mut in some wrapper that declares the operation safe.
-static SLIPMUX2COAP: Signal<
-    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
-> = Signal::new();
-/// See [`SLIPMUX2COAP`]; this works the same, just in the opposite direction.
-static COAP2SLIPMUX: Signal<
-    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
-> = Signal::new();
+/// … when used more than once.
+fn setup_slipmux_borrowacrosstasks() -> crate::syncext::Lender<SingleBuffer> {
+    use crate::syncext::*;
+    use static_cell::StaticCell;
+
+    static BORROW_AND_LEND: StaticCell<AsyncBorrowExchange<SingleBuffer>> = StaticCell::new();
+    let borrow_and_lend = BORROW_AND_LEND.init_with(AsyncBorrowExchange::new);
+    let (lender, borrower) = borrow_and_lend.split();
+
+    let store_result = SLIPMUX_BORROWER.init(embassy_sync::mutex::Mutex::new(borrower));
+    assert!(
+        store_result.is_ok(),
+        ".init_with() above ensured this is running once"
+    );
+    lender
+}
 
 /// Decodes frames from a slipmux peer, and sends them to the relevant tasks for further
 /// processing, receiving frames in return.
@@ -201,7 +215,8 @@ static COAP2SLIPMUX: Signal<
 /// happen, this function needs the buffer anyway.
 async fn serve_slipmux<U>(
     uart: &mut U,
-    mut slipmux: &'static mut SingleFrameDecoder,
+    slipmux: &'static mut SingleFrameDecoder,
+    lender: &mut crate::syncext::Lender<SingleBuffer>,
 ) -> Result<core::convert::Infallible, (U::Error, &'static mut SingleFrameDecoder)>
 where
     U: embedded_io_async::Read + embedded_io_async::Write,
@@ -296,12 +311,7 @@ where
             };
             buffer.truncate(actual_length);
 
-            let raw = buffer as *mut _;
-            #[allow(unsafe_code)]
-            let raw_evil = unsafe { &mut *raw };
-            SLIPMUX2COAP.signal(raw_evil);
-            let returned = COAP2SLIPMUX.wait().await;
-            assert!(returned as *mut _ == raw);
+            lender.lend(buffer).await;
 
             if buffer.len() == 0 {
                 // FIXME: Send RST if parsable to that point (or make
@@ -324,9 +334,15 @@ where
 }
 
 pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) -> ! {
+    let mut borrower = SLIPMUX_BORROWER
+        .get()
+        .await
+        .try_lock()
+        .expect("Only runs once");
+
     loop {
-        let buffer = SLIPMUX2COAP.wait().await;
-        // FIXME: Needs drop guard, exploring https://github.com/ariel-os/ariel-os/issues/2384
+        let mut borrowed = borrower.borrow().await;
+        let buffer = &mut *borrowed;
 
         debug!("Sending into CoAP stack: {}", Hex(&buffer));
         let mut pseudostack = PseudoStack(buffer);
@@ -336,7 +352,8 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
 
         debug!("Taking out of CoAP stack: {}", Hex(&buffer));
 
-        COAP2SLIPMUX.signal(buffer);
+        // Releasing the buffer so slipmux can pick it up again.
+        drop(borrowed);
     }
 }
 
