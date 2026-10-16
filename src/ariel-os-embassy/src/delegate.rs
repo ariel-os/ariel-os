@@ -74,6 +74,38 @@ impl<T> Delegate<T> {
     ///
     /// This must only be called *once* per [`Delegate`] instance.
     pub async unsafe fn lend<'a, 'b: 'a>(&'a self, something: &'b mut T) {
+        use core::pin::{Pin, pin};
+
+        struct DropGuard {
+            active: bool,
+            _pinned: core::marker::PhantomPinned,
+        }
+
+        impl DropGuard {
+            fn defuse(self: Pin<&mut Self>) {
+                // SAFETY: Not moving data; also, that field is not structural.
+                unsafe {
+                    self.get_unchecked_mut().active = false;
+                }
+            }
+        }
+
+        impl Drop for DropGuard {
+            fn drop(&mut self) {
+                assert!(
+                    !self.active,
+                    "Task that lends data must not be dropped, panicking in drop handler to avoid use-after-free."
+                );
+            }
+        }
+
+        // Not guarding 'b itself, but as 'b outlives our scope and this is scope local, 'b can
+        // only terminate if this is either dropped or leaked.
+        let drop_guard = pin!(DropGuard {
+            active: true,
+            _pinned: core::marker::PhantomPinned,
+        });
+
         // SAFETY: TODO(`for_current_executore()` unsoundness)
         let spawner = unsafe { Spawner::for_current_executor().await };
         self.send.signal(SameExecutorCell::new(
@@ -82,6 +114,8 @@ impl<T> Delegate<T> {
         ));
 
         self.reply.wait().await;
+
+        drop_guard.defuse();
     }
 
     /// Calls a closure on a lent object.
