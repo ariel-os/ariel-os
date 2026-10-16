@@ -12,6 +12,9 @@
 #[cfg(feature = "coap-transport-udp")]
 mod udp_nal;
 
+// To be PR'd into embassy-sync at some maturity level.
+pub(crate) mod syncext;
+
 #[cfg(feature = "coap-server-config-storage")]
 mod stored;
 
