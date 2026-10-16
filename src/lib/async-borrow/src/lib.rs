@@ -61,7 +61,7 @@ unsafe impl<T: Send> Send for Wrapped<T> {}
 /// If both sides are callees of a single function, the sides can just be sent around.
 /// Otherwise, one side can be sent to the receiving site eg. using a
 /// `OnceCell<Mutex<Lender>>`.
-// We could also do with less than 'static if the BorrowArossTasks itself is not static, but
+// We could also do with less than 'static if the AsyncBorrowExchange itself is not static, but
 // realistically, using it statically in a static_cell or a global mutex is the practical way.
 pub struct AsyncBorrowExchange<T: 'static + Send> {
     // If you think about whether we can get away with a single Signal, think about what
