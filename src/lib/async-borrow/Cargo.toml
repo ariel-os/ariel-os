@@ -11,5 +11,10 @@ categories = ["no-std", "no-std::no-alloc"]
 [dependencies]
 embassy-sync.workspace = true
 
+[dev-dependencies]
+static_cell = "2.1.1"
+tokio = { version = "1.53.3", features = ["macros", "rt", "time"] }
+critical-section = { version = "1.0.0", features = ["std"] }
+
 [lints]
 workspace = true
