@@ -732,6 +732,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-borrow"
+version = "0.0.0"
+dependencies = [
+ "embassy-sync 0.7.2",
+]
+
+[[package]]
 name = "async-io"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
