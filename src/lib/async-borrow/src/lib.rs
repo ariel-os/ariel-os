@@ -28,6 +28,9 @@
     reason = "lifetimes are used across boundaries that are not transparent to Rust"
 )]
 
+#[cfg(test)]
+mod tests;
+
 use core::ops::DerefMut;
 use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
 use embassy_sync::signal::Signal;
