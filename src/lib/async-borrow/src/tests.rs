@@ -4,7 +4,7 @@ use tokio::time::{Duration, sleep, timeout};
 
 /// Basic integration test on the happy path, with borrower and lender passed down to the parts.
 ///
-/// In its three lending cases it illustrates different versiond of dropping the borrowed value,
+/// In its three lending cases it illustrates different versions of dropping the borrowed value,
 /// but also uses short sleeps to ensure that cases of "borrower waits for lender" and "lender
 /// waits for borrower" are covered. (They currently don't take different code paths, but might
 /// after optimization).
