@@ -42,6 +42,8 @@ ariel:
     - nrf5340-app
     - nrf5340-net
     - nrf54l15-app
+    - nrf54lm20-app
+    #- nrf54lm20-net
     - nrf9151
     - nrf9160
     - rp2040

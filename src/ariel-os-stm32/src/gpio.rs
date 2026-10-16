@@ -13,7 +13,7 @@ pub mod input {
 
     #[cfg(feature = "external-interrupts")]
     #[doc(hidden)]
-    pub use embassy_stm32::exti::ExtiInput as IntEnabledInput;
+    pub type IntEnabledInput<'d> = embassy_stm32::exti::ExtiInput<'d, embassy_stm32::mode::Async>;
 
     /// Whether inputs support configuring whether a Schmitt trigger is enabled.
     pub const SCHMITT_TRIGGER_CONFIGURABLE: bool = false;
@@ -36,9 +36,7 @@ pub mod input {
         _schmitt_trigger: bool, // Not supported by this hardware
     ) -> Result<IntEnabledInput<'_>, ariel_os_embassy_common::gpio::input::Error> {
         let pull = from_pull(pull);
-        let ch = crate::extint_registry::EXTINT_REGISTRY.get_interrupt_channel_for_pin(&pin)?;
-        let pin: Peri<'_, AnyPin> = pin.into();
-        Ok(IntEnabledInput::new(pin, ch, pull))
+        Ok(crate::extint_registry::EXTINT_REGISTRY.new_exti_input(pin, pull)?)
     }
 
     ariel_os_embassy_common::define_from_pull!();

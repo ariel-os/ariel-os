@@ -34,7 +34,7 @@ tinyrlibc = { workspace = true, optional = true }
 
 embassy-futures = { workspace = true, optional = true }
 embassy-net = { workspace = true, optional = true }
-embassy-net-driver-channel = { version = "0.4.0", default-features = false, optional = true }
+embassy-net-driver-channel = { workspace = true, default-features = false, optional = true }
 heapless = { workspace = true, optional = true }
 
 [target.'cfg(context = "nrf51822-xxaa")'.dependencies]
@@ -61,6 +61,9 @@ nrf-sdc = { workspace = true, features = ["nrf5340-net"], optional = true }
 
 [target.'cfg(context = "nrf54l15-app")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf54l15-app-s"] }
+
+[target.'cfg(context = "nrf54lm20-app")'.dependencies]
+embassy-nrf = { workspace = true, features = ["nrf54lm20-app-s"] }
 
 [target.'cfg(context = "nrf9151")'.dependencies]
 embassy-nrf = { workspace = true, features = ["nrf9151-s"] }

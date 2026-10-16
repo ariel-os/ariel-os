@@ -238,8 +238,8 @@ defmt = [
   "embassy-usb?/defmt",
   "embedded-hal-async/defmt-03",
   "embedded-hal/defmt-03",
-  "embedded-io-async/defmt-03",
-  "embedded-io/defmt-03",
+  "embedded-io-async/defmt",
+  "embedded-io/defmt",
   "trouble-host?/defmt",
   "usbd-hid?/defmt",
 ]

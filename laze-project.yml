@@ -323,13 +323,16 @@ contexts:
       CHIP_RAM_START_ADDRESS: "0x21000000"
     help: nRF5340 Network Core support
 
+  - name: nrf54
+    parent: nrf
+
   - name: nrf54l
     parent: nrf
+    selects:
+      - cortex-m33f
 
   - name: nrf54l15-app
     parent: nrf54l
-    selects:
-      - cortex-m33f
     provides:
       - has_hwrng
     env:
@@ -337,6 +340,23 @@ contexts:
       CHIP_NVM_SIZE_BYTES: "$(1524 * 1024)"
       CHIP_RAM_SIZE_BYTES: "$(256*1024)"
     help: nRF54L15 Application Core support
+
+  - name: nrf54lm20
+    parent: nrf54l
+    # NOTE: nrf54l has RRAM rather than flash; ariel-os-nrf's storage backend
+    # (embassy-nrf::nvmc) does not support it. Add `has_storage_support` once a
+    # backend is wired up.
+    env:
+      PROBE_RS_CHIP: nRF54LM20A
+      CHIP_NVM_SIZE_BYTES: "$(2036 * 1024)"
+      # Actual RAM size is 512K, but:
+      #
+      # 0x2007df40 - 0x2007fe40: VPR saved context
+      # 0x2007ff00 - 0x2007ffff: Protected RAM
+      CHIP_RAM_SIZE_BYTES: "$(511 * 1024)"
+
+  - name: nrf54lm20-app
+    parent: nrf54lm20
 
   - name: nrf91
     parent: nrf
@@ -1575,6 +1595,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/wifi-cyw43
+        executor_stacksize_required:
+          - "24576"
 
   - name: has_wifi_cyw43
     selects:
@@ -1699,6 +1721,8 @@ modules:
       global:
         FEATURES:
           - ariel-os/ble-cyw43
+        executor_stacksize_required:
+          - "24576"
 
   - name: has_ble_cyw43
     selects:

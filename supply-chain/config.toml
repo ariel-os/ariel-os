@@ -143,6 +143,10 @@ audit-as-crates-io = true
 audit-as-crates-io = true
 
 [[exemptions.aead]]
+version = "0.4.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.aead]]
 version = "0.5.2"
 criteria = "safe-to-deploy"
 
@@ -159,7 +163,7 @@ version = "0.8.12"
 criteria = "safe-to-deploy"
 
 [[exemptions.aligned]]
-version = "0.4.2"
+version = "0.4.3"
 criteria = "safe-to-deploy"
 
 [[exemptions.allocator-api2]]
@@ -222,6 +226,10 @@ criteria = "safe-to-deploy"
 version = "0.19.4"
 criteria = "safe-to-deploy"
 
+[[exemptions.bitflags]]
+version = "2.13.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.block-device-driver]]
 version = "0.2.0"
 criteria = "safe-to-deploy"
@@ -231,7 +239,7 @@ version = "0.5.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.bt-hci]]
-version = "0.6.0"
+version = "0.8.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.btuuid]]
@@ -240,6 +248,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.buffered-io]]
 version = "0.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.byte]]
+version = "0.2.7"
 criteria = "safe-to-deploy"
 
 [[exemptions.bytemuck]]
@@ -267,6 +279,10 @@ version = "0.1.3"
 criteria = "safe-to-deploy"
 
 [[exemptions.ccm]]
+version = "0.4.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.ccm]]
 version = "0.5.0"
 criteria = "safe-to-deploy"
 
@@ -279,7 +295,11 @@ version = "0.10.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.chrono]]
-version = "0.4.41"
+version = "0.4.45"
+criteria = "safe-to-deploy"
+
+[[exemptions.cipher]]
+version = "0.3.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.clang-sys]]
@@ -399,6 +419,10 @@ version = "0.5.5"
 criteria = "safe-to-deploy"
 
 [[exemptions.ctr]]
+version = "0.8.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.ctr]]
 version = "0.9.2"
 criteria = "safe-to-deploy"
 
@@ -415,15 +439,11 @@ version = "0.1.7"
 criteria = "safe-to-deploy"
 
 [[exemptions.cyw43]]
-version = "0.5.0@git:603583d94cb7ba14b3a6bbb84c8c5fea8bffea0d"
-criteria = "safe-to-deploy"
-
-[[exemptions.cyw43-firmware]]
-version = "0.1.0"
+version = "0.7.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.cyw43-pio]]
-version = "0.8.0@git:603583d94cb7ba14b3a6bbb84c8c5fea8bffea0d"
+version = "0.10.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.darling]]
@@ -434,6 +454,10 @@ criteria = "safe-to-deploy"
 version = "0.23.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.darling]]
+version = "0.24.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.darling_core]]
 version = "0.20.11"
 criteria = "safe-to-deploy"
@@ -442,12 +466,20 @@ criteria = "safe-to-deploy"
 version = "0.23.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.darling_core]]
+version = "0.24.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.darling_macro]]
 version = "0.20.11"
 criteria = "safe-to-deploy"
 
 [[exemptions.darling_macro]]
 version = "0.23.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.darling_macro]]
+version = "0.24.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.data-encoding]]
@@ -510,6 +542,14 @@ criteria = "safe-to-deploy"
 version = "0.10.7"
 criteria = "safe-to-deploy"
 
+[[exemptions.docsplay]]
+version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.docsplay-macros]]
+version = "0.1.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.doxygen-rs]]
 version = "0.4.2"
 criteria = "safe-to-deploy"
@@ -531,7 +571,7 @@ version = "0.13.8"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-embedded-hal]]
-version = "0.5.0@git:5211daf214eecd64c6754b760fecdb1f16622312"
+version = "0.6.0@git:35b4b7a7f612c4d9bfe13c595d52172a5f8b9bbb"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-executor]]
@@ -551,7 +591,7 @@ version = "0.1.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-hal-internal]]
-version = "0.3.0@git:0feffeb3c90748112a64c6570a39e1251311accb"
+version = "0.5.0@git:c7024cd2ee96f83d95f91570b2d445f95a222512"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net]]
@@ -563,10 +603,6 @@ version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-net-driver-channel]]
-version = "0.3.2"
-criteria = "safe-to-deploy"
-
-[[exemptions.embassy-net-driver-channel]]
 version = "0.4.0"
 criteria = "safe-to-deploy"
 
@@ -575,15 +611,15 @@ version = "0.3.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-nrf]]
-version = "0.9.0@git:cfaa7e92d1f79143b5e892442b1f2ff87b330770"
+version = "0.11.0@git:dc494d8677bb8d8c493940d5c85112662b682aab"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-rp]]
-version = "0.8.0@git:0314802282e112a47b4ccb303c0e7f09cf33df53"
+version = "0.10.0@git:601554c86b11a0b787803662b1823091e0c8bd99"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-stm32]]
-version = "0.4.0@git:1b75c3d6e61a99a312e2d12f039fa6e76e9c3a9c"
+version = "0.6.0@git:2bce2a9816bad68e3d4b8ecb1b746c6d3810d647"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-sync]]
@@ -607,7 +643,7 @@ version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-time-queue-utils]]
-version = "0.3.0"
+version = "0.3.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-usb]]
@@ -615,11 +651,15 @@ version = "0.6.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-usb-driver]]
-version = "0.2.0"
+version = "0.2.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.embassy-usb-synopsys-otg]]
-version = "0.3.1@git:478df29985c8e0d0ff2e915440c8ca15e36f4403"
+version = "0.3.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.embassy-usb-synopsys-otg]]
+version = "0.4.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embedded-alloc]]
@@ -663,15 +703,11 @@ version = "0.9.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embedded-nal-async]]
-version = "0.8.0"
-criteria = "safe-to-deploy"
-
-[[exemptions.embedded-nal-async]]
 version = "0.9.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.embedded-nal-coap]]
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 criteria = "safe-to-deploy"
 
 [[exemptions.embedded-storage]]
@@ -715,55 +751,55 @@ version = "0.11.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-alloc]]
-version = "0.9.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.10.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-bootloader-esp-idf]]
-version = "0.4.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.5.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-config]]
-version = "0.6.1@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.7.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-hal]]
-version = "1.0.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "1.1.1@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-hal-procmacros]]
-version = "0.21.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.22.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-metadata-generated]]
-version = "0.3.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.4.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-phy]]
-version = "0.1.1@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.2.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-println]]
-version = "0.16.1@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.17.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-radio]]
-version = "0.17.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.18.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-radio-rtos-driver]]
-version = "0.2.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.3.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-riscv-rt]]
-version = "0.13.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.14.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-rom-sys]]
-version = "0.1.3@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.1.4@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-sync]]
-version = "0.1.1@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.2.1@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-synopsys-usb-otg]]
@@ -771,59 +807,67 @@ version = "0.4.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32c2]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32c3]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32c6]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32h2]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32s2]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-wifi-sys-esp32s3]]
-version = "0.1.0@git:7623c8d746b55cd8d9f7473359069aef381b7d3b"
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32]]
-version = "0.39.0"
+version = "0.40.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32c2]]
-version = "0.28.0"
+version = "0.29.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32c3]]
-version = "0.31.0"
+version = "0.32.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32c5]]
+version = "0.2.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32c6]]
-version = "0.22.0"
+version = "0.23.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp32c61]]
+version = "0.3.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32h2]]
-version = "0.18.0"
+version = "0.19.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32s2]]
-version = "0.30.0"
+version = "0.31.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp32s3]]
-version = "0.34.0"
+version = "0.35.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.evalexpr]]
@@ -914,6 +958,10 @@ criteria = "safe-to-deploy"
 version = "0.3.1"
 criteria = "safe-to-deploy"
 
+[[exemptions.hash32-derive]]
+version = "0.1.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.hax-lib]]
 version = "0.4.0"
 criteria = "safe-to-deploy"
@@ -958,8 +1006,12 @@ criteria = "safe-to-deploy"
 version = "0.12.4"
 criteria = "safe-to-deploy"
 
+[[exemptions.ieee802154]]
+version = "0.6.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.instability]]
-version = "0.3.10"
+version = "0.3.14"
 criteria = "safe-to-deploy"
 
 [[exemptions.itertools]]
@@ -1075,23 +1127,23 @@ version = "0.10.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf-mpsl]]
-version = "0.3.0@git:d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
+version = "0.3.0@git:fd518ccfdde702ecc58f9a52b0c69a5940e88839"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf-mpsl-sys]]
-version = "0.2.1@git:d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
+version = "0.2.1@git:fd518ccfdde702ecc58f9a52b0c69a5940e88839"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf-pac]]
-version = "0.2.0@git:074935b9b24ab302fe812f91725937f57cd082cf"
+version = "0.4.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf-sdc]]
-version = "0.4.0@git:d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
+version = "0.4.0@git:fd518ccfdde702ecc58f9a52b0c69a5940e88839"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf-sdc-sys]]
-version = "0.2.1@git:d4d244d5ce21f59fa2263333cb1d8f2a5d997145"
+version = "0.2.1@git:fd518ccfdde702ecc58f9a52b0c69a5940e88839"
 criteria = "safe-to-deploy"
 
 [[exemptions.nrf9120-pac]]
@@ -1238,12 +1290,20 @@ criteria = "safe-to-deploy"
 version = "3.3.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.pure-rust-locales]]
+version = "0.8.2"
+criteria = "safe-to-deploy"
+
 [[exemptions.r-efi]]
 version = "5.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.ral-registers]]
 version = "0.1.3"
+criteria = "safe-to-deploy"
+
+[[exemptions.rand_core]]
+version = "0.10.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.rand_pcg]]
@@ -1260,6 +1320,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.redox_syscall]]
 version = "0.5.12"
+criteria = "safe-to-deploy"
+
+[[exemptions.regex-syntax]]
+version = "0.8.11"
 criteria = "safe-to-deploy"
 
 [[exemptions.reqwless]]
@@ -1383,10 +1447,6 @@ version = "0.3.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.smoltcp]]
-version = "0.12.0"
-criteria = "safe-to-deploy"
-
-[[exemptions.smoltcp]]
 version = "0.13.1"
 criteria = "safe-to-deploy"
 
@@ -1423,11 +1483,23 @@ version = "2.1.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.stm32-fmc]]
-version = "0.3.2"
+version = "0.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.stm32-hrtim]]
+version = "0.2.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.stm32-metapac]]
-version = "18.0.0"
+version = "21.0.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.stm32f3]]
+version = "0.16.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.stm32g4]]
+version = "0.16.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.string_cache]]
@@ -1470,12 +1542,16 @@ criteria = "safe-to-deploy"
 version = "0.3.23"
 criteria = "safe-to-deploy"
 
+[[exemptions.trait-set]]
+version = "0.3.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.trouble-host]]
-version = "0.5.1"
+version = "0.6.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.trouble-host-macros]]
-version = "0.3.0"
+version = "0.4.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.typenum]]
@@ -1543,15 +1619,15 @@ version = "1.1.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx]]
-version = "0.13.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.13.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx-rt]]
-version = "0.21.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.22.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx-rt-proc-macros]]
-version = "0.5.0@git:531c629afdd80ea464682ce7f4db8baed97967a6"
+version = "0.5.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
 [[exemptions.zerocopy]]

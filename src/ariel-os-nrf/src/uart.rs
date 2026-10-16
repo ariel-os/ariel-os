@@ -108,24 +108,24 @@ impl From<Baudrate> for u32 {
 
 fn from_baudrate(baud: Baudrate) -> embassy_nrf::buffered_uarte::Baudrate {
     match baud {
-        Baudrate::_1200 => embassy_nrf::uarte::Baudrate::BAUD1200,
-        Baudrate::_2400 => embassy_nrf::uarte::Baudrate::BAUD2400,
-        Baudrate::_4800 => embassy_nrf::uarte::Baudrate::BAUD4800,
-        Baudrate::_9600 => embassy_nrf::uarte::Baudrate::BAUD9600,
-        Baudrate::_14400 => embassy_nrf::uarte::Baudrate::BAUD14400,
-        Baudrate::_19200 => embassy_nrf::uarte::Baudrate::BAUD19200,
-        Baudrate::_28800 => embassy_nrf::uarte::Baudrate::BAUD28800,
-        Baudrate::_31250 => embassy_nrf::uarte::Baudrate::BAUD31250,
-        Baudrate::_38400 => embassy_nrf::uarte::Baudrate::BAUD38400,
-        Baudrate::_56000 => embassy_nrf::uarte::Baudrate::BAUD56000,
-        Baudrate::_57600 => embassy_nrf::uarte::Baudrate::BAUD57600,
-        Baudrate::_76800 => embassy_nrf::uarte::Baudrate::BAUD76800,
-        Baudrate::_115200 => embassy_nrf::uarte::Baudrate::BAUD115200,
-        Baudrate::_230400 => embassy_nrf::uarte::Baudrate::BAUD230400,
-        Baudrate::_250000 => embassy_nrf::uarte::Baudrate::BAUD250000,
-        Baudrate::_460800 => embassy_nrf::uarte::Baudrate::BAUD460800,
-        Baudrate::_921600 => embassy_nrf::uarte::Baudrate::BAUD921600,
-        Baudrate::_1000000 => embassy_nrf::uarte::Baudrate::BAUD1M,
+        Baudrate::_1200 => embassy_nrf::uarte::Baudrate::Baud1200,
+        Baudrate::_2400 => embassy_nrf::uarte::Baudrate::Baud2400,
+        Baudrate::_4800 => embassy_nrf::uarte::Baudrate::Baud4800,
+        Baudrate::_9600 => embassy_nrf::uarte::Baudrate::Baud9600,
+        Baudrate::_14400 => embassy_nrf::uarte::Baudrate::Baud14400,
+        Baudrate::_19200 => embassy_nrf::uarte::Baudrate::Baud19200,
+        Baudrate::_28800 => embassy_nrf::uarte::Baudrate::Baud28800,
+        Baudrate::_31250 => embassy_nrf::uarte::Baudrate::Baud31250,
+        Baudrate::_38400 => embassy_nrf::uarte::Baudrate::Baud38400,
+        Baudrate::_56000 => embassy_nrf::uarte::Baudrate::Baud56000,
+        Baudrate::_57600 => embassy_nrf::uarte::Baudrate::Baud57600,
+        Baudrate::_76800 => embassy_nrf::uarte::Baudrate::Baud76800,
+        Baudrate::_115200 => embassy_nrf::uarte::Baudrate::Baud115200,
+        Baudrate::_230400 => embassy_nrf::uarte::Baudrate::Baud230400,
+        Baudrate::_250000 => embassy_nrf::uarte::Baudrate::Baud250000,
+        Baudrate::_460800 => embassy_nrf::uarte::Baudrate::Baud460800,
+        Baudrate::_921600 => embassy_nrf::uarte::Baudrate::Baud921600,
+        Baudrate::_1000000 => embassy_nrf::uarte::Baudrate::Baud1m,
     }
 }
 
@@ -192,8 +192,8 @@ pub enum Parity {
 
 fn from_parity(parity: Parity) -> embassy_nrf::uarte::Parity {
     match parity {
-        Parity::None => embassy_nrf::uarte::Parity::EXCLUDED,
-        Parity::Even => embassy_nrf::uarte::Parity::INCLUDED,
+        Parity::None => embassy_nrf::uarte::Parity::Excluded,
+        Parity::Even => embassy_nrf::uarte::Parity::Included,
     }
 }
 
@@ -347,6 +347,15 @@ define_uart_drivers!(
 define_uart_drivers!(
    SERIAL3 => SERIAL3 + TIMER2 + PPI_CH14 + PPI_CH15 + PPI_GROUP5,
 );
+// FIXME(nrf54l): embassy-nrf's BufferedUarte API on nrf54l uses DPPI rather
+// than PPI. Once embassy-nrf is bumped to a version that supports nRF54LM20,
+// add a real `define_uart_drivers!` invocation here (likely using UARTE20 and
+// the chip's DPPI channels).
+#[cfg(context = "nrf54lm20")]
+compile_error!(
+    "UART is not yet implemented for nRF54LM20: needs DPPI-based BufferedUarte support"
+);
+
 
 #[doc(hidden)]
 pub fn init(peripherals: &mut crate::OptionalPeripherals) {

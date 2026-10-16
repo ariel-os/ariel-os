@@ -123,6 +123,10 @@ fn enable_flash_cache() {
             embassy_nrf::pac::CACHE_S
                 .enable().write(|w| w.set_enable(true));
         }
+        context = "nrf54lm20-app" => {
+            embassy_nrf::pac::ICACHE_S
+                .enable().write(|w| w.set_enable(true));
+        }
         _ => {}
     }
 }

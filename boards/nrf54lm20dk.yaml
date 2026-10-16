@@ -1,0 +1,54 @@
+# NOTE: scaffolded board file for the Nordic nRF54LM20-DK.
+version: 0.3.0
+targets:
+  nrf54lm20dk-app:
+    chip: nrf54lm20-app
+    flags:
+      - has_usb_device_port
+    leds:
+      led0:
+        color: green
+        pin: P1_22
+        active: high
+        aliases:
+          - LED1
+      led1:
+        color: green
+        pin: P1_25
+        active: high
+        aliases:
+          - LED2
+      led2:
+        color: green
+        pin: P1_27
+        active: high
+        aliases:
+          - LED3
+      led3:
+        color: green
+        pin: P1_28
+        active: high
+        aliases:
+          - LED4
+
+    buttons:
+      button0:
+        pin: P1_26
+        active: low
+        aliases:
+          - Button 1
+      button1:
+        pin: P1_09
+        active: low
+        aliases:
+          - Button 2
+      button2:
+        pin: P1_08
+        active: low
+        aliases:
+          - Button 3
+      button3:
+        pin: P0_05
+        active: low
+        aliases:
+          - Button 4
