@@ -894,7 +894,7 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-cryp\"
         - --cfg capability=\"hw/stm32-usb-drd-fs\"
-      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096" # Should be 2048, but is doubled here as a memsolve workaround.
       CHIP_NVM_SIZE_BYTES: $(256 * 1024)
       CHIP_RAM_SIZE_BYTES: $(40 * 1024)
 
