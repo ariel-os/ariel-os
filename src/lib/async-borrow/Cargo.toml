@@ -2,19 +2,19 @@
 name = "async-borrow"
 version = "0.0.0"
 edition.workspace = true
-description = "A tool for borrowing in async"
 rust-version.workspace = true
+description = "A tool for borrowing in async"
 repository.workspace = true
 license.workspace = true
 categories = ["no-std", "no-std::no-alloc"]
 
 [dependencies]
-embassy-sync.workspace = true
+embassy-sync = { workspace = true }
 
 [dev-dependencies]
+critical-section = { version = "1.0.0", features = ["std"] }
 static_cell = "2.1.1"
 tokio = { version = "1.53.3", features = ["macros", "rt", "time"] }
-critical-section = { version = "1.0.0", features = ["std"] }
 
 [lints]
 workspace = true
