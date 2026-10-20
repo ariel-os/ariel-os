@@ -19,15 +19,15 @@ use ariel_os_embassy::api::net;
 ///
 /// This struct receives the bytes that make up the manifest,
 /// authenticates the manifest and then processes it,
-/// including fetching the payload and writing it of a storage backend (only NVM at this point)
+/// including fetching the payload and writing it of a storage backend (only NVM at this point).
 pub struct SuitProcessor<'a, STATE: AuthState, const CHUNK_SIZE: usize, U> {
-    /// The SUIT manifest
+    /// The SUIT manifest.
     manifest: SuitManifest<'a, STATE>,
 
-    /// Updater responsible for writing and reading the update components
+    /// Updater responsible for writing and reading the update components.
     updater: core::cell::RefCell<U>,
 
-    /// Size of the component described by the manifest
+    /// Size of the component described by the manifest.
     component_size: core::cell::RefCell<usize>,
 }
 
@@ -42,6 +42,11 @@ impl<'a, const CHUNK_SIZE: usize, U> SuitProcessor<'a, New, CHUNK_SIZE, U> {
     }
 
     /// Authenticate a new Suit Manifest.
+    ///
+    /// # Errors
+    ///
+    /// When the function given as an argument errors.
+    ///
     pub fn authenticate<F, E>(
         self,
         authenticate: F,
@@ -60,10 +65,15 @@ impl<'a, const CHUNK_SIZE: usize, U> SuitProcessor<'a, New, CHUNK_SIZE, U> {
     }
 }
 
-impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater>
-    SuitProcessor<'a, Authenticated, CHUNK_SIZE, U>
+impl<const CHUNK_SIZE: usize, U: DeviceUpdater>
+    SuitProcessor<'_, Authenticated, CHUNK_SIZE, U>
 {
     /// Process the manifest, including the fetching and writing into a storage backend.
+    ///
+    /// # Errors
+    ///
+    /// If any of the steps that occur when processing the manifest fail.
+    ///
     pub async fn process_full_manifest(&self) -> Result<(), dress_up::error::Error> {
         let envelope = self.manifest.envelope()?;
         let manifest = envelope.manifest()?;
@@ -90,11 +100,12 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater>
     }
 }
 
-impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
-    for SuitProcessor<'a, Authenticated, CHUNK_SIZE, U>
+impl<const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
+    for SuitProcessor<'_, Authenticated, CHUNK_SIZE, U>
 {
     type ReadWriteBufferSize = generic_array::typenum::U64;
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn match_vendor_id(
         &self,
         _uuid: Uuid,
@@ -104,6 +115,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         // todo!()
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn match_class_id(
         &self,
         _uuid: Uuid,
@@ -113,6 +125,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         // todo!()
     }
 
+    #[allow(clippy::await_holding_refcell_ref)]
     async fn component_read(
         &self,
         _component: &dress_up::component::Component<'_>,
@@ -120,9 +133,11 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
+
         self.updater
             .borrow_mut()
-            .read_firmware(offset as u32, bytes)
+            .read_firmware(u32::try_from(offset).unwrap(), bytes)
+
             .await
             .map_err(|_e| dress_up::error::Error::ConditionMatchFail {
                 command: SuitCommand::ImageMatch,
@@ -130,6 +145,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
             })
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn component_write(
         &self,
         _component: &dress_up::component::Component<'_>,
@@ -142,6 +158,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         })
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn component_size(
         &self,
         _component: &dress_up::component::Component<'_>,
@@ -150,6 +167,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         Ok(*self.component_size.borrow())
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn component_capacity(
         &self,
         _component: &dress_up::component::Component<'_>,
@@ -157,6 +175,7 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         Ok(usize::MAX)
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     async fn match_component_slot(
         &self,
         _component: &Component<'_>,
@@ -165,101 +184,70 @@ impl<'a, const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         Ok(true)
     }
 
+    #[allow(clippy::await_holding_refcell_ref)]
     async fn fetch(
         &self,
         _component: &Component<'_>,
-        _slot: Option<u64>,
+        slot: Option<u64>,
         uri: &str,
     ) -> Result<(), dress_up::error::Error> {
-        ariel_os_log::trace!("Fetching component in slot {:?} at uri {}", _slot, uri);
+        ariel_os_log::trace!("Fetching component in slot {:?} at uri {}", slot, uri);
+
+        // FIXME: find a new way to
+        let maximum_capacity = u32::MAX;
+
+        let stack = net::network_stack().await.unwrap();
+
+        let dns_client = embassy_net::dns::DnsSocket::new(stack);
+
+        let mut chunk = [0u8; CHUNK_SIZE];
+
         #[cfg(feature = "http")]
-        {
-            let stack = net::network_stack().await.unwrap();
-            let mut payload_buffer = [0; CHUNK_SIZE];
+        let tcp_state = embassy_net::tcp::client::TcpClientState::<1, CHUNK_SIZE, CHUNK_SIZE>::new();
+        #[cfg(feature = "http")]
+        let tcp_client = embassy_net::tcp::client::TcpClient::new(stack, &tcp_state);
 
-            let tcp_state =
-                embassy_net::tcp::client::TcpClientState::<1, CHUNK_SIZE, CHUNK_SIZE>::new();
-            let tcp_client = embassy_net::tcp::client::TcpClient::new(stack, &tcp_state);
+        let mut stream = cfg_select! {
+            feature = "http" => {
+                ariel_os_update_transports::fetch_from_uri::<_,_, CHUNK_SIZE, CHUNK_SIZE>(
+                    &tcp_client,
+                    &dns_client,
+                    uri,
+                    &mut chunk,
+                    maximum_capacity
+                ).await
+            },
+            feature = "coap" => {
+                ariel_os_update_transports::fetch_from_uri::<_, _, CHUNK_SIZE>(
+                    &dns_client,
+                    uri,
+                    &mut chunk,
+                    maximum_capacity
+                ).await
+            }
+        }.map_err(|e| {
+            ariel_os_log::error!("Error when initiating the transport: {:?}", e);
+            dress_up::error::Error::ConditionMatchFail { command: SuitCommand::Fetch, position: 0 }
+        })?;
 
-            let dns_client = embassy_net::dns::DnsSocket::new(stack);
-
-            let mut stream = ariel_os_update_transports::fetch_from_uri::<_, _, _, CHUNK_SIZE>(
-                &tcp_client,
-                &dns_client,
-                uri,
-                &mut payload_buffer,
-            )
-            .await
-            .map_err(|_| dress_up::error::Error::ConditionMatchFail {
-                command: SuitCommand::Fetch,
-                position: 0,
-            })?;
-            let mut offset = 0;
-            while let Some(maybe_chunk) = stream.next().await {
-                let chunk = maybe_chunk.map_err(|e| {
-                    ariel_os_log::error!("Error in fetching the payload: {:?}", e);
-                    dress_up::error::Error::ConditionMatchFail {
-                        command: SuitCommand::Fetch,
-                        position: 0,
-                    }
+        let mut offset = 0;
+        while let Some(maybe_chunk) = stream.next().await {
+            let chunk =
+                maybe_chunk.map_err(|_| dress_up::error::Error::ConditionMatchFail {
+                    command: SuitCommand::Fetch,
+                    position: 0,
                 })?;
-                self.updater
-                    .borrow_mut()
-                    .write_firmware(offset, chunk.bytes())
-                    .await
-                    .map_err(|_| dress_up::error::Error::ConditionMatchFail {
-                        command: SuitCommand::Fetch,
-                        position: 0,
-                    })?;
-                offset += chunk.bytes().len() as u32;
-            }
-            self.component_size.replace(offset as usize);
+            self.updater
+                .borrow_mut()
+                .write_firmware(offset, chunk.bytes())
+                .await
+                .map_err(|_| dress_up::error::Error::ConditionMatchFail {
+                    command: SuitCommand::Fetch,
+                    position: 0,
+                })?;
+            offset += u32::try_from(chunk.bytes().len()).unwrap();
         }
-        #[cfg(feature = "coap")]
-        {
-            let stack = net::network_stack().await.unwrap();
-            let mut payload_buffer = [0; CHUNK_SIZE];
-
-            let dns_client = embassy_net::dns::DnsSocket::new(stack);
-
-            ariel_os_log::trace!("Starting fetch");
-            let mut stream = match ariel_os_update_transports::fetch_from_uri::<_, _, CHUNK_SIZE>(
-                &dns_client,
-                uri,
-                &mut payload_buffer,
-            )
-            .await
-            {
-                Ok(stream) => stream,
-                Err(e) => {
-                    ariel_os_log::error!("Error in initiating the stream: {:?}", &e);
-                    return Err(dress_up::error::Error::ConditionMatchFail {
-                        command: SuitCommand::Fetch,
-                        position: 0,
-                    });
-                }
-            };
-
-            ariel_os_log::trace!("Transport initiated");
-            let mut offset = 0;
-            while let Some(maybe_chunk) = stream.next().await {
-                let chunk =
-                    maybe_chunk.map_err(|_| dress_up::error::Error::ConditionMatchFail {
-                        command: SuitCommand::Fetch,
-                        position: 0,
-                    })?;
-                self.updater
-                    .borrow_mut()
-                    .write_firmware(offset, chunk.bytes())
-                    .await
-                    .map_err(|_| dress_up::error::Error::ConditionMatchFail {
-                        command: SuitCommand::Fetch,
-                        position: 0,
-                    })?;
-                offset += chunk.bytes().len() as u32;
-            }
-            self.component_size.replace(offset as usize);
-        }
+        self.component_size.replace(offset as usize);
         Ok(())
     }
 }

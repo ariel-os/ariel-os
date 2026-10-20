@@ -9,11 +9,11 @@ license.workspace = true
 transport.exactly-one = { features = ["coap", "http"] }
 
 [dependencies]
-cose_minicbor = { workspace = true, features = [
-  "es256",
-  "sha256",
-  "suit-sha256-es256",
-] }
+# cose_minicbor = { workspace = true, features = [
+#   "es256",
+#   "sha256",
+#   "suit-sha256-es256",
+# ] }
 defmt = { workspace = true, optional = true }
 dress-up = { git = "https://github.com/anlavandier/dress-up/", rev = "a9d67a36ee7873053a5588dcc0877c439301a480", features = [
   "async",
