@@ -6,7 +6,41 @@ use embassy_sync::signal::Signal;
 
 // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
 type SingleBuffer = heapless::Vec<u8, 1280>;
-type SingleFrameDecoder = slipmux::SingleBufferHandler<SingleBuffer>;
+/// An indirection that, rather than borrowing the content, can also move it out temporarily.
+///
+/// This behaves largely like a smart pointer, and allows moving out content cheaply (eg. the move
+/// writes a word rather moving a whole ~1kB buffer). The expectation is that content gets returned
+/// before any further use; violating that leads to unceremoneous panics.
+struct MoveOutBuffer(Option<&'static mut SingleBuffer>);
+impl MoveOutBuffer {
+    fn as_ref(&self) -> &SingleBuffer {
+        self.0
+            .as_ref()
+            .expect("data was moved out and not returned")
+    }
+    fn as_mut(&mut self) -> &mut SingleBuffer {
+        self.0
+            .as_mut()
+            .expect("data was moved out and not returned")
+    }
+}
+impl embedded_io::ErrorType for MoveOutBuffer {
+    type Error = <SingleBuffer as embedded_io::ErrorType>::Error;
+}
+impl embedded_io::Write for MoveOutBuffer {
+    fn write(&mut self, data: &[u8]) -> Result<usize, Self::Error> {
+        self.as_mut().write(data)
+    }
+    fn flush(&mut self) -> Result<(), Self::Error> {
+        self.as_mut().flush()
+    }
+}
+impl AsRef<[u8]> for MoveOutBuffer {
+    fn as_ref(&self) -> &[u8] {
+        Self::as_ref(self).as_ref()
+    }
+}
+type SingleFrameDecoder = slipmux::SingleBufferHandler<MoveOutBuffer>;
 
 #[cfg(feature = "coap-transport-slipmux-usb")]
 mod usb_serial {
@@ -51,12 +85,12 @@ mod usb_serial {
             })
             .await;
 
-        static SLIPMUX_AND_BUFFER: static_cell::StaticCell<(
-            SingleFrameDecoder,
+        static SLIP_AND_USB_BUF: static_cell::StaticCell<(
+            SingleBuffer,
             [u8; MAX_FULL_SPEED_PACKET_SIZE as usize],
         )> = static_cell::StaticCell::new();
-        let slipmux_and_buffer = SLIPMUX_AND_BUFFER.init_with(|| (Default::default(), [0; _]));
-        let mut slipmux = &mut slipmux_and_buffer.0;
+        let slipmux_and_buffer = SLIP_AND_USB_BUF.init_with(|| (Default::default(), [0; _]));
+        let mut slipbuf = &mut slipmux_and_buffer.0;
         let buf = &mut slipmux_and_buffer.1;
 
         // We don't really need the control channels: USB Serial is back-pressuring anyway.
@@ -68,12 +102,12 @@ mod usb_serial {
             as_io.rx.wait_connection().await;
             debug!("Connected");
 
-            let Err((_e, returned_slipmux)) = serve_slipmux(&mut as_io, slipmux).await;
+            let Err((_e, returned_slipmux)) = serve_slipmux(&mut as_io, slipbuf).await;
             // FIXME: Could there be any *other* errors but disconnect errors that need to be
             // handled differently (i.e., that needs another action than just doing wait_connection
             // again)?
 
-            slipmux = returned_slipmux;
+            slipbuf = returned_slipmux;
 
             debug!("Disconnected");
         }
@@ -142,13 +176,12 @@ mod over_uart {
             .build_with_config(rx_buf, tx_buf, config)
             .expect("Invalid UART configuration");
 
-        static SLIPMUX: static_cell::StaticCell<SingleFrameDecoder> =
-            static_cell::StaticCell::new();
-        let mut slipmux = SLIPMUX.init_with(Default::default);
+        static SLIPBUF: static_cell::StaticCell<SingleBuffer> = static_cell::StaticCell::new();
+        let mut slipbuf = SLIPBUF.init_with(Default::default);
 
         loop {
-            let Err((_e, returned_slipmux)) = serve_slipmux(&mut uart, slipmux).await;
-            slipmux = returned_slipmux;
+            let Err((_e, returned_slipbuf)) = serve_slipmux(&mut uart, slipbuf).await;
+            slipbuf = returned_slipbuf;
             warn!("UART error, restarting Slipmux engine.");
         }
     }
@@ -165,8 +198,6 @@ mod over_uart {
 /// As there is only a single `&'static mut SingleFrameDecoder`, Signal's overwrite semantics don't
 /// concern us: We don't have anything to overwrite the latest value with, unless it was taken out
 /// and returned before.
-// BIG FIXME: dressing those as &'static mut rathern than *mut is a quick and easy way to get it to
-// build; really this should send the *mut in some wrapper that declares the operation safe.
 static SLIPMUX2COAP: Signal<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
     &'static mut SingleBuffer,
@@ -206,20 +237,21 @@ static COAP2SLIPMUX: Signal<
 /// happen, this function needs the buffer anyway.
 async fn serve_slipmux<U>(
     uart: &mut U,
-    mut slipmux: &'static mut SingleFrameDecoder,
-) -> Result<core::convert::Infallible, (U::Error, &'static mut SingleFrameDecoder)>
+    slipbuf: &'static mut SingleBuffer,
+) -> Result<core::convert::Infallible, (U::Error, &'static mut SingleBuffer)>
 where
     U: embedded_io_async::Read + embedded_io_async::Write,
 {
     use slipmux::DecodeStatus;
+
+    let mut slipmux =
+        SingleFrameDecoder::new_single_buffer(MoveOutBuffer(Some(slipbuf)), |b| b.as_mut().clear());
 
     // For the time being we play the simple game, where we just have a server, and can afford to
     // read until something has arrived, then write out what has been written, and continue.
     //
     // This will not be sustainable with the next generation coap-handler, and then we may need to
     // split the UARTs.
-
-    *slipmux = Default::default();
 
     let mut decoder = slipmux::Decoder::new();
     loop {
@@ -243,7 +275,7 @@ where
         //BR consume += 1;
 
         // Ignoring the return value; handling everything inside the decoder.
-        match decoder.decode(byte, slipmux) {
+        match decoder.decode(byte, &mut slipmux) {
             Err(_) => {
                 warn!("Decoding error; trying at the next byte.");
                 //BR consume = 1;
@@ -255,10 +287,10 @@ where
             Ok(DecodeStatus::FrameCompleteDiagnostic) => {
                 // Use up to the cursor, and silently ignore overflows.
                 let (buffer, error) = slipmux.read_diagnostic_and_error();
-                let text = core::str::from_utf8(buffer);
+                let text = core::str::from_utf8(buffer.as_ref());
                 warn!(
                     "Peer sent diagnostic data. This will no be forwarded; content was {:?}{}",
-                    text.map_err(|_| buffer.as_slice()),
+                    text.map_err(|_| buffer.as_ref().as_ref()),
                     if error.is_some() { "..." } else { "" },
                 );
                 //BR break;
@@ -286,13 +318,15 @@ where
             // networking), this might start issuing RSTs (meh: peer might think they're permanent)
             // or 5.03 Max-Age: 1 responses.
 
-            let (buffer, error) = slipmux.read_configuration_and_error();
+            let (bufref, error) = slipmux.read_configuration_and_error();
 
             if error.is_some() {
                 warn!("Ignoring overly long CoAP request.");
                 // FIXME: Respond accordingly (Request Entity Too Large and size1)
                 continue;
             };
+
+            let mut buffer = bufref.0.take().expect("we're the only party taking this");
 
             // Compensate for checksum that was already checked inside slipmux
             let Some(actual_length) = buffer.len().checked_sub(2) else {
@@ -301,12 +335,8 @@ where
             };
             buffer.truncate(actual_length);
 
-            let raw = buffer as *mut _;
-            #[allow(unsafe_code)]
-            let raw_evil = unsafe { &mut *raw };
-            SLIPMUX2COAP.signal(raw_evil);
-            let returned = COAP2SLIPMUX.wait().await;
-            assert!(returned as *mut _ == raw);
+            SLIPMUX2COAP.signal(buffer);
+            buffer = COAP2SLIPMUX.wait().await;
 
             if buffer.len() == 0 {
                 // FIXME: Send RST if parsable to that point (or make
@@ -324,6 +354,8 @@ where
                     uart.write_all(&outbuf[..size]).await.unwrap();
                 }
             }
+
+            bufref.0 = Some(buffer);
         }
     }
 }
@@ -331,7 +363,6 @@ where
 pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) -> ! {
     loop {
         let buffer = SLIPMUX2COAP.wait().await;
-        // FIXME: Needs drop guard, exploring https://github.com/ariel-os/ariel-os/issues/2384
 
         debug!("Sending into CoAP stack: {}", Hex(&buffer));
         let mut pseudostack = PseudoStack(buffer);

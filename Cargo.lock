@@ -177,6 +177,7 @@ dependencies = [
  "critical-section",
  "embassy-net",
  "embassy-sync 0.8.0",
+ "embedded-io 0.7.1",
  "embedded-io-async 0.7.0",
  "embedded-nal",
  "embedded-nal-async",
@@ -5988,7 +5989,7 @@ checksum = "7a2ae44ef20feb57a68b23d846850f861394c2e02dc425a50098ae8c90267589"
 [[package]]
 name = "slipmux"
 version = "0.4.1"
-source = "git+https://github.com/chrysn-pull-requests/slipmux?branch=fix-owned-latest-frame#0737376718a4d8cbdb86c90519282ea54d110276"
+source = "git+https://github.com/chrysn-pull-requests/slipmux?branch=fix-owned-latest-frame#89848d0a496bc55eb7fb17ee64169ef78079dcf8"
 dependencies = [
  "embedded-io 0.7.1",
  "serial-line-ip",
