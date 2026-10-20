@@ -1,6 +1,6 @@
 use core::ops::Range;
 
-use ariel_os_log::{debug, error};
+use ariel_os_log::{debug, error, trace};
 use embedded_nal_async::{Dns, TcpConnect};
 use reqwless::{
     client::HttpClient,
@@ -50,45 +50,21 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
             .client
             .request(Method::GET, self.uri)
             .await
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
             .map_err(|e| {
                 error!(
                     "Error in building the request {:?}",
                     ariel_os_log::Debug2Format(&e)
                 );
-<<<<<<< HEAD
-=======
-            .map_err(|e|{
-                error!("Error in building the request {:?}", ariel_os_log::Debug2Format(&e));
->>>>>>> b5d21f19 (wip)
-=======
->>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
                 Error::Transport
             })?
             .headers(headers);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         #[allow(unused_variables, reason = "conditional compilation")]
-=======
->>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
         let response = handle.send(buf).await.map_err(|e| {
             error!(
                 "Error in receiving the response {:?}",
                 ariel_os_log::Debug2Format(&e)
             );
-<<<<<<< HEAD
-=======
-        trace!("Trying to receive response in a buffer of size {:?}", buf.len());
-
-        let response = handle.send(buf).await.map_err(|e|{
-            error!("Error in the response {:?}", ariel_os_log::Debug2Format(&e));
->>>>>>> b5d21f19 (wip)
-=======
->>>>>>> 0dc28f0f (feat: remove requirement on payload size in http)
             Error::Transport
         })?;
 
