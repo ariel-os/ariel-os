@@ -1,0 +1,68 @@
+#![no_main]
+#![no_std]
+
+use ariel_os::{
+    device_update::{DeviceUpdater, DeviceUpdaterState, HalDeviceUpdaterState},
+    gpio::{Input, Pull},
+    log::*,
+};
+
+use ariel_os_boards::pins;
+
+#[cfg(context = "stm32u083mc")]
+static APP_B: &[u8] = include_bytes!("../bins/stm-blinky.bin");
+#[cfg(context = "nrf52840")]
+static APP_B: &[u8] = include_bytes!("../bins/hello-world.bin");
+#[cfg(context = "rp2040")]
+static APP_B: &[u8] = include_bytes!("../bins/pico-serial.bin");
+
+
+// --- snip
+// --- snip
+
+async fn update() {
+    let mut updater_state = HalDeviceUpdaterState::new();
+    let mut updater = updater_state.updater();
+
+    let mut offset = 0;
+
+    for chunk in APP_B.chunks(4096) {
+        let mut buf = [0; 4096];
+        buf[..chunk.len()].copy_from_slice(chunk);
+        updater.write_firmware(offset, &buf).await.unwrap();
+        offset += chunk.len() as u32;
+    }
+
+    updater.mark_updated().await.unwrap();
+
+    info!("Updater done.");
+
+    ariel_os::power::reboot();
+}
+
+#[cfg(not(any(context = "rpi-pico2-w", context = "rpi-pico-w")))]
+#[ariel_os::task(autostart, peripherals)]
+async fn main(peripherals: pins::ButtonPeripherals) {
+    info!("Updater started! Waiting for button press...");
+
+    // Configure button
+    // TODO: handle board specific pullup and active state
+    let pull = Pull::Up;
+    let mut btn0 = Input::builder(peripherals.button0, pull)
+        .build_with_interrupt()
+        .unwrap();
+
+    // Wait for the button being pressed
+    let _ = btn0.wait_for_falling_edge().await;
+
+    info!("Button pressed, initiating update...");
+    update().await
+}
+
+// If APP_B exits / reboots without marking itself as booted it will wear out the flash by
+// having the bootloader continuously swap partitions between this app and APP_B.
+#[cfg(any(context = "rpi-pico2-w", context = "rpi-pico-w"))]
+#[ariel_os::task(autostart)]
+async fn main() {
+    update().await;
+}
