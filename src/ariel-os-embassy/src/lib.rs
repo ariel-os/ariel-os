@@ -252,6 +252,7 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     }
 
     #[cfg(feature = "usb")]
+    #[allow(unused_mut, reason = "mut needed in some configurations")]
     let mut usb_builder = {
         use static_cell::ConstStaticCell;
 
@@ -323,13 +324,13 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     #[cfg(feature = "usb")]
     {
+        use crate::cell::SameExecutorCell;
+        let mut usb_builder = SameExecutorCell::new_async(usb_builder).await;
         for hook in usb::USB_BUILDER_HOOKS {
-            // SAFETY: `lend()` is only called once per hook instance, as required.
-            unsafe {
-                hook.lend(&mut usb_builder).await;
-            }
+            let mut lender = hook.wait().await;
+            lender.lend(&mut usb_builder).await;
         }
-        let usb = usb_builder.build();
+        let usb = usb_builder.destruct_async().await.unwrap().build();
         spawner.spawn(usb::usb_task(usb).unwrap());
     }
 

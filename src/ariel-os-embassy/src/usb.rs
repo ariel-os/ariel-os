@@ -18,7 +18,10 @@ pub use crate::hal::usb::UsbDriver;
 pub type UsbBuilder = embassy_usb::Builder<'static, UsbDriver>;
 
 /// Configuration hook for a [`UsbBuilder`].
-pub type UsbBuilderHook = &'static crate::delegate::Delegate<UsbBuilder>;
+pub type UsbBuilderHook = embassy_sync::signal::Signal<
+    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
+    async_borrow::Lender<crate::cell::SameExecutorCell<UsbBuilder>>,
+>;
 
 #[doc(hidden)]
 #[linkme::distributed_slice]

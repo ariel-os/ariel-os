@@ -250,11 +250,13 @@ mod task {
 
             // TODO: try to reduce namespace pollution
             quote! {
-                static #delegate_hook_ident: #delegate_type<#delegate_inner_type> = #delegate_type::new();
+                static #delegate_hook_ident: #delegate_type<#delegate_inner_type> = #delegate_type::new(&#delegate_hook_ref_ident);
 
+                // See ariel_os_embassy::delegate module level documentation for why this is a full
+                // signal.
                 #[#ariel_os_crate::reexports::linkme::distributed_slice(#distributed_slice_type)]
                 #[linkme(crate=#ariel_os_crate::reexports::linkme)]
-                    static #delegate_hook_ref_ident: #ariel_os_crate::#type_path = &#delegate_hook_ident;
+                    static #delegate_hook_ref_ident: #ariel_os_crate::#type_path = #ariel_os_crate::#type_path::new();
                 }
             }
         );
