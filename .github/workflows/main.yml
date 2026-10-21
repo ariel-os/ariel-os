@@ -168,6 +168,7 @@ jobs:
             -p ariel-os-threads
             -p ariel-os-utils
             -p ariel-os-update-transports
+            -p ariel-os-suit
             --
             --deny warnings
 
@@ -326,15 +327,18 @@ jobs:
             --
             --deny warnings
 
-      - name: Clippy on ariel-os-update-transports
+      - name: Clippy on ariel-os-update-transports and ariel-os-suit
         uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
         with:
           args: |
             --locked
             -p ariel-os-update-transports
+            -p ariel-os-suit
             --features "
               http,
               defmt,
+              ariel-os-log/defmt,
+              ariel-os-embassy/ipv4,
               "
             --
             --deny warnings

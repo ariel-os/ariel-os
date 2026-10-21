@@ -1,0 +1,22 @@
+[package]
+name = "ariel-os-bootloader"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os = { workspace = true, default-features = true, features = [
+  "ariel-os-bootloader-loader",
+] }
+ariel-os-boards = { workspace = true }
+ariel-os-bootloader-common = { workspace = true }
+ariel-os-embassy-common = { workspace = true }
+ariel-os-hal = { workspace = true }
+ariel-os-rt = { workspace = true }
+embassy-boot = { workspace = true }
+embedded-storage = { workspace = true }
+
+[lints]
+workspace = true
