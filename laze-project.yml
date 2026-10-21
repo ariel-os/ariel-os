@@ -1204,6 +1204,10 @@ modules:
 
   - name: ram-tiny
     help: This module marks boards with very little RAM (currently, <=16KiB)
+    # Note that this does *not* select ram-small, so that configuration can act
+    # on being precisely in that class rather than this-or-bigger.
+    # Consequently, this needs to be conflicted on manually by everything that
+    # also conflicts with ram-small.
     conflicts:
       # disabling alloc until we have a usable use case
       - alloc
@@ -1862,6 +1866,7 @@ modules:
       - c-function-abort
     conflicts:
       - ram-small
+      - ram-tiny
     env:
       global:
         FEATURES:
