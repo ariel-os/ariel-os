@@ -65,9 +65,7 @@ impl<'a, const CHUNK_SIZE: usize, U> SuitProcessor<'a, New, CHUNK_SIZE, U> {
     }
 }
 
-impl<const CHUNK_SIZE: usize, U: DeviceUpdater>
-    SuitProcessor<'_, Authenticated, CHUNK_SIZE, U>
-{
+impl<const CHUNK_SIZE: usize, U: DeviceUpdater> SuitProcessor<'_, Authenticated, CHUNK_SIZE, U> {
     /// Process the manifest, including the fetching and writing into a storage backend.
     ///
     /// # Errors
@@ -133,11 +131,9 @@ impl<const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         offset: usize,
         bytes: &mut [u8],
     ) -> Result<(), dress_up::error::Error> {
-
         self.updater
             .borrow_mut()
             .read_firmware(u32::try_from(offset).unwrap(), bytes)
-
             .await
             .map_err(|_e| dress_up::error::Error::ConditionMatchFail {
                 command: SuitCommand::ImageMatch,
@@ -203,7 +199,8 @@ impl<const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
         let mut chunk = [0u8; CHUNK_SIZE];
 
         #[cfg(feature = "http")]
-        let tcp_state = embassy_net::tcp::client::TcpClientState::<1, CHUNK_SIZE, CHUNK_SIZE>::new();
+        let tcp_state =
+            embassy_net::tcp::client::TcpClientState::<1, CHUNK_SIZE, CHUNK_SIZE>::new();
         #[cfg(feature = "http")]
         let tcp_client = embassy_net::tcp::client::TcpClient::new(stack, &tcp_state);
 
@@ -225,18 +222,21 @@ impl<const CHUNK_SIZE: usize, U: DeviceUpdater> AsyncOperatingHooks
                     maximum_capacity
                 ).await
             }
-        }.map_err(|e| {
+        }
+        .map_err(|e| {
             ariel_os_log::error!("Error when initiating the transport: {:?}", e);
-            dress_up::error::Error::ConditionMatchFail { command: SuitCommand::Fetch, position: 0 }
+            dress_up::error::Error::ConditionMatchFail {
+                command: SuitCommand::Fetch,
+                position: 0,
+            }
         })?;
 
         let mut offset = 0;
         while let Some(maybe_chunk) = stream.next().await {
-            let chunk =
-                maybe_chunk.map_err(|_| dress_up::error::Error::ConditionMatchFail {
-                    command: SuitCommand::Fetch,
-                    position: 0,
-                })?;
+            let chunk = maybe_chunk.map_err(|_| dress_up::error::Error::ConditionMatchFail {
+                command: SuitCommand::Fetch,
+                position: 0,
+            })?;
             self.updater
                 .borrow_mut()
                 .write_firmware(offset, chunk.bytes())
