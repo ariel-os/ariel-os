@@ -775,6 +775,7 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32G431RB
       RUSTFLAGS:
+        - --cfg capability=\"async-flash-driver\"
         - --cfg capability=\"hw/stm32-rng\"
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(128 * 1024)
@@ -803,6 +804,7 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32H755ZI
       RUSTFLAGS:
+        - --cfg capability=\"async-flash-driver\"
         - --cfg capability=\"hw/stm32-dual-core\"
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
@@ -822,6 +824,7 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32H753ZITx
       RUSTFLAGS:
+        - --cfg capability=\"async-flash-driver\"
         - --cfg capability=\"hw/stm32-hash-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
       CHIP_NVM_PAGE_SIZE_BYTES: "0x20000" # 128 KiB
@@ -857,6 +860,7 @@ contexts:
     env:
       PROBE_RS_CHIP: STM32L475VG
       RUSTFLAGS:
+        - --cfg capability=\"async-flash-driver\"
         - --cfg capability=\"hw/stm32-rng\"
         - --cfg capability=\"hw/stm32-usb-synopsys\" # Needs an external 32.768 kHz crystal to have a stable clock
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
