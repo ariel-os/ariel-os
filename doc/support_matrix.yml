@@ -316,8 +316,8 @@ chips:
       ble: not_available
       ethernet: not_available
 
-  rp235xa:
-    name: RP235xA
+  rp2350a:
+    name: RP2350A
     manufacturer: Raspberry Pi
     support:
       gpio: supported
@@ -330,6 +330,25 @@ chips:
       storage: supported
       wifi: not_available
       ble: not_available
+      ethernet: not_available
+
+  # Currently identical to rp2350a
+  rp2354a:
+    name: RP2354A
+    manufacturer: Raspberry Pi
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: supported
+      uart: supported
+      logging: supported
+      storage: supported
+      wifi: not_available
+      ble: not_available
+      user_usb: supported
+      ethernet_over_usb: supported
       ethernet: not_available
 
   esp32-d0wd:
@@ -1339,14 +1358,14 @@ builders:
       ethernet_over_usb: supported
 
   rpi-pico2:
-    chip: rp235xa
+    chip: rp2350a
     tier: "1"
     support:
       user_usb: supported
       ethernet_over_usb: supported
 
   rpi-pico2-w:
-    chip: rp235xa
+    chip: rp2350a
     tier: "1"
     support:
       user_usb: supported

@@ -6,8 +6,7 @@ apps:
       - nrf52840
       - nrf5340-app
       - nrf9160
-      - rp2040
-      - rp235xa
+      - rp
       - st-b-l072z-lrwan1
       - st-b-l475e-iot01a
       - st-nucleo-c031c6
