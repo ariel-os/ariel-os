@@ -349,6 +349,53 @@ macro_rules! define_i2c_alias {
     };
 }
 
+/// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
+/// that are part of the switch.
+#[macro_export]
+macro_rules! define_switch {
+    (name: $name:ident, inputs: [$(pin: $pin:ident, pull: $pull:ident)+], aliases: [$($alias:ident,)*]) => {
+
+
+        #[allow(nonstandard_style)]
+        pub struct $name<'a> {
+            $(
+                // FIXME: field name
+                pub $pin: $crate::gpio::Input<'a>,
+            )+
+        }
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                $name {
+                    $(
+                        // FIXME: field name
+                        $pin: $crate::gpio::Input::new(
+                            self.$pin.take().unwrap(),
+                            $pull
+                        )
+                    )+
+                }
+            }
+        }
+
+        $(
+            $crate::define_switch_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+/// Aliases the sbd default name "Switch{n}" with sbd defined aliases.
+#[macro_export]
+macro_rules! define_switch_alias {
+    ($name:ident = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias<'a> = $name<'a>;
+    };
+}
+
+
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;
