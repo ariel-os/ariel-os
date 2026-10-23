@@ -26,7 +26,10 @@ async fn i2c_scanner(peripherals: Peripherals) {
     for addr in 1..=127 {
         // The byte is unnecessary, but this otherwise always fails on RP.
         let mut buf = [0u8; 1];
-        if i2c_bus.read(addr, &mut buf).await.is_ok() {
+        // Some devices are only responsive to write transactions for this check.
+        let device_found =
+            i2c_bus.read(addr, &mut buf).await.is_ok() | i2c_bus.write(addr, &[]).await.is_ok();
+        if device_found {
             info!("Found device at address 0x{:x}", addr);
         }
     }
