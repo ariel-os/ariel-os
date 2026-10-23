@@ -20,9 +20,6 @@ coap-handler-implementations = "0.6.1"
 coap-message = "0.3.0"
 coapcore = { path = "../lib/coapcore", default-features = false }
 critical-section = { workspace = true }
-# Technically only needed when there are multiple CoAP transports active, but
-# a) we can't model this here, and b) the crate is pulled in by something else
-# almost certainly anyway.
 embassy-futures = { workspace = true }
 # These features should be more selective and not enabled here, but as things
 # stand, this modules also contains the embedded-nal implementation for
@@ -103,6 +100,8 @@ coap-transport-slipmux-usb = [
   "dep:ariel-os-buildinfo",
   "_coap-transport-slipmux",
 ]
+
+slipmux-ip = []
 
 # Plain feature forwards and selected by laze to fill up the default features on demand.
 liboscore-provide-abort = ["coapcore/liboscore-provide-abort"]
