@@ -14,6 +14,7 @@ pub fn main() {
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"dfrobot-firebeetle2-esp32-c6\"))"
     );
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"dwm3001cdk\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"espressif-esp32-c3-devkit-rust-1\"))"
     );
