@@ -9,5 +9,10 @@ ariel-os = { path = "../../src/ariel-os", features = ["tcp", "time"] }
 ariel-os-boards = { path = "../../src/ariel-os-boards" }
 embedded-io-async = "0.7.0"
 
+[features]
+default = []
+ipv4 = []
+ipv6 = []
+
 [lints]
 workspace = true
