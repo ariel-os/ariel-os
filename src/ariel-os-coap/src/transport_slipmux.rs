@@ -208,6 +208,25 @@ static COAP2SLIPMUX: Signal<
     &'static mut SingleBuffer,
 > = Signal::new();
 
+/// Like `SLIPMUX2COAP` but for IP (which is needs to be picked up by the user if enabled)
+///
+/// Unlike there, the IP side may also take the initiative; if that happened, that buffer is
+/// returned empty.
+#[cfg(feature = "slipmux-ip")]
+pub static SLIPMUX2IP: Signal<
+    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
+    &'static mut SingleBuffer,
+> = Signal::new();
+/// Like `COAP2SLIPMUX`, but for IP
+///
+/// Unlike there, the IP side may also take the initiative; that side has its own buffer, which it
+/// may send unprompted.
+#[cfg(feature = "slipmux-ip")]
+pub static IP2SLIPMUX: Signal<
+    embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
+    &'static mut SingleBuffer,
+> = Signal::new();
+
 /// Decodes frames from a slipmux peer, and sends them to the relevant tasks for further
 /// processing, receiving frames in return.
 ///
@@ -262,7 +281,27 @@ where
         // be replaced by the `//BR` comments, which avoid going back and forth with the
         // peripheral.
         let mut bytebuf = [0];
-        let read = uart.read(&mut bytebuf).await.unwrap();
+        let read = match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.wait())
+            .await
+        {
+            embassy_futures::select::Either::First(read) => read.unwrap(),
+            embassy_futures::select::Either::Second(ip_buffer) => {
+                warn!("Got sometehing to encode!, len {}", ip_buffer.len());
+                if !ip_buffer.is_empty() {
+                    // Usually it is not, but the tasks may race and the IP task's initiative
+                    // message is handled in our initiative side's response … yeah, bigger
+                    // bigger refactoring due
+                    encode(
+                        uart,
+                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, ip_buffer),
+                    )
+                    .await;
+                }
+                ip_buffer.clear();
+                SLIPMUX2IP.signal(ip_buffer);
+                continue;
+            }
+        };
         assert_eq!(read, 1);
         let byte = bytebuf[0];
 
@@ -270,6 +309,8 @@ where
         //BR let mut consume = 0;
 
         let mut coap_ready = false;
+        #[cfg(feature = "slipmux-ip")]
+        let mut ip_ready = false;
 
         //BR while let Some(&byte) = buffer.split_off_first() {
         //BR consume += 1;
@@ -296,7 +337,13 @@ where
                 //BR break;
             }
             Ok(DecodeStatus::FrameCompleteIp) => {
-                warn!("Peer sent network data, which is unsupported.",);
+                cfg_select! {
+                    feature = "slipmux-ip" => {
+                        ip_ready = true;
+                        //BR break;
+                    },
+                    _ => warn!("Peer sent network data, which is unsupported."),
+                }
                 //BR break;
             }
             Ok(DecodeStatus::FrameCompleteConfiguration) => {
@@ -338,25 +385,63 @@ where
             SLIPMUX2COAP.signal(buffer);
             buffer = COAP2SLIPMUX.wait().await;
 
-            if buffer.len() == 0 {
+            bufref.0 = Some(buffer);
+
+            if bufref.as_ref().is_empty() {
                 // FIXME: Send RST if parsable to that point (or make
                 // embedded_nal_minimal_coapserver emit one
                 warn!("Request was completely unparsable, ignoring.");
             } else {
-                let mut outbuf = [0; 16];
-                let mut encoder =
-                    slipmux::ChunkedEncoder::new(slipmux::FrameType::Configuration, &buffer);
-                loop {
-                    let size = encoder.encode_chunk(&mut outbuf);
-                    if size == 0 {
-                        break;
-                    }
-                    uart.write_all(&outbuf[..size]).await.unwrap();
+                encode(
+                    uart,
+                    slipmux::ChunkedEncoder::new(
+                        slipmux::FrameType::Configuration,
+                        &bufref.as_ref(),
+                    ),
+                )
+                .await;
+            }
+        } else {
+            // Slightly unfortuante indentation here -- but apparently the grammar doesn't like
+            // `#[cfg()] else if`.
+
+            #[cfg(feature = "slipmux-ip")]
+            if ip_ready {
+                let (bufref, error) = slipmux.read_ip_and_error();
+
+                if error.is_some() {
+                    warn!("Ignoring overly long IP packet.");
+                    continue;
+                };
+
+                let buffer = bufref.0.take().expect("we're the only party taking this");
+                SLIPMUX2IP.signal(buffer);
+                warn!("Got IP frame in, waiting to get buffer back");
+                bufref.0 = Some(IP2SLIPMUX.wait().await);
+                warn!("Buffer is back");
+                if !bufref.as_ref().is_empty() {
+                    encode(
+                        uart,
+                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, &bufref.as_ref()),
+                    )
+                    .await;
                 }
             }
-
-            bufref.0 = Some(buffer);
         }
+    }
+}
+
+async fn encode<U>(uart: &mut U, mut encoder: slipmux::ChunkedEncoder<'_>)
+where
+    U: embedded_io_async::Read + embedded_io_async::Write,
+{
+    let mut outbuf = [0; 16];
+    loop {
+        let size = encoder.encode_chunk(&mut outbuf);
+        if size == 0 {
+            break;
+        }
+        uart.write_all(&outbuf[..size]).await.unwrap();
     }
 }
 

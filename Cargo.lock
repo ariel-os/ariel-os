@@ -175,6 +175,7 @@ dependencies = [
  "coap-numbers",
  "coapcore",
  "critical-section",
+ "embassy-futures",
  "embassy-net",
  "embassy-sync 0.8.0",
  "embedded-io 0.7.1",
