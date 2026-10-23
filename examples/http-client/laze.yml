@@ -9,6 +9,7 @@ apps:
       - random
     conflicts:
       - ram-small
+      - ram-tiny
       # not enough ram
       - context::esp32c2
       - context::esp32s2
