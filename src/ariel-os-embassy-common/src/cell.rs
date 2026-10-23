@@ -59,6 +59,18 @@ impl<T> SameExecutorCell<T> {
         }
     }
 
+    /// Turns the [`SameExecutorCell`] back into a `T`.
+    pub fn destruct(self, spawner: Spawner) -> Option<T> {
+        if spawner.executor_id() == self.executor_id {
+            Some(self.inner)
+        } else {
+            None
+            // Drop will be called here, and that might panic (see
+            // https://github.com/ariel-os/ariel-os/pull/2393 or Drop implementation); however, not
+            // making this infallible because the drop might be OK, and also for consistency.
+        }
+    }
+
     /// Creates a new [`SameExecutorCell`] (async version).
     ///
     /// Despite being async, this function never blocks/yields, it returns instantly.
@@ -84,5 +96,14 @@ impl<T> SameExecutorCell<T> {
         // SAFETY: TODO(`for_current_executore()` unsoundness)
         let spawner = unsafe { Spawner::for_current_executor().await };
         self.get_mut(spawner)
+    }
+
+    /// Turns the [`SameExecutorCell`] back into a `T`.
+    ///
+    /// Despite being async, this function never blocks/yields, it returns instantly.
+    pub async fn destruct_async(self) -> Option<T> {
+        // SAFETY: TODO(`for_current_executore()` unsoundness)
+        let spawner = unsafe { Spawner::for_current_executor().await };
+        self.destruct(spawner)
     }
 }
