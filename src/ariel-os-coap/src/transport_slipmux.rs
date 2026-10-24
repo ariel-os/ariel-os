@@ -125,7 +125,6 @@ mod usb_serial {
     }
     impl<'d, D: Driver<'d>> embedded_io_async::Read for CdcAcmAsIo<'d, D> {
         async fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
-            use embedded_io_async::Read;
             self.rx
                 .read(buf)
                 .await
@@ -150,6 +149,9 @@ mod usb_serial {
                 }
             }
             Ok(orig_len)
+        }
+        async fn flush(&mut self) -> Result<(), Self::Error> {
+            Ok(())
         }
     }
 }
