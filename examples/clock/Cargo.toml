@@ -1,0 +1,19 @@
+[package]
+name = "clock-app"
+license.workspace = true
+edition.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = ["time"] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+defmt.workspace = true
+
+embassy-futures = { version = "0.1.1" }
+embassy-sync = "0.6.2"
+embedded-hal-async.workspace = true
+static_cell = "2"
+trouble-host = { workspace = true, features = ["defmt"] }
