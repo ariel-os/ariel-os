@@ -1,12 +1,20 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   bbc-microbit-v1:
     chip: nrf51822-xxaa
-    buttons:
+    switches:
       # button0
-      - pin: P0_17
+      - pins: P0_17
+        resistors: pullup
+        active: low
+        aliases:
+          - BTN_A # Name on the schematic
       # button1
-      - pin: P0_26
+      - pins: P0_26
+        resistors: pullup
+        active: low
+        aliases:
+          - BTN_B #Name on the schematic
     # TODO: support for the TWI peripheral needs to be added to Ariel OS first.
     # i2c:
     #   - sda_pin: P0_30

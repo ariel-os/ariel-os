@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   # different names in use: "Adafruit Feather nRF52840 Express" on shop as of
   # 2025-12-14, whereas schematics dating from 2025-05-05 label it as "Adafruit
@@ -31,10 +31,11 @@ targets:
       # Only to be mapped if we start expressing aspects that are not user controllable:
       # * orange D3 is hardwired to LiPo charge port STAT
 
-    buttons:
+    switches:
       # button0
-      - pin: P1_02
+      - pins: P1_02
         # Note that there is no external pull-up.
+        resistors: none
         active: low
         aliases:
           - UserSw # silkscreen label

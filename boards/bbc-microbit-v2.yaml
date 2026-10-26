@@ -1,12 +1,20 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   bbc-microbit-v2:
     chip: nrf52833
-    buttons:
+    switches:
       # button0
-      - pin: P0_14
+      - pins: P0_14
+        resistors: pullup
+        active: low
+        aliases:
+          - BTN_A # Name on the schematic
       # button1
-      - pin: P0_23
+      - pins: P0_23
+        resistors: pullup
+        active: low
+        aliases:
+          - BTN_B # Name on the schematic
     i2c:
       - sda_pin: P0_16
         scl_pin: P0_08

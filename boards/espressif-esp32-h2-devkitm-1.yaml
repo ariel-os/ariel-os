@@ -1,13 +1,18 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   espressif-esp32-h2-devkitm-1:
+    # Schematic <https://dl.espressif.com/dl/schematics/esp32-h2-devkitm-1_v1.3_schematics.pdf>
     chip: esp32-h2-mini-1-h4s
     flags:
       - has_usb_cdc_acm_port
-    buttons:
+    switches:
       # button0 (BOOT)
-      - pin: GPIO9
+      - pins: GPIO9
         active: low
+        resistors: none
+        aliases:
+          - BOOT
+          - SW1
     uarts:
       - tx_pin: GPIO24
         rx_pin: GPIO23
