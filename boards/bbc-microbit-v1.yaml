@@ -14,7 +14,7 @@ targets:
         resistors: pullup
         active: low
         aliases:
-          - BTN_B #Name on the schematic
+          - BTN_B # Name on the schematic
     # TODO: support for the TWI peripheral needs to be added to Ariel OS first.
     # i2c:
     #   - sda_pin: P0_30

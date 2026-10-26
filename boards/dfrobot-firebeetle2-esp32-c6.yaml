@@ -9,8 +9,8 @@ targets:
       # led0
       - pin: GPIO15
         aliases:
-        - D1
-        - BLK
+          - D1
+          - BLK
     switches:
       # button0
       - pins: GPIO9
