@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from <https://docs.nordicsemi.com/r/bundle/ug_nrf9151_dk/page/ug/nrf91_dk/hw_description/hw_buttons_leds.html>
   nrf9151-dk:
     chip: nrf9151
     leds:
@@ -23,27 +24,35 @@ targets:
         color: green
         aliases:
           - LED4
-    buttons:
+    switches:
       # button0
-      - pin: P0_08
+      - pins: P0_08
         active: low
+        resistors: none
         aliases:
           - Button 1
+          - SW1
       # button1
-      - pin: P0_09
+      - pins: P0_09
         active: low
+        resistors: none
         aliases:
           - Button 2
+          - SW2
       # button2
-      - pin: P0_18
+      - pins: P0_18
         active: low
+        resistors: none
         aliases:
           - Button 3
+          - SW3
       # button3
-      - pin: P0_19
+      - pins: P0_19
         active: low
+        resistors: none
         aliases:
           - Button 4
+          - SW4
     i2c:
       # Only available when a shield is inserted and if enabled by the interface
       # MCU using the nRF Connect for Desktop application.

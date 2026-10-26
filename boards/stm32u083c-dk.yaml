@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/resource/en/schematic_pack/mb1933-u083c-c02-schematic.pdf>
   stm32u083c-dk:
     chip: stm32u083mc
     flags:
@@ -17,9 +18,13 @@ targets:
       # led2
       - pin: PB2
         color: red
-    buttons:
+    switches:
       # button0
-      - pin: PC2
+      - pins: PC2
+        resistors: pullup
+        active: low
+        aliases:
+          - JOYSTICK_CENTER
     i2c:
       - sda_pin: PB7
         scl_pin: PB8

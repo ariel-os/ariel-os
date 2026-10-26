@@ -1,6 +1,7 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   nrf52dk:
+    # Schematic in <https://docs.nordicsemi.com/viewer/book-attachment/baHwOVZu14GaxxPcvg~L_Q/4lvULL~ptfn4MsnQIVGfzg-baHwOVZu14GaxxPcvg~L_Q>
     chip: nrf52832
     leds:
       # led0
@@ -19,19 +20,35 @@ targets:
       - color: green
         pin: P0_20
 
-    buttons:
+    switches:
       # button0
-      - pin: P0_13
+      - pins: P0_13
         active: low
+        resistors: none
+        aliases:
+          - SW1
+          - BUTTON1
       # button1
-      - pin: P0_14
+      - pins: P0_14
         active: low
+        resistors: none
+        aliases:
+          - SW2
+          - BUTTON2
       # button2
-      - pin: P0_15
+      - pins: P0_15
         active: low
+        resistors: none
+        aliases:
+          - SW3
+          - BUTTON13
       # button3
-      - pin: P0_16
+      - pins: P0_16
         active: low
+        resistors: none
+        aliases:
+          - SW4
+          - BUTTON4
     # TODO: support for the TWI peripheral needs to be added to Ariel OS first.
     # i2c:
     #   # Only available when a shield is inserted.

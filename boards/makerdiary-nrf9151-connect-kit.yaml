@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 # Note that the "kit" is really part of the board name, and not the
 # composition of the board with the pin headers and the antennas: It says
 # "nRF9151 Connect Kit" on the board's silkscreen.
@@ -10,10 +10,11 @@ targets:
     # leds:
       # No user accessible LEDs: There is a green and an RGB LED, but both are
       # only accessible from the interface chip.
-    buttons:
+    switches:
       # button0
-      - pin: P0_25
+      - pins: P0_25
         active: low # … and no built-in pull-up.
+        resistors: none
         aliases:
           - USR
     uarts:

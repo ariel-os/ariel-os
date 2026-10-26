@@ -1,16 +1,22 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   espressif-esp8684-devkitc-02:
+    # Schematic <https://dl.espressif.com/dl/schematics/esp8684-devkitc-02-schematics_V1.0.pdf>
     chip: esp8684-wroom-02c-h4
-    buttons:
+    switches:
       # button0 (BOOT)
-      - pin: GPIO9
+      - pins: GPIO9
         active: low
+        resistors: none
+        aliases:
+          - SW1
     leds:
       # led0 (RGB red channel)
       - pin: GPIO0
         color: red
         active: high
+        aliases:
+          - D5
     uarts:
       - tx_pin: GPIO20
         rx_pin: GPIO19

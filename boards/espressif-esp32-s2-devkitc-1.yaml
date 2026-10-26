@@ -1,13 +1,17 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   espressif-esp32-s2-devkitc-1:
+    # Schematic <https://dl.espressif.com/dl/schematics/esp-idf/SCH_ESP32-S2-DEVKITC-1_V1_20220817.pdf>
     chip: esp32-s2-solo-2
     flags:
       - has_usb_device_port
-    buttons:
+    switches:
       # button0
-      - pin: GPIO0
+      - pins: GPIO0
         active: low
+        resistors: none
+        aliases:
+          - SW1
     uarts:
       - tx_pin: GPIO43
         rx_pin: GPIO44

@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the switches and LEDs from <https://www.st.com/resource/en/schematic_pack/mb1717-c031c6-b02_schematic.pdf>
   st-nucleo-c031c6:
     chip: stm32c031c6
     ariel:
@@ -7,9 +8,13 @@ targets:
     leds:
       # led0
       - pin: PA5
-    buttons:
+    switches:
       # button0
-      - pin: PC13
+      - pins: PC13
+        resistors: pullup
+        active: low
+        aliases:
+          - B1
     uarts:
       - aliases:
           - VCP

@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for switches/leds taken from <https://www.mouser.com/pdfDocs/Thingy91X_UG_100.pdf>
   nordic-thingy-91-x-nrf9151:
     chip: nrf9151
     leds:
@@ -12,9 +13,14 @@ targets:
       # led2
       - pin: P0_30
         color: blue
-    buttons:
+    switches:
       # button0
-      - pin: P0_26
+      - pins: P0_26
+        resistors: none
+        active: low
+        aliases:
+          - SW3
+          - Button 1
     i2c:
       - sda_pin: P0_09
         scl_pin: P0_08
@@ -65,9 +71,14 @@ targets:
       # led2
       - pin: P0_15
         color: blue
-    buttons:
+    switches:
       # button0
-      - pin: P0_24
+      - pins: P0_24
+        active: low
+        resistors: none
+        aliases:
+          - SW4
+          - Button 2
     i2c:
       - sda_pin: P1_03
         scl_pin: P1_02

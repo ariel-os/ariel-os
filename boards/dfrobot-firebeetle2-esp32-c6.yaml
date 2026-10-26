@@ -1,15 +1,21 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   dfrobot-firebeetle2-esp32-c6:
+    # Schematic <https://dfimg.dfrobot.com/wiki/20576/DFR1075_firebeetle-esp32-c6-microcontroller_schematics_v1.zip>
     chip: esp32c6fx4
     flags:
       - has_usb_cdc_acm_port
     leds:
       # led0
       - pin: GPIO15
-    buttons:
+        aliases:
+        - D1
+        - BLK
+    switches:
       # button0
-      - pin: GPIO9
+      - pins: GPIO9
         aliases:
           - D9
           - BOOT
+        resistors: pullup
+        active: low

@@ -4,15 +4,15 @@ builders:
 - name: adafruit-feather-nrf52840-express
   parent: nrf52840
   provides:
-  - has_buttons
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: adafruit-feather-nrf52840-sense
   parent: nrf52840
   provides:
-  - has_buttons
   - has_i2c_bus
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: arduino-uno-q
   parent: stm32u585ai
@@ -28,31 +28,31 @@ builders:
 - name: bbc-microbit-v1
   parent: nrf51822-xxaa
   provides:
-  - has_buttons
+  - has_switches
 - name: bbc-microbit-v2
   parent: nrf52833
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
+  - has_switches
 - name: decawave-dwm1001-dev
   parent: nrf52832
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
+  - has_switches
 - name: dfrobot-firebeetle2-esp32-c6
   parent: esp32c6fx4
   provides:
-  - has_buttons
   - has_leds
+  - has_switches
   - has_usb_cdc_acm_port
 - name: espressif-esp32-c3-devkit-rust-1
   parent: esp32-c3-mini-1
   provides:
-  - has_buttons
   - has_i2c_bus
   - has_leds
+  - has_switches
   - has_usb_cdc_acm_port
 - name: espressif-esp32-c3-lcdkit
   parent: esp32-c3-mini-1
@@ -61,46 +61,46 @@ builders:
 - name: espressif-esp32-c6-devkitc-1
   parent: esp32-c6-wroom-1
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
   - has_usb_cdc_acm_port
 - name: espressif-esp32-devkitc
   parent: esp-wroom-32
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
 - name: espressif-esp32-h2-devkitm-1
   parent: esp32-h2-mini-1-h4s
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
   - has_usb_cdc_acm_port
 - name: espressif-esp32-s2-devkitc-1
   parent: esp32-s2-solo-2
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
   - has_usb_device_port
 - name: espressif-esp32-s3-devkitc-1
   parent: esp32-s3-wroom-1
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
   - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: espressif-esp8684-devkitc-02
   parent: esp8684-wroom-02c-h4
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
+  - has_switches
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
 - name: makerdiary-nrf52840-mdk-usb-dongle
   parent: nrf52840
   provides:
@@ -108,29 +108,29 @@ builders:
 - name: makerdiary-nrf52840-mdk
   parent: nrf52840
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
+  - has_switches
 - name: makerdiary-nrf9151-connect-kit
   parent: nrf9151
   provides:
-  - has_buttons
   - has_host_facing_uart
+  - has_switches
 - name: native
   parent: native-chip
 - name: nordic-thingy-91-x-nrf9151
   parent: nrf9151
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
 - name: nordic-thingy-91-x-nrf5340-app
   parent: nrf5340-app
   provides:
-  - has_buttons
   - has_i2c_bus
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: nordic-thingy-91-x-nrf5340-net
   parent: nrf5340-net
@@ -139,51 +139,51 @@ builders:
 - name: nrf52840dk
   parent: nrf52840
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: nrf52dk
   parent: nrf52832
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
+  - has_switches
 - name: nrf5340dk-app
   parent: nrf5340-app
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: nrf5340dk-net
   parent: nrf5340-net
 - name: nrf54l15dk-app
   parent: nrf54l15-app
   provides:
-  - has_buttons
   - has_leds
+  - has_switches
 - name: nrf9151-dk
   parent: nrf9151
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
 - name: nrf9160dk-nrf9160
   parent: nrf9160
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
+  - has_switches
 - name: particle-xenon
   parent: nrf52840
   provides:
-  - has_buttons
   - has_leds
+  - has_switches
   - has_usb_device_port
 - name: rpi-pico-w
   parent: rp2040
@@ -218,10 +218,10 @@ builders:
 - name: seeedstudio-lora-e5-mini
   parent: stm32wle5jc
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
@@ -229,15 +229,15 @@ builders:
   parent: esp32s3r8
   provides:
   - has_ble_esp
-  - has_buttons
   - has_leds
+  - has_switches
   - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: seeedstudio-xiao-esp32c6
   parent: esp32c6fx4
   provides:
-  - has_buttons
   - has_leds
+  - has_switches
   - has_usb_cdc_acm_port
 - name: seeedstudio-xiao-nrf52840-plus
   parent: nrf52840
@@ -247,22 +247,22 @@ builders:
 - name: st-b-l072z-lrwan1
   parent: stm32l072cz
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-b-l475e-iot01a
   parent: stm32l475vg
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -270,10 +270,10 @@ builders:
 - name: st-nucleo-c031c6
   parent: stm32c031c6
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
@@ -289,62 +289,62 @@ builders:
 - name: st-nucleo-f303re
   parent: stm32f303re
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-f401re
   parent: stm32f401re
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-f411re
   parent: stm32f411re
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-f767zi
   parent: stm32f767zi
   provides:
-  - has_buttons
   - has_ethernet_stm32
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-g431rb
   parent: stm32g431rb
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-h753zi
   parent: stm32h753zi
   provides:
-  - has_buttons
   - has_ethernet_stm32
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -352,11 +352,11 @@ builders:
 - name: st-nucleo-h755zi-q
   parent: stm32h755zi
   provides:
-  - has_buttons
   - has_ethernet_stm32
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -364,10 +364,10 @@ builders:
 - name: st-nucleo-wb55
   parent: stm32wb55rg
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -375,20 +375,20 @@ builders:
 - name: st-nucleo-wba55
   parent: stm32wba55cg
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: st-nucleo-wba65ri
   parent: stm32wba65ri
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -396,10 +396,10 @@ builders:
 - name: st-steval-mkboxpro
   parent: stm32u585ai
   provides:
-  - has_buttons
   - has_i2c_bus
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -408,11 +408,11 @@ builders:
 - name: stm32u083c-dk
   parent: stm32u083mc
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds
   - has_swi
+  - has_switches
   - has_usb_device_port
   env:
     CARGO_ENV:
@@ -420,14 +420,14 @@ builders:
 - name: ulanzi-tc001
   parent: esp32-wroom-32d
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
+  - has_switches
 - name: unihiker-k10
   parent: esp32-s3-wroom-1
   provides:
-  - has_buttons
   - has_i2c_bus
+  - has_switches
   - has_usb_cdc_acm_port
   - has_usb_device_port
 - name: waveshare-esp32-s3-eth

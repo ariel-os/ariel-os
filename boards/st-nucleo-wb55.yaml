@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/resource/en/schematic_pack/mb1355-wb55rg-c02_schematic.pdf>
   st-nucleo-wb55:
     chip: stm32wb55rg
     flags:
@@ -22,17 +23,23 @@ targets:
         color: red
         aliases:
           - LED3
-    buttons:
+    switches:
       # button0
-      - pin: PC4
+      - pins: PC4 # Can be PC13 if SB48 is closed and SB47 is opened
+        resistors: none
+        active: low
         aliases:
           - SW1
       # button1
-      - pin: PD0
+      - pins: PD0
+        resistors: none
+        active: low
         aliases:
           - SW2
       # button2
-      - pin: PD1
+      - pins: PD1
+        resistors: none
+        active: low
         aliases:
           - SW3
     uarts:

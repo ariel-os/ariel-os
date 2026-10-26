@@ -1,16 +1,22 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   heltec-wifi-lora-32-v3:
+    # Schematic <https://resource.heltec.cn/download/WiFi_LoRa_32_V3/HTIT-WB32LA(F)_V3_Schematic_Diagram.pdf>
     chip: esp32s3fx8
     leds:
       # led0
       - pin: GPIO35
         color: white
         active: high
-    buttons:
+        aliases:
+          - LED2
+    switches:
       # button0
-      - pin: GPIO0
+      - pins: GPIO0
         active: low
+        resistors: none # Couldn't find on the schematic
+        aliases:
+          - USER
     i2c:
       - sda_pin: GPIO17
         scl_pin: GPIO18
