@@ -359,7 +359,6 @@ macro_rules! define_switches {
     }
 }
 
-
 /// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
 /// that are part of the switch.
 ///
@@ -517,7 +516,9 @@ macro_rules! into_bool {
 
 #[macro_export]
 macro_rules! empty {
-    ($i: ident) => {()};
+    ($i: ident) => {
+        ()
+    };
 }
 
 #[macro_export]
