@@ -19,8 +19,6 @@ mod stored;
 mod transport_udp;
 
 use ariel_os_embassy::cell::SameExecutorCell;
-#[cfg(feature = "coap-server")]
-use coap_handler_implementations::ReportingHandlerBuilder as _;
 use embassy_sync::watch::Watch;
 
 const CONCURRENT_REQUESTS: usize = 3;
@@ -107,6 +105,21 @@ pub async fn coap_run(handler: impl coap_handler::Handler + coap_handler::Report
     coap_run_impl(handler).await
 }
 
+/// Adds all the resources that are enabled through Ariel features to the handler tree, and then
+/// closes it with a .well-known/core resource.
+#[cfg(feature = "coap-server")]
+fn add_system_resources(
+    handler: impl coap_handler::Handler + coap_handler::Reporting,
+) -> impl coap_handler::Handler {
+    use coap_handler_implementations::ReportingHandlerBuilder as _;
+
+    // FIXME: Should we allow users to override that? After all, this is just convenience and may
+    // be limiting in special applications.
+    let handler = handler.with_wkc();
+
+    handler
+}
+
 /// Workhorse of [`coap_run`], see there for details.
 ///
 /// This is a separate function because if that function is not exposed publicly (i.e. when the
@@ -142,10 +155,8 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
         }
     }
 
-    // FIXME: Should we allow users to override that? After all, this is just convenience and may
-    // be limiting in special applications.
     #[cfg(feature = "coap-server")]
-    let handler = handler.with_wkc();
+    let handler = add_system_resources(handler);
     #[cfg(any(
         feature = "coap-server-config-storage",
         feature = "coap-server-config-demokeys"
