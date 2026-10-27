@@ -419,9 +419,7 @@ where
 
                 let buffer = bufref.0.take().expect("we're the only party taking this");
                 SLIPMUX2IP.signal(buffer);
-                warn!("Got IP frame in, waiting to get buffer back");
                 bufref.0 = Some(IP2SLIPMUX.wait().await);
-                warn!("Buffer is back");
                 if !bufref.as_ref().is_empty() {
                     encode(
                         uart,
