@@ -4,8 +4,11 @@
 use ariel_os_log::{Hex, debug, warn};
 use embassy_sync::signal::Signal;
 
+/// Buffer type in which all slipmux traffic is handled (usually through `&'static mut`).
+///
+/// This is public only when slipmux's user access to its IP traffic is enabled.
 // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
-type SingleBuffer = heapless::Vec<u8, 1280>;
+pub type SingleBuffer = heapless::Vec<u8, 1280>;
 /// An indirection that, rather than borrowing the content, can also move it out temporarily.
 ///
 /// This behaves largely like a smart pointer, and allows moving out content cheaply (eg. the move
