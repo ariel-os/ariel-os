@@ -18,6 +18,9 @@ mod stored;
 #[cfg(feature = "coap-transport-udp")]
 mod transport_udp;
 
+#[cfg(feature = "coap-server-resource-identity")]
+mod identity;
+
 use ariel_os_embassy::cell::SameExecutorCell;
 use embassy_sync::watch::Watch;
 
@@ -55,6 +58,7 @@ mod demo_setup {
     const ADMIN_SCOPE: cboritem::CborItem<'_> = cbor!([
             ["/stdout", 17 / GET and FETCH /],
             ["/.well-known/core", 1],
+            ["/id", 1],
             ["/poem", 1]
     ]);
     /// Credential by which the administrator of any demo device is recognized.
@@ -112,6 +116,22 @@ fn add_system_resources(
     handler: impl coap_handler::Handler + coap_handler::Reporting,
 ) -> impl coap_handler::Handler {
     use coap_handler_implementations::ReportingHandlerBuilder as _;
+
+    // to be allow(unused) if the condition became any more complex
+    #[cfg(feature = "coap-server-resource-identity")]
+    use coap_handler_implementations::HandlerBuilder as _;
+
+    #[cfg(feature = "coap-server-resource-identity")]
+    let handler = handler.at(
+        &["id"],
+        coap_handler_implementations::wkc::ConstantSingleRecordReport::new(
+            coap_handler_implementations::TypeHandler::new_minicbor_2(
+                coap_handler_implementations::with_get(identity::Identity),
+            ),
+            &[],
+        )
+        .with_rel("impl-info"),
+    );
 
     // FIXME: Should we allow users to override that? After all, this is just convenience and may
     // be limiting in special applications.

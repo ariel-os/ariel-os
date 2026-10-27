@@ -289,3 +289,22 @@ without the need for the CoAP client to create a network connection to the host.
 [New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
 
 [laze-modules-book]: ../build-system.md#laze-modules
+
+## Provided resources
+
+For CoAP servers, Ariel OS can provide the following resources:
+
+* `/.well-known/core`: Provided for all servers;
+  lists other resources in a format described by [RFC 6690](https://www.rfc-editor.org/info/rfc6690/)
+* `/.well-known/edhoc`: Entry point for EDHOC.
+  Provided if EDHOC is enabled.
+* `/authz-info`: Entry point for the ACE OSCORE profile.
+  Provided if token parsing is enabled.
+* `/id`: Build and device information.
+  This is provided if the feature `ariel-os/coap-server-resource-identity` (or the [laze module][laze-modules-book] `coap-server-resource-identity`) is requested.
+  Its representation is a CBOR map with tag 971465540, indexed with integers that provide the following items as they are available:
+  - 1: Operating system name
+  - 3: Board name
+  - 5: Device identity
+  *Privacy considerations:* The device identity is a stable identifier, and as such may allow tracking a user across networks.
+  Like all other resources that are not part of establishing secure connections, it only available to authorized users, unless the "unprotected" mode is selected.
