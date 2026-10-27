@@ -1877,7 +1877,7 @@ modules:
   - name: coap-transport-udp
     help: The transport of CoAP that uses the CoAP-over-UDP transport on the network stack.
     # In the long run, this should not be unique, but currently it is.
-    provides_unique: [coap-transport]
+    provides: [coap-transport]
     selects:
       - network
       - random
@@ -1888,7 +1888,7 @@ modules:
 
   - name: coap-transport-slipmux
     help: The transport of CoAP that uses the slipmux (CoAP multiplexed in SLIP) over some UART.
-    provides_unique: [coap-transport]
+    provides: [coap-transport]
     selects:
       - coap-transport-slipmux-backend
 
