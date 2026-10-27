@@ -284,6 +284,7 @@ where
         // be replaced by the `//BR` comments, which avoid going back and forth with the
         // peripheral.
         let mut bytebuf = [0];
+        #[cfg(feature = "slipmux-ip")]
         let read = match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.wait())
             .await
         {
@@ -305,6 +306,8 @@ where
                 continue;
             }
         };
+        #[cfg(not(feature = "slipmux-ip"))]
+        let read = uart.read(&mut bytebuf).await.unwrap();
         assert_eq!(read, 1);
         let byte = bytebuf[0];
 
