@@ -45,7 +45,7 @@ jobs:
           PR_NUMBER: ${{ steps.pr.outputs.pr }}
 
       - name: Comment URL
-        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.pr.outputs.pr }}
