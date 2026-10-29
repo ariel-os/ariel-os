@@ -300,6 +300,7 @@ version = "0.6.0"
 dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-esp",
+ "ariel-os-macros",
  "ariel-os-native",
  "ariel-os-nrf",
  "ariel-os-rp",

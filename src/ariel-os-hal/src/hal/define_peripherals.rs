@@ -210,7 +210,7 @@ macro_rules! define_uarts {
 ///
 /// It holds the TX and RX pins, and can be taken through the same mechanism as those defined using
 /// [`define_peripherals!`](crate::define_peripherals!) (that is, by using [`ariel_os::task(autostart,
-/// peripherals)`](ariel_os::task()) or the underlying `TakePeripherals` trait).
+/// peripherals)`](crate::task) or the underlying `TakePeripherals` trait).
 ///
 /// The struct also has a method `.build_with_config()` that can be used to initialize an Ariel OS uart
 /// instance.
