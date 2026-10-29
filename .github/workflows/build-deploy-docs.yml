@@ -71,17 +71,6 @@ jobs:
               -p ariel-os \
               -p ariel-os-sensors \
               -p coapcore \
-              -p ariel-os-bench \
-              -p ariel-os-buildinfo \
-              -p ariel-os-coap \
-              -p ariel-os-debug \
-              -p ariel-os-identity \
-              -p ariel-os-log \
-              -p ariel-os-power \
-              -p ariel-os-random \
-              -p ariel-os-rt \
-              -p ariel-os-storage \
-              -p ariel-os-threads \
               --features "
                   ariel-os-sensors/max-sample-min-count-12,
                   ariel-os-log/custom-transport-driver,
@@ -189,11 +178,11 @@ jobs:
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
 
       - name: Check the API docs links
-        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8  # v2
         with:
           # Not checking fragments because lychee is bad at finding them when they exist. Especially "range" fragment like some/url#123-127 tbf.
           # Also not checking verbatims because all of those errors are link that are written by scripts.
-          args: --root-dir _site/dev/docs/api --require-https --no-progress --offline _site/dev/docs/api
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --include-fragments=full --offline _site/dev/docs/api
           fail: false
 
       - name: Format link checker results for PR comment
@@ -209,7 +198,7 @@ jobs:
           echo "</details>" >> summary-comment.md
 
       - name: Comment Summary on PR
-        uses: marocchino/sticky-pull-request-comment@70d2764d1a7d5d9560b100cbea0077fc8f633987 # v3
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af8 # v3
         with:
           header: stats
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
