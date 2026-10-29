@@ -198,7 +198,7 @@ jobs:
           echo "</details>" >> summary-comment.md
 
       - name: Comment Summary on PR
-        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af8 # v3
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3
         with:
           header: stats
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
