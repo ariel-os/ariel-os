@@ -1,0 +1,12 @@
+modules:
+  - name: suit-ids-default
+    provides:
+      - suit-ids
+    env:
+      global:
+        # uuidgen --sha1 --namespace @dns --name "ariel-os.org"
+        CONFIG_SUIT_VENDOR_ID: '"a3f8a89a-2d3a-56cc-8c2c-f46495242647"'
+        # This is an exercise in Yaml -> laze -> Ninja -> sh escaping.
+        # Fiddled until `uuidgen --sha1 --namespace "a3f8a89a-2d3a-56cc-8c2c-f46495242647" --name "board:native"`
+        # output (`9a16e77d-9f00-5128-90fe-c458bbf5d0e6`) matched the resulting env var.
+        CONFIG_SUIT_CLASS_ID: '"`uuidgen --sha1 --namespace ${CONFIG_SUIT_VENDOR_ID} --name \"board:${builder}\"`"'
