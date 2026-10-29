@@ -290,7 +290,6 @@ where
         {
             embassy_futures::select::Either::First(read) => read.unwrap(),
             embassy_futures::select::Either::Second(ip_buffer) => {
-                warn!("Got sometehing to encode!, len {}", ip_buffer.len());
                 if !ip_buffer.is_empty() {
                     // Usually it is not, but the tasks may race and the IP task's initiative
                     // message is handled in our initiative side's response … yeah, bigger
