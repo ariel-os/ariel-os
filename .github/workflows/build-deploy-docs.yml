@@ -66,7 +66,13 @@ jobs:
       # faster generation.
       - name: Build rustdoc docs
         run: |
-          RUSTDOCFLAGS='--cfg nightly -Z unstable-options --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0 --extern-html-root-url static_cell=https://docs.rs/static_cell/latest' cargo doc \
+          RUSTDOCFLAGS='
+            --cfg nightly
+            -Z unstable-options
+            --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0
+            --extern-html-root-url static_cell=https://docs.rs/static_cell/latest
+            --extern-html-root-url futures_core=https://docs.rs/futures-core/0.3.31' \
+            cargo doc \
               --no-deps \
               -p ariel-os \
               -p ariel-os-sensors \
