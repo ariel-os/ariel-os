@@ -4,6 +4,7 @@ subdirs:
   - ariel-os-boards
   - ariel-os-embassy
   - ariel-os-embassy-common
+  - ariel-os-esp
   - ariel-os-identity
   - ariel-os-log
   - ariel-os-macros
