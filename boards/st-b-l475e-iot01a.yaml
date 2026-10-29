@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the switches and LEDs from the schematic found at <https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html#cad-resources>
   st-b-l475e-iot01a:
     chip: stm32l475vg
     flags:
@@ -17,9 +18,16 @@ targets:
         aliases:
           - LD2
         color: green
-    buttons:
+    switches:
       # button0
-      - pin: PC13
+      - pins: PC13
+        resistors: pullup
+        active: low
+        aliases:
+          - B2
+          - USER
+          - WAKE_UP
+          - BUTTON_EXTI13
     i2c:
       # These pins have strong pull-ups suitable for I2C.
       - sda_pin: PB9

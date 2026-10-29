@@ -4,7 +4,10 @@ pub mod pins {
     ariel_os_hal::define_peripherals!(
         LedPeripherals { led0 : PC13, led1 : PA5, led2 : PB2, }
     );
-    ariel_os_hal::define_peripherals!(ButtonPeripherals { button0 : PC2, });
+    ariel_os_hal::define_switches![
+        { name : Switch0, pins : [pin : PC2, pull : Up, active : Low,], aliases :
+        [JOYSTICK_CENTER,] },
+    ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : I2C1, sda : PB7, scl : PB8, aliases : [] },
     ];

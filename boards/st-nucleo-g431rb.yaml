@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the switches and LEDs from the files found at <https://www.st.com/en/evaluation-tools/nucleo-g431rb.html#cad-resources>
   st-nucleo-g431rb:
     chip: stm32g431rb
     ariel:
@@ -9,10 +10,14 @@ targets:
       - pin: PA5
         color: green
         active: high
-    buttons:
+    switches:
       # button0
-      - pin: PC13
-        active: high
+      - pins: PC13
+        active: low
+        resistors: pullup
+        aliases:
+          - B1
+          - USER
     uarts:
       - aliases:
           - VCP

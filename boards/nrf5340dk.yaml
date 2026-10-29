@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the Buttons and LEDs from <https://docs.nordicsemi.com/viewer/book-attachment/Mg1yMHNCihJkguCGlcr6HQ/98N6Sk7KIGmKBCPlbXl2Aw-Mg1yMHNCihJkguCGlcr6HQ>
   nrf5340dk-app:
     chip: nrf5340-app
     flags:
@@ -21,20 +22,35 @@ targets:
       - color: green
         pin: P0_31
 
-    buttons:
+    switches:
       # button0
-      - pin: P0_23
+      - pins: P0_23
         active: low
+        resistors: none
+        aliases:
+          - SW1
+          - Button1
       # button1
-      - pin: P0_24
+      - pins: P0_24
         active: low
+        resistors: none
+        aliases:
+          - SW2
+          - Button2
       # button2
-      - pin: P0_08
+      - pins: P0_08
         active: low
+        resistors: none
+        aliases:
+          - SW3
+          - Button3
       # button3
-      - pin: P0_09
+      - pins: P0_09
         active: low
-
+        resistors: none
+        aliases:
+          - SW4
+          - Button4
     i2c:
       # Only available when a shield is inserted.
       - sda_pin: P1_02

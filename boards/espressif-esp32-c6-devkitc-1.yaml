@@ -1,13 +1,17 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   espressif-esp32-c6-devkitc-1:
+    # Schematic <https://dl.espressif.com/dl/schematics/esp32-c6-devkitc-1-schematics_v1.2.pdf>
     chip: esp32-c6-wroom-1
     flags:
       - has_usb_cdc_acm_port
-    buttons:
+    switches:
       # button0
-      - pin: GPIO9
+      - pins: GPIO9
         active: low
+        resistors: none
+        aliases:
+          - SW1
     uarts:
       - tx_pin: GPIO16
         rx_pin: GPIO17

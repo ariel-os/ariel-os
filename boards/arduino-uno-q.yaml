@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   arduino-uno-q:
     chip: stm32u585ai

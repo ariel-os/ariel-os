@@ -349,6 +349,185 @@ macro_rules! define_i2c_alias {
     };
 }
 
+/// Repeatedly calls [`define_switch`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_switches {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_switch!{ $($args)+ }
+        )*
+    }
+}
+
+/// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
+/// that are part of the switch.
+///
+/// Currently the activity level denoted by `active` is not used in any way.
+#[cfg(not(feature = "external-interrupts"))]
+#[macro_export]
+macro_rules! define_switch {
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+
+        #[allow(nonstandard_style)]
+        pub struct $name<'a> {
+            $(
+                // FIXME: field name
+                $pin: $crate::gpio::Input<'a>,
+            )+
+        }
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                $name {
+                    $(
+                        // FIXME: field name
+                        $pin: $crate::gpio::Input::new(
+                            self.$pin.take().unwrap(),
+                            $pull
+                        )
+                    )+
+                }
+            }
+        }
+
+        impl $name<'_> {
+            pub fn status(&self) -> (
+                $(
+                    $crate::into_level!($pin),
+                )+
+            ) {
+                use $crate::gpio::Level::*;
+                (
+                    $(
+                        if self.$pin.is_high() { High } else { Low },
+                    )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_switch_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+/// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::IntEnabledInput`)
+/// that are part of the switch.
+///
+/// Currently the activity level denoted by `active` is not used in any way.
+#[macro_export]
+#[cfg(feature = "external-interrupts")]
+macro_rules! define_switch {
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+        use $crate::gpio::IntEnabledInput;
+
+        #[allow(nonstandard_style)]
+        pub struct $name<'a> {
+            $(
+                // FIXME: field name
+                $pin: IntEnabledInput<'a>,
+            )+
+        }
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                $name {
+                    $(
+                        // FIXME: field name
+                        $pin: $crate::gpio::Input::builder(
+                            self.$pin.take().unwrap(),
+                            $pull
+                        ).build_with_interrupt().unwrap()
+                    )+
+                }
+            }
+        }
+
+        impl $name<'_> {
+            pub fn status(&self) -> (
+                $(
+                    $crate::into_level!($pin),
+                )+
+            ) {
+                use $crate::gpio::Level::*;
+                (
+                    $(
+                        if self.$pin.is_high() { High } else { Low },
+                    )+
+                )
+            }
+
+            pub fn wait_for_high(&mut self) -> (
+                $(
+                    impl Future<
+                        Output = $crate::empty!($pin)
+                    >,
+                )+
+            ) {
+                (
+                $(
+                    self.$pin.wait_for_high(),
+                )+
+                )
+            }
+
+            pub fn wait_for_low(&mut self) -> (
+                $(
+                    impl Future<
+                        Output = $crate::empty!($pin)
+                    >,
+                )+
+            ) {
+                (
+                $(
+                    self.$pin.wait_for_low(),
+                )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_switch_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+/// Aliases the sbd default name "Switch{n}" with sbd defined aliases.
+#[macro_export]
+macro_rules! define_switch_alias {
+    ($name:ident = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias<'a> = $name<'a>;
+    };
+}
+
+#[macro_export]
+macro_rules! into_bool {
+    ($i: ident) => {
+        bool
+    };
+}
+
+#[macro_export]
+macro_rules! empty {
+    ($i: ident) => {
+        ()
+    };
+}
+
+#[macro_export]
+macro_rules! into_level {
+    ($i: ident) => {
+        $crate::gpio::Level
+    };
+}
+
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;
