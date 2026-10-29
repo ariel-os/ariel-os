@@ -158,7 +158,10 @@ version = "0.6.0"
 name = "ariel-os-coap"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-boards",
+ "ariel-os-buildinfo",
  "ariel-os-embassy",
+ "ariel-os-hal",
  "ariel-os-log",
  "ariel-os-macros",
  "ariel-os-random",
@@ -169,21 +172,28 @@ dependencies = [
  "cboritem",
  "coap-handler",
  "coap-handler-implementations",
+ "coap-message",
  "coap-numbers",
  "coapcore",
  "critical-section",
+ "embassy-futures",
  "embassy-net",
  "embassy-sync 0.8.0",
+ "embedded-io 0.7.1",
  "embedded-io-async 0.7.0",
+ "embedded-nal",
  "embedded-nal-async",
  "embedded-nal-coap",
+ "embedded-nal-minimal-coapserver",
  "heapless 0.9.3",
  "hexlit",
  "lakers",
  "lakers-crypto-rustcrypto",
  "minicbor",
+ "once_cell",
  "serde",
  "serde_yaml",
+ "slipmux",
  "static_cell",
 ]
 
@@ -1797,7 +1807,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 2.0.114",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -2612,6 +2622,22 @@ dependencies = [
  "embedded-nal-async",
  "heapless 0.9.3",
  "rand_core 0.9.3",
+]
+
+[[package]]
+name = "embedded-nal-minimal-coapserver"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93b7e44d01f417eb6c38a8cd14cf2fd929104f58f6db84841d850fa72d78fa78"
+dependencies = [
+ "coap-handler",
+ "coap-message",
+ "coap-message-implementations",
+ "coap-numbers",
+ "embedded-nal",
+ "heapless 0.8.0",
+ "num-derive",
+ "num-traits",
 ]
 
 [[package]]
@@ -3810,6 +3836,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "25ba4bd83f9415b58b4ed8dc5714c76e626a105be4646c02630ad730ad3b5aa4"
 dependencies = [
  "defmt 1.1.1",
+ "embedded-io 0.7.1",
  "hash32 0.3.1",
  "serde_core",
  "stable_deref_trait",
@@ -5846,6 +5873,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "serial-line-ip"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08a0b86bcdab6b15029ff7e37ae8acdadbf5d48e070ec5a067aa5c31e306f958"
+
+[[package]]
 name = "sha1"
 version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5919,6 +5952,15 @@ name = "slab"
 version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a2ae44ef20feb57a68b23d846850f861394c2e02dc425a50098ae8c90267589"
+
+[[package]]
+name = "slipmux"
+version = "0.4.1"
+source = "git+https://github.com/chrysn-pull-requests/slipmux?branch=fix-owned-latest-frame#89848d0a496bc55eb7fb17ee64169ef78079dcf8"
+dependencies = [
+ "embedded-io 0.7.1",
+ "serial-line-ip",
+]
 
 [[package]]
 name = "smallvec"
