@@ -18,9 +18,10 @@ mod stored;
 #[cfg(feature = "coap-transport-udp")]
 mod transport_udp;
 
+#[cfg(feature = "coap-server-resource-identity")]
+mod identity;
+
 use ariel_os_embassy::cell::SameExecutorCell;
-#[cfg(feature = "coap-server")]
-use coap_handler_implementations::ReportingHandlerBuilder as _;
 use embassy_sync::watch::Watch;
 
 const CONCURRENT_REQUESTS: usize = 3;
@@ -57,6 +58,7 @@ mod demo_setup {
     const ADMIN_SCOPE: cboritem::CborItem<'_> = cbor!([
             ["/stdout", 17 / GET and FETCH /],
             ["/.well-known/core", 1],
+            ["/id", 1],
             ["/poem", 1]
     ]);
     /// Credential by which the administrator of any demo device is recognized.
@@ -107,6 +109,37 @@ pub async fn coap_run(handler: impl coap_handler::Handler + coap_handler::Report
     coap_run_impl(handler).await
 }
 
+/// Adds all the resources that are enabled through Ariel features to the handler tree, and then
+/// closes it with a .well-known/core resource.
+#[cfg(feature = "coap-server")]
+fn add_system_resources(
+    handler: impl coap_handler::Handler + coap_handler::Reporting,
+) -> impl coap_handler::Handler {
+    use coap_handler_implementations::ReportingHandlerBuilder as _;
+
+    // to be allow(unused) if the condition became any more complex
+    #[cfg(feature = "coap-server-resource-identity")]
+    use coap_handler_implementations::HandlerBuilder as _;
+
+    #[cfg(feature = "coap-server-resource-identity")]
+    let handler = handler.at(
+        &["id"],
+        coap_handler_implementations::wkc::ConstantSingleRecordReport::new(
+            coap_handler_implementations::TypeHandler::new_minicbor_2(
+                coap_handler_implementations::with_get(identity::Identity),
+            ),
+            &[],
+        )
+        .with_rel("impl-info"),
+    );
+
+    // FIXME: Should we allow users to override that? After all, this is just convenience and may
+    // be limiting in special applications.
+    let handler = handler.with_wkc();
+
+    handler
+}
+
 /// Workhorse of [`coap_run`], see there for details.
 ///
 /// This is a separate function because if that function is not exposed publicly (i.e. when the
@@ -142,10 +175,8 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
         }
     }
 
-    // FIXME: Should we allow users to override that? After all, this is just convenience and may
-    // be limiting in special applications.
     #[cfg(feature = "coap-server")]
-    let handler = handler.with_wkc();
+    let handler = add_system_resources(handler);
     #[cfg(any(
         feature = "coap-server-config-storage",
         feature = "coap-server-config-demokeys"

@@ -1947,6 +1947,16 @@ modules:
         FEATURES:
           - ariel-os/coap-server-config-demokeys
 
+  - name: coap-server-resource-identity
+    help:
+      Configure the CoAP server to provide an `/id` resource.
+    depends:
+      - coap
+    env:
+      global:
+        FEATURES:
+          - ariel-os/coap-server-resource-identity
+
   - name: coap-client
     help: Support for CoAP client functionality.
     selects:
