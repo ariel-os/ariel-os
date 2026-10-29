@@ -189,7 +189,7 @@ jobs:
           # Not checking fragments of the from 'url#123-127' because they rely on user-side Javascript and thus cannot be checked by lychee
           # Also not checking '*/all.html' because they stem from `doc(inline)` crate reexports.
           # Also not checking verbatims because all of those errors are links that are written by scripts.
-          args: --root-dir _site/dev/docs/api --require-https --no-progress --include-fragments=full --exclude '\#\d+-\d+' --exclude '.+/all\.html'--offline _site/dev/docs/api
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --include-fragments=full --exclude '\#\d+-\d+' --exclude '.+/all\.html' --offline _site/dev/docs/api
           fail: false
 
       - name: Format link checker results for PR comment
