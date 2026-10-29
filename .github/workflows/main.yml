@@ -117,7 +117,7 @@ jobs:
       # TODO: we'll eventually want to check relevant feature combinations
       # TODO: we may want to use --no-deps as well
       - name: clippy
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -172,7 +172,7 @@ jobs:
             --deny warnings
 
       - name: lint with Clippy when using the `log` logging facade
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -187,7 +187,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="esp32c6" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for ESP32
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -207,7 +207,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="cortex-m" --cfg context="rp" --cfg context="rp2040" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for RP
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -226,7 +226,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="nrf52840" --cfg context="nrf52" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF52
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -245,7 +245,7 @@ jobs:
             --deny warnings
       - run: echo 'RUSTFLAGS=--cfg context="nrf9160" --cfg context="nrf91" --cfg context="nrf" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for nRF91
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -274,7 +274,7 @@ jobs:
 
       - run: echo 'RUSTFLAGS=--cfg context="stm32wb55rg" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for STM32
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -292,7 +292,7 @@ jobs:
       # Reset `RUSTFLAGS`.
       - run: echo 'RUSTFLAGS=' >> $GITHUB_ENV
       - name: clippy
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -302,7 +302,7 @@ jobs:
 
       # Lint sensor drivers.
       - name: Clippy on sensor drivers
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -314,7 +314,7 @@ jobs:
             --deny warnings
 
       - name: Clippy on nrf91 sensor drivers
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
@@ -327,7 +327,7 @@ jobs:
             --deny warnings
 
       - name: Clippy on ariel-os-update-transports
-        uses: clechasseur/rs-clippy-check@d626afd6670c78ecef6c7872e1c9e1221065d5c5 # v6.1.0
+        uses: clechasseur/rs-clippy-check@ac75e246ebbd78d106ac9460c668ab7c8044ebe3 # v6.1.1
         with:
           args: |
             --locked
