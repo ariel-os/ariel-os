@@ -196,6 +196,10 @@ criteria = "safe-to-deploy"
 version = "2.13.2"
 criteria = "safe-to-deploy"
 
+[[exemptions.bitvec]]
+version = "1.1.1"
+criteria = "safe-to-deploy"
+
 [[exemptions.block-device-driver]]
 version = "0.2.0"
 criteria = "safe-to-deploy"
@@ -384,6 +388,14 @@ criteria = "safe-to-deploy"
 version = "0.5.5"
 criteria = "safe-to-deploy"
 
+[[exemptions.csv]]
+version = "1.4.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.csv-core]]
+version = "0.1.13"
+criteria = "safe-to-deploy"
+
 [[exemptions.ctr]]
 version = "0.8.0"
 criteria = "safe-to-deploy"
@@ -482,6 +494,14 @@ criteria = "safe-to-deploy"
 
 [[exemptions.defmt-rtt]]
 version = "1.1.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.deku]]
+version = "0.18.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.deku_derive]]
+version = "0.18.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.delegate]]
@@ -728,6 +748,10 @@ criteria = "safe-to-deploy"
 version = "0.22.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
 
+[[exemptions.esp-idf-part]]
+version = "0.6.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.esp-metadata-generated]]
 version = "0.4.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
 criteria = "safe-to-deploy"
@@ -850,6 +874,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.fugit]]
 version = "0.3.7"
+criteria = "safe-to-deploy"
+
+[[exemptions.funty]]
+version = "2.0.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.futures-intrusive]]
@@ -1052,6 +1080,10 @@ criteria = "safe-to-deploy"
 version = "0.3.11"
 criteria = "safe-to-deploy"
 
+[[exemptions.md-5]]
+version = "0.10.6"
+criteria = "safe-to-deploy"
+
 [[exemptions.microlp]]
 version = "0.6.0"
 criteria = "safe-to-deploy"
@@ -1074,6 +1106,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.ndarray]]
 version = "0.17.2"
+criteria = "safe-to-deploy"
+
+[[exemptions.no_std_io2]]
+version = "0.8.1"
 criteria = "safe-to-deploy"
 
 [[exemptions.nourl]]
@@ -1142,6 +1178,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.p384]]
 version = "0.13.1"
+criteria = "safe-to-deploy"
+
+[[exemptions.parse_int]]
+version = "0.9.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.peg]]
@@ -1254,6 +1294,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.r-efi]]
 version = "5.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.radium]]
+version = "0.7.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.ral-registers]]
@@ -1382,6 +1426,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.serde-json-core]]
 version = "0.6.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.serde_plain]]
+version = "1.0.2"
 criteria = "safe-to-deploy"
 
 [[exemptions.sha2-const-stable]]
@@ -1566,6 +1614,10 @@ criteria = "safe-to-deploy"
 
 [[exemptions.wasm-bindgen-shared]]
 version = "0.2.128"
+criteria = "safe-to-deploy"
+
+[[exemptions.wyz]]
+version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx]]
