@@ -17,6 +17,7 @@
 - [nRF54L15-DK](./nrf54l15-dk.md)
 - [nRF9151-DK](./nrf9151-dk.md)
 - [nRF9160-DK](./nrf9160-dk.md)
+- [Particle Xenon](./particle-xenon.md)
 - [Raspberry Pi Pico](./raspberry-pi-pico.md)
 - [Raspberry Pi Pico W](./raspberry-pi-pico-w.md)
 - [Raspberry Pi Pico 2](./raspberry-pi-pico-2.md)
