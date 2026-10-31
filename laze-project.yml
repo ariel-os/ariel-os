@@ -829,6 +829,17 @@ contexts:
       CHIP_RAM_SIZE_BYTES: $(512 * 1024)
       CHIP_RAM_START_ADDRESS: "0x24000000"
 
+  - name: stm32h7r7l8
+    parent: stm32
+    selects:
+      - cortex-m7f
+    env:
+      PROBE_RS_CHIP: STM32H7R7L8
+      CHIP_NVM_PAGE_SIZE_BYTES: "8192"
+      CHIP_NVM_SIZE_BYTES: $(64 * 1024)
+      CHIP_RAM_START_ADDRESS: "0x24000000"
+      CHIP_RAM_SIZE_BYTES: $(456 * 1024)
+
   - name: stm32l072cz
     parent: stm32
     selects:

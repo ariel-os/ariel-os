@@ -66,6 +66,7 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico2-w\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico2\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"rt-thread-art-pi2\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-lora-e5-mini\"))"
     );

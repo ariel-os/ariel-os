@@ -21,6 +21,7 @@
 - [Raspberry Pi Pico W](./raspberry-pi-pico-w.md)
 - [Raspberry Pi Pico 2](./raspberry-pi-pico-2.md)
 - [Raspberry Pi Pico 2 W](./raspberry-pi-pico-2-w.md)
+- [RT-Thread ART-Pi2](./rt-thread-art-pi2.md)
 - [Decawave DWM1001-DEV](./decawave-dwm1001-dev.md)
 - [DFRobot FireBeetle 2 ESP32-C6](./dfrobot-firebeetle-2-esp32-c6.md)
 - [Espressif ESP32-C3-DevKit-RUST-1](./espressif-esp32-c3-devkit-rust-1.md)
