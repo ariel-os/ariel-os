@@ -151,8 +151,14 @@ macro_rules! define_i2c_drivers {
                 ) -> I2c {
                     let mut i2c_config = embassy_stm32::i2c::Config::default();
                     i2c_config.frequency = config.frequency.into();
-                    i2c_config.sda_pullup = config.sda_pullup;
-                    i2c_config.scl_pullup = config.scl_pullup;
+                    // The GPIO peripheral of STM32F1 chips does not support configuring
+                    // internal pull-ups on I2C pins (Embassy gates these fields on `gpio_v2`),
+                    // so the pull-up configuration is ignored on these chips.
+                    #[cfg(not(context = "stm32f103re"))]
+                    {
+                        i2c_config.sda_pullup = config.sda_pullup;
+                        i2c_config.scl_pullup = config.scl_pullup;
+                    }
                     i2c_config.timeout = ariel_os_embassy_common::i2c::controller::I2C_TIMEOUT;
 
                     bind_interrupts!(
@@ -243,6 +249,11 @@ define_i2c_drivers!(
 #[cfg(context = "stm32f042k6")]
 define_i2c_drivers!(
    I2C1 => I2C1,
+);
+#[cfg(context = "stm32f103re")]
+define_i2c_drivers!(
+   I2C1_EV + I2C1_ER => I2C1,
+   I2C2_EV + I2C2_ER => I2C2,
 );
 #[cfg(context = "stm32f303cb")]
 define_i2c_drivers!(

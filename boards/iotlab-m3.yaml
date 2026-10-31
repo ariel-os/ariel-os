@@ -1,0 +1,24 @@
+version: 0.4.1
+targets:
+  iotlab-m3:
+    chip: stm32f103re
+    ariel:
+      swi: UART5
+    leds:
+      # led0
+      - pin: PD2
+        color: red
+        active: low
+      # led1
+      - pin: PB5
+        color: green
+        active: low
+      # led2
+      - pin: PC10
+        color: orange
+        active: low
+    i2c:
+      - sda_pin: PB7
+        scl_pin: PB6
+        possible_peripherals:
+          - I2C1
