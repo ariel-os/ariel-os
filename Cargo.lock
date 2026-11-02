@@ -2648,9 +2648,9 @@ checksum = "892fd6c812db2dc4fde8cac39717b772661bb26b24cd54cb5d6d89b37b5cd8c2"
 
 [[package]]
 name = "embedded-test-macros"
-version = "0.9.0"
+version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b761f3c7d9ecb103b4765ca0f3b0f4ec9c4118168ddf6aa5cf3232b07de3f29"
+checksum = "a813682474719a83b599380e4b4842ac04617b6c46fff4b8d241df803b730c00"
 dependencies = [
  "darling 0.24.1",
  "proc-macro2",

@@ -283,6 +283,12 @@ No new unsafe code. Changes mainly amount to dropping proc-macro-error2 in favor
 This version also removes the requirement on linker script for use with std.
 """
 
+[[audits.embedded-test-macros]]
+who = "Kaspar Schleiser <kaspar@schleiser.de>"
+criteria = "safe-to-deploy"
+delta = "0.9.0 -> 0.9.1"
+notes = "The only change is a conditional import of `ariel_os`."
+
 [[audits.extra-embedded-io-adapters]]
 who = "chrysn <chrysn@fsfe.org>"
 criteria = "safe-to-deploy"
