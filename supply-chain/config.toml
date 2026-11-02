@@ -776,7 +776,15 @@ criteria = "safe-to-deploy"
 version = "0.2.0"
 criteria = "safe-to-deploy"
 
+[[exemptions.esp-wifi-sys-esp32c5]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
 [[exemptions.esp-wifi-sys-esp32c6]]
+version = "0.2.0"
+criteria = "safe-to-deploy"
+
+[[exemptions.esp-wifi-sys-esp32c61]]
 version = "0.2.0"
 criteria = "safe-to-deploy"
 

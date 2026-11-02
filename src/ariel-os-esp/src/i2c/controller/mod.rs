@@ -211,7 +211,11 @@ define_i2c_drivers!(I2C0, I2C1);
 define_i2c_drivers!(I2C0);
 #[cfg(context = "esp32c3")]
 define_i2c_drivers!(I2C0);
+#[cfg(context = "esp32c5")]
+define_i2c_drivers!(I2C0);
 #[cfg(context = "esp32c6")]
+define_i2c_drivers!(I2C0);
+#[cfg(context = "esp32c61")]
 define_i2c_drivers!(I2C0);
 #[cfg(context = "esp32h2")]
 define_i2c_drivers!(I2C0, I2C1);

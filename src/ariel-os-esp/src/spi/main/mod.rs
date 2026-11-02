@@ -24,7 +24,9 @@ use esp_hal::{
     context = "esp32",
     context = "esp32c2",
     context = "esp32c3",
+    context = "esp32c5",
     context = "esp32c6",
+    context = "esp32c61",
     context = "esp32h2",
     context = "esp32s2",
     context = "esp32s3"
@@ -174,7 +176,11 @@ define_spi_drivers!(SPI2, SPI3);
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c3")]
 define_spi_drivers!(SPI2);
+#[cfg(context = "esp32c5")]
+define_spi_drivers!(SPI2);
 #[cfg(context = "esp32c6")]
+define_spi_drivers!(SPI2);
+#[cfg(context = "esp32c61")]
 define_spi_drivers!(SPI2);
 #[cfg(context = "esp32h2")]
 define_spi_drivers!(SPI2);

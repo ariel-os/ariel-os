@@ -17,7 +17,13 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         context = "esp32c3" => {
             let _ = peripherals.I2C0.take().unwrap();
         }
+        context = "esp32c5" => {
+            let _ = peripherals.I2C0.take().unwrap();
+        }
         context = "esp32c6" => {
+            let _ = peripherals.I2C0.take().unwrap();
+        }
+        context = "esp32c61" => {
             let _ = peripherals.I2C0.take().unwrap();
         }
         context = "esp32h2" => {
