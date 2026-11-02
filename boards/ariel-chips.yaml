@@ -47,6 +47,7 @@ ariel:
     - rp2040
     - rp2350a
     - stm32c031c6
+    - stm32f103re
     - stm32f303cb
     - stm32f303re
     - stm32f042k6
