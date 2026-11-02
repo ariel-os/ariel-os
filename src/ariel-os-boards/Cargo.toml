@@ -18,8 +18,7 @@ workspace = true
 [dependencies.ariel-os-hal]
 workspace = true
 
-[dependencies.cfg-if]
-workspace = true
-
 [features]
 no-boards = []
+
+[lints]
