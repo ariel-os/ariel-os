@@ -43,7 +43,8 @@ cfg_select! {
     include!("particle-xenon.rs"); } context = "rpi-pico-w" => {
     include!("rpi-pico-w.rs"); } context = "rpi-pico" => { include!("rpi-pico.rs"); }
     context = "rpi-pico2-w" => { include!("rpi-pico2-w.rs"); } context = "rpi-pico2" => {
-    include!("rpi-pico2.rs"); } context = "seeedstudio-lora-e5-mini" => {
+    include!("rpi-pico2.rs"); } context = "rt-thread-art-pi2" => {
+    include!("rt-thread-art-pi2.rs"); } context = "seeedstudio-lora-e5-mini" => {
     include!("seeedstudio-lora-e5-mini.rs"); } context = "seeedstudio-xiao-esp32-s3" => {
     include!("seeedstudio-xiao-esp32-s3.rs"); } context = "seeedstudio-xiao-esp32c6" => {
     include!("seeedstudio-xiao-esp32c6.rs"); } context = "seeedstudio-xiao-nrf52840-plus"
