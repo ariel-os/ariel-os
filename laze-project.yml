@@ -780,6 +780,18 @@ contexts:
       CHIP_NVM_SIZE_BYTES: $(128 * 1024)
       CHIP_RAM_SIZE_BYTES: $(32 * 1024)
 
+  - name: stm32f723ie
+    parent: stm32
+    selects:
+      - cortex-m7f
+    provides:
+      - has_hwrng
+    env:
+      PROBE_RS_CHIP: STM32F723IE
+      RUSTFLAGS:
+        - --cfg capability=\"hw/stm32-rng\"
+        - --cfg capability=\"hw/stm32-usb-synopsys\"
+
   - name: stm32f767zi
     parent: stm32
     selects:
@@ -2269,6 +2281,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
       - st-b-l072z-lrwan1
       - st-b-l475e-iot01a
@@ -2292,6 +2305,7 @@ modules:
       - nrf52840dk
       - nrf52dk
       - rp2040
+      - stm32f723e-disco
       - stm32u083c-dk
       - st-b-l072z-lrwan1
     selects:
