@@ -398,6 +398,12 @@ define_uart_drivers!(
    USART2 => USART2,
    USART3 => USART3,
 );
+#[cfg(context = "stm32wl55jc")]
+define_uart_drivers!(
+   LPUART1 => LPUART1,
+   USART1 => USART1,
+   // USART2 => USART2, // Often used as SWI
+);
 #[cfg(context = "stm32wle5jc")]
 define_uart_drivers!(
    LPUART1 => LPUART1,
@@ -524,6 +530,11 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.USART1.take().unwrap();
             let _ = peripherals.USART2.take().unwrap();
             let _ = peripherals.USART3.take().unwrap();
+        }
+        context = "stm32wl55jc" => {
+            let _ = peripherals.LPUART1.take().unwrap();
+            let _ = peripherals.USART1.take().unwrap();
+            let _ = peripherals.USART2.take().unwrap();
         }
         context = "stm32wle5jc" => {
             let _ = peripherals.LPUART1.take().unwrap();
