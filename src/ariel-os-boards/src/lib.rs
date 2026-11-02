@@ -1,6 +1,7 @@
 // @generated
 
 #![no_std]
+#[rustfmt::skip]
 cfg_select! {
     context = "adafruit-feather-nrf52840-express" => {
     include!("adafruit-feather-nrf52840-express.rs"); } context =
