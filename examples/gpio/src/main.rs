@@ -20,9 +20,9 @@ async fn blinky(peripherals: Peripherals) {
     let mut switch = peripherals.switch;
 
     loop {
-        ariel_os::log::info!("Is Switch0 on ? {}", switch.throws().0.is_on());
+        ariel_os::log::info!("Is Switch0 active ? {}", switch.pins().0.is_active());
         let _ = embassy_futures::select::select(
-            switch.throws().0.wait_for_on(),
+            switch.pins().0.wait_for_active(),
             Timer::after_millis(300),
         )
         .await;
