@@ -58,7 +58,7 @@ impl<'a> IntEnabledSwitchPin<'a> {
     }
 
     /// Asynchronously wait for the pin to be active.
-    /// Returns immediatly if the pin is active.
+    /// Returns immediately if the pin is active.
     pub async fn wait_for_active(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_high().await;
@@ -68,7 +68,7 @@ impl<'a> IntEnabledSwitchPin<'a> {
     }
 
     /// Asynchronously wait for the pin to be inactive.
-    /// Returns immediatly if the pin is inactive.
+    /// Returns immediately if the pin is inactive.
     pub async fn wait_for_inactive(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_low().await;
