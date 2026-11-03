@@ -1,0 +1,19 @@
+[package]
+name = "tests_build_system"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[[test]]
+name = "test"
+harness = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os" }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+
+[dev-dependencies]
+embedded-test = { workspace = true }
+
+[lints]
+workspace = true

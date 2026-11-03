@@ -1,5 +1,8 @@
 laze_required_version: 0.1.39
 
+includes:
+  - laze-suit.yml
+
 contexts:
   # base context that all other contexts inherit from
   - name: default
@@ -62,6 +65,8 @@ contexts:
           CHIP_RAM_SIZE_BYTES=${CHIP_RAM_SIZE_BYTES}
           CHIP_LD_INCLUDES=${CHIP_LD_INCLUDES}
           CHIP_MEMORY_SECTION_RESERVE_BYTES=${CHIP_MEMORY_SECTION_RESERVE_BYTES}
+          CONFIG_SUIT_VENDOR_ID=${CONFIG_SUIT_VENDOR_ID}
+          CONFIG_SUIT_CLASS_ID=${CONFIG_SUIT_CLASS_ID}
       PROFILE: release
       PROFILE_DIR: $(if("${PROFILE}"=="dev", "debug", "${PROFILE}"))
       PROBE_RS_PROTOCOL: swd
