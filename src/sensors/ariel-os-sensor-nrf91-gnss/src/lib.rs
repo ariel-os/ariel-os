@@ -49,7 +49,7 @@ const EARTH_RADIUS: f64 = 6_371_008.771_4;
 // Computed at build time to improve performance.
 const DEGREES_PER_METER_BASE: f64 = 360.0 / (EARTH_RADIUS * 2.0 * PI);
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum Command {
     Start,
     Trigger,
@@ -60,6 +60,36 @@ enum Command {
 #[expect(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
 fn clamp_to_u8(value: f32) -> u8 {
     value.clamp(u8::MIN.into(), u8::MAX.into()) as u8
+}
+
+/// Convert time from `nrf_modem` to parts that can be put in samples.
+///
+/// # Panics
+///
+/// When the date is too far in the future / past.
+fn convert_to_time_parts(
+    data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
+) -> Option<(i32, i32)> {
+    // Default year when no GNSS fix.
+    if data.datetime.year == 1980 {
+        return None;
+    }
+    let parsed_date_time = DateTime::new(
+        data.datetime.year.cast_signed(),
+        data.datetime.month.cast_signed(),
+        data.datetime.day.cast_signed(),
+        data.datetime.hour.cast_signed(),
+        data.datetime.minute.cast_signed(),
+        data.datetime.seconds.cast_signed(),
+        i32::from(data.datetime.ms) * 1_000_000,
+    )
+    .ok()?
+    .to_zoned(TimeZone::UTC)
+    .ok()?;
+
+    let timestamp = parsed_date_time.timestamp().as_nanosecond();
+
+    Some(ariel_os_sensors_gnss_time_ext::convert_datetime_to_parts(timestamp).unwrap())
 }
 
 pub struct Nrf91Gnss {
@@ -98,7 +128,9 @@ impl Nrf91Gnss {
 
     /// At this point the sensor assume the modem is already initialized with the GNSS feature enabled.
     /// In single shot mode, taking a measurement will return until a fix is obtained or the timeout is reached.
-    /// In continuous or periodic mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In continuous mode, taking a measurement will return the current status of the GNSS module, even if a fix has not been obtained yet.
+    /// In periodic mode, taking a measurement will return the current status of the GNSS module when it is currently active:
+    /// when it wakes up it will send some invalid fixes before returning a valid fix and going to sleep.
     ///
     /// # Panics
     ///
@@ -108,7 +140,7 @@ impl Nrf91Gnss {
         loop {
             // Wait until the state is Enabled.
             if self.state.get() != State::Enabled
-                && !matches!(self.command_channel.receive().await, Command::Start)
+                && self.command_channel.receive().await != Command::Start
             {
                 continue;
             }
@@ -225,42 +257,12 @@ impl Nrf91Gnss {
         let _ = gnss_stream.deactivate().await;
     }
 
-    /// Convert time from `nrf_modem` to parts that can be put in samples.
-    ///
-    /// # Panics
-    ///
-    /// When the date is too far in the future / past.
-    fn convert_to_time_parts(
-        data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
-    ) -> Option<(i32, i32)> {
-        // Default year when no GNSS fix.
-        if data.datetime.year == 1980 {
-            return None;
-        }
-        let parsed_date_time = DateTime::new(
-            data.datetime.year.cast_signed(),
-            data.datetime.month.cast_signed(),
-            data.datetime.day.cast_signed(),
-            data.datetime.hour.cast_signed(),
-            data.datetime.minute.cast_signed(),
-            data.datetime.seconds.cast_signed(),
-            i32::from(data.datetime.ms) * 1_000_000,
-        )
-        .ok()?
-        .to_zoned(TimeZone::UTC)
-        .ok()?;
-
-        let timestamp = parsed_date_time.timestamp().as_nanosecond();
-
-        Some(ariel_os_sensors_gnss_time_ext::convert_datetime_to_parts(timestamp).unwrap())
-    }
-
     #[expect(clippy::cast_possible_truncation)]
     fn convert_to_samples(
         &'static self,
         data: &nrf_modem::nrfxlib_sys::nrf_modem_gnss_pvt_data_frame,
     ) -> Samples {
-        let time_parts = Self::convert_to_time_parts(data);
+        let time_parts = convert_to_time_parts(data);
 
         let (time_seconds_part, time_nanos_part) = if let Some(time_parts) = time_parts {
             (
