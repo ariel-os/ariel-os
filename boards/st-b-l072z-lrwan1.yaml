@@ -31,7 +31,7 @@ targets:
           - LD4
         color: red
     switches:
-      # button0
+      # switch0
       - pins: PB2
         resistors: none
         active: high

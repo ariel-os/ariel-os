@@ -3,13 +3,13 @@ targets:
   bbc-microbit-v2:
     chip: nrf52833
     switches:
-      # button0
+      # switch0
       - pins: P0_14
         resistors: pullup
         active: low
         aliases:
           - BTN_A # Name on the schematic
-      # button1
+      # switch1
       - pins: P0_23
         resistors: pullup
         active: low

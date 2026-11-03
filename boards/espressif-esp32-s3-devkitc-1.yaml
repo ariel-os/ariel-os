@@ -7,10 +7,10 @@ targets:
       - has_usb_cdc_acm_port
       - has_usb_device_port
     switches:
-      # button0
+      # switch0
       - pins: GPIO0
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW1
     uarts:

@@ -21,31 +21,31 @@ targets:
         pin: P0_20
 
     switches:
-      # button0
+      # switch0
       - pins: P0_13
         active: low
         resistors: none
         aliases:
           - SW1
           - BUTTON1
-      # button1
+      # switch1
       - pins: P0_14
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW2
           - BUTTON2
-      # button2
+      # switch2
       - pins: P0_15
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW3
           - BUTTON13
-      # button3
+      # switch3
       - pins: P0_16
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW4
           - BUTTON4

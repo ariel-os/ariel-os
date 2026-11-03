@@ -9,10 +9,10 @@ targets:
       # led0
       - pin: PA5
     switches:
-      # button0
+      # switch0
       - pins: PC13
-        active: low
         resistors: pullup
+        active: low
         aliases:
           - B1
           - USER

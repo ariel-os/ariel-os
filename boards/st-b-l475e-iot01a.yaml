@@ -19,7 +19,7 @@ targets:
           - LD2
         color: green
     switches:
-      # button0
+      # switch0
       - pins: PC13
         resistors: pullup
         active: low

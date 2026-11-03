@@ -22,31 +22,31 @@ targets:
         active: high
 
     switches:
-      # button0
+      # switch0
       - pins: P1_13
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW2
           - Button0
-      # button1
+      # switch1
       - pins: P1_09
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW3
           - Button1
-      # button2
+      # switch2
       - pins: P1_08
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW5
           - Button2
-      # button3
+      # switch3
       - pins: P0_04
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW6
           - Button3

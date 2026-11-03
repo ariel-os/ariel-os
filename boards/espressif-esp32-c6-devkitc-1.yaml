@@ -6,10 +6,10 @@ targets:
     flags:
       - has_usb_cdc_acm_port
     switches:
-      # button0
+      # switch0
       - pins: GPIO9
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW1
     uarts:

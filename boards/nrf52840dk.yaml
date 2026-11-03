@@ -23,28 +23,28 @@ targets:
         pin: P0_16
         active: low
     switches:
-      # button0
+      # switch0
       - pins: P0_11
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW1
-      # button1
+      # switch1
       - pins: P0_12
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW2
-      # button2
+      # switch2
       - pins: P0_24
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW3
-      # button3
+      # switch3
       - pins: P0_25
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW4
     i2c:

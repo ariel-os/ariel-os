@@ -14,9 +14,10 @@ targets:
         aliases:
           - USER_LED
     switches:
+      # switch0
       - pins: GPIO0
-        active: low
         resistors: pullup
+        active: low
         aliases:
           - BOOT
           - K2

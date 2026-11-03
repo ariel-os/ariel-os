@@ -27,14 +27,14 @@ targets:
       # * orange D3 is hardwired to LiPo charge port STAT
 
     switches:
-      # button0
+      # switch0
       - pins: P1_02
         # Note that there is no external pull-up.
         active: low
         resistors: none
         aliases:
           - UserSw # silkscreen label
-          - SW2 # button part designator in schematic
+          - SW2 # switch part designator in schematic
           - SWITCH # bus name in schematic
 
       # Only to be mapped if we start expressing aspects that are not user controllable:

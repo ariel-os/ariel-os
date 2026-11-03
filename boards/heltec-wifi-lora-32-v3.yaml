@@ -11,10 +11,10 @@ targets:
         aliases:
           - LED2
     switches:
-      # button0
+      # switch0
       - pins: GPIO0
-        active: low
         resistors: none # Couldn't find on the schematic
+        active: low
         aliases:
           - USER
     i2c:

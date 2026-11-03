@@ -11,10 +11,10 @@ targets:
       # No user accessible LEDs: There is a green and an RGB LED, but both are
       # only accessible from the interface chip.
     switches:
-      # button0
+      # switch0
       - pins: P0_25
-        active: low # … and no built-in pull-up.
         resistors: none
+        active: low # … and no built-in pull-up.
         aliases:
           - USR
     uarts:

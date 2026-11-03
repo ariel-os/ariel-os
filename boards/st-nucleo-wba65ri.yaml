@@ -24,19 +24,19 @@ targets:
           - LD3
         color: red
     switches:
-      # button0
+      # switch0
       - pins: PC13
         resistors: none
         active: low
         aliases:
           - B1
-      # button1
+      # switch1
       - pins: PC5
         resistors: none
         active: low
         aliases:
           - B2
-      # button2
+      # switch2
       - pins: PB4
         resistors: none
         active: low

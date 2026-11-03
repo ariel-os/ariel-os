@@ -29,12 +29,12 @@ targets:
         color: blue
         active: low
     switches:
-      # button0
+      # switch0
       - pins: P0_02
+        resistors: none # Couldn't find a proper schematic
+        active: low
         aliases:
           - BT_WAKE_UP
-        active: low
-        resistors: none # Couldn't find a proper schematic
     uarts:
       - tx_pin: P0_05
         rx_pin: P0_11

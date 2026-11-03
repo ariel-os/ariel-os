@@ -14,7 +14,7 @@ targets:
       - pin: P0_30
         color: blue
     switches:
-      # button0
+      # switch0
       - pins: P0_26
         resistors: none
         active: low
@@ -72,7 +72,7 @@ targets:
       - pin: P0_15
         color: blue
     switches:
-      # button0
+      # switch0
       - pins: P0_24
         active: low
         resistors: none

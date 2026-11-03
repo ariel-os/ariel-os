@@ -12,10 +12,10 @@ targets:
           - LD1
         color: red
     switches:
-      # button0
+      # switch0
       - pins: PB13
-        active: low
         resistors: none
+        active: low
         aliases:
           - BOOT
           - SCK

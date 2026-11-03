@@ -14,9 +14,9 @@ targets:
           - D4
           - USER_LED
     switches:
-      # button0
+      # switch0
       - pins: GPIO9
-        active: low
         resistors: pullup
+        active: low
         aliases:
           - BOOT

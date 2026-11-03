@@ -4,10 +4,10 @@ targets:
     # Schematic <https://dl.espressif.com/dl/schematics/esp32_devkitc_v4_sch.pdf>
     chip: esp-wroom-32
     switches:
-      # button0
+      # switch0
       - pins: GPIO0
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW1
     uarts:

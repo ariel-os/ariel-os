@@ -20,10 +20,10 @@ targets:
         pin: P0_24
         active: low
     switches:
-      # button0
+      # switch0
       - pins: P1_00
-        active: low
         resistors: none # Could not find on the schematic
+        active: low
         aliases:
           - USR_BTN
           - SW2

@@ -19,7 +19,7 @@ targets:
       - pin: PB2
         color: red
     switches:
-      # button0
+      # switch0
       - pins: PC2
         resistors: pullup
         active: low

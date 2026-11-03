@@ -4,10 +4,10 @@ targets:
     # Schematic <https://dl.espressif.com/dl/schematics/esp8684-devkitc-02-schematics_V1.0.pdf>
     chip: esp8684-wroom-02c-h4
     switches:
-      # button0 (BOOT)
+      # switch0 (BOOT)
       - pins: GPIO9
-        active: low
         resistors: none
+        active: low
         aliases:
           - SW1
     leds:

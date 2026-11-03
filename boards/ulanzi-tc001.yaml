@@ -4,22 +4,22 @@ targets:
   ulanzi-tc001:
     chip: esp32-wroom-32d
     switches:
-      # button0
+      # switch0
       - pins: GPIO26
-        active: low
         resistors: none
+        active: low
         aliases:
           - left
-      # button1
+      # switch1
       - pins: GPIO27
-        active: low
         resistors: none
+        active: low
         aliases:
           - middle
-      # button2
+      # switch2
       - pins: GPIO14
-        active: low
         resistors: none
+        active: low
         aliases:
           - right
     quirks:

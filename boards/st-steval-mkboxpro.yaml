@@ -38,14 +38,14 @@ targets:
           - D10
         color: blue
     switches:
-      # button0
+      # switch0
       - pins: PC13
-        active: high
         resistors: pulldown
+        active: high
         aliases:
           - BT1
           - SW1
-      # button1
+      # switch1
       - pins: PE0
         resistors: pulldown
         active: high

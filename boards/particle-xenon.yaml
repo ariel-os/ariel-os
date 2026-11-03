@@ -13,9 +13,9 @@ targets:
           - D7
         active: low
     switches:
-      # button0
+      # switch0
       - pins: P0_11
+        resistors: none
+        active: low
         aliases:
           - MODE
-        active: low
-        resistors: none

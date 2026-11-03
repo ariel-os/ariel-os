@@ -6,12 +6,12 @@ targets:
     flags:
       - has_usb_cdc_acm_port
     switches:
-      # button0
+      # switch0
       - pins: GPIO9
+        resistors: pullup
         active: low
         aliases:
           - IO9_BOOT
-        resistors: pullup
     leds:
       # led0
       - pin: GPIO7

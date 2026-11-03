@@ -25,31 +25,31 @@ targets:
         aliases:
           - LED4
     switches:
-      # button0
+      # switch0
       - pins: P0_08
-        active: low
         resistors: none
+        active: low
         aliases:
           - Button 1
           - SW1
-      # button1
+      # switch1
       - pins: P0_09
-        active: low
         resistors: none
+        active: low
         aliases:
           - Button 2
           - SW2
-      # button2
+      # switch2
       - pins: P0_18
-        active: low
         resistors: none
+        active: low
         aliases:
           - Button 3
           - SW3
-      # button3
+      # switch3
       - pins: P0_19
-        active: low
         resistors: none
+        active: low
         aliases:
           - Button 4
           - SW4
