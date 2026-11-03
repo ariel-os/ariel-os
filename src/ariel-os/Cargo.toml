@@ -243,6 +243,7 @@ no-boards = ["ariel-os-boards/no-boards", "ariel-os-embassy/no-boards"]
 # NOTE: `time` is only needed on RP.
 logging-over-uart = [
   "ariel-os-log-transport-driver/uart",
+  "ariel-os-power/log-finish-hook",
   "log-transport-driver",
   "time",
   "uart",
@@ -253,7 +254,10 @@ defmt-rtt = ["ariel-os-log/defmt-rtt"]
 esp-println = ["ariel-os-log/esp-println"]
 semihosting = ["ariel-os-debug/semihosting"]
 # Log transport defined by the application.
-logging-over-custom-transport = ["ariel-os-log/custom-transport-driver"]
+logging-over-custom-transport = [
+  "ariel-os-log/custom-transport-driver",
+  "ariel-os-power/log-finish-hook",
+]
 # Logging over stdout (only available on native).
 logging-over-stdout = ["ariel-os-log/logging-over-stdout"]
 

@@ -433,6 +433,8 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-debug",
+ "ariel-os-log",
  "cortex-m",
  "esp-hal",
 ]
@@ -485,6 +487,7 @@ dependencies = [
  "ariel-os-debug",
  "ariel-os-log",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-threads",
  "ariel-os-utils",
  "cortex-m",

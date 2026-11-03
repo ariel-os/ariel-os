@@ -7,12 +7,17 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+ariel-os-debug = { workspace = true }
+ariel-os-log = { workspace = true, optional = true }
 
 [target.'cfg(context = "cortex-m")'.dependencies]
 cortex-m = { workspace = true }
 
 [target.'cfg(context = "esp")'.dependencies]
 esp-hal = { workspace = true }
+
+[features]
+log-finish-hook = ["dep:ariel-os-log"]
 
 [lints]
 workspace = true
