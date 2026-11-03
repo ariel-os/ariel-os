@@ -593,8 +593,8 @@ contexts:
     parent: esp
     selects:
       - xtensa
-      - has_wifi_esp
     provides:
+      - has_wifi_esp
       - sw/benchmark
     provides_unique: [c-function-abort]
     env:
