@@ -255,3 +255,51 @@ fn ariel_os_network_config() -> embassy_net::Config {
 
     config
 }
+
+#[cfg(feature = "user-net-driver-channel")]
+// FIXME: Do we need all those layers?
+static USER_NET_RUNNER: embassy_sync::once_lock::OnceLock<
+    embassy_sync::blocking_mutex::Mutex<
+        embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
+        crate::cell::SameExecutorCell<
+            core::cell::Cell<Option<embassy_net_driver_channel::Runner<'static, 1500>>>,
+        >,
+    >,
+> = embassy_sync::once_lock::OnceLock::new();
+
+/// Obtains a runner through which the user can implement the network device.
+///
+/// # Panics
+///
+/// if called more than once.
+#[cfg(feature = "user-net-driver-channel")]
+pub async fn user_net_runner() -> embassy_net_driver_channel::Runner<'static, 1500> {
+    // SAFETY: TODO(`for_current_executore()` unsoundness)
+    let spawner = unsafe { embassy_executor::Spawner::for_current_executor().await };
+    USER_NET_RUNNER
+        .get()
+        .await
+        .lock(|inner| inner.get(spawner).expect("is auto-initialized").take())
+        .expect("called twice")
+}
+
+pub(super) fn user_net_device(
+    spawner: embassy_executor::Spawner,
+) -> embassy_net_driver_channel::Device<'static, 1500> {
+    use embassy_net_driver_channel::{State, new};
+    use static_cell::StaticCell;
+    static STATE: StaticCell<State<1500, 1, 1>> = StaticCell::new();
+    let state = STATE.init_with(State::new);
+
+    let (runner, device) = new(state, embassy_net_driver::HardwareAddress::Ip);
+    if USER_NET_RUNNER
+        .init(embassy_sync::blocking_mutex::Mutex::new(
+            crate::cell::SameExecutorCell::new(Some(runner).into(), spawner),
+        ))
+        .is_err()
+    {
+        unreachable!("Run only once");
+    }
+
+    device
+}
