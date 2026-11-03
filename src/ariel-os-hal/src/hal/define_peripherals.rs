@@ -366,42 +366,86 @@ macro_rules! define_switches {
 #[cfg(not(feature = "external-interrupts"))]
 #[macro_export]
 macro_rules! define_switch {
-    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+    (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
+        #[allow(nonstandard_style)]
+        pub struct $name<'a>($crate::gpio::Throw<'a>);
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+                $name(
+                    $crate::gpio::Throw::new(
+                        $crate::gpio::Input::builder(
+                            self.$pin.take().unwrap(),
+                            $pull
+                        ).build(),
+                        $active,
+                    )
+                )
+            }
+        }
+
+        impl $name<'_> {
+            pub fn is_on(&self) -> bool {
+                self.0.is_on()
+            }
+
+            pub fn is_off(&self) -> bool {
+                self.0.is_off()
+            }
+        }
+
+        impl<'a> $name<'a> {
+            pub fn throws(&mut self) -> (&mut $crate::gpio::Throw<'a>,)
+            {
+                (&mut self.0,)
+            }
+        }
+
+        $(
+            $crate::define_switch_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
         pub struct $name<'a> {
             $(
-                // FIXME: field name
-                $pin: $crate::gpio::Input<'a>,
+                throw_$pin: $crate::gpio::Throw<'a>,
             )+
         }
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
                 $name {
                     $(
-                        // FIXME: field name
-                        $pin: $crate::gpio::Input::new(
-                            self.$pin.take().unwrap(),
-                            $pull
-                        )
+                        throw_$pin: $crate::gpio::Throw::new(
+                            $crate::gpio::Input::builder(
+                                self.$pin.take().unwrap(),
+                                $pull
+                            ).build(),
+                            $active,
+                        ),
                     )+
                 }
             }
         }
 
-        impl $name<'_> {
-            pub fn status(&self) -> (
+        impl $name<'a> {
+            pub fn throws(&mut self) -> (
                 $(
-                    $crate::into_level!($pin),
+                    &mut $crate::into_throw!($pin),
                 )+
-            ) {
-                use $crate::gpio::Level::*;
+            )
+            {
                 (
                     $(
-                        if self.$pin.is_high() { High } else { Low },
+                        &mut self.throw_$pin,
                     )+
                 )
             }
@@ -421,72 +465,96 @@ macro_rules! define_switch {
 #[macro_export]
 #[cfg(feature = "external-interrupts")]
 macro_rules! define_switch {
-    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+    (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
-        use $crate::gpio::IntEnabledInput;
+        #[allow(nonstandard_style)]
+        pub struct $name<'a>($crate::gpio::IntEnabledThrow<'a>);
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+                $name(
+                    $crate::gpio::IntEnabledThrow::new(
+                        $crate::gpio::Input::builder(
+                            self.$pin.take().unwrap(),
+                            $pull
+                        ).build_with_interrupt().unwrap(),
+                        $active,
+                    )
+                )
+            }
+        }
+
+        impl $name<'_> {
+            pub fn is_on(&self) -> bool {
+                self.0.is_on()
+            }
+
+            pub fn is_off(&self) -> bool {
+                self.0.is_off()
+            }
+
+            fn wait_for_on(&mut self) -> impl Future<Output = ()> {
+                self.0.wait_for_on()
+            }
+
+            fn wait_for_off(&mut self) -> impl Future<Output = ()> {
+                self.0.wait_for_on()
+            }
+
+        }
+
+        impl<'a> $name<'a> {
+            pub fn throws(&mut self) -> (&mut $crate::gpio::IntEnabledThrow<'a>,)
+            {
+                (&mut self.0,)
+            }
+        }
+
+        $(
+            $crate::define_switch_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
         pub struct $name<'a> {
             $(
-                // FIXME: field name
-                $pin: IntEnabledInput<'a>,
+                throw_$pin: $crate::gpio::IntEnabledThrow<'a>,
             )+
         }
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
                 $name {
                     $(
-                        // FIXME: field name
-                        $pin: $crate::gpio::Input::builder(
-                            self.$pin.take().unwrap(),
-                            $pull
-                        ).build_with_interrupt().unwrap()
+                        throw_$pin: $crate::gpio::IntEnabledThrow::new(
+                            $crate::gpio::Input::builder(
+                                self.$pin.take().unwrap(),
+                                $pull
+                            ).build_with_interrupt().unwrap(),
+                            $active,
+                        ),
                     )+
                 }
             }
         }
 
-        impl $name<'_> {
-            pub fn status(&self) -> (
+        impl $name<'a> {
+            pub fn throws(&mut self) -> (
                 $(
-                    $crate::into_level!($pin),
+                    &mut $crate::into_int_enabled_throw!($pin),
                 )+
-            ) {
-                use $crate::gpio::Level::*;
+            )
+            {
                 (
                     $(
-                        if self.$pin.is_high() { High } else { Low },
+                        &mut self.throw_$pin,
                     )+
-                )
-            }
-
-            pub fn wait_for_high(&mut self) -> (
-                $(
-                    impl Future<
-                        Output = $crate::empty!($pin)
-                    >,
-                )+
-            ) {
-                (
-                $(
-                    self.$pin.wait_for_high(),
-                )+
-                )
-            }
-
-            pub fn wait_for_low(&mut self) -> (
-                $(
-                    impl Future<
-                        Output = $crate::empty!($pin)
-                    >,
-                )+
-            ) {
-                (
-                $(
-                    self.$pin.wait_for_low(),
-                )+
                 )
             }
         }
@@ -525,6 +593,22 @@ macro_rules! empty {
 macro_rules! into_level {
     ($i: ident) => {
         $crate::gpio::Level
+    };
+}
+
+#[cfg(feature = "external-interrupts")]
+#[macro_export]
+macro_rules! into_int_enabled_throw {
+    ($i: ident) => {
+        $crate::gpio::IntEnabledThrow<'a>
+    };
+}
+
+#[cfg(not(feature = "external-interrupts"))]
+#[macro_export]
+macro_rules! into_throw {
+    ($i: ident) => {
+        $crate::gpio::Throw<'a>
     };
 }
 

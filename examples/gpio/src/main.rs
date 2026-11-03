@@ -5,7 +5,6 @@ use ariel_os_boards::pins;
 
 use ariel_os::{
     gpio::{Level, Output},
-    log::info,
     time::Timer,
 };
 
@@ -21,11 +20,12 @@ async fn blinky(peripherals: Peripherals) {
     let mut switch = peripherals.switch;
 
     loop {
-        info!("Switch status: {:?}", switch.status());
-
-        // Assuming external interrupts
-        let _ = embassy_futures::select::select(switch.wait_for_low().0, Timer::after_millis(300))
-            .await;
+        ariel_os::log::info!("Is Switch0 on ? {}", switch.throws().0.is_on());
+        let _ = embassy_futures::select::select(
+            switch.throws().0.wait_for_on(),
+            Timer::after_millis(300),
+        )
+        .await;
 
         led0.toggle();
         Timer::after_millis(100).await;
