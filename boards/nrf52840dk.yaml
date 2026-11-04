@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  # Pinout for the switches and LEDs from https://docs.nordicsemi.com/r/bundle/ug_nrf52840_dk/page/ug/dk/hw_buttons_leds.html
+  # Pinout for the buttons and LEDs from https://docs.nordicsemi.com/r/bundle/ug_nrf52840_dk/page/ug/dk/hw_buttons_leds.html
   nrf52840dk:
     chip: nrf52840
     flags:
@@ -22,28 +22,28 @@ targets:
       - color: green
         pin: P0_16
         active: low
-    switches:
-      # switch0
-      - pins: P0_11
-        resistors: none
+    buttons:
+      # button0
+      - pin: P0_11
+        resistor: none
         active: low
         aliases:
           - SW1
-      # switch1
-      - pins: P0_12
-        resistors: none
+      # button1
+      - pin: P0_12
+        resistor: none
         active: low
         aliases:
           - SW2
-      # switch2
-      - pins: P0_24
-        resistors: none
+      # button2
+      - pin: P0_24
+        resistor: none
         active: low
         aliases:
           - SW3
-      # switch3
-      - pins: P0_25
-        resistors: none
+      # button3
+      - pin: P0_25
+        resistor: none
         active: low
         aliases:
           - SW4

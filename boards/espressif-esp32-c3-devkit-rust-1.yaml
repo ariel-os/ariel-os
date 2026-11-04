@@ -5,10 +5,10 @@ targets:
     chip: esp32-c3-mini-1
     flags:
       - has_usb_cdc_acm_port
-    switches:
-      # switch0
-      - pins: GPIO9
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: GPIO9
+        resistor: pullup
         active: low
         aliases:
           - IO9_BOOT

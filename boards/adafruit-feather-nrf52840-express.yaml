@@ -31,11 +31,11 @@ targets:
       # Only to be mapped if we start expressing aspects that are not user controllable:
       # * orange D3 is hardwired to LiPo charge port STAT
 
-    switches:
-      # switch0
-      - pins: P1_02
+    buttons:
+      # button0
+      - pin: P1_02
         # Note that there is no external pull-up.
-        resistors: none
+        resistor: none
         active: low
         aliases:
           - UserSw # silkscreen label

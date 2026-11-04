@@ -5,10 +5,10 @@ targets:
     chip: esp32-h2-mini-1-h4s
     flags:
       - has_usb_cdc_acm_port
-    switches:
-      # switch0 (BOOT)
-      - pins: GPIO9
-        resistors: none
+    buttons:
+      # button0 (BOOT)
+      - pin: GPIO9
+        resistor: none
         active: low
         aliases:
           - BOOT

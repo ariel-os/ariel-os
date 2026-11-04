@@ -19,8 +19,8 @@ targets:
         color: blue
         pin: P0_24
         active: low
-    # switches:
-    #   # switch0
+    # buttons:
+    #   # button0
     #   - # note: this is configurable via UICR
     #     pin: P0_18
     #     resistor: active

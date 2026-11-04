@@ -5,10 +5,10 @@ targets:
     chip: esp32-s2-solo-2
     flags:
       - has_usb_device_port
-    switches:
-      # switch0
-      - pins: GPIO0
-        resistors: none
+    buttons:
+      # button0
+      - pin: GPIO0
+        resistor: none
         active: low
         aliases:
           - SW1

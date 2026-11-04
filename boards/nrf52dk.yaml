@@ -20,31 +20,31 @@ targets:
       - color: green
         pin: P0_20
 
-    switches:
-      # switch0
-      - pins: P0_13
+    buttons:
+      # button0
+      - pin: P0_13
         active: low
-        resistors: none
+        resistor: none
         aliases:
           - SW1
           - BUTTON1
-      # switch1
-      - pins: P0_14
-        resistors: none
+      # button1
+      - pin: P0_14
+        resistor: none
         active: low
         aliases:
           - SW2
           - BUTTON2
-      # switch2
-      - pins: P0_15
-        resistors: none
+      # button2
+      - pin: P0_15
+        resistor: none
         active: low
         aliases:
           - SW3
           - BUTTON13
-      # switch3
-      - pins: P0_16
-        resistors: none
+      # button3
+      - pin: P0_16
+        resistor: none
         active: low
         aliases:
           - SW4

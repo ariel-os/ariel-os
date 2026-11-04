@@ -23,22 +23,22 @@ targets:
         aliases:
           - LD3
         color: red
-    switches:
-      # switch0
-      - pins: PC13
-        resistors: none
+    buttons:
+      # button0
+      - pin: PC13
+        resistor: none
         active: low
         aliases:
           - B1
-      # switch1
-      - pins: PC5
-        resistors: none
+      # button1
+      - pin: PC5
+        resistor: none
         active: low
         aliases:
           - B2
-      # switch2
-      - pins: PB4
-        resistors: none
+      # button2
+      - pin: PB4
+        resistor: none
         active: low
         aliases:
           - B3

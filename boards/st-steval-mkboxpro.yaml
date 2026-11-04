@@ -37,17 +37,17 @@ targets:
           - USB_enum_LED
           - D10
         color: blue
-    switches:
-      # switch0
-      - pins: PC13
-        resistors: pulldown
+    buttons:
+      # button0
+      - pin: PC13
+        resistor: pulldown
         active: high
         aliases:
           - BT1
           - SW1
-      # switch1
-      - pins: PE0
-        resistors: pulldown
+      # button1
+      - pin: PE0
+        resistor: pulldown
         active: high
         aliases:
           - BT2

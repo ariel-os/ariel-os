@@ -2,16 +2,16 @@ version: 0.5.0
 targets:
   bbc-microbit-v1:
     chip: nrf51822-xxaa
-    switches:
-      # switch0
-      - pins: P0_17
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: P0_17
+        resistor: pullup
         active: low
         aliases:
           - BTN_A # Name on the schematic
-      # switch1
-      - pins: P0_26
-        resistors: pullup
+      # button1
+      - pin: P0_26
+        resistor: pullup
         active: low
         aliases:
           - BTN_B # Name on the schematic

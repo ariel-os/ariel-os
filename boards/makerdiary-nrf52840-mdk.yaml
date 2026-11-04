@@ -19,10 +19,10 @@ targets:
         color: blue
         pin: P0_24
         active: low
-    switches:
-      # switch0
-      - pins: P1_00
-        resistors: none # Could not find on the schematic
+    buttons:
+      # button0
+      - pin: P1_00
+        resistor: none # Could not find on the schematic
         active: low
         aliases:
           - USR_BTN

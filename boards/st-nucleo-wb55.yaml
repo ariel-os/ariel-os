@@ -23,22 +23,22 @@ targets:
         color: red
         aliases:
           - LED3
-    switches:
-      # switch0
-      - pins: PC4 # Can be PC13 if SB48 is closed and SB47 is opened
-        resistors: none
+    buttons:
+      # button0
+      - pin: PC4 # Can be PC13 if SB48 is closed and SB47 is opened
+        resistor: none
         active: low
         aliases:
           - SW1
-      # switch1
-      - pins: PD0
-        resistors: none
+      # button1
+      - pin: PD0
+        resistor: none
         active: low
         aliases:
           - SW2
-      # switch2
-      - pins: PD1
-        resistors: none
+      # button2
+      - pin: PD1
+        resistor: none
         active: low
         aliases:
           - SW3

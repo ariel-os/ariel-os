@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  # Pinout for the switches and LEDs from <https://www.st.com/resource/en/user_manual/um2115-discovery-kit-for-lorawan-sigfox-and-lpwan-protocols-with-stm32l0-stmicroelectronics.pdf>
+  # Pinout for the buttons and LEDs from <https://www.st.com/resource/en/user_manual/um2115-discovery-kit-for-lorawan-sigfox-and-lpwan-protocols-with-stm32l0-stmicroelectronics.pdf>
   st-b-l072z-lrwan1:
     chip: stm32l072cz
     # The USB user connector (CN11) is not connected to the MCU by default: solder bridges SB15
@@ -30,10 +30,10 @@ targets:
         aliases:
           - LD4
         color: red
-    switches:
-      # switch0
-      - pins: PB2
-        resistors: none
+    buttons:
+      # button0
+      - pin: PB2
+        resistor: none
         active: high
         aliases:
           - USER

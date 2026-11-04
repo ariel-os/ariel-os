@@ -6,10 +6,10 @@ targets:
     flags:
       - has_usb_cdc_acm_port
       - has_usb_device_port
-    switches:
-      # switch0
-      - pins: GPIO0
-        resistors: none
+    buttons:
+      # button0
+      - pin: GPIO0
+        resistor: none
         active: low
         aliases:
           - BOOT

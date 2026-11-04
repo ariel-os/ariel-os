@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  # Pinout for the switches and LEDs from <https://docs.nordicsemi.com/r/bundle/ug_nrf9160_dk/page/ug/nrf91_dk/hw_description/hw_buttons_leds.html>
+  # Pinout for the buttons, switches and LEDs from <https://docs.nordicsemi.com/r/bundle/ug_nrf9160_dk/page/ug/nrf91_dk/hw_description/hw_buttons_leds.html>
   nrf9160dk-nrf9160:
     chip: nrf9160
     leds:
@@ -22,29 +22,30 @@ targets:
         active: high
         aliases:
           - LED4
-    switches:
-      # switch0
-      - pins: P0_06
-        resistors: none
+    buttons:
+      # button0
+      - pin: P0_06
+        resistor: none
         active: low
         aliases:
           - SW3
           - BUTTON1
-      # switch1
-      - pins: P0_07
-        resistors: none
+      # button1
+      - pin: P0_07
+        resistor: none
         active: low
         aliases:
           - SW4
           - BUTTON2
-      # switch2
+    switches:
+      # switch0
       - pins: P0_08
         resistors: none
         active: low
         aliases:
           - SW1
           - SWITCH1
-      # switch3
+      # switch1
       - pins: P0_09
         resistors: none
         active: low

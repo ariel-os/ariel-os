@@ -10,10 +10,10 @@ targets:
         active: high
         aliases:
           - LED2
-    switches:
-      # switch0
-      - pins: GPIO0
-        resistors: none # Couldn't find on the schematic
+    buttons:
+      # button0
+      - pin: GPIO0
+        resistor: none # Couldn't find on the schematic
         active: low
         aliases:
           - USER

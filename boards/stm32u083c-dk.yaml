@@ -18,10 +18,10 @@ targets:
       # led2
       - pin: PB2
         color: red
-    switches:
-      # switch0
-      - pins: PC2
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: PC2
+        resistor: pullup
         active: low
         aliases:
           - JOYSTICK_CENTER

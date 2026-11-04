@@ -24,31 +24,31 @@ targets:
         color: green
         aliases:
           - LED4
-    switches:
-      # switch0
-      - pins: P0_08
-        resistors: none
+    buttons:
+      # button0
+      - pin: P0_08
+        resistor: none
         active: low
         aliases:
           - Button 1
           - SW1
-      # switch1
-      - pins: P0_09
-        resistors: none
+      # button1
+      - pin: P0_09
+        resistor: none
         active: low
         aliases:
           - Button 2
           - SW2
-      # switch2
-      - pins: P0_18
-        resistors: none
+      # button2
+      - pin: P0_18
+        resistor: none
         active: low
         aliases:
           - Button 3
           - SW3
-      # switch3
-      - pins: P0_19
-        resistors: none
+      # button3
+      - pin: P0_19
+        resistor: none
         active: low
         aliases:
           - Button 4

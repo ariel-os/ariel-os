@@ -11,10 +11,10 @@ targets:
         aliases:
           - D1
           - BLK
-    switches:
-      # switch0
-      - pins: GPIO9
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: GPIO9
+        resistor: pullup
         active: low
         aliases:
           - D9

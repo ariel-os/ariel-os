@@ -3,10 +3,10 @@ targets:
   espressif-esp32-devkitc:
     # Schematic <https://dl.espressif.com/dl/schematics/esp32_devkitc_v4_sch.pdf>
     chip: esp-wroom-32
-    switches:
-      # switch0
-      - pins: GPIO0
-        resistors: none
+    buttons:
+      # button0
+      - pin: GPIO0
+        resistor: none
         active: low
         aliases:
           - SW1

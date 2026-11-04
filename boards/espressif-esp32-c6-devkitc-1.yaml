@@ -5,10 +5,10 @@ targets:
     chip: esp32-c6-wroom-1
     flags:
       - has_usb_cdc_acm_port
-    switches:
-      # switch0
-      - pins: GPIO9
-        resistors: none
+    buttons:
+      # button0
+      - pin: GPIO9
+        resistor: none
         active: low
         aliases:
           - SW1

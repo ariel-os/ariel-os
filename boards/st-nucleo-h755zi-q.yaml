@@ -27,10 +27,10 @@ targets:
           - LD3
         color: red
         active: high
-    switches:
-      # switch0
-      - pins: PC13
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: PC13
+        resistor: pullup
         active: low
         aliases:
           - B1

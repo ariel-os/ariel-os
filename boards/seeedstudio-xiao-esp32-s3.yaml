@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  # Pinout for the switch and LEDs from <https://files.seeedstudio.com/wiki/SeeedStudio-XIAO-ESP32S3/res/XIAO_ESP32S3_SCH_v1.2.pdf>
+  # Pinout for the button and LEDs from <https://files.seeedstudio.com/wiki/SeeedStudio-XIAO-ESP32S3/res/XIAO_ESP32S3_SCH_v1.2.pdf>
   seeedstudio-xiao-esp32-s3:
     chip: esp32s3r8
     flags:
@@ -13,10 +13,10 @@ targets:
         active: low
         aliases:
           - USER_LED
-    switches:
-      # switch0
-      - pins: GPIO0
-        resistors: pullup
+    buttons:
+      # button0
+      - pin: GPIO0
+        resistor: pullup
         active: low
         aliases:
           - BOOT
