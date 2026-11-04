@@ -115,6 +115,16 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
         }
     }
 
+    /// Removes thread with tid `n`.
+    ///
+    /// The function is an optimized version of [`del`] with O(1) for when
+    /// the thread's predecessor in the runqueue and its runqueue ID is known.
+    pub fn del_opt(&mut self, n: ThreadId, prev: ThreadId, rq: RunqueueId) {
+        if self.queues.del_opt(n.0, prev.0, rq.0) {
+            self.bitcache &= !(1 << rq.0);
+        }
+    }
+
     /// Returns the tid that should run next.
     ///
     /// Returns the next runnable thread of
@@ -127,26 +137,51 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
     /// Returns the tid that should run next and the runqueue it is in.
     #[must_use]
     pub fn get_next_with_rq(&self) -> Option<(ThreadId, RunqueueId)> {
-        let rq_ffs = ffs(self.bitcache);
-        if rq_ffs == 0 {
-            return None;
-        }
-        let rq = rq_ffs as u8 - 1;
+        let rq = self.get_next_rq()?.0;
         self.queues
             .peek_head(rq)
             .map(|id| (ThreadId::new(id), RunqueueId::new(rq)))
     }
 
     /// Returns the next thread from the runqueue that fulfills the predicate.
+    ///
+    /// Returns the next thread, it's predecessor in the same runqueue (for optimized
+    /// deletion), and its runqueue id.
     pub fn get_next_filter<F: FnMut(&ThreadId) -> bool>(
         &self,
         mut predicate: F,
-    ) -> Option<ThreadId> {
-        let (next, prio) = self.get_next_with_rq()?;
-        if predicate(&next) {
-            return Some(next);
+    ) -> Option<(ThreadId, ThreadId, RunqueueId)> {
+        // Bitcache of the queues that we need to iterate over.
+        let mut bitcache = self.bitcache;
+        let mut rq = self.get_next_rq()?.0;
+        let mut rq_head = self.queues.peek_head(rq)?;
+        let mut next = rq_head;
+        let mut prev = self.queues.peek_tail(rq)?;
+
+        loop {
+            if predicate(&ThreadId(next)) {
+                return Some((ThreadId(next), ThreadId(prev), RunqueueId(rq)));
+            }
+
+            prev = next;
+            next = self.queues.peek_next(prev);
+
+            // Check if we are done iteration over the current runaueue.
+            if next == rq_head {
+                // Clear runqueue from bitcache.
+                bitcache &= !(1 << rq);
+
+                // Get head from remaining highest priority runqueue.
+                if bitcache == 0 {
+                    return None;
+                }
+                rq = ffs(bitcache) as u8 - 1;
+
+                prev = self.queues.peek_tail(rq)?;
+                rq_head = self.queues.peek_next(prev);
+                next = rq_head;
+            }
         }
-        self.iter_from(next, prio).find(predicate)
     }
 
     /// Pop the thread that should run next.
@@ -154,11 +189,7 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
     /// Pops the next runnable thread of
     /// the runqueue with the highest index.
     pub fn pop_next(&mut self) -> Option<ThreadId> {
-        let rq_ffs = ffs(self.bitcache);
-        if rq_ffs == 0 {
-            return None;
-        }
-        let rq = (rq_ffs - 1) as u8;
+        let rq = self.get_next_rq()?.0;
         let head = self.queues.pop_head(rq).map(ThreadId::new);
         if self.queues.is_empty(rq) {
             self.bitcache &= !(1 << rq);
@@ -183,67 +214,19 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
         self.queues.is_empty(rq.0)
     }
 
-    /// Returns an iterator over the [`RunQueue`], starting after thread `start` in runqueue `rq`.
-    ///
-    /// The `start` is not included in the iterator.
-    #[must_use]
-    pub fn iter_from(
-        &self,
-        start: ThreadId,
-        rq: RunqueueId,
-    ) -> RunQueueIter<'_, N_QUEUES, N_THREADS> {
-        RunQueueIter {
-            prev: start.0,
-            rq_head: self.queues.peek_head(rq.0),
-            // Clear higher priority runqueues.
-            bitcache: self.bitcache % (1 << (rq.0 + 1)),
-            queues: &self.queues,
+    fn get_next_rq(&self) -> Option<RunqueueId> {
+        let rq_ffs = ffs(self.bitcache);
+        if rq_ffs == 0 {
+            return None;
         }
+        let rq = (rq_ffs - 1) as u8;
+        Some(RunqueueId(rq))
     }
 }
 
 #[inline]
 fn ffs(val: usize) -> u32 {
     USIZE_BITS as u32 - val.leading_zeros()
-}
-
-/// Iterator over threads in a [`RunQueue`].
-///
-/// It starts from the highest priority queue and continues switching to lower
-/// priority queues after circling through a queue once, until all queues
-/// that are included in this iterator have been iterated.
-pub struct RunQueueIter<'a, const N_QUEUES: usize, const N_THREADS: usize> {
-    queues: &'a clist::CList<N_QUEUES, N_THREADS>,
-    // Predecessor in the circular runqueue list.
-    prev: u8,
-    // Head of the currently iterated runqueue.
-    rq_head: Option<u8>,
-    // Bitcache with the remaining queues that have to be iterated.
-    bitcache: usize,
-}
-
-impl<const N_QUEUES: usize, const N_THREADS: usize> Iterator
-    for RunQueueIter<'_, { N_QUEUES }, { N_THREADS }>
-{
-    type Item = ThreadId;
-    fn next(&mut self) -> Option<Self::Item> {
-        let mut next = self.queues.peek_next(self.prev);
-        if next == self.rq_head? {
-            // Circled through whole queue, so switch to next one.
-            let rq = ffs(self.bitcache) as u8 - 1;
-            // Clear current runqueue from bitcache.
-            self.bitcache &= !(1 << rq);
-            // Get head from remaining highest priority runqueue.
-            self.rq_head = if self.bitcache > 0 {
-                self.queues.peek_head(ffs(self.bitcache) as u8 - 1)
-            } else {
-                None
-            };
-            next = self.rq_head?;
-        }
-        self.prev = next;
-        Some(ThreadId(next))
-    }
 }
 
 mod clist {
@@ -327,9 +310,33 @@ mod clist {
                     self.tail[rq] = prev as u8;
                 }
             }
+            // Update link from the previous thread.
             self.next_idxs[prev] = self.next_idxs[n as usize];
             self.next_idxs[n as usize] = Self::sentinel();
             empty_runqueue
+        }
+
+        /// Optimized variant of [`del`] if the runqueue and previous thread in runqueue
+        /// is known.
+        pub fn del_opt(&mut self, n: u8, prev_in_rq: u8, rq: u8) -> bool {
+            // Thread bytes itself.
+            let is_only_in_rq = prev_in_rq == n;
+
+            if is_only_in_rq {
+                self.tail[rq as usize] = Self::sentinel();
+            } else {
+                // Update link from the previous thread.
+                self.next_idxs[prev_in_rq as usize] = self.next_idxs[n as usize];
+
+                // Update tail.
+                if self.tail[rq as usize] == n {
+                    self.tail[rq as usize] = prev_in_rq;
+                }
+            }
+
+            self.next_idxs[n as usize] = Self::sentinel();
+
+            is_only_in_rq
         }
 
         pub fn pop_head(&mut self, rq: u8) -> Option<u8> {
@@ -353,10 +360,15 @@ mod clist {
 
         #[inline]
         pub fn peek_head(&self, rq: u8) -> Option<u8> {
+            self.peek_tail(rq).map(|tail| self.next_idxs[tail as usize])
+        }
+
+        #[inline]
+        pub fn peek_tail(&self, rq: u8) -> Option<u8> {
             if self.is_empty(rq) {
                 None
             } else {
-                Some(self.next_idxs[self.tail[rq as usize] as usize])
+                Some(self.tail[rq as usize])
             }
         }
 
