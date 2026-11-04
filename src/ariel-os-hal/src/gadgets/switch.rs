@@ -93,3 +93,58 @@ impl<'a> IntEnabledSwitchPin<'a> {
         self.wait_for_inactive().await;
     }
 }
+
+
+#[macro_export]
+macro_rules! impl_intswitch_inner {
+    ($inner:ident) => {
+        /// Returns whether the pin is active.
+        pub fn is_active(&self) -> bool {
+            self.$inner.is_active()
+        }
+
+        /// Returns whether the pin is inactive.
+        #[must_use]
+        pub fn is_inactive(&self) -> bool {
+            self.$inner.is_inactive()
+        }
+
+        /// Asynchronously wait for the pin to be active.
+        /// Returns immediately if the pin is active.
+        pub fn wait_for_active(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_active()
+        }
+
+        /// Asynchronously wait for the pin to be inactive.
+        /// Returns immediately if the pin is inactive.
+        pub fn wait_for_inactive(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_inactive()
+        }
+
+        /// Asynchronously waits for the input level to transition from inactive to active.
+        pub fn wait_for_activation_edge(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_activation_edge()
+        }
+
+        /// Asynchronously waits for the input level to transition from active to inactive.
+        pub fn wait_for_deactivation_edge(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_deactivation_edge()
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! impl_switch_inner {
+    ($inner:ident) => {
+        /// Returns whether the pin is active.
+        pub fn is_active(&self) -> bool {
+            self.$inner.is_active()
+        }
+
+        /// Returns whether the pin is inactive.
+        #[must_use]
+        pub fn is_inactive(&self) -> bool {
+            self.$inner.is_inactive()
+        }
+    };
+}

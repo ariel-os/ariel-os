@@ -359,6 +359,61 @@ macro_rules! define_switches {
     }
 }
 
+
+/// Repeatedly calls [`define_switch`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_buttons {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_button!{ $($args)+ }
+        )*
+    }
+}
+/// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
+/// that are part of the switch.
+///
+/// Currently the activity level denoted by `active` is not used in any way.
+#[cfg(feature = "external-interrupts")]
+#[macro_export]
+macro_rules! define_button {
+    (name: $name:ident, pin : $pin:ident, pull : $pull:ident, active : $active:ident, aliases : [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name<'a>{
+            inner: $crate::gadgets::button::Button<'a>
+        }
+
+        impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name<'a> {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+                $name{
+                    inner: $crate::gadgets::button::Button::new(
+                        $crate::gadgets::switch::IntEnabledSwitchPin::new(
+                            $crate::gpio::Input::builder(
+                                self.$pin.take().unwrap(),
+                                $crate::select_pull!($pull, $active)
+                            ).build_with_interrupt().unwrap(),
+                            $active,
+                        )
+                    )
+                }
+            }
+        }
+
+        impl $name<'_> {
+            $crate::impl_intswitch_inner!(inner);
+
+            $crate::impl_intbutton_inner!(inner);
+        }
+
+        $(
+            $crate::define_alias!{$name<'a> = $alias}
+        )*
+
+    };
+}
+
 /// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
 /// that are part of the switch.
 ///
@@ -369,43 +424,39 @@ macro_rules! define_switch {
     (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
-        pub struct $name<'a>($crate::gadgets::switch::SwitchPin<'a>);
+        pub struct $name<'a>{
+            inner: $crate::gadgets::switch::SwitchPin<'a>
+        }
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
                 use $crate::gpio::Level::*;
-                $name(
-                    $crate::gadgets::switch::SwitchPin::new(
+                $name {
+                    inner: $crate::gadgets::switch::SwitchPin::new(
                         $crate::gpio::Input::builder(
                             self.$pin.take().unwrap(),
-                            $pull
+                            $crate::select_pull!($pull, $active)
                         ).build(),
                         $active,
                     )
-                )
+                }
             }
         }
 
         impl $name<'_> {
-            pub fn is_active(&self) -> bool {
-                self.0.is_active()
-            }
-
-            pub fn is_off(&self) -> bool {
-                self.0.is_inactive()
-            }
+            $crate::impl_switch_inner!(inner);
         }
 
         impl<'a> $name<'a> {
             pub fn pins(&mut self) -> (&mut $crate::gadgets::switch::SwitchPin<'a>,)
             {
-                (&mut self.0,)
+                (&mut self.inner,)
             }
         }
 
         $(
-            $crate::define_switch_alias!{$name = $alias}
+            $crate::define_alias!{$name<'a> = $alias}
         )*
 
     };
@@ -427,7 +478,7 @@ macro_rules! define_switch {
                         $pin: $crate::gadgets::switch::SwitchPin::new(
                             $crate::gpio::Input::builder(
                                 self.$pin.take().unwrap(),
-                                $pull
+                                $crate::select_pull!($pull, $active)
                             ).build(),
                             $active,
                         ),
@@ -452,7 +503,7 @@ macro_rules! define_switch {
         }
 
         $(
-            $crate::define_switch_alias!{$name = $alias}
+            $crate::define_alias!{$name<'a> = $alias}
         )*
 
     };
@@ -468,59 +519,40 @@ macro_rules! define_switch {
     (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
-        pub struct $name<'a>($crate::gadgets::switch::IntEnabledSwitchPin<'a>);
+        pub struct $name<'a>{
+            inner: $crate::gadgets::switch::IntEnabledSwitchPin<'a>
+        }
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
                 use $crate::gpio::Level::*;
-                $name(
-                    $crate::gadgets::switch::IntEnabledSwitchPin::new(
+
+                $name{
+                    inner: $crate::gadgets::switch::IntEnabledSwitchPin::new(
                         $crate::gpio::Input::builder(
                             self.$pin.take().unwrap(),
-                            $pull
+                            $crate::select_pull!($pull, $active)
                         ).build_with_interrupt().unwrap(),
                         $active,
                     )
-                )
+                }
             }
         }
 
         impl $name<'_> {
-            pub fn is_active(&self) -> bool {
-                self.0.is_active()
-            }
-
-            pub fn is_inactive(&self) -> bool {
-                self.0.is_inactive()
-            }
-
-            fn wait_for_active(&mut self) -> impl Future<Output = ()> {
-                self.0.wait_for_active()
-            }
-
-            fn wait_for_inactive(&mut self) -> impl Future<Output = ()> {
-                self.0.wait_for_inactive()
-            }
-
-            fn wait_for_activation_edge(&mut self) -> impl Future<Output = ()> {
-                self.0.wait_for_activation_edge()
-            }
-
-            fn wait_for_deactivation_edge(&mut self) -> impl Future<Output = ()> {
-                self.0.wait_for_deactivation_edge()
-            }
+            $crate::impl_intswitch_inner!(inner);
         }
 
         impl<'a> $name<'a> {
             pub fn pins(&mut self) -> (&mut $crate::gadgets::switch::IntEnabledSwitchPin<'a>,)
             {
-                (&mut self.0,)
+                (&mut self.inner,)
             }
         }
 
         $(
-            $crate::define_switch_alias!{$name = $alias}
+            $crate::define_alias!{$name<'a> = $alias}
         )*
 
     };
@@ -542,7 +574,7 @@ macro_rules! define_switch {
                         $pin: $crate::gadgets::switch::IntEnabledSwitchPin::new(
                             $crate::gpio::Input::builder(
                                 self.$pin.take().unwrap(),
-                                $pull
+                                $crate::select_pull!($pull, $active)
                             ).build_with_interrupt().unwrap(),
                             $active,
                         ),
@@ -567,19 +599,38 @@ macro_rules! define_switch {
         }
 
         $(
-            $crate::define_switch_alias!{$name = $alias}
+            $crate::define_alias!{$name<'a> = $alias}
         )*
 
     };
 }
 
-/// Aliases the sbd default name "Switch{n}" with sbd defined aliases.
 #[macro_export]
-macro_rules! define_switch_alias {
+macro_rules! define_alias {
     ($name:ident = $alias:ident) => {
         #[allow(nonstandard_style)]
-        pub type $alias<'a> = $name<'a>;
+        pub type $alias = $name;
     };
+    ($name:ident<$lt:lifetime> = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias<$lt> = $name<$lt>;
+    };
+}
+
+#[macro_export]
+macro_rules! select_pull {
+    (None, High) => {
+        Down
+    };
+    (None, Low) => {
+        Up
+    };
+    (Down, $tt:tt) => {
+        None
+    };
+    (Up, $tt:tt) => {
+        None
+    }
 }
 
 #[macro_export]
