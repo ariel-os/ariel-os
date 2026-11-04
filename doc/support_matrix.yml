@@ -971,6 +971,24 @@ chips:
       wifi: not_available
       ble: not_available
 
+  stm32h7r7l8:
+    name: STM32H7R7L8
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: supported
+      ethernet: not_currently_supported
+      ethernet_over_usb: not_currently_supported
+      hwrng: not_currently_supported
+      i2c_controller: not_currently_supported
+      spi_main: not_currently_supported
+      uart: not_currently_supported
+      logging: supported
+      storage: not_currently_supported
+      user_usb: not_currently_supported
+      wifi: not_available
+      ble: not_available
+
   stm32l072cz:
     name: STM32L072CZ
     manufacturer: STMicroelectronics
@@ -1354,6 +1372,23 @@ builders:
       ble: supported
       ethernet_over_usb: supported
 
+  rt-thread-art-pi2:
+    chip: stm32h7r7l8
+    tier: "3"
+    support:
+      ethernet: not_available
+      wifi:
+        status: not_currently_supported
+        comments:
+          - an external Wi-Fi module is present on the board
+      ble:
+        status: not_currently_supported
+        comments:
+          - an external Bluetooth module is present on the board
+    notes: |-
+      Applications currently link into and run from the 64 KiB internal Flash at `0x08000000` (using 456 KiB of contiguous AXI SRAM at `0x24000000`), which overwrites any bootloader stored in internal Flash.
+      External HyperFlash and HyperRAM are not yet configured.
+
   decawave-dwm1001-dev:
     chip: nrf52832
     tier: "3"
@@ -1709,6 +1744,11 @@ boards:
     url: https://web.archive.org/web/20250130144056/https://www.raspberrypi.com/products/raspberry-pi-pico-2/
     builders:
       - rpi-pico2-w
+
+  - name: RT-Thread ART-Pi2
+    url: https://web.archive.org/web/20261031114745/https://github.com/RT-Thread-Studio/sdk-bsp-stm32h7r-realthread-artpi2
+    builders:
+      - rt-thread-art-pi2
 
   - name: Decawave DWM1001-DEV
     url: https://web.archive.org/web/20260620211515/https://www.qorvo.com/products/p/DWM1001-DEV

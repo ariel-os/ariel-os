@@ -1,0 +1,23 @@
+version: 0.4.1
+targets:
+  rt-thread-art-pi2:
+    chip: stm32h7r7l8
+    ariel:
+      swi: WWDG
+    leds:
+      # led0
+      - pin: PO1
+        aliases:
+          - LED1
+        color: red
+        active: high
+      # led1
+      - pin: PO5
+        aliases:
+          - LED2
+        color: blue
+        active: low
+    buttons:
+      # button0
+      - pin: PC13
+        active: low

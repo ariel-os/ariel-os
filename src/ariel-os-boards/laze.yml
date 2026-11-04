@@ -215,6 +215,15 @@ builders:
   - has_usb_device_port
   env:
     CHIP_NVM_SIZE_BYTES: $(4096 * 1024)
+- name: rt-thread-art-pi2
+  parent: stm32h7r7l8
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=WWDG
 - name: seeedstudio-lora-e5-mini
   parent: stm32wle5jc
   provides:
