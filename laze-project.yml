@@ -47,7 +47,8 @@ contexts:
         - >-
           OPENOCD_ARGS="${OPENOCD_ARGS}"
           SCRIPTS=${SCRIPTS}
-          CONFIG_BOARD=${builder}
+          CONFIG_APPLICATION="${app}"
+          CONFIG_BOARD="${builder}"
           CARGO_BUILD_TARGET=${RUSTC_TARGET}
           ${CARGO_TARGET_PREFIX}_RUNNER=${CARGO_RUNNER}
           ${CARGO_TARGET_PREFIX}_RUSTFLAGS="${RUSTFLAGS}"
@@ -461,9 +462,15 @@ contexts:
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
+      ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
+      # Setting a default here, all currently supported esp have >=2048KiB flash.
+      # MCU contexts or boards override this.
+      CHIP_NVM_SIZE_BYTES: "$(2048 * 1024)"
+      CHIP_NVM_START_ADDRESS: "0x0"
+      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
 
   - name: esp32
     parent: esp
@@ -484,12 +491,18 @@ contexts:
 
   - name: esp32-wroom-32d
     parent: esp32
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-wroom-32u
     parent: esp32
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp-wroom-32
     parent: esp32
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-c3-mini-1
     parent: esp32c3fx4
@@ -512,6 +525,8 @@ contexts:
 
   - name: esp32c3fx4
     parent: esp32c3
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32c6
     parent: esp
@@ -531,9 +546,13 @@ contexts:
 
   - name: esp32c6fx4
     parent: esp32c6
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-c6-wroom-1
     parent: esp32c6
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32c2
     parent: esp
@@ -555,6 +574,8 @@ contexts:
 
   - name: esp8684h4
     parent: esp32c2
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp8684-wroom-02c-h2
     parent: esp8684h2
@@ -582,6 +603,8 @@ contexts:
 
   - name: esp32h2fh4s
     parent: esp32h2
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-h2-mini-1-h2s
     parent: esp32h2fh2s
@@ -613,12 +636,18 @@ contexts:
 
   - name: esp32s2fx4
     parent: esp32s2
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32s2fx4r2
     parent: esp32s2
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-s2-solo-2
     parent: esp32s2
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32s3
     parent: esp
@@ -644,15 +673,21 @@ contexts:
 
   - name: esp32s3fx4r2
     parent: esp32s3
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32s3fx8
     parent: esp32s3
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(8192 * 1024)"
 
   - name: esp32s3r8
     parent: esp32s3
 
   - name: esp32-s3-wroom-1
     parent: esp32s3
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: native-chip
     # This intermediary context is necessary so we can generate the native "board"
@@ -1335,12 +1370,12 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor"'
+        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${ESP_PARTITION_FILE}"'
     tasks:
       flash:
         help: flash the target using `espflash`
         cmd:
-          - espflash flash --after hard-reset ${out} $@
+          - espflash flash --partition-table ${ESP_PARTITION_FILE} --after hard-reset ${out} $@
 
       attach:
         help: attach `espflash` to a running target
