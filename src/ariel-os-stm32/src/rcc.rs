@@ -118,6 +118,31 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_P;
     }
 
+    #[cfg(context = "blackpill-f401rc")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(25_000_000),
+            mode: HseMode::Oscillator,
+        });
+
+        rcc.pll_src = PllSource::HSE;
+        rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV25,
+            mul: PllMul::MUL336,
+            divp: Some(PllPDiv::DIV4),
+            divq: Some(PllQDiv::DIV7),
+            divr: None,
+        });
+
+        rcc.ahb_pre = AHBPrescaler::DIV1;
+        rcc.apb1_pre = APBPrescaler::DIV2;
+        rcc.apb2_pre = APBPrescaler::DIV1;
+
+        rcc.sys = Sysclk::PLL1_P;
+    }
+
     #[cfg(context = "st-nucleo-f767zi")]
     {
         use embassy_stm32::rcc::*;
@@ -209,7 +234,7 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.hsi48 = Some(Hsi48Config {
             sync_from_usb: true,
         }); // needed for USB
-        // No HSE fitted on the stm32u083c-dk board
+            // No HSE fitted on the stm32u083c-dk board
         rcc.hsi = true;
         rcc.sys = Sysclk::PLL1_R;
         rcc.pll = Some(Pll {
