@@ -24,8 +24,8 @@ impl<'a> Button<'a> {
             )
             .await
             {
-                Either::First(_) => break,
-                Either::Second(_) => {}
+                Either::First(()) => break,
+                Either::Second(()) => {}
             }
         }
     }
