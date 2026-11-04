@@ -6,7 +6,7 @@ pub mod i2c;
 
 pub mod hal;
 
-pub mod high_level;
+pub mod gadgets;
 
 #[cfg(feature = "uart")]
 pub mod uart;

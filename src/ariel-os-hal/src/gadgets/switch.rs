@@ -1,9 +1,9 @@
 //! Higher Level drivers.
 
-use super::gpio::{Input, Level};
+use crate::gpio::{Input, Level};
 
 #[cfg(feature = "external-interrupts")]
-use super::gpio::IntEnabledInput;
+use crate::gpio::IntEnabledInput;
 
 /// The combination of an Input and an active Level.
 pub struct SwitchPin<'a> {

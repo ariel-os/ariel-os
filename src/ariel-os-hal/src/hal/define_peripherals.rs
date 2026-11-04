@@ -369,14 +369,14 @@ macro_rules! define_switch {
     (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
-        pub struct $name<'a>($crate::high_level::SwitchPin<'a>);
+        pub struct $name<'a>($crate::gadgets::switch::SwitchPin<'a>);
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
                 use $crate::gpio::Level::*;
                 $name(
-                    $crate::high_level::SwitchPin::new(
+                    $crate::gadgets::switch::SwitchPin::new(
                         $crate::gpio::Input::builder(
                             self.$pin.take().unwrap(),
                             $pull
@@ -398,7 +398,7 @@ macro_rules! define_switch {
         }
 
         impl<'a> $name<'a> {
-            pub fn pins(&mut self) -> (&mut $crate::high_level::SwitchPin<'a>,)
+            pub fn pins(&mut self) -> (&mut $crate::gadgets::switch::SwitchPin<'a>,)
             {
                 (&mut self.0,)
             }
@@ -414,7 +414,7 @@ macro_rules! define_switch {
         #[allow(nonstandard_style)]
         pub struct $name<'a> {
             $(
-                $pin: $crate::high_level::SwitchPin<'a>,
+                $pin: $crate::gadgets::switch::SwitchPin<'a>,
             )+
         }
 
@@ -424,7 +424,7 @@ macro_rules! define_switch {
                 use $crate::gpio::Level::*;
                 $name {
                     $(
-                        $pin: $crate::high_level::SwitchPin::new(
+                        $pin: $crate::gadgets::switch::SwitchPin::new(
                             $crate::gpio::Input::builder(
                                 self.$pin.take().unwrap(),
                                 $pull
@@ -439,7 +439,7 @@ macro_rules! define_switch {
         impl $name<'a> {
             pub fn pins(&mut self) -> (
                 $(
-                    &mut $crate::repeat!($pin, $crate::high_level::SwitchPin),
+                    &mut $crate::repeat!($pin, $crate::gadgets::switch::SwitchPin),
                 )+
             )
             {
@@ -468,14 +468,14 @@ macro_rules! define_switch {
     (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
 
         #[allow(nonstandard_style)]
-        pub struct $name<'a>($crate::high_level::IntEnabledSwitchPin<'a>);
+        pub struct $name<'a>($crate::gadgets::switch::IntEnabledSwitchPin<'a>);
 
         impl<'a> $crate::hal::TakePeripherals<$name<'a>> for &mut $crate::hal::OptionalPeripherals {
             fn take_peripherals(&mut self) -> $name<'a> {
                 use $crate::gpio::Pull::*;
                 use $crate::gpio::Level::*;
                 $name(
-                    $crate::high_level::IntEnabledSwitchPin::new(
+                    $crate::gadgets::switch::IntEnabledSwitchPin::new(
                         $crate::gpio::Input::builder(
                             self.$pin.take().unwrap(),
                             $pull
@@ -513,7 +513,7 @@ macro_rules! define_switch {
         }
 
         impl<'a> $name<'a> {
-            pub fn pins(&mut self) -> (&mut $crate::high_level::IntEnabledSwitchPin<'a>,)
+            pub fn pins(&mut self) -> (&mut $crate::gadgets::switch::IntEnabledSwitchPin<'a>,)
             {
                 (&mut self.0,)
             }
@@ -529,7 +529,7 @@ macro_rules! define_switch {
         #[allow(nonstandard_style)]
         pub struct $name<'a> {
             $(
-                $pin: $crate::high_level::IntEnabledSwitchPin<'a>,
+                $pin: $crate::gadgets::switch::IntEnabledSwitchPin<'a>,
             )+
         }
 
@@ -539,7 +539,7 @@ macro_rules! define_switch {
                 use $crate::gpio::Level::*;
                 $name {
                     $(
-                        $pin: $crate::high_level::IntEnabledSwitchPin::new(
+                        $pin: $crate::gadgets::switch::IntEnabledSwitchPin::new(
                             $crate::gpio::Input::builder(
                                 self.$pin.take().unwrap(),
                                 $pull
@@ -554,7 +554,7 @@ macro_rules! define_switch {
         impl $name<'a> {
             pub fn pins(&mut self) -> (
                 $(
-                    &mut $crate::repeat!($pin, $crate::high_level::IntEnabledSwitchPin),
+                    &mut $crate::repeat!($pin, $crate::gadgets::switch::IntEnabledSwitchPin),
                 )+
             )
             {
