@@ -1,4 +1,4 @@
-//! Push button
+//! Push button.
 
 use crate::gadgets::switch::IntEnabledSwitchPin;
 
