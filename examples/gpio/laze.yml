@@ -1,7 +1,5 @@
 apps:
   - name: gpio
-    # context:
-    #   - stm32u083c-dk
     selects:
       - has_leds
       - has_buttons
