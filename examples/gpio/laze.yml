@@ -4,4 +4,4 @@ apps:
     #   - stm32u083c-dk
     selects:
       - has_leds
-      - has_switches
+      - has_buttons
