@@ -94,7 +94,6 @@ impl<'a> IntEnabledSwitchPin<'a> {
     }
 }
 
-
 #[macro_export]
 macro_rules! impl_intswitch_inner {
     ($inner:ident) => {

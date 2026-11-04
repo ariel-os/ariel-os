@@ -359,7 +359,6 @@ macro_rules! define_switches {
     }
 }
 
-
 /// Repeatedly calls [`define_switch`] with each item of a comma separated list.
 #[macro_export]
 macro_rules! define_buttons {
@@ -369,10 +368,9 @@ macro_rules! define_buttons {
         )*
     }
 }
-/// Creates a struct of the given `name`, containing all of the [`Input`](`crate::gpio::Input`)
-/// that are part of the switch.
+/// Packages an [`IntEnabledInput`](crate::gpio::IntEnabledInput) and an activity [`Level`](crate::gpio::Level).
 ///
-/// Currently the activity level denoted by `active` is not used in any way.
+/// This creates a button struct named `name` that can wait for single and double-clicks.
 #[cfg(feature = "external-interrupts")]
 #[macro_export]
 macro_rules! define_button {
@@ -630,7 +628,7 @@ macro_rules! select_pull {
     };
     (Up, $tt:tt) => {
         None
-    }
+    };
 }
 
 #[macro_export]
