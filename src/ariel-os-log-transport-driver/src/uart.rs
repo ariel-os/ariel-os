@@ -1,99 +1,104 @@
 use embassy_executor::Spawner;
-use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex, pipe::Pipe};
-use embedded_io_async::Write;
-use static_cell::ConstStaticCell;
+use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, mutex::Mutex};
+#[allow(unused, reason = "nrf doesn't use it yet")]
+use embedded_io::Write;
 
-use ariel_os_embassy_common::uart::Baudrate;
-use ariel_os_hal::hal::{OptionalPeripherals, TakePeripherals, uart::Uart};
+use ariel_os_hal::hal::{OptionalPeripherals, TakePeripherals};
 
 type UartAssignment = ariel_os_boards::pins::HOST_FACING_UART;
 
-const UART_PIPE_SIZE: usize = 1024;
-const UART_BUF_SIZE: usize = 32;
+static UART: Mutex<CriticalSectionRawMutex, Option<UartDriver>> = Mutex::new(None);
 
-static UART_LOG_PIPE: Pipe<CriticalSectionRawMutex, { UART_PIPE_SIZE }> = Pipe::new();
-
-static RX_BUF: ConstStaticCell<[u8; UART_BUF_SIZE]> = ConstStaticCell::new([0u8; UART_BUF_SIZE]);
-static TX_BUF: ConstStaticCell<[u8; UART_BUF_SIZE]> = ConstStaticCell::new([0u8; UART_BUF_SIZE]);
-
-static UART: Mutex<CriticalSectionRawMutex, Option<Uart<'static>>> = Mutex::new(None);
+#[cfg(context = "esp")]
+type UartDriver = esp_hal::uart::Uart<'static, esp_hal::Blocking>;
+#[cfg(context = "nrf")]
+type UartDriver = embassy_nrf::uarte::Uarte<'static>;
+#[cfg(context = "rp")]
+type UartDriver = embassy_rp::uart::Uart<'static, embassy_rp::uart::Blocking>;
+#[cfg(context = "stm32")]
+type UartDriver = embassy_stm32::usart::Uart<'static, embassy_stm32::mode::Blocking>;
 
 /// Initialize UART log transport.
-pub fn init(mut peripherals: &mut OptionalPeripherals, spawner: Spawner) {
-    let mut config = ariel_os_hal::hal::uart::Config::default();
-    config.baudrate = Baudrate::_115200;
-
-    let tx_buf = TX_BUF.take();
-    let rx_buf = RX_BUF.take();
-
+pub fn init(mut peripherals: &mut OptionalPeripherals, _spawner: Spawner) {
     let assignment: UartAssignment = peripherals.take_peripherals();
 
-    let uart = assignment
-        .build_with_config(rx_buf, tx_buf, config)
-        .unwrap();
+    let (tx, rx, peri) = assignment.retrieve_peripherals();
 
-    spawner.spawn(run().expect("start UART log task"));
+    let uart = cfg_select! {
 
+        context = "nrf" => {
+            {
+                let mut config = embassy_nrf::uarte::Config::default();
+                config.baudrate = embassy_nrf::buffered_uarte::Baudrate::Baud115200;
+
+                embassy_nrf::uarte::Uarte::new(peri,rx,tx,UartAssignment::irq(),config)
+            }
+
+        }
+        context = "esp" =>  {
+            {
+                let config = esp_hal::uart::Config::default().with_baudrate(115200);
+
+                esp_hal::uart::Uart::new(peri,config).unwrap().with_tx(tx)
+            }
+        }
+        context = "rp" => {
+            {
+                let mut config = embassy_rp::uart::Config::default();
+
+                config.baudrate = 115200;
+                embassy_rp::uart::Uart::new_blocking(peri, tx, rx, config)
+            }
+        }
+        context = "stm32" => {
+            {
+                let mut config = embassy_stm32::usart::Config::default();
+
+                config.baudrate = 115200;
+                embassy_stm32::usart::Uart::new_blocking(peri, rx, tx, config).unwrap()
+            }
+        }
+        _ => {
+            compile_error!("logging-over-uart is not supported on this platform.")
+        }
+    };
     {
         let mut guard = UART.try_lock().unwrap();
         guard.replace(uart);
     }
 
     ariel_os_log::transport::register_custom_transport(write_bytes, flush);
-    ariel_os_log::transport::register_finish_fn(finish);
 }
 
-// This is called before a power event (`exit`, `reboot`).
-fn finish() {
-    // TODO: figure out why `run` doesn't give back the lock when doing a `embassy_futures::yield_now().await;` just before exiting
-    if let Ok(mut guard) = UART.try_lock()
-        && let Some(mut uart) = guard.take()
-    {
-        embassy_futures::block_on(async {
-            let mut buf = [0u8; UART_BUF_SIZE];
-            loop {
-                // Read until empty.
-                let len = match UART_LOG_PIPE.try_read(&mut buf) {
-                    Ok(len) => len,
-                    // Error means empty.
-                    Err(_) => break,
-                };
-                let _ = uart.write_all(&buf[..len]).await;
-                let _ = uart.flush().await;
+fn write_bytes(bytes: &[u8]) {
+    if let Ok(mut guard) = UART.try_lock() {
+        if let Some(mut uart) = guard.take() {
+            cfg_select! {
+               context = "nrf" => {
+                   let _ = uart.blocking_write(bytes);
+                }
+                _=> {
+                    let _ = uart.write_all(bytes);
+                    let _ = uart.flush();
+                }
             }
-        })
+            guard.replace(uart);
+        }
     }
 }
 
-#[embassy_executor::task]
-async fn run() {
-    let mut buf = [0u8; UART_BUF_SIZE];
-    loop {
-        let len = UART_LOG_PIPE.read(&mut buf).await;
-        {
-            let mut guard = UART.lock().await;
-            if let Some(mut uart) = guard.take() {
-                let _ = uart.write_all(&buf[..len]).await;
-                let _ = uart.flush().await;
-
+fn flush() {
+    cfg_select! {
+        context = "nrf" => {
+            // nrf doesn't have a flush.
+        }
+        _ => {
+            if let Ok(mut guard) = UART.try_lock() {
+                if let Some(mut uart) = guard.take() {
+                        let _ = uart.flush();
+                }
                 guard.replace(uart);
             }
         }
     }
 }
-
-fn write_bytes(bytes: &[u8]) {
-    let end = bytes.len();
-
-    let mut total = 0;
-    while total < end {
-        let n = match UART_LOG_PIPE.try_write(&bytes[total..end]) {
-            Ok(n) => n,
-            // Pipe full, drop the data.
-            Err(_) => return,
-        };
-        total += n;
-    }
-}
-
-fn flush() {}

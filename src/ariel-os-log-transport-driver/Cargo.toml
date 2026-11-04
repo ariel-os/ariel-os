@@ -17,13 +17,30 @@ embassy-sync = { workspace = true, optional = true }
 featurecomb = { workspace = true }
 ariel-os-boards = { workspace = true, optional = true }
 ariel-os-embassy-common = { workspace = true, optional = true }
-embedded-io-async = { workspace = true, optional = true }
+embedded-io = { workspace = true, optional = true }
 
 # embedded-io-async-06 = { package = "embedded-io-async", version = "0.6", optional = true }
 embassy-futures = { workspace = true, optional = true }
-static_cell = { workspace = true, optional = true }
+
+embassy-time = { workspace = true }
+
+
+[target.'cfg(context = "nrf")'.dependencies]
+embassy-nrf = { workspace = true, optional = true }
+
+[target.'cfg(context = "rp")'.dependencies]
+embassy-rp = { workspace = true, optional = true }
+
+[target.'cfg(context = "stm32")'.dependencies]
+embassy-stm32 = { workspace = true, optional = true }
+
+[target.'cfg(context = "esp")'.dependencies]
+esp-hal = { workspace = true, optional = true }
+
 
 [features]
+
+hal = ["dep:esp-hal", "dep:embassy-nrf", "dep:embassy-rp", "dep:embassy-stm32"]
 
 # UART driver.
 uart = [
@@ -31,8 +48,8 @@ uart = [
   "dep:ariel-os-embassy-common",
   "dep:embassy-futures",
   "dep:embassy-sync",
-  "dep:embedded-io-async",
-  "dep:static_cell",
+  "dep:embedded-io",
+  "hal",
 ]
 
 _test = []

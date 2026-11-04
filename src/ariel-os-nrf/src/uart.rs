@@ -233,9 +233,38 @@ macro_rules! define_uart_drivers {
             // Ensure this peripheral has only one active Instance.
             paste::paste! {
                 static [< ACTIVE_ $peripheral >]: AtomicBool = AtomicBool::new(false);
+                bind_interrupts!(
+                    #[doc(hidden)]
+                    pub struct [<$peripheral Irqs >] {
+                    $interrupt => InterruptHandler<peripherals::$peripheral>,embassy_nrf::uarte::InterruptHandler<peripherals::$peripheral>;
+                });
+
             }
 
             impl<'d> $peripheral<'d> {
+
+                #[doc(hidden)]
+                pub fn take() -> embassy_nrf::Peri<'d,peripherals::$peripheral> {
+                    // Check if currently in use and prohibit using this UART again.
+                    // FIXME: using this function implies it will never be given back.
+                    paste::paste! {
+                        if [< ACTIVE_ $peripheral >].swap(true, Ordering::AcqRel) {
+                            panic!("UART peripheral already initialized")
+                        }
+                    }
+
+                    // Safety: we previously checked if this UART has been initialized somewhere else.
+                    unsafe {
+                        peripherals::$peripheral::steal()
+                    }
+                }
+                paste::paste! {
+                    #[doc(hidden)]
+                    pub fn irq() -> [<$peripheral Irqs >] {
+                        [<$peripheral Irqs >]
+                    }
+
+                }
                 /// Returns a driver implementing [`embedded_io_async`] for this Uart
                 /// peripheral.
                 ///
@@ -253,9 +282,6 @@ macro_rules! define_uart_drivers {
                     let mut uart_config = embassy_nrf::uarte::Config::default();
                     uart_config.baudrate = from_baudrate(Baudrate::from(config.baudrate));
                     uart_config.parity = from_parity(config.parity);
-                    bind_interrupts!(struct Irqs {
-                        $interrupt => InterruptHandler<peripherals::$peripheral>;
-                    });
 
                     // Check if we can initialize this peripheral (check if the value was previously false, set it to true).
                     paste::paste! {
@@ -281,19 +307,21 @@ macro_rules! define_uart_drivers {
                     // is active at once.
                     let ppi_group_peripheral = unsafe { peripherals::$ppi_group::steal() };
 
-                    let uart = BufferedUarte::new(
-                        uart_peripheral,
-                        timer_peripheral,
-                        ppi_ch1_peripheral,
-                        ppi_ch2_peripheral,
-                        ppi_group_peripheral,
-                        rx_pin.into_hal_peripheral(),
-                        tx_pin.into_hal_peripheral(),
-                        Irqs,
-                        uart_config,
-                        rx_buffer,
-                        tx_buffer
-                    );
+                    // paste::paste! {
+                        let uart = BufferedUarte::new(
+                            uart_peripheral,
+                            timer_peripheral,
+                            ppi_ch1_peripheral,
+                            ppi_ch2_peripheral,
+                            ppi_group_peripheral,
+                            rx_pin.into_hal_peripheral(),
+                            tx_pin.into_hal_peripheral(),
+                            Self::irq(),
+                            uart_config,
+                            rx_buffer,
+                            tx_buffer
+                        );
+                    // }
 
                     Ok(Uart::$peripheral(Self { uart }))
                 }

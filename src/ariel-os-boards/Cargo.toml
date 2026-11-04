@@ -18,6 +18,9 @@ workspace = true
 [dependencies.ariel-os-hal]
 workspace = true
 
+[dependencies.paste]
+workspace = true
+
 [features]
 no-boards = []
 

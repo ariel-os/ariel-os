@@ -236,6 +236,29 @@ macro_rules! define_uart {
             }
         }
 
+        impl $name {
+            pub fn retrieve_peripherals(
+                self,
+            ) -> (
+                $crate::__peripheral_ty!($tx),
+                $crate::__peripheral_ty!($rx),
+                $crate::__peripheral_ty!($device),
+            ) {
+                (
+                    self.tx,
+                    self.rx,
+                    $crate::hal::uart::$device::<'static>::take(),
+                )
+            }
+
+            paste::paste! {
+
+                pub fn irq() ->  ariel_os_hal::hal::uart::[<$device Irqs >] {
+                    $crate::hal::uart::$device::<'static>::irq()
+                }
+            }
+        }
+
         impl<'d> $name {
             pub fn build_with_config(
                 self,
