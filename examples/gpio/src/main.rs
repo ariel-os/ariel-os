@@ -24,11 +24,8 @@ async fn blinky(peripherals: Peripherals) {
 
     loop {
         ariel_os::log::info!("Is Button0 active ? {}", button.is_active());
-        let _ = embassy_futures::select::select(
-            button.wait_for_active(),
-            Timer::after_millis(300),
-        )
-        .await;
+        let _ = embassy_futures::select::select(button.wait_for_active(), Timer::after_millis(300))
+            .await;
 
         led0.toggle();
         Timer::after_millis(100).await;

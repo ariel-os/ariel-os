@@ -2,8 +2,8 @@
 
 use crate::gadgets::switch::IntEnabledSwitchPin;
 
-use embassy_time::Timer;
 use embassy_futures::select::{Either, select};
+use embassy_time::Timer;
 
 pub struct Button<'a> {
     switch: IntEnabledSwitchPin<'a>,
@@ -18,7 +18,12 @@ impl<'a> Button<'a> {
     pub async fn wait_for_double_click(&mut self, max_gap_ms: u64) {
         loop {
             self.switch.wait_for_activation_edge().await;
-            match select(self.switch.wait_for_activation_edge(), Timer::after_millis(max_gap_ms)).await {
+            match select(
+                self.switch.wait_for_activation_edge(),
+                Timer::after_millis(max_gap_ms),
+            )
+            .await
+            {
                 Either::First(_) => break,
                 Either::Second(_) => {}
             }
