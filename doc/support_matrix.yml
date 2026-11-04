@@ -1322,6 +1322,13 @@ builders:
     support:
       ble: not_available
 
+  particle-xenon:
+    chip: nrf52840
+    tier: "3"
+    support:
+      user_usb: needs_testing
+      ethernet_over_usb: needs_testing
+
   rpi-pico:
     chip: rp2040
     tier: "1"
@@ -1689,6 +1696,11 @@ boards:
     url: https://web.archive.org/web/20250311221943/https://www.nordicsemi.com/Products/Development-hardware/nrf9160-dk
     builders:
       - nrf9160dk-nrf9160
+
+  - name: Particle Xenon
+    url: https://docs.particle.io/reference/discontinued/hardware/xenon-datasheet/
+    builders:
+      - particle-xenon
 
   - name: Raspberry Pi Pico
     url: https://web.archive.org/web/20250101022830/https://www.raspberrypi.com/products/raspberry-pi-pico/
