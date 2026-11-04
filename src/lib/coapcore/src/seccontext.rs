@@ -58,6 +58,8 @@ struct SecContextState<Crypto: lakers::Crypto, GeneralClaims: generalclaims::Gen
     // This is Some(...) unless the stage is unusable.
     authorization: Option<GeneralClaims>,
     protocol_stage: SecContextStage<Crypto>,
+    // An observed OSCORE context, never evicted to make room (`OscoreEdhocHandler::set_pinned`).
+    pinned: bool,
 }
 
 impl<Crypto: lakers::Crypto, GeneralClaims: generalclaims::GeneralClaims> Default
@@ -67,6 +69,7 @@ impl<Crypto: lakers::Crypto, GeneralClaims: generalclaims::GeneralClaims> Defaul
         Self {
             authorization: None,
             protocol_stage: SecContextStage::Empty,
+            pinned: false,
         }
     }
 }
@@ -245,6 +248,20 @@ impl<
         self.last_correlation.take()
     }
 
+    /// Pins exactly the OSCORE contexts whose recipient ID `is_pinned` accepts and unpins all
+    /// others. A pinned context is never evicted to make room for another (EDHOC, ACE): only
+    /// unpinned ones rotate, and a handshake that finds none is refused with 5.03. Pinning changes
+    /// neither priority nor recency.
+    pub fn set_pinned(&mut self, mut is_pinned: impl FnMut(&[u8]) -> bool) {
+        // Not a level change, so `entries` may be mutated without re-sorting.
+        for entry in &mut self.pool.entries {
+            entry.pinned = match &entry.protocol_stage {
+                SecContextStage::Oscore(ctx) => is_pinned(ctx.recipient_id()),
+                _ => false,
+            };
+        }
+    }
+
     /// Protects another response to the request behind `correlation` into `response`.
     ///
     /// This sends Observe notifications (RFC 8613 §4.1.3.5): each gets a fresh sender sequence
@@ -275,6 +292,7 @@ impl<
                     let SecContextState {
                         protocol_stage: SecContextStage::Oscore(oscore_context),
                         authorization: Some(authorization),
+                        ..
                     } = matched
                     else {
                         return Err(NotificationError);
@@ -373,15 +391,26 @@ impl<
 
             let c_r = self.cown_but_not(c_i.as_slice());
 
-            let _evicted = self.pool.force_insert(SecContextState {
-                protocol_stage: SecContextStage::EdhocResponderProcessedM1 {
-                    c_r,
-                    c_i,
-                    responder,
-                    requested_cred_by_value,
-                },
-                authorization: self.authorities.nosec_authorization(),
-            });
+            // Never evict a pinned context; with none to spare, the handshake is refused.
+            let _evicted = self
+                .pool
+                .insert_evicting(
+                    SecContextState {
+                        protocol_stage: SecContextStage::EdhocResponderProcessedM1 {
+                            c_r,
+                            c_i,
+                            responder,
+                            requested_cred_by_value,
+                        },
+                        authorization: self.authorities.nosec_authorization(),
+                        pinned: false,
+                    },
+                    |s| !s.pinned,
+                )
+                .map_err(|_| {
+                    error!("No security context to spare: all are pinned.");
+                    CoAPError::service_unavailable()
+                })?;
 
             Ok(OwnRequestData::EdhocOkSend2(c_r))
         } else {
@@ -420,6 +449,7 @@ impl<
                             requested_cred_by_value,
                         },
                     authorization,
+                    ..
                 } = taken
                 else {
                     todo!();
@@ -449,6 +479,7 @@ impl<
                         c_r,
                     },
                     authorization,
+                    pinned: false,
                 };
                 Ok(message_2)
             },
@@ -539,6 +570,7 @@ impl<
         let SecContextState {
             protocol_stage: SecContextStage::Oscore(mut oscore_context),
             authorization: Some(authorization),
+            pinned,
         } = taken
         else {
             // FIXME: How'd we even get there? Should this be unreachable?
@@ -615,10 +647,19 @@ impl<
         // Storing it even on decryption failure to avoid DoS from the first message (but
         // FIXME, should we increment an error count and lower priority?)
         #[allow(clippy::used_underscore_binding, reason = "used only in debug asserts")]
-        let _evicted = self.pool.force_insert(SecContextState {
-            protocol_stage: SecContextStage::Oscore(oscore_context),
-            authorization: Some(authorization),
-        });
+        // Keeps the context's pin; evicts only an unpinned entry (the Empty one placed when it was
+        // taken, which is never pinned).
+        let _evicted = self
+            .pool
+            .insert_evicting(
+                SecContextState {
+                    protocol_stage: SecContextStage::Oscore(oscore_context),
+                    authorization: Some(authorization),
+                    pinned,
+                },
+                |s| !s.pinned,
+            )
+            .map_err(|_| CoAPError::service_unavailable())?;
         debug_assert!(
             matches!(
                 _evicted,
@@ -757,6 +798,7 @@ impl<
             SecContextState {
                 protocol_stage: SecContextStage::Oscore(context),
                 authorization: Some(authorization),
+                pinned: false,
             }
         } else {
             // Return the state. Best bet is that it was already advanced to an OSCORE
@@ -951,10 +993,18 @@ impl<
         );
         // FIXME: This should be flagged as "unconfirmed" for rapid eviction, as it could be part
         // of a replay.
-        let _evicted = self.pool.force_insert(SecContextState {
-            protocol_stage: SecContextStage::Oscore(oscore),
-            authorization: Some(generalclaims),
-        });
+        // Never evict a pinned context.
+        let _evicted = self
+            .pool
+            .insert_evicting(
+                SecContextState {
+                    protocol_stage: SecContextStage::Oscore(oscore),
+                    authorization: Some(generalclaims),
+                    pinned: false,
+                },
+                |s| !s.pinned,
+            )
+            .map_err(|_| CoAPError::service_unavailable())?;
 
         Ok(response)
     }
@@ -967,6 +1017,15 @@ impl<
 pub struct Correlation {
     kid: COwn,
     id: liboscore::raw::oscore_requestid_t,
+}
+
+impl Correlation {
+    /// Returns the recipient ID of the security context it belongs to (what
+    /// [`OscoreEdhocHandler::set_pinned`] pins by).
+    #[must_use]
+    pub fn recipient_id(&self) -> &[u8] {
+        self.kid.as_slice()
+    }
 }
 
 impl core::fmt::Debug for Correlation {
