@@ -35,6 +35,15 @@ builders:
   - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
+- name: blackpill-f401rc
+  parent: stm32f401rc
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=WWDG
 - name: decawave-dwm1001-dev
   parent: nrf52832
   provides:

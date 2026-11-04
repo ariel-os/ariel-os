@@ -1,0 +1,43 @@
+version: 0.4.1
+targets:
+  blackpill-f401rc:
+    chip: stm32f401rc
+    ariel:
+      swi: WWDG
+    leds:
+      # led0
+      - pin: PC13
+    buttons:
+      # button0
+      - pin: PA0
+
+    # More hardware documentation for this board:
+    #
+    # MCU: STM32F401RC
+    #
+    # Clock sources:
+    #   HSE: 25 MHz
+    #   LSE: 32.768 kHz
+    #
+    # USB-C:
+    #   USB_DM: PA11
+    #   USB_DP: PA12
+    #   USB device operation.
+    #   CC1 and CC2 pulled down to GND.
+    #   Board powered through USB 5V.
+    #   USB host operation is not supported by the board hardware.
+    #
+    # Debug:
+    #   SWDIO: PA13
+    #   SWCLK: PA14
+    #
+    # SPI1 memory footprint (unpopulated):
+    #   CS:   PA4
+    #   SCK:  PA5
+    #   MISO: PA6
+    #   MOSI: PA7
+    #
+    # Note: This footprint is intended for SPI flash memory.
+    # The actual board has no memory IC populated.
+    #
+    # Reference: https://stm32world.com/wiki/Black_Pill
