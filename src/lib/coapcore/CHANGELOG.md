@@ -1,5 +1,11 @@
 # Changelog of coapcore
 
+## Unreleased
+
+### Fixed
+
+* `alloc` is linked, so the crate builds when minicbor's `alloc` or `std` feature is enabled elsewhere in the build.
+
 ## 0.1.1
 
 ### Added

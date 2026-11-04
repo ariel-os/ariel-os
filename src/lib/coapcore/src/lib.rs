@@ -58,6 +58,17 @@
 #![cfg_attr(feature = "_nightly_docs", feature(doc_cfg))]
 #![deny(missing_docs)]
 
+// Derive macros of dependencies may expand to `alloc` items (or to their `std` prelude names, such
+// as a bare `format!`) depending on features that any crate in the build enables. For example,
+// minicbor-derive expands `#[cbor(tag(..))]` to `alloc::format!` once minicbor's `alloc` feature
+// is enabled. Linking `alloc` lets such expansions resolve.
+#[macro_use]
+#[allow(
+    unused_imports,
+    reason = "used only by derive expansions that need `alloc`"
+)]
+extern crate alloc;
+
 mod iana;
 
 mod helpers;
