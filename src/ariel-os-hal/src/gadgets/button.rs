@@ -44,7 +44,7 @@ impl Button {
         self.switch.wait_for_activation_edge()
     }
 
-    /// Waits for the button to be pressed after first being released.
+    /// Waits for the button to be released after first being pressed.
     #[cfg(feature = "external-interrupts")]
     pub fn wait_for_next_release(&mut self) -> impl Future<Output = ()> {
         self.switch.wait_for_deactivation_edge()
