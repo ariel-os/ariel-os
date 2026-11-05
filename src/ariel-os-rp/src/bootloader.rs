@@ -13,7 +13,7 @@ use embassy_sync::{
 // Duplicated from ariel-os-storage, may need to unify this somehow.
 const FLASH_OFFSET: u32 = 0x1000_0000;
 // Duplicated from storage.rs, should this be moved in lib.rs or a common file?.
-const FLASH_SIZE: usize = 2 * 1024 * 1024;
+const FLASH_SIZE: usize = ariel_os_utils::usize_from_env!("CHIP_NVM_SIZE_BYTES", "flash size");
 
 type Flash = embassy_rp::flash::Flash<'static, FLASH, Blocking, FLASH_SIZE>;
 

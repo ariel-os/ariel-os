@@ -428,7 +428,9 @@ contexts:
       - has_storage_support
     env:
       CHIP_NVM_START_ADDRESS: "0x10000000"
-      CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      # This is normally 4096 !
+      # This is doubled to work around a memsolve issue.
+      CHIP_NVM_PAGE_SIZE_BYTES: "16384"
       CHIP_NVM_SIZE_BYTES: $(2048 * 1024)
       # Regular RAM (512KiB) consists of 8 banks, SRAM0-SRAM7, with a striped
       # mapping. This is usually good for performance, as it distributes load
