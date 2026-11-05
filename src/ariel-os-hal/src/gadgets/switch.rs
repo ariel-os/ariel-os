@@ -1,47 +1,38 @@
-//! Higher Level drivers.
-
-use crate::gpio::{Input, Level};
+//! Higher Level drivers for switches.
+use crate::gpio::Level;
 
 #[cfg(feature = "external-interrupts")]
 use crate::gpio::IntEnabledInput;
 
+#[cfg(not(feature = "external-interrupts"))]
+use crate::gpio::Input;
+
 /// The combination of an Input and an active Level.
-pub struct SwitchPin<'a> {
-    input: Input<'a>,
+///
+/// If the `"external-interrupts"` feature is enabled
+/// then inner input supports interrupts and [`SwitchPin`]
+/// implements the `wait_for_X` methods.
+pub struct SwitchPin {
+    #[cfg(feature = "external-interrupts")]
+    input: IntEnabledInput<'static>,
+
+    #[cfg(not(feature = "external-interrupts"))]
+    input: Input<'static>,
     active: Level,
 }
 
-impl<'a> SwitchPin<'a> {
+impl SwitchPin {
     /// Returns a configured [`SwitchPin`].
     #[must_use]
-    pub fn new(input: Input<'a>, active: Level) -> Self {
+    #[cfg(not(feature = "external-interrupts"))]
+    pub fn new(input: Input<'static>, active: Level) -> Self {
         Self { input, active }
     }
-    /// Returns whether the pin is active.
-    #[must_use]
-    pub fn is_active(&self) -> bool {
-        self.input.get_level() == self.active
-    }
 
-    /// Returns whether the pin is inactive.
+    /// Returns a configured [`SwitchPin`].
     #[must_use]
-    pub fn is_inactive(&self) -> bool {
-        self.input.get_level() != self.active
-    }
-}
-
-#[cfg(feature = "external-interrupts")]
-/// The combination of an [`IntEnabledInput`] and an active [`Level`].
-pub struct IntEnabledSwitchPin<'a> {
-    input: IntEnabledInput<'a>,
-    active: Level,
-}
-
-#[cfg(feature = "external-interrupts")]
-impl<'a> IntEnabledSwitchPin<'a> {
-    /// Returns a configured [`IntEnabledSwitchPin`].
-    #[must_use]
-    pub fn new(input: IntEnabledInput<'a>, active: Level) -> Self {
+    #[cfg(feature = "external-interrupts")]
+    pub fn new(input: IntEnabledInput<'static>, active: Level) -> Self {
         Self { input, active }
     }
 
@@ -56,7 +47,10 @@ impl<'a> IntEnabledSwitchPin<'a> {
     pub fn is_inactive(&self) -> bool {
         self.input.get_level() != self.active
     }
+}
 
+#[cfg(feature = "external-interrupts")]
+impl SwitchPin {
     /// Asynchronously wait for the pin to be active.
     /// Returns immediately if the pin is active.
     pub async fn wait_for_active(&mut self) {
@@ -94,8 +88,9 @@ impl<'a> IntEnabledSwitchPin<'a> {
     }
 }
 
+#[cfg(feature = "external-interrupts")]
 #[macro_export]
-macro_rules! impl_intswitch_inner {
+macro_rules! impl_switch_inner {
     ($inner:ident) => {
         /// Returns whether the pin is active.
         pub fn is_active(&self) -> bool {
@@ -132,6 +127,7 @@ macro_rules! impl_intswitch_inner {
     };
 }
 
+#[cfg(not(feature = "external-interrupts"))]
 #[macro_export]
 macro_rules! impl_switch_inner {
     ($inner:ident) => {

@@ -307,10 +307,8 @@ dependencies = [
  "const_panic",
  "embassy-embedded-hal",
  "embassy-executor",
- "embassy-futures",
  "embassy-hal-internal",
  "embassy-sync 0.8.0",
- "embassy-time",
  "embassy-usb",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
@@ -5667,6 +5665,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "sbd-gpio"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-futures",
 ]
 
 [[package]]

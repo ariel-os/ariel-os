@@ -16,9 +16,6 @@ embassy-sync = { workspace = true, optional = true }
 embedded-hal = { workspace = true }
 embedded-hal-async = { workspace = true }
 
-embassy-futures = { workspace = true }
-embassy-time = { workspace = true }
-
 [target.'cfg(context = "esp")'.dependencies]
 ariel-os-esp = { workspace = true }
 
