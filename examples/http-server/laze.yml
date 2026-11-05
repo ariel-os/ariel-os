@@ -9,6 +9,7 @@ apps:
       - ?button-reading
     conflicts:
       - ram-small
+      - ram-tiny
       # needs `feature(impl_trait_in_assoc_type)`
       - stable
 
