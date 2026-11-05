@@ -275,7 +275,7 @@ idle-threads = ["ariel-os-threads/idle-threads"]
 # ## Boot loader / OTA related features
 
 # Unlocks the ability to write updates to the storage.
-device-update = ["dep:ariel-os-device-update"]
+device-update = ["dep:ariel-os-device-update", "ariel-os-rt/device-update"]
 
 # ariel-os-bootloader *application mode* (chosen by laze)
 ariel-os-bootloader-application = [
