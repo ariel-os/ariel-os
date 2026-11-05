@@ -73,18 +73,20 @@ impl SwitchPin {
 
     /// Asynchronously waits for the input level to transition from inactive to active.
     pub async fn wait_for_activation_edge(&mut self) {
-        if self.is_active() {
-            self.wait_for_inactive().await;
+        if self.active == Level::High {
+            self.input.wait_for_rising_edge().await;
+        } else {
+            self.input.wait_for_falling_edge().await;
         }
-        self.wait_for_active().await;
     }
 
     /// Asynchronously waits for the input level to transition from active to inactive.
     pub async fn wait_for_deactivation_edge(&mut self) {
-        if self.is_inactive() {
-            self.wait_for_active().await;
+        if self.active == Level::High {
+            self.input.wait_for_falling_edge().await;
+        } else {
+            self.input.wait_for_rising_edge().await;
         }
-        self.wait_for_inactive().await;
     }
 }
 
