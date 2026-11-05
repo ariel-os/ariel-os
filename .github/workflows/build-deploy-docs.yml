@@ -36,7 +36,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+
   build:
+    permissions:
+      pull-requests: write
     if: github.repository == 'ariel-os/ariel-os'
     runs-on: ubuntu-latest
     steps:
@@ -63,7 +66,13 @@ jobs:
       # faster generation.
       - name: Build rustdoc docs
         run: |
-          RUSTDOCFLAGS='--cfg nightly -Z unstable-options --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0 ' cargo doc \
+          RUSTDOCFLAGS='
+            --cfg nightly
+            -Z unstable-options
+            --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0
+            --extern-html-root-url static_cell=https://docs.rs/static_cell/latest
+            --extern-html-root-url futures_core=https://docs.rs/futures-core/0.3.31' \
+            cargo doc \
               --no-deps \
               -p ariel-os \
               -p ariel-os-sensors \
@@ -173,6 +182,34 @@ jobs:
           sed -i "s/\[\"ariel_os\",\[\"\",\[\],\[\"lib.rs\",\"sensors.rs\"\]\]\]/[\"ariel_os\",[\"\",[],[\"lib.rs\",\"sensors.rs\"]]],$TEXT/g" ./_site/dev/docs/api/src-files.js
           # hack ariel-os-esp in the sidebar
           sed -i 's/"ariel_os","ariel_os_nrf"/"ariel_os","ariel_os_esp","ariel_os_nrf"/g' ./_site/dev/docs/api/crates.js
+
+      - name: Check the API docs links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8  # v2
+        with:
+          # Not checking fragments of the from 'url#123-127' because they rely on user-side Javascript and thus cannot be checked by lychee
+          # Also not checking '*/all.html' because they stem from `doc(inline)` crate reexports.
+          # Also not checking verbatims because all of those errors are links that are written by scripts.
+          args: --root-dir _site/dev/docs/api --require-https --no-progress --include-fragments=full --exclude '\#\d+-\d+' --exclude '.+/all\.html' --offline _site/dev/docs/api
+          fail: false
+
+      - name: Format link checker results for PR comment
+        run: |
+          # Only keep the # Summary and the below table
+          # This (/{d}) deletes every line between the first '##\s'
+          # (here '## Errors per input') and a non existent '$EOF'. This
+          # extends the match to the end of the file.
+          sed '/^##\s/,/$EOF/{d}' lychee/out.md >> summary-comment.md
+          # put the rest of the status check
+          echo "<details>" >> summary-comment.md
+          sed '/^#\s/,/^##\s/{d}' lychee/out.md >> summary-comment.md
+          echo "</details>" >> summary-comment.md
+
+      - name: Comment Summary on PR
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3
+        with:
+          header: stats
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: summary-comment.md
 
       - name: Install mdbook
         uses: taiki-e/install-action@1168f6810a3cb30a3514bf5756a3b7f0422c6df8 # v2
