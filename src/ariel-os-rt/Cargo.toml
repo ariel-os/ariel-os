@@ -67,8 +67,9 @@ memory-x = ["dep:ld-memory", "dep:memsolve"]
 
 embassy-boot-loader = ["embassy-boot"]
 embassy-boot-application = ["embassy-boot"]
-embassy-boot = []
+embassy-boot = ["device-update"]
 esp-partition = ["dep:esp-idf-part", "memsolve/esp"]
+device-update = []
 
 # features needed for `cargo test`
 _test = []
