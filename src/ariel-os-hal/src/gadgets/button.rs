@@ -22,13 +22,12 @@ impl Button {
         self.switch.is_inactive()
     }
 
-    /// Waits for the button to be clicked.
+    /// Waits for the button to be released.
     ///
-    /// This will not return until the button is depressed enough
-    /// to register as released and is then pressed again.
+    /// Returns immediately if it is already being released.
     #[cfg(feature = "external-interrupts")]
-    pub fn wait_for_click(&mut self) -> impl Future<Output = ()> {
-        self.switch.wait_for_activation_edge()
+    pub fn wait_for_released(&mut self) -> impl Future<Output = ()> {
+        self.switch.wait_for_inactive()
     }
 
     /// Waits for the button to be pressed.
@@ -37,6 +36,18 @@ impl Button {
     #[cfg(feature = "external-interrupts")]
     pub fn wait_for_pressed(&mut self) -> impl Future<Output = ()> {
         self.switch.wait_for_active()
+    }
+
+    /// Waits for the button to be pressed after first being released.
+    #[cfg(feature = "external-interrupts")]
+    pub fn wait_for_next_press(&mut self) -> impl Future<Output = ()> {
+        self.switch.wait_for_activation_edge()
+    }
+
+    /// Waits for the button to be pressed after first being released.
+    #[cfg(feature = "external-interrupts")]
+    pub fn wait_for_next_release(&mut self) -> impl Future<Output = ()> {
+        self.switch.wait_for_deactivation_edge()
     }
 }
 
@@ -70,12 +81,11 @@ macro_rules! impl_button_inner {
             self.$inner.is_released()
         }
 
-        /// Waits for the button to be clicked.
+        /// Waits for the button to be released.
         ///
-        /// This will not return until the button is depressed enough
-        /// to register as released and is then pressed again.
-        pub fn wait_for_click(&mut self) -> impl Future<Output = ()> {
-            self.$inner.wait_for_click()
+        /// Returns immediately if it is already released.
+        pub fn wait_for_released(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_released()
         }
 
         /// Waits for the button to be pressed.
@@ -83,6 +93,16 @@ macro_rules! impl_button_inner {
         /// Returns immediately if it is already being pressed.
         pub fn wait_for_pressed(&mut self) -> impl Future<Output = ()> {
             self.$inner.wait_for_pressed()
+        }
+
+        /// Waits for the button to be pressed after first being released.
+        pub fn wait_for_next_press(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_next_press()
+        }
+
+        /// Waits for the button to be pressed after first being released.
+        pub fn wait_for_next_release(&mut self) -> impl Future<Output = ()> {
+            self.$inner.wait_for_next_release()
         }
     };
 }
