@@ -5,11 +5,11 @@ pub mod pins {
         LedPeripherals { led0 : P0_00, led1 : P0_01, led2 : P0_04, led3 : P0_05, }
     );
     ariel_os_hal::define_buttons![
-        { name : Button0, pin : P0_08, pull : None, active : Low, aliases : [Button_1,
+        { name : Button0, pin : P0_08, pull : None, active : Low, aliases : [BUTTON1,
         SW1,] }, { name : Button1, pin : P0_09, pull : None, active : Low, aliases :
-        [Button_2, SW2,] }, { name : Button2, pin : P0_18, pull : None, active : Low,
-        aliases : [Button_3, SW3,] }, { name : Button3, pin : P0_19, pull : None, active
-        : Low, aliases : [Button_4, SW4,] },
+        [BUTTON2, SW2,] }, { name : Button2, pin : P0_18, pull : None, active : Low,
+        aliases : [BUTTON3, SW3,] }, { name : Button3, pin : P0_19, pull : None, active :
+        Low, aliases : [BUTTON4, SW4,] },
     ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : SERIAL0, sda : P0_30, scl : P0_31, aliases : [] },

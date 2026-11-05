@@ -20,7 +20,7 @@ targets:
         active: low
         aliases:
           - SW3
-          - Button 1
+          - BUTTON1
     i2c:
       - sda_pin: P0_09
         scl_pin: P0_08
@@ -78,7 +78,7 @@ targets:
         active: low
         aliases:
           - SW4
-          - Button 2
+          - BUTTON2
     i2c:
       - sda_pin: P1_03
         scl_pin: P1_02

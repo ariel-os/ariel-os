@@ -6,7 +6,7 @@ pub mod pins {
     );
     ariel_os_hal::define_buttons![
         { name : Button0, pin : P0_24, pull : None, active : Low, aliases : [SW4,
-        Button_2,] },
+        BUTTON2,] },
     ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : SERIAL0, sda : P1_03, scl : P1_02, aliases :

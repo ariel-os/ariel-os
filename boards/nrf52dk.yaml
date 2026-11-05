@@ -41,7 +41,7 @@ targets:
         active: low
         aliases:
           - SW3
-          - BUTTON13
+          - BUTTON3
       # button3
       - pin: P0_16
         resistor: none

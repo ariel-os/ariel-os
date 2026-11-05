@@ -97,7 +97,6 @@ builders:
 - name: heltec-wifi-lora-32-v3
   parent: esp32s3fx8
   provides:
-  - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
   - has_leds

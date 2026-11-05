@@ -23,5 +23,5 @@ targets:
     #   # button0
     #   - # note: this is configurable via UICR
     #     pin: P0_18
-    #     resistor: active
+    #     resistor: none
     #     active: low

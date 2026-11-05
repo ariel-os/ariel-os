@@ -30,28 +30,28 @@ targets:
         resistor: none
         active: low
         aliases:
-          - Button 1
+          - BUTTON1
           - SW1
       # button1
       - pin: P0_09
         resistor: none
         active: low
         aliases:
-          - Button 2
+          - BUTTON2
           - SW2
       # button2
       - pin: P0_18
         resistor: none
         active: low
         aliases:
-          - Button 3
+          - BUTTON3
           - SW3
       # button3
       - pin: P0_19
         resistor: none
         active: low
         aliases:
-          - Button 4
+          - BUTTON4
           - SW4
     i2c:
       # Only available when a shield is inserted and if enabled by the interface

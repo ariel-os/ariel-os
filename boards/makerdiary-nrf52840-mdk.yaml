@@ -22,7 +22,7 @@ targets:
     buttons:
       # button0
       - pin: P1_00
-        resistor: none # Could not find on the schematic
+        resistor: none
         active: low
         aliases:
           - USR_BTN

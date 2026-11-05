@@ -13,8 +13,8 @@ targets:
     buttons:
       # button0
       - pin: PC13
-        resistor: pullup
-        active: low
+        resistor: pulldown
+        active: high
         aliases:
           - B1
           - USER

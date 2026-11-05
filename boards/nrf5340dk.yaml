@@ -29,28 +29,24 @@ targets:
         active: low
         aliases:
           - SW1
-          - Button1
       # button1
       - pin: P0_24
         resistor: none
         active: low
         aliases:
           - SW2
-          - Button2
       # button2
       - pin: P0_08
         resistor: none
         active: low
         aliases:
           - SW3
-          - Button3
       # button3
       - pin: P0_09
         resistor: none
         active: low
         aliases:
           - SW4
-          - Button4
     i2c:
       # Only available when a shield is inserted.
       - sda_pin: P1_02

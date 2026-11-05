@@ -31,7 +31,7 @@ targets:
     buttons:
       # button0
       - pin: P0_02
-        resistor: none # Couldn't find a proper schematic
+        resistor: none
         active: low
         aliases:
           - BT_WAKE_UP
