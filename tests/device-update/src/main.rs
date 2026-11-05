@@ -17,6 +17,8 @@ static APP_B: &[u8] = include_bytes!("../bins/hello-world.bin");
 static APP_B: &[u8] = include_bytes!("../bins/pico-serial.bin");
 #[cfg(context = "rp235xa")]
 static APP_B: &[u8] = include_bytes!("../bins/pico2-usb-serial.bin");
+#[cfg(context = "esp32s3")]
+static APP_B: &[u8] = include_bytes!("../bins/esp32s3-hello-world.bin");
 
 async fn update() {
     let mut updater_state = HalDeviceUpdaterState::new();
