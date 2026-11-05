@@ -335,15 +335,46 @@ fn gen_esp_partition_table() {
             .set_address(0xf000)
             .add_esp_metadata(Type::Data, DataType::Phy),
     );
-    memory.add_section(
-        Section::new("factory")
-            .unwrap()
-            .set_maximize(true)
-            // The alignment needs to be 0x10000, see [1].
-            // We believe this is due to NVS MMU limitations.
-            .set_address_align(0x10000)
-            .add_esp_metadata(Type::App, AppType::Factory),
-    );
+
+    if cfg!(not(feature = "device-update")) {
+        memory.add_section(
+            Section::new("factory")
+                .unwrap()
+                .set_maximize(true)
+                // The alignment needs to be 0x10000, see [1].
+                // We believe this is due to NVS MMU limitations.
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Factory),
+        );
+    } else {
+        // See https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/ota.html.
+        // Not using "factory" partition so this is more in line with the embassy boot a/b setup.
+        memory.add_section(
+            Section::new("ota_0")
+                .unwrap()
+                .set_maximize(true)
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Ota_0),
+        );
+        memory.add_section(
+            Section::new("ota_1")
+                .unwrap()
+                .set_maximize(true)
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Ota_1),
+        );
+        memory.add_section(
+            Section::new("otadata")
+                .unwrap()
+                // Upstream says "The OTA data partition is two flash sectors (0x2000 bytes) in
+                // size".
+                .set_size(0x2000)
+                // page aligned
+                .set_address_align(0x1000)
+                .add_esp_metadata(Type::Data, DataType::Ota),
+        );
+    }
+
     let layout = memory.resolve_layout().unwrap();
     let partition_table = layout.into_esp_partition().to_csv().unwrap();
 
