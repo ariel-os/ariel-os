@@ -24,14 +24,14 @@ pub fn init(mut peripherals: &mut OptionalPeripherals, _spawner: Spawner) {
 
     let (tx, rx, peri) = assignment.retrieve_peripherals();
 
-    let uart = cfg_select! {
+    let mut uart = cfg_select! {
 
         context = "nrf" => {
             {
                 let mut config = embassy_nrf::uarte::Config::default();
                 config.baudrate = embassy_nrf::buffered_uarte::Baudrate::Baud115200;
 
-                embassy_nrf::uarte::Uarte::new(peri,rx,tx,UartAssignment::irq(),config)
+                embassy_nrf::uarte::Uarte::new_blocking(peri,tx,rx,config)
             }
 
         }
@@ -62,6 +62,10 @@ pub fn init(mut peripherals: &mut OptionalPeripherals, _spawner: Spawner) {
             compile_error!("logging-over-uart is not supported on this platform.")
         }
     };
+
+    uart.write(b"test").unwrap();
+    uart.flush().unwrap();
+
     {
         let mut guard = UART.try_lock().unwrap();
         guard.replace(uart);

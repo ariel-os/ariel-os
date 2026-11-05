@@ -233,12 +233,6 @@ macro_rules! define_uart_drivers {
             // Ensure this peripheral has only one active Instance.
             paste::paste! {
                 static [< ACTIVE_ $peripheral >]: AtomicBool = AtomicBool::new(false);
-                bind_interrupts!(
-                    #[doc(hidden)]
-                    pub struct [<$peripheral Irqs >] {
-                    $interrupt => InterruptHandler<peripherals::$peripheral>,embassy_nrf::uarte::InterruptHandler<peripherals::$peripheral>;
-                });
-
             }
 
             impl<'d> $peripheral<'d> {
@@ -258,13 +252,7 @@ macro_rules! define_uart_drivers {
                         peripherals::$peripheral::steal()
                     }
                 }
-                paste::paste! {
-                    #[doc(hidden)]
-                    pub fn irq() -> [<$peripheral Irqs >] {
-                        [<$peripheral Irqs >]
-                    }
 
-                }
                 /// Returns a driver implementing [`embedded_io_async`] for this Uart
                 /// peripheral.
                 ///
@@ -290,6 +278,13 @@ macro_rules! define_uart_drivers {
                         }
                     }
 
+                    bind_interrupts!(
+                        #[doc(hidden)]
+                        pub struct Irqs{
+                        $interrupt => InterruptHandler<peripherals::$peripheral>,embassy_nrf::uarte::InterruptHandler<peripherals::$peripheral>;
+                    });
+
+
                     // FIXME(safety): enforce that the init code indeed has run
                     // SAFETY: We check with an AtomicBool that only one instance of this peripheral
                     // is active at once.
@@ -308,19 +303,19 @@ macro_rules! define_uart_drivers {
                     let ppi_group_peripheral = unsafe { peripherals::$ppi_group::steal() };
 
                     // paste::paste! {
-                        let uart = BufferedUarte::new(
-                            uart_peripheral,
-                            timer_peripheral,
-                            ppi_ch1_peripheral,
-                            ppi_ch2_peripheral,
-                            ppi_group_peripheral,
-                            rx_pin.into_hal_peripheral(),
-                            tx_pin.into_hal_peripheral(),
-                            Self::irq(),
-                            uart_config,
-                            rx_buffer,
-                            tx_buffer
-                        );
+                    let uart = BufferedUarte::new(
+                        uart_peripheral,
+                        tx_pin.into_hal_peripheral(),
+                        rx_pin.into_hal_peripheral(),
+                        timer_peripheral,
+                        ppi_ch1_peripheral,
+                        ppi_ch2_peripheral,
+                        ppi_group_peripheral,
+                        Irqs,
+                        tx_buffer,
+                        rx_buffer,
+                        uart_config,
+                    );
                     // }
 
                     Ok(Uart::$peripheral(Self { uart }))
