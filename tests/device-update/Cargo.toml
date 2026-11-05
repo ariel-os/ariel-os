@@ -1,0 +1,15 @@
+[package]
+name = "test-device-update"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+ariel-os = { path = "../../src/ariel-os", features = [
+  "external-interrupts",
+  "device-update",
+] }
+ariel-os-boards = { path = "../../src/ariel-os-boards" }
+
+[lints]
+workspace = true
