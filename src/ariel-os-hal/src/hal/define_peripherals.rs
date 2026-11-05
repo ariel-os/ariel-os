@@ -250,13 +250,6 @@ macro_rules! define_uart {
                     $crate::hal::uart::$device::<'static>::take(),
                 )
             }
-
-            paste::paste! {
-
-                pub fn irq() ->  ariel_os_hal::hal::uart::[<$device Irqs >] {
-                    $crate::hal::uart::$device::<'static>::irq()
-                }
-            }
         }
 
         impl<'d> $name {

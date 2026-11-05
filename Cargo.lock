@@ -141,7 +141,6 @@ version = "0.0.0"
 dependencies = [
  "ariel-os-embassy-common",
  "ariel-os-hal",
- "paste",
 ]
 
 [[package]]

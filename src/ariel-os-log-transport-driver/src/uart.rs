@@ -12,7 +12,7 @@ static UART: Mutex<CriticalSectionRawMutex, Option<UartDriver>> = Mutex::new(Non
 #[cfg(context = "esp")]
 type UartDriver = esp_hal::uart::Uart<'static, esp_hal::Blocking>;
 #[cfg(context = "nrf")]
-type UartDriver = embassy_nrf::uarte::Uarte<'static>;
+type UartDriver = embassy_nrf::uarte::Uarte<'static, embassy_nrf::mode::Blocking>;
 #[cfg(context = "rp")]
 type UartDriver = embassy_rp::uart::Uart<'static, embassy_rp::uart::Blocking>;
 #[cfg(context = "stm32")]
@@ -77,32 +77,19 @@ pub fn init(mut peripherals: &mut OptionalPeripherals, _spawner: Spawner) {
 fn write_bytes(bytes: &[u8]) {
     if let Ok(mut guard) = UART.try_lock() {
         if let Some(mut uart) = guard.take() {
-            cfg_select! {
-               context = "nrf" => {
-                   let _ = uart.blocking_write(bytes);
-                }
-                _=> {
-                    let _ = uart.write_all(bytes);
-                    let _ = uart.flush();
-                }
-            }
+            let _ = uart.write_all(bytes);
+            let _ = uart.flush();
+
             guard.replace(uart);
         }
     }
 }
 
 fn flush() {
-    cfg_select! {
-        context = "nrf" => {
-            // nrf doesn't have a flush.
-        }
-        _ => {
-            if let Ok(mut guard) = UART.try_lock() {
-                if let Some(mut uart) = guard.take() {
-                        let _ = uart.flush();
-                }
-                guard.replace(uart);
-            }
+    if let Ok(mut guard) = UART.try_lock() {
+        if let Some(mut uart) = guard.take() {
+            let _ = uart.flush();
+            guard.replace(uart);
         }
     }
 }
