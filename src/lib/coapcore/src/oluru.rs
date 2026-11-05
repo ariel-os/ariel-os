@@ -237,6 +237,32 @@ impl<T: PriorityLevel, const N: usize, const L: usize> OrderedPool<T, N, L> {
         }
     }
 
+    /// Inserts an element, evicting if full the lowest-priority, least recently used entry for
+    /// which `evictable` holds.
+    ///
+    /// This allows pinning entries. If the pool is full and no entry is evictable, the element is
+    /// returned as an [`Err`] and nothing changes.
+    pub fn insert_evicting(
+        &mut self,
+        new: T,
+        evictable: impl Fn(&T) -> bool,
+    ) -> Result<Option<T>, T> {
+        if self.entries.len() < N {
+            return Ok(self.force_insert(new));
+        }
+        let Some(position) = self
+            .sorted
+            .iter()
+            .rposition(|&index| evictable(&self.entries[usize::from(index)]))
+        else {
+            return Err(new);
+        };
+        let slot = &mut self.entries[usize::from(self.sorted[position])];
+        let evicted = core::mem::replace(slot, new);
+        self.touch(position);
+        Ok(Some(evicted))
+    }
+
     fn touch(&mut self, position: usize) {
         let level = self.entries[usize::from(self.sorted[position])].level();
         debug_assert!(level < L, "Level exceeds limit L={L} in type");
