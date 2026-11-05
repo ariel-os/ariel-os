@@ -415,7 +415,7 @@ macro_rules! define_button {
 /// that are part of the switch.
 ///
 /// if the `"external-interrupts"` feature is enabled then the inputs will be [`IntEnabledInput`](crate::gpio::IntEnabledInput)
-/// instead. The individual [`SwitchPin`](crate::gadgets::switch::SwitchPin)s, and the struct `name` itsef in case of
+/// instead. The individual [`SwitchPin`](crate::gadgets::switch::SwitchPin)s, and the struct `name` itself in case of
 /// single pin switched, will implement `wait_for_X` async methods using the interrupts.
 #[macro_export]
 macro_rules! define_switch {

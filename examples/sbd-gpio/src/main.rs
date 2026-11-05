@@ -4,7 +4,8 @@
 use ariel_os_boards::pins;
 
 use ariel_os::{
-    gpio::{Level, Output}, time::Timer,
+    gpio::{Level, Output},
+    time::Timer,
 };
 
 #[cfg(not(feature = "use-switches"))]
@@ -13,15 +14,12 @@ ariel_os::hal::group_peripherals!(Peripherals {
     button: pins::Button0,
 });
 
-
 #[cfg(feature = "use-switches")]
 ariel_os::hal::group_peripherals!(Peripherals {
     leds: pins::LedPeripherals,
     button: pins::Button0,
     switch: pins::Switch0,
 });
-
-
 
 #[ariel_os::task(autostart, peripherals)]
 async fn blinky(peripherals: Peripherals) {
@@ -38,13 +36,15 @@ async fn blinky(peripherals: Peripherals) {
         ariel_os::log::info!("Turning the switch off will end the program");
     }
 
-
     loop {
         #[cfg(feature = "use-switches")]
-        if switch.is_inactive() { break; }
+        if switch.is_inactive() {
+            break;
+        }
 
-        let _ = embassy_futures::select::select(button.wait_for_pressed(), Timer::after_millis(300))
-            .await;
+        let _ =
+            embassy_futures::select::select(button.wait_for_pressed(), Timer::after_millis(300))
+                .await;
 
         led0.toggle();
         Timer::after_millis(100).await;
