@@ -4676,8 +4676,7 @@ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 [[package]]
 name = "memsolve"
 version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58ae959ac8e83a4c97133d3ca122b14ff9384545d284a1384193719114cbcd25"
+source = "git+https://github.com/ariel-os/memsolve?rev=0f748cb102b244f7ffb6089312fc8e5953b76111#0f748cb102b244f7ffb6089312fc8e5953b76111"
 dependencies = [
  "conv",
  "esp-idf-part",
