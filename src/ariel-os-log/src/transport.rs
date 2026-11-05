@@ -12,6 +12,7 @@ use embassy_sync::once_lock::OnceLock;
 
 static TRANSPORT_WRITE_BYTES_FN: OnceLock<fn(&[u8])> = OnceLock::new();
 static TRANSPORT_FLUSH_FN: OnceLock<fn()> = OnceLock::new();
+static TRANSPORT_FINISH_FN: OnceLock<fn()> = OnceLock::new();
 
 /// Registers a custom transport.
 ///
@@ -28,6 +29,21 @@ static TRANSPORT_FLUSH_FN: OnceLock<fn()> = OnceLock::new();
 pub fn register_custom_transport(write_bytes_fn: fn(&[u8]), flush_fn: fn()) {
     let _ = TRANSPORT_WRITE_BYTES_FN.init(write_bytes_fn);
     let _ = TRANSPORT_FLUSH_FN.init(flush_fn);
+}
+
+/// Register a function that would be called before execution is stopped on the core (shutdown, reboot).
+/// This function should block execution until all the pending bytes are written through the transport.
+pub fn register_finish_fn(finish: fn()) {
+    let _ = TRANSPORT_FINISH_FN.init(finish);
+}
+
+/// Request the transport to flush its internal buffers.
+/// This function is expected to block until all the buffers are written through the transport.
+#[doc(hidden)]
+pub fn finish_transport() {
+    if let Some(f) = TRANSPORT_FINISH_FN.try_get() {
+        f();
+    }
 }
 
 // Write bytes to the transport if available.

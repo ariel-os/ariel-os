@@ -194,6 +194,23 @@ macro_rules! define_uart_drivers {
             }
 
             impl<'d> $peripheral<'d> {
+
+                #[doc(hidden)]
+                pub fn take() -> embassy_stm32::Peri<'d,peripherals::$peripheral> {
+                    // Check if currently in use and prohibit using this UART again.
+                    // FIXME: using this function implies it will never be given back.
+                    paste::paste! {
+                        if [< ACTIVE_ $peripheral >].swap(true, Ordering::AcqRel) {
+                            panic!("UART peripheral already initialized")
+                        }
+                    }
+
+                    // Safety: we previously checked if this UART has been initialized somewhere else.
+                    unsafe {
+                        peripherals::$peripheral::steal()
+                    }
+                }
+
                 /// Returns a driver implementing embedded-io traits for this Uart
                 /// peripheral.
                 ///

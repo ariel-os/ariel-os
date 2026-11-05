@@ -2,6 +2,7 @@
 ///
 /// This function initiates a software reset of the microcontroller and never returns.
 pub fn reboot() -> ! {
+    crate::hooks();
     cfg_select! {
         context = "cortex-m" => cortex_m::peripheral::SCB::sys_reset(),
         context = "esp" => esp_hal::system::software_reset(),

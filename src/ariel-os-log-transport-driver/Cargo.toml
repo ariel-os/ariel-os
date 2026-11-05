@@ -1,0 +1,58 @@
+[package]
+name = "ariel-os-log-transport-driver"
+version = "0.5.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[package.metadata.feature-groups]
+logging-transport-driver.xor = { features = ["uart"] }
+
+[dependencies]
+ariel-os-hal = { workspace = true }
+ariel-os-log = { workspace = true, features = ["internal-transport-driver"] }
+embassy-executor = { workspace = true }
+embassy-sync = { workspace = true, optional = true }
+featurecomb = { workspace = true }
+ariel-os-boards = { workspace = true, optional = true }
+ariel-os-embassy-common = { workspace = true, optional = true }
+embedded-io = { workspace = true, optional = true }
+
+# embedded-io-async-06 = { package = "embedded-io-async", version = "0.6", optional = true }
+embassy-futures = { workspace = true, optional = true }
+
+embassy-time = { workspace = true }
+
+
+[target.'cfg(context = "nrf")'.dependencies]
+embassy-nrf = { workspace = true, optional = true }
+
+[target.'cfg(context = "rp")'.dependencies]
+embassy-rp = { workspace = true, optional = true }
+
+[target.'cfg(context = "stm32")'.dependencies]
+embassy-stm32 = { workspace = true, optional = true }
+
+[target.'cfg(context = "esp")'.dependencies]
+esp-hal = { workspace = true, optional = true }
+
+
+[features]
+
+hal = ["dep:esp-hal", "dep:embassy-nrf", "dep:embassy-rp", "dep:embassy-stm32"]
+
+# UART driver.
+uart = [
+  "dep:ariel-os-boards",
+  "dep:ariel-os-embassy-common",
+  "dep:embassy-futures",
+  "dep:embassy-sync",
+  "dep:embedded-io",
+  "hal",
+]
+
+_test = []
+
+[lints]
+workspace = true
