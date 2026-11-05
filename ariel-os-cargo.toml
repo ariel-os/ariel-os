@@ -44,3 +44,5 @@ esp-radio-rtos-driver = { git = "https://github.com/ariel-os/esp-hal", rev = "41
 esp-rom-sys = { git = "https://github.com/ariel-os/esp-hal", rev = "415f00eca734fd0c8592e61041959af8893167bb" }
 esp-sync = { git = "https://github.com/ariel-os/esp-hal", rev = "415f00eca734fd0c8592e61041959af8893167bb" }
 xtensa-lx-rt = { git = "https://github.com/ariel-os/esp-hal", rev = "415f00eca734fd0c8592e61041959af8893167bb" }
+
+memsolve = { git = "https://github.com/ariel-os/memsolve", rev = "0f748cb102b244f7ffb6089312fc8e5953b76111" }
