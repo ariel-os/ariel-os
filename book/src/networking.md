@@ -80,7 +80,7 @@ The configuration can be customized with the following environment variables:
 Support for IPv6 is not currently enabled by default, but can be enabled by selecting the `ipv6` [laze module](./build-system.md#laze-modules).
 IPv4 and IPv6 can both be enabled at the same time.
 
-IPv6 currently only supports static configuration, which is therefore enabled by default; it can also be explicitly selected with the `network-config-ipv6-static` [laze module](./build-system.md#laze-modules).
+IPv6 currently mainly supports static configuration, which is therefore enabled by default; it can also be explicitly selected with the `network-config-ipv6-static` [laze module](./build-system.md#laze-modules).
 
 The configuration must be customized with the following environment variables:
 
@@ -90,8 +90,12 @@ The configuration must be customized with the following environment variables:
 | `CONFIG_NET_IPV6_STATIC_CIDR_PREFIX_LEN` | `64`                        |
 | `CONFIG_NET_IPV6_STATIC_GATEWAY_ADDRESS` | *No default, but mandatory* |
 
-> [!NOTE]
-> Non-static IPv6 address allocation will be supported in the future.
+There is experimental support for IPv6 configuration through SLAAC,
+which can be enabled using the `network-config-ipv6-slaac` [laze module].
+It is experimental due to shortcomings of the implementation (around DNS and privacy),
+and lack of documentation.
+Once the [associated issues](https://github.com/ariel-os/ariel-os/issues/2135) are resolved,
+it will become the default configuration for IPv6.
 
 #### Custom Configuration Provider
 
