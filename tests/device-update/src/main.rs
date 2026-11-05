@@ -17,6 +17,8 @@ static APP_B: &[u8] = include_bytes!("../bins/hello-world.bin");
 static APP_B: &[u8] = include_bytes!("../bins/pico-serial.bin");
 #[cfg(context = "rp235xa")]
 static APP_B: &[u8] = include_bytes!("../bins/pico2-usb-serial.bin");
+#[cfg(context = "esp32s3")]
+static APP_B: &[u8] = include_bytes!("../bins/esp32s3-hello-world.bin");
 
 async fn update() {
     let mut updater_state = HalDeviceUpdaterState::new();
@@ -27,6 +29,11 @@ async fn update() {
     for chunk in APP_B.chunks(4096) {
         let mut buf = [0; 4096];
         buf[..chunk.len()].copy_from_slice(chunk);
+        info!(
+            "device-updater: writing to offset {} ({}b))",
+            offset,
+            chunk.len()
+        );
         updater.write_firmware(offset, &buf).await.unwrap();
         offset += chunk.len() as u32;
     }

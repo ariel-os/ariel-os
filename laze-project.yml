@@ -465,7 +465,7 @@ contexts:
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
-      ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
+      ESP_PARTITION_FILE: ${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
@@ -1265,7 +1265,16 @@ modules:
     env:
       global:
         FEATURES:
+          - ariel-os/device-update
           - ariel-os/esp-bootloader-application
+
+    tasks:
+      create-update-image:
+        help: create .bin suitable for device update (using `espflash`)
+        cmd:
+          - espflash save-image --chip ${PROBE_RS_CHIP} --partition-table ${ESP_PARTITION_FILE} ${out} ${out}.bin $@
+          - 'echo IMAGE PATH: ${out}.bin'
+
 
   # First 256 bytes of the flash are dedicated to boot2, populated by embassy-rp.
   - name: rp2040-boot2
@@ -1420,7 +1429,7 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${ESP_PARTITION_FILE}"'
+        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${relroot}/${ESP_PARTITION_FILE}"'
     tasks:
       flash:
         help: flash the target using `espflash`
