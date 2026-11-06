@@ -1,9 +1,13 @@
 // @generated
 
 pub mod pins {
-    ariel_os_hal::define_peripherals!(
-        LedPeripherals { led0 : P0_13, led1 : P0_14, led2 : P0_15, led3 : P0_16, }
-    );
+    ariel_os_hal::define_leds![
+        { name : Led0, channels : [pin : P0_13, color : green, active : Low,], aliases :
+        [] }, { name : Led1, channels : [pin : P0_14, color : green, active : Low,],
+        aliases : [] }, { name : Led2, channels : [pin : P0_15, color : green, active :
+        Low,], aliases : [] }, { name : Led3, channels : [pin : P0_16, color : green,
+        active : Low,], aliases : [] },
+    ];
     ariel_os_hal::define_buttons![
         { name : Button0, pin : P0_11, pull : None, active : Low, aliases : [SW1,] }, {
         name : Button1, pin : P0_12, pull : None, active : Low, aliases : [SW2,] }, {
