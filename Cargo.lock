@@ -5789,6 +5789,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "sbd-gpio"
+version = "0.0.0"
+dependencies = [
+ "ariel-os",
+ "ariel-os-boards",
+ "embassy-futures",
+]
+
+[[package]]
 name = "scoped-tls"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

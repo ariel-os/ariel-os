@@ -1,12 +1,13 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/resource/en/user_manual/um1956-stm32-nucleo32-boards-mb1180-stmicroelectronics.pdf>
   st-nucleo-f042k6:
     chip: stm32f042k6
     ariel:
       swi: WWDG
     leds:
       # led0
-      - pin: PA5
+      - pin: PB3
     uarts:
       - aliases:
           - VCP

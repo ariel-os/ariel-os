@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from <https://files.seeedstudio.com/wiki/SeeedStudio-XIAO-ESP32C6/XIAO-ESP32-C6_v1.0_SCH_PDF_24028.pdf>
   seeedstudio-xiao-esp32c6:
     chip: esp32c6fx4
     flags:
@@ -15,6 +16,7 @@ targets:
     buttons:
       # button0
       - pin: GPIO9
+        resistor: pullup
         active: low
         aliases:
           - BOOT

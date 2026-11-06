@@ -32,7 +32,7 @@ impl AppBuilderTrait for AppBuilder {
 #[cfg(feature = "button-reading")]
 pub async fn button() -> impl IntoResponse {
     Json(JsonButton {
-        button: crate::BUTTON_INPUT.get().await.is_low(),
+        button: crate::BUTTON_INPUT.get().await.is_pressed(),
     })
 }
 

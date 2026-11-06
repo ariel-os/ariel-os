@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   adafruit-feather-nrf52840-sense:
     chip: nrf52840
@@ -30,10 +30,11 @@ targets:
       # button0
       - pin: P1_02
         # Note that there is no external pull-up.
+        resistor: none
         active: low
         aliases:
           - UserSw # silkscreen label
-          - SW2 # button part designator in schematic
+          - SW2 # switch part designator in schematic
           - SWITCH # bus name in schematic
 
       # Only to be mapped if we start expressing aspects that are not user controllable:

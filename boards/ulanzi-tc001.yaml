@@ -1,20 +1,24 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://github.com/rroels/ulanzi_tc001_hardware>
   ulanzi-tc001:
     chip: esp32-wroom-32d
     buttons:
       # button0
       - pin: GPIO26
+        resistor: none
         active: low
         aliases:
           - left
       # button1
       - pin: GPIO27
+        resistor: none
         active: low
         aliases:
           - middle
       # button2
       - pin: GPIO14
+        resistor: none
         active: low
         aliases:
           - right

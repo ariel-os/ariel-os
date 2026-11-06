@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html#cad-resources>
   st-nucleo-wba65ri:
     chip: stm32wba65ri
     flags:
@@ -25,14 +26,20 @@ targets:
     buttons:
       # button0
       - pin: PC13
+        resistor: none
+        active: low
         aliases:
           - B1
       # button1
       - pin: PC5
+        resistor: none
+        active: low
         aliases:
           - B2
       # button2
       - pin: PB4
+        resistor: none
+        active: low
         aliases:
           - B3
     uarts:

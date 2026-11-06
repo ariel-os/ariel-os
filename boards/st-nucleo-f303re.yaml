@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from <https://www.st.com/resource/en/schematic_pack/mb1136-default-c03_schematic.pdf>
   st-nucleo-f303re:
     chip: stm32f303re
     ariel:
@@ -10,6 +11,11 @@ targets:
     buttons:
       # button0
       - pin: PC13
+        resistor: pullup
+        active: low
+        aliases:
+          - B1
+          - USER
     uarts:
       - aliases:
           - VCP

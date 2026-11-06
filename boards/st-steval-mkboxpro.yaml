@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/resource/en/schematic_pack/steval-mkboxpro-schematic.pdf>
   st-steval-mkboxpro:
     chip: stm32u585ai
     flags:
@@ -39,12 +40,19 @@ targets:
     buttons:
       # button0
       - pin: PC13
+        resistor: pulldown
+        active: high
         aliases:
           - BT1
+          - SW1
       # button1
       - pin: PE0
+        resistor: pulldown
+        active: high
         aliases:
           - BT2
+          - SW2
+          - BOOT0
     i2c:
       - sda_pin: PB7
         scl_pin: PB6

@@ -6,6 +6,8 @@ pub mod i2c;
 
 pub mod hal;
 
+pub mod gadgets;
+
 #[cfg(feature = "uart")]
 pub mod uart;
 
@@ -14,6 +16,8 @@ pub mod uart;
 pub mod api {
     pub use crate::gpio;
     pub use crate::hal;
+
+    pub use crate::gadgets;
 
     // #[cfg(feature = "ble")]
     // pub use crate::ble;

@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from https://www.unihiker.com/wiki/K10/HardwareReference/img/hardwarereference_onboard/UnihikerK10Schematic.pdf
   unihiker-k10:
     chip: esp32-s3-wroom-1
     flags:
@@ -8,8 +9,11 @@ targets:
     buttons:
       # button0
       - pin: GPIO0
+        resistor: none
+        active: low
         aliases:
           - BOOT
+          - K1
     i2c:
       - sda_pin: GPIO47
         scl_pin: GPIO48
