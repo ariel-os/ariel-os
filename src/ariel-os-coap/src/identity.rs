@@ -28,15 +28,15 @@ impl minicbor::Encode<()> for Identity {
         };
         let encoder = encoder
             // Currently unregistered
-            .tag(minicbor::data::Tag::new(971465540))?
+            .tag(minicbor::data::Tag::new(3050242967))?
             .map(map_len)?
             .u8(1)?
             .str(ariel_os_buildinfo::OS_NAME)?
-            .u8(3)?
+            .u8(5)?
             .str(ariel_os_buildinfo::BOARD)?;
 
         if let Ok(identity) = identity {
-            encoder.u8(5)?.bytes(identity.as_ref())?;
+            encoder.u8(8)?.bytes(identity.as_ref())?;
         }
         Ok(())
     }
