@@ -6,7 +6,7 @@ apps:
       - esp
       - nordic-thingy-91-x-nrf9151
       - nrf52840dk
-      - nrf5340dk
+      - nrf5340dk-app
       - nrf9160dk-nrf9160
       - rp
       - st-nucleo-c031c6

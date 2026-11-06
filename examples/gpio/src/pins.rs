@@ -25,7 +25,7 @@ ariel_os::hal::define_peripherals!(Peripherals {
     btn1: P0_26
 });
 
-#[cfg(context = "nrf5340dk")]
+#[cfg(context = "nrf5340dk-app")]
 ariel_os::hal::define_peripherals!(Peripherals {
     led1: P0_28,
     btn1: P0_23
