@@ -1,13 +1,15 @@
 version: 0.4.1
 targets:
   blackpill-f401rc:
-    chip: stm32f401rc
+    # chip: stm32f401rc
+    chip: blackpill-f401rc
     flags:
       - has_usb_device_port
     ariel:
       swi: WWDG
     leds:
       - pin: PC13
+        color: blue
     buttons:
       - pin: PA0
     # More hardware documentation for this board:
