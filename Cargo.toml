@@ -19,6 +19,7 @@ members = [
   "src/ariel-os-nrf",
   "src/ariel-os-nrf-time",
   "src/ariel-os-power",
+  "src/ariel-os-psoc",
   "src/ariel-os-random",
   "src/ariel-os-rp",
   "src/ariel-os-sensors",
@@ -75,7 +76,7 @@ critical-section = { version = "1.2.0" }
 featurecomb = "0.2.0"
 # Disabling default features may reduce the code size by not providing atomics
 # for types larger than the pointer width, which we do not use.
-portable-atomic = { version = "1.11.0", default-features = false, features = [
+portable-atomic = { version = "1.13.1", default-features = false, features = [
   "require-cas",
 ] }
 riscv = { version = "0.15.0", default-features = false }
@@ -122,6 +123,9 @@ esp-rom-sys = { version = "0.1.4", default-features = false }
 esp-sync = { version = "0.2.1", default-features = false }
 xtensa-lx-rt = { version = "0.22.0", default-features = false }
 
+# Infineon PSoC HAL
+psoc = { git = "https://github.com/Infineon/psoc-rs", rev = "c0796211705b45661a6522b393ea62657ee8e76c", default-features = false }
+
 linkme = { version = "0.3.32" }
 
 ariel-os = { path = "src/ariel-os", default-features = false }
@@ -143,6 +147,7 @@ ariel-os-native = { path = "src/ariel-os-native" }
 ariel-os-nrf = { path = "src/ariel-os-nrf" }
 ariel-os-nrf-time = { path = "src/ariel-os-nrf-time" }
 ariel-os-power = { path = "src/ariel-os-power" }
+ariel-os-psoc = { path = "src/ariel-os-psoc" }
 ariel-os-random = { path = "src/ariel-os-random" }
 ariel-os-rp = { path = "src/ariel-os-rp" }
 ariel-os-rt = { path = "src/ariel-os-rt" }
