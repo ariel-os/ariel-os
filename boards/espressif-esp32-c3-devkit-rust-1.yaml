@@ -15,6 +15,10 @@ targets:
     leds:
       # led0
       - pin: GPIO7
+        color: red
+        active: high
+        aliases:
+          - D2
     i2c:
       - sda_pin: GPIO10
         scl_pin: GPIO8

@@ -7,21 +7,29 @@ targets:
       - has_usb_device_port
     leds:
       # led0
-      - color: green
-        pin: P0_28
+      - pin: P0_28
+        color: green
         active: low
+        aliases:
+          - LED1
       # led1
-      - color: green
-        pin: P0_29
+      - pin: P0_29
+        color: green
         active: low
+        aliases:
+          - LED2
       # led2
-      - color: green
-        pin: P0_30
+      - pin: P0_30
+        color: green
         active: low
+        aliases:
+          - LED3
       # led3
-      - color: green
-        pin: P0_31
-
+      - pin: P0_31
+        color: green
+        active: low
+        aliases:
+          - LED4
     buttons:
       # button0
       - pin: P0_23

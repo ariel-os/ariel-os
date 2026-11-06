@@ -5,21 +5,29 @@ targets:
     chip: nrf52832
     leds:
       # led0
-      - color: green
-        pin: P0_17
+      - pin: P0_17
+        color: green
         active: low
+        aliases:
+          - LED1
       # led1
-      - color: green
-        pin: P0_18
+      - pin: P0_18
+        color: green
         active: low
+        aliases:
+          - LED2
       # led2
-      - color: green
-        pin: P0_19
+      - pin: P0_19
+        color: green
         active: low
+        aliases:
+          - LED3
       # led3
-      - color: green
-        pin: P0_20
-
+      - pin: P0_20
+        color: green
+        active: low
+        aliases:
+          - LED4
     buttons:
       # button0
       - pin: P0_13

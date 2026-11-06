@@ -15,28 +15,32 @@ targets:
     leds:
       # led0
       - pin: PF6
+        color: green
+        active: low
         aliases:
           - LED1
           - D5
-        color: green
       # led1
       - pin: PH11
+        color: red
+        active: low
         aliases:
           - LED2
           - D6
-        color: red
       # led2
       - pin: PH12
+        color: orange
+        active: low
         aliases:
           - LED3
           - D7
-        color: orange
       # led3
       - pin: PF9
+        color: blue
+        active: high
         aliases:
           - USB_enum_LED
           - D10
-        color: blue
     buttons:
       # button0
       - pin: PC13

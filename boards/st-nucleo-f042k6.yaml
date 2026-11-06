@@ -8,6 +8,10 @@ targets:
     leds:
       # led0
       - pin: PB3
+        color: green
+        active: high
+        aliases:
+          - LD3
     uarts:
       - aliases:
           - VCP

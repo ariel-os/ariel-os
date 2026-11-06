@@ -8,6 +8,8 @@ targets:
     leds:
       # led0
       - pin: GPIO15
+        color: green
+        active: high
         aliases:
           - D1
           - BLK

@@ -8,6 +8,10 @@ targets:
     leds:
       # led0
       - pin: PA5
+        color: green
+        active: low
+        aliases:
+          - LD4
     buttons:
       # button0
       - pin: PC13
