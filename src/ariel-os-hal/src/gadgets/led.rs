@@ -1,6 +1,6 @@
 //! Driver for simple LEDs wired directly to MCUs with GPIOs.
 
-use crate::gpio::{Output, Level};
+use crate::gpio::{Level, Output};
 
 pub struct Led {
     inner: Output<'static>,
@@ -12,7 +12,11 @@ impl Led {
     /// Creates new [`Led`].
     #[must_use]
     pub fn new(output: Output<'static>, active: Level, color: &'static str) -> Self {
-        Self { inner: output, active, color }
+        Self {
+            inner: output,
+            active,
+            color,
+        }
     }
 
     /// Toggle the [`Led`].
