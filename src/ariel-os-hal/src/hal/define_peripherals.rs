@@ -515,6 +515,159 @@ macro_rules! define_switch {
     };
 }
 
+/// Repeatedly calls [`define_led`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_leds {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_led!{ $($args)+ }
+        )*
+    }
+}
+
+#[macro_export]
+macro_rules! define_led {
+    (name: $name:ident, channels: [pin: $pin:ident, color: $color:ident, active: $active:ident,], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $color: $crate::gadgets::led::Led,
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Level::*;
+                $name {
+                    $color: $crate::gadgets::led::Led::new(
+                        $crate::gpio::Output::new(
+                            self.$pin.take().unwrap(),
+                            !$active
+                        ),
+                        $active,
+                        stringify!($color),
+                    )
+                }
+            }
+        }
+
+
+        impl $name {
+            pub fn turn_on(&mut self) {
+                self.$color.turn_on()
+            }
+
+            pub fn turn_off(&mut self) {
+                self.$color.turn_off()
+            }
+
+            pub fn toggle(&mut self) {
+                self.$color.toggle()
+            }
+
+            pub fn color(&self) -> &'static str {
+                self.$color.color()
+            }
+
+            /// Return all of the colors that make up the LED as a tuple.
+            ///
+            /// Implemented for API compatibility with 'composite' leds.
+            pub fn colors(&self) -> (&'static str,) {
+                (self.$color.color(),)
+            }
+
+            /// Returns all of the channels that make up the LED as a tuple.
+            ///
+            /// Implemented for API compatibility with 'composite' leds.
+            pub fn channels(&mut self) -> (&mut $crate::gadgets::led::Led,) {
+                (&mut self.$color,)
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, channels: [$(pin: $pin:ident, color: $color:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $(
+                $color: $crate::gadgets::led::Led,
+            )+
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Level::*;
+                $name {
+                    $(
+                        $color: $crate::gadgets::led::Led::new(
+                            $crate::gpio::Output::new(
+                                self.$pin.take().unwrap(),
+                                !$active
+                            ),
+                            $active,
+                            stringify!($color),
+                        ),
+                    )+
+                }
+            }
+        }
+
+        impl $name {
+            pub fn turn_on(&mut self) {
+                $(
+                    self.$color.turn_on();
+                )+
+            }
+
+            pub fn turn_off(&mut self) {
+                $(
+                    self.$color.turn_off();
+                )+
+            }
+
+            pub fn toggle(&mut self) {
+                $(
+                    self.$color.toggle();
+                )+
+            }
+
+            pub fn colors(&self) -> (
+                $(
+                    &'static $crate::repeat!($color, str),
+                )+
+            )
+            {
+                (
+                    $(
+                        self.$color.color(),
+                    )+
+                )
+            }
+
+            pub fn pins(&mut self) -> (
+                $(
+                    &mut $crate::repeat!($pin, $crate::gadgets::led::Led),
+                )+
+            )
+            {
+                (
+                    $(
+                        &mut self.$color,
+                    )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+
 #[macro_export]
 macro_rules! define_alias {
     ($name:ident = $alias:ident) => {
