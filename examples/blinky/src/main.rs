@@ -3,17 +3,12 @@
 
 use ariel_os_boards::pins;
 
-use ariel_os::{
-    gpio::{Level, Output},
-    time::Timer,
-};
+use ariel_os::time::Timer;
 
 #[ariel_os::task(autostart, peripherals)]
-async fn blinky(peripherals: pins::LedPeripherals) {
-    let mut led0 = Output::new(peripherals.led0, Level::Low);
-
+async fn blinky(mut led: pins::Led0) {
     loop {
-        led0.toggle();
+        led.toggle();
         Timer::after_millis(500).await;
     }
 }
