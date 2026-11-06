@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   seeedstudio-xiao-nrf52840-plus:
     chip: nrf52840

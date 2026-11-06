@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from <https://github.com/particle-iot/xenon/blob/master/pdfs/xenon-v1.00-schematic.pdf>
   particle-xenon:
     chip: nrf52840
     flags:
@@ -14,6 +15,7 @@ targets:
     buttons:
       # button0
       - pin: P0_11
+        resistor: none
+        active: low
         aliases:
           - MODE
-        active: low

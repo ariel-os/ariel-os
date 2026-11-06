@@ -6,9 +6,11 @@ mod routes;
 
 use ariel_os::{asynch::Spawner, cell::StaticCell, net};
 
+#[cfg(feature = "button-reading")]
+use ariel_os_boards::pins;
 ariel_os::hal::group_peripherals!(Peripherals {
     #[cfg(feature = "button-reading")]
-    buttons: ariel_os_boards::pins::ButtonPeripherals,
+    button: pins::Button0,
 });
 
 #[cfg(feature = "button-reading")]
@@ -31,7 +33,7 @@ const SERVER_CONFIG: picoserve::Config = {
 static APP: StaticCell<picoserve::Router<routes::AppRouter>> = StaticCell::new();
 
 #[cfg(feature = "button-reading")]
-static BUTTON_INPUT: OnceLock<ariel_os::gpio::Input<'_>> = OnceLock::new();
+static BUTTON_INPUT: OnceLock<ariel_os_boards::pins::Button0> = OnceLock::new();
 
 #[ariel_os::task(pool_size = WEB_TASK_POOL_SIZE)]
 async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRouter>) -> ! {
@@ -60,9 +62,7 @@ async fn web_task(task_id: usize, app: &'static picoserve::Router<routes::AppRou
 fn main(spawner: Spawner, peripherals: Peripherals) {
     #[cfg(feature = "button-reading")]
     {
-        use ariel_os::gpio::{Input, Pull};
-
-        let button = Input::new(peripherals.buttons.button0, Pull::Up);
+        let button = peripherals.button;
         let _ = BUTTON_INPUT.init(button);
     }
     #[cfg(not(feature = "button-reading"))]

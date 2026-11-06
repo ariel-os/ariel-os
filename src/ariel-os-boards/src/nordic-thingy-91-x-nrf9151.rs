@@ -1,10 +1,15 @@
 // @generated
 
 pub mod pins {
-    ariel_os_hal::define_peripherals!(
-        LedPeripherals { led0 : P0_29, led1 : P0_31, led2 : P0_30, }
-    );
-    ariel_os_hal::define_peripherals!(ButtonPeripherals { button0 : P0_26, });
+    ariel_os_hal::define_leds![
+        { name : Led0, channels : [pin : P0_29, color : red, active : Low, pin : P0_31,
+        color : green, active : Low, pin : P0_30, color : blue, active : Low,], aliases :
+        [LED1,] },
+    ];
+    ariel_os_hal::define_buttons![
+        { name : Button0, pin : P0_26, pull : None, active : Low, aliases : [SW3,
+        BUTTON1,] },
+    ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : SERIAL0, sda : P0_09, scl : P0_08, aliases :
         [QwiicI2c,] },

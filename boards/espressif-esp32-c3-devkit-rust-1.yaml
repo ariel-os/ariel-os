@@ -1,16 +1,24 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   espressif-esp32-c3-devkit-rust-1:
+    # Schematic <https://github.com/esp-rs/esp-rust-board/blob/v1.2/hardware/esp-rust-board/schematic/esp-rust-board.pdf>
     chip: esp32-c3-mini-1
     flags:
       - has_usb_cdc_acm_port
     buttons:
       # button0
       - pin: GPIO9
+        resistor: pullup
         active: low
+        aliases:
+          - IO9_BOOT
     leds:
       # led0
       - pin: GPIO7
+        color: red
+        active: high
+        aliases:
+          - D2
     i2c:
       - sda_pin: GPIO10
         scl_pin: GPIO8

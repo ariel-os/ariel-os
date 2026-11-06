@@ -1,20 +1,29 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for buttons/leds taken from <https://www.mouser.com/pdfDocs/Thingy91X_UG_100.pdf>
   nordic-thingy-91-x-nrf9151:
     chip: nrf9151
     leds:
       # led0
-      - pin: P0_29
-        color: red
-      # led1
-      - pin: P0_31
-        color: green
-      # led2
-      - pin: P0_30
-        color: blue
+      - pins:
+          - P0_29
+          - P0_31
+          - P0_30
+        colors:
+          - red
+          - green
+          - blue
+        active: low
+        aliases:
+          - LED1
     buttons:
       # button0
       - pin: P0_26
+        resistor: none
+        active: low
+        aliases:
+          - SW3
+          - BUTTON1
     i2c:
       - sda_pin: P0_09
         scl_pin: P0_08
@@ -57,17 +66,25 @@ targets:
       - has_usb_device_port
     leds:
       # led0
-      - pin: P0_14
-        color: red
-      # led1
-      - pin: P0_26
-        color: green
-      # led2
-      - pin: P0_15
-        color: blue
+      - pins:
+          - P0_14
+          - P0_26
+          - P0_15
+        colors:
+          - red
+          - green
+          - blue
+        active: low
+        aliases:
+          - LED2
     buttons:
       # button0
       - pin: P0_24
+        resistor: none
+        active: low
+        aliases:
+          - SW4
+          - BUTTON2
     i2c:
       - sda_pin: P1_03
         scl_pin: P1_02

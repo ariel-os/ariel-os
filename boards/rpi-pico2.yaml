@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Schematic found in appendix B of <https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008299-DS-3-pico-2-datasheet.pdf>
   rpi-pico2:
     chip: rp2350a
     flags:
@@ -11,3 +12,4 @@ targets:
       # led0
       - pin: PIN_25
         color: green
+        active: high

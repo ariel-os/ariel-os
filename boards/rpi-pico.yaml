@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Schematic found in appendix B of <https://pip-assets.raspberrypi.com/categories/610-raspberry-pi-pico/documents/RP-008307-DS-2-pico-datasheet.pdf>
   rpi-pico:
     chip: rp2040
     flags:
@@ -11,3 +12,4 @@ targets:
       # led0
       - pin: PIN_25
         color: green
+        active: high

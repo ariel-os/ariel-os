@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from <https://files.seeedstudio.com/products/113990939/LoRa-E5%20mini%20v1.0.pdf>
   seeedstudio-lora-e5-mini:
     chip: stm32wle5jc
     ariel:
@@ -7,12 +8,20 @@ targets:
     leds:
       # led0
       - pin: PB5
+        color: red
+        active: low
         aliases:
           - LD1
-        color: red
+          - D6
     buttons:
       # button0
       - pin: PB13
+        resistor: none
+        active: low
+        aliases:
+          - BOOT
+          - SCK
+          - K3
     uarts:
       - tx_pin: PB6
         rx_pin: PB7

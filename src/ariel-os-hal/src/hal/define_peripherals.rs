@@ -349,6 +349,398 @@ macro_rules! define_i2c_alias {
     };
 }
 
+/// Repeatedly calls [`define_switch`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_switches {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_switch!{ $($args)+ }
+        )*
+    }
+}
+
+/// Repeatedly calls [`define_button`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_buttons {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_button!{ $($args)+ }
+        )*
+    }
+}
+/// Packages an [`Input`](crate::gpio::Input) and an activity [`Level`](crate::gpio::Level) into a button struct.
+///
+/// This creates a button struct named `name`. If the `"external-interrupts"` feature is set,
+/// [`IntEnabledInput`](crate::gpio::Input) will be used and the generated struct will implement
+///  `wait_for_X` async functions using the interrupts.
+#[macro_export]
+macro_rules! define_button {
+    (name: $name:ident, pin : $pin:ident, pull : $pull:ident, active : $active:ident, aliases : [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            inner: $crate::gadgets::button::Button
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+                let input_builder = $crate::gpio::Input::builder(
+                    self.$pin.take().unwrap(),
+                    $crate::select_pull!($pull, $active),
+                );
+                $name {
+                    inner: $crate::gadgets::button::Button::new(
+                        $crate::gadgets::switch::SwitchPin::new(
+                            $crate::build_input!(input_builder),
+                            $active,
+                        )
+                    )
+                }
+            }
+        }
+
+        impl $name {
+            $crate::impl_button_inner!(inner);
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+/// Creates a struct of the given `name`, containing all of the [`Input`](crate::gpio::Input)
+/// that are part of the switch.
+///
+/// if the `"external-interrupts"` feature is enabled then the inputs will be [`IntEnabledInput`](crate::gpio::IntEnabledInput)
+/// instead. The individual [`SwitchPin`](crate::gadgets::switch::SwitchPin)s, and the struct `name` itself in case of
+/// single pin switched, will implement `wait_for_X` async methods using the interrupts.
+#[macro_export]
+macro_rules! define_switch {
+    (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name{
+            inner: $crate::gadgets::switch::SwitchPin
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+
+                let input_builder = $crate::gpio::Input::builder(
+                    self.$pin.take().unwrap(),
+                    $crate::select_pull!($pull, $active),
+                );
+
+                $name{
+                    inner: $crate::gadgets::switch::SwitchPin::new(
+                        $crate::build_input!(input_builder),
+                        $active
+                    )
+                }
+            }
+        }
+
+        impl $name {
+            $crate::impl_switch_inner!(inner);
+
+            pub fn pins(&mut self) -> (&mut $crate::gadgets::switch::SwitchPin,)
+            {
+                (&mut self.inner,)
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $(
+                $pin: $crate::gadgets::switch::SwitchPin,
+            )+
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+
+                $ (
+                    let input_builder_$pin = $crate::gpio::Input::builder(
+                        self.$pin.take().unwrap(),
+                        $crate::select_pull!($pull, $active),
+                    );
+                )+
+
+                $name {
+                    $(
+                        $pin: $crate::gadgets::switch::SwitchPin::new(
+                            inner: $crate::gadgets::switch::SwitchPin::new(
+                                $crate::build_input!(input_builder_$pin),
+                                $active,
+                            )
+                        ),
+                    )+
+                }
+            }
+        }
+
+        impl $name {
+            pub fn pins(&mut self) -> (
+                $(
+                    &mut $crate::repeat!($pin, $crate::gadgets::switch::SwitchPin),
+                )+
+            )
+            {
+                (
+                    $(
+                        &mut self.$pin,
+                    )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+/// Repeatedly calls [`define_led`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_leds {
+    ( $( { $($args:tt)+ } ),* $(,)? ) => {
+        $(
+            $crate::define_led!{ $($args)+ }
+        )*
+    }
+}
+
+#[macro_export]
+macro_rules! define_led {
+    (name: $name:ident, channels: [pin: $pin:ident, color: $color:ident, active: $active:ident,], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $color: $crate::gadgets::led::Led,
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Level::*;
+                $name {
+                    $color: $crate::gadgets::led::Led::new(
+                        $crate::gpio::Output::new(
+                            self.$pin.take().unwrap(),
+                            !$active
+                        ),
+                        $active,
+                        stringify!($color),
+                    )
+                }
+            }
+        }
+
+
+        impl $name {
+            pub fn turn_on(&mut self) {
+                self.$color.turn_on()
+            }
+
+            pub fn turn_off(&mut self) {
+                self.$color.turn_off()
+            }
+
+            pub fn toggle(&mut self) {
+                self.$color.toggle()
+            }
+
+            pub fn color(&self) -> &'static str {
+                self.$color.color()
+            }
+
+            /// Destructure all of the channel into Outputs.
+            ///
+            /// Implemented for API compatibility with 'composite' LEDs.
+            pub fn into_outputs(self) -> ($crate::gpio::Output<'static>,) {
+                (self.$color.into_output(),)
+            }
+
+            /// Return all of the colors that make up the LED as a tuple.
+            ///
+            /// Implemented for API compatibility with 'composite' LEDs.
+            pub fn colors(&self) -> (&'static str,) {
+                (self.$color.color(),)
+            }
+
+            /// Returns all of the channels that make up the LED as a tuple of mono-color LEDs.
+            ///
+            /// Implemented for API compatibility with 'composite' LEDs.
+            pub fn channels(&mut self) -> (&mut $crate::gadgets::led::Led,) {
+                (&mut self.$color,)
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, channels: [$(pin: $pin:ident, color: $color:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $(
+                $color: $crate::gadgets::led::Led,
+            )+
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Level::*;
+                $name {
+                    $(
+                        $color: $crate::gadgets::led::Led::new(
+                            $crate::gpio::Output::new(
+                                self.$pin.take().unwrap(),
+                                !$active
+                            ),
+                            $active,
+                            stringify!($color),
+                        ),
+                    )+
+                }
+            }
+        }
+
+        impl $name {
+            pub fn turn_on(&mut self) {
+                $(
+                    self.$color.turn_on();
+                )+
+            }
+
+            pub fn turn_off(&mut self) {
+                $(
+                    self.$color.turn_off();
+                )+
+            }
+
+            pub fn toggle(&mut self) {
+                $(
+                    self.$color.toggle();
+                )+
+            }
+
+            /// Destructure all of the channel into Outputs.
+            pub fn into_outputs(self) -> (
+                $(
+                    $crate::repeat!($color, $crate::gpio::Output<'static>),
+                )+
+            )
+            {
+                (
+                    $(
+                        self.$color.into_output(),
+                    )+
+                )
+            }
+
+            /// Return all of the colors that make up the LED as a tuple.
+            pub fn colors(&self) -> (
+                $(
+                    &'static $crate::repeat!($color, str),
+                )+
+            )
+            {
+                (
+                    $(
+                        self.$color.color(),
+                    )+
+                )
+            }
+
+            /// Returns all of the channels that make up the LED as a tuple of mono-color LEDs.
+            pub fn channels(&mut self) -> (
+                $(
+                    &mut $crate::repeat!($color, $crate::gadgets::led::Led),
+                )+
+            )
+            {
+                (
+                    $(
+                        &mut self.$color,
+                    )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+#[macro_export]
+macro_rules! define_alias {
+    ($name:ident = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias = $name;
+    };
+    ($name:ident<$lt:lifetime> = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias<$lt> = $name<$lt>;
+    };
+}
+
+#[cfg(not(feature = "external-interrupts"))]
+#[macro_export]
+macro_rules! build_input {
+    ( $input:ident ) => {
+        $input.build()
+    };
+}
+#[cfg(feature = "external-interrupts")]
+#[macro_export]
+macro_rules! build_input {
+    ( $input:ident ) => {
+        $input.build_with_interrupt().unwrap()
+    };
+}
+
+#[macro_export]
+macro_rules! select_pull {
+    (None, High) => {
+        Down
+    };
+    (None, Low) => {
+        Up
+    };
+    (Down, $tt:tt) => {
+        None
+    };
+    (Up, $tt:tt) => {
+        None
+    };
+}
+
+#[macro_export]
+macro_rules! repeat {
+    ($i: ident, $expr:ty) => {
+        $expr
+    };
+}
+
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;

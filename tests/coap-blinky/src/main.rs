@@ -1,14 +1,13 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::gpio::{Level, Output};
 use ariel_os_boards::pins;
 
 #[ariel_os::task(autostart, peripherals)]
-async fn coap_run(peripherals: pins::LedPeripherals) {
+async fn coap_run(led: pins::Led0) {
     use coap_handler_implementations::{HandlerBuilder, new_dispatcher};
 
-    let led = Output::new(peripherals.led0, Level::Low);
+    let led = led.into_outputs().0;
 
     let handler = new_dispatcher()
         // We offer a single resource: /led, which CBOR true or false can be PUT into
