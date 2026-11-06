@@ -568,16 +568,23 @@ macro_rules! define_led {
                 self.$color.color()
             }
 
+            /// Destructure all of the channel into Outputs.
+            ///
+            /// Implemented for API compatibility with 'composite' LEDs.
+            pub fn into_outputs(self) -> ($crate::gpio::Output<'static>,) {
+                (self.$color.into_output(),)
+            }
+
             /// Return all of the colors that make up the LED as a tuple.
             ///
-            /// Implemented for API compatibility with 'composite' leds.
+            /// Implemented for API compatibility with 'composite' LEDs.
             pub fn colors(&self) -> (&'static str,) {
                 (self.$color.color(),)
             }
 
-            /// Returns all of the channels that make up the LED as a tuple.
+            /// Returns all of the channels that make up the LED as a tuple of mono-color LEDs.
             ///
-            /// Implemented for API compatibility with 'composite' leds.
+            /// Implemented for API compatibility with 'composite' LEDs.
             pub fn channels(&mut self) -> (&mut $crate::gadgets::led::Led,) {
                 (&mut self.$color,)
             }
@@ -634,6 +641,21 @@ macro_rules! define_led {
                 )+
             }
 
+            /// Destructure all of the channel into Outputs.
+            pub fn into_outputs(self) -> (
+                $(
+                    $crate::repeat!($color, $crate::gpio::Output<'static>),
+                )+
+            )
+            {
+                (
+                    $(
+                        self.$color.into_output(),
+                    )+
+                )
+            }
+
+            /// Return all of the colors that make up the LED as a tuple.
             pub fn colors(&self) -> (
                 $(
                     &'static $crate::repeat!($color, str),
@@ -647,9 +669,10 @@ macro_rules! define_led {
                 )
             }
 
-            pub fn pins(&mut self) -> (
+            /// Returns all of the channels that make up the LED as a tuple of mono-color LEDs.
+            pub fn channels(&mut self) -> (
                 $(
-                    &mut $crate::repeat!($pin, $crate::gadgets::led::Led),
+                    &mut $crate::repeat!($color, $crate::gadgets::led::Led),
                 )+
             )
             {

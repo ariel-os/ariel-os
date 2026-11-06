@@ -47,4 +47,9 @@ impl Led {
     pub fn color(&self) -> &'static str {
         self.color
     }
+
+    #[must_use]
+    pub fn into_output(self) -> Output<'static> {
+        self.inner
+    }
 }
