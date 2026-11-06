@@ -17,20 +17,26 @@ impl coap_handler_implementations::GetRenderable for Identity {
 impl minicbor::Encode<()> for Identity {
     fn encode<W: minicbor::encode::Write>(
         &self,
-        e: &mut minicbor::Encoder<W>,
+        encoder: &mut minicbor::Encoder<W>,
         _ctx: &mut (),
     ) -> Result<(), minicbor::encode::Error<W::Error>> {
         let identity = ariel_os_identity::device_id_bytes();
-        let e = e
+        let map_len = if identity.is_ok() {
+            3 // OS name, board, identity
+        } else {
+            2 // only OS name and board
+        };
+        let encoder = encoder
             // Currently unregistered
             .tag(minicbor::data::Tag::new(971465540))?
-            .map(2 + identity.is_ok() as u64)?
+            .map(map_len)?
             .u8(1)?
             .str(ariel_os_buildinfo::OS_NAME)?
             .u8(3)?
             .str(ariel_os_buildinfo::BOARD)?;
+
         if let Ok(identity) = identity {
-            e.u8(5)?.bytes(identity.as_ref())?;
+            encoder.u8(5)?.bytes(identity.as_ref())?;
         }
         Ok(())
     }
