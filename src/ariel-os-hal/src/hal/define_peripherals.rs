@@ -359,7 +359,7 @@ macro_rules! define_switches {
     }
 }
 
-/// Repeatedly calls [`define_switch`] with each item of a comma separated list.
+/// Repeatedly calls [`define_button`] with each item of a comma separated list.
 #[macro_export]
 macro_rules! define_buttons {
     ( $( { $($args:tt)+ } ),* $(,)? ) => {
@@ -560,7 +560,7 @@ macro_rules! select_pull {
 
 #[macro_export]
 macro_rules! repeat {
-    ($i: ident, $expr:tt) => {
+    ($i: ident, $expr:ty) => {
         $expr
     };
 }
