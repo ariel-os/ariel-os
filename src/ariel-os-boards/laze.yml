@@ -41,6 +41,7 @@ builders:
   - has_buttons
   - has_leds
   - has_swi
+  - has_usb_device_port
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
