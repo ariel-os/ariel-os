@@ -1,4 +1,4 @@
-use embassy_stm32::{Peri, bind_interrupts, peripherals, usb, usb::Driver};
+use embassy_stm32::{bind_interrupts, peripherals, usb, usb::Driver, Peri};
 
 bind_interrupts!(struct Irqs {
     #[cfg(capability = "hw/stm32-usb-synopsys")]
@@ -100,8 +100,21 @@ pub fn driver(peripherals: Peripherals) -> UsbDriver {
     // See https://embassy.dev/book/#_the_usb_examples_are_not_working_on_my_board_is_there_anything_else_i_need_to_configure
     // for more information
     // NOTE(board-config)
-    config.vbus_detection =
-        ariel_os_utils::bool_from_env_or!("CONFIG_VBUS_DETECTION", true, "Enable vbus_detection");
+    config.vbus_detection = {
+        #[cfg(context = "blackpill-f401rc")]
+        {
+            false
+        }
+
+        #[cfg(not(context = "blackpill-f401rc"))]
+        {
+            ariel_os_utils::bool_from_env_or!(
+                "CONFIG_VBUS_DETECTION",
+                true,
+                "Enable vbus_detection"
+            )
+        }
+    };
 
     #[cfg(feature = "executor-interrupt")]
     {

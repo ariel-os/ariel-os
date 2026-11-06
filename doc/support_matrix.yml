@@ -1514,7 +1514,7 @@ builders:
     support:
       wifi: not_available
       ethernet_over_usb: needs_testing
-      user_usb: needs_testing
+      user_usb: supported
     notes: |
       Black Pill board based on the STM32F401RC.
 
