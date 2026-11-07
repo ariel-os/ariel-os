@@ -21,20 +21,23 @@ mod coap {
         dns_client: &'_ DNS,
         uri: &'uri str,
         buf: &'buf mut [u8; N],
-        // We currently don't evaluate Size2 (and otherwise don't have any good use for checking in
-        // advance)
-        _payload_capacity: u32,
+        // We currently don't evaluate Size2 in advance; capacity is enforced per chunk in `next()`.
+        payload_capacity: u32,
     ) -> Result<FetchStream<'uri, 'buf, N, CHUNK_SIZE>, Error> {
         let client = transport::new_client::<_, N>(dns_client, uri, buf).await?;
 
         Ok(FetchStream {
-            client,
+            bytes_received: 0,
+            payload_capacity,
             has_more: true,
+            client,
             _phantom: core::marker::PhantomData,
         })
     }
 
     pub struct FetchStream<'uri, 'buf, const N: usize, const CHUNK_SIZE: usize> {
+        bytes_received: u32,
+        payload_capacity: u32,
         // Needed because the iterator needs to call next() again after the last block to know that
         // it was really the last -- semantics are "produces nothing more" and not "flags itself to
         // be last": this bit persists the information.
@@ -62,6 +65,15 @@ mod coap {
                     return Some(Err(err));
                 }
             };
+
+            if let Err(err) = crate::record_received_bytes(
+                &mut self.bytes_received,
+                buf.len(),
+                self.payload_capacity,
+            ) {
+                self.has_more = false;
+                return Some(Err(err));
+            }
 
             Some(Ok(Chunk { bytes: buf }))
         }
@@ -99,6 +111,8 @@ mod http {
         payload_capacity: u32,
     ) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
         const {
+            assert!(CHUNK_SIZE > 0);
+            assert!(CHUNK_SIZE as u64 <= u32::MAX as u64);
             assert!(N >= CHUNK_SIZE);
         }
 
@@ -135,23 +149,30 @@ mod http {
         FetchStream<'_, '_, '_, TCP, DNS, N, CHUNK_SIZE>
     {
         /// Fetches and returns the next chunk of the requested payload.
-        ///
-        /// # Panics
-        ///
-        /// If the received buffer length or `CHUNK_SIZE` are bigger than `u32::MAX`.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
             // Early exit to prevent extra request after the fetching is done.
             if self.is_done {
                 return None;
             }
+            let chunk_size = const {
+                assert!(CHUNK_SIZE > 0);
+                assert!(CHUNK_SIZE as u64 <= u32::MAX as u64);
+                #[allow(
+                    clippy::cast_possible_truncation,
+                    reason = "checked in const block above"
+                )]
+                {
+                    CHUNK_SIZE as u32
+                }
+            };
             let range = Range {
                 start: self.bytes_received,
-                end: self.bytes_received + u32::try_from(CHUNK_SIZE).unwrap(),
+                end: self.bytes_received.saturating_add(chunk_size),
             };
 
             ariel_os_log::trace!("GET-ing range: {:?} of the payload file", range);
             // NOTE: Since we don't know the size of the payload that we are
-            // fetching, werely on the fact that a GET request with a range whose
+            // fetching, we rely on the fact that a GET request with a range whose
             // start is outside of the file leads to 416 Error which is caught below as
             // Error::InvalidTransportRange. If this occurs after receiving at least one
             // valid chunk, we consider the fetch to be done.
@@ -171,11 +192,13 @@ mod http {
                 }
             };
             self.received_any = true;
-            self.bytes_received += u32::try_from(buf.len()).unwrap();
-
-            if self.bytes_received > self.payload_capacity {
+            if let Err(err) = crate::record_received_bytes(
+                &mut self.bytes_received,
+                buf.len(),
+                self.payload_capacity,
+            ) {
                 self.is_done = true;
-                return Some(Err(Error::ExceedsCapacity));
+                return Some(Err(err));
             }
 
             Some(Ok(Chunk { bytes: buf }))
@@ -189,6 +212,27 @@ pub use coap::*;
 #[cfg(feature = "http")]
 pub use http::*;
 
+/// Accumulates `chunk_len` into `bytes_received`, checking against `payload_capacity`.
+///
+/// # Errors
+///
+/// Returns [`Error::ExceedsCapacity`] if adding `chunk_len` overflows `u32` or exceeds
+/// `payload_capacity`.
+fn record_received_bytes(
+    bytes_received: &mut u32,
+    chunk_len: usize,
+    payload_capacity: u32,
+) -> Result<(), Error> {
+    let total = u32::try_from(chunk_len)
+        .ok()
+        .and_then(|len| bytes_received.checked_add(len))
+        .filter(|&total| total <= payload_capacity)
+        .ok_or(Error::ExceedsCapacity)?;
+
+    *bytes_received = total;
+    Ok(())
+}
+
 #[derive(Debug)]
 pub struct Chunk<'bytes> {
     bytes: &'bytes [u8],
@@ -201,7 +245,7 @@ impl<'bytes> Chunk<'bytes> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
     /// The URI is invalid.
@@ -212,4 +256,35 @@ pub enum Error {
     InvalidTransportRange,
     /// Fetch operation failed because the received size exceeds the allowed capacity.
     ExceedsCapacity,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn record_received_bytes_within_and_at_capacity() {
+        let mut received = 0;
+        assert_eq!(record_received_bytes(&mut received, 64, 100), Ok(()));
+        assert_eq!(received, 64);
+        assert_eq!(record_received_bytes(&mut received, 36, 100), Ok(()));
+        assert_eq!(received, 100);
+    }
+
+    #[test]
+    fn record_received_bytes_exceeds_capacity_and_overflow() {
+        let mut received = 90;
+        assert_eq!(
+            record_received_bytes(&mut received, 11, 100),
+            Err(Error::ExceedsCapacity)
+        );
+        assert_eq!(received, 90);
+
+        let mut near_max = u32::MAX - 4;
+        assert_eq!(
+            record_received_bytes(&mut near_max, 10, u32::MAX),
+            Err(Error::ExceedsCapacity)
+        );
+        assert_eq!(near_max, u32::MAX - 4);
+    }
 }
