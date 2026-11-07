@@ -99,6 +99,8 @@ mod http {
         payload_capacity: u32,
     ) -> Result<FetchStream<'a, 'uri, 'buf, TCP, DNS, N, CHUNK_SIZE>, Error> {
         const {
+            assert!(CHUNK_SIZE > 0);
+            assert!(CHUNK_SIZE as u64 <= u32::MAX as u64);
             assert!(N >= CHUNK_SIZE);
         }
 
@@ -138,20 +140,31 @@ mod http {
         ///
         /// # Panics
         ///
-        /// If the received buffer length or `CHUNK_SIZE` are bigger than `u32::MAX`.
+        /// If the received buffer length is bigger than `u32::MAX`.
         pub async fn next(&mut self) -> Option<Result<Chunk<'_>, Error>> {
             // Early exit to prevent extra request after the fetching is done.
             if self.is_done {
                 return None;
             }
+            let chunk_size = const {
+                assert!(CHUNK_SIZE > 0);
+                assert!(CHUNK_SIZE as u64 <= u32::MAX as u64);
+                #[allow(
+                    clippy::cast_possible_truncation,
+                    reason = "checked in const block above"
+                )]
+                {
+                    CHUNK_SIZE as u32
+                }
+            };
             let range = Range {
                 start: self.bytes_received,
-                end: self.bytes_received + u32::try_from(CHUNK_SIZE).unwrap(),
+                end: self.bytes_received.saturating_add(chunk_size),
             };
 
             ariel_os_log::trace!("GET-ing range: {:?} of the payload file", range);
             // NOTE: Since we don't know the size of the payload that we are
-            // fetching, werely on the fact that a GET request with a range whose
+            // fetching, we rely on the fact that a GET request with a range whose
             // start is outside of the file leads to 416 Error which is caught below as
             // Error::InvalidTransportRange. If this occurs after receiving at least one
             // valid chunk, we consider the fetch to be done.
