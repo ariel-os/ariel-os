@@ -883,11 +883,11 @@ chips:
     support:
       gpio: supported
       debug_channel: supported
-      ethernet_over_usb: needs_testing
+      ethernet_over_usb: supported
       hwrng: not_available
       i2c_controller: needs_testing
       spi_main: needs_testing
-      uart: supported
+      uart: needs_testing
       logging: supported
       storage:
         status: not_currently_supported
@@ -895,7 +895,7 @@ chips:
           - unsupported heterogeneous flash organization
       wifi: not_available
       ble: not_available
-      user_usb: needs_testing
+      user_usb: supported
       ethernet: not_available
 
   stm32f411re:
@@ -1513,11 +1513,9 @@ builders:
     tier: "3"
     support:
       wifi: not_available
-      ethernet_over_usb: needs_testing
+      ethernet_over_usb: supported
       user_usb: supported
     notes: |
-      Black Pill board based on the STM32F401RC.
-
       The board features:
       - 25 MHz HSE crystal
       - 32.768 kHz LSE crystal
