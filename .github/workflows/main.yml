@@ -45,7 +45,7 @@ jobs:
         run: laze build -DCARGO_ARGS+='--locked' --builders host --multiple-tasks --global --keep-going=0 test
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Check out repository code
