@@ -242,8 +242,7 @@ macro_rules! define_uart {
                 rx_buf: &'d mut [u8],
                 tx_buf: &'d mut [u8],
                 config: $crate::hal::uart::Config,
-            ) -> Result<$crate::hal::uart::Uart<'d>, ariel_os_embassy_common::uart::ConfigError>
-            {
+            ) -> Result<$crate::hal::uart::Uart<'d>, $crate::uart::ConfigError> {
                 $crate::hal::uart::$device::<'d>::new(self.rx, self.tx, rx_buf, tx_buf, config)
             }
         }
