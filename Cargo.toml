@@ -66,7 +66,6 @@ repository = "https://github.com/ariel-os/ariel-os"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
-cfg-if = { version = "1.0.0" }
 cortex-m = { version = "0.7", default-features = false, features = [
   "inline-asm",
 ] }
@@ -155,7 +154,6 @@ ariel-os-stm32 = { path = "src/ariel-os-stm32" }
 ariel-os-stm32-mapping = { path = "src/ariel-os-stm32-mapping" }
 ariel-os-storage = { path = "src/ariel-os-storage" }
 ariel-os-threads = { path = "src/ariel-os-threads" }
-ariel-os-update-transports = { path = "src/ariel-os-update-transports" }
 ariel-os-utils = { path = "src/ariel-os-utils", default-features = false }
 
 # Built-in sensor drivers.
