@@ -18,6 +18,9 @@ mod stored;
 #[cfg(feature = "coap-transport-udp")]
 mod transport_udp;
 
+#[cfg(feature = "_coap-transport-slipmux")]
+mod transport_slipmux;
+
 use ariel_os_embassy::cell::SameExecutorCell;
 #[cfg(feature = "coap-server")]
 use coap_handler_implementations::ReportingHandlerBuilder as _;
@@ -159,7 +162,15 @@ async fn coap_run_impl(handler: impl coap_handler::Handler + coap_handler::Repor
     );
 
     cfg_select! {
-        feature = "coap-transport-udp" => transport_udp::coap_run_udp(handler).await,
+        all(feature = "coap-transport-udp", not(feature = "_coap-transport-slipmux")) => transport_udp::coap_run_udp(handler).await,
+        all(feature = "_coap-transport-slipmux", not(feature = "coap-transport-udp")) => transport_slipmux::coap_run_slipmux(handler).await,
+        any(feature = "_coap-transport-slipmux", feature = "coap-transport-udp") => {
+            let handler = RefCellHandler::new(handler);
+            embassy_futures::join::join(
+                transport_udp::coap_run_udp(&handler),
+                transport_slipmux::coap_run_slipmux(&handler),
+            ).await.0
+        }
         feature = "doc" => loop {},
         _ => {
             compile_error!(
@@ -205,4 +216,44 @@ async fn coap_run() {
     // FIXME: Provide an "all system components" constructor in this crate.
     let handler = new_dispatcher();
     coap_run_impl(handler).await;
+}
+
+/// A CoAP server that might be accessed by two different transports.
+///
+/// The Rust compiler doesn't see through that this has no async methods and more generally is not
+/// held across await points, so we use a `RefCell` to show that at runtime.
+///
+/// This will panic when used multiple times. (It could throw a 5.xx "come back later", but if that
+/// lock is held, something is already really wrong).
+struct RefCellHandler<T>(core::cell::RefCell<T>);
+
+impl<T: coap_handler::Handler> RefCellHandler<T> {
+    fn new(handler: T) -> Self {
+        Self(core::cell::RefCell::new(handler))
+    }
+}
+
+impl<T: coap_handler::Handler> coap_handler::Handler for &RefCellHandler<T> {
+    type RequestData = T::RequestData;
+    type ExtractRequestError = T::ExtractRequestError;
+    type BuildResponseError<M: coap_message::MinimalWritableMessage> = T::BuildResponseError<M>;
+
+    fn extract_request_data<M: coap_message::ReadableMessage>(
+        &mut self,
+        request: &M,
+    ) -> Result<Self::RequestData, Self::ExtractRequestError> {
+        self.0.borrow_mut().extract_request_data(request)
+    }
+
+    fn estimate_length(&mut self, request: &Self::RequestData) -> usize {
+        self.0.borrow_mut().estimate_length(request)
+    }
+
+    fn build_response<M: coap_message::MutableWritableMessage>(
+        &mut self,
+        response: &mut M,
+        request: Self::RequestData,
+    ) -> Result<(), Self::BuildResponseError<M>> {
+        self.0.borrow_mut().build_response(response, request)
+    }
 }
