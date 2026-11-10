@@ -41,6 +41,9 @@ mod stts22h {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
 pub use stts22h::STTS22H_I2C;
