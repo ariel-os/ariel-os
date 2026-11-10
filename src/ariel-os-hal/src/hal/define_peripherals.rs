@@ -348,6 +348,232 @@ macro_rules! define_i2c_alias {
     };
 }
 
+/// Repeatedly calls [`define_switch`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_switches {
+    ( $( { field_name: $fname:ident, type_name: $tname:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*] } ),* $(,)? ) => {
+        $(
+            $crate::define_switch!{ name: $tname, pins:[$(pin: $pin, pull: $pull, active: $active,)+], aliases : [$($alias,)*] }
+        )*
+
+        $crate::define_peripherals!(SwitchPeripherals{
+            $(
+                $(
+                   $fname : $pin,
+                )+
+            )*
+        });
+    };
+}
+
+/// Repeatedly calls [`define_button`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_buttons {
+    ( $( { field_name: $fname:ident, type_name: $tname:ident, pin: $pin:ident, pull: $pull:ident, active: $active:ident, aliases: [$($alias:ident,)*] } ),* $(,)? ) => {
+        $(
+            $crate::define_button!{ name: $tname, pin: $pin, pull: $pull, active: $active, aliases : [$($alias,)*] }
+        )*
+
+        $crate::define_peripherals!(ButtonPeripherals{ $($fname: $pin,)*} );
+    };
+}
+/// Packages an [`Input`](crate::gpio::Input) and an activity [`Level`](crate::gpio::Level) into a button struct.
+///
+/// This creates a button struct named `name`. If the `"external-interrupts"` feature is set,
+/// [`IntEnabledInput`](crate::gpio::Input) will be used and the generated struct will implement
+///  `wait_for_X` async functions using the interrupts.
+#[macro_export]
+macro_rules! define_button {
+    (name: $name:ident, pin : $pin:ident, pull : $pull:ident, active : $active:ident, aliases : [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            inner: $crate::hal::button::Button
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+                let input_builder = $crate::gpio::Input::builder(
+                    self.$pin.take().unwrap(),
+                    $crate::select_pull!($pull, $active),
+                );
+                $name {
+                    inner: $crate::hal::button::Button::new(
+                        $crate::hal::switch::SwitchPin::new(
+                            $crate::build_input!(input_builder),
+                            $active,
+                        )
+                    )
+                }
+            }
+        }
+
+        impl $name {
+            $crate::impl_button_inner!(inner);
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+/// Creates a struct of the given `name`, containing all of the [`Input`](crate::gpio::Input)
+/// that are part of the switch.
+///
+/// if the `"external-interrupts"` feature is enabled then the inputs will be [`IntEnabledInput`](crate::gpio::IntEnabledInput)
+/// instead. The individual [`SwitchPin`](crate::hal::switch::SwitchPin)s, and the struct `name` itself in case of
+/// single pin switched, will implement `wait_for_X` async methods using the interrupts.
+#[macro_export]
+macro_rules! define_switch {
+    (name: $name:ident, pins: [pin : $pin:ident, pull : $pull:ident, active : $active:ident,], aliases : [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name{
+            inner: $crate::hal::switch::SwitchPin
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+
+                let input_builder = $crate::gpio::Input::builder(
+                    self.$pin.take().unwrap(),
+                    $crate::select_pull!($pull, $active),
+                );
+
+                $name{
+                    inner: $crate::hal::switch::SwitchPin::new(
+                        $crate::build_input!(input_builder),
+                        $active
+                    )
+                }
+            }
+        }
+
+        impl $name {
+            $crate::impl_switch_inner!(inner);
+
+            pub fn pins(&mut self) -> (&mut $crate::hal::switch::SwitchPin,)
+            {
+                (&mut self.inner,)
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+    (name: $name:ident, pins: [$(pin: $pin:ident, pull: $pull:ident, active: $active:ident,)+], aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $(
+                $pin: $crate::hal::switch::SwitchPin,
+            )+
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Pull::*;
+                use $crate::gpio::Level::*;
+
+                $ (
+                    let input_builder_$pin = $crate::gpio::Input::builder(
+                        self.$pin.take().unwrap(),
+                        $crate::select_pull!($pull, $active),
+                    );
+                )+
+
+                $name {
+                    $(
+                        $pin: $crate::hal::switch::SwitchPin::new(
+                            inner: $crate::hal::switch::SwitchPin::new(
+                                $crate::build_input!(input_builder_$pin),
+                                $active,
+                            )
+                        ),
+                    )+
+                }
+            }
+        }
+
+        impl $name {
+            pub fn pins(&mut self) -> (
+                $(
+                    &mut $crate::repeat!($pin, $crate::hal::switch::SwitchPin),
+                )+
+            )
+            {
+                (
+                    $(
+                        &mut self.$pin,
+                    )+
+                )
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+
+#[macro_export]
+macro_rules! define_alias {
+    ($name:ident = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias = $name;
+    };
+    ($name:ident<$lt:lifetime> = $alias:ident) => {
+        #[allow(nonstandard_style)]
+        pub type $alias<$lt> = $name<$lt>;
+    };
+}
+
+#[cfg(not(feature = "external-interrupts"))]
+#[macro_export]
+macro_rules! build_input {
+    ( $input:ident ) => {
+        $input.build()
+    };
+}
+#[cfg(feature = "external-interrupts")]
+#[macro_export]
+macro_rules! build_input {
+    ( $input:ident ) => {
+        $input.build_with_interrupt().unwrap()
+    };
+}
+
+#[macro_export]
+macro_rules! select_pull {
+    (None, High) => {
+        Down
+    };
+    (None, Low) => {
+        Up
+    };
+    (Down, $tt:tt) => {
+        None
+    };
+    (Up, $tt:tt) => {
+        None
+    };
+}
+
+#[macro_export]
+macro_rules! repeat {
+    ($i: ident, $expr:ty) => {
+        $expr
+    };
+}
+
 #[doc(hidden)]
 pub trait TakePeripherals<T> {
     fn take_peripherals(&mut self) -> T;

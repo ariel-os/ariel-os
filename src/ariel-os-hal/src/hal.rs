@@ -34,6 +34,10 @@ pub use crate::group_peripherals;
 
 pub use define_peripherals::*;
 
+mod gadgets;
+
+pub use gadgets::*;
+
 cfg_select! {
     context = "native" => {
         mod dummy;
