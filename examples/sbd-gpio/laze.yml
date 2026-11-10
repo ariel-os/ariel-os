@@ -1,0 +1,14 @@
+apps:
+  - name: sbd-gpio
+    selects:
+      - has_leds
+      - has_buttons
+
+modules:
+  - name: with-switches
+    selects:
+      - has_switches
+    env:
+      global:
+        FEATURES:
+          - use-switches

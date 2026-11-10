@@ -23,6 +23,7 @@ subdirs:
   - minimal
   - power
   - random
+  - sbd-gpio
   - sensors-debug
   - storage
   - tcp-client
