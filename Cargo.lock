@@ -95,6 +95,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-nrf",
  "ariel-os-power",
@@ -207,6 +208,7 @@ dependencies = [
  "ariel-os-hal",
  "ariel-os-identity",
  "ariel-os-log",
+ "ariel-os-log-transport-driver",
  "ariel-os-macros",
  "ariel-os-random",
  "ariel-os-rt",
@@ -343,6 +345,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "ariel-os-log-transport-driver"
+version = "0.5.0"
+dependencies = [
+ "ariel-os-boards",
+ "ariel-os-embassy-common",
+ "ariel-os-hal",
+ "ariel-os-log",
+ "embassy-executor",
+ "embassy-futures",
+ "embassy-nrf",
+ "embassy-rp",
+ "embassy-stm32",
+ "embassy-sync 0.8.0",
+ "embassy-time",
+ "embedded-io 0.7.1",
+ "esp-hal",
+ "featurecomb",
+]
+
+[[package]]
 name = "ariel-os-macros"
 version = "0.6.0"
 dependencies = [
@@ -415,6 +437,8 @@ dependencies = [
 name = "ariel-os-power"
 version = "0.6.0"
 dependencies = [
+ "ariel-os-debug",
+ "ariel-os-log",
  "cortex-m",
  "esp-hal",
 ]
@@ -467,6 +491,7 @@ dependencies = [
  "ariel-os-debug",
  "ariel-os-log",
  "ariel-os-macros",
+ "ariel-os-power",
  "ariel-os-threads",
  "ariel-os-utils",
  "cortex-m",
@@ -2122,6 +2147,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "embassy-crypto"
+version = "0.1.0"
+source = "git+https://github.com/nponsard/embassy-ariel?rev=17f5c1744da05ea8a8a1ee9036cd53181c7eb07b#17f5c1744da05ea8a8a1ee9036cd53181c7eb07b"
+dependencies = [
+ "defmt 1.1.1",
+ "unitrait",
+]
+
+[[package]]
 name = "embassy-embedded-hal"
 version = "0.6.0"
 source = "git+https://github.com/ariel-os/embassy?rev=35b4b7a7f612c4d9bfe13c595d52172a5f8b9bbb#35b4b7a7f612c4d9bfe13c595d52172a5f8b9bbb"
@@ -2259,15 +2293,15 @@ dependencies = [
 [[package]]
 name = "embassy-nrf"
 version = "0.11.0"
-source = "git+https://github.com/ariel-os/embassy?rev=dc494d8677bb8d8c493940d5c85112662b682aab#dc494d8677bb8d8c493940d5c85112662b682aab"
+source = "git+https://github.com/nponsard/embassy-ariel?rev=17f5c1744da05ea8a8a1ee9036cd53181c7eb07b#17f5c1744da05ea8a8a1ee9036cd53181c7eb07b"
 dependencies = [
  "bitflags 2.13.2",
- "cfg-if",
  "cortex-m",
  "cortex-m-rt",
  "critical-section",
  "defmt 1.1.1",
  "document-features",
+ "embassy-crypto",
  "embassy-embedded-hal",
  "embassy-futures",
  "embassy-hal-internal",
@@ -2284,12 +2318,9 @@ dependencies = [
  "embedded-io-async 0.7.0",
  "embedded-storage",
  "embedded-storage-async",
- "fixed",
  "nrf-pac",
  "optfield",
  "rand_core 0.10.1",
- "rand_core 0.6.4",
- "rand_core 0.9.3",
 ]
 
 [[package]]
@@ -4723,8 +4754,7 @@ dependencies = [
 [[package]]
 name = "nrf-pac"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83531b9f1e19f493018da9b8b20359e4cedd6d1357553b1ac50f3fa27a0104fa"
+source = "git+https://github.com/embassy-rs/nrf-pac?rev=4499375510e2fdb3a5426911beb846d8d2dbbb80#4499375510e2fdb3a5426911beb846d8d2dbbb80"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -6899,6 +6929,24 @@ name = "unicode-xid"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
+
+[[package]]
+name = "unitrait"
+version = "2.0.0"
+source = "git+https://github.com/embassy-rs/unitrait?rev=bb96601b3d293fa27d1ca2891f6ea148e534e433#bb96601b3d293fa27d1ca2891f6ea148e534e433"
+dependencies = [
+ "unitrait-macros",
+]
+
+[[package]]
+name = "unitrait-macros"
+version = "2.0.0"
+source = "git+https://github.com/embassy-rs/unitrait?rev=bb96601b3d293fa27d1ca2891f6ea148e534e433#bb96601b3d293fa27d1ca2891f6ea148e534e433"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.114",
+]
 
 [[package]]
 name = "universal-hash"

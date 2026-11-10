@@ -3,9 +3,9 @@
 
 use ariel_os::{
     config,
-    debug::{ExitCode, exit},
     log::*,
     net,
+    power::{ExitCode, exit},
     reexports::embassy_net,
 };
 use embassy_net::{
