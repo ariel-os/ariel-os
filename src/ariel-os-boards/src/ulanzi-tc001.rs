@@ -1,9 +1,13 @@
 // @generated
 
 pub mod pins {
-    ariel_os_hal::define_peripherals!(
-        ButtonPeripherals { button0 : GPIO26, button1 : GPIO27, button2 : GPIO14, }
-    );
+    ariel_os_hal::define_buttons![
+        { field_name : button0, type_name : Button0, pin : GPIO26, pull : None, active :
+        Low, aliases : [left,] }, { field_name : button1, type_name : Button1, pin :
+        GPIO27, pull : None, active : Low, aliases : [middle,] }, { field_name : button2,
+        type_name : Button2, pin : GPIO14, pull : None, active : Low, aliases : [right,]
+        },
+    ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : I2C0, sda : GPIO21, scl : GPIO22, aliases : [] },
     ];

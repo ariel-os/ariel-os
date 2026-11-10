@@ -1,8 +1,20 @@
 // @generated
 
 pub mod pins {
-    ariel_os_hal::define_peripherals!(LedPeripherals { led0 : P0_02, });
-    ariel_os_hal::define_peripherals!(ButtonPeripherals { button0 : P0_06, });
+    ariel_os_hal::define_peripherals!(
+        LedPeripherals { led0 : P0_02, led1 : P0_03, led2 : P0_04, led3 : P0_05, }
+    );
+    ariel_os_hal::define_switches![
+        { field_name : switch0, type_name : Switch0, pins : [pin : P0_08, pull : None,
+        active : Low,], aliases : [SW1, SWITCH1,] }, { field_name : switch1, type_name :
+        Switch1, pins : [pin : P0_09, pull : None, active : Low,], aliases : [SW2,
+        SWITCH2,] },
+    ];
+    ariel_os_hal::define_buttons![
+        { field_name : button0, type_name : Button0, pin : P0_06, pull : None, active :
+        Low, aliases : [SW3, BUTTON1,] }, { field_name : button1, type_name : Button1,
+        pin : P0_07, pull : None, active : Low, aliases : [SW4, BUTTON2,] },
+    ];
     ariel_os_hal::define_i2c_buses![
         { name : I2c0, peripheral : SERIAL0, sda : P0_30, scl : P0_31, aliases : [] },
     ];

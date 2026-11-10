@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons and LEDs from the files found at <https://www.st.com/en/evaluation-tools/nucleo-h753zi.html#cad-resources>
   st-nucleo-h753zi:
     chip: stm32h753zi
     flags:
@@ -29,6 +30,11 @@ targets:
     buttons:
       # button0
       - pin: PC13
+        resistor: pulldown
+        active: high
+        aliases:
+          - B1
+          - USER
     uarts:
       - aliases:
           - VCP

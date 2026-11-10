@@ -1,13 +1,57 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the buttons, switches and LEDs from <https://docs.nordicsemi.com/r/bundle/ug_nrf9160_dk/page/ug/nrf91_dk/hw_description/hw_buttons_leds.html>
   nrf9160dk-nrf9160:
     chip: nrf9160
     leds:
       # led0
       - pin: P0_02
+        active: high
+        aliases:
+          - LED1
+      # led0
+      - pin: P0_03
+        active: high
+        aliases:
+          - LED2
+      - pin: P0_04
+        active: high
+        aliases:
+          - LED3
+      - pin: P0_05
+        active: high
+        aliases:
+          - LED4
     buttons:
       # button0
       - pin: P0_06
+        resistor: none
+        active: low
+        aliases:
+          - SW3
+          - BUTTON1
+      # button1
+      - pin: P0_07
+        resistor: none
+        active: low
+        aliases:
+          - SW4
+          - BUTTON2
+    switches:
+      # switch0
+      - pins: P0_08
+        resistors: none
+        active: low
+        aliases:
+          - SW1
+          - SWITCH1
+      # switch1
+      - pins: P0_09
+        resistors: none
+        active: low
+        aliases:
+          - SW2
+          - SWITCH2
     i2c:
       # Enabled by the companion nRF5280 MCU.
       # When running custom software, the I/O expander can be enabled by setting the `IOEXP_EN` P0_14 pin high.

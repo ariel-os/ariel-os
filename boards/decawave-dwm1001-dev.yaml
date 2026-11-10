@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   decawave-dwm1001-dev:
     chip: nrf52832
@@ -31,9 +31,10 @@ targets:
     buttons:
       # button0
       - pin: P0_02
+        resistor: none
+        active: low
         aliases:
           - BT_WAKE_UP
-        active: low
     uarts:
       - tx_pin: P0_05
         rx_pin: P0_11
