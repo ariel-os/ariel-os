@@ -56,7 +56,13 @@ fn main() {
         println!("cargo:rerun-if-changed=isr_stack_xtensa.ld.in");
     }
 
-    copy_and_rerun_if_changed("linkme.x");
+    if context("psoc") {
+        std::fs::copy("linkme-psoc.x", out.join("linkme.x")).unwrap();
+        println!("cargo:rerun-if-changed=linkme-psoc.x");
+    } else {
+        copy_and_rerun_if_changed("linkme.x");
+    }
+
     copy_and_rerun_if_changed("eheap.x");
     copy_and_rerun_if_changed("keep-stack-sizes.x");
 
