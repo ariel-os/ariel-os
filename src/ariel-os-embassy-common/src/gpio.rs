@@ -10,6 +10,16 @@ pub enum Level {
     High,
 }
 
+impl core::ops::Not for Level {
+    type Output = Self;
+    fn not(self) -> Self {
+        match self {
+            Self::High => Self::Low,
+            Self::Low => Self::High,
+        }
+    }
+}
+
 impl From<Level> for bool {
     fn from(level: Level) -> Self {
         match level {

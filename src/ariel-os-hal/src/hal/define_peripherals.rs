@@ -524,6 +524,71 @@ macro_rules! define_switch {
     };
 }
 
+/// Repeatedly calls [`define_led`] with each item of a comma separated list.
+#[macro_export]
+macro_rules! define_leds {
+    ( $( { field_name: $fname:ident, type_name: $tname:ident, pin: $pin:ident, color: $color:ident, active: $active:ident, aliases: [$($alias:ident,)*] } ),* $(,)? ) => {
+        $(
+            $crate::define_led!{ name: $tname, pin: $pin, color: $color, active: $active, aliases: [$($alias,)*] }
+        )*
+
+        $crate::define_peripherals!(
+            LedPeripherals { $( $fname: $pin, )* }
+        );
+
+    }
+}
+
+#[macro_export]
+macro_rules! define_led {
+    (name: $name:ident, pin: $pin:ident, color: $color:ident, active: $active:ident, aliases: [$($alias:ident,)*]) => {
+
+        #[allow(nonstandard_style)]
+        pub struct $name {
+            $color: $crate::hal::led::Led,
+        }
+
+        impl $crate::hal::TakePeripherals<$name> for &mut $crate::hal::OptionalPeripherals {
+            fn take_peripherals(&mut self) -> $name {
+                use $crate::gpio::Level::*;
+                $name {
+                    $color: $crate::hal::led::Led::new(
+                        $crate::gpio::Output::new(
+                            self.$pin.take().unwrap(),
+                            !$active
+                        ),
+                        $active,
+                    )
+                }
+            }
+        }
+
+
+        impl $name {
+            pub fn turn_on(&mut self) {
+                self.$color.turn_on()
+            }
+
+            pub fn turn_off(&mut self) {
+                self.$color.turn_off()
+            }
+
+            pub fn toggle(&mut self) {
+                self.$color.toggle()
+            }
+
+            pub fn into_output(self) -> $crate::gpio::Output<'static> {
+                self.$color.into_output()
+            }
+        }
+
+        $(
+            $crate::define_alias!{$name = $alias}
+        )*
+
+    };
+}
+
 #[macro_export]
 macro_rules! define_alias {
     ($name:ident = $alias:ident) => {
