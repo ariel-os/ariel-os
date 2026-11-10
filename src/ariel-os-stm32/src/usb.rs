@@ -1,4 +1,4 @@
-use embassy_stm32::{bind_interrupts, peripherals, usb, usb::Driver, Peri};
+use embassy_stm32::{Peri, bind_interrupts, peripherals, usb, usb::Driver};
 
 bind_interrupts!(struct Irqs {
     #[cfg(capability = "hw/stm32-usb-synopsys")]

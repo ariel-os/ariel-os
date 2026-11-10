@@ -3,7 +3,7 @@
 
 use ariel_os::{
     cell::StaticCell,
-    log::{info, Hex},
+    log::{Hex, info},
     reexports::embassy_usb,
     usb::UsbDriver,
 };
