@@ -6,19 +6,23 @@ targets:
     leds:
       # led0
       - pin: P0_02
+        color: green
         active: high
         aliases:
           - LED1
       # led0
       - pin: P0_03
+        color: green
         active: high
         aliases:
           - LED2
       - pin: P0_04
+        color: green
         active: high
         aliases:
           - LED3
       - pin: P0_05
+        color: green
         active: high
         aliases:
           - LED4

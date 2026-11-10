@@ -16,7 +16,7 @@ targets:
         color: red
         active: high
         aliases:
-          - D5
+          - D6
     uarts:
       - tx_pin: GPIO20
         rx_pin: GPIO19

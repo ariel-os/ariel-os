@@ -11,7 +11,7 @@ targets:
         pin: P1_12
         aliases:
           - D7
-        active: low
+        active: high
     buttons:
       # button0
       - pin: P0_11

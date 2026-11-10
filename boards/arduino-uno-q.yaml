@@ -1,5 +1,6 @@
 version: 0.5.0
 targets:
+  # Schematic <https://docs.arduino.cc/resources/schematics/ABX00162-schematics.pdf>
   arduino-uno-q:
     chip: stm32u585ai
     ariel:
@@ -11,23 +12,29 @@ targets:
           - CONFIG_SWI=WWDG
     leds:
       # led0
-      - color: red
-        pin: PH10
+      - pin: PH10
+        color: red
+        active: low
       # led1
-      - color: green
-        pin: PH11
+      - pin: PH11
+        color: green
+        active: low
       # led2
-      - color: blue
-        pin: PH12
+      - pin: PH12
+        color: blue
+        active: low
       # led3
-      - color: red
-        pin: PH13
+      - pin: PH13
+        color: red
+        active: low
       # led4
-      - color: green
-        pin: PH14
+      - pin: PH14
+        color: green
+        active: low
       # led5
-      - color: blue
-        pin: PH15
+      - pin: PH15
+        color: blue
+        active: low
     i2c:
       # These pins have strong pull-ups suitable for I2C.
       - sda_pin: PB11

@@ -12,24 +12,28 @@ targets:
     leds:
       # led0
       - pin: PB5
+        color: green
+        active: high
         aliases:
           - LD1
-        color: green
       # led1
       - pin: PA5
+        color: red
+        active: high
         aliases:
           - LD2
-        color: red
       # led2
       - pin: PB6
+        color: blue
+        active: high
         aliases:
           - LD3
-        color: blue
       # led3
       - pin: PB7
+        color: red
+        active: high
         aliases:
           - LD4
-        color: red
     buttons:
       # button0
       - pin: PB2

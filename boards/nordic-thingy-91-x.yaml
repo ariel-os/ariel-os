@@ -4,15 +4,17 @@ targets:
   nordic-thingy-91-x-nrf9151:
     chip: nrf9151
     leds:
-      # led0
+      # This is actually a single RBG LED but we don't support it right now
+      # So it is split across 3 single channel LEDs.
       - pin: P0_29
         color: red
-      # led1
+        active: high
       - pin: P0_31
         color: green
-      # led2
+        active: high
       - pin: P0_30
         color: blue
+        active: high
     buttons:
       # button0
       - pin: P0_26
@@ -62,15 +64,17 @@ targets:
     flags:
       - has_usb_device_port
     leds:
-      # led0
+      # This is actually a single RBG LED but we don't support it right now
+      # So it is split across 3 single channel LEDs.
       - pin: P0_14
         color: red
-      # led1
+        active: high
       - pin: P0_26
         color: green
-      # led2
+        active: high
       - pin: P0_15
         color: blue
+        active: high
     buttons:
       # button0
       - pin: P0_24

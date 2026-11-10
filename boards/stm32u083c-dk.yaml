@@ -12,12 +12,24 @@ targets:
       # led0
       - pin: PC13
         color: green
+        active: high
+        aliases:
+          - LD3
+          - LED_GREEN
       # led1
       - pin: PA5
         color: blue
+        active: high
+        aliases:
+          - LD4
+          - LED_BLUE
       # led2
       - pin: PB2
         color: red
+        active: high
+        aliases:
+          - LD5
+          - LED_RED
     buttons:
       # button0
       - pin: PC2

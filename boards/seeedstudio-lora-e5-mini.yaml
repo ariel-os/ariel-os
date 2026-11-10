@@ -8,9 +8,11 @@ targets:
     leds:
       # led0
       - pin: PB5
+        color: red
+        active: low
         aliases:
           - LD1
-        color: red
+          - D6
     buttons:
       # button0
       - pin: PB13
