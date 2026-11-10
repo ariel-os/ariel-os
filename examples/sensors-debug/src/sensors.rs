@@ -51,7 +51,10 @@ mod lis2du12 {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro"))]
 pub use lis2du12::LIS2DU12_I2C;
 
@@ -88,7 +91,10 @@ mod lps22df {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro"))]
 pub use lps22df::LPS22DF_I2C;
 
@@ -127,7 +133,10 @@ mod stts22h {
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(any(context = "st-steval-mkboxpro", context = "stm32u083c-dk"))]
 pub use stts22h::STTS22H_I2C;
 
@@ -174,12 +183,15 @@ mod aht20 {
             .init(
                 ariel_os_sensor_aht20::i2c::Peripherals {},
                 I2cDevice::new(crate::i2c_bus::I2C_BUS.get().unwrap()),
-                config
+                config,
             )
             .await;
     }
 }
 
-#[allow(unused, reason = "should be directly accessible without going through the registry")]
+#[allow(
+    unused,
+    reason = "should be directly accessible without going through the registry"
+)]
 #[cfg(context = "unihiker-k10")]
 pub use aht20::AHT20_I2C;
