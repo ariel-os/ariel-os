@@ -3,27 +3,24 @@
 
 use ariel_os_boards::pins;
 
-use ariel_os::{
-    gpio::{Level, Output},
-    time::Timer,
-};
+use ariel_os::time::Timer;
 
 #[cfg(not(feature = "use-switches"))]
 ariel_os::hal::group_peripherals!(Peripherals {
-    leds: pins::LedPeripherals,
+    led: pins::Led0,
     button: pins::Button0,
 });
 
 #[cfg(feature = "use-switches")]
 ariel_os::hal::group_peripherals!(Peripherals {
-    leds: pins::LedPeripherals,
+    led: pins::Led0,
     button: pins::Button0,
     switch: pins::Switch0,
 });
 
 #[ariel_os::task(autostart, peripherals)]
 async fn blinky(peripherals: Peripherals) {
-    let mut led0 = Output::new(peripherals.leds.led0, Level::Low);
+    let mut led = peripherals.led;
 
     let mut button = peripherals.button;
 
@@ -46,7 +43,7 @@ async fn blinky(peripherals: Peripherals) {
             embassy_futures::select::select(button.wait_for_pressed(), Timer::after_millis(300))
                 .await;
 
-        led0.toggle();
+        led.toggle();
         Timer::after_millis(100).await;
     }
 }
