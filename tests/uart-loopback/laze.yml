@@ -8,8 +8,7 @@ apps:
       - nrf5340-app
       - nrf9151
       - nrf9160
-      - rp2040
-      - rp235xa
+      - rp
       - seeedstudio-lora-e5-mini
       - st-b-l072z-lrwan1
       - st-nucleo-c031c6
