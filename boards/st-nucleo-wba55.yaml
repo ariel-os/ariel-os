@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/resource/en/schematic_pack/mb1803-wba55cga-b01-schematic.pdf>
   st-nucleo-wba55:
     chip: stm32wba55cg
     ariel:
@@ -7,30 +8,39 @@ targets:
     leds:
       # led0
       - pin: PB4
+        color: blue
+        active: low
         aliases:
           - LD1
-        color: blue
       # led1
       - pin: PA9
+        color: green
+        active: low
         aliases:
           - LD2
-        color: green
       # led2
       - pin: PB8
+        color: red
+        active: low
         aliases:
           - LD3
-        color: red
     buttons:
       # button0
       - pin: PC13
+        resistor: none
+        active: low
         aliases:
           - B1
       # button1
       - pin: PB6
+        resistor: none
+        active: low
         aliases:
           - B2
       # button2
       - pin: PB7
+        resistor: none
+        active: low
         aliases:
           - B3
     uarts:

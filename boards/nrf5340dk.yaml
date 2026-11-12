@@ -1,40 +1,60 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout for the Buttons and LEDs from <https://docs.nordicsemi.com/viewer/book-attachment/Mg1yMHNCihJkguCGlcr6HQ/98N6Sk7KIGmKBCPlbXl2Aw-Mg1yMHNCihJkguCGlcr6HQ>
   nrf5340dk-app:
     chip: nrf5340-app
     flags:
       - has_usb_device_port
     leds:
       # led0
-      - color: green
-        pin: P0_28
+      - pin: P0_28
+        color: green
         active: low
+        aliases:
+          - LED1
       # led1
-      - color: green
-        pin: P0_29
+      - pin: P0_29
+        color: green
         active: low
+        aliases:
+          - LED2
       # led2
-      - color: green
-        pin: P0_30
+      - pin: P0_30
+        color: green
         active: low
+        aliases:
+          - LED3
       # led3
-      - color: green
-        pin: P0_31
-
+      - pin: P0_31
+        color: green
+        active: low
+        aliases:
+          - LED4
     buttons:
       # button0
       - pin: P0_23
+        resistor: none
         active: low
+        aliases:
+          - SW1
       # button1
       - pin: P0_24
+        resistor: none
         active: low
+        aliases:
+          - SW2
       # button2
       - pin: P0_08
+        resistor: none
         active: low
+        aliases:
+          - SW3
       # button3
       - pin: P0_09
+        resistor: none
         active: low
-
+        aliases:
+          - SW4
     i2c:
       # Only available when a shield is inserted.
       - sda_pin: P1_02

@@ -1,4 +1,4 @@
-version: 0.4.1
+version: 0.5.0
 # Note that the "kit" is really part of the board name, and not the
 # composition of the board with the pin headers and the antennas: It says
 # "nRF9151 Connect Kit" on the board's silkscreen.
@@ -13,7 +13,8 @@ targets:
     buttons:
       # button0
       - pin: P0_25
-        active: low # … and no built-in pull-up.
+        resistor: none
+        active: low
         aliases:
           - USR
     uarts:

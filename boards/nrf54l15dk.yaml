@@ -1,6 +1,7 @@
-version: 0.4.1
+version: 0.5.0
 targets:
   nrf54l15dk-app:
+    # Pinout for buttons and LED from <https://docs.nordicsemi.com/viewer/book-attachment/~YKv8eslZtFFw36ARogCoQ/wl2RIDv5cuDL35WDb~LGlQ-~YKv8eslZtFFw36ARogCoQ>
     chip: nrf54l15-app
     leds:
       # led0
@@ -23,17 +24,28 @@ targets:
     buttons:
       # button0
       - pin: P1_13
+        resistor: none
         active: low
+        aliases:
+          - SW2
       # button1
       - pin: P1_09
+        resistor: none
         active: low
+        aliases:
+          - SW3
       # button2
       - pin: P1_08
+        resistor: none
         active: low
+        aliases:
+          - SW5
       # button3
       - pin: P0_04
+        resistor: none
         active: low
-
+        aliases:
+          - SW6
   # TODO: Add chip and enable
   # nrf54l15-vpr:
   #

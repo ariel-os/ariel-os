@@ -1,5 +1,6 @@
-version: 0.4.1
+version: 0.5.0
 targets:
+  # Pinout from <https://www.st.com/en/evaluation-tools/nucleo-h755zi-q.html#cad-resources>
   st-nucleo-h755zi-q:
     chip: stm32h755zi
     flags:
@@ -10,25 +11,30 @@ targets:
     leds:
       # led0
       - pin: PB0
-        aliases:
-          - LD1
         color: green
         active: high
+        aliases:
+          - LD1
       # led1
       - pin: PE1
-        aliases:
-          - LD2
         color: yellow
         active: high
+        aliases:
+          - LD2
       # led2
       - pin: PB14
-        aliases:
-          - LD3
         color: red
         active: high
+        aliases:
+          - LD3
     buttons:
       # button0
       - pin: PC13
+        resistor: pulldown
+        active: high
+        aliases:
+          - B1
+          - USER
     uarts:
       - aliases:
           - VCP
