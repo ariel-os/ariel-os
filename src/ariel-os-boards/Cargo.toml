@@ -12,8 +12,8 @@ workspace = true
 [package.rust-version]
 workspace = true
 
-[dependencies.ariel-os-embassy-common]
-workspace = true
+[package.metadata.sbd-gen]
+version = "0.6.0"
 
 [dependencies.ariel-os-hal]
 workspace = true

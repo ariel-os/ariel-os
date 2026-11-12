@@ -21,7 +21,7 @@ pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {
         let pin = peripherals.GPIO15.take().unwrap();
         let output = ariel_os_hal::gpio::Output::new(
             pin,
-            ariel_os_embassy_common::gpio::Level::Low,
+            ariel_os_hal::gpio::Level::Low,
         );
         core::mem::forget(output);
     }
