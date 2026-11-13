@@ -885,9 +885,9 @@ chips:
       debug_channel: supported
       ethernet_over_usb: supported
       hwrng: not_available
-      i2c_controller: unsupported
-      spi_main: unsupported
-      uart: unsupported
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
       logging: supported
       storage:
         status: not_currently_supported
