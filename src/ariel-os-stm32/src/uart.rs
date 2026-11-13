@@ -206,7 +206,14 @@ macro_rules! define_uart_drivers {
                 /// Returns [`ConfigError::ConfigurationNotSupported`] when the requested configuration
                 /// cannot be applied to the peripheral.
                 #[expect(clippy::new_ret_no_self)]
-                pub fn new<RX: RxPin<peripherals::$peripheral>, TX: TxPin<peripherals::$peripheral>>(
+                pub fn new<
+                    // On STM32F1 chips, pin traits carry the AFIO remap as an extra parameter.
+                    #[cfg(not(context = "stm32f103re"))] RX: RxPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] TX: TxPin<peripherals::$peripheral>,
+                    #[cfg(context = "stm32f103re")] A,
+                    #[cfg(context = "stm32f103re")] RX: RxPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] TX: TxPin<peripherals::$peripheral, A>,
+                >(
                     rx_pin: impl $crate::IntoPeripheral<'d, RX>,
                     tx_pin: impl $crate::IntoPeripheral<'d, TX>,
                     rx_buf: &'d mut [u8],

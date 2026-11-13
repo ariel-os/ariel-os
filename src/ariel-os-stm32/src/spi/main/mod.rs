@@ -106,9 +106,14 @@ macro_rules! define_spi_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new<
-                    SCK: SckPin<peripherals::$peripheral>,
-                    MISO: MisoPin<peripherals::$peripheral>,
-                    MOSI: MosiPin<peripherals::$peripheral>,
+                    // On STM32F1 chips, pin traits carry the AFIO remap as an extra parameter.
+                    #[cfg(not(context = "stm32f103re"))] SCK: SckPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] MISO: MisoPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] MOSI: MosiPin<peripherals::$peripheral>,
+                    #[cfg(context = "stm32f103re")] A,
+                    #[cfg(context = "stm32f103re")] SCK: SckPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] MISO: MisoPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] MOSI: MosiPin<peripherals::$peripheral, A>,
                 >(
                     sck_pin: impl $crate::IntoPeripheral<'static, SCK>,
                     miso_pin: impl $crate::IntoPeripheral<'static, MISO>,

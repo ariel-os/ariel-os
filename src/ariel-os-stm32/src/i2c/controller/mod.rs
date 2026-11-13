@@ -144,7 +144,14 @@ macro_rules! define_i2c_drivers {
                 /// I2C peripheral.
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
-                pub fn new<SDA: SdaPin<peripherals::$peripheral>, SCL: SclPin<peripherals::$peripheral>>(
+                pub fn new<
+                    // On STM32F1 chips, pin traits carry the AFIO remap as an extra parameter.
+                    #[cfg(not(context = "stm32f103re"))] SDA: SdaPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] SCL: SclPin<peripherals::$peripheral>,
+                    #[cfg(context = "stm32f103re")] A,
+                    #[cfg(context = "stm32f103re")] SDA: SdaPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] SCL: SclPin<peripherals::$peripheral, A>,
+                >(
                     sda_pin: impl $crate::IntoPeripheral<'static, SDA>,
                     scl_pin: impl $crate::IntoPeripheral<'static, SCL>,
                     config: Config,
