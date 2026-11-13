@@ -794,6 +794,19 @@ contexts:
         - --cfg capability=\"async-flash-driver\"
         - --cfg capability=\"hw/stm32-usb-synopsys\"
 
+  - name: stm32f401rc
+    parent: stm32
+    selects:
+      - cortex-m4f
+      - ram-small
+    env:
+      PROBE_RS_CHIP: STM32F401RC
+      RUSTFLAGS:
+        - --cfg capability=\"async-flash-driver\"
+        - --cfg capability=\"hw/stm32-usb-synopsys\"
+      CHIP_NVM_SIZE_BYTES: $(256 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(64 * 1024)
+
   - name: stm32f411re
     parent: stm32
     selects:

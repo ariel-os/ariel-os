@@ -41,6 +41,7 @@
 - [ST NUCLEO-F042K6](./st-nucleo-f042k6.md)
 - [ST NUCLEO-F303RE](./st-nucleo-f303re.md)
 - [ST NUCLEO-F401RE](./st-nucleo-f401re.md)
+- [Black Pill STM32F401RC](./black-pill-stm32f401rc.md)
 - [ST NUCLEO-F411RE](./st-nucleo-f411re.md)
 - [ST NUCLEO-G431RB](./st-nucleo-g431rb.md)
 - [ST NUCLEO-H753ZI](./st-nucleo-h753zi.md)

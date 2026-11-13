@@ -877,6 +877,27 @@ chips:
       user_usb: needs_testing
       ethernet: not_available
 
+  stm32f401rc:
+    name: STM32F401RC
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: supported
+      ethernet_over_usb: supported
+      hwrng: not_available
+      i2c_controller: needs_testing
+      spi_main: needs_testing
+      uart: needs_testing
+      logging: supported
+      storage:
+        status: not_currently_supported
+        comments:
+          - unsupported heterogeneous flash organization
+      wifi: not_available
+      ble: not_available
+      user_usb: supported
+      ethernet: not_available
+
   stm32f411re:
     name: STM32F411RE
     manufacturer: STMicroelectronics
@@ -1487,6 +1508,23 @@ builders:
       wifi: not_available
       ethernet_over_usb: not_available
 
+  blackpill-f401rc:
+    chip: stm32f401rc
+    tier: "3"
+    support:
+      wifi: not_available
+      ethernet_over_usb: supported
+      user_usb: supported
+    notes: |
+      The board features:
+      - 25 MHz HSE crystal
+      - 32.768 kHz LSE crystal
+      - USB-C connector connected directly to the MCU USB FS peripheral
+      - SWD programming interface
+      - Blue user LED on PC13
+      - User button on PA0
+      - soic-8 footprint connected to SPI1
+
   st-nucleo-f411re:
     chip: stm32f411re
     tier: "3"
@@ -1809,6 +1847,11 @@ boards:
     url: https://web.archive.org/web/20250115005425/https://www.st.com/en/evaluation-tools/nucleo-f401re.html
     builders:
       - st-nucleo-f401re
+
+  - name: Black Pill STM32F401RC
+    url: https://stm32world.com/wiki/Black_Pill
+    builders:
+      - blackpill-f401rc
 
   - name: ST NUCLEO-F411RE
     url: https://web.archive.org/web/20250311221905/https://www.st.com/en/evaluation-tools/nucleo-f411re.html

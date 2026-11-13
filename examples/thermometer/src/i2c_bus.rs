@@ -1,8 +1,8 @@
 //! This module is intended to be @generated.
 use ariel_os::{
-    log::debug,
     hal,
     i2c::controller::{Kilohertz, highest_freq_in},
+    log::debug,
 };
 use embassy_sync::mutex::Mutex;
 
