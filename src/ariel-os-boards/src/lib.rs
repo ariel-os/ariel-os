@@ -61,7 +61,8 @@ cfg_select! {
     include!("st-nucleo-h755zi-q.rs"); } context = "st-nucleo-wb55" => {
     include!("st-nucleo-wb55.rs"); } context = "st-nucleo-wba55" => {
     include!("st-nucleo-wba55.rs"); } context = "st-nucleo-wba65ri" => {
-    include!("st-nucleo-wba65ri.rs"); } context = "st-steval-mkboxpro" => {
+    include!("st-nucleo-wba65ri.rs"); } context = "st-nucleo-wl55jc" => {
+    include!("st-nucleo-wl55jc.rs"); } context = "st-steval-mkboxpro" => {
     include!("st-steval-mkboxpro.rs"); } context = "stm32u083c-dk" => {
     include!("stm32u083c-dk.rs"); } context = "ulanzi-tc001" => {
     include!("ulanzi-tc001.rs"); } context = "unihiker-k10" => {
