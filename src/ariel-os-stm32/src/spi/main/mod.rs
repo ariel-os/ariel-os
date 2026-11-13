@@ -22,7 +22,11 @@ use embassy_stm32::{
 // When peripherals support different frequencies, the smallest one is used.
 #[cfg(context = "stm32c031c6")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(24);
-#[cfg(any(context = "stm32f303cb", context = "stm32f303re"))]
+#[cfg(any(
+    context = "stm32f103re",
+    context = "stm32f303cb",
+    context = "stm32f303re"
+))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(18);
 #[cfg(context = "stm32f401re")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
@@ -106,9 +110,14 @@ macro_rules! define_spi_drivers {
                 #[expect(clippy::new_ret_no_self)]
                 #[must_use]
                 pub fn new<
-                    SCK: SckPin<peripherals::$peripheral>,
-                    MISO: MisoPin<peripherals::$peripheral>,
-                    MOSI: MosiPin<peripherals::$peripheral>,
+                    // On STM32F1 chips, pin traits carry the AFIO remap as an extra parameter.
+                    #[cfg(not(context = "stm32f103re"))] SCK: SckPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] MISO: MisoPin<peripherals::$peripheral>,
+                    #[cfg(not(context = "stm32f103re"))] MOSI: MosiPin<peripherals::$peripheral>,
+                    #[cfg(context = "stm32f103re")] A,
+                    #[cfg(context = "stm32f103re")] SCK: SckPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] MISO: MisoPin<peripherals::$peripheral, A>,
+                    #[cfg(context = "stm32f103re")] MOSI: MosiPin<peripherals::$peripheral, A>,
                 >(
                     sck_pin: impl $crate::IntoPeripheral<'static, SCK>,
                     miso_pin: impl $crate::IntoPeripheral<'static, MISO>,
@@ -182,6 +191,12 @@ macro_rules! define_spi_drivers {
 #[cfg(context = "stm32c031c6")]
 define_spi_drivers!(
    SPI1 => SPI1,
+);
+#[cfg(context = "stm32f103re")]
+define_spi_drivers!(
+   SPI1 => SPI1,
+   SPI2 => SPI2,
+   SPI3 => SPI3,
 );
 #[cfg(context = "stm32f303cb")]
 define_spi_drivers!(
