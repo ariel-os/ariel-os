@@ -81,6 +81,19 @@ mod memoryx {
     /// # Panics
     /// Panics if called outside of a known laze context.
     pub fn write_memoryx(out_dir: &std::path::Path) {
+        // preflight
+        if cfg!(all(
+            feature = "embassy-boot",
+            not(any(
+                feature = "embassy-boot-loader",
+                feature = "embassy-boot-application"
+            ))
+        )) {
+            panic!(
+                "feature \"embassy-boot\" selected but not any of [\"embassy-boot-loader\", \"embassy-boot-application\"]"
+            );
+        }
+
         // Gather chip NVM & RAM config
         let nvm = Nvm::from_env();
         let ram = Ram::from_env();
@@ -91,10 +104,10 @@ mod memoryx {
         // define NVM layout
         let mut layout = memsolve::Memory::new(chip);
 
-        #[cfg(not(any(feature = "embassy-boot-loader", feature = "embassy-boot-application")))]
+        #[cfg(not(feature = "embassy-boot"))]
         layout_default(&mut layout);
 
-        #[cfg(any(feature = "embassy-boot-loader", feature = "embassy-boot-application"))]
+        #[cfg(feature = "embassy-boot")]
         layout_embassy_boot(&mut layout);
 
         let mut memory = layout
@@ -166,7 +179,7 @@ mod memoryx {
         );
     }
 
-    /// Configures the embassy-boot compatible layout.
+    /// Configures the ariel-os-bootloader / embassy-boot compatible layout.
     #[allow(
         clippy::missing_panics_doc,
         reason = "constant names are always correct"
@@ -199,7 +212,7 @@ mod memoryx {
                 .set_boot(true),
         ));
 
-        layout.add_section(Section::new("BOOTLOADER_STATE").unwrap().set_pages(1));
+        layout.add_section(Section::new("BOOTLOADER_STATE").unwrap().set_pages(2));
         layout.add_section(fix_linker_name(
             Section::new("ACTIVE").unwrap().set_maximize(true),
         ));
@@ -322,15 +335,46 @@ fn gen_esp_partition_table() {
             .set_address(0xf000)
             .add_esp_metadata(Type::Data, DataType::Phy),
     );
-    memory.add_section(
-        Section::new("factory")
-            .unwrap()
-            .set_maximize(true)
-            // The alignment needs to be 0x10000, see [1].
-            // We believe this is due to NVS MMU limitations.
-            .set_address_align(0x10000)
-            .add_esp_metadata(Type::App, AppType::Factory),
-    );
+
+    if cfg!(not(feature = "device-update")) {
+        memory.add_section(
+            Section::new("factory")
+                .unwrap()
+                .set_maximize(true)
+                // The alignment needs to be 0x10000, see [1].
+                // We believe this is due to NVS MMU limitations.
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Factory),
+        );
+    } else {
+        // See https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/ota.html.
+        // Not using "factory" partition so this is more in line with the embassy boot a/b setup.
+        memory.add_section(
+            Section::new("ota_0")
+                .unwrap()
+                .set_maximize(true)
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Ota_0),
+        );
+        memory.add_section(
+            Section::new("ota_1")
+                .unwrap()
+                .set_maximize(true)
+                .set_address_align(0x10000)
+                .add_esp_metadata(Type::App, AppType::Ota_1),
+        );
+        memory.add_section(
+            Section::new("otadata")
+                .unwrap()
+                // Upstream says "The OTA data partition is two flash sectors (0x2000 bytes) in
+                // size".
+                .set_size(0x2000)
+                // page aligned
+                .set_address_align(0x1000)
+                .add_esp_metadata(Type::Data, DataType::Ota),
+        );
+    }
+
     let layout = memory.resolve_layout().unwrap();
     let partition_table = layout.into_esp_partition().to_csv().unwrap();
 
