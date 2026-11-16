@@ -3,4 +3,5 @@ apps:
     selects:
       - has_leds
       - coap-server
+      # Not preferring -storage because there is currently no suitable peers.yml.
       - ?coap-server-config-demokeys

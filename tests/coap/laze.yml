@@ -2,5 +2,6 @@ apps:
   - name: test-coap
     selects:
       - coap-server
+      # Not preferring -storage because the current README does not have the appropriate guidance.
       - ?coap-server-config-demokeys
       - coap-client
