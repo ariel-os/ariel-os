@@ -1,4 +1,4 @@
-//! Provides MCU-specific items.
+//! Provides MCU-specific items along with high-level drivers for specific board items.
 //!
 //! This module dispatches between one of the following crate, depending on the target MCU family:
 //!
@@ -17,10 +17,8 @@
 //!
 //! # Portability
 //!
-//! To ensure portability of your application, it is recommended to use the generic,
-//! MCU-family-agnostic items provided in other modules.
-//! Items from this module should only be used when MCU-specific settings are *necessary* for your
-//! application.
+//! To ensure portability of your application, it is recommended to only use the MCU-specific items
+//! from this module when MCU-family-agnostic items from other modules cannot be used.
 
 #[macro_use]
 #[doc(hidden)]
