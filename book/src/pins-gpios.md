@@ -124,7 +124,7 @@ How much current is drawn depends on what is connected to the microcontroller pi
 > Exceeding these limits may damage the microcontroller.
 > Refer to your microcontroller's datasheet.
 
-#### Output Configuration
+### Output Configuration
 
 Depending on the microcontroller, outputs may support configuring their drive strength and/or their speed/slew rate.
 In Ariel OS, this is done through [`Output::builder()`][gpio-output-builder-rustdoc].
@@ -139,6 +139,29 @@ Depending on the MCU family, the speed/slew rate of pins may also be configurabl
 
 > [!TIP]
 > The speed of GPIOs should be left at their default value unless actually required by the board hardware.
+
+### Leveraging the Structured Board Descriptions
+
+Instead of relying on the output pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book] for LEDs.
+
+LEDs defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
+These types provide methods similar to that of [`ariel_os::hal::led::Led`][hal-led-led-rustdoc]; they expose methods that take into account which logic level is considered the active level.
+
+```rust
+ariel_os::hal::group_peripherals!(Peripherals {
+    // Aliases defined in the SBD file can be used instead.
+    led: ariel_os_boards::pins::Led0,
+});
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(peripherals: Peripherals) {
+    let mut led = peripherals.led; // ariel_os_boards::pins::Led0
+}
+```
+
+> [!NOTE]
+> It is planned to later have a type dedicated to RGB LEDs to allow for color mixing.
+> Until then, each color channel is considered its own LED.
 
 ## Pull-up/Pull-down Resistors
 
@@ -173,6 +196,7 @@ They are well-suited as generic pull-up or pull-down resistors, but must not typ
 [gpio-output-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html
 [hal-button-button-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/button/struct.Button.html
 [hal-switch-switchpin-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/switch/struct.SwitchPin.html
+[hal-led-led-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/led/struct.Led.html
 [gpio-output-builder-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html#method.builder
 [embedded-hal-digital-outputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.OutputPin.html
 [embedded-hal-digital-statefuloutputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.StatefulOutputPin.html
