@@ -26,6 +26,8 @@ use minijinja::{context, Environment};
 use serde::Serialize;
 use slug::slugify;
 
+const URL_ARCHIVE_PREFIX: &str = "https://web.archive.org/web/";
+
 #[derive(argh::FromArgs)]
 /// utility commands to generate parts of the Ariel OS book
 struct Args {
@@ -801,6 +803,16 @@ fn gen_board_functionalities(matrix: &schema::Matrix) -> Result<Vec<BoardInfo>, 
             }
         });
 
+        // Require an archived URL for remote resources.
+        if board_info.url.starts_with("http") && !board_info.url.starts_with(URL_ARCHIVE_PREFIX) {
+            return Err(vec![
+                Error::InvalidArchiveUrlBoard {
+                    found: board_info.url.to_owned(),
+                    board: board_info.name.to_owned(),
+                }
+            ]);
+        }
+
         let board_doc_page = ["boards/", &slugify(&board_info.name), ".html"].concat();
         let errors = builders
             .clone()
@@ -1014,6 +1026,11 @@ enum Error {
     InvalidSupportKeyNameBoard {
         found: String,
         functionality: String,
+        board: String,
+    },
+    #[error("invalid archive URL `{found}` for board `{board}`; it must start with `{URL_ARCHIVE_PREFIX}`")]
+    InvalidArchiveUrlBoard {
+        found: String,
         board: String,
     },
     #[error(
