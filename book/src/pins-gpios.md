@@ -71,6 +71,28 @@ Interrupts have many benefits: in particular, they
 - may allow the processor and (some of the) peripherals to enter some low-power mode until the interrupt is triggered, greatly reducing power consumption, and
 - allow to structure the application in an event-driven manner.
 
+### Leveraging the Structured Board Descriptions
+
+Instead of relying on the input pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book] for push-buttons and other switches.
+
+Buttons and switches defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
+These types provide methods similar to that of [`ariel_os::hal::button::Button`][hal-button-button-rustdoc] and [`ariel_os::hal::switch::SwitchPin`][hal-switch-switchpin-rustdoc] respectively; they already configure the pull-up/pull-down resistor if necessary, and expose methods that take into account which logic level is considered the active level.
+To use the methods relying on GPIO interrupts, the `external-interrupts` Cargo feature must be enabled.
+
+```rust
+ariel_os::hal::group_peripherals!(Peripherals {
+    // Aliases defined in the SBD file can be used instead.
+    switch: ariel_os_boards::pins::Switch0,
+    button: ariel_os_boards::pins::Button0,
+});
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(peripherals: Peripherals) {
+    let mut switch = peripherals.switch; // ariel_os_boards::pins::Switch0
+    let mut button = peripherals.button; // ariel_os_boards::pins::Button0
+}
+```
+
 ## GPIOs as Outputs
 
 Digital outputs are tri-state: they use a pair of transistors to either drive the output low, high, or leave it floating, i.e., in a high impedance state (Hi-Z).
@@ -142,12 +164,15 @@ They are well-suited as generic pull-up or pull-down resistors, but must not typ
 [i2c-book]: ./i2c.md
 [spi-book]: ./spi.md
 [uart-book]: ./uart.md
+[sbd-book]: ./structured-board-descriptions.md
 [embassy-style-hals]: ./glossary.md#embassy-style-hals
 [schmitt-trigger-wikipedia]: https://en.wikipedia.org/wiki/Schmitt_trigger
 [gpio-input-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Input.html
 [embedded-hal-digital-inputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.InputPin.html
 [obtaining-peripheral-access-book]: ./application.md#obtaining-peripheral-access
 [gpio-output-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html
+[hal-button-button-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/button/struct.Button.html
+[hal-switch-switchpin-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/switch/struct.SwitchPin.html
 [gpio-output-builder-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html#method.builder
 [embedded-hal-digital-outputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.OutputPin.html
 [embedded-hal-digital-statefuloutputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.StatefulOutputPin.html
