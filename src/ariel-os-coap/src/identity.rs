@@ -22,9 +22,9 @@ impl minicbor::Encode<()> for Identity {
     ) -> Result<(), minicbor::encode::Error<W::Error>> {
         let identity = ariel_os_identity::device_id_bytes();
         let map_len = if identity.is_ok() {
-            3 // OS name, board, identity
+            4 // OS name, application name, board, identity
         } else {
-            2 // only OS name and board
+            3 // only OS name, application name and board
         };
         let encoder = encoder
             // Currently unregistered
@@ -32,6 +32,8 @@ impl minicbor::Encode<()> for Identity {
             .map(map_len)?
             .u8(1)?
             .str(ariel_os_buildinfo::OS_NAME)?
+            .u8(3)?
+            .str(env!("CONFIG_APPLICATION"))?
             .u8(5)?
             .str(ariel_os_buildinfo::BOARD)?;
 
