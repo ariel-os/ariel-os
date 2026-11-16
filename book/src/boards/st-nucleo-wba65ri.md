@@ -2,7 +2,7 @@
 
 ## References
 
-- [Manufacturer link](https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html)
+- [Manufacturer link](https://web.archive.org/web/20261116002102/https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html)
 
 ## laze Builders
 

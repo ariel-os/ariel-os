@@ -1951,7 +1951,7 @@ boards:
       - espressif-esp32-c3-lcdkit
 
   - name: Espressif ESP32-C5-DevKitC-1
-    url: https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c5/esp32-c5-devkitc-1/user_guide.html
+    url: https://web.archive.org/web/20261101233059/https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c5/esp32-c5-devkitc-1/user_guide.html
     builders:
       - espressif-esp32-c5-devkitc-1-n8rx
 
@@ -1961,7 +1961,7 @@ boards:
       - espressif-esp32-c6-devkitc-1
 
   - name: Espressif ESP32-C61-DevKitC-1
-    url: https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c61/esp32-c61-devkitc-1/user_guide.html
+    url: https://web.archive.org/web/20261101233100/https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c61/esp32-c61-devkitc-1/user_guide.html
     builders:
       - espressif-esp32-c61-devkitc-1-n8rx
 
@@ -2071,7 +2071,7 @@ boards:
       - st-nucleo-wba55
 
   - name: ST NUCLEO-WBA65RI
-    url: https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html
+    url: https://web.archive.org/web/20261116002102/https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html
     builders:
       - st-nucleo-wba65ri
 
