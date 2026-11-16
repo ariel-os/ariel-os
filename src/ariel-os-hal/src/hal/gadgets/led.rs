@@ -1,14 +1,18 @@
-//! Driver for simple LEDs wired directly to MCUs with GPIOs.
+//! LEDs.
+//!
+//! LEDs can be specifically monocolor LEDs or individual color channels from bicolor or RGB LEDs.
+//! Addressable LEDs (e.g., "smart pixels") are not part of this module.
 
 use crate::gpio::{Level, Output};
 
+/// An LED.
 pub struct Led {
     inner: Output<'static>,
     active: Level,
 }
 
 impl Led {
-    /// Creates new [`Led`].
+    /// Creates a new [`Led`] from an output and an active [`Level`].
     #[must_use]
     pub fn new(output: Output<'static>, active: Level) -> Self {
         Self {
@@ -17,12 +21,12 @@ impl Led {
         }
     }
 
-    /// Toggle the [`Led`].
+    /// Toggles the LED.
     pub fn toggle(&mut self) {
         self.inner.toggle();
     }
 
-    /// Turns the [`Led`] on.
+    /// Turns the LED on.
     pub fn turn_on(&mut self) {
         if self.active == Level::High {
             self.inner.set_high();
@@ -31,7 +35,7 @@ impl Led {
         }
     }
 
-    /// Turns the [`Led`] off.
+    /// Turns the LED off.
     pub fn turn_off(&mut self) {
         if self.active == Level::High {
             self.inner.set_low();
@@ -40,6 +44,7 @@ impl Led {
         }
     }
 
+    /// Returns the underlying [`Output`], consuming the [`Led`].
     #[must_use]
     pub fn into_output(self) -> Output<'static> {
         self.inner
