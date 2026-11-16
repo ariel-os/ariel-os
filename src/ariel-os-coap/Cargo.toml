@@ -44,7 +44,7 @@ lakers = { version = "0.8.0", default-features = false }
 lakers-crypto-rustcrypto = "0.8.0"
 once_cell = { workspace = true }
 # anything newer than 0.4.1 will have SingleBufferHandler
-slipmux = { git = "https://github.com/chrysn-pull-requests/slipmux", branch = "fix-owned-latest-frame", optional = true, default-features = false }
+slipmux = { git = "https://github.com/teufelchen1/slipmux", optional = true, default-features = false }
 static_cell = { workspace = true }
 
 # Used for constructing credentials
