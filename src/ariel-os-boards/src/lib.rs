@@ -15,7 +15,10 @@ cfg_select! {
     "espressif-esp32-c3-devkit-rust-1" => {
     include!("espressif-esp32-c3-devkit-rust-1.rs"); } context =
     "espressif-esp32-c3-lcdkit" => { include!("espressif-esp32-c3-lcdkit.rs"); } context
-    = "espressif-esp32-c6-devkitc-1" => { include!("espressif-esp32-c6-devkitc-1.rs"); }
+    = "espressif-esp32-c5-devkitc-1" => { include!("espressif-esp32-c5-devkitc-1.rs"); }
+    context = "espressif-esp32-c6-devkitc-1" => {
+    include!("espressif-esp32-c6-devkitc-1.rs"); } context =
+    "espressif-esp32-c61-devkitc-1" => { include!("espressif-esp32-c61-devkitc-1.rs"); }
     context = "espressif-esp32-devkitc" => { include!("espressif-esp32-devkitc.rs"); }
     context = "espressif-esp32-h2-devkitm-1" => {
     include!("espressif-esp32-h2-devkitm-1.rs"); } context =

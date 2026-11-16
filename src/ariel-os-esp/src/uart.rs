@@ -277,8 +277,14 @@ define_uart_drivers!(UART0, UART1, UART2);
 define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32c3")]
 define_uart_drivers!(UART0, UART1);
+#[cfg(context = "esp32c5")]
+define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32c6")]
 define_uart_drivers!(UART0, UART1);
+#[cfg(context = "esp32c61")]
+define_uart_drivers!(UART0, UART1);
+// FIXME: ESP32-C61 has 3 UART controllers, but esp-hal 1.1 is missing the third one.
+// define_uart_drivers!(UART0, UART1, UART2);
 #[cfg(context = "esp32h2")]
 define_uart_drivers!(UART0, UART1);
 #[cfg(context = "esp32s2")]
@@ -303,9 +309,20 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
         }
+        context = "esp32c5" => {
+            let _ = peripherals.UART0.take().unwrap();
+            let _ = peripherals.UART1.take().unwrap();
+        }
         context = "esp32c6" => {
             let _ = peripherals.UART0.take().unwrap();
             let _ = peripherals.UART1.take().unwrap();
+        }
+        context = "esp32c61" => {
+            let _ = peripherals.UART0.take().unwrap();
+            let _ = peripherals.UART1.take().unwrap();
+            // FIXME: ESP32-C61 has 3 UART controllers,
+            // but esp-hal 1.1 is missing the third one.
+            // let _ = peripherals.UART2.take().unwrap();
         }
         context = "esp32h2" => {
             let _ = peripherals.UART0.take().unwrap();
