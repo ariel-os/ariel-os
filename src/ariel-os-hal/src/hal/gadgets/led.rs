@@ -45,3 +45,29 @@ impl Led {
         self.inner
     }
 }
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! impl_led_inner {
+    ($color:ident) => {
+        /// Turns the LED on.
+        pub fn turn_on(&mut self) {
+            self.$color.turn_on()
+        }
+
+        /// Turns the LED off.
+        pub fn turn_off(&mut self) {
+            self.$color.turn_off()
+        }
+
+        /// Toggles the LED.
+        pub fn toggle(&mut self) {
+            self.$color.toggle()
+        }
+
+        /// Returns the underlying output, consuming the type.
+        pub fn into_output(self) -> $crate::gpio::Output<'static> {
+            self.$color.into_output()
+        }
+    };
+}

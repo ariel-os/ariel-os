@@ -1,4 +1,8 @@
-//! Higher Level drivers for switches.
+//! Switches.
+//!
+//! A switch is conceptually composed of one or multiple [`SwitchPin`].
+//! If the switch is a push-button, [`Button`](super::button::Button) can be used instead.
+
 use crate::gpio::Level;
 
 #[cfg(feature = "external-interrupts")]
@@ -7,11 +11,10 @@ use crate::gpio::IntEnabledInput;
 #[cfg(not(feature = "external-interrupts"))]
 use crate::gpio::Input;
 
-/// The combination of an Input and an active Level.
+/// A pin of a switch.
+/// Combines an input and an active [`Level`].
 ///
-/// If the `"external-interrupts"` feature is enabled
-/// then inner input supports interrupts and [`SwitchPin`]
-/// implements the `wait_for_X` methods.
+/// If the `external-interrupts` feature is enabled, additionally provides `wait_for_X` methods.
 pub struct SwitchPin {
     #[cfg(feature = "external-interrupts")]
     input: IntEnabledInput<'static>,
@@ -51,8 +54,8 @@ impl SwitchPin {
 
 #[cfg(feature = "external-interrupts")]
 impl SwitchPin {
-    /// Asynchronously wait for the pin to be active.
-    /// Returns immediately if the pin is active.
+    /// Waits for the pin to be active.
+    /// Returns immediately if the pin is already active.
     pub async fn wait_for_active(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_high().await;
@@ -61,8 +64,8 @@ impl SwitchPin {
         }
     }
 
-    /// Asynchronously wait for the pin to be inactive.
-    /// Returns immediately if the pin is inactive.
+    /// Waits for the pin to be inactive.
+    /// Returns immediately if the pin is already inactive.
     pub async fn wait_for_inactive(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_low().await;
@@ -71,7 +74,7 @@ impl SwitchPin {
         }
     }
 
-    /// Asynchronously waits for the input level to transition from inactive to active.
+    /// Waits for the input level to transition from inactive to active.
     pub async fn wait_for_activation_edge(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_rising_edge().await;
@@ -80,7 +83,7 @@ impl SwitchPin {
         }
     }
 
-    /// Asynchronously waits for the input level to transition from active to inactive.
+    /// Waits for the input level to transition from active to inactive.
     pub async fn wait_for_deactivation_edge(&mut self) {
         if self.active == Level::High {
             self.input.wait_for_falling_edge().await;
@@ -90,7 +93,9 @@ impl SwitchPin {
     }
 }
 
+// Used in the board package.
 #[cfg(feature = "external-interrupts")]
+#[doc(hidden)]
 #[macro_export]
 macro_rules! impl_switch_inner {
     ($inner:ident) => {
@@ -129,7 +134,9 @@ macro_rules! impl_switch_inner {
     };
 }
 
+// Used in the board package.
 #[cfg(not(feature = "external-interrupts"))]
+#[doc(hidden)]
 #[macro_export]
 macro_rules! impl_switch_inner {
     ($inner:ident) => {
