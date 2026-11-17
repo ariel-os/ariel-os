@@ -2013,13 +2013,14 @@ modules:
 
   - name: coap-server-config-provider
     help: |
-      Helper module selected through any implementation of config storage.
-
-      This module is `required` for running a CoAP server;
-      that way, it is made sure that an insecure configuration such as -demokeys or -unprotected is never pulled in implicitly.
-
-      In parallel, there is a `coap-server-config` pseudomodule,
-      which ensures (through `provides_unique`) that only one configuration is picked.
+      Do not select this manually; instead, select any other module (e.g.
+      coap-server-config-storage) that selects it.
+    # This module is `required` for running a CoAP server; that way, it is made
+    # sure that an insecure configuration such as -demokeys or -unprotected is
+    # never pulled in implicitly.
+    #
+    # In parallel, there is a `coap-server-config` pseudomodule, which ensures
+    # (through `provides_unique`) that only one configuration is picked.
 
   - name: coap-server-config-storage
     help: Configure the CoAP server to accept requests depending on build- and runtime configuration
