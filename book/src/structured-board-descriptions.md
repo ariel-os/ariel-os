@@ -60,7 +60,6 @@ The following steps allow to set up and generate an out-of-tree board package, s
        - `rust-version`
        - `license`
    - Define the following `workspace.dependencies` as path dependencies, leveraging the laze import:
-       - `ariel-os-embassy-common`
        - `ariel-os-hal`
 1. The application package currently needs to enable the `no-boards` Cargo feature on the `ariel-os` package, which currently disables support for SBD `quirks`.
 1. Add a [`subdirs`][laze-subdirs-docs] entry in the application's `laze-project.yml`, listing the out-of-tree board package directory.
