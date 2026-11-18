@@ -24,4 +24,5 @@ pub mod pins {
     ];
 }
 #[allow(unused_variables)]
-pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}
+#[unsafe(no_mangle)]
+fn __ariel_os_early_init_hook(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}
