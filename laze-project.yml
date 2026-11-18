@@ -633,24 +633,38 @@ contexts:
 
   - name: esp32c5hf4
     parent: esp32c5
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32c5nf8rxla
     parent: esp32c5
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(8192 * 1024)"
 
   - name: esp32-c5-wroom-1-n4
     parent: esp32c5hf4
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-c5-wroom-1-n4rx
     parent: esp32c5hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32-c5-wroom-1-n8rx
     parent: esp32c5hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(8192 * 1024)"
 
   - name: esp32-c5-wroom-1-n16rx
     parent: esp32c5hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(16384 * 1024)"
 
   - name: esp32-c5-wroom-1-n32rx
     parent: esp32c5hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(32768 * 1024)"
 
   - name: esp32c61
     parent: esp
@@ -673,15 +687,23 @@ contexts:
 
   - name: esp32c61hf4
     parent: esp32c61
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(4096 * 1024)"
 
   - name: esp32c61nf8rxla
     parent: esp32c61
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(8192 * 1024)"
 
   - name: esp32-c61-wroom-1-n8rx
     parent: esp32c61hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(8192 * 1024)"
 
   - name: esp32-c61-wroom-1-h16rx
     parent: esp32c61hrx
+    env:
+      CHIP_NVM_SIZE_BYTES: "$(16384 * 1024)"
 
   - name: esp32s2
     parent: esp
