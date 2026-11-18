@@ -13,6 +13,7 @@ use ariel_os::{
     },
     time::Timer,
 };
+use ariel_os_boards as _;
 
 use stm32_lcd_driver::{Digit, Lcd};
 

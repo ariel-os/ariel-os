@@ -6,6 +6,7 @@ use ariel_os::{
     gpio::{self, Input, Pull},
     log::info,
 };
+use ariel_os_boards as _;
 
 #[cfg(context = "nrf51")]
 ariel_os::hal::define_peripherals!(ButtonPeripherals {

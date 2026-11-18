@@ -10,6 +10,7 @@ use ariel_os::{
     time::Timer,
     usb::UsbDriver,
 };
+use ariel_os_boards as _;
 use embassy_usb::class::hid::{self, HidBootProtocol, HidReaderWriter, HidSubclass};
 use usbd_hid::descriptor::{KeyboardReport, SerializedDescriptor};
 

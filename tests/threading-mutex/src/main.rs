@@ -2,6 +2,7 @@
 #![no_std]
 
 use ariel_os::thread::{self, RunqueueId, ThreadId, sync::Mutex, thread_flags};
+use ariel_os_boards as _;
 use portable_atomic::{AtomicUsize, Ordering};
 
 static MUTEX: Mutex<usize> = Mutex::new(0);

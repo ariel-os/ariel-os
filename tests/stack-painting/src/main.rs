@@ -5,6 +5,7 @@ use ariel_os::{
     debug::{ExitCode, exit},
     log::info,
 };
+use ariel_os_boards as _;
 
 #[ariel_os::task(autostart)]
 async fn main() {

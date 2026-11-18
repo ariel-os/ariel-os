@@ -5,6 +5,7 @@ use ariel_os::{
     log::*,
     thread::{ThreadId, current_tid, sync::Channel, thread_flags},
 };
+use ariel_os_boards as _;
 
 static ID_EXCHANGE: Channel<ThreadId> = Channel::new();
 

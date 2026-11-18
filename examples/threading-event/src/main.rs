@@ -3,6 +3,7 @@
 
 use ariel_os::thread::{ThreadId, sync::Event};
 use ariel_os::{debug::ExitCode, log::*};
+use ariel_os_boards as _;
 
 static EVENT: Event = Event::new();
 

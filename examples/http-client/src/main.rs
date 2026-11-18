@@ -8,6 +8,7 @@ use ariel_os::{
     net,
     reexports::embassy_net,
 };
+use ariel_os_boards as _;
 use embassy_net::{
     dns::DnsSocket,
     tcp::client::{TcpClient, TcpClientState},

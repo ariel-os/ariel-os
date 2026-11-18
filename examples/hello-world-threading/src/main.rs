@@ -5,6 +5,7 @@ use ariel_os::{
     debug::{ExitCode, exit},
     log::*,
 };
+use ariel_os_boards as _;
 
 #[ariel_os::thread(autostart)]
 fn main() {

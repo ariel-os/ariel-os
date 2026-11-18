@@ -12,6 +12,7 @@ use ariel_os::{
     time::{Duration, with_timeout},
     uart::Baudrate,
 };
+use ariel_os_boards as _;
 
 use embedded_io_async::{Read as _, Write as _};
 

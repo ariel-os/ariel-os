@@ -7,6 +7,7 @@ use ariel_os::{
     reexports::embassy_usb::{self, class::cdc_acm::CdcAcmError},
     time::Timer,
 };
+use ariel_os_boards as _;
 use embassy_sync::{blocking_mutex::raw::CriticalSectionRawMutex, pipe::Pipe};
 use embassy_usb::{
     class::cdc_acm::{CdcAcmClass, State},

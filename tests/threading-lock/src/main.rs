@@ -5,6 +5,7 @@ use ariel_os::{
     debug::{ExitCode, exit},
     thread::{ThreadId, sync::Lock, thread_flags},
 };
+use ariel_os_boards as _;
 
 use portable_atomic::{AtomicUsize, Ordering};
 

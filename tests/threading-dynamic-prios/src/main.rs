@@ -7,6 +7,7 @@ use ariel_os::{
     debug::{ExitCode, exit},
     thread::{RunqueueId, ThreadId},
 };
+use ariel_os_boards as _;
 
 static RUN_ORDER: AtomicUsize = AtomicUsize::new(0);
 
