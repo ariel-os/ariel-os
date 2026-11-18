@@ -50,6 +50,7 @@ static_cell = { workspace = true }
 bt-hci = { workspace = true, optional = true }
 
 [target.'cfg(context = "esp32")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32"] }
 esp-hal = { workspace = true, features = ["esp32"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -58,6 +59,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32"] }
 
 [target.'cfg(context = "esp32c2")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32c2"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c2"] }
 esp-hal = { workspace = true, features = ["esp32c2"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -66,6 +68,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32c2"] }
 
 [target.'cfg(context = "esp32c3")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32c3"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c3"] }
 esp-hal = { workspace = true, features = ["esp32c3"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -74,6 +77,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32c3"] }
 
 [target.'cfg(context = "esp32c5")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32c5"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c5"] }
 esp-hal = { workspace = true, features = ["esp32c5"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -82,6 +86,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32c5"] }
 
 [target.'cfg(context = "esp32c6")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32c6"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c6"] }
 esp-hal = { workspace = true, features = ["esp32c6"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -90,6 +95,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32c6"] }
 
 [target.'cfg(context = "esp32c61")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32c61"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32c61"] }
 esp-hal = { workspace = true, features = ["esp32c61"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -98,6 +104,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32c61"] }
 
 [target.'cfg(context = "esp32h2")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32h2"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32h2"] }
 esp-hal = { workspace = true, features = ["esp32h2"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -106,6 +113,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32h2"] }
 
 [target.'cfg(context = "esp32s2")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32s2"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32s2"] }
 esp-hal = { workspace = true, features = ["esp32s2"] }
 esp-radio = { workspace = true, default-features = false, features = [
@@ -114,6 +122,7 @@ esp-radio = { workspace = true, default-features = false, features = [
 esp-sync = { workspace = true, optional = true, features = ["esp32s2"] }
 
 [target.'cfg(context = "esp32s3")'.dependencies]
+esp-alloc = { workspace = true, features = ["esp32s3"] }
 esp-bootloader-esp-idf = { workspace = true, features = ["esp32s3"] }
 esp-hal = { workspace = true, features = ["esp32s3"] }
 esp-radio = { workspace = true, default-features = false, features = [
