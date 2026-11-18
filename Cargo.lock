@@ -199,7 +199,6 @@ dependencies = [
 name = "ariel-os-embassy"
 version = "0.6.0"
 dependencies = [
- "ariel-os-boards",
  "ariel-os-buildinfo",
  "ariel-os-debug",
  "ariel-os-embassy-common",
