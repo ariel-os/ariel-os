@@ -19,7 +19,7 @@ jobs:
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
-          toolchain: 1.98
+          toolchain: 1.100
 
       - name: Install cargo-vet
         uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2
