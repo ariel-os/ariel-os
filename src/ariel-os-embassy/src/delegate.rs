@@ -70,6 +70,10 @@ impl<T> Delegate<T> {
     ///
     /// This blocks until [`Delegate::with()`] is called on the instance.
     ///
+    /// # Panics
+    ///
+    /// Panics if the returned [`Future`] is dropped before [`Delegate::with()`] completes.
+    ///
     /// # Safety
     ///
     /// This must only be called *once* per [`Delegate`] instance.
