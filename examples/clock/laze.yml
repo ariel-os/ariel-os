@@ -1,0 +1,9 @@
+apps:
+  - name: clock-app
+    env:
+      global:
+        executor_stacksize_required:
+          # For BLE. FIXME: Can we bump that through a mechanism as we do in CoAP?
+          - "16384"
+    selects:
+      - ble-peripheral
