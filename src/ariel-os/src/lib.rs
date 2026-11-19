@@ -24,8 +24,11 @@
 #![deny(missing_docs)]
 
 #[cfg(feature = "bench")]
-#[doc(inline)]
-pub use ariel_os_bench as bench;
+/// Provides on-board benchmarking facilities.
+pub mod bench {
+    #[doc(inline)]
+    pub use ariel_os_bench::*;
+}
 #[doc(inline)]
 pub use ariel_os_buildinfo as buildinfo;
 #[cfg(feature = "coap")]

@@ -9,6 +9,10 @@ pub mod hal;
 #[cfg(feature = "uart")]
 pub mod uart;
 
+#[cfg(feature = "doc")]
+#[cfg_attr(feature = "doc", allow(unused, reason = "documentation"))]
+use ariel_os_macros::task;
+
 // All items of this module are re-exported at the root of `ariel_os`.
 #[doc(hidden)]
 pub mod api {
