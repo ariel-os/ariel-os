@@ -729,23 +729,23 @@ version = "0.11.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-alloc]]
-version = "0.10.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.10.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-bootloader-esp-idf]]
-version = "0.5.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.5.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-config]]
-version = "0.7.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.7.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-hal]]
-version = "1.1.1@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "1.1.1@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-hal-procmacros]]
-version = "0.22.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.22.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-idf-part]]
@@ -753,35 +753,35 @@ version = "0.6.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-metadata-generated]]
-version = "0.4.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.4.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-phy]]
-version = "0.2.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.2.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-println]]
-version = "0.17.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.17.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-radio]]
-version = "0.18.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.18.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-radio-rtos-driver]]
-version = "0.3.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.3.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-riscv-rt]]
-version = "0.14.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.14.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-rom-sys]]
-version = "0.1.4@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.1.4@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-sync]]
-version = "0.2.1@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.2.1@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.esp-synopsys-usb-otg]]
@@ -1629,15 +1629,15 @@ version = "0.5.0"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx]]
-version = "0.13.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.13.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx-rt]]
-version = "0.22.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.22.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.xtensa-lx-rt-proc-macros]]
-version = "0.5.0@git:ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+version = "0.5.0@git:415f00eca734fd0c8592e61041959af8893167bb"
 criteria = "safe-to-deploy"
 
 [[exemptions.zerocopy]]
