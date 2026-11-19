@@ -334,16 +334,36 @@ fn gen_esp_partition_table() {
     let layout = memory.resolve_layout().unwrap();
     let partition_table = layout.into_esp_partition().to_csv().unwrap();
 
-    // construct `$OUT_DIR/../../../${app}-partitions.csv`
-    // TODO: encoding ${app} here actually forces a rerun for every application,
+    // Construct a canonical path below `$OUT_DIR/ to put ${app}-partitions.csv`.
+    // This needs to match what `laze` expects.
+    // TODO: encoding ${app} here actually format!es a rerun for every application,
     // as that obviously changes for every application.
-    let filename = format!(
-        "{}-partitions.csv",
-        env_var_and_rerun_if_changed("CONFIG_APPLICATION").unwrap()
-    );
+    let path = {
+        let filename = format!(
+            "{}-partitions.csv",
+            env_var_and_rerun_if_changed("CONFIG_APPLICATION").unwrap()
+        );
 
-    let out_dir = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
-    let path = out_dir.ancestors().nth(3).unwrap().join(filename);
+        let out_dir = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
+
+        // Cargo 1.100 uses `<crate>/hash/out`, pre-1.100 uses `<crate>-hash/out`.
+        // This beast checks if <out>/../../ equals `ariel-os-rt` and selects which variant we're
+        // on based on that.
+        let n = match out_dir
+            .ancestors()
+            .nth(2)
+            .unwrap()
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .as_ref()
+        {
+            "ariel-os-rt" => 4,
+            _ => 3,
+        };
+
+        out_dir.ancestors().nth(n).unwrap().join(filename)
+    };
 
     std::fs::write(path, partition_table).unwrap();
 }
