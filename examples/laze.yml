@@ -20,6 +20,8 @@ subdirs:
   - http-server
   - i2c-scanner
   - log
+  - lora-rx
+  - lora-tx
   - minimal
   - power
   - random
