@@ -97,6 +97,9 @@ but are currently not implemented in Ariel OS.
 ### Server access policy
 
 A policy is configured for the whole server depending on the desired security mechanisms.
+The build system enforces that there is exactly one policy selected.
+Policies have to be selected explicitly (typically in the application) to avoid unsuitable (and, in particular, insecure) defaults.
+
 Examples of described policy entries are:
 
 * This is a fixed public key, and requests authenticated with that key are allowed to GET and PUT to `/limit`.
