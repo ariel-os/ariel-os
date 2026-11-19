@@ -62,6 +62,10 @@ cfg_select! {
             pub fn stack() -> Stack {
                 Stack::default()
             }
+
+            #[doc(hidden)]
+            #[allow(dead_code, reason = "conditional compilation")]
+            pub fn jump_to_application(_start: u32) {}
         }
     }
 }
@@ -218,3 +222,7 @@ fn embedded_test_thread() {
     // TODO: make stack size configurable
     unsafe { embedded_test::export::__embedded_test_entry() }
 }
+
+#[cfg(feature = "embassy-boot-loader")]
+#[doc(hidden)]
+pub use arch::jump_to_application;
