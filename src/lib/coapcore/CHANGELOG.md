@@ -1,5 +1,11 @@
 # Changelog of coapcore
 
+## Unreleased
+
+### Added
+
+* Observe notifications can be protected with `OscoreEdhocHandler::take_correlation` and `OscoreEdhocHandler::protect_notification`, using the new `Correlation` and `NotificationError` types.
+
 ## 0.1.1
 
 ### Added
