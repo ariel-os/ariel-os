@@ -1,4 +1,21 @@
+modules:
+  - name: ipv6-app
+    selects:
+      - ipv6
+    env:
+      global:
+        FEATURES:
+          - ipv6
+  - name: ipv4-app
+    selects:
+      - ipv4
+    env:
+      global:
+        FEATURES:
+          - ipv4
 apps:
   - name: tcp-client
     selects:
       - network
+      - ?ipv6-app
+      - ?ipv4-app
