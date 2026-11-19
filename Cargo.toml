@@ -38,6 +38,7 @@ members = [
   "src/sensors/ariel-os-sensor-stts22h",
   "tests/benchmarks/bench-sched-flags",
   "tests/benchmarks/bench-sched-yield",
+  "tests/build-system",
   "tests/coap",
   "tests/coap-blinky",
   "tests/gpio",

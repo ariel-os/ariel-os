@@ -1,0 +1,9 @@
+apps:
+  - name: tests_build_system
+    context:
+      # currently only has tests relevant to native
+      - native
+    selects:
+      - ?defmt
+      - embedded-test-only
+      - suit-ids-default

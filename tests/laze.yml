@@ -1,5 +1,6 @@
 subdirs:
   - benchmarks
+  - build-system
   - coap
   - coap-blinky
   - gpio
