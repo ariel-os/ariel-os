@@ -1,4 +1,4 @@
 # Require SAFETY docs, as well as a few other lints, for private items
 check-private-items = true
 
-doc-valid-idents = ["STMicroelectronics", "IoT", ".."]
+doc-valid-idents = ["STMicroelectronics", "IoT", "IDevID", ".."]
