@@ -40,11 +40,10 @@ builders:
   provides:
   - has_buttons
   - has_leds
-  - has_swi
   - has_usb_device_port
   env:
     CARGO_ENV:
-    - CONFIG_SWI=WWDG
+    - CONFIG_VBUS_DETECTION=false
 - name: decawave-dwm1001-dev
   parent: nrf52832
   provides:

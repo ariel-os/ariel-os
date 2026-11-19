@@ -5,7 +5,6 @@ targets:
     flags:
       - has_usb_device_port
     ariel:
-      swi: WWDG
       global_env:
         CARGO_ENV:
           - CONFIG_VBUS_DETECTION=false
