@@ -1,0 +1,53 @@
+[package]
+name = "ariel-os-psoc"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+ariel-os-embassy-common = { workspace = true }
+ariel-os-debug = { workspace = true }
+critical-section = { workspace = true }
+defmt = { workspace = true, optional = true }
+embassy-executor = { workspace = true, default-features = false }
+embassy-hal-internal = { workspace = true }
+embedded-hal = { workspace = true }
+embedded-hal-async = { workspace = true }
+paste = { workspace = true }
+
+psoc = { workspace = true }
+
+[target.'cfg(context = "cy8c624abzi-s2d44")'.dependencies]
+psoc = { workspace = true, features = [
+  "device-cy8c624abzi-s2d44",
+  "core-cm4",
+  "boot-image",
+] }
+
+[features]
+## Enables GPIO interrupt support.
+external-interrupts = ["ariel-os-embassy-common/external-interrupts"]
+
+## Enables I2C support.
+i2c = ["ariel-os-embassy-common/i2c"]
+
+## Enables SPI support.
+spi = ["ariel-os-embassy-common/spi"]
+
+## Enables UART support.
+uart = ["ariel-os-embassy-common/uart"]
+
+## Enables a time driver.
+time = ["psoc/embassy-time"]
+
+## Enables defmt support.
+defmt = ["dep:defmt", "psoc/defmt", "embassy-hal-internal/defmt"]
+
+#! ## Executor type selection for the (autostarted) main executor
+## Enables the interrupt executor.
+executor-interrupt = ["embassy-executor/executor-interrupt"]
+
+[lints]
+workspace = true

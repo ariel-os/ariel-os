@@ -35,6 +35,11 @@ builders:
   - has_buttons
   - has_host_facing_uart
   - has_i2c_bus
+- name: cy8cproto-062-4343w
+  parent: cy8c624abzi-s2d44
+  provides:
+  - has_buttons
+  - has_leds
 - name: decawave-dwm1001-dev
   parent: nrf52832
   provides:
