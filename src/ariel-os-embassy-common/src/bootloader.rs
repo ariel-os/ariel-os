@@ -138,9 +138,6 @@ pub trait BootLoaderBackend {
     /// Return the storage configuration of the platform.
     fn storage_config<'a>() -> BootLoaderStorage<'a, Self::ACTIVE, Self::DFU, Self::STATE>;
 
-    /// Start execution of the active partition.
-    fn load_active(flash_config: &FlashConfig);
-
     /// Enable the watchdog, starting it.
     // Currently not used.
     fn enable_watchdog();

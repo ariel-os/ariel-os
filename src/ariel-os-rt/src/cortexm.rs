@@ -254,3 +254,18 @@ pub(crate) fn sp() -> usize {
     };
     sp
 }
+
+/// Jumps to the application in memory, `start` must be a valid address pointing to the vector table
+/// of the application.
+// From [embassy-boot-stm32](https://github.com/embassy-rs/embassy/blob/4c9a8998805b95d472b5e8137b16588369c2a8b6/embassy-boot-stm32/src/lib.rs#L48), license MIT OR Apache-2.0
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn jump_to_application(start: u32) {
+    unsafe {
+        #[allow(unused_mut)]
+        let mut p = cortex_m::Peripherals::steal();
+        #[cfg(not(armv6m))]
+        p.SCB.invalidate_icache();
+        p.SCB.vtor.write(start);
+        cortex_m::asm::bootload(start as *const u32)
+    }
+}
