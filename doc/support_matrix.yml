@@ -2079,7 +2079,7 @@ boards:
       - st-nucleo-f401re
 
   - name: Black Pill STM32F401RC
-    url: https://stm32world.com/wiki/Black_Pill
+    url: https://web.archive.org/web/20260524035455/https://stm32world.com/wiki/Black_Pill
     builders:
       - blackpill-f401rc
 

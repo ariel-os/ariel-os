@@ -4,13 +4,18 @@ targets:
     chip: stm32f401rc
     flags:
       - has_usb_device_port
+    CARGO_ENV:
+      - CONFIG_VBUS_DETECTION=false
     ariel:
       swi: WWDG
     leds:
       - pin: PC13
         color: blue
+        active: low
     buttons:
       - pin: PA0
+        pull: down
+        active: high
     # More hardware documentation for this board:
     #
     # MCU: STM32F401RC
