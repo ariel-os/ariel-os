@@ -15,6 +15,7 @@ fn main() {
         "stm32u083mc",
         "stm32l475vg",
         "nrf5340-net",
+        "stm32wl55jc",
         "stm32wle5jc",
     ]) {
         (4 * KIBIBYTES, 2 * KIBIBYTES)

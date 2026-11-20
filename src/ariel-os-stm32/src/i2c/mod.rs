@@ -52,6 +52,9 @@ pub fn init(peripherals: &mut crate::OptionalPeripherals) {
         context = "stm32wb55rg" => {
             take_all_i2c_peripherals!(I2C1, I2C3);
         }
+        context = "stm32wl55jc" => {
+            take_all_i2c_peripherals!(I2C1, I2C2, I2C3);
+        }
         _ => {
             compile_error!("this STM32 chip is not supported");
         }

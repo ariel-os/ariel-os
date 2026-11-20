@@ -1,0 +1,44 @@
+version: 0.5.0
+targets:
+  st-nucleo-wl55jc:
+    chip: stm32wl55jc
+    ariel:
+      swi: WWDG
+    leds:
+      # led0
+      - pin: PB15
+        color: blue
+        active: high
+        aliases:
+          - LED1
+      # led1
+      - pin: PB9
+        color: green
+        active: high
+        aliases:
+          - LED2
+      # led2
+      - pin: PB11
+        color: red
+        active: high
+        aliases:
+          - LED3
+    buttons:
+      # button0
+      - pin: PA0
+        resistor: none
+        active: low
+        aliases:
+          - B1
+      # button1
+      - pin: PA1
+        resistor: none
+        active: low
+        aliases:
+          - B2
+      # button2
+      - pin: PC6
+        resistor: none
+        active: low
+        aliases:
+          - B3

@@ -19,4 +19,5 @@ apps:
       - st-nucleo-g431rb
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
+      - st-nucleo-wl55jc
       - stm32u083c-dk

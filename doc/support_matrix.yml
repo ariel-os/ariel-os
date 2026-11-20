@@ -1345,6 +1345,27 @@ chips:
       ethernet_over_usb: needs_testing
       ethernet: not_available
 
+  stm32wl55jc:
+    name: STM32WL55JC
+    manufacturer: STMicroelectronics
+    support:
+      gpio: supported
+      debug_channel: supported
+      hwrng: supported
+      i2c_controller: supported
+      spi_main: needs_testing
+      uart: supported
+      logging: supported
+      storage:
+        status: supported_with_caveats
+        comments:
+          - removing items not supported
+      wifi: not_available
+      ble: not_available
+      user_usb: not_available
+      ethernet_over_usb: not_available
+      ethernet: not_available
+
   stm32wle5jc:
     name: STM32WLE5JC
     manufacturer: STMicroelectronics
@@ -1770,6 +1791,11 @@ builders:
     tier: "3"
     support:
 
+  st-nucleo-wl55jc:
+    chip: stm32wl55jc
+    tier: "3"
+    support:
+
   st-steval-mkboxpro:
     chip: stm32u585ai
     tier: "2"
@@ -2084,6 +2110,11 @@ boards:
     url: https://web.archive.org/web/20261116002102/https://www.st.com/en/evaluation-tools/nucleo-wba65ri.html
     builders:
       - st-nucleo-wba65ri
+
+  - name: ST NUCLEO-WL55JC
+    url: https://web.archive.org/web/20261120164642/https://www.st.com/en/evaluation-tools/nucleo-wl55jc.html
+    builders:
+      - st-nucleo-wl55jc
 
   - name: ST STEVAL-MKBOXPRO
     url: https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html
