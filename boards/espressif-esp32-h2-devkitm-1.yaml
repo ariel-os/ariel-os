@@ -8,6 +8,9 @@ targets:
     buttons:
       # button0 (BOOT)
       - pin: GPIO9
+        # The NPN transistor pulls to DTR (an active-low signal) when RTS is
+        # high (also an active-low signal); however when RTS is low the pin
+        # is left floating, which still calls for enabling the internal pull-up.
         resistor: none
         active: low
         aliases:
