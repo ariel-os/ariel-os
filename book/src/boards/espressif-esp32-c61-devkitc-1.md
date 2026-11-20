@@ -2,7 +2,7 @@
 
 ## References
 
-- [Manufacturer link](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c61/esp32-c61-devkitc-1/user_guide.html)
+- [Manufacturer link](https://web.archive.org/web/20261101233100/https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c61/esp32-c61-devkitc-1/user_guide.html)
 
 ## laze Builders
 
