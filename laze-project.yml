@@ -265,6 +265,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
       CHIP_NVM_PAGE_SIZE_BYTES: "512"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "14" # Strict minimum, without logging.
       CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
       CHIP_RAM_SIZE_BYTES: "$(64*1024)"
 
