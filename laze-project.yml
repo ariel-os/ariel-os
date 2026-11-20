@@ -58,6 +58,7 @@ contexts:
           CHIP_NVM_SIZE_BYTES=${CHIP_NVM_SIZE_BYTES}
           CHIP_NVM_START_ADDRESS=${CHIP_NVM_START_ADDRESS}
           CHIP_NVM_PAGE_SIZE_BYTES=${CHIP_NVM_PAGE_SIZE_BYTES}
+          CHIP_EMBASSY_BOOT_SIZE_PAGES=${CHIP_EMBASSY_BOOT_SIZE_PAGES}
           CHIP_EXTRA_SECTIONS=${CHIP_EXTRA_SECTIONS}
           CHIP_RAM_START_ADDRESS=${CHIP_RAM_START_ADDRESS}
           CHIP_RAM_SIZE_BYTES=${CHIP_RAM_SIZE_BYTES}
@@ -224,6 +225,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "4096"
       CHIP_NVM_START_ADDRESS: "0x0"
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
 
   - name: nrf51
     parent: nrf
@@ -380,6 +382,7 @@ contexts:
       - sw/benchmark
     env:
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
 
   - name: rp2040
     parent: rp
@@ -471,6 +474,7 @@ contexts:
       CHIP_NVM_SIZE_BYTES: "$(2048 * 1024)"
       CHIP_NVM_START_ADDRESS: "0x0"
       CHIP_NVM_PAGE_SIZE_BYTES: "4096"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
 
   - name: esp32
     parent: esp
@@ -819,6 +823,7 @@ contexts:
       OPENOCD_ARGS: foo
       CHIP_NVM_START_ADDRESS: "0x08000000"
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
     tasks:
       flash-dfuse:
         cmd:
