@@ -3,3 +3,4 @@ apps:
     selects:
       - coap-server
       - ?coap-server-config-demokeys
+      - ?coap-server-resource-identity

@@ -89,6 +89,8 @@ mdns = ["ariel-os-embassy/mdns"]
 multicast = ["ariel-os-embassy/multicast"]
 ## Enables support for [CoAP](https://ariel-os.github.io/ariel-os/dev/docs/book/tooling/coap.html).
 coap = ["dep:ariel-os-coap", "random"]
+## Enables the inclusion of an identity resource that describes the device over the network
+coap-server-resource-identity = ["ariel-os-coap/coap-server-resource-identity"]
 ## Enables applications to set up CoAP server handlers.
 ## See [`coap::coap_run()`].
 coap-server = ["ariel-os-coap/coap-server", "coap"]
