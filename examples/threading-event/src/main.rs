@@ -18,7 +18,7 @@ fn waiter() {
             "[{:?}@{:?}] All five threads should have reported \"Done.\". exiting.",
             my_id, my_prio
         );
-        ariel_os::debug::exit(ExitCode::SUCCESS);
+        ariel_os::power::exit(ExitCode::SUCCESS);
     }
 }
 

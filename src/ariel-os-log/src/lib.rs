@@ -28,6 +28,16 @@ pub mod transport;
 #[cfg(feature = "custom-transport-driver")]
 pub mod transport;
 
+// Use our custom logger when using a pluggable log transport.
+#[cfg(all(
+    feature = "defmt",
+    any(
+        feature = "internal-transport-driver",
+        feature = "custom-transport-driver"
+    )
+))]
+mod defmt_logger;
+
 #[allow(unused, reason = "conditional compilation")]
 #[doc(hidden)]
 #[cfg(feature = "log")]

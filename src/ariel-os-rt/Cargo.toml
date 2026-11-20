@@ -10,6 +10,7 @@ ariel-os-alloc = { workspace = true, optional = true }
 ariel-os-debug = { workspace = true }
 ariel-os-log = { workspace = true }
 ariel-os-macros = { workspace = true, optional = true }
+ariel-os-power = { workspace = true }
 ariel-os-threads = { workspace = true, optional = true }
 ariel-os-utils = { workspace = true }
 embedded-test = { workspace = true, optional = true }

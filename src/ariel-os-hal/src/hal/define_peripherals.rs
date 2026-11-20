@@ -236,6 +236,22 @@ macro_rules! define_uart {
             }
         }
 
+        impl $name {
+            pub fn retrieve_peripherals(
+                self,
+            ) -> (
+                $crate::__peripheral_ty!($tx),
+                $crate::__peripheral_ty!($rx),
+                $crate::__peripheral_ty!($device),
+            ) {
+                (
+                    self.tx,
+                    self.rx,
+                    $crate::hal::uart::$device::<'static>::take(),
+                )
+            }
+        }
+
         impl<'d> $name {
             pub fn build_with_config(
                 self,

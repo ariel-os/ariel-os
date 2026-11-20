@@ -46,11 +46,14 @@ macro_rules! inner_impl_input_methods {
         /// Returns the input level.
         #[must_use]
         pub fn get_level(&self) -> Level {
-            #[cfg(context = "esp")]
-            let level = hal::gpio::input::into_level(self.$inner.level());
-            #[cfg(not(context = "esp"))]
-            let level = hal::gpio::input::into_level(self.$inner.get_level());
-            level
+            cfg_select! {
+                any(context = "esp", context = "nrf") => {
+                    hal::gpio::input::into_level(self.$inner.level())
+                }
+                _ => {
+                    hal::gpio::input::into_level(self.$inner.get_level())
+                }
+            }
         }
     };
 }

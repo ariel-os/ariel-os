@@ -153,7 +153,7 @@ fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {
     #[cfg(feature = "panic-printing")]
     ariel_os_log::print_panic(_info);
 
-    ariel_os_debug::exit(ariel_os_debug::ExitCode::FAILURE);
+    ariel_os_power::exit(ariel_os_debug::ExitCode::FAILURE);
 
     #[allow(clippy::empty_loop)]
     loop {}

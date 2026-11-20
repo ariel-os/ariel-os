@@ -2,8 +2,8 @@
 #![no_std]
 
 use ariel_os::{
-    debug::{ExitCode, exit},
     log::*,
+    power::{ExitCode, exit},
 };
 
 #[ariel_os::task(autostart)]

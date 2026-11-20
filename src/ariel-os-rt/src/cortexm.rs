@@ -183,7 +183,7 @@ unsafe fn DefaultHandler(_irqn: i16) {
     #[cfg(feature = "panic-printing")]
     ariel_os_log::debug!("IRQn = {}", _irqn);
 
-    ariel_os_debug::exit(ariel_os_debug::ExitCode::FAILURE);
+    ariel_os_power::exit(ariel_os_debug::ExitCode::FAILURE);
 
     #[allow(clippy::empty_loop)]
     loop {}

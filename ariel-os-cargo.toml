@@ -24,8 +24,10 @@ embassy-embedded-hal = { git = "https://github.com/ariel-os/embassy", rev = "35b
 embassy-hal-internal = { git = "https://github.com/ariel-os/embassy", rev = "c7024cd2ee96f83d95f91570b2d445f95a222512" }
 # branch = "embassy-net-v0.9.1+ariel-os": backport of https://github.com/embassy-rs/embassy/pull/6195
 embassy-net = { git = "https://github.com/ariel-os/embassy", rev = "37683fe299f12028e5a77af9f742f496da08afcd" }
-# branch = "embassy-nrf-v0.11.0+ariel-os"
-embassy-nrf = { git = "https://github.com/ariel-os/embassy", rev = "dc494d8677bb8d8c493940d5c85112662b682aab" }
+# branch = "embassy-nrf-2026-11-05+ariel-os"
+embassy-nrf = { git = "https://github.com/nponsard/embassy-ariel", rev = "17f5c1744da05ea8a8a1ee9036cd53181c7eb07b" }
+# branch = "embassy-nrf-2026-11-05+ariel-os"
+embassy-crypto = { git = "https://github.com/nponsard/embassy-ariel", rev = "17f5c1744da05ea8a8a1ee9036cd53181c7eb07b" }
 # branch = "embassy-rp-v0.10.0+ariel-os"
 embassy-rp = { git = "https://github.com/ariel-os/embassy", rev = "601554c86b11a0b787803662b1823091e0c8bd99" }
 # branch = "embassy-stm32-v0.6.0+ariel-os"

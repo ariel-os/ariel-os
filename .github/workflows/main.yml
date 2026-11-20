@@ -155,6 +155,7 @@ jobs:
             -p ariel-os-hal
             -p ariel-os-identity
             -p ariel-os-log
+            -p ariel-os-log-transport-driver
             -p ariel-os-macros
             -p ariel-os-native
             -p ariel-os-power

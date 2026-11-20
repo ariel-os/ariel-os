@@ -9,3 +9,8 @@ targets:
     ariel:
       global_env:
         CHIP_NVM_SIZE_BYTES: $(2048 * 1024)
+    uarts:
+      - tx_pin: PIN_0
+        rx_pin: PIN_1
+        possible_peripherals: [UART0]
+        host_facing: true
