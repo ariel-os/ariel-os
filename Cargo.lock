@@ -2811,7 +2811,7 @@ dependencies = [
 [[package]]
 name = "esp-alloc"
 version = "0.10.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "allocator-api2",
  "cfg-if",
@@ -2826,7 +2826,7 @@ dependencies = [
 [[package]]
 name = "esp-bootloader-esp-idf"
 version = "0.5.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "cfg-if",
  "document-features",
@@ -2842,7 +2842,7 @@ dependencies = [
 [[package]]
 name = "esp-config"
 version = "0.7.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "document-features",
  "esp-metadata-generated",
@@ -2854,7 +2854,7 @@ dependencies = [
 [[package]]
 name = "esp-hal"
 version = "1.1.1"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "bitfield 0.19.4",
  "bitflags 2.13.2",
@@ -2916,7 +2916,7 @@ dependencies = [
 [[package]]
 name = "esp-hal-procmacros"
 version = "0.22.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "document-features",
  "object",
@@ -2948,12 +2948,12 @@ dependencies = [
 [[package]]
 name = "esp-metadata-generated"
 version = "0.4.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 
 [[package]]
 name = "esp-phy"
 version = "0.2.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "cfg-if",
  "defmt 1.1.1",
@@ -2987,7 +2987,7 @@ dependencies = [
 [[package]]
 name = "esp-println"
 version = "0.17.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "defmt 1.1.1",
  "document-features",
@@ -3000,7 +3000,7 @@ dependencies = [
 [[package]]
 name = "esp-radio"
 version = "0.18.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "allocator-api2",
  "bt-hci",
@@ -3056,7 +3056,7 @@ dependencies = [
 [[package]]
 name = "esp-radio-rtos-driver"
 version = "0.3.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "cfg-if",
  "defmt 1.1.1",
@@ -3068,7 +3068,7 @@ dependencies = [
 [[package]]
 name = "esp-riscv-rt"
 version = "0.14.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "defmt 1.1.1",
  "document-features",
@@ -3079,7 +3079,7 @@ dependencies = [
 [[package]]
 name = "esp-rom-sys"
 version = "0.1.4"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "cfg-if",
  "document-features",
@@ -3098,7 +3098,7 @@ dependencies = [
 [[package]]
 name = "esp-sync"
 version = "0.2.1"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "cfg-if",
  "defmt 1.1.1",
@@ -7350,7 +7350,7 @@ dependencies = [
 [[package]]
 name = "xtensa-lx"
 version = "0.13.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "critical-section",
 ]
@@ -7358,7 +7358,7 @@ dependencies = [
 [[package]]
 name = "xtensa-lx-rt"
 version = "0.22.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "defmt 1.1.1",
  "document-features",
@@ -7369,7 +7369,7 @@ dependencies = [
 [[package]]
 name = "xtensa-lx-rt-proc-macros"
 version = "0.5.0"
-source = "git+https://github.com/ariel-os/esp-hal?rev=ce9bcf390ab6b7abc8ae3bc4989360a493c354e7#ce9bcf390ab6b7abc8ae3bc4989360a493c354e7"
+source = "git+https://github.com/ariel-os/esp-hal?rev=415f00eca734fd0c8592e61041959af8893167bb#415f00eca734fd0c8592e61041959af8893167bb"
 dependencies = [
  "proc-macro2",
  "quote",
