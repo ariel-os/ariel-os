@@ -21,6 +21,7 @@ embassy-rp = { workspace = true, default-features = false, features = [
   "unstable-pac",
   # "unstable-traits",
 ] }
+embassy-sync = { workspace = true, optional = true }
 embedded-hal-async = { workspace = true }
 embedded-io-async = { workspace = true, optional = true }
 paste = { workspace = true }
@@ -114,6 +115,13 @@ wifi-cyw43 = ["_cyw43", "cyw43-firmware?/wifi", "wifi"]
 
 ## Enables the interrupt executor.
 executor-interrupt = ["embassy-executor/executor-interrupt"]
+
+## Access to bootloader backend.
+bootloader = ["dep:embassy-sync", "ariel-os-embassy-common/bootloader"]
+
+bootloader-application = [
+  "embassy-rp/boot2-none"
+]
 
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
 

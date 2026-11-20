@@ -65,9 +65,11 @@ single-core = ["cortex-m/critical-section-single-core"]
 multi-core = ["embassy-rp/critical-section-impl"]
 memory-x = ["dep:ld-memory", "dep:memsolve"]
 
-embassy-boot-loader = []
-embassy-boot-application = []
+embassy-boot-loader = ["embassy-boot"]
+embassy-boot-application = ["embassy-boot"]
+embassy-boot = ["device-update"]
 esp-partition = ["dep:esp-idf-part", "memsolve/esp"]
+device-update = []
 
 # features needed for `cargo test`
 _test = []

@@ -1,0 +1,4 @@
+apps:
+  - name: test-device-update
+    selects:
+      - device-update

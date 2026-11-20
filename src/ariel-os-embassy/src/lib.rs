@@ -212,6 +212,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
     #[cfg(all(not(feature = "no-boards"), context = "ariel-os"))]
     ariel_os_boards::init(&mut peripherals);
 
+    #[cfg(feature = "bootloader")]
+    hal::bootloader::init(&mut peripherals);
+
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
 
