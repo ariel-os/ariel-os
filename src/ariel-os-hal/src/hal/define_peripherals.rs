@@ -563,23 +563,8 @@ macro_rules! define_led {
             }
         }
 
-
         impl $name {
-            pub fn turn_on(&mut self) {
-                self.$color.turn_on()
-            }
-
-            pub fn turn_off(&mut self) {
-                self.$color.turn_off()
-            }
-
-            pub fn toggle(&mut self) {
-                self.$color.toggle()
-            }
-
-            pub fn into_output(self) -> $crate::gpio::Output<'static> {
-                self.$color.into_output()
-            }
+            $crate::impl_led_inner!($color);
         }
 
         $(
