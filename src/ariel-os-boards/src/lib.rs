@@ -11,8 +11,8 @@ cfg_select! {
     include!("bbc-microbit-v1.rs"); } context = "bbc-microbit-v2" => {
     include!("bbc-microbit-v2.rs"); } context = "decawave-dwm1001-dev" => {
     include!("decawave-dwm1001-dev.rs"); } context = "dfrobot-firebeetle2-esp32-c6" => {
-    include!("dfrobot-firebeetle2-esp32-c6.rs"); } context = "dwm3001cdk" => {
-    include!("dwm3001cdk.rs"); } context = "espressif-esp32-c3-devkit-rust-1" => {
+    include!("dfrobot-firebeetle2-esp32-c6.rs"); } context =
+    "espressif-esp32-c3-devkit-rust-1" => {
     include!("espressif-esp32-c3-devkit-rust-1.rs"); } context =
     "espressif-esp32-c3-lcdkit" => { include!("espressif-esp32-c3-lcdkit.rs"); } context
     = "espressif-esp32-c5-devkitc-1" => { include!("espressif-esp32-c5-devkitc-1.rs"); }
@@ -43,7 +43,8 @@ cfg_select! {
     include!("nrf54l15dk-app.rs"); } context = "nrf9151-dk" => {
     include!("nrf9151-dk.rs"); } context = "nrf9160dk-nrf9160" => {
     include!("nrf9160dk-nrf9160.rs"); } context = "particle-xenon" => {
-    include!("particle-xenon.rs"); } context = "rpi-pico-w" => {
+    include!("particle-xenon.rs"); } context = "qorvo-dwm3001cdk" => {
+    include!("qorvo-dwm3001cdk.rs"); } context = "rpi-pico-w" => {
     include!("rpi-pico-w.rs"); } context = "rpi-pico" => { include!("rpi-pico.rs"); }
     context = "rpi-pico2-w" => { include!("rpi-pico2-w.rs"); } context = "rpi-pico2" => {
     include!("rpi-pico2.rs"); } context = "seeedstudio-lora-e5-mini" => {

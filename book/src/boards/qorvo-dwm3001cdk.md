@@ -2,13 +2,13 @@
 
 ## References
 
-- [Manufacturer link](https://www.qorvo.com/products/p/DWM3001CDK)
+- [Manufacturer link](https://web.archive.org/web/20260712084449/https://www.qorvo.com/products/p/DWM3001CDK)
 
 ## laze Builders
 
 For more information on laze builders, check out [this page](../build-system.md#laze-builders).
 
-### `dwm3001cdk`
+### `qorvo-dwm3001cdk`
 
 - **Tier:** 3
 - **Chip:** [nRF52833](../chips/nrf52833.md)
@@ -17,7 +17,7 @@ For more information on laze builders, check out [this page](../build-system.md#
 To target this laze builder, run the following command in the root of your Ariel OS app:
 
 ```bash
-laze build -b dwm3001cdk
+laze build -b qorvo-dwm3001cdk
 ```
 
 #### Support Matrix

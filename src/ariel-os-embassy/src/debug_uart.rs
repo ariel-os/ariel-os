@@ -99,7 +99,7 @@ mod iot_lab {
         };
 
         // UART wired to the on-board J-Link virtual COM port.
-        #[cfg(context = "dwm3001cdk")]
+        #[cfg(context = "qorvo-dwm3001cdk")]
         let (p, uart_rx, uart_tx) = {
             config.baudrate = embassy_nrf::buffered_uarte::Baudrate::Baud115200;
             (

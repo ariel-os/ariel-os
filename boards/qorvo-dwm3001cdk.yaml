@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  dwm3001cdk:
+  qorvo-dwm3001cdk:
     chip: nrf52833
     flags:
       - has_usb_device_port

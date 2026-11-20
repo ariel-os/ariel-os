@@ -2399,10 +2399,10 @@ modules:
     # Temporarily restricted to ESP and boards that have ad hoc support.
     context:
       - decawave-dwm1001-dev
-      - dwm3001cdk
       - esp
       - nrf52840dk
       - nrf52dk
+      - qorvo-dwm3001cdk
       - rp2040
       - stm32u083c-dk
       - st-b-l072z-lrwan1
@@ -2424,9 +2424,9 @@ modules:
     help: private
     context:
       - decawave-dwm1001-dev
-      - dwm3001cdk
       - nrf52840dk
       - nrf52dk
+      - qorvo-dwm3001cdk
       - rp2040
       - stm32u083c-dk
       - st-b-l072z-lrwan1
