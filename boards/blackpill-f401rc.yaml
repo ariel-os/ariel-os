@@ -1,0 +1,18 @@
+version: 0.5.0
+targets:
+  blackpill-f401rc:
+    chip: stm32f401rc
+    flags:
+      - has_usb_device_port
+    ariel:
+      global_env:
+        CARGO_ENV:
+          - CONFIG_VBUS_DETECTION=false
+    leds:
+      - pin: PC13
+        color: blue
+        active: low
+    buttons:
+      - pin: PA0
+        resistor: pulldown
+        active: high
