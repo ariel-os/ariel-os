@@ -11,6 +11,7 @@ apps:
       - rp2040
       - rp235xa
       - seeedstudio-lora-e5-mini
+      - st-32f723ediscovery
       - st-b-l072z-lrwan1
       - st-nucleo-c031c6
       - st-nucleo-f042k6
@@ -20,7 +21,6 @@ apps:
       - st-nucleo-g431rb
       - st-nucleo-h755zi-q
       - st-b-l475e-iot01a
-      - stm32f723e-disco
       - stm32u083c-dk
       - st-nucleo-wb55
       - st-nucleo-wba55

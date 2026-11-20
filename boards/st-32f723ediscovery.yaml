@@ -1,6 +1,6 @@
 version: 0.5.0
 targets:
-  stm32f723e-disco:
+  st-32f723ediscovery:
     chip: stm32f723ie
     flags:
       - has_usb_device_port

@@ -118,7 +118,7 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_P;
     }
 
-    #[cfg(context = "stm32f723e-disco")]
+    #[cfg(context = "st-32f723ediscovery")]
     {
         use embassy_stm32::rcc::*;
         rcc.hse = Some(Hse {

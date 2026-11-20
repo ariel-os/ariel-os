@@ -83,10 +83,10 @@ Boards using this chip.
   <tbody>
 	<tbody class="odd">
       <tr>
-	    <td rowspan="2"><a href="../boards/stm32f723e-disco.html">STM32F723E-DISCO</a></td>
+	    <td rowspan="2"><a href="../boards/st-32f723ediscovery.html">ST 32F723EDISCOVERY</a></td>
 	  </tr>
 	  <tr>
-	    <td><code>stm32f723e-disco</code></td>
+	    <td><code>st-32f723ediscovery</code></td>
 		<td style="text-align: center;">3</td>
 		  <td class="support-cell" title="supported">✅</td>
 		  <td class="support-cell" title="supported">✅</td>

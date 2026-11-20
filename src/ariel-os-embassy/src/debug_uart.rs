@@ -134,7 +134,7 @@ mod iot_lab {
         };
 
         // USART6 is wired to the ST-LINK Virtual COM Port.
-        #[cfg(context = "stm32f723e-disco")]
+        #[cfg(context = "st-32f723ediscovery")]
         let (p, uart_rx, uart_tx) = {
             config.baudrate = 115_200;
             (

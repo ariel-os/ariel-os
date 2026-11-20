@@ -256,6 +256,17 @@ builders:
   provides:
   - has_leds
   - has_usb_device_port
+- name: st-32f723ediscovery
+  parent: stm32f723ie
+  provides:
+  - has_buttons
+  - has_i2c_bus
+  - has_leds
+  - has_swi
+  - has_usb_device_port
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=WWDG
 - name: st-b-l072z-lrwan1
   parent: stm32l072cz
   provides:
@@ -416,17 +427,6 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_VBUS_DETECTION=false
-    - CONFIG_SWI=WWDG
-- name: stm32f723e-disco
-  parent: stm32f723ie
-  provides:
-  - has_buttons
-  - has_i2c_bus
-  - has_leds
-  - has_swi
-  - has_usb_device_port
-  env:
-    CARGO_ENV:
     - CONFIG_SWI=WWDG
 - name: stm32u083c-dk
   parent: stm32u083mc

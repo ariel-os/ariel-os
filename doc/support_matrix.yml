@@ -1674,6 +1674,11 @@ builders:
     tier: "3"
     support:
 
+  st-32f723ediscovery:
+    chip: stm32f723ie
+    tier: "3"
+    support:
+
   st-b-l072z-lrwan1:
     chip: stm32l072cz
     tier: "3"
@@ -1807,11 +1812,6 @@ builders:
 
       After opening the case, use the JP2/SWD connector (marked "MCU SWD") with an SWD debug probe (e.g., the STLINK-V3MINIE):
       do note that JP2 is not keyed, the red wire of the ribbon cable must be closer to the JP2 pin marked "1" on the PCB (close to the POWER switch).
-
-  stm32f723e-disco:
-    chip: stm32f723ie
-    tier: "3"
-    support:
 
   stm32u083c-dk:
     chip: stm32u083mc
@@ -2033,6 +2033,11 @@ boards:
     builders:
       - seeedstudio-lora-e5-mini
 
+  - name: ST 32F723EDISCOVERY
+    url: https://web.archive.org/web/20261120093707/https://www.st.com/en/evaluation-tools/32f723ediscovery.html
+    builders:
+      - st-32f723ediscovery
+
   - name: ST B-L072Z-LRWAN1
     url: https://web.archive.org/web/20250402084429/https://www.st.com/en/evaluation-tools/b-l072z-lrwan1.html
     builders:
@@ -2102,11 +2107,6 @@ boards:
     url: https://web.archive.org/web/20250507145935/https://www.st.com/en/evaluation-tools/steval-mkboxpro.html
     builders:
       - st-steval-mkboxpro
-
-  - name: STM32F723E-DISCO
-    url: https://www.st.com/en/evaluation-tools/32f723ediscovery.html
-    builders:
-      - stm32f723e-disco
 
   - name: STM32U083C-DK
     url: https://web.archive.org/web/20250119131656/https://www.st.com/en/evaluation-tools/stm32u083c-dk.html

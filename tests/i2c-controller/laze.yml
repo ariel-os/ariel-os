@@ -10,6 +10,7 @@ apps:
       - nrf9160
       - rp2040
       - rp235xa
+      - st-32f723ediscovery
       - st-b-l072z-lrwan1
       - st-b-l475e-iot01a
       - st-nucleo-c031c6
@@ -19,5 +20,4 @@ apps:
       - st-nucleo-g431rb
       - st-nucleo-h755zi-q
       - st-nucleo-wb55
-      - stm32f723e-disco
       - stm32u083c-dk

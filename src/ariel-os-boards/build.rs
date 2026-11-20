@@ -85,6 +85,7 @@ pub fn main() {
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-xiao-nrf52840-plus\"))"
     );
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"st-32f723ediscovery\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-b-l072z-lrwan1\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-b-l475e-iot01a\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-c031c6\"))");
@@ -100,7 +101,6 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-wba55\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-wba65ri\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-steval-mkboxpro\"))");
-    println!("cargo::rustc-check-cfg=cfg(context, values(\"stm32f723e-disco\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"stm32u083c-dk\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"ulanzi-tc001\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"unihiker-k10\"))");

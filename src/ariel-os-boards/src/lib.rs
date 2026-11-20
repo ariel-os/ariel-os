@@ -50,8 +50,9 @@ cfg_select! {
     include!("seeedstudio-lora-e5-mini.rs"); } context = "seeedstudio-xiao-esp32-s3" => {
     include!("seeedstudio-xiao-esp32-s3.rs"); } context = "seeedstudio-xiao-esp32c6" => {
     include!("seeedstudio-xiao-esp32c6.rs"); } context = "seeedstudio-xiao-nrf52840-plus"
-    => { include!("seeedstudio-xiao-nrf52840-plus.rs"); } context = "st-b-l072z-lrwan1"
-    => { include!("st-b-l072z-lrwan1.rs"); } context = "st-b-l475e-iot01a" => {
+    => { include!("seeedstudio-xiao-nrf52840-plus.rs"); } context = "st-32f723ediscovery"
+    => { include!("st-32f723ediscovery.rs"); } context = "st-b-l072z-lrwan1" => {
+    include!("st-b-l072z-lrwan1.rs"); } context = "st-b-l475e-iot01a" => {
     include!("st-b-l475e-iot01a.rs"); } context = "st-nucleo-c031c6" => {
     include!("st-nucleo-c031c6.rs"); } context = "st-nucleo-f042k6" => {
     include!("st-nucleo-f042k6.rs"); } context = "st-nucleo-f303re" => {
@@ -65,8 +66,7 @@ cfg_select! {
     include!("st-nucleo-wb55.rs"); } context = "st-nucleo-wba55" => {
     include!("st-nucleo-wba55.rs"); } context = "st-nucleo-wba65ri" => {
     include!("st-nucleo-wba65ri.rs"); } context = "st-steval-mkboxpro" => {
-    include!("st-steval-mkboxpro.rs"); } context = "stm32f723e-disco" => {
-    include!("stm32f723e-disco.rs"); } context = "stm32u083c-dk" => {
+    include!("st-steval-mkboxpro.rs"); } context = "stm32u083c-dk" => {
     include!("stm32u083c-dk.rs"); } context = "ulanzi-tc001" => {
     include!("ulanzi-tc001.rs"); } context = "unihiker-k10" => {
     include!("unihiker-k10.rs"); } context = "waveshare-esp32-s3-eth" => {

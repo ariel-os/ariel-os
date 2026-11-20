@@ -128,9 +128,9 @@ ariel_os::hal::define_peripherals!(Peripherals {
 });
 
 // USART2 on the Arduino v3 connector (D1/D0)
-#[cfg(context = "stm32f723e-disco")]
+#[cfg(context = "st-32f723ediscovery")]
 pub type TestUart<'a> = uart::USART2<'a>;
-#[cfg(context = "stm32f723e-disco")]
+#[cfg(context = "st-32f723ediscovery")]
 ariel_os::hal::define_peripherals!(Peripherals {
     uart_rx: PA3,
     uart_tx: PA2,

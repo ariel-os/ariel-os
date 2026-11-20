@@ -1,14 +1,14 @@
-# STM32F723E-DISCO
+# ST 32F723EDISCOVERY
 
 ## References
 
-- [Manufacturer link](https://www.st.com/en/evaluation-tools/32f723ediscovery.html)
+- [Manufacturer link](https://web.archive.org/web/20261120093707/https://www.st.com/en/evaluation-tools/32f723ediscovery.html)
 
 ## laze Builders
 
 For more information on laze builders, check out [this page](../build-system.md#laze-builders).
 
-### `stm32f723e-disco`
+### `st-32f723ediscovery`
 
 - **Tier:** 3
 - **Chip:** [STM32F723IE](../chips/stm32f723ie.md)
@@ -17,7 +17,7 @@ For more information on laze builders, check out [this page](../build-system.md#
 To target this laze builder, run the following command in the root of your Ariel OS app:
 
 ```bash
-laze build -b stm32f723e-disco
+laze build -b st-32f723ediscovery
 ```
 
 #### Support Matrix
