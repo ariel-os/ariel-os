@@ -34,15 +34,17 @@ impl<'a, 'uri, TCP: TcpConnect, DNS: Dns> NetworkTransportClient<'a, 'uri, TCP, 
     }
 
     /// # Errors
-    /// Returns `Error::InvalidTransportRange` in case of a 416 response code. Other errors in the
-    /// sending or receiving of the requests return `Error::Transport`.
+    /// Returns `Error::InvalidTransportRange` if `range` is empty or in case of a 416 response
+    /// code. Other errors in the sending or receiving of the requests return `Error::Transport`.
     pub async fn get<'buf>(
         &mut self,
         range: Range<u32>,
         buf: &'buf mut [u8],
     ) -> Result<&'buf mut [u8], Error> {
         let mut range_buf = [0; Range::<u32>::BUFFER_SIZE];
-        let range = range.to_header_http_range(&mut range_buf);
+        let range = range
+            .to_header_http_range(&mut range_buf)
+            .ok_or(Error::InvalidTransportRange)?;
 
         let headers = &[("Range", range)];
         #[allow(unused_variables, reason = "conditional compilation")]
@@ -103,7 +105,9 @@ trait ToHeaderHttpRange {
 
     /// Converts the range to a string for use as a `bytes` value for the
     /// [HTTP header Range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Range).
-    fn to_header_http_range<'buf>(&self, buf: &'buf mut [u8]) -> &'buf str;
+    ///
+    /// Returns `None` if the range is empty, as HTTP byte ranges are inclusive on both bounds.
+    fn to_header_http_range<'buf>(&self, buf: &'buf mut [u8]) -> Option<&'buf str>;
 }
 
 impl ToHeaderHttpRange for Range<u32> {
@@ -111,7 +115,13 @@ impl ToHeaderHttpRange for Range<u32> {
     const BUFFER_SIZE: usize = HTTP_RANGE_BYTES_VALUE_PREFIX.len() + 2 * 10 + 1;
 
     #[allow(clippy::indexing_slicing)]
-    fn to_header_http_range<'buf>(&self, buf: &'buf mut [u8]) -> &'buf str {
+    fn to_header_http_range<'buf>(&self, buf: &'buf mut [u8]) -> Option<&'buf str> {
+        if self.is_empty() {
+            return None;
+        }
+        // Offset from Range's `bytes` are *inclusive*; non-empty guarantees `self.end >= 1`.
+        let range_end_inclusive = self.end - 1;
+
         assert!(buf.len() >= Self::BUFFER_SIZE);
         buf[..HTTP_RANGE_BYTES_VALUE_PREFIX.len()]
             .copy_from_slice(HTTP_RANGE_BYTES_VALUE_PREFIX.as_bytes());
@@ -125,14 +135,12 @@ impl ToHeaderHttpRange for Range<u32> {
         buf[len] = 0x2d; // Dash.
         len += 1;
 
-        // TODO: handle the case where the range is empty.
-        // Offset from Range's `bytes` are *inclusive*.
-        let range_end_str = (self.end - 1).format_into(&mut num_buf);
+        let range_end_str = range_end_inclusive.format_into(&mut num_buf);
         buf[len..len + range_end_str.len()].copy_from_slice(range_end_str.as_bytes());
         len += range_end_str.len();
 
         // NOTE(no-panic): by construction.
-        str::from_utf8(&buf[..len]).unwrap()
+        Some(str::from_utf8(&buf[..len]).unwrap())
     }
 }
 
@@ -143,10 +151,25 @@ mod tests {
     #[test]
     fn range_to_http_header_range() {
         let mut buf = [0; Range::<u32>::BUFFER_SIZE];
-        assert_eq!((0..42).to_header_http_range(&mut buf), "bytes=0-41");
+        assert_eq!((0..1).to_header_http_range(&mut buf), Some("bytes=0-0"));
+        assert_eq!((0..42).to_header_http_range(&mut buf), Some("bytes=0-41"));
         assert_eq!(
             (42..65_536).to_header_http_range(&mut buf),
-            "bytes=42-65535"
+            Some("bytes=42-65535")
         );
+        assert_eq!(
+            (u32::MAX - 1..u32::MAX).to_header_http_range(&mut buf),
+            Some("bytes=4294967294-4294967294")
+        );
+    }
+
+    #[test]
+    fn empty_range_returns_none() {
+        let mut buf = [0; Range::<u32>::BUFFER_SIZE];
+        assert_eq!((0..0).to_header_http_range(&mut buf), None);
+        assert_eq!((42..42).to_header_http_range(&mut buf), None);
+        #[expect(clippy::reversed_empty_ranges)]
+        let reversed = 50..10;
+        assert_eq!(reversed.to_header_http_range(&mut buf), None);
     }
 }
