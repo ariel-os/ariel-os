@@ -138,6 +138,9 @@ executor-interrupt = [
   "nrf-modem?/os-irq",
 ]
 
+## Access to bootloader backend.
+bootloader = ["ariel-os-embassy-common/bootloader"]
+
 _test = ["embassy-nrf/nrf52840", "external-interrupts", "i2c", "spi"]
 
 [lints]
