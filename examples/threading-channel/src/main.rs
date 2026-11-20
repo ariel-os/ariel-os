@@ -3,6 +3,7 @@
 
 use ariel_os::thread::sync::Channel;
 use ariel_os::{debug::ExitCode, log::*};
+use ariel_os_boards as _;
 
 static CHANNEL: Channel<u8> = Channel::new();
 

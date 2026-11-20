@@ -5,6 +5,7 @@
 use core::cell::RefCell;
 
 use ariel_os::{log::info, reexports::embassy_time, time::Timer};
+use ariel_os_boards as _;
 use embassy_futures::join::join;
 use embassy_time::Duration;
 use heapless::Deque;

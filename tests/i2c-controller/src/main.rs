@@ -16,6 +16,7 @@ use ariel_os::{
     i2c::controller::{I2cDevice, Kilohertz, highest_freq_in},
     log::{debug, info},
 };
+use ariel_os_boards as _;
 use embassy_sync::mutex::Mutex;
 use embedded_hal_async::i2c::I2c as _;
 

@@ -64,3 +64,17 @@ cfg_select! {
         pub use dummy::*;
     }
 }
+
+// Even though this is called during startup, this is defined here so that board crates and the
+// crate managing the startup do use the same function as long as they use the same version of
+// `ariel-os-hal`.
+// NOTE: if this signature or the semantics are modified, the new function must use a different
+// name.
+#[expect(unsafe_code)]
+unsafe extern "Rust" {
+    /// Called early during startup, before most of the other initializations.
+    ///
+    /// In particular, allows to set pins in a default state for specific boards.
+    #[doc(hidden)]
+    pub safe fn __ariel_os_early_init_hook(peripherals: &mut OptionalPeripherals);
+}

@@ -1,6 +1,8 @@
 #![no_main]
 #![no_std]
 
+use ariel_os_boards as _;
+
 #[ariel_os::task(autostart)]
 async fn coap_run() {
     use coap_handler_implementations::{HandlerBuilder, SimpleRendered, new_dispatcher};

@@ -14,6 +14,7 @@ use ariel_os::{
     reexports::embassy_net,
     time::Duration,
 };
+use ariel_os_boards as _;
 
 #[ariel_os::task(autostart)]
 async fn tcp_echo() {

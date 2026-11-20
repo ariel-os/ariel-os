@@ -2,6 +2,7 @@
 #![no_std]
 
 use ariel_os::log::info;
+use ariel_os_boards as _;
 
 #[ariel_os::task(autostart)]
 async fn run_client_operations() {

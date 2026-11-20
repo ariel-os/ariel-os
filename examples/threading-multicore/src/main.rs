@@ -5,6 +5,7 @@ use ariel_os::{
     log::*,
     thread::{CoreAffinity, CoreId},
 };
+use ariel_os_boards as _;
 
 #[ariel_os::thread(autostart, affinity = CoreAffinity::one(CoreId::new(1)), priority = 2)]
 fn thread0() {

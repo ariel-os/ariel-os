@@ -10,6 +10,7 @@ use ariel_os::{
     thread::block_on,
     time::{Instant, Timer},
 };
+use ariel_os_boards as _;
 
 static SIGNAL: Signal<CriticalSectionRawMutex, u32> = Signal::new();
 

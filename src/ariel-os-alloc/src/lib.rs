@@ -131,6 +131,8 @@ mod alloc {
 #[cfg(test)]
 #[embedded_test::tests]
 mod tests {
+    use ariel_os_boards as _;
+
     #[test]
     async fn basic() {
         extern crate alloc;

@@ -5,6 +5,7 @@ use ariel_os::{
     debug::{ExitCode, exit},
     log::{Hex, info},
 };
+use ariel_os_boards as _;
 
 // Imports for using [`ariel_os::storage`]
 use ariel_os::storage;

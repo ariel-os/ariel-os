@@ -6,6 +6,7 @@ use ariel_os::{
     gpio::{self, Input, Pull},
     log::info,
 };
+use ariel_os_boards as _;
 
 // These pins should be available on all STM32 chips.
 #[cfg(context = "stm32")]

@@ -13,6 +13,7 @@ use ariel_os::{
     },
     time::Timer,
 };
+use ariel_os_boards as _;
 
 #[cfg(feature = "gnss")]
 use ariel_os_sensors_gnss_time_ext::GnssTimeExt as _;

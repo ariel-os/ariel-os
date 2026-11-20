@@ -2,6 +2,7 @@
 #![no_std]
 
 use ariel_os::log::*;
+use ariel_os_boards as _;
 use rand::Rng as _;
 
 #[ariel_os::task(autostart)]

@@ -7,6 +7,7 @@ use ariel_os::{
     thread::block_on,
     time::Timer,
 };
+use ariel_os_boards as _;
 
 #[ariel_os::thread(autostart)]
 fn main() {

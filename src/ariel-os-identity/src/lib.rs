@@ -75,6 +75,8 @@ pub fn interface_eui48(if_index: u32) -> Result<Eui48, impl core::error::Error> 
 #[cfg(test)]
 #[embedded_test::tests]
 mod tests {
+    use ariel_os_boards as _;
+
     #[test]
     async fn has_device_id() {
         let device_id = ariel_os::identity::device_id_bytes();

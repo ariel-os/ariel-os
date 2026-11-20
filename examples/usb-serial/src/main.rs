@@ -7,6 +7,7 @@ use ariel_os::{
     reexports::embassy_usb,
     usb::UsbDriver,
 };
+use ariel_os_boards as _;
 use embassy_usb::{
     class::cdc_acm::{CdcAcmClass, State},
     driver::EndpointError,
