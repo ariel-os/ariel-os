@@ -85,6 +85,7 @@ pub fn main() {
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-xiao-nrf52840-plus\"))"
     );
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"st-32f723ediscovery\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-b-l072z-lrwan1\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-b-l475e-iot01a\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"st-nucleo-c031c6\"))");

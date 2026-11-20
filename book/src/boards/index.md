@@ -37,6 +37,7 @@
 - [Seeed Studio XIAO NRF52840 Plus](./seeed-studio-xiao-nrf52840-plus.md)
 - [Seeed Studio XIAO ESP32-S3](./seeed-studio-xiao-esp32-s3.md)
 - [Seeed Studio LoRa-E5 mini](./seeed-studio-lora-e5-mini.md)
+- [ST 32F723EDISCOVERY](./st-32f723ediscovery.md)
 - [ST B-L072Z-LRWAN1](./st-b-l072z-lrwan1.md)
 - [ST B-L475E-IOT01A](./st-b-l475e-iot01a.md)
 - [ST NUCLEO-C031C6](./st-nucleo-c031c6.md)
