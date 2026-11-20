@@ -43,7 +43,8 @@ cfg_select! {
     include!("nrf54l15dk-app.rs"); } context = "nrf9151-dk" => {
     include!("nrf9151-dk.rs"); } context = "nrf9160dk-nrf9160" => {
     include!("nrf9160dk-nrf9160.rs"); } context = "particle-xenon" => {
-    include!("particle-xenon.rs"); } context = "rpi-pico-w" => {
+    include!("particle-xenon.rs"); } context = "qorvo-dwm3001cdk" => {
+    include!("qorvo-dwm3001cdk.rs"); } context = "rpi-pico-w" => {
     include!("rpi-pico-w.rs"); } context = "rpi-pico" => { include!("rpi-pico.rs"); }
     context = "rpi-pico2-w" => { include!("rpi-pico2-w.rs"); } context = "rpi-pico2" => {
     include!("rpi-pico2.rs"); } context = "seeedstudio-lora-e5-mini" => {
