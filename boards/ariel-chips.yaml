@@ -23,6 +23,8 @@ ariel:
     - esp32-s3-wroom-1
     - esp32-s2-solo-2
     - esp32c2
+    - esp32c3
+    - esp32c3fx4
     - esp32c5
     - esp32c5hf4
     - esp32c5hrx
@@ -73,6 +75,7 @@ ariel:
     - stm32h755zi
     - stm32l072cz
     - stm32l475vg
+    - stm32u073kc
     - stm32u083mc
     - stm32u585ai
     - stm32wb55rg
