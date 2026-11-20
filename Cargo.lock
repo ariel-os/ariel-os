@@ -167,6 +167,8 @@ dependencies = [
  "ariel-os-power",
  "ariel-os-rt",
  "embassy-boot",
+ "embassy-embedded-hal",
+ "embassy-sync 0.8.0",
  "embedded-storage",
 ]
 

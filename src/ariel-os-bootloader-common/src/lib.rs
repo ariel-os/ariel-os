@@ -6,6 +6,8 @@ use ariel_os_embassy_common::bootloader::{BootLoaderBackend, FlashConfig};
 use ariel_os_hal::hal::bootloader::HalBootLoaderBackend;
 use ariel_os_rt::memory::sections;
 use embassy_boot::{AlignedBuffer, BlockingFirmwareUpdater};
+use embassy_embedded_hal::flash::partition::BlockingPartition;
+use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
 use embedded_storage::nor_flash::NorFlash;
 
 pub type HalDeviceUpdater<'a> = EmbassyBootDeviceUpdater<'a>;
@@ -51,7 +53,11 @@ impl DeviceUpdaterState for EmbassyBootDeviceUpdaterState {
 }
 
 pub struct EmbassyBootDeviceUpdater<'a> {
-    updater: BlockingFirmwareUpdater<'a, DfuFlash, StateFlash>,
+    updater: BlockingFirmwareUpdater<
+        'a,
+        BlockingPartition<'a, CriticalSectionRawMutex, DfuFlash>,
+        BlockingPartition<'a, CriticalSectionRawMutex, StateFlash>,
+    >,
 }
 
 impl<'a> DeviceUpdater for EmbassyBootDeviceUpdater<'a> {

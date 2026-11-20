@@ -1,11 +1,8 @@
 #![no_main]
 #![no_std]
 
-use ariel_os::{
-    hal::bootloader::HalBootLoaderBackend,
-    rt::{jump_to_application, memory::sections},
-};
-use ariel_os_embassy_common::bootloader::{BootLoaderBackend, FlashConfig};
+use ariel_os::{hal::bootloader::HalBootLoaderBackend, rt::jump_to_application};
+use ariel_os_embassy_common::bootloader::BootLoaderBackend;
 use embassy_boot::{AlignedBuffer, State};
 
 #[ariel_os::task(autostart)]

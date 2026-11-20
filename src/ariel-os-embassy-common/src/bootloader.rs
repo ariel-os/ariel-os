@@ -135,16 +135,16 @@ pub trait BootLoaderBackend {
         }
     }
 
-    /// Return the storage configuration of the platform.
-    fn storage_config<'a>() -> BootLoaderStorage<'a, Self::ACTIVE, Self::DFU, Self::STATE>;
-
     /// Creates the firmware updater config.
-    fn config_firmware_updater(
+    fn config_firmware_updater<'a>(
         flash_config: &FlashConfig,
     ) -> FirmwareUpdaterConfig<
-        BlockingPartition<'_, CriticalSectionRawMutex, Self::DFU>,
-        BlockingPartition<'_, CriticalSectionRawMutex, Self::STATE>,
-    > {
+        BlockingPartition<'a, CriticalSectionRawMutex, Self::DFU>,
+        BlockingPartition<'a, CriticalSectionRawMutex, Self::STATE>,
+    >
+    where
+        <Self as BootLoaderBackend>::ACTIVE: 'a,
+    {
         let storage = Self::storage_config();
 
         let dfu_partition = BlockingPartition::new(
@@ -163,6 +163,9 @@ pub trait BootLoaderBackend {
             state: state_partition,
         }
     }
+
+    /// Return the storage configuration of the platform.
+    fn storage_config<'a>() -> BootLoaderStorage<'a, Self::ACTIVE, Self::DFU, Self::STATE>;
 
     /// Enable the watchdog, starting it.
     // Currently not used.

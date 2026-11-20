@@ -13,7 +13,10 @@ ariel-os-hal = { workspace = true }
 ariel-os-power = { workspace = true }
 ariel-os-rt = { workspace = true }
 embassy-boot = { workspace = true }
+embassy-embedded-hal = { workspace = true }
+embassy-sync = { workspace = true }
 embedded-storage = { workspace = true }
+
 
 [lints]
 workspace = true
