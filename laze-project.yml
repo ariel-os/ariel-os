@@ -914,6 +914,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(128 * 1024)
       CHIP_RAM_SIZE_BYTES: $(32 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32f767zi
     parent: stm32
@@ -1012,6 +1013,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(1024 * 1024)
       CHIP_RAM_SIZE_BYTES: $(96 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32u073kc
     parent: stm32
@@ -1046,6 +1048,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(256 * 1024)
       CHIP_RAM_SIZE_BYTES: $(40 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32u585ai
     parent: stm32
@@ -1124,6 +1127,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(256 * 1024)
       CHIP_RAM_SIZE_BYTES: $(64 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
 modules:
   - name: thumbv6m-none-eabi
