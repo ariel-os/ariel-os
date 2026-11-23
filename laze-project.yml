@@ -467,7 +467,7 @@ contexts:
       - has_hwrng
     env:
       esp_wifi_heapsize_required: $(72*1024)
-      ESP_PARTITION_FILE: ${relroot}/${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
+      ESP_PARTITION_FILE: ${build-dir}/bin/${builder}/cargo/${RUSTC_TARGET}/${PROFILE_DIR}/${app}-partitions.csv
       RUSTFLAGS:
         # linkall first
         - -Clink-arg=-Tlinkall.x
@@ -1367,6 +1367,28 @@ modules:
         FEATURES:
           - ariel-os/ariel-os-bootloader-application
 
+  - name: device-update-esp-bootloader
+    help: Provides esp bootloader based device update.
+    provides_unique:
+      - device-update-impl
+    context:
+      - esp
+    env:
+      global:
+        executor_stacksize_required:
+          # needs space for buffers
+          - "16384"
+        FEATURES:
+          - ariel-os/esp-device-update
+
+    tasks:
+      create-update-image:
+        help: create .bin suitable for device update (using `espflash`)
+        cmd:
+          - espflash save-image --chip ${PROBE_RS_CHIP} --partition-table ${ESP_PARTITION_FILE} ${out} ${out}.bin $@
+          - 'echo IMAGE PATH: ${out}.bin'
+
+
   - name: emit-stack-sizes
     conflicts:
       - stable
@@ -1512,7 +1534,7 @@ modules:
       - flashing-tool
     env:
       global:
-        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${ESP_PARTITION_FILE}"'
+        CARGO_RUNNER: '"espflash flash --monitor --partition-table ${relroot}/${ESP_PARTITION_FILE}"'
     tasks:
       flash:
         help: flash the target using `espflash`

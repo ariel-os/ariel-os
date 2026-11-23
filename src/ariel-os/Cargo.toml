@@ -295,6 +295,12 @@ ariel-os-bootloader = [
   "ariel-os-embassy/bootloader",
 ]
 
+esp-device-update = [
+  "ariel-os-embassy/bootloader",
+  "ariel-os-hal/bootloader",
+  "ariel-os-rt/esp-device-update",
+]
+
 # features needed for `cargo test`
 _test = [
   "ariel-os-rt/_test",
