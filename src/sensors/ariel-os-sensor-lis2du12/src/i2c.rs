@@ -16,7 +16,7 @@ use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 use portable_atomic::{AtomicU8, Ordering};
 
-use crate::{AccelFullScale, PART_NUMBER, Register};
+use crate::{AccelFullScale, Ctrl1, Ctrl4, Ctrl5, OutXL, PART_NUMBER, Status};
 
 /// I2C address of the sensor device.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
@@ -99,22 +99,21 @@ impl<I2C: I2c + Send> Lis2du12<I2C> {
 
         // The device is always in power-down mode as we are only using the one-shot mode.
         i2c_device
-            .write(address, &[Register::Ctrl1 as u8, crate::SW_RESET])
+            .write(address, &[Ctrl1::ADDR, Ctrl1::SW_RESET.into()])
             .await
             .map_err(|_| ())?;
 
         // Initial sensor configuration.
         {
             // Enable address auto-increment on serial interface.
-            let ctrl = crate::IF_ADD_INC_BITS;
             i2c_device
-                .write(address, &[Register::Ctrl1 as u8, ctrl])
+                .write(address, &[Ctrl1::ADDR, Ctrl1::IF_ADD_INC.into()])
                 .await
                 .map_err(|_| ())?;
 
-            let ctrl = crate::Odr::OneShotInterface as u8;
+            let ctrl = Ctrl5::from(crate::Odr::OneShotInterface);
             i2c_device
-                .write(address, &[Register::Ctrl5 as u8, ctrl])
+                .write(address, &[Ctrl5::ADDR, ctrl.into()])
                 .await
                 .map_err(|_| ())?;
         }
@@ -150,20 +149,20 @@ impl<I2C: I2c + Send> Lis2du12<I2C> {
         let address = self.address.load(Ordering::Acquire);
 
         // Trigger acceleration measurement.
-        let ctrl = crate::BDU_BITS | crate::SOC_BITS;
-        i2c.write(address, &[Register::Ctrl4 as u8, ctrl])
+        let ctrl = Ctrl4::BDU | Ctrl4::SOC;
+        i2c.write(address, &[Ctrl4::ADDR, ctrl.into()])
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 
         // Wait for the measurement.
         loop {
             let mut buf = [0u8];
-            i2c.write_read(address, &[Register::Status as u8], &mut buf)
+            i2c.write_read(address, &[Status::ADDR], &mut buf)
                 .await
                 .map_err(|_| ReadingError::SensorAccess)?;
 
             // New data available.
-            let mask = crate::DRDY_BITS;
+            let mask: u8 = Status::DRDY.into();
             if buf[0] & mask == mask {
                 break;
             }
@@ -174,7 +173,7 @@ impl<I2C: I2c + Send> Lis2du12<I2C> {
 
         // Read all acceleration registers.
         let mut buf = [0u8; 3 * 2];
-        i2c.write_read(address, &[Register::OutXL as u8], &mut buf)
+        i2c.write_read(address, &[OutXL::ADDR], &mut buf)
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 
