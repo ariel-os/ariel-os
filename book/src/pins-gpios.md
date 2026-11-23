@@ -165,6 +165,7 @@ Instead of relying on the output pins being defined inside the application as pr
 
 LEDs defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
 These types provide methods similar to that of [`ariel_os::hal::led::Led`][hal-led-led-rustdoc]; they expose methods that take into account which logic level is considered the active level.
+These specific types can be type-erased to the generic type using their `From` implementation.
 
 ```rust
 ariel_os::hal::group_peripherals!(Peripherals {
@@ -174,7 +175,7 @@ ariel_os::hal::group_peripherals!(Peripherals {
 
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: Peripherals) {
-    let mut led = peripherals.led; // ariel_os_boards::pins::Led0
+    let mut led: ariel_os::hal::led::Led = peripherals.led.into();
 }
 ```
 
