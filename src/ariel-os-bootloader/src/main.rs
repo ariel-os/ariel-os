@@ -31,3 +31,10 @@ async fn main() {
     }
     jump_to_application(flash_config.active.start);
 }
+
+// For clippy.
+#[cfg(not(context = "ariel-os"))]
+#[panic_handler]
+fn panic(_info: &core::panic::PanicInfo<'_>) -> ! {
+    loop {}
+}

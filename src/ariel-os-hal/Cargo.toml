@@ -173,8 +173,8 @@ defmt = [
 log = ["ariel-os-esp/log"]
 
 bootloader = [
-  "dep:embedded_storage",
-  "ariel_os_embassy_common/bootloader",
+  "dep:embedded-storage",
+  "ariel-os-embassy-common/bootloader",
   "ariel-os-nrf/bootloader",
   "ariel-os-rp/bootloader",
   "ariel-os-stm32/bootloader",

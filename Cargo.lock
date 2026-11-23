@@ -319,7 +319,6 @@ dependencies = [
  "ariel-os-stm32",
  "bt-hci",
  "const_panic",
- "embassy-boot",
  "embassy-embedded-hal",
  "embassy-executor",
  "embassy-hal-internal",
