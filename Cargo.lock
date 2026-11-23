@@ -220,6 +220,8 @@ dependencies = [
  "embassy-futures",
  "embassy-hal-internal",
  "embassy-net",
+ "embassy-net-driver",
+ "embassy-net-driver-channel",
  "embassy-net-wiznet",
  "embassy-nrf",
  "embassy-rp",
