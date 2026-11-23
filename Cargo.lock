@@ -312,6 +312,7 @@ dependencies = [
  "embedded-hal-async",
  "embedded-io 0.7.1",
  "embedded-storage-async",
+ "linkme",
 ]
 
 [[package]]

@@ -4,14 +4,12 @@ version = "0.6.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
-# Enforces that a single version of the crate is used in the build.
-# Required for hooks so that function signatures match.
-links = "ariel-os-hal"
 
 [dependencies]
 ariel-os-embassy-common = { workspace = true }
 
 const_panic = { workspace = true }
+linkme = { workspace = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-sync = { workspace = true, optional = true }

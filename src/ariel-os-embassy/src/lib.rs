@@ -210,7 +210,9 @@ async fn init_task(mut peripherals: hal::OptionalPeripherals) {
 
     // gated so doc builds pass
     #[cfg(all(not(feature = "no-boards"), context = "ariel-os"))]
-    hal::__ariel_os_early_init_hook(&mut peripherals);
+    if let Some(hook) = hal::EARLY_INIT_HOOKS.first() {
+        hook(&mut peripherals);
+    }
 
     #[cfg(all(context = "stm32", feature = "external-interrupts"))]
     hal::extint_registry::EXTINT_REGISTRY.init(&mut peripherals);
