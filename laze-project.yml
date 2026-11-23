@@ -1347,6 +1347,26 @@ modules:
           - CC="${CC}"
           - CFLAGS="${CFLAGS}"
 
+  - name: device-update
+    help: Enables device updates & bootloader support.
+    context:
+      - ariel-os
+    selects:
+      - ?device-update-impl
+
+  - name: device-update-ariel-os-bootloader
+    help: Provides ariel-os-boot / embassy-boot based device update.
+    provides_unique:
+      - device-update-impl
+    context:
+      - nrf
+      - stm32
+      - rp
+    env:
+      global:
+        FEATURES:
+          - ariel-os/ariel-os-bootloader-application
+
   - name: emit-stack-sizes
     conflicts:
       - stable
