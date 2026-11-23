@@ -119,6 +119,8 @@ executor-interrupt = ["embassy-executor/executor-interrupt"]
 ## Access to bootloader backend.
 bootloader = ["dep:embassy-sync", "ariel-os-embassy-common/bootloader"]
 
+bootloader-application = ["embassy-rp/boot2-none"]
+
 _test = ["embassy-rp/rp2040", "external-interrupts", "i2c", "spi"]
 
 _cyw43 = [
