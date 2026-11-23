@@ -91,6 +91,7 @@ dependencies = [
  "ariel-os-buildinfo",
  "ariel-os-coap",
  "ariel-os-debug",
+ "ariel-os-device-update",
  "ariel-os-embassy",
  "ariel-os-hal",
  "ariel-os-identity",
@@ -204,6 +205,14 @@ dependencies = [
  "featurecomb",
  "rtt-target",
  "semihosting",
+]
+
+[[package]]
+name = "ariel-os-device-update"
+version = "0.5.0"
+dependencies = [
+ "defmt 1.1.1",
+ "embedded-io-async 0.7.0",
 ]
 
 [[package]]
