@@ -76,8 +76,12 @@ Interrupts have many benefits: in particular, they
 Instead of relying on the input pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book] for push-buttons and other switches.
 
 Buttons and switches defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
-These types provide methods similar to that of [`ariel_os::hal::button::Button`][hal-button-button-rustdoc] and [`ariel_os::hal::switch::SwitchPin`][hal-switch-switchpin-rustdoc] respectively; they already configure the pull-up/pull-down resistor if necessary, and expose methods that take into account which logic level is considered the active level.
+Button types provide methods similar to that of [`ariel_os::hal::button::Button`][hal-button-button-rustdoc].
+Switches contain multiple pins, each exposed as [`ariel_os::hal::switch::SwitchPin`][hal-switch-switchpin-rustdoc]s
+Both already configure the pull-up/pull-down resistor if necessary, and expose methods that take into account which logic level is considered the active level.
+Switch types that only contain a single pin themselves expose the same method as [`SwitchPin`][hal-switch-switchpin-rustdoc].
 To use the methods relying on GPIO interrupts, the `external-interrupts` Cargo feature must be enabled.
+These specific types can be type-erased to their respective generic type using their `From` implementation.
 
 ```rust
 ariel_os::hal::group_peripherals!(Peripherals {
@@ -86,10 +90,25 @@ ariel_os::hal::group_peripherals!(Peripherals {
     button: ariel_os_boards::pins::Button0,
 });
 
+// Buttons:
+
 #[ariel_os::task(autostart, peripherals)]
 async fn main(peripherals: Peripherals) {
-    let mut switch = peripherals.switch; // ariel_os_boards::pins::Switch0
-    let mut button = peripherals.button; // ariel_os_boards::pins::Button0
+    let mut button: ariel_os::hal::button::Button = peripherals.button.into();
+    button.wait_for_next_press().await;
+}
+
+// Switches:
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(mut peripherals: Peripherals) {
+    // Assuming the switch has only one pin:
+    let (switch_pin,) = peripherals.switch.pins();
+    switch_pin.wait_for_activation_edge().await;
+
+    // or, as the switch has only one pin:
+    let switch = peripherals.switch;
+    switch.wait_for_activation_edge().await;
 }
 ```
 
