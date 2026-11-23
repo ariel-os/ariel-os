@@ -1375,7 +1375,7 @@ modules:
     env:
       global:
         # this pins our nightly version
-        CARGO_TOOLCHAIN: +nightly-2026-10-14
+        CARGO_TOOLCHAIN: +nightly-2026-11-18
         RUSTFLAGS:
           - --cfg nightly
 
@@ -2647,7 +2647,7 @@ builders:
           - rustup ${CARGO_TOOLCHAIN} target add riscv32imc-unknown-none-elf
           - rustup ${CARGO_TOOLCHAIN} target add riscv32imac-unknown-none-elf
           - rustup ${CARGO_TOOLCHAIN} component add rust-src llvm-tools
-          - if command -v espup >/dev/null; then espup update --targets=esp32,esp32s2,esp32s3; fi
+          - if command -v espup >/dev/null; then espup update --toolchain-version 1.100.0.0 --targets=esp32,esp32s2,esp32s3; fi
 
       update-book:
         build: false
