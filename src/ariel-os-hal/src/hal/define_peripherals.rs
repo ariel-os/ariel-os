@@ -412,7 +412,7 @@ macro_rules! define_button {
 
         impl From<$name> for $crate::hal::button::Button {
             fn from(button: $name) -> Self {
-                button.$inner
+                button.inner
             }
         }
 
