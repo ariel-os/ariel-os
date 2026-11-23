@@ -23,6 +23,3 @@ pub mod pins {
         { name : Uart0, device : UARTE0, tx : P0_06, rx : P0_08, host_facing : true },
     ];
 }
-#[allow(unused_variables)]
-#[unsafe(no_mangle)]
-fn __ariel_os_early_init_hook(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}
