@@ -563,6 +563,11 @@ macro_rules! define_led {
             }
         }
 
+        impl From<$name> for $crate::hal::led::Led {
+            fn from(led: $name) -> Self {
+                led.$color
+            }
+        }
 
         impl $name {
             $crate::impl_led_inner!($color);
