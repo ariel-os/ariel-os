@@ -9,6 +9,7 @@ license.workspace = true
 ariel-os-embassy-common = { workspace = true }
 
 const_panic = { workspace = true }
+linkme = { workspace = true }
 
 embassy-embedded-hal = { workspace = true, optional = true }
 embassy-sync = { workspace = true, optional = true }

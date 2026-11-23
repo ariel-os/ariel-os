@@ -28,3 +28,7 @@ pub mod api {
     // #[cfg(feature = "usb")]
     // pub use crate::usb;
 }
+
+// Required by board packages to define hooks.
+#[doc(hidden)]
+pub use linkme;

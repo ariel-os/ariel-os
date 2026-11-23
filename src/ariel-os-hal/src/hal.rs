@@ -64,3 +64,7 @@ cfg_select! {
         pub use dummy::*;
     }
 }
+
+#[doc(hidden)]
+#[linkme::distributed_slice]
+pub static EARLY_INIT_HOOKS: [fn(&mut OptionalPeripherals)] = [..];

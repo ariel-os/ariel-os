@@ -23,5 +23,3 @@ pub mod pins {
         { name : Uart0, device : UARTE0, tx : P0_06, rx : P0_08, host_facing : true },
     ];
 }
-#[allow(unused_variables)]
-pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {}

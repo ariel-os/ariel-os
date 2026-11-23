@@ -16,6 +16,8 @@ pub mod pins {
     ];
 }
 #[allow(unused_variables)]
+#[ariel_os_hal::linkme::distributed_slice(ariel_os_hal::hal::EARLY_INIT_HOOKS)]
+#[linkme(crate = ariel_os_hal::linkme)]
 pub fn init(peripherals: &mut ariel_os_hal::hal::OptionalPeripherals) {
     {
         let pin = peripherals.GPIO15.take().unwrap();
