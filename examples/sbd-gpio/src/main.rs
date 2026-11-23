@@ -3,7 +3,7 @@
 
 use ariel_os_boards::pins;
 
-use ariel_os::time::Timer;
+use ariel_os::{hal::led::Led, time::Timer};
 
 #[cfg(not(feature = "use-switches"))]
 ariel_os::hal::group_peripherals!(Peripherals {
@@ -20,7 +20,7 @@ ariel_os::hal::group_peripherals!(Peripherals {
 
 #[ariel_os::task(autostart, peripherals)]
 async fn blinky(peripherals: Peripherals) {
-    let mut led = peripherals.led;
+    let mut led: Led = peripherals.led.into();
 
     let mut button = peripherals.button;
 
