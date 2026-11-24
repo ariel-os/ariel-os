@@ -1,6 +1,6 @@
 [package]
 name = "ariel-os-device-update"
-version = "0.5.0"
+version = "0.6.0"
 edition.workspace = true
 rust-version.workspace = true
 repository.workspace = true
