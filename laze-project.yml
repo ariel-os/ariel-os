@@ -990,6 +990,9 @@ contexts:
       RUSTFLAGS:
         - --cfg capability=\"hw/stm32-rng-lpuart1\"
         - --cfg capability=\"hw/stm32-usb\"
+      CHIP_NVM_PAGE_SIZE_BYTES: "128"
+      CHIP_NVM_SIZE_BYTES: $(192 * 1024)
+      CHIP_RAM_SIZE_BYTES: $(20 * 1024)
 
   - name: stm32l475vg
     parent: stm32

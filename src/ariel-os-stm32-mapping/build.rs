@@ -19,8 +19,8 @@ const CM0P_CM4_MCU_PREFIXES: &[&str] = &["stm32wl54", "stm32wl55"];
 
 // These MCUs support memory-x generation
 const SUPPORT_MEMORYX: &[&str] = &[
-    "stm32c0", "stm32f3", "stm32wl", "stm32g4", "stm32h7", "stm32l4", "stm32u0", "stm32u5",
-    "stm32wb",
+    "stm32c0", "stm32f3", "stm32wl", "stm32g4", "stm32h7", "stm32l0", "stm32l4", "stm32u0",
+    "stm32u5", "stm32wb",
 ];
 
 fn main() {
