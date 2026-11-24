@@ -16,7 +16,7 @@ use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 use portable_atomic::{AtomicU8, Ordering};
 
-use crate::{PART_NUMBER, Register};
+use crate::{Ctrl, PART_NUMBER, Status, TempHLimit, TempLOut};
 
 /// I2C address of the sensor device.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
@@ -98,16 +98,13 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
     async fn reset(i2c_device: &mut I2C, address: I2cAddress) -> Result<(), ()> {
         // Set IF_ADD_INC first to reset the thresholds registers in one transaction.
         i2c_device
-            .write(
-                address as u8,
-                &[Register::Ctrl as u8, crate::IF_ADD_INC_BITS],
-            )
+            .write(address as u8, &[Ctrl::ADDR, Ctrl::IF_ADD_INC.into()])
             .await
             .map_err(|_| ())?;
 
         // Reset the temperature limits, disabling the threshold interrupts.
         i2c_device
-            .write(address as u8, &[Register::TempHLimit as u8, 0x00, 0x00])
+            .write(address as u8, &[TempHLimit::ADDR, 0x00, 0x00])
             .await
             .map_err(|_| ())?;
 
@@ -140,26 +137,21 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
         let mut i2c = self.i2c.get().await.lock().await;
         let address = self.address.load(Ordering::Acquire);
 
-        // Sensor configuration.
-        let mut ctrl = 0u8;
-        ctrl |= crate::ONE_SHOT_BITS;
-        ctrl |= crate::IF_ADD_INC_BITS;
-        ctrl |= crate::BDU_BITS;
-
         // Trigger a one-shot measurement.
-        i2c.write(address, &[Register::Ctrl as u8, ctrl])
+        let ctrl = Ctrl::BDU | Ctrl::IF_ADD_INC | Ctrl::ONE_SHOT;
+        i2c.write(address, &[Ctrl::ADDR, ctrl.into()])
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 
         // Wait for the measurement.
         loop {
             let mut buf = [0u8];
-            i2c.write_read(address, &[Register::Status as u8], &mut buf)
+            i2c.write_read(address, &[Status::ADDR], &mut buf)
                 .await
                 .map_err(|_| ReadingError::SensorAccess)?;
 
             // Not BUSY anymore.
-            if buf[0] & crate::BUSY_BITS == 0 {
+            if buf[0] & u8::from(Status::BUSY) == 0 {
                 break;
             }
 
@@ -169,7 +161,7 @@ impl<I2C: I2c + Send> Stts22h<I2C> {
 
         // Reads both temperature bytes thanks to IF_ADD_INC.
         let mut buf = [0u8; 2];
-        i2c.write_read(address, &[Register::TempLOut as u8], &mut buf)
+        i2c.write_read(address, &[TempLOut::ADDR], &mut buf)
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 
@@ -286,8 +278,8 @@ mod tests {
         ) -> Result<(), Self::Error> {
             match operations {
                 [Operation::Write(wbuf), Operation::Read(rbuf)] => match wbuf[0] {
-                    addr if addr == Register::Status as u8 => {}
-                    addr if addr == Register::TempLOut as u8 => {
+                    addr if addr == Status::ADDR => {}
+                    addr if addr == TempLOut::ADDR => {
                         // Provide different samples for consecutive readings.
                         let sample: i32 = match self.reading_count {
                             0 => 2500,
