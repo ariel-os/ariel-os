@@ -235,6 +235,7 @@ contexts:
       - has_hwrng
     env:
       CHIP_NVM_PAGE_SIZE_BYTES: "1024"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: nrf51822-xxaa
     parent: nrf51
