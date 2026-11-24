@@ -18,10 +18,11 @@ const PART_NUMBER: &str = "LPS22DF";
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum Register {
     WhoAmI = 0x0f,
-    CtrlReg2 = 0x11,
+    CtrlReg1,
+    CtrlReg2,
     RpdsL = 0x1a,
     Status = 0x27,
-    PressOutXl = 0x28,
+    PressOutXl,
 }
 
 u8_register!(CtrlReg2 {
