@@ -43,7 +43,7 @@ Configuration is applied to the whole bus, and it is not currently possible to u
 
 ### Leveraging the Structured Board Descriptions
 
-Instead of relying on the I2C pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book], if the board is supported in-tree.
+Instead of relying on the I2C pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book].
 In that case, the driver for the I2C bus can be instantiated as follows:
 
 ```rust

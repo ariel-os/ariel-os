@@ -42,7 +42,7 @@ The buffers should be sized depending on how long it may take for the applicatio
 
 ### Leveraging the Structured Board Descriptions
 
-Instead of relying on the UART pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book], if the board is supported in-tree.
+Instead of relying on the UART pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book].
 In that case, the driver for the UART can be instantiated as follows:
 
 ```rust
