@@ -57,7 +57,7 @@ jobs:
             const commitId = process.env.COMMIT_ID;
             console.log(`Commit ID: ${commitId}`);
             const { data: { items } } = await github.rest.search.issuesAndPullRequests({
-              q: `${commitId} type:pr`,
+              q: `${commitId} type:pr repo:ariel-os/ariel-os`,
             });
             console.log(`Number of PRs containing commit ${commitId}: ${items.length}`);
             // Find a PR where that commit is the tip of the PR's branch.
