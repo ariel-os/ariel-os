@@ -49,6 +49,17 @@ cfg_select! {
         compile_error!("no runtime is defined for this MCU family");
     }
     _ => {
+        // Dummy module for clippy.
+        #[allow(missing_docs)]
+        pub mod memory {
+            pub mod sections {
+                use core::ops::Range;
+                pub const ACTIVE: Range<u32> = 0..10;
+                pub const DFU: Range<u32> = 0..10;
+                pub const BOOTLOADER_STATE: Range<u32> = 0..10;
+            }
+        }
+
         // Provide a default implementation, for arch-independent tooling
         #[cfg_attr(not(context = "ariel-os"), allow(dead_code))]
         mod arch {
@@ -62,6 +73,10 @@ cfg_select! {
             pub fn stack() -> Stack {
                 Stack::default()
             }
+
+            #[doc(hidden)]
+            #[allow(dead_code, reason = "conditional compilation")]
+            pub fn jump_to_application(_start: u32) {}
         }
     }
 }
@@ -218,3 +233,7 @@ fn embedded_test_thread() {
     // TODO: make stack size configurable
     unsafe { embedded_test::export::__embedded_test_entry() }
 }
+
+#[cfg(feature = "embassy-boot-loader")]
+#[doc(hidden)]
+pub use arch::jump_to_application;

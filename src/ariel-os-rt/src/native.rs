@@ -27,3 +27,9 @@ pub(crate) fn stack() -> crate::stack::Stack {
 pub(crate) fn sp() -> usize {
     0
 }
+
+#[doc(hidden)]
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn jump_to_application(_start: u32) {
+    unimplemented!()
+}
