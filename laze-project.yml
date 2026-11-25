@@ -2099,7 +2099,7 @@ modules:
   - name: coap-server-resource-identity
     help:
       Configure the CoAP server to provide an `/id` resource.
-    depends:
+    selects:
       - coap
     env:
       global:
