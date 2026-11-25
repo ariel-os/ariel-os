@@ -88,6 +88,15 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_scl: PB8,
 });
 
+// I2C2 on the Arduino connector (D14/D15).
+#[cfg(context = "stm32wl55jc")]
+pub type SensorI2c = i2c::controller::I2C2;
+#[cfg(context = "stm32wl55jc")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_sda: PA11,
+    i2c_scl: PA12,
+});
+
 #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
 pub type SensorI2c = i2c::controller::I2C1;
 #[cfg(any(context = "stm32u073kc", context = "stm32u083mc"))]
