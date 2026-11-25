@@ -81,16 +81,17 @@ jobs:
         run: echo "toolchain=$(scripts/rust-toolchain.sh)" >> $GITHUB_OUTPUT
 
       # Clippy linting is better done with the nightly set of lints.
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
-        with:
-          toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
-          # Required for checking ariel-os-esp and ariel-os-nrf
-          targets: riscv32imac-unknown-none-elf, thumbv7em-none-eabi, thumbv8m.main-none-eabihf
-          components: clippy, rustfmt, llvm-tools
+      - parallel:
+        - name: Install toolchain
+          uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+          with:
+            toolchain: ${{ steps.get_toolchain.outputs.toolchain }}
+            # Required for checking ariel-os-esp and ariel-os-nrf
+            targets: riscv32imac-unknown-none-elf, thumbv7em-none-eabi, thumbv8m.main-none-eabihf
+            components: clippy, rustfmt, llvm-tools
 
-      - name: Install prerequisites
-        run: sudo apt-get install gcc-arm-none-eabi
+        - name: Install prerequisites
+          run: sudo apt-get install gcc-arm-none-eabi
 
       - name: rust cache
         uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
@@ -116,124 +117,124 @@ jobs:
       # TODO: we'll eventually want to check the whole workspace with --workspace
       # TODO: we'll eventually want to check relevant feature combinations
       # TODO: we may want to use --no-deps as well
-      - parallel:
-        - name: clippy
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              --features "
-                  ariel-os-sensors/max-sample-min-count-12,
-                  ble,
-                  coap,
-                  coap-transport-udp,
-                  csprng,
-                  defmt,
-                  dns,
-                  external-interrupts,
-                  hwrng,
-                  i2c,
-                  mdns,
-                  multicast,
-                  net,
-                  no-boards,
-                  sensors,
-                  spi,
-                  storage,
-                  tcp,
-                  uart,
-                  udp,
-                  usb,
-                  usb-ethernet,
-                  "
-              -p ariel-os
-              -p ariel-os-alloc
-              -p ariel-os-boards
-              -p ariel-os-coap
-              -p ariel-os-debug
-              -p ariel-os-embassy
-              -p ariel-os-embassy-common
-              -p ariel-os-hal
-              -p ariel-os-identity
-              -p ariel-os-log
-              -p ariel-os-macros
-              -p ariel-os-native
-              -p ariel-os-power
-              -p ariel-os-random
-              -p ariel-os-rt
-              -p ariel-os-sensors
-              -p ariel-os-sensors-gnss-time-ext
-              -p ariel-os-sensors-registry
-              -p ariel-os-sensors-utils
-              -p ariel-os-storage
-              -p ariel-os-threads
-              -p ariel-os-utils
-              -p ariel-os-update-transports
-              --
-              --deny warnings
-
-        - name: lint with Clippy when using the `log` logging facade
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              --features "
-                log,
-                no-boards,
-              "
-              -p ariel-os
-              -p ariel-os-debug
-              --
-              --deny warnings
-
-        - name: clippy
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              -p coapcore
-              --
-              --deny warnings
-
-        # Lint sensor drivers.
-        - name: Clippy on sensor drivers
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              -p ariel-os-sensor-aht20
-              -p ariel-os-sensor-lis2du12
-              -p ariel-os-sensor-lps22df
-              -p ariel-os-sensor-stts22h
-              --
-              --deny warnings
-
-        - name: Clippy on nrf91 sensor drivers
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              -p ariel-os-sensor-nrf91-gnss
-              --features "
-                ariel-os-log/log,
-                nrf-modem/nrf9160
-                "
-              --
-              --deny warnings
-
-        - name: Clippy on ariel-os-update-transports
-          uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
-          with:
-            args: |
-              --locked
-              -p ariel-os-update-transports
-              --features "
-                http,
+      # - parallel:
+      - name: clippy
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            --features "
+                ariel-os-sensors/max-sample-min-count-12,
+                ble,
+                coap,
+                coap-transport-udp,
+                csprng,
                 defmt,
-                ariel-os-log/defmt,
+                dns,
+                external-interrupts,
+                hwrng,
+                i2c,
+                mdns,
+                multicast,
+                net,
+                no-boards,
+                sensors,
+                spi,
+                storage,
+                tcp,
+                uart,
+                udp,
+                usb,
+                usb-ethernet,
                 "
-              --
-              --deny warnings
+            -p ariel-os
+            -p ariel-os-alloc
+            -p ariel-os-boards
+            -p ariel-os-coap
+            -p ariel-os-debug
+            -p ariel-os-embassy
+            -p ariel-os-embassy-common
+            -p ariel-os-hal
+            -p ariel-os-identity
+            -p ariel-os-log
+            -p ariel-os-macros
+            -p ariel-os-native
+            -p ariel-os-power
+            -p ariel-os-random
+            -p ariel-os-rt
+            -p ariel-os-sensors
+            -p ariel-os-sensors-gnss-time-ext
+            -p ariel-os-sensors-registry
+            -p ariel-os-sensors-utils
+            -p ariel-os-storage
+            -p ariel-os-threads
+            -p ariel-os-utils
+            -p ariel-os-update-transports
+            --
+            --deny warnings
+
+      - name: lint with Clippy when using the `log` logging facade
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            --features "
+              log,
+              no-boards,
+            "
+            -p ariel-os
+            -p ariel-os-debug
+            --
+            --deny warnings
+
+      - name: clippy
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            -p coapcore
+            --
+            --deny warnings
+
+      # Lint sensor drivers.
+      - name: Clippy on sensor drivers
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            -p ariel-os-sensor-aht20
+            -p ariel-os-sensor-lis2du12
+            -p ariel-os-sensor-lps22df
+            -p ariel-os-sensor-stts22h
+            --
+            --deny warnings
+
+      - name: Clippy on nrf91 sensor drivers
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            -p ariel-os-sensor-nrf91-gnss
+            --features "
+              ariel-os-log/log,
+              nrf-modem/nrf9160
+              "
+            --
+            --deny warnings
+
+      - name: Clippy on ariel-os-update-transports
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            -p ariel-os-update-transports
+            --features "
+              http,
+              defmt,
+              ariel-os-log/defmt,
+              "
+            --
+            --deny warnings
       - run: echo 'RUSTFLAGS=--cfg context="esp32c6" --cfg getrandom_backend="custom"' >> $GITHUB_ENV
       - name: clippy for ESP32
         uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
