@@ -14,7 +14,7 @@ eg. `/.well-known/core` for discovery or `/.well-known/edhoc` for establishing s
 
 The handler needs to concern itself with security aspects of the request content
 (eg. file format parsers should treat incoming data as possibly malformed),
-but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
+but the decision whether or not a request is allowed is delegated to an [access policy](./security.md#server-access-policy).
 
 [provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
 [its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
