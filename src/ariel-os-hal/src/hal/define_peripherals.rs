@@ -410,6 +410,12 @@ macro_rules! define_button {
             }
         }
 
+        impl From<$name> for $crate::hal::button::Button {
+            fn from(button: $name) -> Self {
+                button.inner
+            }
+        }
+
         impl $name {
             $crate::impl_button_inner!(inner);
         }
@@ -563,6 +569,11 @@ macro_rules! define_led {
             }
         }
 
+        impl From<$name> for $crate::hal::led::Led {
+            fn from(led: $name) -> Self {
+                led.$color
+            }
+        }
 
         impl $name {
             $crate::impl_led_inner!($color);
