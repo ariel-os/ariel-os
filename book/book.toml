@@ -25,3 +25,4 @@ level = 0
 "/getting_started.html" = "getting-started.html"
 "/hardware_functionality_support.html" = "hardware-functionality-support.html"
 "/vscode-configuration.html" = "code-editor-configuration.html"
+"/tooling/coap.html" = "../coap/index.html"
