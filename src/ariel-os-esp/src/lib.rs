@@ -85,7 +85,7 @@ impl<T> IntoPeripheral<'_, T> for T {
 #[doc(hidden)]
 #[must_use]
 pub fn init() -> OptionalPeripherals {
-    let config = esp_hal::Config::default().with_cpu_clock(esp_hal::clock::CpuClock::max());
+    let config = esp_hal::Config::default().with_cpu_clock(esp_hal::clock::CpuClock::_80MHz);
 
     #[allow(unused_mut, reason = "mut only needed for some features")]
     let mut peripherals = OptionalPeripherals::from(esp_hal::init(config));
