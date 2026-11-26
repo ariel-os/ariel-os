@@ -1,0 +1,213 @@
+# Securing CoAP
+
+The CoAP stack is configured with server and client policies.
+The security mechanisms used depend on those selected in the policies.
+
+At this stage, Ariel OS uses three pieces of security components:
+OSCORE (for symmetric encryption), EDHOC (for key exchange) and ACE (for authentication).
+
+OSCORE/EDHOC/ACE were chosen first because they scale down
+well to the smallest devices, and because they
+all have in common that they sit naturally on top of CoAP:
+Their communication consists of CoAP requests and responses.
+Thus, they work homogeneously across all CoAP transports,
+and provide end-to-end security across untrusted proxies.
+
+Alternatives are possible (for instance DTLS, TLS, IPsec or link-layer encryption)
+but are currently not implemented in Ariel OS.
+
+## Server access policy
+
+A policy is configured for the whole server depending on the desired security mechanisms.
+Examples of described policy entries are:
+
+* This is a fixed public key, and requests authenticated with that key are allowed to GET and PUT to `/limit`.
+* The device has a shared secret from its authorization server, with which the authorization server secures the tokens it issues to clients. Clients may perform any action as long as they securely present a token that allows it. For example, a token may allow GET on `/limit` and PUT on `/led/0`.
+* Any (even unauthenticated) device may GET `/hello/`.
+
+In Ariel OS, the policies are selected through [laze modules][laze-modules-book]:
+* `coap-server-config-demokeys` selects a set of hard-coded identities and policies usable for examples.
+* `coap-server-config-unprotected` allows access from any client without any authentication or integrity protection.
+* `coap-server-config-storage` reads configuration of the application, currently in a `peers.yml` file ([example](https://github.com/ariel-os/ariel-os/blob/main/tests/coap/peers.yml)).
+  CoAP clients described in there are assigned permissions as described there; the file format is currently only documented in the example file, and still in flux.
+  The device generates an EDHOC key at first startup, [stores it locally](../storage.md), and reports its public credential at startup.
+
+The list of supported policies is being extended.
+
+
+### Outlook: Interacting with an Ariel OS CoAP server from the host
+
+*This section is currently not implemented.*
+
+A convenient policy (which is the default of Ariel OS's examples)
+is to grant the user who flashes the device all access on it.
+When that policy is enabled in the build system,
+an unencrypted key is created in the developer's [state home directory]<!-- precise location TBD -->,
+from where it can be picked up by tools such as [aiocoap-client].
+
+Furthermore,
+when a CoAP server is provisioned through the Ariel OS build system,
+public keys and their device associations are stored
+in the developer's state home directory.
+
+Together, these files act in a similar way as the classic UNIX files `~/.netrc` and `~/.ssh/id_rsa{,.pub}`.
+They can also double as templates for an application akin to `ssh-copy-id`
+in that they enable a server policy like
+"any device previously flashed on this machine may GET all resources".
+
+[aiocoap-client]: https://aiocoap.readthedocs.io/en/latest/tools.html
+[state home directory]: https://specifications.freedesktop.org/basedir-spec/latest/
+
+## Client policies
+
+The policy for outgoing requests can be defined globally or per request.
+
+Examples of policies that can be available are
+  "expect the server to present some concrete public key, use this secret key once the server is verified",
+  "use a token for this audience and scope obtained from that authentication server",
+  "expect the server to present a chain of certificates for its hostname down to a set of root certificates" (which is the default for web browsers),
+  "establish an encrypted connection and trust the peer's key on first use",
+  down to "do not use any encryption".
+
+*Currently*, the only available client security policy is "use an insecure request".
+
+## Available security mechanisms
+
+These components are optional, but enabled as needed by the policy —
+only with the "unprotected" policy, none of them are built
+(which may make sense on a link layer with tight access control).
+The components also have internal dependencies:
+EDHOC can only practically be used in combination with OSCORE;
+ACE comes with profiles with individual dependencies
+(eg. using the ACE-EDHOC profile requires EDHOC).
+
+*Currently*, while all the mechanisms described here are implemented in Ariel OS,
+only EDHOC can be set up through the policy features.
+
+### Symmetric encryption: OSCORE
+
+OSCORE ([RFC8613]) provides symmetric encryption for CoAP requests:
+It allows clients to phrase their CoAP request,
+encrypts the parts that a proxy does not need to be aware of[^parts]
+and sends on the ciphertext in a CoAP request.
+The server can decrypt the request,
+process it like any other request (but with the access policy evaluated according to the key's properties),
+and its response gets encrypted likewise.
+
+Working with symmetric keys requires a lot of care and effort managing keys:
+assigning the same key twice can have catastrophic consequences,
+and even recovering from an unplanned reboot is by far not trivial.
+
+Ariel OS does not offer direct access to OSCORE for those reasons,
+and uses OSCORE's companion mechanisms to set up keys.
+
+Policies are not described in terms of OSCORE keys.
+
+[RFC8613]: https://datatracker.ietf.org/doc/html/rfc8613
+[^parts]: Most of the message is encrypted.
+  Noteworthy unencrypted parts are the hostname the request is sent to,
+  the parts that link a response to a request,
+  and housekeeping details such as whether a request is for an observation and thus needs to be kept alive longer.
+
+### Key establishment: EDHOC
+
+EDHOC ([RFC9528]) is a key establishment protocol
+that uses asymmetric keys to obtain mutual authentication and forward secrecy.
+In particular, two CoAP devices can run EDHOC over CoAP to obtain key material for OSCORE,
+which can then be used for fast communication.
+
+Unless ACE (or, later, certificate chains) are used,
+the main use of EDHOC in Ariel OS is with raw public keys:
+Devices (including the host machine) generate a private key,
+make the corresponding public key known,
+and then send the public key (or its short ID) along with EDHOC messages to be identified by that public key.
+This is similar to how SSH keys are commonly used.
+
+Policies described in terms of EDHOC keys include the public key of the peer,
+which private key to use,
+whether our public key needs to be sent as a full public key or can be sent by key ID,
+and what the peer is authorized to do.
+
+[RFC9528]: https://datatracker.ietf.org/doc/html/rfc9528
+
+### Authorization: ACE
+
+The ACE framework ([RFC9200]) describes how a trusted service (the Authorization Server, "AS")
+can facilitate secure connections between devices that are not explicitly configured to be used together.
+It frequently issues CWTs (CBOR Web Tokens) that are to JWTs (JSON Web Tokens) as CoAP is to HTTP.
+
+The general theme of it is that
+a client that wants to access some resource on a server under the AS's control
+first asks the AS for an access token,
+and then presents that token to the server (called Resource Server / RS in that context).
+
+Clients know the AS by having means to establish some secure connection with it,
+eg. through EDHOC.
+Resource Servers know the AS by verifying the tokens they receive from the AS,
+eg. by having a shared secret with the AS or knowing its signing key.
+
+Details of the process are specified in ACE profiles;
+apart from those listed here, popular profiles include the DTLS profile and the profiles for group communication.
+
+[RFC9200]: https://datatracker.ietf.org/doc/html/rfc9200
+
+#### ACE-OSCORE profile
+
+With the ACE-OSCORE profile ([RFC9203]),
+the AS provides a random OSCORE key in the token (which is encrypted for the RS),
+and sends the token along with the same OSCORE key through its secure connection to the client.
+Before the client can send OSCORE requests,
+it POSTs the token to the server over an unprotected connection
+(the token itself is encrypted),
+along with a random number and some housekeeping data
+that go into the establishment of an OSCORE context.
+
+The [documentation of the CoAP/ACE-OAuth PoC project] describes the whole setup in more detail.
+
+[documentation of the CoAP/ACE-OAuth PoC project]: https://gitlab.com/oscore/coap-ace-poc-overview
+
+[RFC9203]: https://datatracker.ietf.org/doc/html/rfc9203
+
+#### ACE-EDHOC profile
+
+The ACE-EDHOC profile is [under development in the ACE working group].
+
+It differs from the ACE-OSCORE profile
+in that the AS does not provide symmetric key material
+but only points out the respective peer's public keys.
+
+The token may be signed or symmetrically encrypted.
+It is sent to the server as part of the EDHOC exchange,
+after the client has authenticated the server.
+
+[under development in the ACE working group]: https://datatracker.ietf.org/doc/draft-ietf-ace-edhoc-oscore-profile/
+
+#### Outlook: Using ACE from the host during development
+
+*This section is currently not implemented.*
+
+While full operation of ACE requires having an AS as part of the network,
+CoAP servers running on Ariel OS can be used in the ACE framework without a live server.
+
+Similar to how an EDHOC key is created on demand on the host,
+an AS's list of Resource Servers is maintained by default.
+Tools at the host can then use the locally stored key to create tokens that grant fine-grained permissions on the Ariel OS device.
+
+With the [New ACE Workflow developed in ACE],
+such tokens can also be provisioned into Resource Servers on behalf of clients that are being provisioned.
+Thus,
+the offline AS can enable deployed Ariel OS based CoAP servers
+to accept requests from newly created Ariel OS based CoAP clients
+without the need for the CoAP client to create a network connection to the host.
+(Instead, the host needs to find the Resource Server over the network).
+
+> [!NOTE]
+> Some more exploration of this workflow will be necessary
+> as to how the client can trigger the AS to re-install (or renew) its token
+> in case the Resource Server retired the token before its expiration.
+> For Ariel OS internal use,
+> AS-provisioned tokens might just be retained longer.
+
+[New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
+
+[laze-modules-book]: ../build-system.md#laze-modules
