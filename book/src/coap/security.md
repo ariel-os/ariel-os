@@ -1,82 +1,4 @@
-# CoAP
-
-[CoAP] is an **application layer protocol similar to HTTP** in its use
-(eg. you could POST data onto a resource on a server that is identified by a URL)
-but geared towards IoT devices in its format and its security mechanisms.
-
-CoAP provides a versatile set of transports
-(with IETF Proposed Standards for running [over UDP] including multicast, [over TCP and WebSockets],
-other standards for running [over SMS and NB-IoT], and more in development).
-It relies on proxies to span across transports and to accommodate the characteristics of particular networks,
-and offers features exceeding the classical REST set such as [observation].
-
-**Ariel OS supports** the use of CoAP
-for implementing clients, servers or both in a single device.
-As part of our mission for strong security,
-we use encrypted CoAP traffic by default as explained below.
-*Currently*, Ariel OS supports CoAP on its original UDP transport.
-Its CoAP server implementation supports several security mechanisms,
-whereas client support is not mature yet, and lacks security support.
-
-[CoAP]: https://coap.space/
-[over UDP]: https://datatracker.ietf.org/doc/html/rfc7252
-[over TCP and WebSockets]: https://datatracker.ietf.org/doc/html/rfc8323
-[over SMS and NB-IoT]: https://www.omaspecworks.org/wp-content/uploads/2018/10/Whitepaper-11.1.18.pdf
-[observation]: https://datatracker.ietf.org/doc/html/rfc7641
-
-## Usage: Server side
-
-An example of a CoAP server is [provided as `examples/coap-server`], see [its `coap_run()` task] for the practical steps.
-This requires selecting the `coap-server` [laze module][laze-modules-book], and on top of the user's handlers, it runs any operating-system-provided CoAP handlers
-(which would be started in an independent task if `coap-server` was not selected).
-
-A CoAP server is created by assembling several **resource handlers on dedicated paths**:
-There might be a path `/s/0` representing a particular sensor,
-and a path `/fwup` for interacting with firmware updates.
-The CoAP implementation can put additional resources at well-known locations,
-eg. `/.well-known/core` for discovery or `/.well-known/edhoc` for establishing secure connections.
-
-The handler needs to concern itself with security aspects of the request content
-(eg. file format parsers should treat incoming data as possibly malformed),
-but the decision whether or not a request is allowed is delegated to an [access policy](#server-access-policy).
-
-[provided as `examples/coap-server`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-server
-[its `coap_run()` task]: https://github.com/ariel-os/ariel-os/blob/a5483e1cef1bba9b345719ed7e785d7013b8cf73/examples/coap-server/src/main.rs#L20
-
-
-## Usage: Client side
-
-The example [provided as `examples/coap-client`], which sends a single POST request.
-It requires selecting the `coap-client` [laze module][laze-modules-book].
-
-A program that triggers a CoAP request provides[^whatsinarequest] some components to the CoAP stack before phrasing the actual request:
-
-* A **URL describing the resource**, eg. `coap://coap.summit.riot-os.org/agenda` or `coap+tcp://[2001:db8::1]/.well-known/core`.
-
-  Note that while the address is printed here as a text URL
-  (and may even be entered as such in code),
-  its memory and transmitted representations are binary components.
-
-* Optionally, directions regarding how to reach or find the host.
-
-  This is not needed when there are IP literals involved, or DNS is available to resolve names.
-  Directions may be available if the application discovered a usable proxy,
-  or when it is desired to use opt-in discovery mechanisms such as multicast.
-
-* A policy reference on how to authenticate the server, and which identity to present.
-  This is optional if there is a global policy,
-  or if there is an implied security mechanism for the URL.
-
-
-[^whatsinarequest]: The components required for a request are not documented as such in the CoAP RFCs,
-    but it is the author's opinion that they are a factual requirement:
-    Implementations may implicitly make decisions on those,
-    but the decisions are still made.
-    At the time of writing, there [is an open issue](https://github.com/core-wg/corrclar/issues/41) to clarify this in the specifications.
-
-[provided as `examples/coap-client`]: https://github.com/ariel-os/ariel-os/tree/main/examples/coap-client
-
-## Security
+# Securing CoAP
 
 The CoAP stack is configured with server and client policies.
 The security mechanisms used depend on those selected in the policies.
@@ -94,7 +16,7 @@ and provide end-to-end security across untrusted proxies.
 Alternatives are possible (for instance DTLS, TLS, IPsec or link-layer encryption)
 but are currently not implemented in Ariel OS.
 
-### Server access policy
+## Server access policy
 
 A policy is configured for the whole server depending on the desired security mechanisms.
 Examples of described policy entries are:
@@ -113,7 +35,7 @@ In Ariel OS, the policies are selected through [laze modules][laze-modules-book]
 The list of supported policies is being extended.
 
 
-#### Outlook: Interacting with an Ariel OS CoAP server from the host
+### Outlook: Interacting with an Ariel OS CoAP server from the host
 
 *This section is currently not implemented.*
 
@@ -136,7 +58,7 @@ in that they enable a server policy like
 [aiocoap-client]: https://aiocoap.readthedocs.io/en/latest/tools.html
 [state home directory]: https://specifications.freedesktop.org/basedir-spec/latest/
 
-### Client policies
+## Client policies
 
 The policy for outgoing requests can be defined globally or per request.
 
@@ -149,7 +71,7 @@ Examples of policies that can be available are
 
 *Currently*, the only available client security policy is "use an insecure request".
 
-### Available security mechanisms
+## Available security mechanisms
 
 These components are optional, but enabled as needed by the policy —
 only with the "unprotected" policy, none of them are built
@@ -162,7 +84,7 @@ ACE comes with profiles with individual dependencies
 *Currently*, while all the mechanisms described here are implemented in Ariel OS,
 only EDHOC can be set up through the policy features.
 
-#### Symmetric encryption: OSCORE
+### Symmetric encryption: OSCORE
 
 OSCORE ([RFC8613]) provides symmetric encryption for CoAP requests:
 It allows clients to phrase their CoAP request,
@@ -187,7 +109,7 @@ Policies are not described in terms of OSCORE keys.
   the parts that link a response to a request,
   and housekeeping details such as whether a request is for an observation and thus needs to be kept alive longer.
 
-#### Key establishment: EDHOC
+### Key establishment: EDHOC
 
 EDHOC ([RFC9528]) is a key establishment protocol
 that uses asymmetric keys to obtain mutual authentication and forward secrecy.
@@ -208,7 +130,7 @@ and what the peer is authorized to do.
 
 [RFC9528]: https://datatracker.ietf.org/doc/html/rfc9528
 
-#### Authorization: ACE
+### Authorization: ACE
 
 The ACE framework ([RFC9200]) describes how a trusted service (the Authorization Server, "AS")
 can facilitate secure connections between devices that are not explicitly configured to be used together.
@@ -229,7 +151,7 @@ apart from those listed here, popular profiles include the DTLS profile and the 
 
 [RFC9200]: https://datatracker.ietf.org/doc/html/rfc9200
 
-##### ACE-OSCORE profile
+#### ACE-OSCORE profile
 
 With the ACE-OSCORE profile ([RFC9203]),
 the AS provides a random OSCORE key in the token (which is encrypted for the RS),
@@ -246,7 +168,7 @@ The [documentation of the CoAP/ACE-OAuth PoC project] describes the whole setup 
 
 [RFC9203]: https://datatracker.ietf.org/doc/html/rfc9203
 
-##### ACE-EDHOC profile
+#### ACE-EDHOC profile
 
 The ACE-EDHOC profile is [under development in the ACE working group].
 
@@ -260,7 +182,7 @@ after the client has authenticated the server.
 
 [under development in the ACE working group]: https://datatracker.ietf.org/doc/draft-ietf-ace-edhoc-oscore-profile/
 
-##### Outlook: Using ACE from the host during development
+#### Outlook: Using ACE from the host during development
 
 *This section is currently not implemented.*
 
@@ -289,65 +211,3 @@ without the need for the CoAP client to create a network connection to the host.
 [New ACE Workflow developed in ACE]: https://www.ietf.org/archive/id/draft-ietf-ace-workflow-and-params-00.html#name-new-ace-workflow
 
 [laze-modules-book]: ../build-system.md#laze-modules
-
-## Provided resources
-
-For CoAP servers, Ariel OS can provide the following resources:
-
-* `/.well-known/core`: Provided for all servers;
-  lists other resources in a format described by [RFC 6690](https://www.rfc-editor.org/info/rfc6690/)
-* `/.well-known/edhoc`: Entry point for EDHOC.
-  Provided if EDHOC is enabled.
-* `/authz-info`: Entry point for the ACE OSCORE profile.
-  Provided if token parsing is enabled.
-* `/id`: Build and device information.
-  This is provided when the [laze module][laze-modules-book] `coap-server-resource-identity` is enabled.
-  Its representation is a CBOR map with tag 3050242967, indexed with integers that provide the following items as they are currently available:
-  - 1: Operating system name
-  - 6: Board name
-  - 8: Device identity
-
-  The full format is specified by this [CDDL](https://www.rfc-editor.org/info/rfc8610/):
-
-  ```
-  description = #6.3050242967({
-    ? os-name => tstr,
-    ? os-version => version,
-    ? app-name => tstr,
-    ? app-version => version,
-    ? source-hash => hash,
-    ? board-name => tstr,
-    ? build-hash => hash,
-    ? device-id => device-id-value,
-
-    * extension => any,
-  })
-
-  ; Versions can be structured into sortable parts, but are
-  ; generally free-form depending on the OS or version.
-  version = [+ (tstr / hash / int)] / any
-
-  ; Precise hashes (semantics and length) depend on the underlying
-  ; build or versioning system, but are usually shown in hex.
-  hash = bstr
-
-  ; Structure depends on the OS; Ariel OS uses byte strings.
-  device-id-value = any
-
-  ; Consumers should ignore any key/value pairs that are only
-  ; processable through the "extended" feature (eg. added keys or
-  ; unknown value types).
-  extension = any .feature "extended"
-
-  os-name = 1
-  os-version = 2
-  app-name = 3
-  app-version = 4
-  source-hash = 5
-  board-name = 6
-  build-hash = 7
-  device-id = 8
-  ```
-
-  *Privacy considerations:* The device identity is a stable identifier, and as such may allow tracking a user across networks.
-  Like all other resources that are not part of establishing secure connections, it only available to authorized users, unless the "unprotected" mode is selected.
