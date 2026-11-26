@@ -147,7 +147,7 @@
 - [CoAP](./coap/index.md)
   - [Using CoAP](./coap/usage.md)
   - [Securing CoAP](./coap/security.md)
-  - [CoAP resources provided by ArielOS](./coap/resources.md)
+  - [CoAP Resources Provided by Ariel OS](./coap/resources.md)
 - [Ethernet](./ethernet.md)
 - [USB](./usb.md)
 - [Bluetooth Low Energy](./bluetooth.md)

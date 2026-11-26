@@ -1,4 +1,4 @@
-# CoAP resources provided by ArielOS
+# CoAP Resources Provided by Ariel OS
 
 For CoAP servers, Ariel OS can provide several resources,
 either as part of being a (secured) CoAP server,
