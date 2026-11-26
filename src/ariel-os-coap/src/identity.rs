@@ -34,7 +34,7 @@ impl minicbor::Encode<()> for Identity {
             .str(ariel_os_buildinfo::OS_NAME)?
             .u8(3)?
             .str(env!("CONFIG_APPLICATION"))?
-            .u8(5)?
+            .u8(6)?
             .str(ariel_os_buildinfo::BOARD)?;
 
         if let Ok(identity) = identity {
