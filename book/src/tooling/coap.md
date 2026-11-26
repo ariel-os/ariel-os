@@ -350,4 +350,4 @@ For CoAP servers, Ariel OS can provide the following resources:
   ```
 
   *Privacy considerations:* The device identity is a stable identifier, and as such may allow tracking a user across networks.
-  Like all other resources that are not part of establishing secure connections, it only available to authorized users, unless the "unprotected" mode is selected.
+  Like all other resources that are not part of establishing secure connections, it is only available to authorized users, unless the "unprotected" mode is selected.
