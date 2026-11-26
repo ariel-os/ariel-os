@@ -24,7 +24,7 @@ use embassy_stm32::{
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(24);
 #[cfg(any(context = "stm32f303cb", context = "stm32f303re"))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(18);
-#[cfg(context = "stm32f401re")]
+#[cfg(any(context = "stm32f401re", context = "stm32f401rc"))]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(21);
 #[cfg(context = "stm32f411re")]
 const MAX_FREQUENCY: Kilohertz = Kilohertz::MHz(25);
@@ -196,7 +196,7 @@ define_spi_drivers!(
    SPI3 => SPI3,
    // TODO: the MCU has a fourth SPI peripheral, but it does not seem supported by Embassy.
 );
-#[cfg(context = "stm32f401re")]
+#[cfg(any(context = "stm32f401re", context = "stm32f401rc"))]
 define_spi_drivers!(
    SPI1 => SPI1,
    SPI2 => SPI2,
