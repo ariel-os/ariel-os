@@ -365,7 +365,7 @@ jobs:
 
       - name: rustdoc
         run: |
-            RUSTDOCFLAGS='-D warnings' cargo doc \
+            RUSTDOCFLAGS='-D warnings -Z unstable-options --show-type-layout' cargo doc \
                 --no-deps \
                 -p ariel-os \
                 -p ariel-os-sensors \
@@ -405,7 +405,7 @@ jobs:
 
       - name: rustdoc for ESP32
         run: |
-            RUSTDOCFLAGS='-D warnings --cfg context="esp32c6"' cargo doc \
+            RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" -Z unstable-options --show-type-layout' cargo doc \
                 --no-deps \
                 --target=riscv32imac-unknown-none-elf \
                 --features "
@@ -420,7 +420,7 @@ jobs:
 
       - name: rustdoc for RP
         run: |
-            RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040"' \
+            RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" -Z unstable-options --show-type-layout' \
                 cargo doc \
                 --no-deps \
                 --features "
@@ -434,7 +434,7 @@ jobs:
 
       - name: rustdoc for nRF
         run: |
-            RUSTDOCFLAGS='-D warnings --cfg context="nrf52840"' cargo doc \
+            RUSTDOCFLAGS='-D warnings --cfg context="nrf52840" -Z unstable-options --show-type-layout' cargo doc \
                 --no-deps \
                 --features "
                     embassy-nrf/nrf52840,
@@ -447,7 +447,7 @@ jobs:
 
       - name: rustdoc for STM32
         run: |
-            RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg"' cargo doc \
+            RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" -Z unstable-options --show-type-layout' cargo doc \
                 --no-deps \
                 --features "
                     embassy-stm32/stm32wb55rg,

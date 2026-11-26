@@ -63,7 +63,7 @@ jobs:
       # faster generation.
       - name: Build rustdoc docs
         run: |
-          RUSTDOCFLAGS='--cfg nightly -Z unstable-options --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0 ' cargo doc \
+          RUSTDOCFLAGS='--cfg nightly -Z unstable-options --show-type-layout --extern-html-root-url trouble_host=https://docs.embassy.dev/trouble-host/0.5.0 ' cargo doc \
               --no-deps \
               -p ariel-os \
               -p ariel-os-sensors \
@@ -112,11 +112,11 @@ jobs:
 
           # These are split out so items from `ariel-os-sensors` are properly
           # resolved.
-          cargo doc --no-deps \
+          RUSTDOCFLAGS='-Z unstable-options --show-type-layout' cargo doc --no-deps \
             -p ariel-os-sensors-gnss-time-ext \
             -p ariel-os-sensors-utils
 
-          RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="esp32c6" --cfg nightly -Z unstable-options --show-type-layout' cargo doc \
               --target=riscv32imac-unknown-none-elf \
               --no-deps \
               --features "
@@ -128,7 +128,7 @@ jobs:
                   uart,
                   " \
               -p ariel-os-esp
-          RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" --cfg nightly' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="rp" --cfg context="rp2040" --cfg nightly -Z unstable-options --show-type-layout' cargo doc \
               --no-deps \
               --features "
                   embassy-rp/rp2040,
@@ -138,7 +138,7 @@ jobs:
                   uart,
                   " \
               -p ariel-os-rp
-          RUSTDOCFLAGS='-D warnings --cfg context="nrf52840" --cfg nightly' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="nrf52840" --cfg nightly -Z unstable-options --show-type-layout' cargo doc \
               --no-deps \
               --features "
                   embassy-nrf/nrf52840,
@@ -148,7 +148,7 @@ jobs:
                   uart,
                   " \
               -p ariel-os-nrf
-          RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" --cfg nightly' cargo doc \
+          RUSTDOCFLAGS='-D warnings --cfg context="stm32wb55rg" --cfg nightly -Z unstable-options --show-type-layout' cargo doc \
               --no-deps \
               --features "
                   embassy-stm32/stm32wb55rg,
