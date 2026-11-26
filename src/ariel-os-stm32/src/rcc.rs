@@ -118,6 +118,31 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_P;
     }
 
+    #[cfg(context = "blackpill-f411ce")]
+    {
+        use embassy_stm32::rcc::*;
+
+        rcc.hse = Some(Hse {
+            freq: embassy_stm32::time::Hertz(8_000_000),
+            mode: HseMode::Oscillator,
+        });
+
+        rcc.pll_src = PllSource::HSE;
+        rcc.pll = Some(Pll {
+            prediv: PllPreDiv::DIV8,
+            mul: PllMul::MUL192,
+            divp: Some(PllPDiv::DIV2),
+            divq: Some(PllQDiv::DIV4),
+            divr: None,
+        });
+
+        rcc.ahb_pre = AHBPrescaler::DIV1;
+        rcc.apb1_pre = APBPrescaler::DIV2;
+        rcc.apb2_pre = APBPrescaler::DIV1;
+
+        rcc.sys = Sysclk::PLL1_P;
+    }
+
     #[cfg(context = "st-nucleo-f767zi")]
     {
         use embassy_stm32::rcc::*;
