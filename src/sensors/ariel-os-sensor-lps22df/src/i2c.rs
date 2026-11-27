@@ -16,7 +16,7 @@ use embassy_time::Timer;
 use embedded_hal_async::i2c::I2c;
 use portable_atomic::{AtomicI16, AtomicU8, Ordering};
 
-use crate::{PART_NUMBER, Register, i32_from_i24_be_bytes};
+use crate::{CtrlReg2, PART_NUMBER, PressOutXl, RpdsL, Status, i32_from_i24_be_bytes};
 
 /// I2C address of the sensor device.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
@@ -101,7 +101,7 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
         let address = address as u8;
 
         i2c_device
-            .write(address, &[Register::CtrlReg2 as u8, crate::SWRESET_BITS])
+            .write(address, &[CtrlReg2::ADDR, CtrlReg2::SWRESET.into()])
             .await
             .map_err(|_| ())?;
 
@@ -110,7 +110,7 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
 
         let mut buf = [0u8; 2];
         i2c_device
-            .write_read(address, &[Register::RpdsL as u8], &mut buf)
+            .write_read(address, &[RpdsL::ADDR], &mut buf)
             .await
             .map_err(|_| ())?;
 
@@ -146,8 +146,8 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
         let address = self.address.load(Ordering::Acquire);
 
         // Trigger a one-shot measurement.
-        let ctrl = crate::BDU_BITS | crate::ONESHOT_BITS;
-        i2c.write(address, &[Register::CtrlReg2 as u8, ctrl])
+        let ctrl = CtrlReg2::BDU | CtrlReg2::ONESHOT;
+        i2c.write(address, &[CtrlReg2::ADDR, ctrl.into()])
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 
@@ -157,12 +157,12 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
             Timer::after_micros(1500).await;
 
             let mut buf = [0u8];
-            i2c.write_read(address, &[Register::Status as u8], &mut buf)
+            i2c.write_read(address, &[Status::ADDR], &mut buf)
                 .await
                 .map_err(|_| ReadingError::SensorAccess)?;
 
             // New data available.
-            let mask = crate::T_DA_BITS | crate::P_DA_BITS;
+            let mask = u8::from(Status::T_DA | Status::P_DA);
             if buf[0] & mask == mask {
                 break;
             }
@@ -170,7 +170,7 @@ impl<I2C: I2c + Send> Lps22df<I2C> {
 
         // Requires `IF_ADD_INC` to be set (which is the default).
         let mut buf = [0u8; 5];
-        i2c.write_read(address, &[Register::PressOutXl as u8], &mut buf)
+        i2c.write_read(address, &[PressOutXl::ADDR], &mut buf)
             .await
             .map_err(|_| ReadingError::SensorAccess)?;
 

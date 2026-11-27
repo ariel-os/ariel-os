@@ -10,6 +10,7 @@
 pub mod i2c;
 
 use ariel_os_sensors::sensor::SampleMetadata;
+use ariel_os_sensors_utils::u8_register;
 
 const PART_NUMBER: &str = "LPS22DF";
 
@@ -17,20 +18,27 @@ const PART_NUMBER: &str = "LPS22DF";
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum Register {
     WhoAmI = 0x0f,
-    CtrlReg2 = 0x11,
+    CtrlReg1,
+    CtrlReg2,
     RpdsL = 0x1a,
     Status = 0x27,
-    PressOutXl = 0x28,
+    PressOutXl,
 }
 
-// `CTRL_REG2` register bits.
-const ONESHOT_BITS: u8 = 1 << 0;
-const SWRESET_BITS: u8 = 1 << 2;
-const BDU_BITS: u8 = 1 << 3;
+u8_register!(CtrlReg2 {
+    BDU << 3,
+    SWRESET << 2,
+    ONESHOT << 0,
+});
 
-// `STATUS` register bits.
-const P_DA_BITS: u8 = 1 << 0;
-const T_DA_BITS: u8 = 1 << 1;
+u8_register!(RpdsL {});
+
+u8_register!(Status {
+    T_DA << 1,
+    P_DA << 0,
+});
+
+u8_register!(PressOutXl {});
 
 #[expect(dead_code)]
 const DEVICE_ID: u8 = 0xb4;

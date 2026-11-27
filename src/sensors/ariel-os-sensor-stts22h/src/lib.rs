@@ -10,6 +10,7 @@
 pub mod i2c;
 
 use ariel_os_sensors::sensor::SampleMetadata;
+use ariel_os_sensors_utils::u8_register;
 
 const PART_NUMBER: &str = "STTS22H";
 
@@ -17,21 +18,27 @@ const PART_NUMBER: &str = "STTS22H";
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum Register {
     Whoami = 0x01,
-    TempHLimit = 0x02,
-    TempLLimit = 0x03,
-    Ctrl = 0x04,
-    Status = 0x05,
-    TempLOut = 0x06,
-    TempHOut = 0x07,
+    TempHLimit,
+    TempLLimit,
+    Ctrl,
+    Status,
+    TempLOut,
+    TempHOut,
 }
 
-// CTRL register bits.
-const ONE_SHOT_BITS: u8 = 1 << 0;
-const IF_ADD_INC_BITS: u8 = 1 << 3;
-const BDU_BITS: u8 = 1 << 6;
+u8_register!(TempHLimit {});
 
-// STATUS register bits.
-const BUSY_BITS: u8 = 1 << 0;
+u8_register!(Ctrl {
+    BDU << 6,
+    IF_ADD_INC << 3,
+    ONE_SHOT << 0,
+});
+
+u8_register!(Status {
+    BUSY << 0,
+});
+
+u8_register!(TempLOut {});
 
 #[expect(dead_code)]
 const DEVICE_ID: u8 = 0xa0;

@@ -10,6 +10,7 @@
 pub mod i2c;
 
 use ariel_os_sensors::sensor::SampleMetadata;
+use ariel_os_sensors_utils::u8_register;
 
 const PART_NUMBER: &str = "LIS2DU12";
 
@@ -17,8 +18,10 @@ const PART_NUMBER: &str = "LIS2DU12";
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum Register {
     Ctrl1 = 0x10,
-    Ctrl4 = 0x13,
-    Ctrl5 = 0x14,
+    Ctrl2,
+    Ctrl3,
+    Ctrl4,
+    Ctrl5,
     Status = 0x25,
     OutXL = 0x28,
     WhoAmI = 0x43,
@@ -28,10 +31,10 @@ enum Register {
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
 enum AccelFullScale {
     #[default]
-    _2g = 0x0,
-    _4g = 0x1,
-    _8g = 0x2,
-    _16g = 0x3,
+    _2g,
+    _4g,
+    _8g,
+    _16g,
 }
 
 impl AccelFullScale {
@@ -48,37 +51,46 @@ impl AccelFullScale {
     }
 }
 
-// Table 34 of the datasheet, includes bit shift for CTRL5.
+// Table 34 of the datasheet.
 #[expect(unused)]
 #[derive(Copy, Clone, PartialEq, Eq)]
 enum Odr {
-    PowerDown = 0x0 << 4,
-    _1_6HzUltraLpMode = 0x1 << 4,
-    _3HzUltraLpMode = 0x2 << 4,
-    _6HzUltraLpMode = 0x3 << 4,
-    _6HzNormalMode = 0x4 << 4,
-    _12_5HzNormalMode = 0x5 << 4,
-    _25HzNormalMode = 0x6 << 4,
-    _50HzNormalMode = 0x7 << 4,
-    _100HzNormalMode = 0x8 << 4,
-    _200HzNormalMode = 0x9 << 4,
-    _400HzNormalMode = 0xa << 4,
-    _800HzNormalMode = 0xb << 4,
+    PowerDown,
+    _1_6HzUltraLpMode,
+    _3HzUltraLpMode,
+    _6HzUltraLpMode,
+    _6HzNormalMode,
+    _12_5HzNormalMode,
+    _25HzNormalMode,
+    _50HzNormalMode,
+    _100HzNormalMode,
+    _200HzNormalMode,
+    _400HzNormalMode,
+    _800HzNormalMode,
     // Some values are skipped.
-    OneShotInt2Pin = 0xe << 4,
-    OneShotInterface = 0xf << 4,
+    OneShotInt2Pin = 0xe,
+    OneShotInterface,
 }
 
-// CTRL1 register bits.
-const IF_ADD_INC_BITS: u8 = 1 << 4;
-const SW_RESET: u8 = 1 << 5;
+u8_register!(Ctrl1 {
+    SW_RESET << 5,
+    IF_ADD_INC << 4,
+});
 
-// CTRL4 register bits
-const SOC_BITS: u8 = 1 << 1;
-const BDU_BITS: u8 = 1 << 5;
+u8_register!(Ctrl4 {
+    BDU << 5,
+    SOC << 1,
+});
 
-// STATUS register bits.
-const DRDY_BITS: u8 = 1 << 0;
+u8_register!(Ctrl5 {
+    [Odr] << 4,
+});
+
+u8_register!(Status {
+    DRDY << 0,
+});
+
+u8_register!(OutXL {});
 
 #[expect(dead_code)]
 const DEVICE_ID: u8 = 0b0100_0101;
