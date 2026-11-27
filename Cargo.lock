@@ -193,6 +193,9 @@ dependencies = [
  "serde_yaml",
  "slipmux",
  "static_cell",
+ "thiserror",
+ "xarxa",
+ "xarxa-driver",
 ]
 
 [[package]]
@@ -1842,7 +1845,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d162beedaa69905488a8da94f5ac3edb4dd4788b732fadb7bd120b2625c1976"
 dependencies = [
  "data-encoding",
- "syn 1.0.109",
+ "syn 2.0.114",
 ]
 
 [[package]]
@@ -6560,18 +6563,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "2.0.20"
+version = "2.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f"
+checksum = "09e52cb86a36cede5cb101bf8908837b3e4c6e5e59fe7fd85c23fb56200d189e"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.20"
+version = "2.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af"
+checksum = "fe5197923287db20a58125f0bc85c062f7f2c892de97b18c356f9efb14b28524"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -7387,6 +7390,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "05f360fc0b24296329c78fda852a1e9ae82de9cf7b27dae4b7f62f118f77b9ed"
 dependencies = [
  "tap",
+]
+
+[[package]]
+name = "xarxa"
+version = "0.1.0"
+source = "git+https://github.com/embassy-rs/xarxa?rev=df5d6cc5bca193db5cbb652961d626fdbf8b1aa1#df5d6cc5bca193db5cbb652961d626fdbf8b1aa1"
+dependencies = [
+ "bitflags 2.13.2",
+ "byteorder",
+ "critical-section",
+ "defmt 1.1.1",
+ "document-features",
+ "heapless 0.9.3",
+ "xarxa-driver",
+]
+
+[[package]]
+name = "xarxa-driver"
+version = "0.1.0"
+source = "git+https://github.com/embassy-rs/xarxa?rev=df5d6cc5bca193db5cbb652961d626fdbf8b1aa1#df5d6cc5bca193db5cbb652961d626fdbf8b1aa1"
+dependencies = [
+ "defmt 1.1.1",
+ "document-features",
 ]
 
 [[package]]

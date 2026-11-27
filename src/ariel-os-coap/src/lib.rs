@@ -22,7 +22,7 @@ mod transport_udp;
 mod transport_slipmux;
 
 #[cfg(feature = "slipmux-ip")]
-pub use transport_slipmux::{IP2SLIPMUX, SLIPMUX2IP, SingleBuffer};
+pub use transport_slipmux::{IP2SLIPMUX, POOL as SLIPMUX_POOL, SLIPMUX2IP};
 
 use ariel_os_embassy::cell::SameExecutorCell;
 #[cfg(feature = "coap-server")]

@@ -55,6 +55,11 @@ hexlit = "0.5.5"
 
 embedded-io-async = { workspace = true }
 
+# right now: just for its buffer pool
+xarxa = { git = "https://github.com/embassy-rs/xarxa", version = "0.1.0", default-features = false, features = ["defmt", "ipv6", "medium-ip"], rev = "df5d6cc5bca193db5cbb652961d626fdbf8b1aa1" }
+xarxa-driver = { git = "https://github.com/embassy-rs/xarxa", version = "0.1.0", default-features = false, rev = "df5d6cc5bca193db5cbb652961d626fdbf8b1aa1" }
+thiserror = { version = "2.0.21", default-features = false }
+
 [build-dependencies]
 # "blessed" by Cargo basing its build script API on it <https://blog.rust-lang.org/inside-rust/2024/12/13/this-development-cycle-in-cargo-1.84.html#build-script-api>
 build-rs = "0.3.0"

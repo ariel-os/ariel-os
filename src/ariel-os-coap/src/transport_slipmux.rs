@@ -2,19 +2,36 @@
 // address semantics).
 
 use ariel_os_log::{Hex, debug, warn};
-use embassy_sync::signal::Signal;
+use embassy_sync::{channel::Channel, signal::Signal};
+use xarxa::Pool as _;
 
-/// Buffer type in which all slipmux traffic is handled (usually through `&'static mut`).
-///
-/// This is public only when slipmux's user access to its IP traffic is enabled.
+/// Pool from which submissions into [`IP2SLIPMUX`] can be allocated.
+// Once the rest of the system uses xarxa as well, this will be passed in rather than created
+// locally.
+//
+// Note that for the plain CoAP application, using such a pool is overkill (we could just have a
+// single buffer), but a single buffer does not scale smoothly to IP packet handling (where an
+// owned packet would be moved on).
+//
+// Even when using the slipmux-ip feature, the default 16 are overkill, for there is room for 1 in
+// each of the queues, 1 ping-ponged between slipmux and CoAP, and whatever is local in the tasks.
+//
+// FIXME: Scale down (for coap-only: to size 1, or 2 if we start offering client work unless we
+// block RX while the client message is being composed).
+pub static POOL: xarxa::StaticPool = xarxa::StaticPool::new();
+
+// FIXME: Inline definition (but at the stage of reviewing diffs, it's easier to keep this type
+// alias)
+//
 // See https://github.com/t2trg/slipmux/issues/1 for expectations on how big this should be
-pub type SingleBuffer = heapless::Vec<u8, 1280>;
+type SingleBuffer = xarxa_driver::DriverBuf;
+
 /// An indirection that, rather than borrowing the content, can also move it out temporarily.
 ///
-/// This behaves largely like a smart pointer, and allows moving out content cheaply (eg. the move
-/// writes a word rather moving a whole ~1kB buffer). The expectation is that content gets returned
-/// before any further use; violating that leads to unceremoneous panics.
-struct MoveOutBuffer(Option<&'static mut SingleBuffer>);
+/// This smart pointer wrapper allows module-internal code to take the content completely without
+/// replacing it with a dummy allocation -- and promises under penalty of panics that it returns
+/// the buffer before giving anyone access to the now empty shell.
+struct MoveOutBuffer(Option<SingleBuffer>);
 impl MoveOutBuffer {
     fn as_ref(&self) -> &SingleBuffer {
         self.0
@@ -27,22 +44,41 @@ impl MoveOutBuffer {
             .expect("data was moved out and not returned")
     }
 }
+/// Error for writing into a [`MoveOutBuffer`]-wrapped [`SingleBuffer`].
+#[derive(thiserror::Error, Debug)]
+#[error("data could not be written to a buffer because it would exceed its size")]
+struct OutOfSpace;
+impl embedded_io::Error for OutOfSpace {
+    fn kind(&self) -> embedded_io::ErrorKind {
+        embedded_io::ErrorKind::OutOfMemory
+    }
+}
 impl embedded_io::ErrorType for MoveOutBuffer {
-    type Error = <SingleBuffer as embedded_io::ErrorType>::Error;
+    type Error = OutOfSpace;
 }
 impl embedded_io::Write for MoveOutBuffer {
     fn write(&mut self, data: &[u8]) -> Result<usize, Self::Error> {
-        self.as_mut().write(data)
+        let inner = self.as_mut();
+        let oldlen = inner.len();
+        if (oldlen + inner.headroom()).saturating_add(data.len()) > inner.capacity() {
+            return Err(OutOfSpace);
+        }
+        inner.set_len(oldlen + data.len());
+        let newslice = oldlen..;
+        inner[newslice].copy_from_slice(data);
+        Ok(data.len())
     }
     fn flush(&mut self) -> Result<(), Self::Error> {
-        self.as_mut().flush()
+        Ok(())
     }
 }
 impl AsRef<[u8]> for MoveOutBuffer {
     fn as_ref(&self) -> &[u8] {
-        Self::as_ref(self).as_ref()
+        self.as_ref().as_ref()
     }
 }
+// FIXME rename to SingleFrameHandler because that is what it is, but for now let's keep the diff
+// small.
 type SingleFrameDecoder = slipmux::SingleBufferHandler<MoveOutBuffer>;
 
 #[cfg(feature = "coap-transport-slipmux-usb")]
@@ -88,13 +124,12 @@ mod usb_serial {
             })
             .await;
 
-        static SLIP_AND_USB_BUF: static_cell::StaticCell<(
-            SingleBuffer,
-            [u8; MAX_FULL_SPEED_PACKET_SIZE as usize],
-        )> = static_cell::StaticCell::new();
-        let slipmux_and_buffer = SLIP_AND_USB_BUF.init_with(|| (Default::default(), [0; _]));
-        let mut slipbuf = &mut slipmux_and_buffer.0;
-        let buf = &mut slipmux_and_buffer.1;
+        let mut slipbuf = POOL.alloc().unwrap();
+
+        static USB_BUF: static_cell::StaticCell<[u8; MAX_FULL_SPEED_PACKET_SIZE as usize]> =
+            static_cell::StaticCell::new();
+        let buf = USB_Buf.init_with(|| [0; _]);
+        let buf = &mut buf;
 
         // We don't really need the control channels: USB Serial is back-pressuring anyway.
         let (tx, rx) = class.split();
@@ -181,8 +216,7 @@ mod over_uart {
             .build_with_config(rx_buf, tx_buf, config)
             .expect("Invalid UART configuration");
 
-        static SLIPBUF: static_cell::StaticCell<SingleBuffer> = static_cell::StaticCell::new();
-        let mut slipbuf = SLIPBUF.init_with(Default::default);
+        let mut slipbuf = POOL.alloc().unwrap();
 
         loop {
             let Err((_e, returned_slipbuf)) = serve_slipmux(&mut uart, slipbuf).await;
@@ -200,37 +234,41 @@ mod over_uart {
 /// then we'd have to handle the case when that other task is not active yet, and just
 /// yielding-for-everyone-else still returns us the unmodified buffer.
 ///
-/// As there is only a single `&'static mut SingleFrameDecoder`, Signal's overwrite semantics don't
-/// concern us: We don't have anything to overwrite the latest value with, unless it was taken out
-/// and returned before.
+/// As long as slipmux and CoAP work in lockstep (the slipmux side places a request in here, and
+/// waits until the response comes back), Signal's overwrite semantics don't concern us: We don't
+/// have write another time unless the peer acknowledges that it has consumed it by placing it in
+/// the return signal.
 static SLIPMUX2COAP: Signal<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
+    SingleBuffer,
 > = Signal::new();
 /// See [`SLIPMUX2COAP`]; this works the same, just in the opposite direction.
 static COAP2SLIPMUX: Signal<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
+    SingleBuffer,
 > = Signal::new();
 
-/// Like `SLIPMUX2COAP` but for IP (which is needs to be picked up by the user if enabled)
+/// Similar to `SLIPMUX2COAP` but for IP.
 ///
-/// Unlike there, the IP side may also take the initiative; if that happened, that buffer is
-/// returned empty.
+/// But there is no lock-stepping, and no expectation of immediate return, so the buffers are just
+/// queued up.
 #[cfg(feature = "slipmux-ip")]
-pub static SLIPMUX2IP: Signal<
+pub static SLIPMUX2IP: Channel<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
-> = Signal::new();
-/// Like `COAP2SLIPMUX`, but for IP
+    SingleBuffer,
+    // FIXME: Any reason to use more?
+    1,
+> = Channel::new();
+/// Like `COAP2SLIPMUX`, but for IP.
 ///
-/// Unlike there, the IP side may also take the initiative; that side has its own buffer, which it
-/// may send unprompted.
+/// But there is no lock-stepping, and no expectation of immediate return, so the buffers are just
+/// queued up.
 #[cfg(feature = "slipmux-ip")]
-pub static IP2SLIPMUX: Signal<
+pub static IP2SLIPMUX: Channel<
     embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex,
-    &'static mut SingleBuffer,
-> = Signal::new();
+    SingleBuffer,
+    1,
+> = Channel::new();
 
 /// Decodes frames from a slipmux peer, and sends them to the relevant tasks for further
 /// processing, receiving frames in return.
@@ -261,15 +299,17 @@ pub static IP2SLIPMUX: Signal<
 /// happen, this function needs the buffer anyway.
 async fn serve_slipmux<U>(
     uart: &mut U,
-    slipbuf: &'static mut SingleBuffer,
-) -> Result<core::convert::Infallible, (U::Error, &'static mut SingleBuffer)>
+    slipbuf: SingleBuffer,
+) -> Result<core::convert::Infallible, (U::Error, SingleBuffer)>
 where
     U: embedded_io_async::Read + embedded_io_async::Write,
 {
     use slipmux::DecodeStatus;
 
-    let mut slipmux =
-        SingleFrameDecoder::new_single_buffer(MoveOutBuffer(Some(slipbuf)), |b| b.as_mut().clear());
+    // FIXME rename to handler (but later; now focusing on readable diffs)
+    let mut slipmux = SingleFrameDecoder::new_single_buffer(MoveOutBuffer(Some(slipbuf)), |b| {
+        b.as_mut().set_len(0)
+    });
 
     // For the time being we play the simple game, where we just have a server, and can afford to
     // read until something has arrived, then write out what has been written, and continue.
@@ -277,6 +317,10 @@ where
     // This will not be sustainable with the next generation coap-handler, and then we may need to
     // split the UARTs.
 
+    // FIXME: This is built as one loop that serves both directions because CoAP currently only has
+    // one initiative side, and may be alone, so that makes sense. Once slipmux-ip becomes more of
+    // a default case, or CoAP goes async and/or split-initiative, this will likely work better as
+    // two separate coroutines / tasks.
     let mut decoder = slipmux::Decoder::new();
     loop {
         // FIXME: This is an ugly reading mechanism, made just slightly more tolerable by
@@ -287,7 +331,7 @@ where
         // peripheral.
         let mut bytebuf = [0];
         #[cfg(feature = "slipmux-ip")]
-        let read = match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.wait())
+        let read = match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.receive())
             .await
         {
             embassy_futures::select::Either::First(read) => read.unwrap(),
@@ -298,12 +342,11 @@ where
                     // bigger refactoring due
                     encode(
                         uart,
-                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, ip_buffer),
+                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, &ip_buffer),
                     )
                     .await;
                 }
-                ip_buffer.clear();
-                SLIPMUX2IP.signal(ip_buffer);
+                drop(ip_buffer);
                 continue;
             }
         };
@@ -387,7 +430,7 @@ where
                 warn!("Ignoring overly short CoAP request.");
                 continue;
             };
-            buffer.truncate(actual_length);
+            buffer.set_len(actual_length);
 
             SLIPMUX2COAP.signal(buffer);
             buffer = COAP2SLIPMUX.wait().await;
@@ -421,15 +464,17 @@ where
                     continue;
                 };
 
-                let buffer = bufref.0.take().expect("we're the only party taking this");
-                SLIPMUX2IP.signal(buffer);
-                bufref.0 = Some(IP2SLIPMUX.wait().await);
-                if !bufref.as_ref().is_empty() {
-                    encode(
-                        uart,
-                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, &bufref.as_ref()),
-                    )
-                    .await;
+                if let Some(replacement) = POOL.alloc() {
+                    let buffer = core::mem::replace(bufref.as_mut(), replacement);
+                    if let Err(_) = SLIPMUX2IP.try_send(buffer) {
+                        warn!("Dropping packet due to SLIPMUX2IP queue overflow.");
+                    }
+                } else {
+                    // FIXME: Should we start some global consumption calculation by which we
+                    // guarantee that due to the queue and pool sizes, this will never happen?
+                    warn!(
+                        "Out of pool space, dropping packet from before SLIPMUX2IP for lack of replacement buffer."
+                    );
                 }
             }
         }
@@ -454,13 +499,14 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
     loop {
         let buffer = SLIPMUX2COAP.wait().await;
 
-        debug!("Sending into CoAP stack: {}", Hex(&buffer));
+        debug!("Sending into CoAP stack: {}", Hex(&*buffer));
         let mut pseudostack = PseudoStack(buffer);
         embedded_nal_minimal_coapserver::poll(&mut pseudostack, &mut PseudoSocket, &mut handler)
             // No `let Ok(()) = `, because there's the unavoidable nb::Error case.
             .unwrap();
 
-        debug!("Taking out of CoAP stack: {}", Hex(&buffer));
+        let buffer = pseudostack.0;
+        debug!("Taking out of CoAP stack: {}", Hex(&*buffer));
 
         COAP2SLIPMUX.signal(buffer);
     }
@@ -471,7 +517,7 @@ pub(crate) async fn coap_run_slipmux(mut handler: impl coap_handler::Handler) ->
 ///
 /// As CoAP is currently not async and we don't send messages on our own, this now goes into the
 /// simpler embedded-nal rather than embedded-nal-async.
-struct PseudoStack<'a>(&'a mut SingleBuffer);
+struct PseudoStack(SingleBuffer);
 
 struct PseudoSocket;
 
@@ -480,7 +526,7 @@ struct DoesNotFit;
 
 use core::net::SocketAddr;
 
-impl embedded_nal::UdpClientStack for PseudoStack<'_> {
+impl embedded_nal::UdpClientStack for PseudoStack {
     type UdpSocket = PseudoSocket;
     type Error = DoesNotFit;
     fn socket(&mut self) -> Result<PseudoSocket, DoesNotFit> {
@@ -503,11 +549,11 @@ impl embedded_nal::UdpClientStack for PseudoStack<'_> {
     ) -> Result<(usize, SocketAddr), embedded_nal::nb::Error<DoesNotFit>> {
         let len = self.0.len();
         let outslice = outbuf.get_mut(0..len).ok_or(DoesNotFit)?;
-        outslice.copy_from_slice(self.0);
+        outslice.copy_from_slice(self.0.as_ref());
 
         // Mostly a precaution against sending the request back if ever the minimal CoAP server
         // should *not* send a single response.
-        self.0.truncate(0);
+        self.0.set_len(0);
 
         Ok((
             len,
@@ -524,7 +570,7 @@ impl embedded_nal::UdpClientStack for PseudoStack<'_> {
     }
 }
 
-impl embedded_nal::UdpFullStack for PseudoStack<'_> {
+impl embedded_nal::UdpFullStack for PseudoStack {
     fn bind(&mut self, _: &mut PseudoSocket, _: u16) -> Result<(), Self::Error> {
         panic!("Unused")
     }
@@ -534,12 +580,13 @@ impl embedded_nal::UdpFullStack for PseudoStack<'_> {
         _: SocketAddr,
         data: &[u8],
     ) -> Result<(), embedded_nal::nb::Error<Self::Error>> {
-        // FIXME: Abusing the configuration buffer seems like a convenient thing to do, given we're
-        // in full control of .0 for the duration of processing the request -- anything more
-        // elegant?
-
-        self.0.clear();
-        self.0.extend_from_slice(data).map_err(|_| DoesNotFit)?;
+        // We currently don't expect a headroom, but the calculation should account for it so we
+        // don't stumble over it if we ever do need headroom.
+        if data.len() + self.0.headroom() > self.0.capacity() {
+            return Err(DoesNotFit.into());
+        }
+        self.0.set_len(data.len());
+        self.0.copy_from_slice(data);
         Ok(())
     }
 }
