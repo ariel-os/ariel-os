@@ -16,6 +16,18 @@ Feel free to report anything that is unclear or missing!
 
 ## Adding Support for a Board
 
+### Picking the Board's Name
+
+The conventions to follow for the board name are based on [RIOT OS's RDM0003][riot-os-rdm0003].
+In particular:
+
+- When the manufacturer is clearly identified, the board name must be prefixed with the manufacturer name.
+- The board name should generally follow the manufacturer's name for the board: spaces are replaced with dashes.
+- Variant and version markers relevant to software should be included: in particular, differences in memory sizes should appear in the board name.
+  Each variant and version therefore results in a different board name and [SBD file](#creating-an-sbd-file).
+
+### Checklist
+
 - Ensure that the HAL [is supported in `ariel-os-hal`](#adding-support-for-an-embassy-halmcu-family).
 - Ensure that the chip [is supported](#adding-support-for-an-mcu-from-a-supported-mcu-family).
 - [Create a new SBD file](#creating-an-sbd-file) `boards/<your-board-name>.yaml`.
@@ -155,3 +167,4 @@ the processor architecture to `ariel-os-bench`, `ariel-os-rt`, `ariel-os-threads
 [sbd-book]: ./structured-board-descriptions.md
 [ci-builder-lists]: https://github.com/ariel-os/ariel-os/blob/5c23c04cd51c5cfebd561c9d27a47d4e26cdb649/.github/workflows/build.yml#L147-L168
 [i2c-pull-up-resistors-book]: ./i2c.md#configuring-other-settings
+[riot-os-rdm0003]: https://github.com/RIOT-OS/RIOT/blob/066ffa11188cdc9ced3095d4f5c8b8dfe481d926/doc/memos/rdm0003.md
