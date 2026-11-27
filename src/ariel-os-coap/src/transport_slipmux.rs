@@ -331,25 +331,26 @@ where
         // peripheral.
         let mut bytebuf = [0];
         #[cfg(feature = "slipmux-ip")]
-        let read = match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.receive())
-            .await
-        {
-            embassy_futures::select::Either::First(read) => read.unwrap(),
-            embassy_futures::select::Either::Second(ip_buffer) => {
-                if !ip_buffer.is_empty() {
-                    // Usually it is not, but the tasks may race and the IP task's initiative
-                    // message is handled in our initiative side's response … yeah, bigger
-                    // bigger refactoring due
-                    encode(
-                        uart,
-                        slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, &ip_buffer),
-                    )
-                    .await;
+        let read =
+            match embassy_futures::select::select(uart.read(&mut bytebuf), IP2SLIPMUX.receive())
+                .await
+            {
+                embassy_futures::select::Either::First(read) => read.unwrap(),
+                embassy_futures::select::Either::Second(ip_buffer) => {
+                    if !ip_buffer.is_empty() {
+                        // Usually it is not, but the tasks may race and the IP task's initiative
+                        // message is handled in our initiative side's response … yeah, bigger
+                        // bigger refactoring due
+                        encode(
+                            uart,
+                            slipmux::ChunkedEncoder::new(slipmux::FrameType::Ip, &ip_buffer),
+                        )
+                        .await;
+                    }
+                    drop(ip_buffer);
+                    continue;
                 }
-                drop(ip_buffer);
-                continue;
-            }
-        };
+            };
         #[cfg(not(feature = "slipmux-ip"))]
         let read = uart.read(&mut bytebuf).await.unwrap();
         assert_eq!(read, 1);
