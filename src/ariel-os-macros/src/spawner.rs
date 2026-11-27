@@ -15,6 +15,10 @@
 /// - `peripherals`: (*optional*) provide the function with a peripheral struct as the second
 ///   parameter.
 ///
+///   **Note:** The application panics at runtime when attempting to take the same peripheral twice,
+///   either because it is taken twice in the application itself, or because it is already used by
+///   the OS.
+///
 /// # Examples
 ///
 /// ```ignore

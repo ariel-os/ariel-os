@@ -51,6 +51,8 @@ Functions can currently be registered as either `spawner`s or `task`s:
   They are especially useful for long-running, `async` tasks.
 
 Both of these can be provided with an instance of an Ariel OS peripheral struct when needed, using the `peripherals` macro parameters (see the macros' documentation) and taking that Ariel OS peripheral struct as parameter.
+Note that the application panics at runtime when attempting to take the same peripheral twice, either because it is taken twice in the application itself, or because it is already used by the OS.
+This panic should happen early during startup, instead of later during execution.
 
 > [!TIP]
 > The peripheral ZSTs obtained this way are regular Embassy-style peripherals, which are compatible with both Ariel OS portable drivers and [Embassy-style HALs][embassy-style-hals] HAL-specific drivers.
