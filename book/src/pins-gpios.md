@@ -71,6 +71,47 @@ Interrupts have many benefits: in particular, they
 - may allow the processor and (some of the) peripherals to enter some low-power mode until the interrupt is triggered, greatly reducing power consumption, and
 - allow to structure the application in an event-driven manner.
 
+### Leveraging the Structured Board Descriptions
+
+Instead of relying on the input pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book] for push-buttons and other switches.
+
+Buttons and switches defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
+Button types provide methods similar to that of [`ariel_os::hal::button::Button`][hal-button-button-rustdoc].
+Switches contain multiple pins, each exposed as [`ariel_os::hal::switch::SwitchPin`][hal-switch-switchpin-rustdoc]s
+Both already configure the pull-up/pull-down resistor if necessary, and expose methods that take into account which logic level is considered the active level.
+Switch types that only contain a single pin themselves expose the same method as [`SwitchPin`][hal-switch-switchpin-rustdoc].
+To use the methods relying on GPIO interrupts, the `external-interrupts` Cargo feature must be enabled.
+These specific types can be type-erased to their respective generic type using their `From` implementation.
+
+```rust
+ariel_os::hal::group_peripherals!(Peripherals {
+    // Aliases defined in the SBD file can be used instead.
+    switch: ariel_os_boards::pins::Switch0,
+    button: ariel_os_boards::pins::Button0,
+});
+
+// Buttons:
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(peripherals: Peripherals) {
+    let mut button: ariel_os::hal::button::Button = peripherals.button.into();
+    button.wait_for_next_press().await;
+}
+
+// Switches:
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(mut peripherals: Peripherals) {
+    // Assuming the switch has only one pin:
+    let (switch_pin,) = peripherals.switch.pins();
+    switch_pin.wait_for_activation_edge().await;
+
+    // or, as the switch has only one pin:
+    let switch = peripherals.switch;
+    switch.wait_for_activation_edge().await;
+}
+```
+
 ## GPIOs as Outputs
 
 Digital outputs are tri-state: they use a pair of transistors to either drive the output low, high, or leave it floating, i.e., in a high impedance state (Hi-Z).
@@ -102,7 +143,7 @@ How much current is drawn depends on what is connected to the microcontroller pi
 > Exceeding these limits may damage the microcontroller.
 > Refer to your microcontroller's datasheet.
 
-#### Output Configuration
+### Output Configuration
 
 Depending on the microcontroller, outputs may support configuring their drive strength and/or their speed/slew rate.
 In Ariel OS, this is done through [`Output::builder()`][gpio-output-builder-rustdoc].
@@ -117,6 +158,30 @@ Depending on the MCU family, the speed/slew rate of pins may also be configurabl
 
 > [!TIP]
 > The speed of GPIOs should be left at their default value unless actually required by the board hardware.
+
+### Leveraging the Structured Board Descriptions
+
+Instead of relying on the output pins being defined inside the application as presented above, it is also possible to leverage [the SBD files][sbd-book] for LEDs.
+
+LEDs defined in the SBD file result in matching types being generated in the board package, named after the defined aliases and their positions in the SBD sequence.
+These types provide methods similar to that of [`ariel_os::hal::led::Led`][hal-led-led-rustdoc]; they expose methods that take into account which logic level is considered the active level.
+These specific types can be type-erased to the generic type using their `From` implementation.
+
+```rust
+ariel_os::hal::group_peripherals!(Peripherals {
+    // Aliases defined in the SBD file can be used instead.
+    led: ariel_os_boards::pins::Led0,
+});
+
+#[ariel_os::task(autostart, peripherals)]
+async fn main(peripherals: Peripherals) {
+    let mut led: ariel_os::hal::led::Led = peripherals.led.into();
+}
+```
+
+> [!NOTE]
+> It is planned to later have a type dedicated to RGB LEDs to allow for color mixing.
+> Until then, each color channel is considered its own LED.
 
 ## Pull-up/Pull-down Resistors
 
@@ -142,12 +207,16 @@ They are well-suited as generic pull-up or pull-down resistors, but must not typ
 [i2c-book]: ./i2c.md
 [spi-book]: ./spi.md
 [uart-book]: ./uart.md
+[sbd-book]: ./structured-board-descriptions.md
 [embassy-style-hals]: ./glossary.md#embassy-style-hals
 [schmitt-trigger-wikipedia]: https://en.wikipedia.org/wiki/Schmitt_trigger
 [gpio-input-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Input.html
 [embedded-hal-digital-inputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.InputPin.html
 [obtaining-peripheral-access-book]: ./application.md#obtaining-peripheral-access
 [gpio-output-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html
+[hal-button-button-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/button/struct.Button.html
+[hal-switch-switchpin-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/switch/struct.SwitchPin.html
+[hal-led-led-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/hal/led/struct.Led.html
 [gpio-output-builder-rustdoc]: https://ariel-os.github.io/ariel-os/dev/docs/api/ariel_os/gpio/struct.Output.html#method.builder
 [embedded-hal-digital-outputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.OutputPin.html
 [embedded-hal-digital-statefuloutputpin]: https://docs.rs/embedded-hal/1.0.0/embedded_hal/digital/trait.StatefulOutputPin.html
