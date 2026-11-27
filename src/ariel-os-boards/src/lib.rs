@@ -52,8 +52,9 @@ cfg_select! {
     include!("seeedstudio-lora-e5-mini.rs"); } context = "seeedstudio-xiao-esp32-s3" => {
     include!("seeedstudio-xiao-esp32-s3.rs"); } context = "seeedstudio-xiao-esp32c6" => {
     include!("seeedstudio-xiao-esp32c6.rs"); } context = "seeedstudio-xiao-nrf52840-plus"
-    => { include!("seeedstudio-xiao-nrf52840-plus.rs"); } context = "st-b-l072z-lrwan1"
-    => { include!("st-b-l072z-lrwan1.rs"); } context = "st-b-l475e-iot01a" => {
+    => { include!("seeedstudio-xiao-nrf52840-plus.rs"); } context = "st-32f723ediscovery"
+    => { include!("st-32f723ediscovery.rs"); } context = "st-b-l072z-lrwan1" => {
+    include!("st-b-l072z-lrwan1.rs"); } context = "st-b-l475e-iot01a" => {
     include!("st-b-l475e-iot01a.rs"); } context = "st-nucleo-c031c6" => {
     include!("st-nucleo-c031c6.rs"); } context = "st-nucleo-f042k6" => {
     include!("st-nucleo-f042k6.rs"); } context = "st-nucleo-f303re" => {

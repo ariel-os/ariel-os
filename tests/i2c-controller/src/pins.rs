@@ -119,3 +119,12 @@ ariel_os::hal::define_peripherals!(Peripherals {
     i2c_sda: PB9,
     i2c_scl: PB8,
 });
+
+// This is the I2C bus shared by the Arduino (D15/D14) and STMOD+ connectors.
+#[cfg(context = "st-32f723ediscovery")]
+pub type SensorI2c = i2c::controller::I2C2;
+#[cfg(context = "st-32f723ediscovery")]
+ariel_os::hal::define_peripherals!(Peripherals {
+    i2c_sda: PH5,
+    i2c_scl: PH4,
+});
