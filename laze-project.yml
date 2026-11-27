@@ -58,6 +58,7 @@ contexts:
           CHIP_NVM_SIZE_BYTES=${CHIP_NVM_SIZE_BYTES}
           CHIP_NVM_START_ADDRESS=${CHIP_NVM_START_ADDRESS}
           CHIP_NVM_PAGE_SIZE_BYTES=${CHIP_NVM_PAGE_SIZE_BYTES}
+          CHIP_EMBASSY_BOOT_SIZE_PAGES=${CHIP_EMBASSY_BOOT_SIZE_PAGES}
           CHIP_EXTRA_SECTIONS=${CHIP_EXTRA_SECTIONS}
           CHIP_RAM_START_ADDRESS=${CHIP_RAM_START_ADDRESS}
           CHIP_RAM_SIZE_BYTES=${CHIP_RAM_SIZE_BYTES}
@@ -224,6 +225,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "4096"
       CHIP_NVM_START_ADDRESS: "0x0"
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
 
   - name: nrf51
     parent: nrf
@@ -233,6 +235,7 @@ contexts:
       - has_hwrng
     env:
       CHIP_NVM_PAGE_SIZE_BYTES: "1024"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: nrf51822-xxaa
     parent: nrf51
@@ -263,6 +266,7 @@ contexts:
     env:
       PROBE_RS_CHIP: nrf52832_xxAA
       CHIP_NVM_PAGE_SIZE_BYTES: "512"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "14" # Strict minimum, without logging.
       CHIP_NVM_SIZE_BYTES: "$(256 * 1024)"
       CHIP_RAM_SIZE_BYTES: "$(64*1024)"
 
@@ -380,6 +384,7 @@ contexts:
       - sw/benchmark
     env:
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
 
   - name: rp2040
     parent: rp
@@ -819,6 +824,7 @@ contexts:
       OPENOCD_ARGS: foo
       CHIP_NVM_START_ADDRESS: "0x08000000"
       CHIP_RAM_START_ADDRESS: "0x20000000"
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "4"
     tasks:
       flash-dfuse:
         cmd:
@@ -908,6 +914,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(128 * 1024)
       CHIP_RAM_SIZE_BYTES: $(32 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32f767zi
     parent: stm32
@@ -1006,6 +1013,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(1024 * 1024)
       CHIP_RAM_SIZE_BYTES: $(96 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32u073kc
     parent: stm32
@@ -1040,6 +1048,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(256 * 1024)
       CHIP_RAM_SIZE_BYTES: $(40 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
   - name: stm32u585ai
     parent: stm32
@@ -1118,6 +1127,7 @@ contexts:
       CHIP_NVM_PAGE_SIZE_BYTES: "2048"
       CHIP_NVM_SIZE_BYTES: $(256 * 1024)
       CHIP_RAM_SIZE_BYTES: $(64 * 1024)
+      CHIP_EMBASSY_BOOT_SIZE_PAGES: "5"
 
 modules:
   - name: thumbv6m-none-eabi
@@ -2329,7 +2339,7 @@ modules:
   # Ordered by priority.
   # Currently the logging transports are mutually exclusive.
   - name: logging-transport-default
-    help: 'private: use `logging` instead'
+    help: "private: use `logging` instead"
     selects:
       - ?logging-over-stdout
       - ?logging-over-debug-channel
@@ -2463,7 +2473,7 @@ modules:
           - ariel-os/debug-uart
 
   - name: logging-facade-default
-    help: 'private: use `logging` instead'
+    help: "private: use `logging` instead"
     selects:
       - ?defmt
       - ?log
@@ -2592,7 +2602,7 @@ modules:
     env:
       global:
         # `cargo install embedded-test-std-runner`
-        CARGO_RUNNER: 'embedded-test-std-runner'
+        CARGO_RUNNER: "embedded-test-std-runner"
 
   # This helper module works around laze not supporting sth like "if context == foo then depend on bar".
   - name: esp-single-core

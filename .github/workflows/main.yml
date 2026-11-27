@@ -339,7 +339,15 @@ jobs:
               "
             --
             --deny warnings
-
+      - run: echo 'RUSTFLAGS=-C panic=abort' >> $GITHUB_ENV
+      - name: Clippy on ariel-os-bootloader
+        uses: clechasseur/rs-clippy-check@1f566b8b39778a3778838ac8350a1c1effd7b91c # v6.1.2
+        with:
+          args: |
+            --locked
+            -p ariel-os-bootloader
+            --
+            --deny warnings
   lint-rustdoc:
     runs-on: ubuntu-latest
 

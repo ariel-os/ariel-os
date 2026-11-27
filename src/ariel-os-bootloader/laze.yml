@@ -1,0 +1,27 @@
+apps:
+  - name: ariel-os-bootloader
+    conflicts:
+      # ESPs have their own bootloader.
+      - context::esp
+      - context::native
+      # nrf54 non volatile memory access is not supported yet.
+      - context::nrf54l
+      # Not yet supported (missing memory layout information)
+      - context::stm32l072cz
+      - context::stm32f042k6
+      - context::stm32f401re
+      - context::stm32f411re
+      - context::stm32f767zi
+      # The modem is initialized by default to save power, it is not useful here
+      # as it takes flash space for something that exits quickly.
+      - nrf91-modem
+    selects:
+      # At least on cortex-m, the chain loading to application image doesn't work when called from SWI (interrupt executor).
+      - executor-thread
+      - ?no-logging
+
+modules:
+  - name: no-logging
+    help: disables logging to save space
+    conflicts:
+      - logging

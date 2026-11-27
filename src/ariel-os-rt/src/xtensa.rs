@@ -52,3 +52,9 @@ pub(crate) fn stack() -> Stack {
 
     Stack::new(lowest, highest)
 }
+
+#[doc(hidden)]
+#[allow(dead_code, reason = "conditional compilation")]
+pub fn jump_to_application(_start: u32) {
+    unimplemented!()
+}
