@@ -5,7 +5,7 @@
 /// - a `Spawner` as first parameter,
 /// - a peripheral struct, as optional second parameter.
 ///
-/// The peripheral struct must be defined with the `ariel_os::hal::define_peripherals!` macro.
+/// The peripheral struct must be defined with the `ariel_os::hal::define_peripherals!` or `ariel_os::hal::group_peripherals!` macros.
 ///
 /// See [`macro@task`] to use a long-lived async function instead.
 ///

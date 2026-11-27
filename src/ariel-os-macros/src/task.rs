@@ -12,7 +12,7 @@
 ///       parameter.
 ///       The `peripherals` parameter can only be used on `autostart` tasks.
 ///       The peripheral struct must be defined with the `ariel_os::hal::define_peripherals!`
-///       macro.
+///       or `ariel_os::hal::group_peripherals!` macros.
 ///     - hooks: (*optional*) available hooks are:
 ///         - `usb_builder_hook`: when present, the macro will define a static `USB_BUILDER_HOOK`
 ///           of type `UsbBuilderHook`, allowing to access and modify the system-provided
