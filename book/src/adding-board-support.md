@@ -40,9 +40,17 @@ Each file corresponds to a physical board.
 Boards having multiple MCUs, or MCUs with multiple compilation targets, still require only a single file, but multiple `targets` entries are used to describe the different compilation targets.
 When adding support for a new board, it is usually best to copy and adapt an existing one instead of starting from scratch.
 
+The SBD schema is defined and documented by the [`sbd-gen-schema` package][sbd-gen-schema-docsrs].
 When writing an SBD file to be added in tree, the following guidelines should be followed for each key:
 
 - `chip`: The board's chip, needs to correspond to an existing laze context listed in `boards/ariel-chips.yaml`.
+- `leds`: The LEDs present on the board, that can be controlled by the MCU.
+  Currently, each color channel of a multicolor LED is modeled as an individual LED.
+  Addressable LEDs are not part of this key.
+- `buttons`: Push-buttons present on the board.
+  Push-buttons are typically monostable tactile switches.
+- `switches`: Switches present on the board.
+  Push-buttons qualify as switches, but it is generally preferable to add them as `buttons`.
 - `i2c`: I2C buses present on the board.
     To qualify, there should be at least either:
 
@@ -152,6 +160,7 @@ Chances are that if you need to add this, you will also have to add support for
 the processor architecture to `ariel-os-bench`, `ariel-os-rt`, `ariel-os-threads`.
 
 [sbd]: https://github.com/ariel-os/sbd
+[sbd-gen-schema-docsrs]: https://docs.rs/sbd-gen-schema/latest/sbd_gen_schema/
 [sbd-book]: ./structured-board-descriptions.md
 [ci-builder-lists]: https://github.com/ariel-os/ariel-os/blob/5c23c04cd51c5cfebd561c9d27a47d4e26cdb649/.github/workflows/build.yml#L147-L168
 [i2c-pull-up-resistors-book]: ./i2c.md#configuring-other-settings
