@@ -77,8 +77,8 @@ impl HeaderMap<'_> {
     /// Merge two header maps, using the latter's value in case of conflict.
     fn updated_with(&self, other: &Self) -> Self {
         Self {
-            alg: self.alg.or(other.alg),
-            iv: self.iv.or(other.iv),
+            alg: other.alg.or(self.alg),
+            iv: other.iv.or(self.iv),
         }
     }
 }
