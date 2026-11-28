@@ -78,7 +78,9 @@ impl<T: Copy + Send> Channel<T> {
                 ChannelState::SendersWaiting(waiters) => {
                     waiters.put_current(
                         cs,
-                        crate::ThreadState::ChannelTxBlocked(core::ptr::from_ref(self) as usize),
+                        crate::ThreadState::ChannelTxBlocked(
+                            core::ptr::from_ref::<T>(something) as usize
+                        ),
                     );
                 }
             }
